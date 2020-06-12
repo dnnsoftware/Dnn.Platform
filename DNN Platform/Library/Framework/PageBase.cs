@@ -262,7 +262,7 @@ namespace DotNetNuke.Framework
                 {
                     HttpContext.Current.Response.Clear();
                     var errorMessage = HttpUtility.UrlEncode(Localization.GetString("NoSitesForThisInstallation.Error", Localization.GlobalResourceFile));
-                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error="+errorMessage);
+                    HttpContext.Current.Server.Transfer("~/ErrorPage.aspx?status=503&error=" + errorMessage);
                 }
             }
 

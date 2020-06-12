@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 message = new EventMessage();
                 message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID));
-                message.Priority = (MessagePriority) Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
+                message.Priority = (MessagePriority)Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
                 message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType));
                 message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand));
                 message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body));
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.EventQueue
                 try
                 {
                     object oMessageProcessor = Reflection.CreateObject(message.ProcessorType, message.ProcessorType);
-                    if (!((EventMessageProcessorBase) oMessageProcessor).ProcessMessage(message))
+                    if (!((EventMessageProcessorBase)oMessageProcessor).ProcessMessage(message))
                     {
                         throw new Exception();
                     }
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.EventQueue
                 for (int indx = 0; indx <= subscribers.Length - 1; indx++)
                 {
                     intMessageID = DataProvider.Instance().AddEventMessage(eventName,
-                                                                           (int) message.Priority,
+                                                                           (int)message.Priority,
                                                                            message.ProcessorType,
                                                                            message.ProcessorCommand,
                                                                            message.Body,

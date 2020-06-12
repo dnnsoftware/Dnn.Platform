@@ -227,7 +227,7 @@ namespace DotNetNuke.Services.Mail
         {
             this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             this.PortalAlias = this._portalSettings.PortalAlias.HTTPAlias;
-            this.SendingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
+            this.SendingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
             this._tokenReplace = new TokenReplace();
             this._confirmBodyHTML = Localization.Localization.GetString("EMAIL_BulkMailConf_Html_Body", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);
             this._confirmBodyText = Localization.Localization.GetString("EMAIL_BulkMailConf_Text_Body", Localization.Localization.GlobalResourceFile, this._strSenderLanguage);

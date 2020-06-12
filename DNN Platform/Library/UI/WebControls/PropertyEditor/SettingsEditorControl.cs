@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private ArrayList GetSettings()
         {
-            var settings = (Hashtable) this.DataSource;
+            var settings = (Hashtable)this.DataSource;
             var arrSettings = new ArrayList();
             IDictionaryEnumerator settingsEnumerator = settings.GetEnumerator();
             while (settingsEnumerator.MoveNext())
@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.WebControls
 
 		protected override void AddEditorRow(Table table, object obj)
         {
-            var info = (SettingInfo) obj;
+            var info = (SettingInfo)obj;
             this.AddEditorRow(table, info.Name, new SettingsEditorInfoAdapter(this.DataSource, obj, this.ID));
         }
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override bool GetRowVisibility(object obj)
         {
-            var info = (SettingInfo) obj;
+            var info = (SettingInfo)obj;
             bool _IsVisible = true;
             if ((this.Visibility != null) && (this.Visibility[info.Name] != null))
             {

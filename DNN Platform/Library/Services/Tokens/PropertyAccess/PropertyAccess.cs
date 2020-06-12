@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Tokens
                             {
                                 strFormat = "g";
                             }
-                            return (((IFormattable) propValue).ToString(strFormat, formatProvider));
+                            return (((IFormattable)propValue).ToString(strFormat, formatProvider));
                     }
                 }
                 else

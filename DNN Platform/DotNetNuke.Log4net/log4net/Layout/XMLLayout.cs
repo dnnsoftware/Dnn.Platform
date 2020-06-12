@@ -142,7 +142,7 @@ namespace log4net.Layout
 		public bool Base64EncodeMessage
 		{
 			get {return this.m_base64Message; }
-			set {this.m_base64Message=value; }
+			set {this.m_base64Message = value; }
 		}
 
 		/// <summary>
@@ -161,7 +161,7 @@ namespace log4net.Layout
 		public bool Base64EncodeProperties
 		{
 			get {return this.m_base64Properties; }
-			set {this.m_base64Properties=value; }
+			set {this.m_base64Properties = value; }
 		}
 
 
@@ -272,7 +272,7 @@ namespace log4net.Layout
 					writer.WriteAttributeString(ATTR_NAME, Transform.MaskXmlInvalidCharacters((string)entry.Key, this.InvalidCharReplacement));
 
 					// Use an ObjectRenderer to convert the object to a string
-					string valueStr =null;
+					string valueStr = null;
 					if (!this.Base64EncodeProperties)
 					{
 						valueStr = Transform.MaskXmlInvalidCharacters(loggingEvent.Repository.RendererMap.FindAndRender(entry.Value), this.InvalidCharReplacement);
@@ -329,8 +329,8 @@ namespace log4net.Layout
 		private string m_elmException = ELM_EXCEPTION;
 		private string m_elmLocation = ELM_LOCATION;
 
-		private bool m_base64Message=false;
-		private bool m_base64Properties=false;
+		private bool m_base64Message = false;
+		private bool m_base64Properties = false;
 
 		#endregion Private Instance Fields
 

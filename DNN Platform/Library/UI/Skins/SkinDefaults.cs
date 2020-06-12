@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.Skins
 
         private static object GetSkinDefaultsCallback(CacheItemArgs cacheItemArgs)
         {
-            var defaultType = (SkinDefaultType) cacheItemArgs.ParamList[0];
+            var defaultType = (SkinDefaultType)cacheItemArgs.ParamList[0];
             return new SkinDefaults(defaultType);
         }
 

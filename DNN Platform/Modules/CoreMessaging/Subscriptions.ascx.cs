@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             var portalSettings = PortalSettings.Current;
             var userPreferenceController = UserPreferencesController.Instance;
             var user = UserController.GetUserById(portalSettings.PortalId, portalSettings.UserId);
-            UserPreference userPreference=null;
+            UserPreference userPreference = null;
             if (user != null)
             {
                 userPreference = userPreferenceController.GetUserPreference(user);

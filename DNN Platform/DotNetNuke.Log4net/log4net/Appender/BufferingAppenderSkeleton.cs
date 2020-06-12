@@ -393,7 +393,7 @@ namespace log4net.Appender
 			// therefore check we have an evaluator.
 			if (this.m_lossy && this.m_evaluator == null)
 			{
-				this.ErrorHandler.Error("Appender ["+this.Name+"] is Lossy but has no Evaluator. The buffer will never be sent!"); 
+				this.ErrorHandler.Error("Appender [" + this.Name + "] is Lossy but has no Evaluator. The buffer will never be sent!"); 
 			}
 
 			if (this.m_bufferSize > 1)

@@ -290,7 +290,7 @@ namespace log4net.Config
 				}
 				catch (Exception ex)
 				{
-					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+this.m_configFile+"] will be treated as an absolute path.", ex);
+					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path [" + this.m_configFile + "] will be treated as an absolute path.", ex);
 				}
 
 				if (applicationBaseDirectory != null)
@@ -414,7 +414,7 @@ namespace log4net.Config
 				}
 				catch (Exception ex)
 				{
-					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+this.m_configFile+"] will be treated as an absolute URI.", ex);
+					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path [" + this.m_configFile + "] will be treated as an absolute URI.", ex);
 				}
 
 				if (applicationBaseDirectory != null)

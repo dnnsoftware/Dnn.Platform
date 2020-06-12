@@ -144,7 +144,7 @@ namespace DNN.Integration.Test.Framework
                 try
                 {
                     var requestUriString = CombineUrlPath(this.Domain, LogoffPath);
-                    var httpWebRequest1 = (HttpWebRequest) WebRequest.Create(requestUriString);
+                    var httpWebRequest1 = (HttpWebRequest)WebRequest.Create(requestUriString);
                     httpWebRequest1.Method = "GET";
                     httpWebRequest1.KeepAlive = false;
                     httpWebRequest1.CookieContainer = this._sessionCookiesContainer;

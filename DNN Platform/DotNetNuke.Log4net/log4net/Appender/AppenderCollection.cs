@@ -87,7 +87,7 @@ namespace log4net.Appender
 		/// </returns>
 		public static AppenderCollection ReadOnly(AppenderCollection list)
 		{
-			if (list==null) throw new ArgumentNullException("list");
+			if (list == null) throw new ArgumentNullException("list");
 
 			return new ReadOnlyAppenderCollection(list);
 		}
@@ -314,7 +314,7 @@ namespace log4net.Appender
 		/// <returns><c>true</c> if <paramref name="item"/> is found in the <c>AppenderCollection</c>; otherwise, <c>false</c>.</returns>
 		public virtual bool Contains(IAppender item)
 		{
-			for (int i=0; i != this.m_count; ++i)
+			for (int i = 0; i != this.m_count; ++i)
 			{
 				if (this.m_array[i].Equals(item))
 				{
@@ -335,7 +335,7 @@ namespace log4net.Appender
 		/// </returns>
 		public virtual int IndexOf(IAppender item)
 		{
-			for (int i=0; i != this.m_count; ++i)
+			for (int i = 0; i != this.m_count; ++i)
 			{
 				if (this.m_array[i].Equals(item))
 				{
@@ -589,7 +589,7 @@ namespace log4net.Appender
 		/// </exception>
 		private void ValidateIndex(int i, bool allowEqualEnd)
 		{
-			int max = (allowEqualEnd) ? (this.m_count) : (this.m_count-1);
+			int max = (allowEqualEnd) ? (this.m_count) : (this.m_count - 1);
 			if (i < 0 || i > max)
 			{
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");

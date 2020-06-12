@@ -10,7 +10,7 @@ namespace DNN.Integration.Test.Framework.Helpers
     {
         public static string GetHostSettingValue(string hostSettingName)
         {
-            var query = string.Format("SELECT TOP(1) SettingValue FROM {{objectQualifier}}HostSettings WHERE SettingName='" + hostSettingName +"';");
+            var query = string.Format("SELECT TOP(1) SettingValue FROM {{objectQualifier}}HostSettings WHERE SettingName='" + hostSettingName + "';");
             return DatabaseHelper.ExecuteScalar<string>(query);
         }
 

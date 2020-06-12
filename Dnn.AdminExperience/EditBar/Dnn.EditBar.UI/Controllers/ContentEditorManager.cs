@@ -193,7 +193,7 @@ namespace Dnn.EditBar.UI.Controllers
 
                         if (moduleControl != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
                         {
-                            ((HtmlContainerControl) moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+                            ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
                             
                             if (this.HaveContentLayoutModuleOnPage())
                             {
@@ -524,7 +524,7 @@ namespace Dnn.EditBar.UI.Controllers
                     var moduleInfo = this.FindModuleInfo(moduleId);
                     if (moduleContainer != null && moduleInfo != null && moduleContainer.Parent is HtmlContainerControl)
                     {
-                        ((HtmlContainerControl) moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
+                        ((HtmlContainerControl)moduleContainer.Parent).Attributes["data-module-title"] = moduleInfo.ModuleTitle;
                         this.ProcessDragTipShown(moduleContainer);
                     }
                 }
@@ -537,7 +537,7 @@ namespace Dnn.EditBar.UI.Controllers
             if (string.IsNullOrEmpty(dragTipShown) && moduleContainer.Parent is HtmlContainerControl && this.Request.Cookies["noFloat"] == null)
             {
                 Personalization.SetProfile("Usability", "DragTipShown" + this.PortalSettings.PortalId, "true");
-                ((HtmlContainerControl) moduleContainer.Parent).Attributes["class"] += " dragtip";
+                ((HtmlContainerControl)moduleContainer.Parent).Attributes["class"] += " dragtip";
             }
         }
 

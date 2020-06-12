@@ -27,11 +27,11 @@ namespace DotNetNuke.Services.Localization
             switch (this._compare.ToUpperInvariant())
             {
                 case "ENGLISH":
-                    return ((CultureInfo) x).EnglishName.CompareTo(((CultureInfo) y).EnglishName);
+                    return ((CultureInfo)x).EnglishName.CompareTo(((CultureInfo)y).EnglishName);
                 case "NATIVE":
-                    return ((CultureInfo) x).NativeName.CompareTo(((CultureInfo) y).NativeName);
+                    return ((CultureInfo)x).NativeName.CompareTo(((CultureInfo)y).NativeName);
                 default:
-                    return ((CultureInfo) x).Name.CompareTo(((CultureInfo) y).Name);
+                    return ((CultureInfo)x).Name.CompareTo(((CultureInfo)y).Name);
             }
         }
 

@@ -663,7 +663,7 @@ namespace DotNetNuke.Entities.Modules
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
 			//And with the 1's complement of Feature to Clear the Feature flag
-            this.SupportedFeatures = this.SupportedFeatures & ~((int) feature);
+            this.SupportedFeatures = this.SupportedFeatures & ~((int)feature);
         }
 
         /// -----------------------------------------------------------------------------
@@ -674,7 +674,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private bool GetFeature(DesktopModuleSupportedFeature feature)
         {
-            return this.SupportedFeatures > Null.NullInteger && (this.SupportedFeatures & (int) feature) == (int) feature;
+            return this.SupportedFeatures > Null.NullInteger && (this.SupportedFeatures & (int)feature) == (int)feature;
         }
 
         /// -----------------------------------------------------------------------------
@@ -685,7 +685,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private void SetFeature(DesktopModuleSupportedFeature feature)
         {
-            this.SupportedFeatures |= (int) feature;
+            this.SupportedFeatures |= (int)feature;
         }
 
         /// -----------------------------------------------------------------------------

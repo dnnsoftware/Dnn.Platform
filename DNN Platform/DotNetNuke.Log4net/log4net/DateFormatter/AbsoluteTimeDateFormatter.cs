@@ -120,7 +120,7 @@ namespace log4net.DateFormatter
                         }
                         else
                         {
-                            timeString = (string) s_lastTimeStrings[this.GetType()];
+                            timeString = (string)s_lastTimeStrings[this.GetType()];
                         }
 
                         if (timeString == null)
@@ -131,7 +131,7 @@ namespace log4net.DateFormatter
 				// PERF: Try removing this lock and using a new StringBuilder each time
 				lock (s_lastTimeBuf)
 				{
-                                        timeString = (string) s_lastTimeStrings[this.GetType()];
+                                        timeString = (string)s_lastTimeStrings[this.GetType()];
 
                                         if (timeString == null)
                                         {

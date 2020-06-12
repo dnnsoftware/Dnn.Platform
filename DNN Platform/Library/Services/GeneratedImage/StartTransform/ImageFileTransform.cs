@@ -74,11 +74,11 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         private Image ProcessImageFromUrl()
         {
-            var httpWebRequest = (HttpWebRequest) WebRequest.Create(this.ImageUrl);
+            var httpWebRequest = (HttpWebRequest)WebRequest.Create(this.ImageUrl);
 
             try
             {
-                using (var httpWebReponse = (HttpWebResponse) httpWebRequest.GetResponse())
+                using (var httpWebReponse = (HttpWebResponse)httpWebRequest.GetResponse())
                 {
                     using (var stream = httpWebReponse.GetResponseStream())
                     {

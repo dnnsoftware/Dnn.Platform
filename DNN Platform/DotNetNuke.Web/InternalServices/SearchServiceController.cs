@@ -566,7 +566,7 @@ namespace DotNetNuke.Web.InternalServices
                         EndModifiedTimeUtc = beginModifiedTimeUtc > DateTime.MinValue ? DateTime.MaxValue : DateTime.MinValue,
                         PageIndex = pageIndex,
                         PageSize = pageSize,
-                        SortField = (SortFields) sortOption,
+                        SortField = (SortFields)sortOption,
                         TitleSnippetLength = 120,
                         BodySnippetLength = 300,
                         CultureCode = culture,

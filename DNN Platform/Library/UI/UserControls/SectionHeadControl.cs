@@ -255,7 +255,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                var ctl = (HtmlControl) this.Parent.FindControl(this.Section);
+                var ctl = (HtmlControl)this.Parent.FindControl(this.Section);
                 if (ctl != null)
                 {
                     this.lblTitle.Attributes.Add("onclick", this.imgIcon.ClientID + ".click();");
@@ -274,7 +274,7 @@ namespace DotNetNuke.UI.UserControls
 
         protected void imgIcon_Click(object sender, ImageClickEventArgs e)
         {
-            var ctl = (HtmlControl) this.Parent.FindControl(this.Section);
+            var ctl = (HtmlControl)this.Parent.FindControl(this.Section);
             if (ctl != null)
             {
                 this.IsExpanded = !this.IsExpanded;

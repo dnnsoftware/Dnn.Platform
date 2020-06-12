@@ -239,7 +239,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         private static void GetReadLock(object obj)
         {
-            var strategy = (ILockStrategy) obj;
+            var strategy = (ILockStrategy)obj;
             using (var readLock = strategy.GetReadLock())
             {
                 //do nothing
@@ -248,7 +248,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         private static void GetWriteLock(object obj)
         {
-            var strategy = (ILockStrategy) obj;
+            var strategy = (ILockStrategy)obj;
             using (var writeLock = strategy.GetWriteLock())
             {
                 //do nothing

@@ -42,12 +42,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             UnknownSearchTypeId
         }
 
-        private const int ModuleSearchTypeId = (int) SearchTypeIds.ModuleSearchTypeId;
-        private const int TabSearchTypeId = (int) SearchTypeIds.TabSearchTypeId;
-        private const int DocumentSearchTypeId = (int) SearchTypeIds.DocumentSearchTypeId;
-        private const int UrlSearchTypeId = (int) SearchTypeIds.UrlSearchTypeId;
-        private const int OtherSearchTypeId = (int) SearchTypeIds.OtherSearchTypeId;
-        private const int UnknownSearchTypeId = (int) SearchTypeIds.UnknownSearchTypeId;
+        private const int ModuleSearchTypeId = (int)SearchTypeIds.ModuleSearchTypeId;
+        private const int TabSearchTypeId = (int)SearchTypeIds.TabSearchTypeId;
+        private const int DocumentSearchTypeId = (int)SearchTypeIds.DocumentSearchTypeId;
+        private const int UrlSearchTypeId = (int)SearchTypeIds.UrlSearchTypeId;
+        private const int OtherSearchTypeId = (int)SearchTypeIds.OtherSearchTypeId;
+        private const int UnknownSearchTypeId = (int)SearchTypeIds.UnknownSearchTypeId;
 
         private const int PortalId0 = 0;
         private const int PortalId1 = 1;
@@ -554,7 +554,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 var doc = new SearchDocument
                 {
-                    PortalId = i <= (totalDocs/2) ? PortalId0 : PortalId1,
+                    PortalId = i <= (totalDocs / 2) ? PortalId0 : PortalId1,
                     UniqueKey = Guid.NewGuid().ToString(),
                     SearchTypeId = ModuleSearchTypeId,
                     ModifiedTimeUtc = now,
@@ -575,8 +575,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             //Assert - delete all portal 1
             stats = this.GetSearchStatistics();
-            Assert.AreEqual(totalDocs/2, stats.TotalActiveDocuments);
-            Assert.AreEqual(totalDocs/2, stats.TotalDeletedDocuments);
+            Assert.AreEqual(totalDocs / 2, stats.TotalActiveDocuments);
+            Assert.AreEqual(totalDocs / 2, stats.TotalDeletedDocuments);
         }
 
         [Test]

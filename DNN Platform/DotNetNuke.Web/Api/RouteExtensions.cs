@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Api
         /// <returns>Namespaces</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
-            return (string[]) route.DataTokens[NamespaceKey];
+            return (string[])route.DataTokens[NamespaceKey];
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.Api
         /// <returns>Route name</returns>
         public static string GetName(this Route route)
         {
-            return (string) route.DataTokens[NameKey];
+            return (string)route.DataTokens[NameKey];
         }
 
         /// <summary>

@@ -297,7 +297,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             var routeData = new RouteData();
             routeData.Values["controller"] = "bar";
             routeData.Values["action"] = "foo";
-            var context = MockHelper.CreateMockControllerContext(url!=null? MockHelper.CreateMockHttpContext(url):null, routeData);
+            var context = MockHelper.CreateMockControllerContext(url != null ? MockHelper.CreateMockHttpContext(url) : null, routeData);
             
             mockDnnController.Setup(c => c.ModuleContext).Returns(expectedContext);
             mockDnnController.Setup(c => c.ControllerContext).Returns(context);

@@ -126,7 +126,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     strCurrency = this.PortalSettings.Currency;
                 }
-                dblTotal = Convert.ToDouble(this.lblFee.Text)*Convert.ToDouble(this.txtUnits.Text);
+                dblTotal = Convert.ToDouble(this.lblFee.Text) * Convert.ToDouble(this.txtUnits.Text);
                 this.lblTotal.Text = dblTotal.ToString("#.##");
 
                 this.lblFeeCurrency.Text = strCurrency;
@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 }
 
 
-                var objResponse = (HttpWebResponse) objRequest.GetResponse();
+                var objResponse = (HttpWebResponse)objRequest.GetResponse();
                 using (var sr = new StreamReader(objResponse.GetResponseStream()))
                 {
                     string strResponse = sr.ReadToEnd();

@@ -800,7 +800,7 @@ namespace log4net.Layout
 		/// which just prints the application supplied message. 
 		/// </para>
 		/// </remarks>
-		public const string DefaultConversionPattern ="%message%newline";
+		public const string DefaultConversionPattern = "%message%newline";
 
 		/// <summary>
 		/// A detailed conversion pattern

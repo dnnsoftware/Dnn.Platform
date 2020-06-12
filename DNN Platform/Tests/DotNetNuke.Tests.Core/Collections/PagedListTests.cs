@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Core.Collections
             //Assert
             for (int i = 0; i < pageSize; i++)
             {
-                Assert.AreEqual(index*pageSize + i, pagedList[i]);
+                Assert.AreEqual(index * pageSize + i, pagedList[i]);
             }
         }
 

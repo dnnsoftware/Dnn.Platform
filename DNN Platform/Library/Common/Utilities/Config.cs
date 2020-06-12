@@ -231,7 +231,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var section = System.Configuration.ConfigurationManager.GetSection("system.web/httpRuntime") as HttpRuntimeSection;
             var mode = section?.FcnMode;
-            return ((ValueType) mode ?? FcnMode.NotSet).ToString();
+            return ((ValueType)mode ?? FcnMode.NotSet).ToString();
         }
 
         /// -----------------------------------------------------------------------------
@@ -279,7 +279,7 @@ namespace DotNetNuke.Common.Utilities
         public static long GetRequestFilterSize()
         {
             var configNav = Load();
-            const int defaultRequestFilter = 30000000/1024/1024;
+            const int defaultRequestFilter = 30000000 / 1024 / 1024;
             var httpNode = configNav.SelectSingleNode("configuration//system.webServer//security//requestFiltering//requestLimits") ??
                        configNav.SelectSingleNode("configuration//location//system.webServer//security//requestFiltering//requestLimits");
             if (httpNode == null && Iis7AndAbove())

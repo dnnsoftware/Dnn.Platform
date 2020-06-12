@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this.ViewState.Add("ToolInfo", new RibbonBarToolInfo());
                 }
-                return (RibbonBarToolInfo) this.ViewState["ToolInfo"];
+                return (RibbonBarToolInfo)this.ViewState["ToolInfo"];
             }
             set
             {

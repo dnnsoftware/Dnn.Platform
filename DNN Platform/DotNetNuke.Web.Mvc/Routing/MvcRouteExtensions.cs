@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         /// <returns>Namespaces</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
-            return (string[]) route.DataTokens[NamespaceKey];
+            return (string[])route.DataTokens[NamespaceKey];
         }
 
         internal static void SetName(this Route route, string name)
@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         /// <returns>Route name</returns>
         public static string GetName(this Route route)
         {
-            return (string) route.DataTokens[NameKey];
+            return (string)route.DataTokens[NameKey];
         }
     }
 }

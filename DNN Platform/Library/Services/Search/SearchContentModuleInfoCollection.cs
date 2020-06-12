@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchContentModuleInfo) this.List[index];
+                return (SearchContentModuleInfo)this.List[index];
             }
             set
             {
@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                this.Add((SearchContentModuleInfo) value.List[i]);
+                this.Add((SearchContentModuleInfo)value.List[i]);
             }
         }
 

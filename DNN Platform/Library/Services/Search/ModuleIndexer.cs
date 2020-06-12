@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Search
                     try
                     {
                         var controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
-                        var contentInfo = new SearchContentModuleInfo {ModSearchBaseControllerType= (ModuleSearchBase) controller, ModInfo = module};
+                        var contentInfo = new SearchContentModuleInfo {ModSearchBaseControllerType = (ModuleSearchBase)controller, ModInfo = module};
                         var searchItems = contentInfo.ModSearchBaseControllerType.GetModifiedSearchDocuments(module, startDateLocal.ToUniversalTime());
 
                         if (searchItems != null && searchItems.Count > 0)

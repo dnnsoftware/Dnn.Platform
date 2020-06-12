@@ -567,7 +567,7 @@ namespace log4net.Repository.Hierarchy
 
 			int writes = 0;
 
-			for (Logger c=this; c != null; c=c.m_parent) 
+			for (Logger c = this; c != null; c = c.m_parent) 
 			{
 				if (c.m_appenderAttachedImpl != null) 
 				{

@@ -253,11 +253,11 @@ namespace Dnn.Modules.Console
 
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
             {
-                var tab = (TabInfo) e.Item.DataItem;
+                var tab = (TabInfo)e.Item.DataItem;
                 DnnComboBox visibilityDropDown = (DnnComboBox)e.Item.FindControl("tabVisibility");
 
-                var tabLabel = (Label) e.Item.FindControl("tabLabel");
-                var tabPathField = (HiddenField) e.Item.FindControl("tabPath");
+                var tabLabel = (Label)e.Item.FindControl("tabLabel");
+                var tabPathField = (HiddenField)e.Item.FindControl("tabPath");
 
                 visibilityDropDown.Items.Clear();
                 //visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));

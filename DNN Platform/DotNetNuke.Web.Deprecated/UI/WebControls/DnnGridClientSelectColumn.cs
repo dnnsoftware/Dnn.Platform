@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.InitializeCell(cell, columnIndex, inItem);
             if (inItem is GridHeaderItem && !String.IsNullOrEmpty(this.HeaderText))
             {
-                if (! inItem.OwnerTableView.OwnerGrid.AllowMultiRowSelection)
+                if (!inItem.OwnerTableView.OwnerGrid.AllowMultiRowSelection)
                 {
                     cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
                 }

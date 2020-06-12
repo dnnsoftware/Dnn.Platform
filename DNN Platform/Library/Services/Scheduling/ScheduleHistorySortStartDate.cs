@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public int Compare(object x, object y)
         {
-            return ((ScheduleHistoryItem) y).StartDate.CompareTo(((ScheduleHistoryItem) x).StartDate);
+            return ((ScheduleHistoryItem)y).StartDate.CompareTo(((ScheduleHistoryItem)x).StartDate);
         }
 
         #endregion

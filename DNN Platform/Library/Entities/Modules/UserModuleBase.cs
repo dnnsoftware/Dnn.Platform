@@ -370,7 +370,7 @@ namespace DotNetNuke.Entities.Modules
             if (_CacheGeoIPData)
             {
 				//Yes, get it from cache
-                _CountryLookup = new CountryLookup((MemoryStream) this.Context.Cache.Get("GeoIPData"));
+                _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
             }
             else
             {
@@ -435,7 +435,7 @@ namespace DotNetNuke.Entities.Modules
                 //complete registration
                 switch (this.PortalSettings.UserRegistration)
                 {
-                    case (int) Globals.PortalRegistrationType.PrivateRegistration:
+                    case (int)Globals.PortalRegistrationType.PrivateRegistration:
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, this.PortalSettings);
 
                         //show a message that a portal administrator has to verify the user credentials
@@ -445,11 +445,11 @@ namespace DotNetNuke.Entities.Modules
                             message = ModuleMessage.ModuleMessageType.GreenSuccess;
                         }
                         break;
-                    case (int) Globals.PortalRegistrationType.PublicRegistration:
+                    case (int)Globals.PortalRegistrationType.PublicRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
                         UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
                         break;
-                    case (int) Globals.PortalRegistrationType.VerifiedRegistration:
+                    case (int)Globals.PortalRegistrationType.VerifiedRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
                         UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
                         break;
@@ -470,7 +470,7 @@ namespace DotNetNuke.Entities.Modules
                 if (notify)
                 {
 					//Send Notification to User
-                    if (this.PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                    if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
                     }

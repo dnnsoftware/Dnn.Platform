@@ -76,7 +76,7 @@ namespace log4net.Util
 			// Write either escaped text or CDATA sections
 
 			int weightCData = 12 * (1 + CountSubstrings(stringData, CDATA_END));
-			int weightStringEscapes = 3*(CountSubstrings(stringData, "<") + CountSubstrings(stringData, ">")) + 4*CountSubstrings(stringData, "&");
+			int weightStringEscapes = 3 * (CountSubstrings(stringData, "<") + CountSubstrings(stringData, ">")) + 4 * CountSubstrings(stringData, "&");
 
 			if (weightStringEscapes <= weightCData)
 			{
@@ -198,7 +198,7 @@ namespace log4net.Util
         /// <summary>
         /// Characters illegal in XML 1.0
         /// </summary>
-		private static Regex INVALIDCHARS=new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD]", RegexOptions.Compiled);
+		private static Regex INVALIDCHARS = new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD]", RegexOptions.Compiled);
 		#endregion Private Static Fields
 	}
 }

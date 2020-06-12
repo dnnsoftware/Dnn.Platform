@@ -151,7 +151,7 @@ namespace DotNetNuke.Security.Permissions
         {
             unchecked
             {
-                return (this._StateID*397) ^ this._WorkflowStatePermissionID;
+                return (this._StateID * 397) ^ this._WorkflowStatePermissionID;
             }
         }
 

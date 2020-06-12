@@ -357,9 +357,9 @@ namespace DotNetNuke.Modules.Admin.Security
 
             var userList = RoleController.Instance.GetUserRoles(this.PortalId, userName, roleName);
             this._totalRecords = userList.Count;
-            this._totalPages = this._totalRecords%this.PageSize == 0 ? this._totalRecords/this.PageSize : this._totalRecords/this.PageSize + 1;
+            this._totalPages = this._totalRecords % this.PageSize == 0 ? this._totalRecords / this.PageSize : this._totalRecords / this.PageSize + 1;
 
-            return userList.Skip((this.CurrentPage - 1 )*this.PageSize).Take(this.PageSize).ToList();
+            return userList.Skip((this.CurrentPage - 1 ) * this.PageSize).Take(this.PageSize).ToList();
         }
 
         /// -----------------------------------------------------------------------------
@@ -400,7 +400,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             expiryDate = DateTime.Now.AddDays(objRole.BillingPeriod);
                             break;
                         case "W":
-                            expiryDate = DateTime.Now.AddDays(objRole.BillingPeriod*7);
+                            expiryDate = DateTime.Now.AddDays(objRole.BillingPeriod * 7);
                             break;
                         case "M":
                             expiryDate = DateTime.Now.AddMonths(objRole.BillingPeriod);
@@ -713,7 +713,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             try
             {
-                var cmdDeleteUserRole = (ImageButton) sender;
+                var cmdDeleteUserRole = (ImageButton)sender;
                 int roleId = Convert.ToInt32(cmdDeleteUserRole.Attributes["roleId"]);
                 int userId = Convert.ToInt32(cmdDeleteUserRole.Attributes["userId"]);
 
@@ -775,7 +775,7 @@ namespace DotNetNuke.Modules.Admin.Security
             DataGridItem item = e.Item;
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
-                var userRole = (UserRoleInfo) item.DataItem;
+                var userRole = (UserRoleInfo)item.DataItem;
                 if (this.RoleId == Null.NullInteger)
                 {
                     if (userRole.RoleID == Convert.ToInt32(this.cboRoles.SelectedValue))

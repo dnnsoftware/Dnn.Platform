@@ -29,9 +29,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 if (!this.Page.IsPostBack)
                 {
-                    if (!string.IsNullOrEmpty((string) this.TabModuleSettings["ProfileTemplate"]))
+                    if (!string.IsNullOrEmpty((string)this.TabModuleSettings["ProfileTemplate"]))
                     {
-                        this.txtTemplate.Text = (string) this.TabModuleSettings["ProfileTemplate"];
+                        this.txtTemplate.Text = (string)this.TabModuleSettings["ProfileTemplate"];
                     }
                     if (this.Settings.ContainsKey("IncludeButton"))
                     {

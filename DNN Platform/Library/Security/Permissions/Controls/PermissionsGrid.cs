@@ -473,7 +473,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }            
             if (checkedRoles.Contains(this.AllUsersRoleId))
             {
-                this.Roles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName=Globals.glbRoleAllUsersName });                    
+                this.Roles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });                    
             }
 
             //Administrators Role always has implicit permissions, then it should be always in
@@ -648,7 +648,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.lblErrorMessage = new Label
             {
                 //TODO Remove DEBUG test
-                Text = "<br />" + (errorKey.StartsWith("DEBUG")? errorKey: Localization.GetString(errorKey)),
+                Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
                 CssClass = "NormalRed"
             };
             this.pnlPermissions.Controls.Add(this.lblErrorMessage);

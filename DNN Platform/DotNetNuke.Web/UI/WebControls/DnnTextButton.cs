@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string) this.ViewState["ConfirmMessage"];
+                return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string)this.ViewState["ConfirmMessage"];
             }
             set
             {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["CssClass"] == null ? string.Empty : (string) this.ViewState["CssClass"];
+                return this.ViewState["CssClass"] == null ? string.Empty : (string)this.ViewState["CssClass"];
             }
             set
             {
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string) this.ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
             set
             {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["Text"] == null ? string.Empty : (string) this.ViewState["Text"];
+                return this.ViewState["Text"] == null ? string.Empty : (string)this.ViewState["Text"];
             }
             set
             {

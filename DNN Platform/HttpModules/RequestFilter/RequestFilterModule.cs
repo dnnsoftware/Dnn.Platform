@@ -41,7 +41,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
 
         private static void FilterRequest(object sender, EventArgs e)
         {
-            var app = (HttpApplication) sender;
+            var app = (HttpApplication)sender;
             if ((app == null) || (app.Context == null) || (app.Context.Items == null))
             {
                 return;

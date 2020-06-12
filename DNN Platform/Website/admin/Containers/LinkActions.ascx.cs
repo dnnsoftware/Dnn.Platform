@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                this.ProcessAction(((LinkButton) sender).ID.Substring(3));
+                this.ProcessAction(((LinkButton)sender).ID.Substring(3));
             }
             catch (Exception exc) //Module failed to load
             {

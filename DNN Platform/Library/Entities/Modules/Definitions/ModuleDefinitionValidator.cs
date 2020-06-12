@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         private static string GetLocalizedString(string key)
         {
-            var objPortalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+            var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             if (objPortalSettings == null)
             {
                 return key;

@@ -134,7 +134,7 @@ namespace DotNetNuke.Application
                         Attribute attr = Attribute.GetCustomAttribute(assy, typeof(AssemblyStatusAttribute));
                         if (attr != null)
                         {
-                            _status = ((AssemblyStatusAttribute) attr).Status;
+                            _status = ((AssemblyStatusAttribute)attr).Status;
                         }
                     }
                 }

@@ -225,7 +225,7 @@ namespace log4net.Appender
 
 				if (writer == null)
 				{
-					this.ErrorHandler.Error("Failed to create output file for writing ["+filePath+"]", null, ErrorCode.FileOpenFailure);
+					this.ErrorHandler.Error("Failed to create output file for writing [" + filePath + "]", null, ErrorCode.FileOpenFailure);
 				}
 				else
 				{

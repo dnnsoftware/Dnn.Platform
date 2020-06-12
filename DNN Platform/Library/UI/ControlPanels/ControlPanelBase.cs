@@ -326,7 +326,7 @@ namespace DotNetNuke.UI.ControlPanels
                     for (j = 0; j <= arrSystemModulePermissions.Count - 1; j++)
                     {
                         PermissionInfo objSystemModulePermission;
-                        objSystemModulePermission = (PermissionInfo) arrSystemModulePermissions[j];
+                        objSystemModulePermission = (PermissionInfo)arrSystemModulePermissions[j];
                         if (objSystemModulePermission.PermissionKey == "VIEW" && permissionType == ViewPermissionType.Edit && objTabPermission.PermissionKey != "EDIT")
                         {
 							//Only Page Editors get View permissions if "Page Editors Only"
@@ -342,7 +342,7 @@ namespace DotNetNuke.UI.ControlPanels
                         if (objModulePermission.PermissionKey == "EDIT" && objModulePermission.AllowAccess)
                         {
                             ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
-                                                                                         (PermissionInfo) arrSystemModuleViewPermissions[0],
+                                                                                         (PermissionInfo)arrSystemModuleViewPermissions[0],
                                                                                          objModulePermission.RoleID,
                                                                                          objModulePermission.UserID,
                                                                                          true);
@@ -360,7 +360,7 @@ namespace DotNetNuke.UI.ControlPanels
                         {
 							//create the module permission
                             PermissionInfo objCustomModulePermission;
-                            objCustomModulePermission = (PermissionInfo) arrCustomModulePermissions[j];
+                            objCustomModulePermission = (PermissionInfo)arrCustomModulePermissions[j];
                             this.AddModulePermission(objModule, objCustomModulePermission, objTabPermission.RoleID, objTabPermission.UserID, objTabPermission.AllowAccess);
                         }
                     }

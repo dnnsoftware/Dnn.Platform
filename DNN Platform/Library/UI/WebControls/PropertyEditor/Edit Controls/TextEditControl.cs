@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     if (attribute is MaxLengthAttribute)
                     {
-                        var lengthAtt = (MaxLengthAttribute) attribute;
+                        var lengthAtt = (MaxLengthAttribute)attribute;
                         length = lengthAtt.Length;
                         break;
                     }

@@ -281,7 +281,7 @@ namespace DotNetNuke.UI.WebControls
 				if (!String.IsNullOrEmpty(this.DataField))
 				{
 					//DataBind the Label (via the Resource Key)
-					var dataRow = (DataRowView) this.DataSource;
+					var dataRow = (DataRowView)this.DataSource;
 					if (this.ResourceKey == string.Empty)
 					{
 						this.ResourceKey = Convert.ToString(dataRow[this.DataField]);

@@ -259,7 +259,7 @@ namespace DotNetNuke.Modules.Journal.Components
 				}
 				if (xc == 1) {
 					sb.Append(" {resx:likesthis}");
-				} else if (xc>1) {
+				} else if (xc > 1) {
 					sb.Append(" {resx:likethis}");
 				}
 
@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.Journal.Components
 			}
 			if (xc == 1) {
 				sb.Append(" {resx:likesthis}");
-			} else if (xc>1) {
+			} else if (xc > 1) {
 				sb.Append(" {resx:likethis}");
 			}
 		}

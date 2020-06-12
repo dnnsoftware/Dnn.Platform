@@ -58,7 +58,7 @@ namespace DotNetNuke.Security
 			this.DisplayNameFormat = string.Empty;
 			this.EmailValidator = Globals.glbEmailRegEx;
 		}
-		public RegistrationSettings(Dictionary<string, string> settings): this()
+		public RegistrationSettings(Dictionary<string, string> settings) : this()
 		{
             this.RandomPassword = settings.GetValueOrDefault("Registration_RandomPassword", this.RandomPassword);
             this.RedirectAfterRegistration = settings.GetValueOrDefault("Redirect_AfterRegistration", this.RedirectAfterRegistration);

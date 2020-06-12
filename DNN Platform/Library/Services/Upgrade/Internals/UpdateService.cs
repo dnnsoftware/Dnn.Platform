@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         private static StreamReader GetResponseAsStream(string url)
         {
             //creating the proxy for the service call using the HttpWebRequest class
-            var webReq = (HttpWebRequest) WebRequest.Create(url);
+            var webReq = (HttpWebRequest)WebRequest.Create(url);
 
             //Set the method/action type
             webReq.Method = "GET";
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             webReq.ContentType = "text/xml; charset=utf-8";
 
             //Get the response handle, we have no true response yet!
-            var webResp = (HttpWebResponse) webReq.GetResponse();
+            var webResp = (HttpWebResponse)webReq.GetResponse();
 
             //Now, we read the response (the string), and output it.
             Stream myResponse = webResp.GetResponseStream();

@@ -47,7 +47,7 @@ namespace log4net.Layout.Pattern
     {
         internal override string GetMethodInformation(MethodItem method)
         {
-            string returnValue="";
+            string returnValue = "";
 
             try
             {
@@ -68,7 +68,7 @@ namespace log4net.Layout.Pattern
                     param = sb.ToString();
                 }
 
-                returnValue=base.GetMethodInformation(method) + "(" + param + ")";
+                returnValue = base.GetMethodInformation(method) + "(" + param + ")";
             }
             catch (Exception ex)
             {

@@ -144,7 +144,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
             if (!this.IsPostBack)
             {
-                if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]) && this.PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.VerifiedRegistration)
+                if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]) && this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                 {
                     if (this.Request.IsAuthenticated)
                     {

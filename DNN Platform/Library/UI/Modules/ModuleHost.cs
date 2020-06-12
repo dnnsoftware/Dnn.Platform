@@ -174,7 +174,7 @@ namespace DotNetNuke.UI.Modules
                 }
                 else if (this._moduleConfiguration.CacheTime > 0)
                 {
-                    ttl.Attributes["title"] = (this._moduleConfiguration.CacheTime/60).ToString();
+                    ttl.Attributes["title"] = (this._moduleConfiguration.CacheTime / 60).ToString();
                     websliceContainer.Controls.Add(ttl);
                 }
 

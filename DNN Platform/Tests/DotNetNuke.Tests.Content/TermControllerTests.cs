@@ -458,7 +458,7 @@ namespace DotNetNuke.Tests.Content
         {
             //Arrange
             var mockDataService = new Mock<IDataService>();
-            MockComponentProvider.CreateDataProvider().Setup(c=>c.GetProviderPath()).Returns(String.Empty);
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
             var termController = new TermController(mockDataService.Object);
 
             //Act, Arrange

@@ -184,12 +184,12 @@ namespace DotNetNuke.Framework
                     if (String.IsNullOrEmpty(ObjectProviderName))
                     {
                         //get the typename of the default Provider from web.config
-                        TypeName = ((Provider) objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
+                        TypeName = ((Provider)objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
                     }
                     else
                     {
                         //get the typename of the specified ProviderName from web.config 
-                        TypeName = ((Provider) objProviderConfiguration.Providers[ObjectProviderName]).Type;
+                        TypeName = ((Provider)objProviderConfiguration.Providers[ObjectProviderName]).Type;
                     }
                 }
             }
@@ -277,7 +277,7 @@ namespace DotNetNuke.Framework
             //use the cache for performance
             if (UseCache)
             {
-                type = (Type) DataCache.GetCache(CacheKey);
+                type = (Type)DataCache.GetCache(CacheKey);
             }
 			
             //is the type in the cache?
@@ -355,7 +355,7 @@ namespace DotNetNuke.Framework
             ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration(ObjectProviderType);
 
             //get the typename of the Base DataProvider from web.config
-            TypeName = ((Provider) objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
+            TypeName = ((Provider)objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
             try
             {
                 //use reflection to get the type of the class

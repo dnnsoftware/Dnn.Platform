@@ -391,7 +391,7 @@ namespace DotNetNuke.UI.WebControls
 			Brush b = new LinearGradientBrush(rect,
                                               Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
                                               Color.FromArgb(_Rand.Next(224), _Rand.Next(224), _Rand.Next(224)),
-											  Convert.ToSingle(_Rand.NextDouble())*360,
+											  Convert.ToSingle(_Rand.NextDouble()) * 360,
 											  false);
 			g.FillRectangle(b, rectF);
 
@@ -417,7 +417,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			var textPath = new GraphicsPath();
 			var ff = GetFont();
-			var emSize = Convert.ToInt32(width*2/text.Length);
+			var emSize = Convert.ToInt32(width * 2 / text.Length);
 			Font f = null;
 			try
 			{
@@ -493,13 +493,13 @@ namespace DotNetNuke.UI.WebControls
 			int width = b.Width;
 			int height = b.Height;
 
-			var copy = (Bitmap) b.Clone();
+			var copy = (Bitmap)b.Clone();
 			for (int y = 0; y <= height - 1; y++)
 			{
 				for (int x = 0; x <= width - 1; x++)
 				{
-					int newX = Convert.ToInt32(x + (distortion*Math.Sin(Math.PI*y/64.0)));
-					int newY = Convert.ToInt32(y + (distortion*Math.Cos(Math.PI*x/64.0)));
+					int newX = Convert.ToInt32(x + (distortion * Math.Sin(Math.PI * y / 64.0)));
+					int newY = Convert.ToInt32(y + (distortion * Math.Cos(Math.PI * x / 64.0)));
 					if ((newX < 0 || newX >= width))
 					{
 						newX = 0;
@@ -630,8 +630,8 @@ namespace DotNetNuke.UI.WebControls
 
 			intWarpDivisor = _Rand.Next(4, 8);
 
-			int intHrange = Convert.ToInt32(rect.Height/intWarpDivisor);
-			int intWrange = Convert.ToInt32(rect.Width/intWarpDivisor);
+			int intHrange = Convert.ToInt32(rect.Height / intWarpDivisor);
+			int intWrange = Convert.ToInt32(rect.Width / intWarpDivisor);
 
 			PointF p1 = RandomPoint(0, intWrange, 0, intHrange);
 			PointF p2 = RandomPoint(rect.Width - (intWrange - Convert.ToInt32(p1.X)), rect.Width, 0, intHrange);

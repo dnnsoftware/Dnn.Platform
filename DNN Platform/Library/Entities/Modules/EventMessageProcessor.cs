@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Modules
                     string Version = message.Attributes["Version"];
                     int UserID = Convert.ToInt32(message.Attributes["UserId"]);
                     //call the IPortable interface for the module/version
-                    ((IPortable) controller).ImportModule(ModuleId, Content, Version, UserID);
+                    ((IPortable)controller).ImportModule(ModuleId, Content, Version, UserID);
                     //Synchronize Module Cache
                     ModuleController.SynchronizeModule(ModuleId);
                 }
@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Modules
                     foreach (string Version in UpgradeVersions)
                     {
 						//call the IUpgradeable interface for the module/version
-                        string Results = ((IUpgradeable) controller).UpgradeModule(Version);
+                        string Results = ((IUpgradeable)controller).UpgradeModule(Version);
                         //log the upgrade results
                         var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString()};
                         log.AddProperty("Module Upgraded", BusinessControllerClass);

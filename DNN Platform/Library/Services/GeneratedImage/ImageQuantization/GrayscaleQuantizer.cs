@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			for (uint i = 0; i < nColors; i++)
 			{
 				uint Alpha = 0xFF;                      // Colors are opaque.
-				uint intensity = Convert.ToUInt32(i*0xFF/(nColors-1));    // Even distribution. 
+				uint intensity = Convert.ToUInt32(i * 0xFF / (nColors - 1));    // Even distribution. 
 
 				// The GIF encoder makes the first entry in the palette
 				// that has a ZERO alpha the transparent color in the GIF.
@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				// Otherwise, use your favorite color reduction algorithm
 				// and an optimum palette for that algorithm generated here.
 				// For example, a color histogram, or a median cut palette.
-				this._colors[i] = Color.FromArgb( (int)Alpha, 
+				this._colors[i] = Color.FromArgb((int)Alpha, 
 					(int)intensity, 
 					(int)intensity, 
 					(int)intensity );
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <returns>The quantized value</returns>
 		protected override byte QuantizePixel ( Color32 pixel )
 		{
-		    double luminance = (pixel.Red *0.299) + (pixel.Green *0.587) + (pixel.Blue  *0.114);
+		    double luminance = (pixel.Red * 0.299) + (pixel.Green * 0.587) + (pixel.Blue  * 0.114);
 
 			// Gray scale is an intensity map from black to white.
 			// Compute the index to the grayscale entry that
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			// Also, constrain the index choices by the number of
 			// colors to do, and then set that pixel's index to the 
 			// byte value.
-			var colorIndex = (byte)(luminance +0.5);
+			var colorIndex = (byte)(luminance + 0.5);
 
 			return colorIndex;
 		}

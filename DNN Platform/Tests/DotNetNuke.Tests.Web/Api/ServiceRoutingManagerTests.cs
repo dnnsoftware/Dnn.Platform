@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Web.Api
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
 
             //Assert
-            var route = (Route) routeCollection[0];
+            var route = (Route)routeCollection[0];
             Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
         }
 

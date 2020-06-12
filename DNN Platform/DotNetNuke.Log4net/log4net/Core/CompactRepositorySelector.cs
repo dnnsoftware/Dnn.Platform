@@ -85,14 +85,14 @@ namespace log4net.Core
 			}
 
 			// Check that the type is a repository
-			if (! (typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)) )
+			if (!(typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)) )
 			{
-				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", (object)defaultRepositoryType, "Parameter: defaultRepositoryType, Value: ["+defaultRepositoryType+"] out of range. Argument must implement the ILoggerRepository interface");
+				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", (object)defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
 			}
 
 			this.m_defaultRepositoryType = defaultRepositoryType;
 
-			LogLog.Debug(declaringType, "defaultRepositoryType ["+this.m_defaultRepositoryType+"]");
+			LogLog.Debug(declaringType, "defaultRepositoryType [" + this.m_defaultRepositoryType + "]");
 		}
 
 		#endregion
@@ -147,7 +147,7 @@ namespace log4net.Core
 				ILoggerRepository rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
 				if (rep == null)
 				{
-					throw new LogException("Repository ["+repositoryName+"] is NOT defined.");
+					throw new LogException("Repository [" + repositoryName + "] is NOT defined.");
 				}
 				return rep;
 			}
@@ -241,11 +241,11 @@ namespace log4net.Core
 				rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
 				if (rep != null)
 				{
-					throw new LogException("Repository ["+repositoryName+"] is already defined. Repositories cannot be redefined.");
+					throw new LogException("Repository [" + repositoryName + "] is already defined. Repositories cannot be redefined.");
 				}
 				else
 				{
-					LogLog.Debug(declaringType, "Creating repository ["+repositoryName+"] using type ["+repositoryType+"]");
+					LogLog.Debug(declaringType, "Creating repository [" + repositoryName + "] using type [" + repositoryType + "]");
 
 					// Call the no arg constructor for the repositoryType
 					rep = (ILoggerRepository)Activator.CreateInstance(repositoryType);

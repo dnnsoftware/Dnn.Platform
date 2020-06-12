@@ -49,7 +49,7 @@ namespace Dnn.PersonaBar.Library.Permissions
         {
             get
             {
-                return (MenuPermissionInfo) this.List[index];
+                return (MenuPermissionInfo)this.List[index];
             }
             set
             {

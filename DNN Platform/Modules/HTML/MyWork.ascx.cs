@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Html
 
         public string FormatURL(object dataItem)
         {
-            var objHtmlTextUser = (HtmlTextUserInfo) dataItem;
+            var objHtmlTextUser = (HtmlTextUserInfo)dataItem;
             return "<a href=\"" + this._navigationManager.NavigateURL(objHtmlTextUser.TabID) + "#" + objHtmlTextUser.ModuleID + "\">" + objHtmlTextUser.ModuleTitle + " ( " + objHtmlTextUser.StateName + " )</a>";
         }
 

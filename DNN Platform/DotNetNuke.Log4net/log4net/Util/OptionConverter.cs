@@ -247,7 +247,7 @@ namespace log4net.Util
 				}
 				else
 				{
-					LogLog.Error(declaringType, "OptionConverter: ["+ s +"] is not in the correct file size syntax.");
+					LogLog.Error(declaringType, "OptionConverter: [" + s + "] is not in the correct file size syntax.");
 				}
 			}
 			return defaultValue;

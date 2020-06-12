@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="exc">The exc.</param>
         public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc)
         {
-            ProcessModuleLoadException((Control) objPortalModuleBase, exc);
+            ProcessModuleLoadException((Control)objPortalModuleBase, exc);
         }
 
 		/// <summary>
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
         public static void ProcessModuleLoadException(PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
         {
-            ProcessModuleLoadException((Control) objPortalModuleBase, exc, DisplayErrorMessage);
+            ProcessModuleLoadException((Control)objPortalModuleBase, exc, DisplayErrorMessage);
         }
 
 		/// <summary>
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
         public static void ProcessModuleLoadException(string FriendlyMessage, PortalModuleBase objPortalModuleBase, Exception exc, bool DisplayErrorMessage)
         {
-            ProcessModuleLoadException(FriendlyMessage, (Control) objPortalModuleBase, exc, DisplayErrorMessage);
+            ProcessModuleLoadException(FriendlyMessage, (Control)objPortalModuleBase, exc, DisplayErrorMessage);
         }
 
 		/// <summary>
@@ -317,7 +317,7 @@ namespace DotNetNuke.Services.Exceptions
                         PlaceHolder ErrorPlaceholder = null;
                         if (ctrl.Parent != null)
                         {
-                            ErrorPlaceholder = (PlaceHolder) ctrl.Parent.FindControl("MessagePlaceHolder");
+                            ErrorPlaceholder = (PlaceHolder)ctrl.Parent.FindControl("MessagePlaceHolder");
                         }
                         if (ErrorPlaceholder != null)
                         {

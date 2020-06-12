@@ -267,12 +267,12 @@ namespace log4net.Util.TypeConverters
 				}
 				catch (Exception ex)
 				{
-					LogLog.Error(declaringType, "Cannot CreateConverterInstance of type ["+converterType.FullName+"], Exception in call to Activator.CreateInstance", ex);
+					LogLog.Error(declaringType, "Cannot CreateConverterInstance of type [" + converterType.FullName + "], Exception in call to Activator.CreateInstance", ex);
 				}
 			}
 			else
 			{
-				LogLog.Error(declaringType, "Cannot CreateConverterInstance of type ["+converterType.FullName+"], type does not implement IConvertFrom or IConvertTo");
+				LogLog.Error(declaringType, "Cannot CreateConverterInstance of type [" + converterType.FullName + "], type does not implement IConvertFrom or IConvertTo");
 			}
 			return null;
 		}

@@ -341,8 +341,8 @@ namespace DotNetNuke.UI.WebControls
             int keyValue = Null.NullInteger;
             if (this.EditMode == ImageCommandColumnEditMode.URL)
             {
-                var hypLink = (HyperLink) sender;
-                container = (DataGridItem) hypLink.NamingContainer;
+                var hypLink = (HyperLink)sender;
+                container = (DataGridItem)hypLink.NamingContainer;
                 keyValue = this.GetValue(container);
                 if (!String.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
@@ -358,8 +358,8 @@ namespace DotNetNuke.UI.WebControls
 				//Bind Image Button
                 if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
-                    var colIcon = (ImageButton) sender;
-                    container = (DataGridItem) colIcon.NamingContainer;
+                    var colIcon = (ImageButton)sender;
+                    container = (DataGridItem)colIcon.NamingContainer;
                     keyValue = this.GetValue(container);
                     colIcon.CommandArgument = keyValue.ToString();
                     colIcon.Visible = this.GetIsVisible(container);
@@ -367,8 +367,8 @@ namespace DotNetNuke.UI.WebControls
                 if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
 					//Bind Link Button
-                    var colLink = (LinkButton) sender;
-                    container = (DataGridItem) colLink.NamingContainer;
+                    var colLink = (LinkButton)sender;
+                    container = (DataGridItem)colLink.NamingContainer;
                     keyValue = this.GetValue(container);
                     colLink.CommandArgument = keyValue.ToString();
                     colLink.Visible = this.GetIsVisible(container);

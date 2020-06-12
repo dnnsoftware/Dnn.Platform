@@ -610,7 +610,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetButtonConfirmMessage(string toolName)
         {
-            return ClientAPI.GetSafeJSString(Localization.GetString("Tool."+toolName+".ConfirmText", this.LocalResourceFile));
+            return ClientAPI.GetSafeJSString(Localization.GetString("Tool." + toolName + ".ConfirmText", this.LocalResourceFile));
         }
 
         protected string GetButtonConfirmHeader(string toolName)

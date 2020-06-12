@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (DnnRibbonBarGroup) base[index];
+                return (DnnRibbonBarGroup)base[index];
             }
         }
 

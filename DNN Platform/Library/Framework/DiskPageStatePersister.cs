@@ -92,7 +92,7 @@ namespace DotNetNuke.Framework
 
                 //Deserialize returns the Pair object that is serialized in
                 //the Save method.      
-                var statePair = (Pair) formatter.Deserialize(serializedStatePair);
+                var statePair = (Pair)formatter.Deserialize(serializedStatePair);
                 this.ViewState = statePair.First;
                 this.ControlState = statePair.Second;
             }

@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Personalization
         //default implementation relies on HTTPContext
         public void SaveProfile(HttpContext httpContext, int userId, int portalId)
         {
-            var objPersonalization = (PersonalizationInfo) httpContext.Items["Personalization"];
+            var objPersonalization = (PersonalizationInfo)httpContext.Items["Personalization"];
             this.SaveProfile(objPersonalization, userId, portalId);
         }
 

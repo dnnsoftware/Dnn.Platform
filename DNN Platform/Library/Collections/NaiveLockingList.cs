@@ -15,7 +15,7 @@ namespace DotNetNuke.Collections.Internal
         
         void DoInReadLock(Action action)
         {
-            this.DoInReadLock(() =>{ action.Invoke(); return true; });
+            this.DoInReadLock(() => { action.Invoke(); return true; });
         }
 
         TRet DoInReadLock<TRet>(Func<TRet> func)

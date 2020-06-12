@@ -58,13 +58,13 @@ namespace DotNetNuke.Entities.Modules.Communications
             // Check and see if the module implements IModuleCommunicator 
             if (ctrl is IModuleCommunicator)
             {
-                this.Add((IModuleCommunicator) ctrl);
+                this.Add((IModuleCommunicator)ctrl);
             }
 
             // Check and see if the module implements IModuleListener 
             if (ctrl is IModuleListener)
             {
-                this.Add((IModuleListener) ctrl);
+                this.Add((IModuleListener)ctrl);
             }
         }
 

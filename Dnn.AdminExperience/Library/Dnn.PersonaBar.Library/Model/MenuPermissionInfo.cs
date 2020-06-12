@@ -205,7 +205,7 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return false;
             }
-            return this.Equals((MenuPermissionInfo) obj);
+            return this.Equals((MenuPermissionInfo)obj);
         }
 
         public override int GetHashCode()

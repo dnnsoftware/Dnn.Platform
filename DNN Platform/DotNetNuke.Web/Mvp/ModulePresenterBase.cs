@@ -150,7 +150,7 @@ namespace DotNetNuke.Web.Mvp
                 this.Settings = new Dictionary<string, string>();
                 foreach (object key in this.ModuleContext.Settings.Keys)
                 {
-                    this.Settings[key.ToString()] = (string) this.ModuleContext.Settings[key];
+                    this.Settings[key.ToString()] = (string)this.ModuleContext.Settings[key];
                 }
                 this.TabId = this.ModuleContext.TabId;
                 this.UserId = this.ModuleContext.PortalSettings.UserInfo.UserID;

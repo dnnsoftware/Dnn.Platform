@@ -54,7 +54,7 @@ namespace DotNetNuke.HttpModules.Analytics
             try
             {
                 //First check if we are upgrading/installing or if it is a non-page request
-                var app = (HttpApplication) sender;
+                var app = (HttpApplication)sender;
                 var request = app.Request;
 
                 if (!Initialize.ProcessHttpModule(request, false, false)) return;
@@ -115,7 +115,7 @@ namespace DotNetNuke.HttpModules.Analytics
                         if (engineType == null)
                             objEngine = new GenericAnalyticsEngine();
                         else
-                            objEngine = (AnalyticsEngineBase) Activator.CreateInstance(engineType);
+                            objEngine = (AnalyticsEngineBase)Activator.CreateInstance(engineType);
                     }
                     else
                     {
@@ -129,7 +129,7 @@ namespace DotNetNuke.HttpModules.Analytics
                     script = objEngine.RenderScript(script);
                     if ((string.IsNullOrEmpty(script))) continue;
 
-                    var element = (HtmlContainerControl) page.FindControl(engine.ElementId);
+                    var element = (HtmlContainerControl)page.FindControl(engine.ElementId);
                     if (element == null) continue;
 
                     var scriptControl = new LiteralControl {Text = script};

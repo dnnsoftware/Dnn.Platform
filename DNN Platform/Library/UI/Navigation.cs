@@ -299,7 +299,7 @@ namespace DotNetNuke.UI
                 return objTab.ParentId == -1;
             }
 
-            return objTab.ParentId == ((TabInfo) objTabLookup[intStartTabId]).ParentId;
+            return objTab.ParentId == ((TabInfo)objTabLookup[intStartTabId]).ParentId;
         }
 
         private static void ProcessTab(DNNNode objRootNode, TabInfo objTab, Hashtable objTabLookup, Hashtable objBreadCrumbs, int intLastBreadCrumbId, ToolTipSource eToolTips, int intStartTabId,
@@ -321,25 +321,25 @@ namespace DotNetNuke.UI
                 if (objTab.TabID == intStartTabId)
                 {
                     //is this the starting tab
-                    if ((intNavNodeOptions & (int) NavNodeOptions.IncludeParent) != 0)
+                    if ((intNavNodeOptions & (int)NavNodeOptions.IncludeParent) != 0)
                     {
                         //if we are including parent, make sure there is one, then add
                         if (objTabLookup[objTab.ParentId] != null)
                         {
-                            AddNode((TabInfo) objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
+                            AddNode((TabInfo)objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                             if (nodesLookup.TryGetValue(objTab.ParentId.ToString(), out objParentNode))
                             {
                                 objParentNodes = objParentNode.DNNNodes;
                             }
                         }
                     }
-                    if ((intNavNodeOptions & (int) NavNodeOptions.IncludeSelf) != 0)
+                    if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) != 0)
                     {
                         //if we are including our self (starting tab) then add
                         AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                     }
                 }
-                else if (((intNavNodeOptions & (int) NavNodeOptions.IncludeSiblings) != 0) && IsTabSibling(objTab, intStartTabId, objTabLookup))
+                else if (((intNavNodeOptions & (int)NavNodeOptions.IncludeSiblings) != 0) && IsTabSibling(objTab, intStartTabId, objTabLookup))
                 {
                     //is this a sibling of the starting node, and we are including siblings, then add it
                     AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
@@ -349,10 +349,10 @@ namespace DotNetNuke.UI
                     if (blnParentFound) //if tabs parent already in hierarchy (as is the case when we are sending down more than 1 level)
                     {
                         //parent will be found for siblings.  Check to see if we want them, if we don't make sure tab is not a sibling
-                        if (((intNavNodeOptions & (int) NavNodeOptions.IncludeSiblings) != 0) || IsTabSibling(objTab, intStartTabId, objTabLookup) == false)
+                        if (((intNavNodeOptions & (int)NavNodeOptions.IncludeSiblings) != 0) || IsTabSibling(objTab, intStartTabId, objTabLookup) == false)
                         {
                             //determine if tab should be included or marked as pending
-                            bool blnPOD = (intNavNodeOptions & (int) NavNodeOptions.MarkPendingNodes) != 0;
+                            bool blnPOD = (intNavNodeOptions & (int)NavNodeOptions.MarkPendingNodes) != 0;
                             if (IsTabPending(objTab, objParentNode, objRootNode, intDepth, objBreadCrumbs, intLastBreadCrumbId, blnPOD))
                             {
                                 if (blnPOD)
@@ -366,7 +366,7 @@ namespace DotNetNuke.UI
                             }
                         }
                     }
-                    else if ((intNavNodeOptions & (int) NavNodeOptions.IncludeSelf) == 0 && objTab.ParentId == intStartTabId)
+                    else if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) == 0 && objTab.ParentId == intStartTabId)
                     {
                         //if not including self and parent is the start id then add 
                         AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);

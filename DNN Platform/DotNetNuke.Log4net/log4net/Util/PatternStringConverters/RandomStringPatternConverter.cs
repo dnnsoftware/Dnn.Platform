@@ -91,7 +91,7 @@ namespace log4net.Util.PatternStringConverters
 				}
 				else
 				{
-					LogLog.Error(declaringType, "RandomStringPatternConverter: Could not convert Option ["+optionStr+"] to Length Int32");
+					LogLog.Error(declaringType, "RandomStringPatternConverter: Could not convert Option [" + optionStr + "] to Length Int32");
 				}	
 			}
 		}
@@ -114,7 +114,7 @@ namespace log4net.Util.PatternStringConverters
 			{
 				lock (s_random)
 				{
-					for (int i=0; i<this.m_length; i++)
+					for (int i = 0; i < this.m_length; i++)
 					{
 						int randValue = s_random.Next(36);
 

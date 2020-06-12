@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public UserSettings GetPersonaBarUserSettings()
         {
-            var settings = (UserSettings) Personalization.GetProfile(ContainerName, UserSettingsKey);
+            var settings = (UserSettings)Personalization.GetProfile(ContainerName, UserSettingsKey);
             return settings ?? GetDefaultSettings();
         }
         #endregion

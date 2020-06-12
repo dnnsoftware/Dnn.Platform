@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.WebControls
                 var pnlEditor = new Panel();
                 if (string.IsNullOrEmpty(this.CssClass))
                 {
-                    pnlEditor.CssClass ="dnnLeft";
+                    pnlEditor.CssClass = "dnnLeft";
                 }
                 else
                 {

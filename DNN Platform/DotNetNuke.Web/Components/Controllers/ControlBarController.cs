@@ -131,7 +131,7 @@ namespace DotNetNuke.Web.Components.Controllers
         {
             var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
             var personalization = personalizationController.LoadProfile(userId, portalId);
-            var bookmarkItems = personalization.Profile["ControlBar:"+ BookmarkModulesTitle + portalId];
+            var bookmarkItems = personalization.Profile["ControlBar:" + BookmarkModulesTitle + portalId];
             if (bookmarkItems == null)
             {
                 return new List<KeyValuePair<string, PortalDesktopModuleInfo>>();

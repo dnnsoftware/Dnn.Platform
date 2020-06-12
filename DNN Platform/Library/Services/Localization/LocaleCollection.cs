@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                return (Locale) this.BaseGet(key);
+                return (Locale)this.BaseGet(key);
             }
             set
             {

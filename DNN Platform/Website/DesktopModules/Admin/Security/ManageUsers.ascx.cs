@@ -244,7 +244,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (this.User != null)
             {
 				//If trying to add a SuperUser - check that user is a SuperUser
-                if (this.VerifyUserPermissions()==false)
+                if (this.VerifyUserPermissions() == false)
                 {
                     return;
                 }
@@ -834,7 +834,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				//Send Notification to User
                 try
                 {
-                    var accessingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
+                    var accessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     if (accessingUser.UserID != this.User.UserID)
                     {
 						//The password was changed by someone else

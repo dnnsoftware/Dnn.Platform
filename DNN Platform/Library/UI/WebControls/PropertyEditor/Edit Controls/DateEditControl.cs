@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         if (attribute is FormatAttribute)
                         {
-                            var formatAtt = (FormatAttribute) attribute;
+                            var formatAtt = (FormatAttribute)attribute;
                             _Format = formatAtt.Format;
                             break;
                         }

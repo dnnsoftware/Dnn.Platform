@@ -185,13 +185,13 @@ namespace DotNetNuke.UI.WebControls
                 case ListItemType.Item:
                 case ListItemType.AlternatingItem:
                 case ListItemType.SelectedItem:
-                    var lblText = (Label) sender;
-                    container = (DataGridItem) lblText.NamingContainer;
+                    var lblText = (Label)sender;
+                    container = (DataGridItem)lblText.NamingContainer;
                     lblText.Text = this.GetValue(container);
                     break;
                 case ListItemType.EditItem:
-                    var txtText = (TextBox) sender;
-                    container = (DataGridItem) txtText.NamingContainer;
+                    var txtText = (TextBox)sender;
+                    container = (DataGridItem)txtText.NamingContainer;
                     txtText.Text = this.GetValue(container);
                     break;
             }

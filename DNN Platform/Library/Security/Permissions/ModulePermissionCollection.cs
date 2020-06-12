@@ -69,7 +69,7 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (ModulePermissionInfo) this.List[index];
+                return (ModulePermissionInfo)this.List[index];
             }
             set
             {

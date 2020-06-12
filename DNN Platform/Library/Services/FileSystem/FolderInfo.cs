@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.FileSystem
 
         #region Constructors
 
-        public FolderInfo(): this(false)
+        public FolderInfo() : this(false)
         {            
         }
 

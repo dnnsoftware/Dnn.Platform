@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 				if (authSystem != null && !string.IsNullOrEmpty(authSystem.LogoffControlSrc))
 				{
-					var authLogoffControl = (AuthenticationLogoffBase) this.LoadControl("~/" + authSystem.LogoffControlSrc);
+					var authLogoffControl = (AuthenticationLogoffBase)this.LoadControl("~/" + authSystem.LogoffControlSrc);
 
 					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
 					//this is necessary for the Localization in PageBase

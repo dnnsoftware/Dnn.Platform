@@ -78,7 +78,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             try
             {
                 //Get the response
-                using (var response = (HttpWebResponse) (request.EndGetResponse(asynchronousResult)))
+                using (var response = (HttpWebResponse)(request.EndGetResponse(asynchronousResult)))
                 {
                     //If status code is ok do nothing
                     if (response.StatusCode == HttpStatusCode.OK)
@@ -105,7 +105,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 return;
 
             //Abort if possible
-            var request = (HttpWebRequest) state;
+            var request = (HttpWebRequest)state;
             request?.Abort();
         }
 

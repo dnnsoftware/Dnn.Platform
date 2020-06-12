@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.Containers
                     Control objCtl = this.Parent.FindControl("ModuleContent");
                     if (objCtl != null)
                     {
-                        this._pnlModuleContent = (Panel) objCtl;
+                        this._pnlModuleContent = (Panel)objCtl;
                     }
                 }
                 return this._pnlModuleContent;

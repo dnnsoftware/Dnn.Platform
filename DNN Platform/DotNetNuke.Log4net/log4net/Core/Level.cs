@@ -413,7 +413,7 @@ namespace log4net.Core
 			}
 			else
 			{
-				return ((object) l) == ((object) r);
+				return ((object)l) == ((object)r);
 			}
 		}
 
@@ -434,7 +434,7 @@ namespace log4net.Core
 		/// </remarks>
 		public static bool operator != (Level l, Level r)
 		{
-			return !(l==r);
+			return !(l == r);
 		}
 
 		#endregion Operators

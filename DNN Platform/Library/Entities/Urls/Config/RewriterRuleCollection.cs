@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Urls.Config
         {
             get
             {
-                return (RewriterRule) this.List[index];
+                return (RewriterRule)this.List[index];
             }
             set
             {

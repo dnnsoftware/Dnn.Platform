@@ -120,7 +120,7 @@ namespace DotNetNuke.Framework
             }
             else
             {
-                return (bool) HttpContext.Current.Items["System.Web.UI.ScriptManager"];
+                return (bool)HttpContext.Current.Items["System.Web.UI.ScriptManager"];
             }
         }
 

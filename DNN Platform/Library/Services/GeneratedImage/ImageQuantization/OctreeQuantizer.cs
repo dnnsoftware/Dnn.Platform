@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			ArrayList	palette = this._octree.Palletize ( this._maxColors - 1 );
 
 			// Then convert the palette based on those colors
-			for ( int index = 0; index < palette.Count; index++ )
+			for ( int index = 0; index < palette.Count; index++)
 				original.Entries[index] = (Color)palette[index];
 
 			// Add the transparent color
@@ -358,7 +358,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 					int	children = 0;
 
 					// Loop through all children and add their information to this node
-					for ( int index = 0; index < 8; index++ )
+					for ( int index = 0; index < 8; index++)
 					{
 						if ( null != this._children[index] )
 						{
@@ -396,7 +396,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 					else
 					{
 						// Loop through children looking for leaves
-						for ( int index = 0; index < 8; index++ )
+						for ( int index = 0; index < 8; index++)
 						{
 							if ( null != this._children[index] )
 								this._children[index].ConstructPalette ( palette, ref paletteIndex );
@@ -411,7 +411,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				{
 					int	paletteIndex = this._paletteIndex;
 
-					if ( !this._leaf )
+					if (!this._leaf )
 					{
 						int	shift = 7 - level;
 						int index = ( ( pixel.Red & mask[level] ) >> ( shift - 2 ) ) |

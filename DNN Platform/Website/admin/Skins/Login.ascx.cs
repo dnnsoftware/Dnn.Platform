@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                         //avoid issues caused by multiple clicks of login link
                         var oneclick = "this.disabled=true;";
-			            if (this.Request.UserAgent != null && this.Request.UserAgent.Contains("MSIE 8.0")==false)
+			            if (this.Request.UserAgent != null && this.Request.UserAgent.Contains("MSIE 8.0") == false)
 			            {
                             this.loginLink.Attributes.Add("onclick", oneclick);
                             this.enhancedLoginLink.Attributes.Add("onclick", oneclick);

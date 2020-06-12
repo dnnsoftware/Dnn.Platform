@@ -90,7 +90,7 @@ namespace DotNetNuke.Web.Mvc
         private static int FindInt(HttpRequestBase requestBase, string key)
         {
             string value = null;
-            if (requestBase.Headers[key]!=null)
+            if (requestBase.Headers[key] != null)
             {
                 value = requestBase.Headers[key];
             }
@@ -120,7 +120,7 @@ namespace DotNetNuke.Web.Mvc
         private static int FindIntInHeader(HttpRequestBase requestBase, string key)
         {
             string value = null;
-            if (requestBase.Headers[key]!=null)
+            if (requestBase.Headers[key] != null)
             {
                 value = requestBase.Headers[key];
             }

@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (string) this.ViewState["Language"];
+                return (string)this.ViewState["Language"];
             }
             set
             {

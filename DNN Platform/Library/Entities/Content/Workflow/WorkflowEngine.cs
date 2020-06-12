@@ -131,7 +131,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             var logDraftCompleted = logs
                 .OrderByDescending(l => l.Date)
-                .FirstOrDefault(l => l.Type == (int) type);
+                .FirstOrDefault(l => l.Type == (int)type);
 
             if (logDraftCompleted != null && logDraftCompleted.User != Null.NullInteger)
             {
@@ -693,7 +693,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             // before-change action
             this.PerformWorkflowActionOnStateChanging(stateTransaction, WorkflowActionTypes.DiscardWorkflow);
 
-            var workflow =this._workflowManager.GetWorkflow(contentItem);
+            var workflow = this._workflowManager.GetWorkflow(contentItem);
             this.UpdateContentItemWorkflowState(workflow.LastState.StateID, contentItem);
 
             // Logs

@@ -110,7 +110,7 @@ namespace log4net.Util
 			}
 			catch (Exception ex)
 			{
-				log4net.Util.LogLog.Warn(declaringType, "Exception while rendering format ["+format+"]", ex);
+				log4net.Util.LogLog.Warn(declaringType, "Exception while rendering format [" + format + "]", ex);
 				return StringFormatError(ex, format, args);
 			}
 #if !NET_2_0 && !MONO_2_0 && !MONO_3_5 && !MONO_4_0 && !NETSTANDARD1_3

@@ -188,7 +188,7 @@ namespace log4net.Appender
 				// Cancel the async send
 				this.EndAsyncSend();
 
-				this.ErrorHandler.Error("RemotingAppender ["+this.Name+"] failed to ThreadPool.QueueUserWorkItem logging events in SendBuffer.");
+				this.ErrorHandler.Error("RemotingAppender [" + this.Name + "] failed to ThreadPool.QueueUserWorkItem logging events in SendBuffer.");
 			}
 		}
 
@@ -218,7 +218,7 @@ namespace log4net.Appender
 			// Wait for the work queue to become empty before closing, timeout 30 seconds
 			if (!this.m_workQueueEmptyEvent.WaitOne(30 * 1000, false))
 			{
-				this.ErrorHandler.Error("RemotingAppender ["+this.Name+"] failed to send all queued events before close, in OnClose.");
+				this.ErrorHandler.Error("RemotingAppender [" + this.Name + "] failed to send all queued events before close, in OnClose.");
 			}
 		}
 

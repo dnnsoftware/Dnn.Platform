@@ -116,7 +116,7 @@ namespace Dnn.PersonaBar.UI.Services
                     webRequest.UserAgent = request.UserAgent;
                     webRequest.Referer = request.RawUrl;
 
-                    using (var stream = ((HttpWebResponse) webRequest.GetResponse()).GetResponseStream())
+                    using (var stream = ((HttpWebResponse)webRequest.GetResponse()).GetResponseStream())
                     {
                         if (stream == null)
                         {
@@ -126,7 +126,7 @@ namespace Dnn.PersonaBar.UI.Services
                         {
                             hash =
                                 BitConverter.ToString(sha256.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
-                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency) null,
+                            DataCache.SetCache(cacheKey, hash, (DNNCacheDependency)null,
                                 Cache.NoAbsoluteExpiration, TimeSpan.FromDays(1), CacheItemPriority.Normal, null);
                         }
                     }

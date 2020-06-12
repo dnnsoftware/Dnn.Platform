@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                     switch (this.Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
-                            this._FileType = (UploadType) Enum.Parse(typeof(UploadType), this.Request.QueryString["ftype"]);
+                            this._FileType = (UploadType)Enum.Parse(typeof(UploadType), this.Request.QueryString["ftype"]);
                             break;
                     }
                 }
@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 string strHost = Localization.GetString("HostRoot", this.LocalResourceFile);
                 string strPortal = Localization.GetString("PortalRoot", this.LocalResourceFile);
 
-                this.maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), (Config.GetMaxUploadSize()/(1024 *1024)));
+                this.maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), (Config.GetMaxUploadSize() / (1024 * 1024)));
 
                 if (!this.Page.IsPostBack)
                 {

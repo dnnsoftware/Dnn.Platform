@@ -193,7 +193,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var mockPortalSettingsController = MockComponentProvider.CreateNew<IPortalSettingsController>("PortalSettingsController");
 
             //Act
-            var settings = new PortalSettings(ValidTabId, (PortalInfo) null);
+            var settings = new PortalSettings(ValidTabId, (PortalInfo)null);
 
             //Assert
             mockPortalSettingsController.Verify(c => c.LoadPortal(It.IsAny<PortalInfo>(), settings), Times.Never);

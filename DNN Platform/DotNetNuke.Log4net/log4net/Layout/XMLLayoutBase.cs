@@ -131,7 +131,7 @@ namespace log4net.Layout
 		public string InvalidCharReplacement
 		{
 			get {return this.m_invalidCharReplacement; }
-			set {this.m_invalidCharReplacement=value; }
+			set {this.m_invalidCharReplacement = value; }
 		}
 		#endregion
 
@@ -252,7 +252,7 @@ namespace log4net.Layout
 		/// <summary>
 		/// The string to replace invalid chars with
 		/// </summary>
-		private string m_invalidCharReplacement="?";
+		private string m_invalidCharReplacement = "?";
 
 		#endregion Private Instance Fields
 	}

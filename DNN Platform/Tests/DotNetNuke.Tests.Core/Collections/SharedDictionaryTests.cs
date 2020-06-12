@@ -171,7 +171,7 @@ namespace DotNetNuke.Tests.Core.Collections
             l.Add(d => d.Contains(new KeyValuePair<string, string>("key", "value")));
             l.Add(d => Console.WriteLine(d.Count));
             l.Add(d => d.GetEnumerator());
-            l.Add(d => ((IEnumerable) d).GetEnumerator());
+            l.Add(d => ((IEnumerable)d).GetEnumerator());
             l.Add(d => Console.WriteLine(d.IsReadOnly));
             l.Add(d => Console.WriteLine(d["key"]));
             l.Add(d => Console.WriteLine(d.Keys));

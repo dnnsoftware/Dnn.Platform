@@ -59,7 +59,7 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (TabPermissionInfo) this.List[index];
+                return (TabPermissionInfo)this.List[index];
             }
             set
             {

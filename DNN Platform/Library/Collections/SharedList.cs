@@ -84,7 +84,7 @@ namespace DotNetNuke.Collections.Internal
             {
                 this.EnsureNotDisposed();
                 this.EnsureReadAccess();
-                return ((ICollection<T>) this._list).IsReadOnly;
+                return ((ICollection<T>)this._list).IsReadOnly;
             }
         }
 

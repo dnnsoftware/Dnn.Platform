@@ -233,7 +233,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     if (attribute is MaxLengthAttribute)
                     {
-                        var lengthAtt = (MaxLengthAttribute) attribute;
+                        var lengthAtt = (MaxLengthAttribute)attribute;
                         length = lengthAtt.Length;
                         break;
                     }

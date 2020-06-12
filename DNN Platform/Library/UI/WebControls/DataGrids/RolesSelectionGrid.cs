@@ -341,7 +341,7 @@ namespace DotNetNuke.UI.WebControls
 			if (savedState != null)
 			{
 				//Load State from the array of objects that was saved with SaveViewState.
-				var myState = (object[]) savedState;
+				var myState = (object[])savedState;
 				
 				//Load Base Controls ViewState
 				if (myState[0] != null)
@@ -489,7 +489,7 @@ namespace DotNetNuke.UI.WebControls
 				    const int i = 2;
 				    if (dgi.Cells[i].Controls.Count > 0)
 					{
-						var cb = (CheckBox) dgi.Cells[i].Controls[0];
+						var cb = (CheckBox)dgi.Cells[i].Controls[0];
 						this.UpdateSelection(dgi.Cells[0].Text, cb.Checked);
 					}
 				}

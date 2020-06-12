@@ -445,7 +445,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 case CommonJs.HoverIntent:
                     return (int)FileOrder.Js.HoverIntent;
                 default:
-                    return jsl.PackageID + (int) FileOrder.Js.DefaultPriority;
+                    return jsl.PackageID + (int)FileOrder.Js.DefaultPriority;
 
             }
         }

@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 if (package != null)
                 {
                     var pkgIconFile = Util.ParsePackageIconFileName(package);
-                    package.IconFile = (pkgIconFile.Trim().Length > 0)? Util.ParsePackageIconFile(package) : null;
+                    package.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(package) : null;
                     PackageController.Instance.SaveExtensionPackage(package);
                 }
                 if (displayMessage)

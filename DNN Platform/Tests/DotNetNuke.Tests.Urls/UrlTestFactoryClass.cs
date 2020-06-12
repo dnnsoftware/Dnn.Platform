@@ -36,7 +36,7 @@ namespace DotNetNuke.Tests.Urls
                                 fieldList["Alias"] = alias;
                                 string[] headers = header.Split(',');
                                 string[] fields = line.Split(',');
-                                for (int i = 0; i < fields.Length; i++ )
+                                for (int i = 0; i < fields.Length; i++)
                                 {
                                     string key = headers[i].Trim(new[] { '\t', '"' });
                                     string val = fields[i].Trim(new[] {'\t', '"'});

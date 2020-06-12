@@ -116,7 +116,7 @@ namespace DotNetNuke.Tests.Urls
         {
             base.TestFixtureTearDown();
 
-            var aliasController =PortalAliasController.Instance;
+            var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');

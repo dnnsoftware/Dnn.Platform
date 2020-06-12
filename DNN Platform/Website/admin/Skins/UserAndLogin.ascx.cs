@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return ((this.PortalSettings.UserRegistration != (int) Globals.PortalRegistrationType.NoRegistration)
+                return ((this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
                     && (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0));
             }
         }

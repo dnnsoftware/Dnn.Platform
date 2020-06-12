@@ -141,7 +141,7 @@ namespace log4net.ObjectRenderer
 					catch (Exception ex)
 					{
 						// Exception rendering the object
-						log4net.Util.LogLog.Error(declaringType, "Exception while rendering object of type ["+obj.GetType().FullName+"]", ex);
+						log4net.Util.LogLog.Error(declaringType, "Exception while rendering object of type [" + obj.GetType().FullName + "]", ex);
 
 						// return default message
 						string objectTypeName = "";
@@ -150,7 +150,7 @@ namespace log4net.ObjectRenderer
 							objectTypeName = obj.GetType().FullName;
 						}
 
-						writer.Write("<log4net.Error>Exception rendering object type ["+objectTypeName+"]");
+						writer.Write("<log4net.Error>Exception rendering object type [" + objectTypeName + "]");
 						if (ex != null)
 						{
 							string exceptionText = null;

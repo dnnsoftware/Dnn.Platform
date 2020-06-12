@@ -176,7 +176,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (DataRow user in users.Rows)
                 {
                     //Row Header
-                    writer.Write(string.IsNullOrEmpty(this.AlternatingRowHeaderTemplate) || row%2 == 0 ? this.RowHeaderTemplate : this.AlternatingRowHeaderTemplate);
+                    writer.Write(string.IsNullOrEmpty(this.AlternatingRowHeaderTemplate) || row % 2 == 0 ? this.RowHeaderTemplate : this.AlternatingRowHeaderTemplate);
 
                     var tokenReplace = new TokenReplace();
                     var tokenKeyValues = new Dictionary<string, string>();
@@ -186,12 +186,12 @@ namespace DotNetNuke.Web.UI.WebControls
                         tokenKeyValues.Add(col.ColumnName, user[col.ColumnName].ToString());
                     }
 
-                    var listItem = string.IsNullOrEmpty(this.AlternatingItemTemplate) || row%2 == 0 ? this.ItemTemplate : this.AlternatingItemTemplate;
+                    var listItem = string.IsNullOrEmpty(this.AlternatingItemTemplate) || row % 2 == 0 ? this.ItemTemplate : this.AlternatingItemTemplate;
                     listItem = tokenReplace.ReplaceEnvironmentTokens(listItem, tokenKeyValues, "Member");
                     writer.Write(listItem);
 
                     //Row Footer
-                    writer.Write(string.IsNullOrEmpty(this.AlternatingRowFooterTemplate) || row%2 == 0 ? this.RowFooterTemplate : this.AlternatingRowFooterTemplate);
+                    writer.Write(string.IsNullOrEmpty(this.AlternatingRowFooterTemplate) || row % 2 == 0 ? this.RowFooterTemplate : this.AlternatingRowFooterTemplate);
 
                     row++;
                 }

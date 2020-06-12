@@ -83,7 +83,7 @@ namespace log4net.Appender
 			// There is no point in closing twice.
 			if (!this.m_closed) 
 			{
-				LogLog.Debug(declaringType, "Finalizing appender named ["+this.m_name+"].");
+				LogLog.Debug(declaringType, "Finalizing appender named [" + this.m_name + "].");
 				this.Close();
 			}
 		}
@@ -302,7 +302,7 @@ namespace log4net.Appender
 			{
 				if (this.m_closed)
 				{
-					this.ErrorHandler.Error("Attempted to append to closed appender named ["+this.m_name+"].");
+					this.ErrorHandler.Error("Attempted to append to closed appender named [" + this.m_name + "].");
 					return;
 				}
 
@@ -399,7 +399,7 @@ namespace log4net.Appender
 			{
 				if (this.m_closed)
 				{
-					this.ErrorHandler.Error("Attempted to append to closed appender named ["+this.m_name+"].");
+					this.ErrorHandler.Error("Attempted to append to closed appender named [" + this.m_name + "].");
 					return;
 				}
 
@@ -662,7 +662,7 @@ namespace log4net.Appender
 		{
 			if ((this.m_layout == null) && this.RequiresLayout)
 			{
-				this.ErrorHandler.Error("AppenderSkeleton: No layout set for the appender named ["+this.m_name+"].");
+				this.ErrorHandler.Error("AppenderSkeleton: No layout set for the appender named [" + this.m_name + "].");
 				return false;
 			}
 

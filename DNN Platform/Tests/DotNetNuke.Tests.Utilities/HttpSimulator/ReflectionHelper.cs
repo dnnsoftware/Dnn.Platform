@@ -165,7 +165,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             if (propertyInfo == null)
                 throw new ArgumentException(string.Format("Could not find a propertyName with the name '{0}'", propertyName), "propertyName");
 
-            return (TReturn) propertyInfo.GetValue(source, null);
+            return (TReturn)propertyInfo.GetValue(source, null);
         }
 
         public static object InvokeNonPublicProperty(object source, string propertyName)

@@ -105,7 +105,7 @@ namespace DotNetNuke.UI.WebControls
             object[] categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {
-                var category = (CategoryAttribute) categoryAttributes[0];
+                var category = (CategoryAttribute)categoryAttributes[0];
                 editInfo.Category = category.Category;
             }
 			
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.WebControls
                 object[] readOnlyAttributes = objProperty.GetCustomAttributes(typeof(IsReadOnlyAttribute), true);
                 if (readOnlyAttributes.Length > 0)
                 {
-                    var readOnlyMode = (IsReadOnlyAttribute) readOnlyAttributes[0];
+                    var readOnlyMode = (IsReadOnlyAttribute)readOnlyAttributes[0];
                     if (readOnlyMode.IsReadOnly)
                     {
                         editInfo.EditMode = PropertyEditorMode.View;
@@ -136,9 +136,9 @@ namespace DotNetNuke.UI.WebControls
                 EditorAttribute editor = null;
                 for (int i = 0; i <= editorAttributes.Length - 1; i++)
                 {
-                    if (((EditorAttribute) editorAttributes[i]).EditorBaseTypeName.IndexOf("DotNetNuke.UI.WebControls.EditControl") >= 0)
+                    if (((EditorAttribute)editorAttributes[i]).EditorBaseTypeName.IndexOf("DotNetNuke.UI.WebControls.EditControl") >= 0)
                     {
-                        editor = (EditorAttribute) editorAttributes[i];
+                        editor = (EditorAttribute)editorAttributes[i];
                         break;
                     }
                 }
@@ -154,7 +154,7 @@ namespace DotNetNuke.UI.WebControls
             if (requiredAttributes.Length > 0)
             {
                 //The property may contain multiple edit mode types, so make sure we only use DotNetNuke editors.
-                var required = (RequiredAttribute) requiredAttributes[0];
+                var required = (RequiredAttribute)requiredAttributes[0];
                 if (required.Required)
                 {
                     editInfo.Required = true;
@@ -166,7 +166,7 @@ namespace DotNetNuke.UI.WebControls
             object[] StyleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
             if (StyleAttributes.Length > 0)
             {
-                var attribute = (ControlStyleAttribute) StyleAttributes[0];
+                var attribute = (ControlStyleAttribute)StyleAttributes[0];
                 editInfo.ControlStyle.CssClass = attribute.CssClass;
                 editInfo.ControlStyle.Height = attribute.Height;
                 editInfo.ControlStyle.Width = attribute.Width;
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.WebControls
             object[] labelModeAttributes = objProperty.GetCustomAttributes(typeof(LabelModeAttribute), true);
             if (labelModeAttributes.Length > 0)
             {
-                var mode = (LabelModeAttribute) labelModeAttributes[0];
+                var mode = (LabelModeAttribute)labelModeAttributes[0];
                 editInfo.LabelMode = mode.Mode;
             }
 			
@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.WebControls
             object[] regExAttributes = objProperty.GetCustomAttributes(typeof(RegularExpressionValidatorAttribute), true);
             if (regExAttributes.Length > 0)
             {
-                var regExAttribute = (RegularExpressionValidatorAttribute) regExAttributes[0];
+                var regExAttribute = (RegularExpressionValidatorAttribute)regExAttributes[0];
                 editInfo.ValidationExpression = regExAttribute.Expression;
             }
 			

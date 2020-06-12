@@ -112,8 +112,8 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         PortalId = this.UserInfo.PortalID,
                         UserId = this.UserInfo.UserID,
-                        MessagesEmailFrequency = (Frequency) post.MsgFreq,
-                        NotificationsEmailFrequency = (Frequency) post.NotifyFreq
+                        MessagesEmailFrequency = (Frequency)post.MsgFreq,
+                        NotificationsEmailFrequency = (Frequency)post.NotifyFreq
                     };
                 userPreferencesController.SetUserPreference(userPreference);
                 

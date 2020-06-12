@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId) + this.Request.Url.Query);
             }
-            this.cmdChangePassword.Click +=this.cmdChangePassword_Click;
+            this.cmdChangePassword.Click += this.cmdChangePassword_Click;
 
             this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
 
             var newPassword = this.txtPassword.Text.Trim();
-            if (UserController.ValidatePassword(newPassword) ==false)
+            if (UserController.ValidatePassword(newPassword) == false)
             {
                 this.resetMessages.Visible = true;
                 var failed = Localization.GetString("PasswordResetFailed");

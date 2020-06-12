@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Authentication
         public static AuthenticationConfig GetConfig(int portalId)
         {
             string key = CACHEKEY + "_" + portalId;
-            var config = (AuthenticationConfig) DataCache.GetCache(key);
+            var config = (AuthenticationConfig)DataCache.GetCache(key);
             if (config == null)
             {
                 config = new AuthenticationConfig(portalId);

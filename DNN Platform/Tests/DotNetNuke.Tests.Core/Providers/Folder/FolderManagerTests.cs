@@ -298,7 +298,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             var subfolder1 = new FolderInfoBuilder()
                 .WithFolderId(2)
-                .WithPhysicalPath(Constants.FOLDER_ValidFolderPath+"\\subfolder1")
+                .WithPhysicalPath(Constants.FOLDER_ValidFolderPath + "\\subfolder1")
                 .Build();
             var subfolder2 = new FolderInfoBuilder()
                 .WithFolderId(3)

@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private object GetTermsCallBack(CacheItemArgs cacheItemArgs)
         {
-            var vocabularyId = (int) cacheItemArgs.ParamList[0];
+            var vocabularyId = (int)cacheItemArgs.ParamList[0];
             return CBO.FillQueryable<Term>(this._DataService.GetTermsByVocabulary(vocabularyId)).ToList();
         }
 

@@ -522,7 +522,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     return;
                 }
             }
-            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() =="_default")
+            if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
             {
 				//Add the Files in the Folder
                 FileInfo[] files = folder.GetFiles();

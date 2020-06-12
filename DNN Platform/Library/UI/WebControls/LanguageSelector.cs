@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
 				}
 				else
 				{
-					return (LanguageSelectionMode) this.ViewState["SelectionMode"];
+					return (LanguageSelectionMode)this.ViewState["SelectionMode"];
 				}
 			}
 			set
@@ -118,12 +118,12 @@ namespace DotNetNuke.UI.WebControls
 				}
 				else
 				{
-					return (LanguageSelectionObject) this.ViewState["SelectionObject"];
+					return (LanguageSelectionObject)this.ViewState["SelectionObject"];
 				}
 			}
 			set
 			{
-				if ((int) this.SelectionMode != (int) value)
+				if ((int)this.SelectionMode != (int)value)
 				{
 					this.ViewState["SelectionObject"] = value;
 					if (this.Controls.Count > 0)
@@ -147,7 +147,7 @@ namespace DotNetNuke.UI.WebControls
 				}
 				else
 				{
-					return (LanguageItemStyle) this.ViewState["ItemStyle"];
+					return (LanguageItemStyle)this.ViewState["ItemStyle"];
 				}
 			}
 			set
@@ -176,7 +176,7 @@ namespace DotNetNuke.UI.WebControls
 				}
 				else
 				{
-					return (LanguageListDirection) this.ViewState["ListDirection"];
+					return (LanguageListDirection)this.ViewState["ListDirection"];
 				}
 			}
 			set
@@ -217,14 +217,14 @@ namespace DotNetNuke.UI.WebControls
 					{
 						if (this.SelectionMode == LanguageSelectionMode.Single)
 						{
-							if (((RadioButton) this.pnlControl.FindControl("opt" + c.Name)).Checked)
+							if (((RadioButton)this.pnlControl.FindControl("opt" + c.Name)).Checked)
 							{
 								a.Add(c.Name);
 							}
 						}
 						else
 						{
-							if (((CheckBox) this.pnlControl.FindControl("chk" + c.Name)).Checked)
+							if (((CheckBox)this.pnlControl.FindControl("chk" + c.Name)).Checked)
 							{
 								a.Add(c.Name);
 							}
@@ -244,11 +244,11 @@ namespace DotNetNuke.UI.WebControls
 				{
 					if (this.SelectionMode == LanguageSelectionMode.Single)
 					{
-						((RadioButton) this.pnlControl.FindControl("opt" + c.Name)).Checked = false;
+						((RadioButton)this.pnlControl.FindControl("opt" + c.Name)).Checked = false;
 					}
 					else
 					{
-						((CheckBox) this.pnlControl.FindControl("chk" + c.Name)).Checked = false;
+						((CheckBox)this.pnlControl.FindControl("chk" + c.Name)).Checked = false;
 					}
 				}
 				foreach (string strLocale in value)
@@ -258,7 +258,7 @@ namespace DotNetNuke.UI.WebControls
 						Control ctl = this.pnlControl.FindControl("opt" + strLocale);
 						if (ctl != null)
 						{
-							((RadioButton) ctl).Checked = true;
+							((RadioButton)ctl).Checked = true;
 						}
 					}
 					else
@@ -266,7 +266,7 @@ namespace DotNetNuke.UI.WebControls
 						Control ctl = this.pnlControl.FindControl("chk" + strLocale);
 						if (ctl != null)
 						{
-							((CheckBox) ctl).Checked = true;
+							((CheckBox)ctl).Checked = true;
 						}
 					}
 				}
@@ -367,7 +367,7 @@ namespace DotNetNuke.UI.WebControls
 					}
 				}
 			}
-			return (CultureInfo[]) a.ToArray(typeof(CultureInfo));
+			return (CultureInfo[])a.ToArray(typeof(CultureInfo));
 		}
 		
 		#endregion

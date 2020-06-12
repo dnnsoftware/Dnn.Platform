@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.WebControls
         {
             if (x is PropertyInfo && y is PropertyInfo)
             {
-                return string.Compare(((PropertyInfo) x).Name, ((PropertyInfo) y).Name);
+                return string.Compare(((PropertyInfo)x).Name, ((PropertyInfo)y).Name);
             }
             else
             {

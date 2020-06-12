@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         public int Compare(object x, object y)
         {
-            return ((ProfilePropertyDefinition) x).ViewOrder.CompareTo(((ProfilePropertyDefinition) y).ViewOrder);
+            return ((ProfilePropertyDefinition)x).ViewOrder.CompareTo(((ProfilePropertyDefinition)y).ViewOrder);
         }
 
         #endregion

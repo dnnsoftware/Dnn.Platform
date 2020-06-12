@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Razor
                 var fileRoot = Path.GetFileNameWithoutExtension(this.AppRelativeVirtualPath);
                 var scriptFile = scriptFolder + "_" + fileRoot + ".cshtml";
 
-                if (! (File.Exists(this.Server.MapPath(scriptFile))))
+                if (!(File.Exists(this.Server.MapPath(scriptFile))))
                 {
                     //Try VB (vbhtml)
                     scriptFile = scriptFolder + "_" + fileRoot + ".vbhtml";
@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Razor
             base.OnPreRender(e);
             try
             {
-                if (! (string.IsNullOrEmpty(this.RazorScriptFile)))
+                if (!(string.IsNullOrEmpty(this.RazorScriptFile)))
                 {
                     var razorEngine = new RazorEngine(this.RazorScriptFile, this.ModuleContext, this.LocalResourceFile);
                     var writer = new StringWriter();

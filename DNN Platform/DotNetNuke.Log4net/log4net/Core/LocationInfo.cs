@@ -123,7 +123,7 @@ namespace log4net.Core
 						int adjustedFrameCount = st.FrameCount - frameIndex;
                         ArrayList stackFramesList = new ArrayList(adjustedFrameCount);
 						this.m_stackFrames = new StackFrameItem[adjustedFrameCount];
-						for (int i=frameIndex; i < st.FrameCount; i++) 
+						for (int i = frameIndex; i < st.FrameCount; i++) 
 						{
 							stackFramesList.Add(new StackFrameItem(st.GetFrame(i)));
 						}

@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Journal
                 return;
             }
 
-            for (var i = 0; i < role.Settings.Keys.Count; i++ )
+            for (var i = 0; i < role.Settings.Keys.Count; i++)
             {
                 var key = role.Settings.Keys.ElementAt(i);
                 if (key.StartsWith("stat_"))
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Journal
         private void PrepareSecuritySet(JournalItem journalItem, UserInfo currentUser)
         {
             var originalSecuritySet =
-                journalItem.SecuritySet = (journalItem.SecuritySet ??string.Empty).ToUpperInvariant();
+                journalItem.SecuritySet = (journalItem.SecuritySet ?? string.Empty).ToUpperInvariant();
 
             if (String.IsNullOrEmpty(journalItem.SecuritySet))
             {

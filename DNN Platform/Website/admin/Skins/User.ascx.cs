@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.notificationGroup.Visible = false;
                     this.avatarGroup.Visible = false;
 
-                    if (this.PortalSettings.UserRegistration != (int) Globals.PortalRegistrationType.NoRegistration)
+                    if (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
                     {
                         if (!String.IsNullOrEmpty(this.Text))
                         {

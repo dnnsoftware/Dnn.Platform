@@ -50,9 +50,9 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             this._password = this.GetPassword(this.Request);
             if (this._password != null)
             {
-                this.IsNonceStale = ! (IsNonceValid(this._request.RequestParams["nonce"]));
+                this.IsNonceStale = !(IsNonceValid(this._request.RequestParams["nonce"]));
                 //Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
-                if ((! this.IsNonceStale) && this._request.RequestParams["response"] == this.CalculateHashedDigest())
+                if ((!this.IsNonceStale) && this._request.RequestParams["response"] == this.CalculateHashedDigest())
                 {
                     this.IsValid = true;
                     this.User = new GenericPrincipal(new GenericIdentity(this._request.RawUsername, AuthenticationScheme), null);
@@ -120,7 +120,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         {
             DateTime expireTime;
 
-            int numPadChars = nonce.Length%4;
+            int numPadChars = nonce.Length % 4;
             if (numPadChars > 0)
             {
                 numPadChars = 4 - numPadChars;

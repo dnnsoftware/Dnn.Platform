@@ -110,17 +110,17 @@ namespace log4net.Config
 		{
 			if (this.m_providerType == null)
 			{
-				LogLog.Error(declaringType, "Attribute specified on assembly ["+sourceAssembly.FullName+"] with null ProviderType.");
+				LogLog.Error(declaringType, "Attribute specified on assembly [" + sourceAssembly.FullName + "] with null ProviderType.");
 			}
 			else
 			{
-				LogLog.Debug(declaringType, "Creating provider of type ["+ this.m_providerType.FullName +"]");
+				LogLog.Debug(declaringType, "Creating provider of type [" + this.m_providerType.FullName + "]");
 
 				SecurityContextProvider provider = Activator.CreateInstance(this.m_providerType) as SecurityContextProvider;
 
 				if (provider == null)
 				{
-					LogLog.Error(declaringType, "Failed to create SecurityContextProvider instance of type ["+this.m_providerType.Name+"].");
+					LogLog.Error(declaringType, "Failed to create SecurityContextProvider instance of type [" + this.m_providerType.Name + "].");
 				}
 				else
 				{

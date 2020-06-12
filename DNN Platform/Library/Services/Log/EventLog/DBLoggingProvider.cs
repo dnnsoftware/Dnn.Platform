@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Log.EventLog
             int i;
             for (i = 0; i <= arr.Count - 1; i++)
             {
-                var logTypeConfigInfo = (LogTypeConfigInfo) arr[i];
+                var logTypeConfigInfo = (LogTypeConfigInfo)arr[i];
                 if (String.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
                 {
                     logTypeConfigInfo.LogTypeKey = "*";
@@ -62,16 +62,16 @@ namespace DotNetNuke.Services.Log.EventLog
         private LogTypeConfigInfo GetLogTypeConfigInfoByKey(string logTypeKey, string logTypePortalID)
         {
             var configInfoByKey = (Hashtable)DataCache.GetCache(LogTypeInfoByKeyCacheKey) ?? FillLogTypeConfigInfoByKey(this.GetLogTypeConfigInfo());
-            var logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey[logTypeKey + "|" + logTypePortalID];
+            var logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|" + logTypePortalID];
             if (logTypeConfigInfo == null)
             {
-                logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey["*|" + logTypePortalID];
+                logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|" + logTypePortalID];
                 if (logTypeConfigInfo == null)
                 {
-                    logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey[logTypeKey + "|*"];
+                    logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey[logTypeKey + "|*"];
                     if (logTypeConfigInfo == null)
                     {
-                        logTypeConfigInfo = (LogTypeConfigInfo) configInfoByKey["*|*"];
+                        logTypeConfigInfo = (LogTypeConfigInfo)configInfoByKey["*|*"];
                     }
                     else
                     {

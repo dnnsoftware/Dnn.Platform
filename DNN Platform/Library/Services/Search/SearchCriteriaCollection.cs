@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchCriteria) this.List[index];
+                return (SearchCriteria)this.List[index];
             }
             set
             {
@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                this.Add((SearchCriteria) value.List[i]);
+                this.Add((SearchCriteria)value.List[i]);
             }
         }
 

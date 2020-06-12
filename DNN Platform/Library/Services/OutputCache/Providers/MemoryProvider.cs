@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             object output = Cache[cacheKey];
             if (output != null)
             {
-                return (byte[]) output;
+                return (byte[])output;
             }
             else
             {

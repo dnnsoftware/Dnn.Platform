@@ -334,7 +334,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
-            var item = this.GetStorageItem(folderMapping, folder.MappedPath+file.FileName);
+            var item = this.GetStorageItem(folderMapping, folder.MappedPath + file.FileName);
             if (item == null)
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);

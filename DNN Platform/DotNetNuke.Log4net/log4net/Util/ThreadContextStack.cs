@@ -158,7 +158,7 @@ namespace log4net.Util
 		public IDisposable Push(string message) 
 		{
 			Stack stack = this.m_stack;
-			stack.Push(new StackFrame(message, (stack.Count>0) ? (StackFrame)stack.Peek() : null));
+			stack.Push(new StackFrame(message, (stack.Count > 0) ? (StackFrame)stack.Peek() : null));
 
 			return new AutoPopStackFrame(stack, stack.Count - 1);
 		}

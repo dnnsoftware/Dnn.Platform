@@ -40,7 +40,7 @@ namespace DotNetNuke.HttpModules.Personalization
 
         public void OnEndRequest(object s, EventArgs e)
         {
-            HttpContext context = ((HttpApplication) s).Context;
+            HttpContext context = ((HttpApplication)s).Context;
             HttpRequest request = context.Request;
 
             if (!Initialize.ProcessHttpModule(request, false, false))

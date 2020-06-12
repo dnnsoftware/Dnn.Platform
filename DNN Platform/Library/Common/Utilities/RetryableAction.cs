@@ -87,7 +87,7 @@ namespace DotNetNuke.Common.Utilities.Internal
 
         public void TryIt()
         {
-            var currentDelay = (int) this.Delay.TotalMilliseconds;
+            var currentDelay = (int)this.Delay.TotalMilliseconds;
             int retrysRemaining = this.MaxRetries;
 
             do

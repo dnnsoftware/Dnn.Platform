@@ -90,13 +90,13 @@ namespace DotNetNuke.UI
             if (ControlSrc.EndsWith(".ascx", StringComparison.InvariantCultureIgnoreCase))
             {
 				//load from a user control on the file system
-                ctrl = (T) containerControl.LoadControl("~/" + ControlSrc);
+                ctrl = (T)containerControl.LoadControl("~/" + ControlSrc);
             }
             else
             {
 				//load from a typename in an assembly ( ie. server control )
                 Type objType = Reflection.CreateType(ControlSrc);
-                ctrl = (T) containerControl.LoadControl(objType, null);
+                ctrl = (T)containerControl.LoadControl(objType, null);
             }
             return ctrl;
         }

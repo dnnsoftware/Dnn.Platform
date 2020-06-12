@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     string skinpath = string.Empty;
                     if (this.UseSkinPath)
                     {
-                        skinpath = ((Skin) this.Parent).SkinPath;
+                        skinpath = ((Skin)this.Parent).SkinPath;
                     }
                     var objLink = new HtmlLink();
                     objLink.ID = Globals.CreateValidID(this.Name);

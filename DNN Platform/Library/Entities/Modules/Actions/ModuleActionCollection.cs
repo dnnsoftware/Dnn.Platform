@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                return (ModuleAction) this.List[index];
+                return (ModuleAction)this.List[index];
             }
             set
             {

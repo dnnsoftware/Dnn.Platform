@@ -704,7 +704,7 @@ namespace DotNetNuke.Entities.Urls
                                              FriendlyUrlSettings settings,
                                              string reason)
         {
-            this.onRemovePageIndex = settings.LogCacheMessages ? (CacheItemRemovedCallback) this.RemovedPageIndexCallBack : null;
+            this.onRemovePageIndex = settings.LogCacheMessages ? (CacheItemRemovedCallback)this.RemovedPageIndexCallBack : null;
 
             //get list of portal ids for the portals we are storing in the page index
             var portalIds = new List<int>();

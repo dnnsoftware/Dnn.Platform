@@ -492,10 +492,10 @@ namespace log4net.Core
 			this.m_data.Message = info.GetString("Message");
 			this.m_data.ThreadName = info.GetString("ThreadName");
 			this.m_data.TimeStampUtc = info.GetDateTime("TimeStamp").ToUniversalTime();
-			this.m_data.LocationInfo = (LocationInfo) info.GetValue("LocationInfo", typeof(LocationInfo));
+			this.m_data.LocationInfo = (LocationInfo)info.GetValue("LocationInfo", typeof(LocationInfo));
 			this.m_data.UserName = info.GetString("UserName");
 			this.m_data.ExceptionString = info.GetString("ExceptionString");
-			this.m_data.Properties = (PropertiesDictionary) info.GetValue("Properties", typeof(PropertiesDictionary));
+			this.m_data.Properties = (PropertiesDictionary)info.GetValue("Properties", typeof(PropertiesDictionary));
 			this.m_data.Domain = info.GetString("Domain");
 			this.m_data.Identity = info.GetString("Identity");
 
@@ -1310,7 +1310,7 @@ namespace log4net.Core
 			//Unlock the cache so that new values can be stored
 			//This may not be ideal if we are no longer in the correct context
 			//and someone calls fix. 
-			this.m_cacheUpdatable=true;
+			this.m_cacheUpdatable = true;
 
 			// determine the flags that we are actually fixing
 			FixFlags updateFlags = (FixFlags)((flags ^ this.m_fixFlags) & flags);
@@ -1383,7 +1383,7 @@ namespace log4net.Core
 			}
 
 			//Finaly lock everything we've cached.
-			this.m_cacheUpdatable=false;
+			this.m_cacheUpdatable = false;
 		}
 
 		#endregion Public Instance Methods

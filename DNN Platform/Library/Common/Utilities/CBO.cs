@@ -116,27 +116,27 @@ namespace DotNetNuke.Common.Utilities
                 while (dr.Read())
                 {
 					//Create the Object
-                    objObject = (TValue) CreateObjectFromReader(typeof(TValue), dr, false);
+                    objObject = (TValue)CreateObjectFromReader(typeof(TValue), dr, false);
                     if (keyField == "KeyID" && objObject is IHydratable)
                     {
 						//Get the value of the key field from the KeyID
-                        keyValue = (TKey) Null.SetNull(((IHydratable) objObject).KeyID, keyValue);
+                        keyValue = (TKey)Null.SetNull(((IHydratable)objObject).KeyID, keyValue);
                     }
                     else
                     {
 						//Get the value of the key field from the DataReader
                         if (typeof(TKey).Name == "Int32" && dr[keyField].GetType().Name == "Decimal")
                         {
-                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey));
                         }
                         else if (typeof(TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
                                  dr[keyField].GetType().Name.Equals("dbnull", StringComparison.OrdinalIgnoreCase))
                         {
-                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
                         }
                         else
                         {
-                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
+                            keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
                         }
                     }
 					//add to dictionary
@@ -199,7 +199,7 @@ namespace DotNetNuke.Common.Utilities
                 while (dr.Read())
                 {
 					//Create the Object
-                    objObject = (TItem) CreateObjectFromReader(typeof(TItem), dr, false);
+                    objObject = (TItem)CreateObjectFromReader(typeof(TItem), dr, false);
 					//add to collection
                     objList.Add(objObject);
                 }
@@ -263,7 +263,7 @@ namespace DotNetNuke.Common.Utilities
             if (hydratedObject is BaseEntityInfo && !(hydratedObject is ScheduleItem))
             {
                 //Call the base classes fill method to populate base class properties
-                ((BaseEntityInfo) hydratedObject).FillBaseProperties(dr);
+                ((BaseEntityInfo)hydratedObject).FillBaseProperties(dr);
             }
             //fill object with values from datareader
             for (intIndex = 0; intIndex <= dr.FieldCount - 1; intIndex++)
@@ -373,7 +373,7 @@ namespace DotNetNuke.Common.Utilities
         private static ObjectMappingInfo GetObjectMapping(Type objType)
         {
             string cacheKey = objectMapCacheKey + objType.FullName;
-            var objMap = (ObjectMappingInfo) DataCache.GetCache(cacheKey);
+            var objMap = (ObjectMappingInfo)DataCache.GetCache(cacheKey);
             if (objMap == null)
             {
                 //Create an ObjectMappingInfo instance
@@ -575,7 +575,7 @@ namespace DotNetNuke.Common.Utilities
             {
 				//Use XmlSerializer
                 var serializer = new XmlSerializer(objObject.GetType());
-                objObject = (TObject) serializer.Deserialize(reader);
+                objObject = (TObject)serializer.Deserialize(reader);
             }
             else
             {
@@ -598,7 +598,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, Type objType)
         {
-            return (ArrayList) FillListFromReader(objType, dr, new ArrayList(), true);
+            return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -611,7 +611,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, Type objType, bool closeReader)
         {
-            return (ArrayList) FillListFromReader(objType, dr, new ArrayList(), closeReader);
+            return (ArrayList)FillListFromReader(objType, dr, new ArrayList(), closeReader);
         }
 
         /// -----------------------------------------------------------------------------
@@ -636,7 +636,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static List<TItem> FillCollection<TItem>(IDataReader dr)
         {
-            return (List<TItem>) FillListFromReader(dr, new List<TItem>(), true);
+            return (List<TItem>)FillListFromReader(dr, new List<TItem>(), true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -679,7 +679,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, ref Type objType, ref int totalRecords)
         {
-            var objFillCollection = (ArrayList) FillListFromReader(objType, dr, new ArrayList(), false);
+            var objFillCollection = (ArrayList)FillListFromReader(objType, dr, new ArrayList(), false);
             try
             {
                 if (dr.NextResult())
@@ -731,7 +731,7 @@ namespace DotNetNuke.Common.Utilities
 				//Ensure DataReader is closed
                 CloseDataReader(dr, true);
             }
-            return (List<T>) objFillCollection;
+            return (List<T>)objFillCollection;
         }
 		
 		#endregion
@@ -748,7 +748,7 @@ namespace DotNetNuke.Common.Utilities
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr)
         {
             return
-                (Dictionary<TKey, TValue>) FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), true);
+                (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), true);
         }
 
         /// <summary>
@@ -761,7 +761,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="closeReader">A flag indicating whether to close the reader.</param>
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, bool closeReader)
         {
-            return (Dictionary<TKey, TValue>) FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
+            return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
         }
 
         /// -----------------------------------------------------------------------------
@@ -776,7 +776,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
         {
-            return (Dictionary<TKey, TValue>) FillDictionaryFromReader(keyField, dr, objDictionary, true);
+            return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, objDictionary, true);
         }
 		
 		#endregion
@@ -792,7 +792,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr)
         {
-            return (TObject) CreateObjectFromReader(typeof(TObject), dr, true);
+            return (TObject)CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -805,7 +805,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
         {
-            return (TObject) CreateObjectFromReader(typeof(TObject), dr, closeReader);
+            return (TObject)CreateObjectFromReader(typeof(TObject), dr, closeReader);
         }
 
 		#endregion
@@ -827,7 +827,7 @@ namespace DotNetNuke.Common.Utilities
         public static SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
         {
             return
-                (SortedList<TKey, TValue>) FillDictionaryFromReader(keyField, dr, new SortedList<TKey, TValue>(), true);
+                (SortedList<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new SortedList<TKey, TValue>(), true);
         }
 
         public static void DeserializeSettings(IDictionary dictionary, XmlNode rootNode, string elementName)

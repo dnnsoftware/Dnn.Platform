@@ -201,14 +201,14 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
-            return this.Equals((ModulePermissionInfo) obj);
+            return this.Equals((ModulePermissionInfo)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (this._moduleID*397) ^ this._modulePermissionID;
+                return (this._moduleID * 397) ^ this._modulePermissionID;
             }
         }
 		

@@ -145,7 +145,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode) this.ViewState["Mode"];
+				return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode)this.ViewState["Mode"];
 			}
 			set
 			{
@@ -235,7 +235,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 			get
 			{
-				return this.ViewState["FileFilter"] != null ? (string) this.ViewState["FileFilter"] : "";
+				return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : "";
 			}
 			set
 			{

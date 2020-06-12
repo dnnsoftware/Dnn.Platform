@@ -169,7 +169,7 @@ namespace DotNetNuke.Web.InternalServices
 				}
 				if (chunkLength < 0)
 				{
-					var uchunkLength = (ushort) chunkLength;
+					var uchunkLength = (ushort)chunkLength;
 					binaryReader.ReadBytes(uchunkLength - 2);
 				}
 				else

@@ -38,7 +38,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 : UrlUtils.DecryptParameter(context.Request.QueryString["detail"], Host.GUID);
 
             //Pass the action on, if the current caching provider is ours
-            var provider = (Caching.SimpleWebFarmCachingProvider.SimpleWebFarmCachingProvider) CachingProvider.Instance();
+            var provider = (Caching.SimpleWebFarmCachingProvider.SimpleWebFarmCachingProvider)CachingProvider.Instance();
             provider.ProcessSynchronizationRequest(command, detail);
         }
 

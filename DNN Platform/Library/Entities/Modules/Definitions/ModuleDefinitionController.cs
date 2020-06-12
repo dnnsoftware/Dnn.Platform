@@ -217,7 +217,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                     ArrayList permissions = permissionController.GetPermissionByCodeAndKey(kvp.Value.PermissionCode, kvp.Value.PermissionKey);
                     if (permissions != null && permissions.Count == 1)
                     {
-                        var permission = (PermissionInfo) permissions[0];
+                        var permission = (PermissionInfo)permissions[0];
                         kvp.Value.PermissionID = permission.PermissionID;
                         permissionController.UpdatePermission(kvp.Value);
                     }

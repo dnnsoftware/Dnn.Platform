@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			foreach (var authSystem in authSystems)
 			{
 				//Add a Section Header
-				var sectionHeadControl = (SectionHeadControl) this.LoadControl("~/controls/SectionHeadControl.ascx");
+				var sectionHeadControl = (SectionHeadControl)this.LoadControl("~/controls/SectionHeadControl.ascx");
 				sectionHeadControl.IncludeRule = true;
 				sectionHeadControl.CssClass = "Head";
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				var container = new HtmlGenericControl();
 				container.ID = authSystem.AuthenticationType;
 
-				var authSettingsControl = (AuthenticationSettingsBase) this.LoadControl("~/" + authSystem.SettingsControlSrc);
+				var authSettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + authSystem.SettingsControlSrc);
 
 				//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
 				//this is necessary for the Localization in PageBase
@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
 			foreach (var authSystem in authSystems)
 			{
-				var authLoginControl = (AuthenticationLoginBase) this.LoadControl("~/" + authSystem.LoginControlSrc);
+				var authLoginControl = (AuthenticationLoginBase)this.LoadControl("~/" + authSystem.LoginControlSrc);
 
 				//Check if AuthSystem is Enabled
 				if (authLoginControl.Enabled)

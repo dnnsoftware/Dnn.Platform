@@ -1388,7 +1388,7 @@ namespace DotNetNuke.Services.Scheduling
                                         break;
                                     case "w":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse*7);
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                         break;
                                     case "mo":
                                         scheduleHistoryItem.NextStart =
@@ -1422,7 +1422,7 @@ namespace DotNetNuke.Services.Scheduling
                                         break;
                                     case "w":
                                         scheduleHistoryItem.NextStart =
-                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse*7);
+                                            scheduleHistoryItem.StartDate.AddDays(scheduleHistoryItem.TimeLapse * 7);
                                         break;
                                     case "mo":
                                         scheduleHistoryItem.NextStart =

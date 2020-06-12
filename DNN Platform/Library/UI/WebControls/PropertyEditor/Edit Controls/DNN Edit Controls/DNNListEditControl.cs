@@ -297,7 +297,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     if (attribute is ListAttribute)
                     {
-                        var listAtt = (ListAttribute) attribute;
+                        var listAtt = (ListAttribute)attribute;
                         this.ListName = listAtt.ListName;
                         this.ParentKey = listAtt.ParentKey;
                         this.TextField = listAtt.TextField;

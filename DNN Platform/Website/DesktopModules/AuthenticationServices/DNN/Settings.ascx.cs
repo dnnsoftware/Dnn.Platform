@@ -19,7 +19,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         {
             if (this.SettingsEditor.IsValid && this.SettingsEditor.IsDirty)
             {
-                var config = (AuthenticationConfig) this.SettingsEditor.DataSource;
+                var config = (AuthenticationConfig)this.SettingsEditor.DataSource;
                 AuthenticationConfig.UpdateConfig(config);
             }
         }

@@ -1337,7 +1337,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockMessagingController.Setup(mc => mc.GetPortalSettingAsInteger(It.IsAny<string>(), this._user12UserInfo.PortalID, Null.NullInteger)).Returns(1);
             this._mockMessagingController.Setup(mc => mc.IsAdminOrHost(this._adminUserInfo)).Returns(false);
 
-            this._mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(this._user12UserInfo)).Returns((Message) null);
+            this._mockInternalMessagingController.Setup(mc => mc.GetLastSentMessage(this._user12UserInfo)).Returns((Message)null);
 
             var result = this._mockInternalMessagingController.Object.WaitTimeForNextMessage(this._user12UserInfo);
 

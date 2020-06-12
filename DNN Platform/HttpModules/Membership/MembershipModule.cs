@@ -93,7 +93,7 @@ namespace DotNetNuke.HttpModules.Membership
 
         private void OnAuthenticateRequest(object sender, EventArgs e)
         {
-            var application = (HttpApplication) sender;
+            var application = (HttpApplication)sender;
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
 

@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Library.Permissions
 
         public int Compare(object x, object y)
         {
-            return ((MenuPermissionInfo) x).MenuPermissionId.CompareTo(((MenuPermissionInfo) y).MenuPermissionId);
+            return ((MenuPermissionInfo)x).MenuPermissionId.CompareTo(((MenuPermissionInfo)y).MenuPermissionId);
         }
 
         #endregion

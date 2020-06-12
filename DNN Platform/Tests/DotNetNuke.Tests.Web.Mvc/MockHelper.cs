@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Web.Mvc
 
         public static ControllerContext CreateMockControllerContext(HttpContextBase httpContext, RouteData routeData)
         {
-            return new ControllerContext(httpContext?? CreateMockHttpContext(), routeData, new Mock<ControllerBase>().Object);
+            return new ControllerContext(httpContext ?? CreateMockHttpContext(), routeData, new Mock<ControllerBase>().Object);
         }
 
         public static ViewContext CreateViewContext(string url)

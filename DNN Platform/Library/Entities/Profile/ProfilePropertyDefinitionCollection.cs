@@ -69,7 +69,7 @@ namespace DotNetNuke.Entities.Profile
         {
             get
             {
-                return (ProfilePropertyDefinition) this.List[index];
+                return (ProfilePropertyDefinition)this.List[index];
             }
             set
             {

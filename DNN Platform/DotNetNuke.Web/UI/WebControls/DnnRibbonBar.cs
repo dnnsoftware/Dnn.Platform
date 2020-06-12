@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (DnnRibbonBarGroupCollection) this.Controls;
+                return (DnnRibbonBarGroupCollection)this.Controls;
             }
         }
 

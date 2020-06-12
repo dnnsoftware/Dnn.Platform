@@ -107,14 +107,14 @@ namespace DotNetNuke.Common.Utilities
 
             if (utcTimeDifference.TotalSeconds < 60)
             {
-                return String.Format(Localization.GetString("SecondsAgo"), (int) utcTimeDifference.TotalSeconds);
+                return String.Format(Localization.GetString("SecondsAgo"), (int)utcTimeDifference.TotalSeconds);
             }
 
             if (utcTimeDifference.TotalMinutes < 60)
             {
                 if (utcTimeDifference.TotalMinutes < 2)
                 {
-                    return String.Format(Localization.GetString("MinuteAgo"), (int) utcTimeDifference.TotalMinutes);
+                    return String.Format(Localization.GetString("MinuteAgo"), (int)utcTimeDifference.TotalMinutes);
                 }
 
                 return String.Format(Localization.GetString("MinutesAgo"), (int)utcTimeDifference.TotalMinutes);

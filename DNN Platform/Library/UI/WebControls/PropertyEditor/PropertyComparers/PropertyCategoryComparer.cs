@@ -21,13 +21,13 @@ namespace DotNetNuke.UI.WebControls
         {
             if (x is PropertyInfo && y is PropertyInfo)
             {
-                var xProp = (PropertyInfo) x;
-                var yProp = (PropertyInfo) y;
+                var xProp = (PropertyInfo)x;
+                var yProp = (PropertyInfo)y;
                 object[] xCategory = xProp.GetCustomAttributes(typeof(CategoryAttribute), true);
                 string xCategoryName = string.Empty;
                 if (xCategory.Length > 0)
                 {
-                    xCategoryName = ((CategoryAttribute) xCategory[0]).Category;
+                    xCategoryName = ((CategoryAttribute)xCategory[0]).Category;
                 }
                 else
                 {
@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.WebControls
                 string yCategoryName = string.Empty;
                 if (yCategory.Length > 0)
                 {
-                    yCategoryName = ((CategoryAttribute) yCategory[0]).Category;
+                    yCategoryName = ((CategoryAttribute)yCategory[0]).Category;
                 }
                 else
                 {

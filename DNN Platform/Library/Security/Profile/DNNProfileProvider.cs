@@ -214,7 +214,7 @@ namespace DotNetNuke.Security.Profile
                     var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);
                     this._dataProvider.UpdateProfileProperty(Null.NullInteger, user.UserID, profProperty.PropertyDefinitionId, 
-                                                propertyValue, (int) profProperty.ProfileVisibility.VisibilityMode, 
+                                                propertyValue, (int)profProperty.ProfileVisibility.VisibilityMode, 
                                                 profProperty.ProfileVisibility.ExtendedVisibilityString(), DateTime.Now);
                     EventLogController.Instance.AddLog(user, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", "USERPROFILE_UPDATED");
                 }

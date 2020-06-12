@@ -336,7 +336,7 @@ namespace DotNetNuke.Tests.Data
 
             foreach (DataRow row in table.Rows)
             {
-                if ((int) row["ID"] == Constants.PETAPOCO_UpdateDogId)
+                if ((int)row["ID"] == Constants.PETAPOCO_UpdateDogId)
                 {
                     Assert.AreEqual(row["Age"], Constants.PETAPOCO_UpdateDogAge);
                     Assert.AreEqual(row["Name"], Constants.PETAPOCO_UpdateDogName);

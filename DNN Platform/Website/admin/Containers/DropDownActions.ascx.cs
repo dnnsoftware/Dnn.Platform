@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.Containers
         {
             try
             {
-                var cboActions = (DropDownList) this.Control.NavigationControl;
+                var cboActions = (DropDownList)this.Control.NavigationControl;
                 if (cboActions.SelectedIndex != -1)
                 {
                     this.ProcessAction(cboActions.SelectedItem.Value);

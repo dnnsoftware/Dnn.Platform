@@ -243,7 +243,7 @@ namespace log4net.Util
     
 			for (int i = 4; i >= 0; i--) 
 			{	
-				if ((length & (1<<i)) != 0) 
+				if ((length & (1 << i)) != 0) 
 				{
 					writer.Write(SPACES[i]);
 				}

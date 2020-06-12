@@ -213,8 +213,8 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {
-            var box = (CheckBox) sender;
-            var container = (DataGridItem) box.NamingContainer;
+            var box = (CheckBox)sender;
+            var container = (DataGridItem)box.NamingContainer;
             if (!String.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
             {
                 if (this.DesignMode)
@@ -254,8 +254,8 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private void OnCheckChanged(object sender, EventArgs e)
         {
-            var box = (CheckBox) sender;
-            var container = (DataGridItem) box.NamingContainer;
+            var box = (CheckBox)sender;
+            var container = (DataGridItem)box.NamingContainer;
             DNNDataGridCheckChangedEventArgs evntArgs;
             if (container.ItemIndex == Null.NullInteger)
             {

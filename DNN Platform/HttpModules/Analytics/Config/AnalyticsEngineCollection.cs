@@ -18,7 +18,7 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return (AnalyticsEngine) base.List[index];
+                return (AnalyticsEngine)base.List[index];
             }
             set
             {

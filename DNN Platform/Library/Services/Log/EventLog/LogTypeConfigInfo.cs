@@ -38,13 +38,13 @@ namespace DotNetNuke.Services.Log.EventLog
                 switch (this.NotificationThresholdTimeType)
                 {
                     case NotificationThresholdTimeTypes.Seconds:
-                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddSeconds(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Minutes:
-                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddMinutes(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Hours:
-                        return DateTime.Now.AddHours(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddHours(this.NotificationThresholdTime * -1);
                     case NotificationThresholdTimeTypes.Days:
-                        return DateTime.Now.AddDays(this.NotificationThresholdTime*-1);
+                        return DateTime.Now.AddDays(this.NotificationThresholdTime * -1);
                     default:
                         return Null.NullDate;
                 }

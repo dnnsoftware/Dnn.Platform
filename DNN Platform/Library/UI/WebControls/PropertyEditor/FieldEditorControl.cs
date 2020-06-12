@@ -411,7 +411,7 @@ namespace DotNetNuke.UI.WebControls
 			propEditor.ValueChanged += this.ValueChanged;
 			if (propEditor is DNNListEditControl)
 			{
-				var listEditor = (DNNListEditControl) propEditor;
+				var listEditor = (DNNListEditControl)propEditor;
 				listEditor.ItemChanged += this.ListItemChanged;
 			}
 			this.Editor = propEditor;
@@ -843,7 +843,7 @@ namespace DotNetNuke.UI.WebControls
 				IEnumerator valEnumerator = this.Validators.GetEnumerator();
 				while (valEnumerator.MoveNext())
 				{
-					var validator = (IValidator) valEnumerator.Current;
+					var validator = (IValidator)valEnumerator.Current;
 					validator.Validate();
 					if (!validator.IsValid)
 					{

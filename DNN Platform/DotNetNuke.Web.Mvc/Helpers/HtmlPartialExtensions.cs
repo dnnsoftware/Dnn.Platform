@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <param name="html">The HTML helper instance that this method extends.</param><param name="partialViewName">The name of the partial view to render.</param><param name="viewData">The view data dictionary for the partial view.</param>
         public static MvcHtmlString Partial(this DnnHtmlHelper html, string partialViewName, ViewDataDictionary viewData)
         {
-            return html.HtmlHelper.Partial(partialViewName, (object) null, viewData);
+            return html.HtmlHelper.Partial(partialViewName, (object)null, viewData);
         }
 
         /// <summary>

@@ -196,7 +196,7 @@ namespace DotNetNuke.Web.UI
                 if (image.Width > maxWidth)
                 {
                     img.Width = maxWidth;
-                    img.Height = Convert.ToInt32((image.Height*maxWidth)/(float) image.Width);
+                    img.Height = Convert.ToInt32((image.Height * maxWidth) / (float)image.Width);
                 }
                 else
                 {
@@ -209,7 +209,7 @@ namespace DotNetNuke.Web.UI
                 // Portrait
                 if (image.Height > maxHeight)
                 {
-                    img.Width = Convert.ToInt32((image.Width*maxHeight)/(float) image.Height);
+                    img.Width = Convert.ToInt32((image.Width * maxHeight) / (float)image.Height);
                     img.Height = maxHeight;
                 }
                 else

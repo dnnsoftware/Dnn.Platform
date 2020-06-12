@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Connections
 
                             if (arrayValue is IDictionary<string, object>)
                             {
-                                sb.Append(new DynamicJsonObject((IDictionary<string, object>) arrayValue).ToString());
+                                sb.Append(new DynamicJsonObject((IDictionary<string, object>)arrayValue).ToString());
                             }
                             else if (arrayValue is string)
                             {

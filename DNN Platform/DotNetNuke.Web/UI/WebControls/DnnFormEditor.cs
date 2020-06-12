@@ -294,7 +294,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (state != null)
             {
-                this._itemCount = (int) state;
+                this._itemCount = (int)state;
             }
         }
 
@@ -349,7 +349,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override object SaveControlState()
         {
-            return this._itemCount > 0 ? (object) this._itemCount : null;
+            return this._itemCount > 0 ? (object)this._itemCount : null;
         }
 
         #endregion

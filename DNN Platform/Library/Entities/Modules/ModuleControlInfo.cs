@@ -117,7 +117,7 @@ namespace DotNetNuke.Entities.Modules
             this.ControlTitle = Null.SetNullString(dr["ControlTitle"]);
             this.IconFile = Null.SetNullString(dr["IconFile"]);
             this.HelpURL = Null.SetNullString(dr["HelpUrl"]);
-            this.ControlType = (SecurityAccessLevel) Enum.Parse(typeof(SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
+            this.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
             this.ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
             this.SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
 			//Call the base classes fill method to populate base class proeprties
@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Modules
                         this.ControlTitle = reader.ReadElementContentAsString();
                         break;
                     case "controlType":
-                        this.ControlType = (SecurityAccessLevel) Enum.Parse(typeof(SecurityAccessLevel), reader.ReadElementContentAsString());
+                        this.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), reader.ReadElementContentAsString());
                         break;
                     case "iconFile":
                         this.IconFile = reader.ReadElementContentAsString();

@@ -52,7 +52,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         /// </summary>
         public static RequestFilterSettings GetSettings()
         {
-            var settings = (RequestFilterSettings) DataCache.GetCache(RequestFilterConfig);
+            var settings = (RequestFilterSettings)DataCache.GetCache(RequestFilterConfig);
             if (settings == null)
             {
                 settings = new RequestFilterSettings();

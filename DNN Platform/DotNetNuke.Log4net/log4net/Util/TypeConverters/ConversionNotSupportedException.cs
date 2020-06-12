@@ -149,11 +149,11 @@ namespace log4net.Util.TypeConverters
 		{
 			if (sourceValue == null)
 			{
-				return new ConversionNotSupportedException("Cannot convert value [null] to type ["+destinationType+"]", innerException);
+				return new ConversionNotSupportedException("Cannot convert value [null] to type [" + destinationType + "]", innerException);
 			}
 			else
 			{
-				return new ConversionNotSupportedException("Cannot convert from type ["+sourceValue.GetType()+"] value ["+sourceValue+"] to type ["+destinationType+"]", innerException);
+				return new ConversionNotSupportedException("Cannot convert from type [" + sourceValue.GetType() + "] value [" + sourceValue + "] to type [" + destinationType + "]", innerException);
 			}
 		}
 

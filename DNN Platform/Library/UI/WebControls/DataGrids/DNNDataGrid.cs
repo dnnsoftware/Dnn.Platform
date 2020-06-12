@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.WebControls
                 if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
                 {
 					//Manage CheckBox column events
-                    var cbColumn = (CheckBoxColumn) column;
+                    var cbColumn = (CheckBoxColumn)column;
                     cbColumn.CheckedChanged += this.OnItemCheckedChanged;
                 }
             }

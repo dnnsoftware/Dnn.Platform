@@ -41,7 +41,7 @@ namespace log4net.Util.TypeConverters
 	/// </remarks>
 	/// <author>Nicko Cadell</author>
 	/// <author>Gert Driesen</author>
-	[AttributeUsage(AttributeTargets.Class|AttributeTargets.Interface|AttributeTargets.Enum)]
+	[AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum)]
 	public sealed class TypeConverterAttribute : Attribute
 	{
 		#region Member Variables

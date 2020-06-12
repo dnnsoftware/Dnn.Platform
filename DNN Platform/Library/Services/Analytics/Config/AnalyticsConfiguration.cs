@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Analytics.Config
             string filePath = "";
             try
             {
-                Config = (AnalyticsConfiguration) DataCache.GetCache(cacheKey);
+                Config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
                 if ((Config == null))
                 {
                     filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";

@@ -260,8 +260,8 @@ namespace DotNetNuke.Web.UI.WebControls
             int keyValue;
             if (this.EditMode == ImageCommandColumnEditMode.URL)
             {
-                var hypLink = (HyperLink) sender;
-                container = (GridItem) hypLink.NamingContainer;
+                var hypLink = (HyperLink)sender;
+                container = (GridItem)hypLink.NamingContainer;
                 keyValue = this.GetValue(container);
                 if (!String.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
@@ -277,8 +277,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 //Bind Image Button
                 if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
-                    var colIcon = (ImageButton) sender;
-                    container = (GridItem) colIcon.NamingContainer;
+                    var colIcon = (ImageButton)sender;
+                    container = (GridItem)colIcon.NamingContainer;
                     keyValue = this.GetValue(container);
                     colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colIcon.Visible = this.GetIsVisible(container);
@@ -286,8 +286,8 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
                     //Bind Link Button
-                    var colLink = (LinkButton) sender;
-                    container = (GridItem) colLink.NamingContainer;
+                    var colLink = (LinkButton)sender;
+                    container = (GridItem)colLink.NamingContainer;
                     keyValue = this.GetValue(container);
                     colLink.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colLink.Visible = this.GetIsVisible(container);

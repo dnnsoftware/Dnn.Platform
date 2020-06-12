@@ -25,12 +25,12 @@ namespace DotNetNuke.ComponentModel
 
         public virtual TContract GetComponent<TContract>()
         {
-            return (TContract) this.GetComponent(typeof(TContract));
+            return (TContract)this.GetComponent(typeof(TContract));
         }
 
         public virtual TContract GetComponent<TContract>(string name)
         {
-            return (TContract) this.GetComponent(name, typeof(TContract));
+            return (TContract)this.GetComponent(name, typeof(TContract));
         }
 
         public abstract string[] GetComponentList(Type contractType);

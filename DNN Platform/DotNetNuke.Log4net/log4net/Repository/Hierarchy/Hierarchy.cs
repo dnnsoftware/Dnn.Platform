@@ -389,7 +389,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		override public void Shutdown() 
 		{
-			LogLog.Debug(declaringType, "Shutdown called on Hierarchy ["+this.Name+"]");
+			LogLog.Debug(declaringType, "Shutdown called on Hierarchy [" + this.Name + "]");
 
 			// begin by closing nested appenders
 			this.Root.CloseNestedAppenders();
@@ -846,7 +846,7 @@ namespace log4net.Repository.Hierarchy
 			bool parentFound = false;
 	
 			// if name = "w.x.y.z", loop through "w.x.y", "w.x" and "w", but not "w.x.y.z" 
-			for (int i = name.LastIndexOf('.', length-1); i >= 0; i = name.LastIndexOf('.', i-1))  
+			for (int i = name.LastIndexOf('.', length - 1); i >= 0; i = name.LastIndexOf('.', i - 1))  
 			{
 				string substr = name.Substring(0, i);
 
@@ -876,7 +876,7 @@ namespace log4net.Repository.Hierarchy
 						}
 						else
 						{
-							LogLog.Error(declaringType, "Unexpected object type ["+node.GetType()+"] in ht.", new LogException());
+							LogLog.Error(declaringType, "Unexpected object type [" + node.GetType() + "] in ht.", new LogException());
 						}
 					} 
 				}
@@ -957,7 +957,7 @@ namespace log4net.Repository.Hierarchy
 				Level previousLevel = this.LevelMap[levelEntry.Name];
 				if (previousLevel == null)
 				{
-					throw new InvalidOperationException("Cannot redefine level ["+levelEntry.Name+"] because it is not defined in the LevelMap. To define the level supply the level value.");
+					throw new InvalidOperationException("Cannot redefine level [" + levelEntry.Name + "] because it is not defined in the LevelMap. To define the level supply the level value.");
 				}
 
 				levelEntry.Value = previousLevel.Value;
@@ -1035,7 +1035,7 @@ namespace log4net.Repository.Hierarchy
 			/// <returns>string info about this object</returns>
 			public override string ToString()
 			{
-				return "LevelEntry(Value="+this.m_levelValue+", Name="+this.m_levelName+", DisplayName="+this.m_levelDisplayName+")";
+				return "LevelEntry(Value=" + this.m_levelValue + ", Name=" + this.m_levelName + ", DisplayName=" + this.m_levelDisplayName + ")";
 			}
 		}
 

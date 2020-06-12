@@ -42,7 +42,7 @@ namespace DotNetNuke.HttpModules.UsersOnline
         public void OnAuthorizeRequest(object s, EventArgs e)
         {
             //First check if we are upgrading/installing
-            var app = (HttpApplication) s;
+            var app = (HttpApplication)s;
             HttpRequest request = app.Request;
 
             //check if we are upgrading/installing or if this is a captcha request

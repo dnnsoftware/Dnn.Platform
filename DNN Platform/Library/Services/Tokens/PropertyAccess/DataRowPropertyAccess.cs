@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Tokens
                     case "Single":
                     case "Int32":
                     case "Int64":
-                        return (((IFormattable) valueObject).ToString(OutputFormat, formatProvider));
+                        return (((IFormattable)valueObject).ToString(OutputFormat, formatProvider));
                     default:
                         return PropertyAccess.FormatString(valueObject.ToString(), format);
                 }

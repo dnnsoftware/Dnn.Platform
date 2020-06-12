@@ -755,7 +755,7 @@ namespace log4net.Util
 						if (t != null)
 						{
 							// Found type in loaded assembly
-							LogLog.Debug(declaringType, "Loaded type ["+typeName+"] from assembly ["+assembly.FullName+"] by searching loaded assemblies.");
+							LogLog.Debug(declaringType, "Loaded type [" + typeName + "] from assembly [" + assembly.FullName + "] by searching loaded assemblies.");
                                                         if (assembly.GlobalAssemblyCache)
                                                         {
                                                             fallback = t;
@@ -775,7 +775,7 @@ namespace log4net.Util
 				// Didn't find the type
 				if (throwOnError)
 				{
-					throw new TypeLoadException("Could not load type ["+typeName+"]. Tried assembly ["+relativeAssembly.FullName+"] and all loaded assemblies");
+					throw new TypeLoadException("Could not load type [" + typeName + "]. Tried assembly [" + relativeAssembly.FullName + "] and all loaded assemblies");
 				}
 				return null;
 #endif

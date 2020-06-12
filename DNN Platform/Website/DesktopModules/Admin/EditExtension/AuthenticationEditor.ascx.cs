@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             {
                 if (this._SettingsControl == null && !string.IsNullOrEmpty(this.AuthSystem.SettingsControlSrc))
                 {
-                    this._SettingsControl = (AuthenticationSettingsBase) this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
+                    this._SettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
                 }
                 return this._SettingsControl;
             }

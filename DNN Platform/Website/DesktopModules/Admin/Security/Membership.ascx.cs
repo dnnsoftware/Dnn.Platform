@@ -213,7 +213,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.cmdAuthorize.Visible = !this.UserMembership.Approved || this.User.IsInRole("Unverified Users");
                 this.cmdPassword.Visible = !this.UserMembership.UpdatePassword;
             }
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID!=this.User.UserID)
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID != this.User.UserID)
             {
                 this.cmdToggleSuperuser.Visible = true;
 
@@ -231,7 +231,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
             this.lastLockoutDate.Value = this.UserMembership.LastLockoutDate.Year > 2000
-                                        ? (object) this.UserMembership.LastLockoutDate
+                                        ? (object)this.UserMembership.LastLockoutDate
                                         : this.LocalizeString("Never");
             // ReSharper disable SpecifyACultureInStringConversionExplicitly
             this.isOnLine.Value = this.LocalizeString(this.UserMembership.IsOnLine.ToString());
@@ -272,7 +272,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.cmdPassword.Click += this.cmdPassword_Click;
             this.cmdUnAuthorize.Click += this.cmdUnAuthorize_Click;
             this.cmdUnLock.Click += this.cmdUnLock_Click;
-            this.cmdToggleSuperuser.Click+=this.cmdToggleSuperuser_Click;
+            this.cmdToggleSuperuser.Click += this.cmdToggleSuperuser_Click;
         }
 
 

@@ -21,7 +21,7 @@ namespace DotNetNuke.Common.Lists
 
         public ListInfo GetChildren(string ParentName)
         {
-            return (ListInfo) this.Item(ParentName);
+            return (ListInfo)this.Item(ParentName);
         }
 
         internal new void Clear()
@@ -125,7 +125,7 @@ namespace DotNetNuke.Common.Lists
             var childList = new ArrayList();
             foreach (object child in this.List)
             {
-                if (((ListInfo) child).Key.IndexOf(ParentKey.ToLowerInvariant()) > -1)
+                if (((ListInfo)child).Key.IndexOf(ParentKey.ToLowerInvariant()) > -1)
                 {
                     childList.Add(child);
                 }

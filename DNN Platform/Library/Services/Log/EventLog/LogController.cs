@@ -297,8 +297,7 @@ namespace DotNetNuke.Services.Log.EventLog
                                                         NotificationThreshold = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThreshold"].Value),
                                                         NotificationThresholdTime = Convert.ToInt32(typeConfigInfo.Attributes["NotificationThresholdTime"].Value),
                                                         NotificationThresholdTimeType =
-                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)
-                                                            Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value)
+                                                            (LogTypeConfigInfo.NotificationThresholdTimeTypes)Enum.Parse(typeof(LogTypeConfigInfo.NotificationThresholdTimeTypes), typeConfigInfo.Attributes["NotificationThresholdTimeType"].Value)
                                                     };
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }

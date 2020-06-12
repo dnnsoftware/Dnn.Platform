@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return (DnnTab) base[index];
+                return (DnnTab)base[index];
             }
         }
 

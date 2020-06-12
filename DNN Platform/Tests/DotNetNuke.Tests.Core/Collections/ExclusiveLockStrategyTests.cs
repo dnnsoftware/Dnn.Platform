@@ -21,11 +21,11 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected override IEnumerable<Action<ILockStrategy>> GetObjectDisposedExceptionMethods()
         {
-            var l = (List<Action<ILockStrategy>>) base.GetObjectDisposedExceptionMethods();
+            var l = (List<Action<ILockStrategy>>)base.GetObjectDisposedExceptionMethods();
 
             l.Add((ILockStrategy strategy) =>
                       {
-                          ExclusiveLockStrategy els = (ExclusiveLockStrategy) strategy;
+                          ExclusiveLockStrategy els = (ExclusiveLockStrategy)strategy;
                           els.Exit();
                       });
 

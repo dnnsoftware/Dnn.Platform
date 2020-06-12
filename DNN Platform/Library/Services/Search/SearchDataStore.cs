@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Search
         private Hashtable GetCommonWords(string locale)
         {
             string strCacheKey = "CommonWords" + locale;
-            var objWords = (Hashtable) DataCache.GetCache(strCacheKey);
+            var objWords = (Hashtable)DataCache.GetCache(strCacheKey);
             if (objWords == null)
             {
                 objWords = new Hashtable();

@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         public SynonymFilter(TokenStream input) : base(input)
         {
-            this._termAtt = (TermAttribute) this.AddAttribute<ITermAttribute>();
+            this._termAtt = (TermAttribute)this.AddAttribute<ITermAttribute>();
             this._posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();
         }
 

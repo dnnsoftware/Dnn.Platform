@@ -27,7 +27,7 @@ namespace DotNetNuke.Common.Utilities
             var values = Enum.GetValues(enumType.GetType());
             for (var i = 0; i < values.Length; i++)
             {
-                pairs.Add(new KeyValuePair<int, string>((int) values.GetValue(i), names[i]));
+                pairs.Add(new KeyValuePair<int, string>((int)values.GetValue(i), names[i]));
             }
             return pairs;
         }

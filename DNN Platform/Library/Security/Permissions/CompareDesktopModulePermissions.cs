@@ -26,7 +26,7 @@ namespace DotNetNuke.Security.Permissions
 
         public int Compare(object x, object y)
         {
-            return ((DesktopModulePermissionInfo) x).DesktopModulePermissionID.CompareTo(((DesktopModulePermissionInfo) y).DesktopModulePermissionID);
+            return ((DesktopModulePermissionInfo)x).DesktopModulePermissionID.CompareTo(((DesktopModulePermissionInfo)y).DesktopModulePermissionID);
         }
 
         #endregion

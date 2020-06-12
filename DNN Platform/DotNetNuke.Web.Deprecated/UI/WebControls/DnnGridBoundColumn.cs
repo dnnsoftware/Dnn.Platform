@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    LinkButton button = (LinkButton) headerItem[columnName].Controls[0];
+                    LinkButton button = (LinkButton)headerItem[columnName].Controls[0];
                     button.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
                 }
             }

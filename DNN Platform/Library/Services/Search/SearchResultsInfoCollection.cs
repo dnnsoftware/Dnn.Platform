@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Search
         {
             get
             {
-                return (SearchResultsInfo) this.List[index];
+                return (SearchResultsInfo)this.List[index];
             }
             set
             {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Search
             {
                 if (obj is SearchResultsInfo)
                 {
-                    this.Add((SearchResultsInfo) obj);
+                    this.Add((SearchResultsInfo)obj);
                 }
             }
         }
@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Search
         {
             for (int i = 0; i <= value.Count - 1; i++)
             {
-                this.Add((SearchResultsInfo) value.List[i]);
+                this.Add((SearchResultsInfo)value.List[i]);
             }
         }
 

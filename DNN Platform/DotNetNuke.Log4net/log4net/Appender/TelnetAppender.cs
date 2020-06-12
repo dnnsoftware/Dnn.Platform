@@ -185,7 +185,7 @@ namespace log4net.Appender
 			base.ActivateOptions();
 			try 
 			{
-				LogLog.Debug(declaringType, "Creating SocketHandler to listen on port ["+this.m_listeningPort+"]");
+				LogLog.Debug(declaringType, "Creating SocketHandler to listen on port [" + this.m_listeningPort + "]");
 				this.m_handler = new SocketHandler(this.m_listeningPort);
 			}
 			catch (Exception ex) 
@@ -459,7 +459,7 @@ namespace log4net.Appender
 					// Block until a client connects
 					Socket socket = this.m_serverSocket.EndAccept(asyncResult);
 #endif
-					LogLog.Debug(declaringType, "Accepting connection from ["+socket.RemoteEndPoint.ToString()+"]");
+					LogLog.Debug(declaringType, "Accepting connection from [" + socket.RemoteEndPoint.ToString() + "]");
 					SocketClient client = new SocketClient(socket);
 
 					int currentActiveConnectionsCount = this.m_clients.Count;

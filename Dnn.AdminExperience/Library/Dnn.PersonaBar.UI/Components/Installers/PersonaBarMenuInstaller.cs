@@ -96,7 +96,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
 
         private void SaveMenuItems()
         {
-            foreach (var menuItem in this._menuItems.Where(x=>!string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
+            foreach (var menuItem in this._menuItems.Where(x => !string.IsNullOrEmpty(x.Identifier) && !string.IsNullOrEmpty(x.ModuleName)))
             {
                 if (this._parentMaps.ContainsKey(menuItem.Identifier))
                 {

@@ -99,7 +99,7 @@ namespace log4net.Util
 						{
 						}
 
-						LogLog.Error(declaringType, "ThreadContextStacks: Request for stack named ["+key+"] failed because a property with the same name exists which is a ["+propertyValue.GetType().Name+"] with value ["+propertyValueString+"]");
+						LogLog.Error(declaringType, "ThreadContextStacks: Request for stack named [" + key + "] failed because a property with the same name exists which is a [" + propertyValue.GetType().Name + "] with value [" + propertyValueString + "]");
 
 						stack = new ThreadContextStack();
 					}

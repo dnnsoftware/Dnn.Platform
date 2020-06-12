@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var scripts = Upgrade.GetUpgradeScripts(providerPath, DataProvider.Instance().GetVersion());
             if (scripts.Count > 0)
             {
-                percentForMiniStep = percentForEachStep/(scripts.Count);
+                percentForMiniStep = percentForEachStep / (scripts.Count);
                 foreach (string scriptFile in scripts)
                 {
                     var fileName = Upgrade.GetFileNameWithoutExtension(scriptFile);

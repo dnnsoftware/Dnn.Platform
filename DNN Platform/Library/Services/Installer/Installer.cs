@@ -442,7 +442,7 @@ namespace DotNetNuke.Services.Installer
             }
             catch (Exception ex)
             {
-                Logger.Error("Exception deleting folder "+this.TempInstallFolder+" while installing "+this.InstallerInfo.ManifestFile.Name, ex);
+                Logger.Error("Exception deleting folder " + this.TempInstallFolder + " while installing " + this.InstallerInfo.ManifestFile.Name, ex);
                 Exceptions.Exceptions.LogException(ex);
             }            
         }

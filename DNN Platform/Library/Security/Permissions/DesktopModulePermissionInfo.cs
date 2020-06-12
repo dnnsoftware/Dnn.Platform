@@ -197,14 +197,14 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
-            return this.Equals((DesktopModulePermissionInfo) obj);
+            return this.Equals((DesktopModulePermissionInfo)obj);
         }
 
         public override int GetHashCode()
         {
             unchecked
             {
-                return (this._desktopModulePermissionID*397) ^ this._portalDesktopModuleID;
+                return (this._desktopModulePermissionID * 397) ^ this._portalDesktopModuleID;
             }
         }
 		

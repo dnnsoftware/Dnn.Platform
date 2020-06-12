@@ -143,7 +143,7 @@ namespace log4net.Layout.Pattern
 				}
 				catch (Exception e) 
 				{
-					LogLog.Error(declaringType, "Could not instantiate SimpleDateFormatter with ["+dateFormatStr+"]", e);
+					LogLog.Error(declaringType, "Could not instantiate SimpleDateFormatter with [" + dateFormatStr + "]", e);
 					this.m_dateFormatter = new Iso8601DateFormatter();
 				}	
 			}

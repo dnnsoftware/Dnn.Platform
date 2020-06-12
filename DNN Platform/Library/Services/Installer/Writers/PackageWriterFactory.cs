@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
 						//The class for the Installer is specified in the Text property
-                        writer = (PackageWriterBase) Reflection.CreateObject(entry.Text, "PackageWriter_" + entry.Value);
+                        writer = (PackageWriterBase)Reflection.CreateObject(entry.Text, "PackageWriter_" + entry.Value);
                     }
                     break;
             }

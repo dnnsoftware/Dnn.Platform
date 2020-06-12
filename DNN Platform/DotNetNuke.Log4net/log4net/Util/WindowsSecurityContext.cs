@@ -294,7 +294,7 @@ namespace log4net.Util
 			if (!LogonUser(userName, domainName, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, ref tokenHandle))
 			{
 				NativeError error = NativeError.GetLastError();
-				throw new Exception("Failed to LogonUser ["+userName+"] in Domain ["+domainName+"]. Error: "+ error.ToString());
+				throw new Exception("Failed to LogonUser [" + userName + "] in Domain [" + domainName + "]. Error: " + error.ToString());
 			}
 
 			const int SecurityImpersonation = 2;

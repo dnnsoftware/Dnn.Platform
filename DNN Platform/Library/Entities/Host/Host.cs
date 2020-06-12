@@ -1100,7 +1100,7 @@ namespace DotNetNuke.Entities.Host
                 string s = HostController.Instance.GetString("SchedulerMode");
                 if (!string.IsNullOrEmpty(s))
                 {
-                    setting = (SchedulerMode) Enum.Parse(typeof(SchedulerMode), s);
+                    setting = (SchedulerMode)Enum.Parse(typeof(SchedulerMode), s);
                 }
                 return setting;
             }

@@ -193,13 +193,13 @@ namespace log4net.Appender
 
 				if (this.m_qtw == null) 
 				{
-					this.ErrorHandler.Error("No output stream or file set for the appender named ["+ this.Name +"].");
+					this.ErrorHandler.Error("No output stream or file set for the appender named [" + this.Name + "].");
 					return false;
 				}
 			}
 			if (this.m_qtw.Closed) 
 			{
-				this.ErrorHandler.Error("Output stream for appender named ["+ this.Name +"] has been closed.");
+				this.ErrorHandler.Error("Output stream for appender named [" + this.Name + "] has been closed.");
 				return false;
 			}
 
@@ -348,7 +348,7 @@ namespace log4net.Appender
 				} 
 				catch (Exception e) 
 				{
-					this.ErrorHandler.Error("Could not close writer ["+this.m_qtw+"]", e); 
+					this.ErrorHandler.Error("Could not close writer [" + this.m_qtw + "]", e); 
 					// do need to invoke an error handler
 					// at this late stage
 				}

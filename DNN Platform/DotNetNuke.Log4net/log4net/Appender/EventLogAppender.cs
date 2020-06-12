@@ -428,7 +428,7 @@ namespace log4net.Appender
             {
                 if (categoryPropertyObj is short)
                 {
-                    category = (short) categoryPropertyObj;
+                    category = (short)categoryPropertyObj;
                 }
                 else
                 {

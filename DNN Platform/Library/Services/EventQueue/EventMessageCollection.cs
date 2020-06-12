@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return (EventMessage) base.List[index];
+                return (EventMessage)base.List[index];
             }
             set
             {

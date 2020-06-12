@@ -25,7 +25,7 @@ namespace DotNetNuke.Common.Lists
         {
             try
             {
-                return (ListEntryInfo) base.List[index];
+                return (ListEntryInfo)base.List[index];
             }
             catch (Exception exc)
             {
@@ -51,7 +51,7 @@ namespace DotNetNuke.Common.Lists
                 return null;
             }
             index = Convert.ToInt32(this._keyIndexLookup[key.ToLowerInvariant()]);
-            return (ListEntryInfo) base.List[index];
+            return (ListEntryInfo)base.List[index];
         }
 
         public ListEntryInfo GetChildren(string parentName)

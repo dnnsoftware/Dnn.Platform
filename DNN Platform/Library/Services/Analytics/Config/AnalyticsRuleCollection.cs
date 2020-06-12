@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return (AnalyticsRule) base.List[index];
+                return (AnalyticsRule)base.List[index];
             }
             set
             {

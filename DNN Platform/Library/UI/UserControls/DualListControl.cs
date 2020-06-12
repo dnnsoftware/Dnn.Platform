@@ -281,8 +281,8 @@ namespace DotNetNuke.UI.UserControls
 
         public int Compare(object x, object y)
         {
-            var a = (ListItem) x;
-            var b = (ListItem) y;
+            var a = (ListItem)x;
+            var b = (ListItem)y;
             var c = new CaseInsensitiveComparer();
             return c.Compare(a.Text, b.Text);
         }

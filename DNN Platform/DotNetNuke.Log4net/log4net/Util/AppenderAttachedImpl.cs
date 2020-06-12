@@ -297,7 +297,7 @@ namespace log4net.Util
 					}
 					catch (Exception ex)
 					{
-						LogLog.Error(declaringType, "Failed to Close appender ["+appender.Name+"]", ex);
+						LogLog.Error(declaringType, "Failed to Close appender [" + appender.Name + "]", ex);
 					}
 				}
 				this.m_appenderList = null;	  

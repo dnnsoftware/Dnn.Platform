@@ -122,7 +122,7 @@ namespace DotNetNuke.UI.Utilities
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_dragDrop", objContainer.ClientID + " " + objTitle.ClientID + " " + ModuleID + ";", false);
                 string strPanes = "";
                 string strPaneNames = "";
-                var objPortalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
+                var objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
 
                 Control objCtl;
                 foreach (string strPane in objPortalSettings.ActiveTab.Panes)
@@ -296,7 +296,7 @@ namespace DotNetNuke.UI.Utilities
         {
             if (objButton is LinkButton)
             {
-                var objLB = (LinkButton) objButton;
+                var objLB = (LinkButton)objButton;
                 objLB.ToolTip = strToolTip;
                 if (objLB.Controls.Count > 0)
                 {
@@ -317,21 +317,21 @@ namespace DotNetNuke.UI.Utilities
         {
             if (objControl is Image)
             {
-                var objImage = (Image) objControl;
+                var objImage = (Image)objControl;
                 objImage.ImageUrl = strImage;
                 objImage.AlternateText = strAltText;
                 objImage.ToolTip = strToolTip;
             }
             else if (objControl is ImageButton)
             {
-                var objImage = (ImageButton) objControl;
+                var objImage = (ImageButton)objControl;
                 objImage.ImageUrl = strImage;
                 objImage.AlternateText = strAltText;
                 objImage.ToolTip = strToolTip;
             }
             else if (objControl is HtmlImage)
             {
-                var objImage = (HtmlImage) objControl;
+                var objImage = (HtmlImage)objControl;
                 objImage.Src = strImage;
                 objImage.Alt = strAltText;
             }
@@ -425,11 +425,11 @@ namespace DotNetNuke.UI.Utilities
         {
             if (objControl is HtmlControl)
             {
-                ((HtmlControl) objControl).Attributes.Add(strName, strValue);
+                ((HtmlControl)objControl).Attributes.Add(strName, strValue);
             }
             else if (objControl is WebControl)
             {
-                ((WebControl) objControl).Attributes.Add(strName, strValue);
+                ((WebControl)objControl).Attributes.Add(strName, strValue);
             }
         }
 
@@ -439,22 +439,22 @@ namespace DotNetNuke.UI.Utilities
             {
                 if (!String.IsNullOrEmpty(strValue))
                 {
-                    ((HtmlControl) objControl).Style.Add(strName, strValue);
+                    ((HtmlControl)objControl).Style.Add(strName, strValue);
                 }
                 else
                 {
-                    ((HtmlControl) objControl).Style.Remove(strName);
+                    ((HtmlControl)objControl).Style.Remove(strName);
                 }
             }
             else if (objControl is WebControl)
             {
                 if (!String.IsNullOrEmpty(strValue))
                 {
-                    ((WebControl) objControl).Style.Add(strName, strValue);
+                    ((WebControl)objControl).Style.Add(strName, strValue);
                 }
                 else
                 {
-                    ((WebControl) objControl).Style.Remove(strName);
+                    ((WebControl)objControl).Style.Remove(strName);
                 }
             }
         }

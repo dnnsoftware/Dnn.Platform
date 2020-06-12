@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return (PortalAliasInfo) this.Dictionary[key];
+                return (PortalAliasInfo)this.Dictionary[key];
             }
             set
             {

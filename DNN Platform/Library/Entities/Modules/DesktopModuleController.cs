@@ -264,7 +264,7 @@ namespace DotNetNuke.Entities.Modules
         {
             var module = (from kvp in GetDesktopModulesInternal(Null.NullInteger) where kvp.Value.FriendlyName == friendlyName select kvp.Value).FirstOrDefault();
 
-            if (module== null)
+            if (module == null)
                 Logger.WarnFormat("Unable to find module by friendly name. Name:{0}", friendlyName);
 
             return module;

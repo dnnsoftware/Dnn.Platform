@@ -55,7 +55,7 @@ namespace DotNetNuke.ComponentModel
             //Register the default provider first (so it is the first component registered for its service interface
 			if (config != null)
             {
-                this.InstallProvider(container, (Provider) config.Providers[config.DefaultProvider]);
+                this.InstallProvider(container, (Provider)config.Providers[config.DefaultProvider]);
 
                 //Register the others
                 foreach (Provider provider in config.Providers.Values)

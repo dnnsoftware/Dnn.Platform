@@ -362,10 +362,10 @@ namespace DotNetNuke.UI.Skins.Controls
             //technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
             if (this.Control.NavigationControl is DnnTree)
             {
-                var objTree = (DnnTree) this.Control.NavigationControl;
+                var objTree = (DnnTree)this.Control.NavigationControl;
                 if (objTree.SelectedTreeNodes.Count > 0)
                 {
-                    var objTNode = (TreeNode) objTree.SelectedTreeNodes[1];
+                    var objTNode = (TreeNode)objTree.SelectedTreeNodes[1];
                     if (objTNode.DNNNodes.Count > 0) //only expand it if nodes are not pending
                     {
                         objTNode.Expand();

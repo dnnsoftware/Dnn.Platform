@@ -38,7 +38,7 @@ namespace DotNetNuke.ExtensionPoints
                 str.Append(@"<li id=""" + extension.CtxMenuItemId + @""" class=""" + extension.CssClass + @""">
     <a id=""" + extension.CtxMenuItemId + @"_link"" href=""#"" onclick=""" + extension.Action + @""" >
         <img id=""" + extension.CtxMenuItemId + @"_icon"" alt=""" + extension.AltText + @""" src=""" + icon + @""" title=""" + extension.AltText + @""">
-        <span id=""" + extension.CtxMenuItemId + @"_text"">"+extension.Text+@"</span>
+        <span id=""" + extension.CtxMenuItemId + @"_text"">" + extension.Text + @"</span>
     </a>
 </li>");
             }

@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.ClientCapability
 				string payload = signedRequestSplit[1];
 
 				var decodedJson = ReplaceSpecialCharactersInSignedRequest(payload);
-				var base64JsonArray = Convert.FromBase64String(decodedJson.PadRight(decodedJson.Length + (4 - decodedJson.Length%4)%4, '='));
+				var base64JsonArray = Convert.FromBase64String(decodedJson.PadRight(decodedJson.Length + (4 - decodedJson.Length % 4) % 4, '='));
 
 				var encoding = new UTF8Encoding();
 				FaceBookData faceBookData = encoding.GetString(base64JsonArray).FromJson<FaceBookData>();

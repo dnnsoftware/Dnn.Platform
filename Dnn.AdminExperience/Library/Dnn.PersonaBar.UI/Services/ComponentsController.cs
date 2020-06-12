@@ -83,7 +83,7 @@ namespace Dnn.PersonaBar.UI.Services
                 matchedUsers.AddRange(UserController.GetUsersByUserName(this.PortalId, displayMatch, 0, count, ref totalRecords2, false, false));
                 var finalUsers = matchedUsers
                     .Cast<UserInfo>()
-                    .Where(x=>x.Membership.Approved)
+                    .Where(x => x.Membership.Approved)
                     .Select(u => new SuggestionDto()
                     {
                         Value = u.UserID,

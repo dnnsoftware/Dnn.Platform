@@ -428,7 +428,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             //Arrange
             var mockDataService = new Mock<IDataService>();
             this.dtRelationships.Clear();
-            for (int i = 1; i <= 5; i ++)
+            for (int i = 1; i <= 5; i++)
             {
                 this.dtRelationships.Rows.Add(i, DefaultRelationshipTypes.Friends, DefaultRelationshipTypes.Friends.ToString(), 
                                             DefaultRelationshipTypes.Friends.ToString(), 

@@ -589,7 +589,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             Assert.AreEqual(3, groupedDetailViews.Count());
             
             //Tab 1 has 2 DetailViews 
-            Assert.AreEqual(2, groupedDetailViews.Single(x=>x.DocumentUrl==tabUrl1).Results.Count());
+            Assert.AreEqual(2, groupedDetailViews.Single(x => x.DocumentUrl == tabUrl1).Results.Count());
 
             //Tab 2 has 1 DetailViews 
             Assert.AreEqual(1, groupedDetailViews.Single(x => x.DocumentUrl == tabUrl2).Results.Count());
@@ -638,7 +638,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             Assert.AreEqual(2, groupedBasicViews.Count());
 
             //1 User results 
-            Assert.AreEqual(1, groupedBasicViews.Single(x=>x.DocumentTypeName=="user").Results.Count());
+            Assert.AreEqual(1, groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.Count());
 
             //User result should have 1 attribute(avatar)
             Assert.AreEqual(1, groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.ElementAt(0).Attributes.Count());

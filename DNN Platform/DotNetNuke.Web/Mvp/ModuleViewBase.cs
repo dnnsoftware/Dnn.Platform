@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Mvp
 
         protected T DataValue<T>()
         {
-            return (T) this.Page.GetDataItem();
+            return (T)this.Page.GetDataItem();
         }
 
         protected string DataValue<T>(string format)

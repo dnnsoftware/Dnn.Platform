@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Urls
             const bool debug = true;
             bool failedInitialization = false;
             bool ignoreForInstall = false;
-            var app = (HttpApplication) sender;
+            var app = (HttpApplication)sender;
             try
             {
                 //875 : completely ignore install/upgrade requests immediately
@@ -801,7 +801,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 if (context.Items.Contains("PortalSettings"))
                 {
-                    var ps = (PortalSettings) context.Items["PortalSettings"];
+                    var ps = (PortalSettings)context.Items["PortalSettings"];
                     if (ps != null)
                     {
                         portalSettings = ps.PortalId.ToString();
@@ -897,7 +897,7 @@ namespace DotNetNuke.Entities.Urls
                 //876 : security catch for custom error reading
                 try
                 {
-                    ceSection = (CustomErrorsSection) WebConfigurationManager.GetSection("system.web/customErrors");
+                    ceSection = (CustomErrorsSection)WebConfigurationManager.GetSection("system.web/customErrors");
                 }
 // ReSharper disable EmptyGeneralCatchClause
                 catch (Exception)
@@ -1035,7 +1035,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 if (context.Items.Contains("PortalSettings"))
                                 {
-                                    ps = (PortalSettings) context.Items["PortalSettings"];
+                                    ps = (PortalSettings)context.Items["PortalSettings"];
                                     context.Items.Remove("PortalSettings"); //nix it from the context
                                 }
                             }
@@ -1060,7 +1060,7 @@ namespace DotNetNuke.Entities.Urls
                                     if (portals != null && portals.Count == 1)
                                     {
                                         //single portal install, load up portal settings for this portal
-                                        var singlePortal = (PortalInfo) portals[0];
+                                        var singlePortal = (PortalInfo)portals[0];
                                         //list of aliases from database
                                         var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(singlePortal.PortalID).ToList();
                                         //list of aliases from Advanced Url settings

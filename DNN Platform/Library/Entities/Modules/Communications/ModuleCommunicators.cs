@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Modules.Communications
         {
             get
             {
-                return (IModuleCommunicator) this.List[index];
+                return (IModuleCommunicator)this.List[index];
             }
             set
             {

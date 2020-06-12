@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				if ( 0 == pixel.Alpha )
 				{
 					// Transparent. Lookup the first color with an alpha value of 0
-					for ( int index = 0; index < this._colors.Length; index++ )
+					for ( int index = 0; index < this._colors.Length; index++)
 					{
 						if ( 0 == this._colors[index].A )
 						{
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 					int blue = pixel.Blue;
 
 					// Loop through the entire palette, looking for the closest color match
-					for ( int index = 0; index < this._colors.Length; index++ )
+					for ( int index = 0; index < this._colors.Length; index++)
 					{
 						Color	paletteColor = this._colors[index];
 						
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <returns>The new color palette</returns>
 		protected override ColorPalette GetPalette ( ColorPalette palette )
 		{
-			for ( int index = 0; index < this._colors.Length; index++ )
+			for ( int index = 0; index < this._colors.Length; index++)
 				palette.Entries[index] = this._colors[index];
 
 			return palette;

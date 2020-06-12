@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
 
                     string strResponse;
-                    using (var objResponse = (HttpWebResponse) objRequest.GetResponse())
+                    using (var objResponse = (HttpWebResponse)objRequest.GetResponse())
                     {
                         using (var sr = new StreamReader(objResponse.GetResponseStream()))
                         {

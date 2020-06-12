@@ -197,7 +197,7 @@ namespace log4net.Util
 				}
 				else
 				{
-					if (pattern[i+1] == '%')
+					if (pattern[i + 1] == '%')
 					{
 						// Escaped
 						this.ProcessLiteral(pattern.Substring(offset, i - offset + 1));
@@ -261,7 +261,7 @@ namespace log4net.Util
 						int remainingStringLength = pattern.Length - offset;
 
 						// Look for pattern
-						for (int m=0; m<matches.Length; m++)
+						for (int m = 0; m < matches.Length; m++)
 						{
 							string key = matches[m];
 
@@ -326,13 +326,13 @@ namespace log4net.Util
 		/// <param name="formattingInfo">the formatting info for the converter</param>
 		private void ProcessConverter(string converterName, string option, FormattingInfo formattingInfo)
 		{
-			LogLog.Debug(declaringType, "Converter ["+converterName+"] Option ["+option+"] Format [min="+formattingInfo.Min+",max="+formattingInfo.Max+",leftAlign="+formattingInfo.LeftAlign+"]");
+			LogLog.Debug(declaringType, "Converter [" + converterName + "] Option [" + option + "] Format [min=" + formattingInfo.Min + ",max=" + formattingInfo.Max + ",leftAlign=" + formattingInfo.LeftAlign + "]");
 
 			// Lookup the converter type
             ConverterInfo converterInfo = (ConverterInfo)this.m_patternConverters[converterName];
 			if (converterInfo == null)
 			{
-				LogLog.Error(declaringType, "Unknown converter name ["+converterName+"] in conversion pattern.");
+				LogLog.Error(declaringType, "Unknown converter name [" + converterName + "] in conversion pattern.");
 			}
 			else
 			{

@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private void FillFolderMappings(XmlDocument configDocument)
         {
-            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode+"/folderMappings");            
+            var folderMappingsNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderMappings");            
             if (folderMappingsNode == null)
             {
                 return;
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private void FillFolderTypes(XmlDocument configDocument)
         {
-            var folderTypesNode = configDocument.SelectSingleNode(this.ConfigNode+"/folderTypes");
+            var folderTypesNode = configDocument.SelectSingleNode(this.ConfigNode + "/folderTypes");
             if (folderTypesNode == null)
             {
                 return;
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.FileSystem
         {            
             if (!File.Exists(defaultConfigFilePath))
             {
-                var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode +">";
+                var folderMappingsConfigContent = "<" + this.ConfigNode + ">" + folderMappinsSettings + "</" + this.ConfigNode + ">";
                 File.AppendAllText(defaultConfigFilePath, folderMappingsConfigContent);
                 var configDocument = new XmlDocument { XmlResolver = null };
                 configDocument.LoadXml(folderMappingsConfigContent);

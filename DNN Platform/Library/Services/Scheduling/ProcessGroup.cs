@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.Scheduling
         //so the two subroutines cannot be combined, so instead just call Run from here.
         private void RunPooledThread(object objScheduleHistoryItem)
         {
-            this.Run((ScheduleHistoryItem) objScheduleHistoryItem);
+            this.Run((ScheduleHistoryItem)objScheduleHistoryItem);
         }
 
         //Add a queue request to Threadpool with a 

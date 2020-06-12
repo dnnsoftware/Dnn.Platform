@@ -933,7 +933,7 @@ namespace DotNetNuke.Modules.NavigationProvider
 
         public static NavigationProvider Instance(string FriendlyName)
         {
-            return (NavigationProvider) Reflection.CreateObject("navigationControl", FriendlyName, "", "");
+            return (NavigationProvider)Reflection.CreateObject("navigationControl", FriendlyName, "", "");
         }
 
         public abstract void Initialize();

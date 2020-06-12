@@ -299,7 +299,7 @@ namespace Dnn.Module.ModuleCreator
             var objModuleControl = ModuleControlController.GetModuleControl(this.ModuleControlId);
             var objModuleDefinition = ModuleDefinitionController.GetModuleDefinitionByID(objModuleControl.ModuleDefID);
             var objDesktopModule = DesktopModuleController.GetDesktopModule(objModuleDefinition.DesktopModuleID, this.PortalId);
-            var objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID ==objDesktopModule.PackageID);
+            var objPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == objDesktopModule.PackageID);
 
 			var moduleTemplatePath = this.Server.MapPath(this.ControlPath) + "Templates\\" + this.optLanguage.SelectedValue + "\\" + this.cboTemplate.SelectedValue + "\\";
 

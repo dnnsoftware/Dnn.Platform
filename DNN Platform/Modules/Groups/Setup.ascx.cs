@@ -246,7 +246,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         // create the module permission
                         PermissionInfo objSystemModulePermission = default(PermissionInfo);
-                        objSystemModulePermission = (PermissionInfo) arrSystemModulePermissions[j];
+                        objSystemModulePermission = (PermissionInfo)arrSystemModulePermissions[j];
                         if (objSystemModulePermission.PermissionKey == "VIEW" && permissionType == 1 && objTabPermission.PermissionKey != "EDIT")
                         {
                             //Only Page Editors get View permissions if "Page Editors Only"
@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.Groups
                         if (objModulePermission.PermissionKey == "EDIT" & objModulePermission.AllowAccess)
                         {
                             ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
-                                                                                         (PermissionInfo) arrSystemModuleViewPermissions[0],
+                                                                                         (PermissionInfo)arrSystemModuleViewPermissions[0],
                                                                                          objModulePermission.RoleID,
                                                                                          objModulePermission.UserID,
                                                                                          true);

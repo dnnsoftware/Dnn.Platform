@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 try
                 {
-                    moduleControl.ControlType = (SecurityAccessLevel) TypeDescriptor.GetConverter(typeof(SecurityAccessLevel)).ConvertFromString(controlType);
+                    moduleControl.ControlType = (SecurityAccessLevel)TypeDescriptor.GetConverter(typeof(SecurityAccessLevel)).ConvertFromString(controlType);
                 }
                 catch (Exception exc)
                 {

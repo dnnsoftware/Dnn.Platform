@@ -375,7 +375,7 @@ namespace DotNetNuke.UI.Containers
                 string folderName = this.ModuleConfiguration.DesktopModule.FolderName;
 
                 string stylesheet = "";
-                if (String.IsNullOrEmpty(folderName)==false)
+                if (String.IsNullOrEmpty(folderName) == false)
                 {
                     if (controlSrc.EndsWith(".mvc"))
                     {

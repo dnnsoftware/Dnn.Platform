@@ -110,7 +110,7 @@ namespace log4net.Layout.Pattern
 			}
 			else
 			{
-				throw new ArgumentException("state must be of type ["+typeof(LoggingEvent).FullName+"]", "state");
+				throw new ArgumentException("state must be of type [" + typeof(LoggingEvent).FullName + "]", "state");
 			}
 		}
 

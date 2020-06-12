@@ -55,7 +55,7 @@ namespace DotNetNuke.HttpModules.Config
             string filePath = null;
             try
             {
-                config = (AnalyticsEngineConfiguration) DataCache.GetCache("AnalyticsEngineConfig");
+                config = (AnalyticsEngineConfiguration)DataCache.GetCache("AnalyticsEngineConfig");
                 if ((config == null))
                 {
                     filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics);

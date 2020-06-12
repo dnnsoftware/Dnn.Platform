@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.Admin.Users
         private bool CanUpdateUsername()
         {
             //do not allow for non-logged in users
-            if (this.Request.IsAuthenticated==false || this.AddUser)
+            if (this.Request.IsAuthenticated == false || this.AddUser)
             {
                 return false;
             }
@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 //only allow updates for non-superuser accounts
-                if (this.User.IsSuperUser==false)
+                if (this.User.IsSuperUser == false)
                 {
                     return true;
                 }
@@ -241,7 +241,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.IsRegister)
             {
-                this.User.Membership.Approved = this.PortalSettings.UserRegistration == (int) Globals.PortalRegistrationType.PublicRegistration;
+                this.User.Membership.Approved = this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
             }
             else
             {
@@ -352,9 +352,9 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.userNameReadOnly.Visible = false;
 
                 ArrayList portals = PortalController.GetPortalsByUser(this.User.UserID);
-                if (portals.Count>1)
+                if (portals.Count > 1)
                 {
-                    this.numSites.Text=String.Format(Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
+                    this.numSites.Text = String.Format(Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
                     this.cboSites.Visible = true;
                     this.cboSites.DataSource = portals;
                     this.cboSites.DataTextField = "PortalName";

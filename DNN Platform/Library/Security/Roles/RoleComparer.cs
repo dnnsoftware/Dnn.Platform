@@ -34,7 +34,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public int Compare(object x, object y)
         {
-            return new CaseInsensitiveComparer().Compare(((RoleInfo) x).RoleName, ((RoleInfo) y).RoleName);
+            return new CaseInsensitiveComparer().Compare(((RoleInfo)x).RoleName, ((RoleInfo)y).RoleName);
         }
 
         #endregion

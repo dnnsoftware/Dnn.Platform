@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 				objGraphics.FillRectangle(backColorBrush, 0, 0, this.Width, this.Height);
 				
 				// Draw border
-				objGraphics.DrawRectangle(colorPen, 1, 1, this.Width-3, this.Height-3);
+				objGraphics.DrawRectangle(colorPen, 1, 1, this.Width - 3, this.Height - 3);
 
 				// Determine fontsize
 				var fontSize = 13;

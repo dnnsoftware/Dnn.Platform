@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Journal {
                         this.Id = int.Parse(xNode["id"].InnerText);
                         this.Name = xNode["name"].InnerText.ToString();
                         if ((xNode["vanity"] != null)) {
-                            this.Vanity= xNode["vanity"].InnerText.ToString();
+                            this.Vanity = xNode["vanity"].InnerText.ToString();
                         }
 
                     }

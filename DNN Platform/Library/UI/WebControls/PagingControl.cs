@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.WebControls
                 this._totalPages = 1;
                 return;
             }
-            this._totalPages = TotalRecords/RecordsPerPage >= 1 ? Convert.ToInt32(Math.Ceiling(Convert.ToDouble(TotalRecords)/RecordsPerPage)) : 0;
+            this._totalPages = TotalRecords / RecordsPerPage >= 1 ? Convert.ToInt32(Math.Ceiling(Convert.ToDouble(TotalRecords) / RecordsPerPage)) : 0;
             if (this._totalPages > 0)
             {
                 var ht = new DataTable();
@@ -128,12 +128,12 @@ namespace DotNetNuke.UI.WebControls
                 var LowNum = 1;
                 var HighNum = Convert.ToInt32(this._totalPages);
                 double tmpNum;
-                tmpNum = this.CurrentPage - pageLinksPerPage/2;
+                tmpNum = this.CurrentPage - pageLinksPerPage / 2;
                 if (tmpNum < 1)
                 {
                     tmpNum = 1;
                 }
-                if (this.CurrentPage > (pageLinksPerPage/2))
+                if (this.CurrentPage > (pageLinksPerPage / 2))
                 {
                     LowNum = Convert.ToInt32(Math.Floor(tmpNum));
                 }
@@ -352,9 +352,9 @@ namespace DotNetNuke.UI.WebControls
             private void BindData(object sender, EventArgs e)
             {
                 Literal lc;
-                lc = (Literal) sender;
+                lc = (Literal)sender;
                 RepeaterItem container;
-                container = (RepeaterItem) lc.NamingContainer;
+                container = (RepeaterItem)lc.NamingContainer;
                 lc.Text = this._PagingControl.GetLink(Convert.ToInt32(DataBinder.Eval(container.DataItem, "PageNum"))) + "&nbsp;&nbsp;";
             }
         }

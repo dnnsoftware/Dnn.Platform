@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Tokens
                 {
                     if (HttpContext.Current != null)
                     {
-                        this.User = (UserInfo) HttpContext.Current.Items["UserInfo"];
+                        this.User = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     }
                     else
                     {
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Tokens
                     this.User = user;
                     if (HttpContext.Current != null)
                     {
-                        this.AccessingUser = (UserInfo) HttpContext.Current.Items["UserInfo"];
+                        this.AccessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     }
                     else
                     {

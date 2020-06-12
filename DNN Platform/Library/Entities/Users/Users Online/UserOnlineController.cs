@@ -132,7 +132,7 @@ namespace DotNetNuke.Entities.Users
         private void TrackAnonymousUser(HttpContext context)
         {
             string cookieName = "DotNetNukeAnonymous";
-            var portalSettings = (PortalSettings) context.Items["PortalSettings"];
+            var portalSettings = (PortalSettings)context.Items["PortalSettings"];
             if (portalSettings == null)
             {
                 return;
@@ -191,10 +191,10 @@ namespace DotNetNuke.Entities.Users
                 if ((userList[userID] == null))
                 {
                     userList[userID] = new AnonymousUserInfo();
-                    ((AnonymousUserInfo) userList[userID]).CreationDate = DateTime.Now;
+                    ((AnonymousUserInfo)userList[userID]).CreationDate = DateTime.Now;
                 }
 				
-                user = (AnonymousUserInfo) userList[userID];
+                user = (AnonymousUserInfo)userList[userID];
                 user.UserID = userID;
                 user.PortalID = portalSettings.PortalId;
                 user.TabID = portalSettings.ActiveTab.TabID;
@@ -220,7 +220,7 @@ namespace DotNetNuke.Entities.Users
         private void TrackAuthenticatedUser(HttpContext context)
         {
             //Retrieve Portal Settings
-            var portalSettings = (PortalSettings) context.Items["PortalSettings"];
+            var portalSettings = (PortalSettings)context.Items["PortalSettings"];
 
             if (portalSettings == null)
             {
@@ -289,7 +289,7 @@ namespace DotNetNuke.Entities.Users
             Hashtable userList = this.GetUserList();
 
             //Create a shallow copy of the list to Process
-            var listToProcess = (Hashtable) userList.Clone();
+            var listToProcess = (Hashtable)userList.Clone();
 
             //Clear the list
             this.ClearUserList();

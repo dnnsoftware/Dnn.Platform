@@ -2250,18 +2250,18 @@ namespace DotNetNuke.UI.Skins
                 case "child":
                     break;
                 case "parent":
-                    intNavNodeOptions = (int) Navigation.NavNodeOptions.IncludeParent + (int) Navigation.NavNodeOptions.IncludeSelf;
+                    intNavNodeOptions = (int)Navigation.NavNodeOptions.IncludeParent + (int)Navigation.NavNodeOptions.IncludeSelf;
                     break;
                 case "same":
-                    intNavNodeOptions = (int) Navigation.NavNodeOptions.IncludeSiblings + (int) Navigation.NavNodeOptions.IncludeSelf;
+                    intNavNodeOptions = (int)Navigation.NavNodeOptions.IncludeSiblings + (int)Navigation.NavNodeOptions.IncludeSelf;
                     break;
                 default:
                     intRootParent = -1;
-                    intNavNodeOptions = (int) Navigation.NavNodeOptions.IncludeSiblings + (int) Navigation.NavNodeOptions.IncludeSelf;
+                    intNavNodeOptions = (int)Navigation.NavNodeOptions.IncludeSiblings + (int)Navigation.NavNodeOptions.IncludeSelf;
                     break;
             }
 
-            if (this.ShowHiddenTabs) intNavNodeOptions += (int) Navigation.NavNodeOptions.IncludeHiddenNodes;
+            if (this.ShowHiddenTabs) intNavNodeOptions += (int)Navigation.NavNodeOptions.IncludeHiddenNodes;
 
             switch (this.ToolTip.ToLowerInvariant())
             {
@@ -2280,7 +2280,7 @@ namespace DotNetNuke.UI.Skins
             }
             if (this.PopulateNodesFromClient && this.Control.SupportsPopulateOnDemand)
             {
-                intNavNodeOptions += (int) Navigation.NavNodeOptions.MarkPendingNodes;
+                intNavNodeOptions += (int)Navigation.NavNodeOptions.MarkPendingNodes;
             }
             if (this.PopulateNodesFromClient && this.Control.SupportsPopulateOnDemand == false)
             {
@@ -2293,7 +2293,7 @@ namespace DotNetNuke.UI.Skins
             if (objNode != null)
             {
                 intRootParent = Convert.ToInt32(objNode.ID);
-                intNavNodeOptions = (int) Navigation.NavNodeOptions.MarkPendingNodes;
+                intNavNodeOptions = (int)Navigation.NavNodeOptions.MarkPendingNodes;
                 objNodes = Navigation.GetNavigationNodes(objNode, eToolTips, intRootParent, intDepth, intNavNodeOptions);
             }
             else

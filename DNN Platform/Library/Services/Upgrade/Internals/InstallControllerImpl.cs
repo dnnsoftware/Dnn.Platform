@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             //Set Folder Mappings Settings            
             if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
             {
-                XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
+                XmlNode folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
 
                 if (folderMappingsNode == null)
                 {
@@ -388,8 +388,8 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     }
                 }
             }
-            var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/"+FolderMappingsConfigController.Instance.ConfigNode);
-            installConfig.FolderMappingsSettings =  (folderMappingsNode != null)? folderMappingsNode.InnerXml : String.Empty;
+            var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
+            installConfig.FolderMappingsSettings =  (folderMappingsNode != null) ? folderMappingsNode.InnerXml : String.Empty;
 
             //Parse the portals node
             XmlNodeList portalsNode = installTemplate.SelectNodes("//dotnetnuke/portals/portal");

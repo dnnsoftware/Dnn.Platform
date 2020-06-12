@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.ControlPanel
 
                     if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
                     {
-                        this.Response.Redirect(Globals.AddHTTP(((PortalAliasInfo) portalAliases[0]).HTTPAlias));
+                        this.Response.Redirect(Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias));
                     }
                 }
             }

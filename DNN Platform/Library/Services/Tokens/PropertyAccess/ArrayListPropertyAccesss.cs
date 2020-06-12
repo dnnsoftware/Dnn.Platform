@@ -47,15 +47,15 @@ namespace DotNetNuke.Services.Tokens
                 switch (valueObject.GetType().Name)
                 {
                     case "String":
-                        return PropertyAccess.FormatString((string) valueObject, format);
+                        return PropertyAccess.FormatString((string)valueObject, format);
                     case "Boolean":
-                        return (PropertyAccess.Boolean2LocalizedYesNo((bool) valueObject, formatProvider));
+                        return (PropertyAccess.Boolean2LocalizedYesNo((bool)valueObject, formatProvider));
                     case "DateTime":
                     case "Double":
                     case "Single":
                     case "Int32":
                     case "Int64":
-                        return (((IFormattable) valueObject).ToString(OutputFormat, formatProvider));
+                        return (((IFormattable)valueObject).ToString(OutputFormat, formatProvider));
                     default:
                         return PropertyAccess.FormatString(valueObject.ToString(), format);
                 }

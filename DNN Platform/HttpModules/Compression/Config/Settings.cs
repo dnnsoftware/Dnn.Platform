@@ -60,14 +60,14 @@ namespace DotNetNuke.HttpModules.Compression
         /// </summary>
         public static Settings GetSettings()
         {
-            var settings = (Settings) DataCache.GetCache("CompressionConfig");
+            var settings = (Settings)DataCache.GetCache("CompressionConfig");
             if (settings == null)
             {
                 settings = Default;
                 //Place this in a try/catch as during install the host settings will not exist
                 try
                 {
-                    settings._preferredAlgorithm = (Algorithms) Host.HttpCompressionAlgorithm;
+                    settings._preferredAlgorithm = (Algorithms)Host.HttpCompressionAlgorithm;
                 }
                 catch (Exception e)
                 {

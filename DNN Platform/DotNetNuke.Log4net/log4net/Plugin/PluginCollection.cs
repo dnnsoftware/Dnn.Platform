@@ -313,7 +313,7 @@ namespace log4net.Plugin
 		/// <returns><c>true</c> if <paramref name="item"/> is found in the <c>PluginCollection</c>; otherwise, <c>false</c>.</returns>
 		public virtual bool Contains(IPlugin item)
 		{
-			for (int i=0; i != this.m_count; ++i)
+			for (int i = 0; i != this.m_count; ++i)
 			{
 				if (this.m_array[i].Equals(item))
 				{
@@ -334,7 +334,7 @@ namespace log4net.Plugin
 		/// </returns>
 		public virtual int IndexOf(IPlugin item)
 		{
-			for (int i=0; i != this.m_count; ++i)
+			for (int i = 0; i != this.m_count; ++i)
 			{
 				if (this.m_array[i].Equals(item))
 				{
@@ -576,7 +576,7 @@ namespace log4net.Plugin
 		/// </exception>
 		private void ValidateIndex(int i, bool allowEqualEnd)
 		{
-			int max = (allowEqualEnd) ? (this.m_count) : (this.m_count-1);
+			int max = (allowEqualEnd) ? (this.m_count) : (this.m_count - 1);
 			if (i < 0 || i > max)
 			{
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");

@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.FileSystem
             //Sync Portals
 			for (var intIndex = 0; intIndex <= portals.Count - 1; intIndex++)
             {
-                var portal = (PortalInfo) portals[intIndex];
+                var portal = (PortalInfo)portals[intIndex];
                 folderManager.Synchronize(portal.PortalID);
             }
         }

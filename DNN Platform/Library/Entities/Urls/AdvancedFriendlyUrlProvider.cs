@@ -1283,7 +1283,7 @@ namespace DotNetNuke.Entities.Urls
             for (var i = 0; i < pathParts.Length; i = i + 2)
             {
                 // Just append to path, if no value exists
-                if (pathParts.Length <= i+1)
+                if (pathParts.Length <= i + 1)
                 {
                     pathBuilder.Append(string.Format("/{0}", pathParts[i]));
                     continue;

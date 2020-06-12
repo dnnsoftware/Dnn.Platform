@@ -3610,7 +3610,7 @@ namespace DotNetNuke.Common
                     var bin = new BinaryFormatter();
                     try
                     {
-                        objHashTable = (Hashtable) bin.Deserialize(mem);
+                        objHashTable = (Hashtable)bin.Deserialize(mem);
                     }
                     catch (Exception exc)
                     {

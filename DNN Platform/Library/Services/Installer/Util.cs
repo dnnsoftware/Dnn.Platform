@@ -620,7 +620,7 @@ namespace DotNetNuke.Services.Installer
                     int milliSecond = Timeout.Infinite;
                     if (milliSecondMax != Timeout.Infinite)
                     {
-                        milliSecond = (int) (DateTime.Now - dateTimeStart).TotalMilliseconds;
+                        milliSecond = (int)(DateTime.Now - dateTimeStart).TotalMilliseconds;
                         if (milliSecond >= milliSecondMax)
                         {
                             result = false;

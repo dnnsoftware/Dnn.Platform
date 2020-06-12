@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.WebControls
                     if (this._CacheGeoIPData)
                     {
 						//Yes, get it from cache
-                        _CountryLookup = new CountryLookup((MemoryStream) this.Context.Cache.Get("GeoIPData"));
+                        _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
                     }
                     else
                     {

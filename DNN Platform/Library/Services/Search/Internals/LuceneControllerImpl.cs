@@ -166,8 +166,8 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             var reader = new CachedReader(searcher);
-            var cutoffTime = DateTime.Now - TimeSpan.FromSeconds(this._readerTimeSpan*10);
-            lock (((ICollection) this._oldReaders).SyncRoot)
+            var cutoffTime = DateTime.Now - TimeSpan.FromSeconds(this._readerTimeSpan * 10);
+            lock (((ICollection)this._oldReaders).SyncRoot)
             {
                 this.CheckDisposed();
                 this._oldReaders.RemoveAll(r => r.LastUsed <= cutoffTime);

@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.Scheduling
                 //}
                 if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
                 {
-                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1)*60;
+                    DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
                 }
                 else
                 {

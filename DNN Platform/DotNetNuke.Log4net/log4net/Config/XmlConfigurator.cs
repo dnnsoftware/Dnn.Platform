@@ -613,7 +613,7 @@ namespace log4net.Config
 	   
 		static private void InternalConfigure(ILoggerRepository repository, Uri configUri)
 		{
-			LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using URI ["+configUri+"]");
+			LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using URI [" + configUri + "]");
 
 			if (configUri == null)
 			{
@@ -637,7 +637,7 @@ namespace log4net.Config
 					}
 					catch (Exception ex)
 					{
-						LogLog.Error(declaringType, "Failed to create WebRequest for URI ["+configUri+"]", ex);
+						LogLog.Error(declaringType, "Failed to create WebRequest for URI [" + configUri + "]", ex);
 					}
 
 					if (configRequest != null)
@@ -678,7 +678,7 @@ namespace log4net.Config
 						}
 						catch (Exception ex)
 						{
-							LogLog.Error(declaringType, "Failed to request config from URI ["+configUri+"]", ex);
+							LogLog.Error(declaringType, "Failed to request config from URI [" + configUri + "]", ex);
 						}
 					}
 				}
@@ -907,7 +907,7 @@ namespace log4net.Config
 				}
 				catch (Exception ex)
 				{
-					LogLog.Error(declaringType, "Failed to initialize configuration file watcher for file ["+configFile.FullName+"]", ex);
+					LogLog.Error(declaringType, "Failed to initialize configuration file watcher for file [" + configFile.FullName + "]", ex);
 				}
 			}
 		}
@@ -1016,7 +1016,7 @@ namespace log4net.Config
 			/// </remarks>
 			private void ConfigureAndWatchHandler_OnChanged(object source, FileSystemEventArgs e)
 			{
-				LogLog.Debug(declaringType, "ConfigureAndWatchHandler: "+e.ChangeType+" [" + this.m_configFile.FullName + "]");
+				LogLog.Debug(declaringType, "ConfigureAndWatchHandler: " + e.ChangeType + " [" + this.m_configFile.FullName + "]");
 
 				// Deliver the event in TimeoutMillis time
 				// timer will fire only once

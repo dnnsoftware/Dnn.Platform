@@ -394,7 +394,7 @@ namespace log4net.Appender
 				bool appendNewline = false;
 
 				// Trim off last newline, if it exists
-				if (arrayLength > 1 && messageCharArray[arrayLength-2] == '\r' && messageCharArray[arrayLength-1] == '\n')
+				if (arrayLength > 1 && messageCharArray[arrayLength - 2] == '\r' && messageCharArray[arrayLength - 1] == '\n')
 				{
 					arrayLength -= 2;
 					appendNewline = true;
@@ -647,7 +647,7 @@ namespace log4net.Appender
 			public override void ActivateOptions()
 			{
 				base.ActivateOptions();
-				this.m_combinedColor = (ushort)( (int)this.m_foreColor + (((int)this.m_backColor) << 4) );
+				this.m_combinedColor = (ushort)((int)this.m_foreColor + (((int)this.m_backColor) << 4) );
 			}
 
 			/// <summary>

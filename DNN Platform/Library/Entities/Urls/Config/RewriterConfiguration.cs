@@ -45,12 +45,12 @@ namespace DotNetNuke.Entities.Urls.Config
             string filePath = "";
             try
             {
-                config = (RewriterConfiguration) DataCache.GetCache("RewriterConfig");
+                config = (RewriterConfiguration)DataCache.GetCache("RewriterConfig");
                 if (config == null)
                 {
 	                lock (_threadLocker)
 	                {
-						config = (RewriterConfiguration) DataCache.GetCache("RewriterConfig");
+						config = (RewriterConfiguration)DataCache.GetCache("RewriterConfig");
 		                if (config == null)
 		                {
 			                filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);

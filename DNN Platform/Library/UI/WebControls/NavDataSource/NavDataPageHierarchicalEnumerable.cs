@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.WebControls
         /// <remarks></remarks>
         public virtual IHierarchyData GetHierarchyData(object enumeratedItem)
         {
-            return (IHierarchyData) enumeratedItem;
+            return (IHierarchyData)enumeratedItem;
         }
 
         #endregion

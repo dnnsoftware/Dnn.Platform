@@ -218,7 +218,7 @@ namespace DotNetNuke.Common.Utils
             try
             {
                 //handle case where local adapter is localhost
-                if (currentIP=="::1")
+                if (currentIP == "::1")
                 {
                     currentIP = "127.0.0.1";
                 }

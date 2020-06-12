@@ -36,7 +36,7 @@ namespace DotNetNuke.Framework.Providers
 
         public static ProviderConfiguration GetProviderConfiguration(string strProvider)
         {
-            return (ProviderConfiguration) Config.GetSection("dotnetnuke/" + strProvider);
+            return (ProviderConfiguration)Config.GetSection("dotnetnuke/" + strProvider);
         }
 
         internal void LoadValuesFromConfigurationXml(XmlNode node)

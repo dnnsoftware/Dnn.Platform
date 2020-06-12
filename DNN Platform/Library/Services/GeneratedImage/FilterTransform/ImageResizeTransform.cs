@@ -225,7 +225,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 			graphics.InterpolationMode = this.InterpolationMode;
 			graphics.SmoothingMode = this.SmoothingMode;
 
-			graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + 2*this._border, newDim + 2*this._border));
+			graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + 2 * this._border, newDim + 2 * this._border));
 			graphics.DrawImage(img, (newDim - resizeWidth) / 2 + this._border, (newDim - resizeHeight) / 2 + this._border, resizeWidth, resizeHeight);
 			return newimage;
 		}

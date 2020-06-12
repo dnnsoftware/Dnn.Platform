@@ -38,7 +38,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
         internal override void RewriteUrl(object sender, EventArgs e)
         {
-            var app = (HttpApplication) sender;
+            var app = (HttpApplication)sender;
             HttpServerUtility server = app.Server;
             HttpRequest request = app.Request;
             HttpResponse response = app.Response;

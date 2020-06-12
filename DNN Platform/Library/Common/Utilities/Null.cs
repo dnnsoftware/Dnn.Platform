@@ -322,7 +322,7 @@ namespace DotNetNuke.Common.Utilities
             }
             else if (objField is Guid)
             {
-                if (((Guid) objField).Equals(NullGuid))
+                if (((Guid)objField).Equals(NullGuid))
                 {
                     returnValue = objDBNull;
                 }
@@ -362,7 +362,7 @@ namespace DotNetNuke.Common.Utilities
                 }
                 else if (objField is DateTime)
                 {
-                    var objDate = (DateTime) objField;
+                    var objDate = (DateTime)objField;
                     isNull = objDate.Date.Equals(NullDate.Date);
                 }
                 else if (objField is string)

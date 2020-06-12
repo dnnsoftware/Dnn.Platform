@@ -247,8 +247,8 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {
-            var box = (DNNMultiStateBox) sender;
-            var container = (DataGridItem) box.NamingContainer;
+            var box = (DNNMultiStateBox)sender;
+            var container = (DataGridItem)box.NamingContainer;
             if (!String.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
             {
                 if (this.DesignMode)

@@ -22,7 +22,7 @@ namespace DotNetNuke.Security.Permissions
 
         public int Compare(object x, object y)
         {
-            return ((WorkflowStatePermissionInfo) x).WorkflowStatePermissionID.CompareTo(((WorkflowStatePermissionInfo) y).WorkflowStatePermissionID);
+            return ((WorkflowStatePermissionInfo)x).WorkflowStatePermissionID.CompareTo(((WorkflowStatePermissionInfo)y).WorkflowStatePermissionID);
         }
 
         #endregion

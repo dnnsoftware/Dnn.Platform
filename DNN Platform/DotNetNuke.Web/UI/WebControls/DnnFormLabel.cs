@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				var panel = new Panel { ID = "Help", CssClass = "dnnFormHelpContent dnnClear" };				
                 tooltipPanel.Controls.Add(panel);
 				
-				var helpLabel = new Label { ID = "Text", CssClass="dnnHelpText", Text = this.LocalizeString(this.ToolTipKey) };
+				var helpLabel = new Label { ID = "Text", CssClass = "dnnHelpText", Text = this.LocalizeString(this.ToolTipKey) };
 				panel.Controls.Add(helpLabel);
 
 				var pinLink = new HyperLink { CssClass = "pinHelp"};

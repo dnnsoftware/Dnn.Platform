@@ -62,11 +62,11 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 return;
             }
 
-            if (this._app.Context.Request.RequestType == "POST" || ! (this._app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase)))
+            if (this._app.Context.Request.RequestType == "POST" || !(this._app.Context.Request.Url.LocalPath.EndsWith(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase)))
             {
                 return;
             }
-            var portalSettings = (PortalSettings) (HttpContext.Current.Items["PortalSettings"]);
+            var portalSettings = (PortalSettings)(HttpContext.Current.Items["PortalSettings"]);
             int tabId = portalSettings.ActiveTab.TabID;
 
             Hashtable tabSettings = TabController.Instance.GetTabSettings(tabId);
@@ -80,7 +80,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             string locale = Localization.GetPageLocale(portalSettings).Name;
 
             IncludeExcludeType includeExclude = IncludeExcludeType.ExcludeByDefault;
-            if (tabSettings["CacheIncludeExclude"] != null && ! string.IsNullOrEmpty(tabSettings["CacheIncludeExclude"].ToString()))
+            if (tabSettings["CacheIncludeExclude"] != null && !string.IsNullOrEmpty(tabSettings["CacheIncludeExclude"].ToString()))
             {
                 if (tabSettings["CacheIncludeExclude"].ToString() == "0")
                 {
@@ -96,7 +96,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             string tabOutputCacheProvider = tabSettings["CacheProvider"].ToString();
             this._app.Context.Items[ContextKeyTabOutputCacheProvider] = tabOutputCacheProvider;
             int maxCachedVariationsForTab = 250; //by default, prevent DOS attacks
-            if (tabSettings["MaxVaryByCount"] != null && ! string.IsNullOrEmpty(tabSettings["MaxVaryByCount"].ToString()))
+            if (tabSettings["MaxVaryByCount"] != null && !string.IsNullOrEmpty(tabSettings["MaxVaryByCount"].ToString()))
             {
                 maxCachedVariationsForTab = Convert.ToInt32(tabSettings["MaxVaryByCount"].ToString());
             }
@@ -118,7 +118,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     includeVaryByKeysSettings = tabSettings["IncludeVaryBy"].ToString();
                 }
 
-                if (! string.IsNullOrEmpty(includeVaryByKeysSettings))
+                if (!string.IsNullOrEmpty(includeVaryByKeysSettings))
                 {
                     if (includeVaryByKeysSettings.Contains(","))
                     {
@@ -143,7 +143,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     excludeVaryByKeysSettings = tabSettings["ExcludeVaryBy"].ToString();
                 }
 
-                if (! string.IsNullOrEmpty(excludeVaryByKeysSettings))
+                if (!string.IsNullOrEmpty(excludeVaryByKeysSettings))
                 {
                     if (excludeVaryByKeysSettings.Contains(","))
                     {
@@ -176,15 +176,15 @@ namespace DotNetNuke.HttpModules.OutputCaching
                 }
                 
             }
-            if (! (varyBy.ContainsKey("portalid")))
+            if (!(varyBy.ContainsKey("portalid")))
             {
                 varyBy.Add("portalid", portalId.ToString());
             }
-            if (! (varyBy.ContainsKey("tabid")))
+            if (!(varyBy.ContainsKey("tabid")))
             {
                 varyBy.Add("tabid", tabId.ToString());
             }
-            if (! (varyBy.ContainsKey("locale")))
+            if (!(varyBy.ContainsKey("locale")))
             {
                 varyBy.Add("locale", locale);
             }
@@ -220,7 +220,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             if (cached != true)
             {
-                if (tabSettings["CacheDuration"] != null && ! string.IsNullOrEmpty(tabSettings["CacheDuration"].ToString()) && Convert.ToInt32(tabSettings["CacheDuration"].ToString()) > 0)
+                if (tabSettings["CacheDuration"] != null && !string.IsNullOrEmpty(tabSettings["CacheDuration"].ToString()) && Convert.ToInt32(tabSettings["CacheDuration"].ToString()) > 0)
                 {
                     int seconds = Convert.ToInt32(tabSettings["CacheDuration"].ToString());
                     var duration = new TimeSpan(0, 0, seconds);
@@ -238,7 +238,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
         private void OnUpdateRequestCache(object sender, EventArgs e)
         {
-            if (! HttpContext.Current.Request.Browser.Crawler)
+            if (!HttpContext.Current.Request.Browser.Crawler)
             {
                 var responseFilter = this._app.Context.Items[ContextKeyResponseFilter] as OutputCacheResponseFilter;
                 if (responseFilter != null)

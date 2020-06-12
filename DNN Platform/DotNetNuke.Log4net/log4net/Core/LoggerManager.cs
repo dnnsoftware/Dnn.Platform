@@ -96,9 +96,9 @@ namespace log4net.Core
 			}
 			catch (System.Security.SecurityException)
 			{
-				LogLog.Debug(declaringType, "Security Exception (ControlAppDomain LinkDemand) while trying "+
-					"to register Shutdown handler with the AppDomain. LoggerManager.Shutdown() "+
-					"will not be called automatically when the AppDomain exits. It must be called "+
+				LogLog.Debug(declaringType, "Security Exception (ControlAppDomain LinkDemand) while trying " +
+					"to register Shutdown handler with the AppDomain. LoggerManager.Shutdown() " +
+					"will not be called automatically when the AppDomain exits. It must be called " +
 					"programmatically.");
 			}
 
@@ -122,7 +122,7 @@ namespace log4net.Core
 				}
 				catch (Exception ex)
 				{
-					LogLog.Error(declaringType, "Exception while resolving RepositorySelector Type ["+appRepositorySelectorTypeName+"]", ex);
+					LogLog.Error(declaringType, "Exception while resolving RepositorySelector Type [" + appRepositorySelectorTypeName + "]", ex);
 				}
 
 				if (appRepositorySelectorType != null)
@@ -135,7 +135,7 @@ namespace log4net.Core
 					}
 					catch (Exception ex)
 					{
-						LogLog.Error(declaringType, "Exception while creating RepositorySelector ["+appRepositorySelectorType.FullName+"]", ex);
+						LogLog.Error(declaringType, "Exception while creating RepositorySelector [" + appRepositorySelectorType.FullName + "]", ex);
 					}
 
 					if (appRepositorySelectorObj != null && appRepositorySelectorObj is IRepositorySelector)
@@ -144,7 +144,7 @@ namespace log4net.Core
 					}
 					else
 					{
-						LogLog.Error(declaringType, "RepositorySelector Type ["+appRepositorySelectorType.FullName+"] is not an IRepositorySelector");
+						LogLog.Error(declaringType, "RepositorySelector Type [" + appRepositorySelectorType.FullName + "] is not an IRepositorySelector");
 					}
 				}
 			}

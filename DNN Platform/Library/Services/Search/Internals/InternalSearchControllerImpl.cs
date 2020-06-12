@@ -265,7 +265,7 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     try
                     {
-                        this.AddSearchDocumentInternal(searchDoc, (++idx%commitBatchSize) == 0);
+                        this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
                         //added = true;
                     }
                     catch (Exception ex)
@@ -392,7 +392,7 @@ namespace DotNetNuke.Services.Search.Internals
             if (!string.IsNullOrEmpty(searchDocument.Title))
             {
                 var field = new Field(Constants.TitleTag, StripTagsRetainAttributes(searchDocument.Title, HtmlAttributesToRetain, false, true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (this._titleBoost >0 && this._titleBoost != Constants.StandardLuceneBoost) field.Boost = this._titleBoost / 10f;
+                if (this._titleBoost > 0 && this._titleBoost != Constants.StandardLuceneBoost) field.Boost = this._titleBoost / 10f;
                 doc.Add(field);
             }
 
@@ -503,7 +503,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var field = new Field(Constants.ContentTag, SearchHelper.Instance.StripTagsNoAttributes(sb.ToString(), true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 doc.Add(field);
-                if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost) field.Boost = this._contentBoost/10f;
+                if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost) field.Boost = this._contentBoost / 10f;
             }
 
         }

@@ -46,7 +46,7 @@ namespace DotNetNuke.Security.Permissions
         {
             get
             {
-                return (FolderPermissionInfo) this.List[index];
+                return (FolderPermissionInfo)this.List[index];
             }
             set
             {

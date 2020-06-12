@@ -354,7 +354,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 else
                 {
                     message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
-                    moduleMessageType=ModuleMessage.ModuleMessageType.RedError;
+                    moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
                     this.LogFailure(message);
                 }
 

@@ -474,7 +474,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual void AddEditorRow(Table table, object obj)
         {
-            var objProperty = (PropertyInfo) obj;
+            var objProperty = (PropertyInfo)obj;
             this.AddEditorRow(table, objProperty.Name, new StandardEditorInfoAdapter(this.DataSource, objProperty.Name));
         }
 
@@ -738,14 +738,14 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual string GetCategory(object obj)
         {
-            var objProperty = (PropertyInfo) obj;
+            var objProperty = (PropertyInfo)obj;
             var categoryString = Null.NullString;
 
             //Get Category Field
             var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {
-                var category = (CategoryAttribute) categoryAttributes[0];
+                var category = (CategoryAttribute)categoryAttributes[0];
                 categoryString = category.Category;
             }
             return categoryString;
@@ -765,7 +765,7 @@ namespace DotNetNuke.UI.WebControls
                 var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
                 if (categoryAttributes.Length > 0)
                 {
-                    var category = (CategoryAttribute) categoryAttributes[0];
+                    var category = (CategoryAttribute)categoryAttributes[0];
 
                     if (!arrGroups.Contains(category.Category))
                     {
@@ -789,13 +789,13 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected virtual bool GetRowVisibility(object obj)
         {
-            var objProperty = (PropertyInfo) obj;
+            var objProperty = (PropertyInfo)obj;
 
             bool isVisible = true;
             object[] browsableAttributes = objProperty.GetCustomAttributes(typeof(BrowsableAttribute), true);
             if (browsableAttributes.Length > 0)
             {
-                var browsable = (BrowsableAttribute) browsableAttributes[0];
+                var browsable = (BrowsableAttribute)browsableAttributes[0];
                 if (!browsable.Browsable)
                 {
                     isVisible = false;
@@ -807,7 +807,7 @@ namespace DotNetNuke.UI.WebControls
                 object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
                 if (requiredAttributes.Length > 0)
                 {
-                    var required = (RequiredAttribute) requiredAttributes[0];
+                    var required = (RequiredAttribute)requiredAttributes[0];
                     if (required.Required)
                     {
                         isVisible = true;
@@ -879,8 +879,8 @@ namespace DotNetNuke.UI.WebControls
             {
                 foreach (DictionaryEntry key in this._sections)
                 {
-                    var tbl = (Table) key.Value;
-                    var icon = (Image) key.Key;
+                    var tbl = (Table)key.Value;
+                    var icon = (Image)key.Key;
                     DNNClientAPI.EnableMinMax(icon, tbl, false, IconController.IconURL("Minus", "12X15"), IconController.IconURL("Plus", "12X15"), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
             }

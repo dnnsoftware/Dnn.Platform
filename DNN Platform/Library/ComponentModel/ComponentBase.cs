@@ -26,7 +26,7 @@ namespace DotNetNuke.ComponentModel
 
                 if (component == null)
                 {
-                    component = (TContract) Activator.CreateInstance(typeof(TType), true);
+                    component = (TContract)Activator.CreateInstance(typeof(TType), true);
                     ComponentFactory.RegisterComponentInstance<TContract>(component);
                 }
 

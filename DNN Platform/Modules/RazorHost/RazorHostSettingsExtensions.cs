@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.RazorHost
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
         public static Settings LoadRazorSettingsControl(this UserControl parent, ModuleInfo configuration, string localResourceFile)
         {
-            var control = (Settings) parent.LoadControl("~/DesktopModules/RazorModules/RazorHost/Settings.ascx");
+            var control = (Settings)parent.LoadControl("~/DesktopModules/RazorModules/RazorHost/Settings.ascx");
             control.ModuleConfiguration = configuration;
             control.LocalResourceFile = localResourceFile;
             EnsureEditScriptControlIsRegistered(configuration.ModuleDefID);

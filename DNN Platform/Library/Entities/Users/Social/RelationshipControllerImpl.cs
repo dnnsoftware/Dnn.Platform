@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                             c =>
                                                             CBO.FillCollection<Relationship>(
                                                                 this._dataService.GetRelationshipsByPortalId(
-                                                                    (int) c.ParamList[0])));
+                                                                    (int)c.ParamList[0])));
         }
 
         public void SaveRelationship(Relationship relationship)
@@ -555,7 +555,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                  UserId = Null.NullInteger,
                                                  DefaultResponse = RelationshipStatus.None,
                                                  //default response is None
-                                                 RelationshipTypeId = (int) DefaultRelationshipTypes.Friends
+                                                 RelationshipTypeId = (int)DefaultRelationshipTypes.Friends
                                              };
                 this.SaveRelationship(friendRelationship);
             }
@@ -572,7 +572,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                    UserId = Null.NullInteger,
                                                    DefaultResponse = RelationshipStatus.Accepted,
                                                    //default response is Accepted
-                                                   RelationshipTypeId = (int) DefaultRelationshipTypes.Followers
+                                                   RelationshipTypeId = (int)DefaultRelationshipTypes.Followers
                                                };
                 this.SaveRelationship(followerRelationship);
             }

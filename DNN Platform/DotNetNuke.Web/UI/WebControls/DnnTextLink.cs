@@ -97,7 +97,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             get
             {
-                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string) this.ViewState["DisabledCssClass"];
+                return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
             set
             {

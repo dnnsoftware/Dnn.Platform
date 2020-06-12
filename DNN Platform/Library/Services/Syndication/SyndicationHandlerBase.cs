@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 if (this._tabId == Null.NullInteger && this.Request.QueryString["tabid"] != null)
                 {
-                    if (! Int32.TryParse(this.Request.QueryString["tabid"], out this._tabId))
+                    if (!Int32.TryParse(this.Request.QueryString["tabid"], out this._tabId))
                     {
                         this._tabId = Null.NullInteger;
                     }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 if (this._moduleId == Null.NullInteger && this.Request.QueryString["moduleid"] != null)
                 {
-                    if (! Int32.TryParse(this.Request.QueryString["moduleid"], out this._moduleId))
+                    if (!Int32.TryParse(this.Request.QueryString["moduleid"], out this._moduleId))
                     {
                         this._moduleId = Null.NullInteger;
                     }

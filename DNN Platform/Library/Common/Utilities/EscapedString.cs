@@ -117,7 +117,7 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
 
-            return escapeCount%2 == 1; //odd count means escape mode is active
+            return escapeCount % 2 == 1; //odd count means escape mode is active
         }
     }
 }

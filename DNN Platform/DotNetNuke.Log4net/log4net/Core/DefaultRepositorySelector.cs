@@ -101,7 +101,7 @@ namespace log4net.Core
 			}
 
 			// Check that the type is a repository
-			if (! (typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)) )
+			if (!(typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)) )
 			{
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
 			}
@@ -405,7 +405,7 @@ namespace log4net.Core
 						else
 						{
 							// Invalid repository type for alias
-							LogLog.Error(declaringType, "Failed to alias repository [" + repositoryName + "] to existing repository ["+aliasedRepository.Name+"]. Requested repository type ["+repositoryType.FullName+"] is not compatible with existing type [" + aliasedRepository.GetType().FullName + "]");
+							LogLog.Error(declaringType, "Failed to alias repository [" + repositoryName + "] to existing repository [" + aliasedRepository.Name + "]. Requested repository type [" + repositoryType.FullName + "] is not compatible with existing type [" + aliasedRepository.GetType().FullName + "]");
 
 							// We now drop through to create the repository without aliasing
 						}
@@ -688,7 +688,7 @@ namespace log4net.Core
 						}
 						catch (Exception ex)
 						{
-							LogLog.Error(declaringType, "Exception calling ["+configAttr.GetType().FullName+"] .Configure method.", ex);
+							LogLog.Error(declaringType, "Exception calling [" + configAttr.GetType().FullName + "] .Configure method.", ex);
 						}
 					}
 				}
@@ -710,7 +710,7 @@ namespace log4net.Core
 					}
 					catch (Exception ex)
 					{
-						LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. appSettings log4net.Config path ["+repositoryConfigFile+"] will be treated as an absolute URI", ex);
+						LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. appSettings log4net.Config path [" + repositoryConfigFile + "] will be treated as an absolute URI", ex);
 					}
 
                     string repositoryConfigFilePath = repositoryConfigFile;
@@ -775,12 +775,12 @@ namespace log4net.Core
 					}
 					catch (Exception ex)
 					{
-						LogLog.Error(declaringType, "Exception while parsing log4net.Config file path ["+repositoryConfigFile+"]", ex);
+						LogLog.Error(declaringType, "Exception while parsing log4net.Config file path [" + repositoryConfigFile + "]", ex);
 					}
 
 					if (repositoryConfigUri != null)
 					{
-						LogLog.Debug(declaringType, "Loading configuration for default repository from AppSettings specified Config URI ["+repositoryConfigUri.ToString()+"]");
+						LogLog.Debug(declaringType, "Loading configuration for default repository from AppSettings specified Config URI [" + repositoryConfigUri.ToString() + "]");
 
 						try
 						{
@@ -789,7 +789,7 @@ namespace log4net.Core
 						}
 						catch (Exception ex)
 						{
-							LogLog.Error(declaringType, "Exception calling XmlConfigurator.Configure method with ConfigUri ["+repositoryConfigUri+"]", ex);
+							LogLog.Error(declaringType, "Exception calling XmlConfigurator.Configure method with ConfigUri [" + repositoryConfigUri + "]", ex);
 						}
 					}
                     }

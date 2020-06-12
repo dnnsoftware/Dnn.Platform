@@ -32,8 +32,8 @@ namespace DotNetNuke.Entities.Host
         
         private enum FilterType
         {
-            Allow=1,
-            Deny=2
+            Allow = 1,
+            Deny = 2
         }
         #endregion
 
@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Host
                 //check any allows - if one exists set flag but let processing continue to verify no deny overrides
                 if (ipFilterInfo.RuleType == (int)FilterType.Allow)
                 {
-                    if (ipFilterInfo.IPAddress=="*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
+                    if (ipFilterInfo.IPAddress == "*" || NetworkUtils.IsIPInRange(ipAddress, ipFilterInfo.IPAddress, ipFilterInfo.SubnetMask))
                     {
                         ipAllowed = false;
 
@@ -187,13 +187,13 @@ namespace DotNetNuke.Entities.Host
                              where p.RuleType == (int)FilterType.Deny
                              select p).ToList();
             //if global allow and no deny
-            if (allowAllIPs & denyRules.Count==0)
+            if (allowAllIPs & denyRules.Count == 0)
             {
                 return true;
             }
 
             //if global allow, check if a deny rule would override
-            if (allowAllIPs & denyRules.Count>0)
+            if (allowAllIPs & denyRules.Count > 0)
             {
                 if (denyRules.Any(ipf => NetworkUtils.IsIPInRange(myip, ipf.IPAddress, ipf.SubnetMask)))
                 {
@@ -202,7 +202,7 @@ namespace DotNetNuke.Entities.Host
             }
 
             //if no global allow, check if a deny rule would apply
-            if (allowAllIPs==false & denyRules.Count > 0)
+            if (allowAllIPs == false & denyRules.Count > 0)
             {
                 if (denyRules.Any(ipf => NetworkUtils.IsIPInRange(myip, ipf.IPAddress, ipf.SubnetMask)))
                 {
@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Host
         /// <returns>true if rule would not block current IP, false otherwise</returns>
         public bool IsAllowableDeny(string currentIP, IPFilterInfo ipFilter)
         {
-            if (ipFilter.RuleType==(int)FilterType.Allow)
+            if (ipFilter.RuleType == (int)FilterType.Allow)
             {
                 return true;
             }
