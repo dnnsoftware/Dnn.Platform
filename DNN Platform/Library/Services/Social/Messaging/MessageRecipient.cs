@@ -37,6 +37,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 return this._recipientID;
             }
+
             set
             {
                 this._recipientID = value;
@@ -77,6 +78,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 return this.RecipientID;
             }
+
             set
             {
                 this.RecipientID = value;

@@ -36,16 +36,22 @@ namespace DotNetNuke.Web.InternalServices
         public class SynonymsGroupDto
         {
             public int Id { get; set; }
+
             public string Tags { get; set; }
+
             public int PortalId { get; set; }
+
             public string Culture { get; set; }
         }
 
         public class StopWordsDto
         {
             public int Id { get; set; }
+
             public string Words { get; set; }
+
             public int PortalId { get; set; }
+
             public string Culture { get; set; }
         }
 

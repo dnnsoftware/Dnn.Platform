@@ -15,7 +15,9 @@ namespace DotNetNuke.Services.FileSystem
     public class FolderTypeSettingConfig
     {
         public string Name { get; set; }
+
         public string Value { get; set; }
+
         public bool Encrypt { get; set; }
     }
 }

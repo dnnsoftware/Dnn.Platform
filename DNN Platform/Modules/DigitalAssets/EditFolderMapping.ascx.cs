@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.DigitalAssets
     public partial class EditFolderMapping : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public EditFolderMapping()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

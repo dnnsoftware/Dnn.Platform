@@ -57,6 +57,7 @@ namespace DotNetNuke.Security.Membership
         public override int MaxInvalidPasswordAttempts
         {
             get { return System.Web.Security.Membership.MaxInvalidPasswordAttempts; }
+
             set
             {
                 throw new NotSupportedException(
@@ -67,6 +68,7 @@ namespace DotNetNuke.Security.Membership
         public override int MinNonAlphanumericCharacters
         {
             get { return System.Web.Security.Membership.MinRequiredNonAlphanumericCharacters; }
+
             set
             {
                 throw new NotSupportedException(
@@ -77,6 +79,7 @@ namespace DotNetNuke.Security.Membership
         public override int MinPasswordLength
         {
             get { return System.Web.Security.Membership.MinRequiredPasswordLength; }
+
             set
             {
                 throw new NotSupportedException(
@@ -87,6 +90,7 @@ namespace DotNetNuke.Security.Membership
         public override int PasswordAttemptWindow
         {
             get { return System.Web.Security.Membership.PasswordAttemptWindow; }
+
             set
             {
                 throw new NotSupportedException(
@@ -108,6 +112,7 @@ namespace DotNetNuke.Security.Membership
                         return PasswordFormat.Clear;
                 }
             }
+
             set
             {
                 throw new NotSupportedException(
@@ -118,6 +123,7 @@ namespace DotNetNuke.Security.Membership
         public override bool PasswordResetEnabled
         {
             get { return System.Web.Security.Membership.EnablePasswordReset; }
+
             set
             {
                 throw new NotSupportedException(
@@ -128,6 +134,7 @@ namespace DotNetNuke.Security.Membership
         public override bool PasswordRetrievalEnabled
         {
             get { return System.Web.Security.Membership.EnablePasswordRetrieval; }
+
             set
             {
                 throw new NotSupportedException(
@@ -138,6 +145,7 @@ namespace DotNetNuke.Security.Membership
         public override string PasswordStrengthRegularExpression
         {
             get { return System.Web.Security.Membership.PasswordStrengthRegularExpression; }
+
             set
             {
                 throw new NotSupportedException(
@@ -148,6 +156,7 @@ namespace DotNetNuke.Security.Membership
         public override bool RequiresQuestionAndAnswer
         {
             get { return System.Web.Security.Membership.RequiresQuestionAndAnswer; }
+
             set
             {
                 throw new NotSupportedException(
@@ -158,6 +167,7 @@ namespace DotNetNuke.Security.Membership
         public override bool RequiresUniqueEmail
         {
             get { return System.Web.Security.Membership.Provider.RequiresUniqueEmail; }
+
             set
             {
                 throw new NotSupportedException(
@@ -1713,6 +1723,7 @@ namespace DotNetNuke.Security.Membership
         }
 
         private static Random random = new Random();
+
         private string RandomString(int length)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

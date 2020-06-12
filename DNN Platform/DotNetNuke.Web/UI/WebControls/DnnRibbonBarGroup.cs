@@ -42,6 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._CheckToolVisibility;
             }
+
             set
             {
                 this._CheckToolVisibility = value;

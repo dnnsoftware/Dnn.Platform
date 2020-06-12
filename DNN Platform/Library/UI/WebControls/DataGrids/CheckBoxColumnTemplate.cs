@@ -68,6 +68,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mDataField;
             }
+
             set
             {
                 this.mDataField = value;
@@ -96,6 +97,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEnabled;
             }
+
             set
             {
                 this.mEnabled = value;
@@ -115,6 +117,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEnabledField;
             }
+
             set
             {
                 this.mEnabledField = value;
@@ -134,6 +137,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mHeaderCheckBox;
             }
+
             set
             {
                 this.mHeaderCheckBox = value;
@@ -152,6 +156,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mItemType;
             }
+
             set
             {
                 this.mItemType = value;
@@ -170,6 +175,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mText;
             }
+
             set
             {
                 this.mText = value;

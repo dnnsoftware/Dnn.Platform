@@ -20,6 +20,7 @@ namespace DotNetNuke.UI.Modules
     public abstract class ProfileModuleUserControlBase : ModuleUserControlBase, IProfileModule
     {
         protected INavigationManager NavigationManager { get; }
+
         public ProfileModuleUserControlBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

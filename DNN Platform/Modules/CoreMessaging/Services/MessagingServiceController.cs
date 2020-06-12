@@ -378,6 +378,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         public class ReplyDTO : ConversationDTO
         {
             public string Body { get; set; }
+
             public IList<int> FileIds { get; set; }
         }
 

@@ -18,8 +18,11 @@ namespace DotNetNuke.Modules.Journal
     public class JournalList : WebControl
     {
         public int PortalId { get; set; }
+
         public int ProfileId { get; set; }
+
         public int SocialGroupId { get; set; }
+
         public int DisplayMode { get; set; }
 
         protected override void Render(HtmlTextWriter output)

@@ -19,6 +19,7 @@ namespace Dnn.ExportImport.Components.Controllers
     {
         private const string CacheKey = "ExportImport_Settings";
         private const int CacheDuration = 120;
+
         protected override Func<ISettingsController> GetFactory()
         {
             return () => new SettingsController();

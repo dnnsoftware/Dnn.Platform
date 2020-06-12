@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Services.Social.Subscriptions

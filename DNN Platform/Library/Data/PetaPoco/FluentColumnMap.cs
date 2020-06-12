@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
@@ -11,7 +12,9 @@ namespace DotNetNuke.Data.PetaPoco
     public class FluentColumnMap
     {
         public ColumnInfo ColumnInfo { get; set; }
+
         public Func<object, object> FromDbConverter { get; set; }
+
         public Func<object, object> ToDbConverter { get; set; }
 
         public FluentColumnMap()

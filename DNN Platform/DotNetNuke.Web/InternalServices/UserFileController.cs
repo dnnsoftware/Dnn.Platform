@@ -160,13 +160,21 @@ namespace DotNetNuke.Web.InternalServices
             // ReSharper disable InconsistentNaming
             // ReSharper disable UnusedAutoPropertyAccessor.Local
             public int id { get; set; }
+
             public string name { get; set; }
+
             public bool folder { get; set; }
+
             public int parentId { get; set; }
+
             public string thumb_url { get; set; }
+
             public string type { get; set; }
+
             public string size { get; set; }
+
             public string modified { get; set; }
+
             public List<Item> children { get; set; }
 
             // ReSharper restore UnusedAutoPropertyAccessor.Local

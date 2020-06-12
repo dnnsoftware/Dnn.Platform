@@ -5,6 +5,7 @@
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.UI.WebControls;
+
 using EaloTabInfo = effority.Ealo.Specialized.TabInfo;
 
 namespace DotNetNuke.Web.DDRMenu.Localisation
@@ -14,6 +15,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         private readonly int portalId;
         private static bool apiChecked;
         private static ILocalisation _LocalisationApi;
+
         private static ILocalisation LocalisationApi
         {
             get

@@ -582,6 +582,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public string ApplicationPath
         {
             get { return this._applicationPath; }
+
             set
             {
                 this._applicationPath = value ?? "/";
@@ -597,6 +598,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public string PhysicalApplicationPath
         {
             get { return this._physicalApplicationPath; }
+
             set
             {
                 this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
@@ -715,6 +717,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         internal class ConfigMapPath : IConfigMapPath
         {
             private readonly HttpSimulator _requestSimulation;
+
             public ConfigMapPath(HttpSimulator simulation)
             {
                 this._requestSimulation = simulation;

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Data;
 using DotNetNuke.Entities.Content.Common;
@@ -14,6 +15,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
     public class FileDeletionController : ServiceLocator<IFileDeletionController, FileDeletionController>, IFileDeletionController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileDeletionController));
+
         public void DeleteFile(IFileInfo file)
         {
             string lockReason;

@@ -8,6 +8,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Web.Mvc;
+
 using DotNetNuke.Entities.Host;
 
 namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
@@ -21,6 +22,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         }
 
         public AuthorizationContext ActionContext { get; private set; }
+
         public string AuthFailureMessage { get; set; }
 
         /// <summary>

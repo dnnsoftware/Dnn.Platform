@@ -54,6 +54,7 @@ namespace DotNetNuke.Services.Installer.Log
 
                 return this._errorClass;
             }
+
             set
             {
                 this._errorClass = value;
@@ -85,6 +86,7 @@ namespace DotNetNuke.Services.Installer.Log
 
                 return this._highlightClass;
             }
+
             set
             {
                 this._highlightClass = value;
@@ -122,6 +124,7 @@ namespace DotNetNuke.Services.Installer.Log
 
                 return this._normalClass;
             }
+
             set
             {
                 this._normalClass = value;

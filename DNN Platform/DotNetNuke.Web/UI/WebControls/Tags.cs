@@ -55,6 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return _IsEditMode;
             }
+
             set
             {
                 this.ViewState["IsEditMode"] = value;
@@ -69,6 +70,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._RepeatDirection;
             }
+
             set
             {
                 this._RepeatDirection = value;
@@ -83,6 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._Separator;
             }
+
             set
             {
                 this._Separator = value;

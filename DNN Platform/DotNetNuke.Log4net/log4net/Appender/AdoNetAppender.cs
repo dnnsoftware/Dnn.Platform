@@ -884,6 +884,7 @@ namespace log4net.Appender
         public DbType DbType
         {
             get { return this.m_dbType; }
+
             set
             {
                 this.m_dbType = value;

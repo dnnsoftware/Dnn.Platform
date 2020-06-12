@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     public interface IDependency
     {
         string ErrorMessage { get; }
+
         bool IsValid { get; }
 
         void ReadManifest(XPathNavigator dependencyNav);

@@ -39,6 +39,7 @@ namespace DotNetNuke.Web.UI
             {
                 return this._Message;
             }
+
             set
             {
                 // todo: javascript encode for onclick events
@@ -54,6 +55,7 @@ namespace DotNetNuke.Web.UI
             {
                 return this._Title;
             }
+
             set
             {
                 // todo: javascript encode for onclick events
@@ -69,6 +71,7 @@ namespace DotNetNuke.Web.UI
             {
                 return this._WindowWidth;
             }
+
             set
             {
                 this._WindowWidth = value;
@@ -81,6 +84,7 @@ namespace DotNetNuke.Web.UI
             {
                 return this._WindowHeight;
             }
+
             set
             {
                 this._WindowHeight = value;

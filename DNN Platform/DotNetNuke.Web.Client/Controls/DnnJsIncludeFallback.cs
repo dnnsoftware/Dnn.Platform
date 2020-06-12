@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         public string ObjectName { get; set; }
+
         public string FileName { get; set; }
 
         public override void RenderControl(HtmlTextWriter writer)

@@ -50,6 +50,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.IntegerValue.ToString();
             }
+
             set
             {
                 int setValue = int.Parse(value);

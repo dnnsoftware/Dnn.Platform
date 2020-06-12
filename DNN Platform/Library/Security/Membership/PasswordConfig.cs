@@ -38,6 +38,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return Host.PasswordExpiry;
             }
+
             set
             {
                 HostController.Instance.Update("PasswordExpiry", value.ToString());
@@ -59,6 +60,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return Host.PasswordExpiryReminder;
             }
+
             set
             {
                 HostController.Instance.Update("PasswordExpiryReminder", value.ToString());

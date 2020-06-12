@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Tests.Utilities;

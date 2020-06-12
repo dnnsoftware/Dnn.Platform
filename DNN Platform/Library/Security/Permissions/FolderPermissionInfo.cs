@@ -57,6 +57,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._folderPermissionID;
             }
+
             set
             {
                 this._folderPermissionID = value;
@@ -70,6 +71,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._folderID;
             }
+
             set
             {
                 this._folderID = value;
@@ -83,6 +85,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._portalID;
             }
+
             set
             {
                 this._portalID = value;
@@ -96,6 +99,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._folderPath;
             }
+
             set
             {
                 this._folderPath = value;
@@ -130,6 +134,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this.FolderPermissionID;
             }
+
             set
             {
                 this.FolderPermissionID = value;

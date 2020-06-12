@@ -6,6 +6,7 @@ using System;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
+
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
 

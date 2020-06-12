@@ -61,6 +61,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return this._RoleGroupID;
             }
+
             set
             {
                 this._RoleGroupID = value;
@@ -79,6 +80,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return this._PortalID;
             }
+
             set
             {
                 this._PortalID = value;
@@ -97,6 +99,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return this._RoleGroupName;
             }
+
             set
             {
                 this._RoleGroupName = value;
@@ -115,6 +118,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return this._Description;
             }
+
             set
             {
                 this._Description = value;
@@ -169,6 +173,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return this.RoleGroupID;
             }
+
             set
             {
                 this.RoleGroupID = value;

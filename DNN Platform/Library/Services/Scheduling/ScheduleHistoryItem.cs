@@ -99,6 +99,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._LogNotes.ToString();
             }
+
             set
             {
                 this._LogNotes = new StringBuilder(value);
@@ -170,6 +171,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._ScheduleHistoryID;
             }
+
             set
             {
                 this._ScheduleHistoryID = value;
@@ -182,6 +184,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._Server;
             }
+
             set
             {
                 this._Server = value;
@@ -194,6 +197,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._StartDate;
             }
+
             set
             {
                 this._StartDate = value;
@@ -206,6 +210,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this._Succeeded;
             }
+
             set
             {
                 this._Succeeded = value;

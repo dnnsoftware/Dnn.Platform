@@ -6,6 +6,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -37,6 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return !this.DesignMode && this._localize;
             }
+
             set
             {
                 this._localize = value;

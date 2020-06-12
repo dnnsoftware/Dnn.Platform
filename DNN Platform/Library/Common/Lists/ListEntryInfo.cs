@@ -94,6 +94,7 @@ namespace DotNetNuke.Common.Lists
 
                 return res;
             }
+
             set
             {
                 this._Text = value;

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.XPath;
+
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
@@ -24,7 +25,9 @@ namespace Dnn.PersonaBar.UI.Components.Installers
         private struct PermissionDefinition
         {
              public string Identifier { get; set; }
+
              public string Key { get; set; }
+
              public string Name { get; set; }
         }
 

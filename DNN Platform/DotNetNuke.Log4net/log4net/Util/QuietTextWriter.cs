@@ -75,6 +75,7 @@ namespace log4net.Util
         public IErrorHandler ErrorHandler
         {
             get { return this.m_errorHandler; }
+
             set
             {
                 if (value == null)

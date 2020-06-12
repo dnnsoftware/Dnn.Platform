@@ -32,6 +32,7 @@ namespace DotNetNuke.Modules.Admin.Security
     public partial class PasswordReset : UserModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public PasswordReset()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -46,6 +47,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return this.ViewState["ResetToken"] != null ? this.Request.QueryString["resetToken"] : string.Empty;
             }
+
             set
             {
                 this.ViewState.Add("ResetToken", value);

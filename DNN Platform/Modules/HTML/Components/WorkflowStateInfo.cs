@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._IsActive;
             }
+
             set
             {
                 this._IsActive = value;

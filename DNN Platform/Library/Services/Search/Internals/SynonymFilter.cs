@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Search.Entities;
 

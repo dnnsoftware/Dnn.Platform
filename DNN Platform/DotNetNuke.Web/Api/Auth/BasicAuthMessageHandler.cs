@@ -9,6 +9,7 @@ using System.Net.Http.Headers;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Membership;
@@ -115,6 +116,7 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             public string Password { get; set; }
+
             public string UserName { get; set; }
         }
     }

@@ -87,6 +87,7 @@ namespace log4net.Layout
         public string Version
         {
             get { return "1.2"; }
+
             set
             {
                 if (value != "1.2")

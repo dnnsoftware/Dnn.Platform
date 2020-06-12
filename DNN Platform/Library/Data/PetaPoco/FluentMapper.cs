@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Web.Caching;
+
 using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco

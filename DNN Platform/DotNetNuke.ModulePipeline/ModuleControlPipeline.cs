@@ -33,6 +33,7 @@ using DotNetNuke.UI.Modules;
 using DotNetNuke.UI.Modules.Html5;
 using DotNetNuke.Web.Mvc;
 using DotNetNuke.Web.Razor;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -63,6 +64,7 @@ namespace DotNetNuke.ModulePipeline
     {
         private static readonly ILog TraceLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
         private Dictionary<string, IModuleControlFactory> _controlFactories;
+
         public ModuleControlPipeline(
             WebFormsModuleControlFactory webforms,
             Html5ModuleControlFactory html5,

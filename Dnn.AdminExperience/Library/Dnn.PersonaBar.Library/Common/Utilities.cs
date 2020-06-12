@@ -4,6 +4,7 @@
 
 using System;
 using System.Text.RegularExpressions;
+
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Users;
 

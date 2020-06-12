@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Threading;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;

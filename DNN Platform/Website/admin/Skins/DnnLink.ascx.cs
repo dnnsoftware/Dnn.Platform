@@ -5,6 +5,7 @@
 // See the LICENSE file in the project root for more information
 using System;
 using System.Web;
+
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.UI.Skins.Controls
@@ -17,8 +18,11 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class DnnLink : SkinObjectBase
     {
         private const string MyFileName = "DnnLink.ascx";
+
         public string CssClass { get; set; }
+
         public string Target { get; set; }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

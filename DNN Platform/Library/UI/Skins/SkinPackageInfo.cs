@@ -41,6 +41,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._PackageID;
             }
+
             set
             {
                 this._PackageID = value;
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinPackageID;
             }
+
             set
             {
                 this._SkinPackageID = value;
@@ -65,6 +67,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._PortalID;
             }
+
             set
             {
                 this._PortalID = value;
@@ -77,6 +80,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinName;
             }
+
             set
             {
                 this._SkinName = value;
@@ -90,6 +94,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._Skins;
             }
+
             set
             {
                 this._Skins = value;
@@ -102,6 +107,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinType;
             }
+
             set
             {
                 this._SkinType = value;
@@ -137,6 +143,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.SkinPackageID;
             }
+
             set
             {
                 this.SkinPackageID = value;

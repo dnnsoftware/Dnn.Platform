@@ -68,6 +68,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._WorkflowStatePermissionID;
             }
+
             set
             {
                 this._WorkflowStatePermissionID = value;
@@ -86,6 +87,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._StateID;
             }
+
             set
             {
                 this._StateID = value;
@@ -176,6 +178,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this.WorkflowStatePermissionID;
             }
+
             set
             {
                 this.WorkflowStatePermissionID = value;

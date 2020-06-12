@@ -115,6 +115,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         }
 
         public const string CachePrefix = "ModuleSettingsPersister_";
+
         protected virtual string MappingCacheKey
         {
             get

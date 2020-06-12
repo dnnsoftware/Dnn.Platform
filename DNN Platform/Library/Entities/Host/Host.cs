@@ -986,6 +986,7 @@ namespace DotNetNuke.Entities.Host
 
                 return _performanceSetting.Value;
             }
+
             set { _performanceSetting = value; }
         }
 

@@ -21,9 +21,13 @@ namespace DotNetNuke.Services.FileSystem
         private Hashtable _folderMappingSettings;
 
         public int FolderMappingID { get; set; }
+
         public int PortalID { get; set; }
+
         public string MappingName { get; set; }
+
         public string FolderProviderType { get; set; }
+
         public int Priority { get; set; }
 
         public Hashtable FolderMappingSettings
@@ -47,6 +51,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         private string _imageUrl;
+
         public string ImageUrl
         {
             get
@@ -79,6 +84,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return true;
             }
+
             set
             {
                 this.FolderMappingSettings["SyncAllSubFolders"] = value;
@@ -121,6 +127,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return this.FolderMappingID;
             }
+
             set
             {
                 this.FolderMappingID = value;

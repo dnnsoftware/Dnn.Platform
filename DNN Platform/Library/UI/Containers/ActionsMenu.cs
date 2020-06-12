@@ -87,6 +87,7 @@ namespace DotNetNuke.UI.Containers
 
                 return this._ExpandDepth;
             }
+
             set
             {
                 this._ExpandDepth = value;
@@ -121,6 +122,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._ProviderName;
             }
+
             set
             {
                 this._ProviderName = value;

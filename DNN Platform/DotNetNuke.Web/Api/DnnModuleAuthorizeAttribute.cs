@@ -4,6 +4,7 @@
 
 using System;
 using System.Net.Http;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Permissions;
@@ -18,6 +19,7 @@ namespace DotNetNuke.Web.Api
         }
 
         public string PermissionKey { get; set; }
+
         public SecurityAccessLevel AccessLevel { get; set; }
 
         public override bool IsAuthorized(AuthFilterContext context)

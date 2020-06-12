@@ -10,7 +10,9 @@ namespace DotNetNuke.Collections.Internal
     public interface ILockStrategy : IDisposable
     {
         bool ThreadCanRead { get; }
+
         bool ThreadCanWrite { get; }
+
         bool SupportsConcurrentReads { get; }
 
         ISharedCollectionLock GetReadLock();

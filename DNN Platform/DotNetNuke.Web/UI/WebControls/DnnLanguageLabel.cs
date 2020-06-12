@@ -32,6 +32,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return (string)this.ViewState["Language"];
             }
+
             set
             {
                 this.ViewState["Language"] = value;

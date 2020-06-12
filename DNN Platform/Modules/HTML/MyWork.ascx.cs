@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Html
     public partial class MyWork : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public MyWork()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

@@ -98,6 +98,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._requiredMessageSuffix;
             }
+
             set
             {
                 this._requiredMessageSuffix = value;
@@ -110,6 +111,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._validationMessageSuffix;
             }
+
             set
             {
                 this._validationMessageSuffix = value;

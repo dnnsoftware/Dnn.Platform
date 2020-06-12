@@ -13,6 +13,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     public class DnnDateTimePicker : DnnDatePicker
     {
         protected override string Format => "yyyy-MM-dd HH:mm:ss";
+
         protected override string ClientFormat => "YYYY-MM-DD HH:mm:ss";
 
         protected override IDictionary<string, object> GetSettings()

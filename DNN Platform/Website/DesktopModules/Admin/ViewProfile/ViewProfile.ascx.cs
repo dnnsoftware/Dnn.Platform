@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ViewProfile()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

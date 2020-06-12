@@ -7,6 +7,7 @@ using System;
 using System.IO;
 using System.Text;
 using System.Xml;
+
 using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Services.Log.EventLog

@@ -31,6 +31,7 @@ using log4net.Core;
 using log4net.Layout.Pattern;
 using log4net.Util;
 using log4net.Util.PatternStringConverters;
+
 using AppDomainPatternConverter=log4net.Layout.Pattern.AppDomainPatternConverter;
 using DatePatternConverter=log4net.Layout.Pattern.DatePatternConverter;
 using IdentityPatternConverter=log4net.Layout.Pattern.IdentityPatternConverter;

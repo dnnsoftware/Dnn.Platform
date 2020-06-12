@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Tests.Integration.Executers.Dto

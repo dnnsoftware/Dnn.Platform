@@ -94,6 +94,7 @@ namespace log4net.Util
 
                 return null;
             }
+
             set
             {
                 // Force the dictionary to be created

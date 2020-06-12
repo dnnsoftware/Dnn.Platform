@@ -69,6 +69,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._modulePermissionID;
             }
+
             set
             {
                 this._modulePermissionID = value;
@@ -88,6 +89,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._moduleID;
             }
+
             set
             {
                 this._moduleID = value;
@@ -120,6 +122,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this.ModulePermissionID;
             }
+
             set
             {
                 this.ModulePermissionID = value;

@@ -35,13 +35,19 @@ namespace DotNetNuke.Entities.Portals
         }
 
         public string HTTPAlias { get; set; }
+
         public int PortalAliasID { get; set; }
+
         public int PortalID { get; set; }
+
         public bool IsPrimary { get; set; }
+
         public bool Redirect { get; set; }
 
         public BrowserTypes BrowserType { get; set; }
+
         public string CultureCode { get; set; }
+
         public string Skin { get; set; }
 
         public int KeyID

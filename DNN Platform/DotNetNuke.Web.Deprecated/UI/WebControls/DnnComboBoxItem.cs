@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return string.Empty;
             }
+
             set
             {
                 this.ViewState["ResourceKey"] = value;

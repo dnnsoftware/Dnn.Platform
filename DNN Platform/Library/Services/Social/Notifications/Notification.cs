@@ -37,6 +37,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 return this._notificationID;
             }
+
             set
             {
                 this._notificationID = value;
@@ -118,6 +119,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 return this.NotificationID;
             }
+
             set
             {
                 this.NotificationID = value;

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Social.Notifications;
 

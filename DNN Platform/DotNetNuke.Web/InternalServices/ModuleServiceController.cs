@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Portals;
@@ -21,18 +22,24 @@ namespace DotNetNuke.Web.InternalServices
     public class ModuleServiceController : DnnApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleServiceController));
+
         public class MoveModuleDTO
         {
             public int ModuleId { get; set; }
+
             public int ModuleOrder { get; set; }
+
             public string Pane { get; set; }
+
             public int TabId { get; set; }
         }
 
         public class DeleteModuleDto
         {
             public int ModuleId { get; set; }
+
             public int TabId { get; set; }
+
             public bool SoftDelete { get; set; }
         }
 

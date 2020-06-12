@@ -315,6 +315,7 @@ namespace log4net.Appender
                     this.AssertLocked();
                     return this.m_realStream.Position;
                 }
+
                 set
                 {
                     this.AssertLocked();

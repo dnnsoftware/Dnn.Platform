@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.UI.Services
     public class ComponentsController : PersonaBarApiController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ComponentsController));
+
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         [HttpGet]

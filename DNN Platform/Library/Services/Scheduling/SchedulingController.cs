@@ -16,6 +16,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Services.Log.EventLog;
 
 using Microsoft.VisualBasic;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Services.Scheduling

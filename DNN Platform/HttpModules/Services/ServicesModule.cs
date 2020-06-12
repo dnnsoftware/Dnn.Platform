@@ -5,6 +5,7 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Web;
+
 using DotNetNuke.Common;
 
 namespace DotNetNuke.HttpModules.Services

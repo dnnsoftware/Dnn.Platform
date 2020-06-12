@@ -92,6 +92,7 @@ namespace log4net.Util
             {
                 return this.m_readOnlyProperties[key];
             }
+
             set
             {
                 lock (this.m_syncRoot)

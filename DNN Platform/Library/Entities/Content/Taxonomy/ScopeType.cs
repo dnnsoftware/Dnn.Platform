@@ -54,6 +54,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this.ScopeTypeId;
             }
+
             set
             {
                 this.ScopeTypeId = value;

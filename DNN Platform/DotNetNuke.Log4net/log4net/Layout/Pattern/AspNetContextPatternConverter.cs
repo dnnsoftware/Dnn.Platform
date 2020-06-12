@@ -25,6 +25,7 @@
 
 using System.IO;
 using System.Web;
+
 using log4net.Core;
 
 namespace log4net.Layout.Pattern

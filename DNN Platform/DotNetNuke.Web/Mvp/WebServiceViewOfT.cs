@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using WebFormsMvp;
 
 namespace DotNetNuke.Web.Mvp
@@ -25,6 +26,7 @@ namespace DotNetNuke.Web.Mvp
 
                 return this._model;
             }
+
             set { this._model = value; }
         }
     }

@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 return this._AuthenticationType;
             }
+
             set
             {
                 this._AuthenticationType = value;

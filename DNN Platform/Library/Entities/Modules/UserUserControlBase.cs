@@ -24,21 +24,35 @@ namespace DotNetNuke.Entities.Modules
     public class UserUserControlBase : UserModuleBase
     {
         public delegate void UserCreatedEventHandler(object sender, UserCreatedEventArgs e);
+
         public delegate void UserDeletedEventHandler(object sender, UserDeletedEventArgs e);
+
         public delegate void UserRestoredEventHandler(object sender, UserRestoredEventArgs e);
+
         public delegate void UserRemovedEventHandler(object sender, UserRemovedEventArgs e);
+
         public delegate void UserUpdateErrorEventHandler(object sender, UserUpdateErrorArgs e);
 
         public event UserCreatedEventHandler UserCreated;
+
         public event UserCreatedEventHandler UserCreateCompleted;
+
         public event UserDeletedEventHandler UserDeleted;
+
         public event UserUpdateErrorEventHandler UserDeleteError;
+
         public event UserRestoredEventHandler UserRestored;
+
         public event UserUpdateErrorEventHandler UserRestoreError;
+
         public event UserRemovedEventHandler UserRemoved;
+
         public event UserUpdateErrorEventHandler UserRemoveError;
+
         public event EventHandler UserUpdated;
+
         public event EventHandler UserUpdateCompleted;
+
         public event UserUpdateErrorEventHandler UserUpdateError;
 
         /// -----------------------------------------------------------------------------
@@ -220,6 +234,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     return this._createStatus;
                 }
+
                 set
                 {
                     this._createStatus = value;

@@ -58,6 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var fileId = this.SelectedItemValueAsInt;
                 return (fileId == Null.NullInteger) ? null : FileManager.Instance.GetFile(fileId);
             }
+
             set
             {
                 this.SelectedItem = (value != null) ? new ListItem() { Text = value.FileName, Value = value.FileId.ToString(CultureInfo.InvariantCulture) } : null;
@@ -70,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.Services.Parameters.ContainsKey("parentId") ? Convert.ToInt32(this.Services.Parameters["parentId"]) : Null.NullInteger;
             }
+
             set
             {
                 this.Services.Parameters["parentId"] = value.ToString();

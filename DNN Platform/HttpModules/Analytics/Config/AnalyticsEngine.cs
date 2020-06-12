@@ -21,6 +21,7 @@ namespace DotNetNuke.HttpModules.Config
             {
                 return this._engineType;
             }
+
             set
             {
                 this._engineType = value;
@@ -33,6 +34,7 @@ namespace DotNetNuke.HttpModules.Config
             {
                 return this._scriptTemplate;
             }
+
             set
             {
                 this._scriptTemplate = value;
@@ -45,6 +47,7 @@ namespace DotNetNuke.HttpModules.Config
             {
                 return this._elementId;
             }
+
             set
             {
                 this._elementId = value;
@@ -57,6 +60,7 @@ namespace DotNetNuke.HttpModules.Config
             {
                 return this._injectTop;
             }
+
             set
             {
                 this._injectTop = value;

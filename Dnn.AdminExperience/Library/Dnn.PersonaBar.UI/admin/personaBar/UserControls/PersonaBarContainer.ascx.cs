@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+
 using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.Controllers;
 using DotNetNuke.Entities.Host;
@@ -16,6 +17,7 @@ using DotNetNuke.UI.ControlPanels;
 using DotNetNuke.UI.Utilities;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Newtonsoft.Json;
+
 using Globals = DotNetNuke.Common.Globals;
 
 // ReSharper disable once CheckNamespace

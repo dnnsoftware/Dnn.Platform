@@ -46,6 +46,7 @@ namespace DotNetNuke.UI.Containers
 
                 return this._ModuleAction;
             }
+
             set
             {
                 this._ModuleAction = value;

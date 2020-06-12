@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Xml;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
@@ -89,6 +90,7 @@ namespace DotNetNuke.Services.FileSystem
         public IList<FolderTypeConfig> FolderTypes { get; internal set; }
 
         private const string configNode = "folderMappingsSettings";
+
         public string ConfigNode
         {
             get { return configNode; }

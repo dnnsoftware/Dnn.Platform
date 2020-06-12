@@ -16,6 +16,7 @@ using System.Web.Caching;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Portals;
@@ -87,6 +88,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._BackGroundColor;
             }
+
             set
             {
                 this._BackGroundColor = value;
@@ -104,6 +106,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._BackGroundImage;
             }
+
             set
             {
                 this._BackGroundImage = value;
@@ -122,6 +125,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._CaptchaChars;
             }
+
             set
             {
                 this._CaptchaChars = value;
@@ -139,6 +143,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._CaptchaHeight;
             }
+
             set
             {
                 this._CaptchaHeight = value;
@@ -157,6 +162,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._CaptchaLength;
             }
+
             set
             {
                 this._CaptchaLength = value;
@@ -174,6 +180,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._CaptchaWidth;
             }
+
             set
             {
                 this._CaptchaWidth = value;
@@ -190,6 +197,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return base.EnableViewState;
             }
+
             set
             {
                 base.EnableViewState = value;
@@ -232,6 +240,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._Expiration;
             }
+
             set
             {
                 this._Expiration = value;
@@ -263,6 +272,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._RenderUrl;
             }
+
             set
             {
                 this._RenderUrl = value;

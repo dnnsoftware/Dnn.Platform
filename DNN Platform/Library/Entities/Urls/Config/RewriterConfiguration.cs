@@ -30,6 +30,7 @@ namespace DotNetNuke.Entities.Urls.Config
             {
                 return this._rules;
             }
+
             set
             {
                 this._rules = value;

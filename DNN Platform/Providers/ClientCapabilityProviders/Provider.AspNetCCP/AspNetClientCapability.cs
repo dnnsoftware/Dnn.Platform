@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Configuration;
+
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
 

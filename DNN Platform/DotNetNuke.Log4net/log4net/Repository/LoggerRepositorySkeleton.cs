@@ -54,9 +54,13 @@ namespace log4net.Repository
         private Level m_threshold;
         private bool m_configured;
         private ICollection m_configurationMessages;
+
         private event LoggerRepositoryShutdownEventHandler m_shutdownEvent;
+
         private event LoggerRepositoryConfigurationResetEventHandler m_configurationResetEvent;
+
         private event LoggerRepositoryConfigurationChangedEventHandler m_configurationChangedEvent;
+
         private PropertiesDictionary m_properties;
 
         /// <summary>
@@ -129,6 +133,7 @@ namespace log4net.Repository
         public virtual Level Threshold
         {
             get { return this.m_threshold; }
+
             set
             {
                 if (value != null)

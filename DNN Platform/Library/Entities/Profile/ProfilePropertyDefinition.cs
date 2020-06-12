@@ -40,6 +40,7 @@ namespace DotNetNuke.Entities.Profile
                                                             {
                                                                 VisibilityMode = UserVisibilityMode.AdminOnly,
                                                             };
+
         private string _propertyCategory;
         private string _propertyName;
         private string _propertyValue;
@@ -81,6 +82,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._dataType;
             }
+
             set
             {
                 if (this._dataType != value)
@@ -105,6 +107,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._defaultValue;
             }
+
             set
             {
                 if (this._defaultValue != value)
@@ -129,6 +132,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._defaultVisibility;
             }
+
             set
             {
                 if (this._defaultVisibility != value)
@@ -153,6 +157,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._deleted;
             }
+
             set
             {
                 this._deleted = value;
@@ -181,6 +186,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._length;
             }
+
             set
             {
                 if (this._length != value)
@@ -205,6 +211,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._moduleDefId;
             }
+
             set
             {
                 this._moduleDefId = value;
@@ -224,6 +231,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._portalId;
             }
+
             set
             {
                 this._portalId = value;
@@ -244,6 +252,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._propertyCategory;
             }
+
             set
             {
                 if (this._propertyCategory != value)
@@ -280,6 +289,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._propertyName;
             }
+
             set
             {
                 if (this._propertyName != value)
@@ -304,6 +314,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._propertyValue;
             }
+
             set
             {
                 if (this._propertyValue != value)
@@ -328,6 +339,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._readOnly;
             }
+
             set
             {
                 if (this._readOnly != value)
@@ -352,6 +364,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._required;
             }
+
             set
             {
                 if (this._required != value)
@@ -376,6 +389,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._ValidationExpression;
             }
+
             set
             {
                 if (this._ValidationExpression != value)
@@ -401,6 +415,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._viewOrder;
             }
+
             set
             {
                 if (this._viewOrder != value)
@@ -425,6 +440,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._visible;
             }
+
             set
             {
                 if (this._visible != value)
@@ -449,6 +465,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this._profileVisibility;
             }
+
             set
             {
                 if (this._profileVisibility != value)
@@ -508,6 +525,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return this.ProfileVisibility.VisibilityMode;
             }
+
             set
             {
                 if (this.ProfileVisibility.VisibilityMode != value)

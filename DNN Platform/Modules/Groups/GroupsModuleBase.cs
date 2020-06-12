@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.Groups
     public class GroupsModuleBase : PortalModuleBase
     {
         protected INavigationManager NavigationManager { get; }
+
         public GroupsModuleBase()
         {
             this.NavigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

@@ -63,6 +63,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this._PortalDesktopModuleID;
             }
+
             set
             {
                 int oldValue = this._PortalDesktopModuleID;

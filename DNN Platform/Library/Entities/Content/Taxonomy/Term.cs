@@ -120,6 +120,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._description;
             }
+
             set
             {
                 this._description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
@@ -154,6 +155,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._name;
             }
+
             set
             {
                 if (HtmlUtils.IsUrlEncoded(value))
@@ -178,6 +180,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._parentTermId;
             }
+
             set
             {
                 this._parentTermId = value;
@@ -212,6 +215,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._termId;
             }
+
             set
             {
                 this._termId = value;
@@ -251,6 +255,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._weight;
             }
+
             set
             {
                 this._weight = value;
@@ -290,6 +295,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this.TermId;
             }
+
             set
             {
                 this.TermId = value;

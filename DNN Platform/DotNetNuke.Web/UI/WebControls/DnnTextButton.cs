@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -25,6 +26,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["ConfirmMessage"] == null ? string.Empty : (string)this.ViewState["ConfirmMessage"];
             }
+
             set
             {
                 this.ViewState["ConfirmMessage"] = value;
@@ -41,6 +43,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["CssClass"] == null ? string.Empty : (string)this.ViewState["CssClass"];
             }
+
             set
             {
                 this.ViewState["CssClass"] = value;
@@ -57,6 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
+
             set
             {
                 this.ViewState["DisabledCssClass"] = value;
@@ -73,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["Text"] == null ? string.Empty : (string)this.ViewState["Text"];
             }
+
             set
             {
                 this.ViewState["Text"] = value;
@@ -104,6 +109,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._localize;
             }
+
             set
             {
                 this._localize = value;

@@ -102,6 +102,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.BooleanValue.ToString();
             }
+
             set
             {
                 bool setValue = bool.Parse(value);

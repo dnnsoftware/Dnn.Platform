@@ -34,6 +34,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
             {
                 return this._details;
             }
+
             set
             {
                 this._details = value;

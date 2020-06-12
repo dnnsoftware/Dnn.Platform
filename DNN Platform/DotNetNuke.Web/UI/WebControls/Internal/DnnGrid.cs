@@ -5,6 +5,7 @@
 // See the LICENSE file in the project root for more information
 using System;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Framework.JavaScriptLibraries;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
@@ -24,12 +25,16 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 return this.PageIndex;
             }
+
             set { this.PageIndex = value; }
         }
 
         public TableItemStyle ItemStyle => this.RowStyle;
+
         public TableItemStyle AlternatingItemStyle => this.AlternatingRowStyle;
+
         public TableItemStyle EditItemStyle => this.EditRowStyle;
+
         public TableItemStyle SelectedItemStyle => this.SelectedRowStyle;
 
         protected override void OnInit(EventArgs e)

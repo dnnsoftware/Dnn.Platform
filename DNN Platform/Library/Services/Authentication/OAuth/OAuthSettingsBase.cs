@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+
 using DotNetNuke.UI.WebControls;
 
 namespace DotNetNuke.Services.Authentication.OAuth

@@ -18,81 +18,157 @@ namespace DotNetNuke.Web.DDRMenu
     public class DDRMenuNavigationProvider : NavigationProvider
     {
         public override Alignment ControlAlignment { get; set; }
+
         public override bool IndicateChildren { get; set; }
+
         public override bool PopulateNodesFromClient { get; set; }
+
         public override decimal MouseOutHideDelay { get; set; }
+
         public override decimal StyleBorderWidth { get; set; }
+
         public override decimal StyleControlHeight { get; set; }
+
         public override decimal StyleFontSize { get; set; }
+
         public override decimal StyleIconWidth { get; set; }
+
         public override decimal StyleNodeHeight { get; set; }
+
         public override double EffectsDuration { get; set; }
+
         public override HoverAction MouseOverAction { get; set; }
+
         public override HoverDisplay MouseOverDisplay { get; set; }
+
         public override int EffectsShadowStrength { get; set; }
+
         public override Orientation ControlOrientation { get; set; }
+
         public override string CSSBreadCrumbRoot { get; set; }
+
         public override string CSSBreadCrumbSub { get; set; }
+
         public override string CSSBreak { get; set; }
+
         public override string CSSContainerRoot { get; set; }
+
         public override string CSSContainerSub { get; set; }
+
         public override string CSSIcon { get; set; }
+
         public override string CSSIndicateChildRoot { get; set; }
+
         public override string CSSIndicateChildSub { get; set; }
+
         public override string CSSLeftSeparator { get; set; }
+
         public override string CSSLeftSeparatorBreadCrumb { get; set; }
+
         public override string CSSLeftSeparatorSelection { get; set; }
+
         public override string CSSNode { get; set; }
+
         public override string CSSNodeHover { get; set; }
+
         public override string CSSNodeHoverRoot { get; set; }
+
         public override string CSSNodeHoverSub { get; set; }
+
         public override string CSSNodeRoot { get; set; }
+
         public override string CSSNodeSelectedRoot { get; set; }
+
         public override string CSSNodeSelectedSub { get; set; }
+
         public override string CSSRightSeparator { get; set; }
+
         public override string CSSRightSeparatorBreadCrumb { get; set; }
+
         public override string CSSRightSeparatorSelection { get; set; }
+
         public override string CSSSeparator { get; set; }
+
         public override string EffectsShadowColor { get; set; }
+
         public override string EffectsShadowDirection { get; set; }
+
         public override string EffectsStyle { get; set; }
+
         public override string EffectsTransition { get; set; }
+
         public override string ForceCrawlerDisplay { get; set; }
+
         public override string ForceDownLevel { get; set; }
+
         public override string IndicateChildImageExpandedRoot { get; set; }
+
         public override string IndicateChildImageExpandedSub { get; set; }
+
         public override string IndicateChildImageRoot { get; set; }
+
         public override string IndicateChildImageSub { get; set; }
+
         public override string NodeLeftHTMLBreadCrumbRoot { get; set; }
+
         public override string NodeLeftHTMLBreadCrumbSub { get; set; }
+
         public override string NodeLeftHTMLRoot { get; set; }
+
         public override string NodeLeftHTMLSub { get; set; }
+
         public override string NodeRightHTMLBreadCrumbRoot { get; set; }
+
         public override string NodeRightHTMLBreadCrumbSub { get; set; }
+
         public override string NodeRightHTMLRoot { get; set; }
+
         public override string NodeRightHTMLSub { get; set; }
+
         public override string PathImage { get; set; }
+
         public override string PathSystemImage { get; set; }
+
         public override string PathSystemScript { get; set; }
+
         public override string SeparatorHTML { get; set; }
+
         public override string SeparatorLeftHTML { get; set; }
+
         public override string SeparatorLeftHTMLActive { get; set; }
+
         public override string SeparatorLeftHTMLBreadCrumb { get; set; }
+
         public override string SeparatorRightHTML { get; set; }
+
         public override string SeparatorRightHTMLActive { get; set; }
+
         public override string SeparatorRightHTMLBreadCrumb { get; set; }
+
         public override string StyleBackColor { get; set; }
+
         public override string StyleFontBold { get; set; }
+
         public override string StyleFontNames { get; set; }
+
         public override string StyleForeColor { get; set; }
+
         public override string StyleHighlightColor { get; set; }
+
         public override string StyleIconBackColor { get; set; }
+
         public override string StyleRoot { get; set; }
+
         public override string StyleSelectionBorderColor { get; set; }
+
         public override string StyleSelectionColor { get; set; }
+
         public override string StyleSelectionForeColor { get; set; }
+
         public override string StyleSub { get; set; }
+
         public override string WorkImage { get; set; }
+
         public override List<CustomAttribute> CustomAttributes { get; set; }
 
         private DDRMenuControl menuControl;

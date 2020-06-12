@@ -272,6 +272,7 @@ namespace DotNetNuke.Entities.Modules
                             ? new ModulePermissionCollection(ModulePermissionController.GetModulePermissions(this.ModuleID, this.TabID))
                             : new ModulePermissionCollection());
             }
+
             set
             {
                 this._modulePermissions = value;
@@ -372,6 +373,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._cultureCode;
             }
+
             set
             {
                 this._cultureCode = value;
@@ -385,6 +387,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._defaultLanguageGuid;
             }
+
             set
             {
                 this._defaultLanguageGuid = value;
@@ -486,6 +489,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._localizedVersionGuid;
             }
+
             set
             {
                 this._localizedVersionGuid = value;
@@ -623,6 +627,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleID;
             }
+
             set
             {
                 this.ModuleID = value;

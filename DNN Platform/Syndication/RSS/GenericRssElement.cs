@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this.GetAttributeValue(attributeName);
             }
+
             set
             {
                 this.Attributes[attributeName] = value;

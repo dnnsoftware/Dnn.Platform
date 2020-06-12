@@ -31,6 +31,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ModulePermissions : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ModulePermissions()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

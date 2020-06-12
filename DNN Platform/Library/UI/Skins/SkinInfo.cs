@@ -33,6 +33,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinId;
             }
+
             set
             {
                 this._SkinId = value;
@@ -45,6 +46,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._PortalId;
             }
+
             set
             {
                 this._PortalId = value;
@@ -57,6 +59,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinRoot;
             }
+
             set
             {
                 this._SkinRoot = value;
@@ -69,6 +72,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinType;
             }
+
             set
             {
                 this._SkinType = value;
@@ -81,6 +85,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._SkinSrc;
             }
+
             set
             {
                 this._SkinSrc = value;

@@ -66,6 +66,7 @@ namespace DotNetNuke.UI.Modules
 
                 return this._actions;
             }
+
             set
             {
                 this._actions = value;
@@ -83,6 +84,7 @@ namespace DotNetNuke.UI.Modules
             {
                 return this._configuration;
             }
+
             set
             {
                 this._configuration = value;
@@ -173,6 +175,7 @@ namespace DotNetNuke.UI.Modules
 
                 return Null.NullInteger;
             }
+
             set
             {
                 if (this._configuration != null)
@@ -265,6 +268,7 @@ namespace DotNetNuke.UI.Modules
 
                 return Null.NullInteger;
             }
+
             set
             {
                 if (this._configuration != null)

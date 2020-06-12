@@ -5,6 +5,7 @@
 using System;
 using System.Text;
 using System.Web;
+
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -17,6 +18,7 @@ namespace DotNetNuke.Common.Internal
     public class GlobalsImpl : IGlobals
     {
         protected INavigationManager NavigationManager { get; }
+
         public GlobalsImpl()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

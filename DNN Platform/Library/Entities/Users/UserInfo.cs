@@ -8,6 +8,7 @@ using System.Collections.Concurrent;
 using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -166,6 +167,7 @@ namespace DotNetNuke.Entities.Users
 
                 return this._membership;
             }
+
             set { this._membership = value; }
         }
 
@@ -232,6 +234,7 @@ namespace DotNetNuke.Entities.Users
 
                 return this._profile;
             }
+
             set { this._profile = value; }
         }
 
@@ -254,6 +257,7 @@ namespace DotNetNuke.Entities.Users
                         select r.RoleName)
                         .ToArray();
             }
+
             set { }
         }
 

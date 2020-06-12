@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 return bool.Parse(PortalController.GetPortalSetting(this.Name + "Enabled", PortalController.Instance.GetCurrentPortalSettings().PortalId, "True"));
             }
+
             set
             {
                 PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Enabled", value.ToString());
@@ -34,6 +35,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 return bool.Parse(PortalController.GetPortalSetting(this.Name + "Override", PortalController.Instance.GetCurrentPortalSettings().PortalId, "False"));
             }
+
             set
             {
                 PortalController.UpdatePortalSetting(PortalController.Instance.GetCurrentPortalSettings().PortalId, this.Name + "Override", value.ToString());

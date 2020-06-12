@@ -54,6 +54,7 @@ namespace DesktopModules.Admin.Security
             {
                 return this.ProfileProperties.EditMode;
             }
+
             set
             {
                 this.ProfileProperties.EditMode = value;
@@ -84,6 +85,7 @@ namespace DesktopModules.Admin.Security
             {
                 return this.actionsRow.Visible;
             }
+
             set
             {
                 this.actionsRow.Visible = value;

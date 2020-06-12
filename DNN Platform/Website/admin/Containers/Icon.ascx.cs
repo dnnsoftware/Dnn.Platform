@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.Containers
     public partial class Icon : SkinObjectBase
     {
         public string BorderWidth { get; set; }
+
         public string CssClass { get; set; }
 
         protected override void OnLoad(EventArgs e)

@@ -34,6 +34,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.Value.ToString();
             }
+
             set
             {
                 this.Value = new Version(value);

@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Web.UI;
+
 using Dnn.PersonaBar.Library.Model;
 
 namespace Dnn.PersonaBar.Library.Containers

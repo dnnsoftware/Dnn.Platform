@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+
 using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks

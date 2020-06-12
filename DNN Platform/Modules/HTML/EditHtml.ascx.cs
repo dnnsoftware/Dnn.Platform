@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.Html
     public partial class EditHtml : HtmlModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public EditHtml()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -82,6 +83,7 @@ namespace DotNetNuke.Modules.Html
 
                 return content;
             }
+
             set
             {
                 this.ViewState["TempContent"] = value;
@@ -100,6 +102,7 @@ namespace DotNetNuke.Modules.Html
 
                 return currentWorkflowType;
             }
+
             set
             {
                 this.ViewState["_currentWorkflowType"] = value;

@@ -99,6 +99,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._maxHeight;
             }
+
             set
             {
                 this._maxHeight = value;
@@ -111,6 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._maxWidth;
             }
+
             set
             {
                 this._maxWidth = value;
@@ -130,6 +132,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["Mode"] == null ? FileControlMode.Normal : (FileControlMode)this.ViewState["Mode"];
             }
+
             set
             {
                 this.ViewState["Mode"] = value;
@@ -198,6 +201,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var cssClass = Convert.ToString(this.ViewState["CommandCssClass"]);
                 return string.IsNullOrEmpty(cssClass) ? "dnnSecondaryAction" : cssClass;
             }
+
             set
             {
                 this.ViewState["CommandCssClass"] = value;
@@ -217,6 +221,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["FileFilter"] != null ? (string)this.ViewState["FileFilter"] : string.Empty;
             }
+
             set
             {
                 this.ViewState["FileFilter"] = value;
@@ -246,6 +251,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return Convert.ToInt32(this.ViewState["FileID"]);
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -271,6 +277,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return Convert.ToString(this.ViewState["FilePath"]);
             }
+
             set
             {
                 this.ViewState["FilePath"] = value;
@@ -290,6 +297,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["UsePersonalFolder"] != null && Convert.ToBoolean(this.ViewState["UsePersonalFolder"]);
             }
+
             set
             {
                 this.ViewState["UsePersonalFolder"] = value;
@@ -307,6 +315,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var cssClass = Convert.ToString(this.ViewState["LabelCssClass"]);
                 return string.IsNullOrEmpty(cssClass) ? string.Empty : cssClass;
             }
+
             set
             {
                 this.ViewState["LabelCssClass"] = value;
@@ -320,6 +329,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var permissions = Convert.ToString(this.ViewState["Permissions"]);
                 return string.IsNullOrEmpty(permissions) ? "BROWSE,ADD" : permissions;
             }
+
             set
             {
                 this.ViewState["Permissions"] = value;
@@ -339,6 +349,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["Required"] != null && Convert.ToBoolean(this.ViewState["Required"]);
             }
+
             set
             {
                 this.ViewState["Required"] = value;
@@ -351,6 +362,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["ShowFolders"] == null || Convert.ToBoolean(this.ViewState["ShowFolders"]);
             }
+
             set
             {
                 this.ViewState["ShowFolders"] = value;
@@ -370,6 +382,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["ShowUpLoad"] == null || Convert.ToBoolean(this.ViewState["ShowUpLoad"]);
             }
+
             set
             {
                 this.ViewState["ShowUpLoad"] = value;
@@ -863,6 +876,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._localize;
             }
+
             set
             {
                 this._localize = value;

@@ -154,6 +154,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
                 return _StringValue;
             }
+
             set
             {
                 this.Value = DateTime.Parse(value);
@@ -166,6 +167,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
             {
                 return base.ID + "_control";
             }
+
             set
             {
                 base.ID = value;

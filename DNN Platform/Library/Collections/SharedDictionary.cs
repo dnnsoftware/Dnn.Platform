@@ -142,6 +142,7 @@ namespace DotNetNuke.Collections.Internal
                 this.EnsureReadAccess();
                 return this._dict[key];
             }
+
             set
             {
                 this.EnsureNotDisposed();

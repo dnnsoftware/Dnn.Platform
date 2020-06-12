@@ -137,6 +137,7 @@ namespace DotNetNuke.Collections.Internal
             {
                 return this.DoInReadLock(() => this._list[index]);
             }
+
             set
             {
                 this.DoInWriteLock(() => this._list[index] = value);

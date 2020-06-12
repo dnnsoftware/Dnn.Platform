@@ -12,6 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Security.Roles;
@@ -47,6 +48,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.dgRoleSelection.AutoGenerateColumns;
             }
+
             set
             {
                 this.dgRoleSelection.AutoGenerateColumns = value;
@@ -59,6 +61,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.dgRoleSelection.CellSpacing;
             }
+
             set
             {
                 this.dgRoleSelection.CellSpacing = value;
@@ -87,6 +90,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.dgRoleSelection.GridLines;
             }
+
             set
             {
                 this.dgRoleSelection.GridLines = value;
@@ -135,6 +139,7 @@ namespace DotNetNuke.UI.WebControls
                 this.UpdateRoleSelections();
                 return new ArrayList(this.CurrentRoleSelection.ToArray());
             }
+
             set
             {
                 this.CurrentRoleSelection = value.Cast<string>().ToList();
@@ -160,6 +165,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return Convert.ToBoolean(this.ViewState["ShowUnauthenticatedUsers"]);
             }
+
             set
             {
                 this.ViewState["ShowUnauthenticatedUsers"] = value;
@@ -180,6 +186,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return Convert.ToBoolean(this.ViewState["ShowAllUsers"]);
             }
+
             set
             {
                 this.ViewState["ShowAllUsers"] = value;
@@ -200,6 +207,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._selectedRoles ?? (this._selectedRoles = new List<string>());
             }
+
             set
             {
                 this._selectedRoles = value;

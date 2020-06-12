@@ -197,6 +197,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this._User ?? (this._User = this.AddUser ? this.InitialiseUser() : UserController.GetUserById(this.UserPortalID, this.UserId));
             }
+
             set
             {
                 this._User = value;
@@ -233,6 +234,7 @@ namespace DotNetNuke.Entities.Modules
 
                 return _UserId;
             }
+
             set
             {
                 this.ViewState["UserId"] = value;

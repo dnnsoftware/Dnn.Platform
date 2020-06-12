@@ -9,9 +9,11 @@ namespace DotNetNuke.Entities.Users.Social
         void AcceptFriend(UserInfo targetUser);
 
         void AddFriend(UserInfo targetUser);
+
         void AddFriend(UserInfo initiatingUser, UserInfo targetUser);
 
         void DeleteFriend(UserInfo targetUser);
+
         void DeleteFriend(UserInfo initiatingUser, UserInfo targetUser);
     }
 }

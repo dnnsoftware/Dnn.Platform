@@ -59,6 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._moduleCombo.Enabled;
             }
+
             set
             {
                 this._moduleCombo.Enabled = value;

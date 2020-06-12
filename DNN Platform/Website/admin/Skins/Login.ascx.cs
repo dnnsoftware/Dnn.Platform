@@ -24,6 +24,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Login : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Login()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

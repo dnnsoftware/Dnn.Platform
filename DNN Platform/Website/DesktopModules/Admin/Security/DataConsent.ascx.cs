@@ -35,7 +35,9 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         public delegate void DataConsentEventHandler(object sender, DataConsentEventArgs e);
+
         public event DataConsentEventHandler DataConsentCompleted;
+
         public void OnDataConsentComplete(DataConsentEventArgs e)
         {
             this.DataConsentCompleted?.Invoke(this, e);

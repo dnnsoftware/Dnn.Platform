@@ -5,6 +5,7 @@
 // See the LICENSE file in the project root for more information
 using System;
 using System.IO;
+
 using DotNetNuke.Common;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Upgrade.Internals.Steps;

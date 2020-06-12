@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
@@ -16,10 +17,15 @@ namespace Dnn.ExportImport.Components.Entities
     public class ExportImportJobLog : IHydratable
     {
         public int JobLogId { get; set; }
+
         public int JobId { get; set; }
+
         public string Name { get; set; }
+
         public string Value { get; set; }
+
         public int Level { get; set; }
+
         public DateTime CreatedOnDate { get; set; }
 
         public int KeyID

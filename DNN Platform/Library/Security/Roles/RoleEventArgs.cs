@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Security.Roles

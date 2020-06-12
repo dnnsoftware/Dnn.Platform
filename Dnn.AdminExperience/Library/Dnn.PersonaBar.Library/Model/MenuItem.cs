@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Runtime.Serialization;
+
 using Dnn.PersonaBar.Library.Repository;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;

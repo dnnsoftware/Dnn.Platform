@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class Password : UserModuleBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
+
         protected bool UseCaptcha
         {
             get
@@ -70,6 +71,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         public event PasswordUpdatedEventHandler PasswordUpdated;
+
         public event PasswordUpdatedEventHandler PasswordQuestionAnswerUpdated;
 
         /// -----------------------------------------------------------------------------

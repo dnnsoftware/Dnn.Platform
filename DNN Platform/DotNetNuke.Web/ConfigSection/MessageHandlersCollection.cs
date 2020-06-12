@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.ConfigSection
             {
                 return this.BaseGet(index) as MessageHandlerEntry;
             }
+
             set
             {
                 if (this.BaseGet(index) != null)

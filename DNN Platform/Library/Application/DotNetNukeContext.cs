@@ -97,6 +97,7 @@ namespace DotNetNuke.Application
 
                 return _current;
             }
+
             set
             {
                 _current = value;

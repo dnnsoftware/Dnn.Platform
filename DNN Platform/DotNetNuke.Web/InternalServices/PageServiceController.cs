@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Urls;
@@ -21,6 +22,7 @@ namespace DotNetNuke.Web.InternalServices
     public class PageServiceController : DnnApiController
     {
         private int? _portalId;
+
         protected int PortalId
         {
             get

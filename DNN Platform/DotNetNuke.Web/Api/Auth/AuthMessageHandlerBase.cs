@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
+
 using DotNetNuke.Instrumentation;
 
 namespace DotNetNuke.Web.Api.Auth
@@ -18,8 +19,11 @@ namespace DotNetNuke.Web.Api.Auth
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthMessageHandlerBase));
 
         public abstract string AuthScheme { get; }
+
         public virtual bool BypassAntiForgeryToken => false;
+
         public bool DefaultInclude { get; }
+
         public bool ForceSsl { get; }
 
         protected AuthMessageHandlerBase(bool includeByDefault, bool forceSsl)

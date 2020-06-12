@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using DotNetNuke.Security;
 
 namespace DotNetNuke.Services.FileSystem.Internal.SecurityCheckers

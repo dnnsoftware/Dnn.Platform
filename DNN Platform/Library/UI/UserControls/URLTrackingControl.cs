@@ -56,6 +56,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._FormattedURL;
             }
+
             set
             {
                 this._FormattedURL = value;
@@ -68,6 +69,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._TrackingURL;
             }
+
             set
             {
                 this._TrackingURL = value;
@@ -80,6 +82,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._URL;
             }
+
             set
             {
                 this._URL = value;
@@ -101,6 +104,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return moduleID;
             }
+
             set
             {
                 this._ModuleID = value;
@@ -123,6 +127,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;

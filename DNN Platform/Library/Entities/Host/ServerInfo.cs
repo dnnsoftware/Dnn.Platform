@@ -98,6 +98,7 @@ namespace DotNetNuke.Entities.Host
             {
                 return this.ServerID;
             }
+
             set
             {
                 this.ServerID = value;

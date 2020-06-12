@@ -24,6 +24,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._itemSeparator;
             }
+
             set
             {
                 this._itemSeparator = value;

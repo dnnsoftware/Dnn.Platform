@@ -115,6 +115,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this.LanguageId;
             }
+
             set
             {
                 this.LanguageId = value;

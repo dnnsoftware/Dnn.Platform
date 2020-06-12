@@ -6,6 +6,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Common.Utilities;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class ProfileDefinitions : PortalModuleBase, IActionable
     {
         private readonly INavigationManager _navigationManager;
+
         public ProfileDefinitions()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class Export : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Export()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

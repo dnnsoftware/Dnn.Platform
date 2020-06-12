@@ -85,6 +85,7 @@ namespace DotNetNuke.Entities.Host
             {
                 return this.IPFilterID;
             }
+
             set
             {
                 this.IPFilterID = value;

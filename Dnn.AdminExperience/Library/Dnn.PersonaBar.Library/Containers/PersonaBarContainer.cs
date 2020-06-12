@@ -28,6 +28,7 @@ namespace Dnn.PersonaBar.Library.Containers
     public class PersonaBarContainer : IPersonaBarContainer
     {
         protected INavigationManager NavigationManager { get; }
+
         public PersonaBarContainer(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;

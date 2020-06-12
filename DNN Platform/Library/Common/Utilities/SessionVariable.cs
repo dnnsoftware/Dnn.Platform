@@ -62,6 +62,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return CurrentItems[key];
             }
+
             set
             {
                 CurrentItems[key] = value;

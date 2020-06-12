@@ -7,6 +7,7 @@ using System;
 using System.Linq;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Lists;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Framework;
@@ -105,6 +106,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToInt32(this.ViewState["ModuleId"]);
             }
+
             set
             {
                 this._moduleId = value;
@@ -117,6 +119,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["LabelColumnWidth"]);
             }
+
             set
             {
                 this._labelColumnWidth = value;
@@ -129,6 +132,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["ControlColumnWidth"]);
             }
+
             set
             {
                 this._controlColumnWidth = value;
@@ -143,6 +147,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtStreet.Text;
             }
+
             set
             {
                 this._street = value;
@@ -155,6 +160,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtUnit.Text;
             }
+
             set
             {
                 this._unit = value;
@@ -167,6 +173,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtCity.Text;
             }
+
             set
             {
                 this._city = value;
@@ -193,6 +200,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return retValue;
             }
+
             set
             {
                 this._country = value;
@@ -230,6 +238,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return retValue;
             }
+
             set
             {
                 this._region = value;
@@ -242,6 +251,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtPostal.Text;
             }
+
             set
             {
                 this._postal = value;
@@ -254,6 +264,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtTelephone.Text;
             }
+
             set
             {
                 this._telephone = value;
@@ -266,6 +277,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtCell.Text;
             }
+
             set
             {
                 this._cell = value;
@@ -278,6 +290,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtFax.Text;
             }
+
             set
             {
                 this._fax = value;

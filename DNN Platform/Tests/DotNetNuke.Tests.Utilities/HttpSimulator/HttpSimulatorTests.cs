@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 using System.Reflection;
 using System.Web;
 using System.Web.Hosting;
+
 using DotNetNuke.Tests.Instance.Utilities.HttpSimulator;
 
 using NUnit.Framework;

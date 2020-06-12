@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Interfaces;
 using DotNetNuke.Entities.Users;
@@ -15,11 +16,15 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
     public class AllJobsResult : IDateTimeConverter
     {
         public int PortalId { get; set; }
+
         public string PortalName { get; set; }
+
         public int TotalJobs { get; set; }
+
         public string TotalJobsString => Util.FormatNumber(this.TotalJobs);
 
         public DateTime? LastExportTime { get; set; }
+
         public DateTime? LastImportTime { get; set; }
 
         public string LastExportTimeString => Util.GetDateTimeString(this.LastExportTime);

@@ -60,6 +60,7 @@ namespace DotNetNuke.Services.Scheduling
 
                 return this._NextStart.Value > MinNextTime ? this._NextStart.Value : MinNextTime;
             }
+
             set
             {
                 this._NextStart = value;
@@ -96,6 +97,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return this.ScheduleID;
             }
+
             set
             {
                 this.ScheduleID = value;

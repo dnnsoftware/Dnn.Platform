@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -21,6 +22,7 @@ using DotNetNuke.UI.WebControls;
 using DotNetNuke.UI.WebControls.Internal;
 using DotNetNuke.Web.Client;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Security.Permissions.Controls
@@ -53,12 +55,14 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser);
+
         private int UnAuthUsersRoleId
         {
             get { return this.unAuthUsersRoleId; }
         }
 
         private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
+
         private int AllUsersRoleId
         {
             get
@@ -109,6 +113,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this.rolePermissionsGrid.AutoGenerateColumns;
             }
+
             set
             {
                 this.rolePermissionsGrid.AutoGenerateColumns = value;
@@ -122,6 +127,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this.rolePermissionsGrid.CellSpacing;
             }
+
             set
             {
                 this.rolePermissionsGrid.CellSpacing = value;
@@ -151,6 +157,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this.rolePermissionsGrid.GridLines;
             }
+
             set
             {
                 this.rolePermissionsGrid.GridLines = value;
@@ -221,6 +228,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this.ViewState["ColumnAdded"] != null;
             }
+
             set
             {
                 this.ViewState["ColumnAdded"] = value;

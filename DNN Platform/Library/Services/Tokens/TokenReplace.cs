@@ -5,6 +5,7 @@
 using System.Collections;
 using System.Data;
 using System.Web;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Modules;
@@ -166,6 +167,7 @@ namespace DotNetNuke.Services.Tokens
 
                 return this._moduleInfo;
             }
+
             set
             {
                 this._moduleInfo = value;

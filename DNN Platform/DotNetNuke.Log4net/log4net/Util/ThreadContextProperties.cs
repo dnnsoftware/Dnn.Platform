@@ -89,6 +89,7 @@ namespace log4net.Util
 
                 return null;
             }
+
             set
             {
                 this.GetProperties(true)[key] = value;

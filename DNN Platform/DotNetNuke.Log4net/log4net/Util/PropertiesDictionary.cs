@@ -243,6 +243,7 @@ namespace log4net.Util
 
                 return this.InnerHashtable[key];
             }
+
             set
             {
                 if (!(key is string))

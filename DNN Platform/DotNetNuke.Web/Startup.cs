@@ -19,6 +19,7 @@ namespace DotNetNuke.Web
     public class Startup : IDnnStartup
     {
         private static readonly ILog _logger = LoggerSource.Instance.GetLogger(typeof(Startup));
+
         public Startup()
         {
             this.Configure();

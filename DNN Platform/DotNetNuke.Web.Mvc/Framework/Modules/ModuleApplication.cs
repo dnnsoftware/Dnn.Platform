@@ -28,8 +28,10 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         protected const string SharedPartialFormat = "~/DesktopModules/MVC/{0}/Views/Shared/{{0}}.cshtml";
 
         public RequestContext RequestContext { get; private set; }
+
         internal static readonly string MvcVersion = GetMvcVersionString();
         private const string MvcVersionHeaderName = "X-AspNetMvc-Version";
+
         private static bool DisableMvcResponseHeader { get; set; }
 
         private bool _initialized;

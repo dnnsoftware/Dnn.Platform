@@ -4,9 +4,11 @@
 
 using System;
 using System.Collections.Generic;
+
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.UI.WebControls;
 using effority.Ealo.Specialized;
+
 using EaloTabInfo = effority.Ealo.Specialized.TabInfo;
 using TabInfo = DotNetNuke.Entities.Tabs.TabInfo;
 

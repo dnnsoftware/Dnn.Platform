@@ -182,6 +182,7 @@ namespace DotNetNuke.Entities.Content
             {
                 return this.Metadata[AttachmentController.TitleKey];
             }
+
             set
             {
                 this.Metadata[AttachmentController.TitleKey] = value;
@@ -296,6 +297,7 @@ namespace DotNetNuke.Entities.Content
             {
                 return this.ContentItemId;
             }
+
             set
             {
                 this.ContentItemId = value;

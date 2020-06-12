@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._channelName;
             }
+
             set
             {
                 this._channelName = value;
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._includeUserName;
             }
+
             set
             {
                 this._includeUserName = value;

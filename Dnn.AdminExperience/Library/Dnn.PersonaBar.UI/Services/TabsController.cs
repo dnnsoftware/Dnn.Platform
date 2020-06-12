@@ -20,6 +20,7 @@ namespace Dnn.PersonaBar.UI.Services
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabsController));
         private readonly Library.Controllers.TabsController _controller = new Library.Controllers.TabsController();
+
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 
         /// GET: api/Tabs/GetPortalTabs

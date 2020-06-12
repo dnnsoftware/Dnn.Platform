@@ -15,6 +15,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Web;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.GeneratedImage.ImageQuantization;
@@ -37,6 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return this._clientCacheExpiration;
             }
+
             set
             {
                 if (value.Ticks < 0)

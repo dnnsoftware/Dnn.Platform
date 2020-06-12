@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Web.Caching;
+
 using DotNetNuke.Entities.Content.Taxonomy;
 
 // ReSharper disable InconsistentNaming

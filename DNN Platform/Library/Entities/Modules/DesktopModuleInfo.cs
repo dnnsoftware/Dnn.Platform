@@ -191,6 +191,7 @@ namespace DotNetNuke.Entities.Modules
                 Term term = (from Term t in this.Terms select t).FirstOrDefault();
                 return (term != null) ? term.Name : string.Empty;
             }
+
             set
             {
                 this.Terms.Clear();
@@ -280,6 +281,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.GetFeature(DesktopModuleSupportedFeature.IsPortable);
             }
+
             set
             {
                 this.UpdateFeature(DesktopModuleSupportedFeature.IsPortable, value);
@@ -306,6 +308,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.GetFeature(DesktopModuleSupportedFeature.IsSearchable);
             }
+
             set
             {
                 this.UpdateFeature(DesktopModuleSupportedFeature.IsSearchable, value);
@@ -324,6 +327,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.GetFeature(DesktopModuleSupportedFeature.IsUpgradeable);
             }
+
             set
             {
                 this.UpdateFeature(DesktopModuleSupportedFeature.IsUpgradeable, value);
@@ -418,6 +422,7 @@ namespace DotNetNuke.Entities.Modules
 
                 return this._pageInfo;
             }
+
             set
             {
                 this._pageInfo = value;

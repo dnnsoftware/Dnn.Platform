@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Configuration;
+
 using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Web.ConfigSection
@@ -24,6 +25,7 @@ namespace DotNetNuke.Web.ConfigSection
             {
                 return (string)this[NameTag];
             }
+
             set
             {
                 this[NameTag] = value;
@@ -39,6 +41,7 @@ namespace DotNetNuke.Web.ConfigSection
             {
                 return (string)this[ClassNameTag];
             }
+
             set
             {
                 this[ClassNameTag] = value;
@@ -53,6 +56,7 @@ namespace DotNetNuke.Web.ConfigSection
                 var b = (bool?)this[EnabledNameTag];
                 return b.Value;
             }
+
             set
             {
                 this[EnabledNameTag] = value;
@@ -70,6 +74,7 @@ namespace DotNetNuke.Web.ConfigSection
                 var b = (bool?)this[DefaultIncludeTag];
                 return b.Value;
             }
+
             set
             {
                 this[DefaultIncludeTag] = value;
@@ -84,6 +89,7 @@ namespace DotNetNuke.Web.ConfigSection
                 var b = (bool?)this[ForceSslTag];
                 return b.Value;
             }
+
             set
             {
                 this[ForceSslTag] = value;

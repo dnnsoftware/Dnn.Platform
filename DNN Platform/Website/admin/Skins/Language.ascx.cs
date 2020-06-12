@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Tabs;
@@ -49,6 +50,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._alternateTemplate;
             }
+
             set
             {
                 this._alternateTemplate = value;
@@ -66,6 +68,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._commonFooterTemplate;
             }
+
             set
             {
                 this._commonFooterTemplate = value;
@@ -83,6 +86,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._commonHeaderTemplate;
             }
+
             set
             {
                 this._commonHeaderTemplate = value;
@@ -102,6 +106,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._footerTemplate;
             }
+
             set
             {
                 this._footerTemplate = value;
@@ -119,6 +124,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._headerTemplate;
             }
+
             set
             {
                 this._headerTemplate = value;
@@ -136,6 +142,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._itemTemplate;
             }
+
             set
             {
                 this._itemTemplate = value;
@@ -153,6 +160,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._SelectedItemTemplate;
             }
+
             set
             {
                 this._SelectedItemTemplate = value;
@@ -170,6 +178,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._separatorTemplate;
             }
+
             set
             {
                 this._separatorTemplate = value;
@@ -190,6 +199,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._showMenu;
             }
+
             set
             {
                 this._showMenu = value;

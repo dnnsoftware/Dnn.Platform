@@ -73,6 +73,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._Description;
             }
+
             set
             {
                 this._Description = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
@@ -93,6 +94,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._IsSystem;
             }
+
             set
             {
                 this._IsSystem = value;
@@ -105,6 +107,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._Name;
             }
+
             set
             {
                 if (HtmlUtils.ContainsEntity(value))
@@ -122,6 +125,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._ScopeId;
             }
+
             set
             {
                 this._ScopeId = value;
@@ -147,6 +151,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._ScopeTypeId;
             }
+
             set
             {
                 this._ScopeTypeId = value;
@@ -172,6 +177,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._Type;
             }
+
             set
             {
                 this._Type = value;
@@ -184,6 +190,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._VocabularyId;
             }
+
             set
             {
                 this._VocabularyId = value;
@@ -196,6 +203,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this._Weight;
             }
+
             set
             {
                 this._Weight = value;
@@ -232,6 +240,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 return this.VocabularyId;
             }
+
             set
             {
                 this.VocabularyId = value;

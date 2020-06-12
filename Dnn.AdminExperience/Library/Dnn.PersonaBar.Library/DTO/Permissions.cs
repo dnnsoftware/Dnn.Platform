@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+
 using Dnn.PersonaBar.Library.Helper;
 
 namespace Dnn.PersonaBar.Library.DTO
@@ -19,6 +20,7 @@ namespace Dnn.PersonaBar.Library.DTO
 
         [DataMember(Name = "userPermissions")]
         public IList<UserPermission> UserPermissions { get; set; }
+
         protected abstract void LoadPermissionDefinitions();
 
         protected Permissions()

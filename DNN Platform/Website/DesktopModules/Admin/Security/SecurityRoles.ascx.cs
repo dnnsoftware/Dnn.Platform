@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -144,6 +145,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return this._SelectedUserID;
             }
+
             set
             {
                 this._SelectedUserID = value;

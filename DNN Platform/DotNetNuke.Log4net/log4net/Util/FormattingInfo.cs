@@ -21,6 +21,7 @@
 // limitations under the License.
 //
 using System;
+
 using log4net.Util;
 
 namespace log4net.Util

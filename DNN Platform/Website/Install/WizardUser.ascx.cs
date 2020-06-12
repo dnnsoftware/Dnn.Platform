@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtFirstName.Text;
             }
+
             set
             {
                 this.txtFirstName.Text = value;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtLastName.Text;
             }
+
             set
             {
                 this.txtLastName.Text = value;
@@ -45,6 +47,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtUserName.Text;
             }
+
             set
             {
                 this.txtUserName.Text = value;
@@ -57,6 +60,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtPassword.Text;
             }
+
             set
             {
                 this.txtPassword.Text = value;
@@ -69,6 +73,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtConfirm.Text;
             }
+
             set
             {
                 this.txtConfirm.Text = value;
@@ -81,6 +86,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.txtEmail.Text;
             }
+
             set
             {
                 this.txtEmail.Text = value;
@@ -93,6 +99,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblFirstName.Text;
             }
+
             set
             {
                 this.lblFirstName.Text = value;
@@ -105,6 +112,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblLastName.Text;
             }
+
             set
             {
                 this.lblLastName.Text = value;
@@ -117,6 +125,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblUserName.Text;
             }
+
             set
             {
                 this.lblUserName.Text = value;
@@ -129,6 +138,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblPassword.Text;
             }
+
             set
             {
                 this.lblPassword.Text = value;
@@ -141,6 +151,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblConfirm.Text;
             }
+
             set
             {
                 this.lblConfirm.Text = value;
@@ -153,6 +164,7 @@ namespace DotNetNuke.Services.Install
             {
                 return this.lblEmail.Text;
             }
+
             set
             {
                 this.lblEmail.Text = value;

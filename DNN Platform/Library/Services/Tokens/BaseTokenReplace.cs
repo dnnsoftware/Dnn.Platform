@@ -57,6 +57,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 return this._language;
             }
+
             set
             {
                 this._language = value;

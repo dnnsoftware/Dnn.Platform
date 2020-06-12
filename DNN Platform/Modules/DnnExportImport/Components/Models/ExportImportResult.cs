@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
+
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto.Jobs;
 using DotNetNuke.Common.Utilities;
@@ -13,6 +14,7 @@ namespace Dnn.ExportImport.Components.Models
     public class ExportImportResult
     {
         public int JobId { get; set; }
+
         public IList<LogItem> CompleteLog { get; private set; }
 
         public IList<LogItem> Summary

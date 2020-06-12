@@ -21,6 +21,7 @@ namespace DotNetNuke.UI.WebControls
     public class DnnCountryAutocompleteControl : EditControl
     {
         private TextBox _CountryName;
+
         private TextBox CountryName
         {
             get
@@ -35,6 +36,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         private HiddenField _CountryId;
+
         private HiddenField CountryId
         {
             get
@@ -69,6 +71,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return strValue;
             }
+
             set { this.Value = value; }
         }
 

@@ -6,6 +6,7 @@
 using System;
 using System.Data;
 using System.Xml.Serialization;
+
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Users

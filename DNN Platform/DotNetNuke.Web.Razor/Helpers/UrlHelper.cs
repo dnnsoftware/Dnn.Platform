@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.Razor.Helpers
     public class UrlHelper
     {
         private readonly ModuleInstanceContext _context;
+
         protected INavigationManager NavigationManager { get; }
 
         [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]

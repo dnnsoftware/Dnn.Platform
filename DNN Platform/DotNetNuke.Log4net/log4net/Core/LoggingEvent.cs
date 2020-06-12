@@ -125,6 +125,7 @@ namespace log4net.Core
 
                 return this._timeStampUtc;
             }
+
             set
             {
                 this._timeStampUtc = value;

@@ -34,6 +34,7 @@ namespace DotNetNuke.UI.WebControls
     public class DNNRegionEditControl : EditControl
     {
         private DropDownList _Regions;
+
         private DropDownList Regions
         {
             get
@@ -48,6 +49,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         private TextBox _Region;
+
         private TextBox Region
         {
             get
@@ -62,6 +64,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         private HtmlInputHidden _InitialValue;
+
         private HtmlInputHidden RegionCode
         {
             get
@@ -87,6 +90,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return strValue;
             }
+
             set { this.Value = value; }
         }
 

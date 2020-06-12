@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+
 using DotNetNuke.Common;
 using DotNetNuke.Entities.Portals;
 
@@ -38,6 +39,7 @@ namespace DotNetNuke.Web.Api
         public string StaticRoles
         {
             get { return this._staticRoles; }
+
             set
             {
                 this._staticRoles = value;
@@ -51,6 +53,7 @@ namespace DotNetNuke.Web.Api
         public string DenyRoles
         {
             get { return this._denyRoles; }
+
             set
             {
                 this._denyRoles = value;
@@ -64,6 +67,7 @@ namespace DotNetNuke.Web.Api
         public string AuthTypes
         {
             get { return this._authTypes; }
+
             set
             {
                 this._authTypes = value;
@@ -116,6 +120,7 @@ namespace DotNetNuke.Web.Api
         }
 
         private static readonly string[] EmptyArray = new string[0];
+
         private static string[] SplitString(string original)
         {
             if (string.IsNullOrEmpty(original))

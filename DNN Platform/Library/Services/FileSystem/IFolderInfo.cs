@@ -12,20 +12,35 @@ namespace DotNetNuke.Services.FileSystem
     public interface IFolderInfo
     {
         string DisplayName { get; set; }
+
         string DisplayPath { get; set; }
+
         int FolderID { get; set; }
+
         string FolderName { get; }
+
         string FolderPath { get; set; }
+
         FolderPermissionCollection FolderPermissions { get; }
+
         bool IsCached { get; set; }
+
         bool IsProtected { get; set; }
+
         DateTime LastUpdated { get; set; }
+
         string PhysicalPath { get; }
+
         int PortalID { get; set; }
+
         int StorageLocation { get; set; }
+
         Guid UniqueId { get; set; }
+
         Guid VersionGuid { get; set; }
+
         int FolderMappingID { get; set; }
+
         bool IsStorageSecure { get; }
 
         /// <summary>

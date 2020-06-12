@@ -17,6 +17,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Copyright : SkinObjectBase
     {
         private const string MyFileName = "Copyright.ascx";
+
         public string CssClass { get; set; }
 
         protected override void OnLoad(EventArgs e)

@@ -34,8 +34,11 @@ namespace DotNetNuke.Services.Installer.Packages
     public class PackageType : PackageTypeMemberNameFixer
     {
         public string Description { get; set; }
+
         public string EditorControlSrc { get; set; }
+
         public SecurityAccessLevel SecurityAccessLevel { get; set; }
+
         public bool SupportsSideBySideInstallation { get; set; }
     }
 }

@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Mobile
             {
                 return this._id;
             }
+
             set
             {
                 this._id = value;
@@ -94,6 +95,7 @@ namespace DotNetNuke.Services.Mobile
 
                 return this._matchRules;
             }
+
             set
             {
                 this._matchRules = value;
@@ -139,6 +141,7 @@ namespace DotNetNuke.Services.Mobile
             {
                 return this.Id;
             }
+
             set
             {
                 this.Id = value;

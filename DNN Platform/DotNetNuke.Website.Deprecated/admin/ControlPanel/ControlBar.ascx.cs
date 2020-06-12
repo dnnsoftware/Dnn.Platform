@@ -47,6 +47,7 @@ namespace DotNetNuke.UI.ControlPanels
     public partial class ControlBar : ControlPanelBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ControlBar()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -965,6 +966,7 @@ namespace DotNetNuke.UI.ControlPanels
         }
 
         private List<string> _adminBookmarkItems;
+
         protected List<string> AdminBookmarkItems
         {
             get
@@ -983,6 +985,7 @@ namespace DotNetNuke.UI.ControlPanels
         }
 
         private List<string> _hostBookmarkItems;
+
         protected List<string> HostBookmarkItems
         {
             get

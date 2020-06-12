@@ -100,6 +100,7 @@ namespace log4net.Repository.Hierarchy
         public override Level Level
         {
             get { return base.Level; }
+
             set
             {
                 if (value == null)

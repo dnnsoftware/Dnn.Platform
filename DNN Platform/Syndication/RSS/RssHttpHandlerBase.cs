@@ -72,6 +72,7 @@ namespace DotNetNuke.Services.Syndication
         }
 
         public event InitEventHandler Init;
+
         public event PreRenderEventHandler PreRender;
 
         /// <summary>

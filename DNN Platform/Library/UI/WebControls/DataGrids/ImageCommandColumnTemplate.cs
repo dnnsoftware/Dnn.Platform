@@ -66,6 +66,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEditMode;
             }
+
             set
             {
                 this.mEditMode = value;
@@ -92,6 +93,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mItemType;
             }
+
             set
             {
                 this.mItemType = value;
@@ -143,6 +145,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mShowImage;
             }
+
             set
             {
                 this.mShowImage = value;
@@ -171,6 +174,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mVisible;
             }
+
             set
             {
                 this.mVisible = value;

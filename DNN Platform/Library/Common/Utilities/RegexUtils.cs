@@ -5,6 +5,7 @@
 using System;
 using System.Text.RegularExpressions;
 using System.Web.Caching;
+
 using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.Common.Utilities

@@ -37,6 +37,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._AddImageUrl;
             }
+
             set
             {
                 this._AddImageUrl = value;
@@ -49,6 +50,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._AllowTagging;
             }
+
             set
             {
                 this._AllowTagging = value;
@@ -61,6 +63,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._CancelImageUrl;
             }
+
             set
             {
                 this._CancelImageUrl = value;
@@ -75,6 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._ObjectType;
             }
+
             set
             {
                 this._ObjectType = value;
@@ -87,6 +91,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._RepeatDirection;
             }
+
             set
             {
                 this._RepeatDirection = value;
@@ -99,6 +104,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._SaveImageUrl;
             }
+
             set
             {
                 this._SaveImageUrl = value;
@@ -111,6 +117,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._Separator;
             }
+
             set
             {
                 this._Separator = value;
@@ -123,6 +130,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._ShowCategories;
             }
+
             set
             {
                 this._ShowCategories = value;
@@ -135,6 +143,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._ShowTags;
             }
+
             set
             {
                 this._ShowTags = value;

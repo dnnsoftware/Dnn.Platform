@@ -33,6 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._Localize;
             }
+
             set
             {
                 this._Localize = value;

@@ -62,6 +62,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.lblLabel.Text;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -76,6 +77,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.lblLabel.AssociatedControlID;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -105,6 +107,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.lblHelp.Text;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -131,6 +134,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._ResourceKey;
             }
+
             set
             {
                 this._ResourceKey = value;
@@ -154,6 +158,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.cmdHelp.Visible;
             }
+
             set
             {
                 this.EnsureChildControls();

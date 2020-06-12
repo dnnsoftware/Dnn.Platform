@@ -70,6 +70,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._TabPermissionID;
             }
+
             set
             {
                 this._TabPermissionID = value;
@@ -89,6 +90,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._TabID;
             }
+
             set
             {
                 this._TabID = value;
@@ -122,6 +124,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this.TabPermissionID;
             }
+
             set
             {
                 this.TabPermissionID = value;

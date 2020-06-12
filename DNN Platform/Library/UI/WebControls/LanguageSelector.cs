@@ -69,6 +69,7 @@ namespace DotNetNuke.UI.WebControls
                     return (LanguageSelectionMode)this.ViewState["SelectionMode"];
                 }
             }
+
             set
             {
                 if (this.SelectionMode != value)
@@ -98,6 +99,7 @@ namespace DotNetNuke.UI.WebControls
                     return (LanguageSelectionObject)this.ViewState["SelectionObject"];
                 }
             }
+
             set
             {
                 if ((int)this.SelectionMode != (int)value)
@@ -127,6 +129,7 @@ namespace DotNetNuke.UI.WebControls
                     return (LanguageItemStyle)this.ViewState["ItemStyle"];
                 }
             }
+
             set
             {
                 if (this.ItemStyle != value)
@@ -156,6 +159,7 @@ namespace DotNetNuke.UI.WebControls
                     return (LanguageListDirection)this.ViewState["ListDirection"];
                 }
             }
+
             set
             {
                 if (this.ListDirection != value)
@@ -211,6 +215,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return a.ToArray(typeof(string)) as string[];
             }
+
             set
             {
                 this.EnsureChildControls();

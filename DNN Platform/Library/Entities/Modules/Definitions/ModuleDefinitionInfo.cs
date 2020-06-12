@@ -144,6 +144,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             {
                 return this.ModuleDefID;
             }
+
             set
             {
                 this.ModuleDefID = value;

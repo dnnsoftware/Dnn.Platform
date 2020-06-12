@@ -354,7 +354,9 @@ namespace DotNetNuke.UI.WebControls
         public Style VisibilityStyle { get; private set; }
 
         public event PropertyChangedEventHandler ItemAdded;
+
         public event EditorCreatedEventHandler ItemCreated;
+
         public event PropertyChangedEventHandler ItemDeleted;
 
         /// -----------------------------------------------------------------------------

@@ -7,6 +7,7 @@ using System;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Services.Exceptions;
@@ -76,6 +77,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblHelp.Text;
             }
+
             set
             {
                 this.lblHelp.Text = value;
@@ -88,6 +90,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblNoHelpLabel.Text;
             }
+
             set
             {
                 this.lblNoHelpLabel.Text = value;
@@ -122,6 +125,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblLabel.Text;
             }
+
             set
             {
                 this.lblLabel.Text = value;
@@ -140,6 +144,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblLabel.Width;
             }
+
             set
             {
                 this.lblLabel.Width = value;

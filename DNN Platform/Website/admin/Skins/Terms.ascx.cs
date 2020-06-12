@@ -23,6 +23,7 @@ namespace DotNetNuke.UI.Skins.Controls
     {
         private readonly INavigationManager _navigationManager;
         private const string MyFileName = "Terms.ascx";
+
         public string Text { get; set; }
 
         public string CssClass { get; set; }

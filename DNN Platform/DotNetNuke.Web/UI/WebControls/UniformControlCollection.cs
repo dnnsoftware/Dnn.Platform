@@ -95,6 +95,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._owner.Controls[index] as TChildren;
             }
+
             set
             {
                 this.RemoveAt(index);

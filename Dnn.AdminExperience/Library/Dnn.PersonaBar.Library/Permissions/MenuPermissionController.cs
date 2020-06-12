@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Caching;
+
 using Dnn.PersonaBar.Library.Data;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;
@@ -17,6 +18,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Security;
 using DotNetNuke.Security.Roles;
+
 using PermissionInfo = Dnn.PersonaBar.Library.Model.PermissionInfo;
 
 namespace Dnn.PersonaBar.Library.Permissions

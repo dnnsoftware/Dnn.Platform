@@ -6,11 +6,13 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Controllers;
 using DotNetNuke.Entities.Host;
 using Microsoft.VisualBasic;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Services.Scheduling
@@ -153,6 +155,7 @@ namespace DotNetNuke.Services.Scheduling
                 return DataCache.GetCache("ScheduleLastPolled") != null
                     ? (DateTime)DataCache.GetCache("ScheduleLastPolled") : DateTime.MinValue;
             }
+
             set
             {
                 var nextScheduledTask = Instance().GetNextScheduledTask(ServerController.GetExecutingServerName());

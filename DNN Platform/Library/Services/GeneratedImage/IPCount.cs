@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.GeneratedImage
         public static string CachePath
         {
             get { return _cachePath; }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -50,6 +51,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _purgeInterval;
             }
+
             set
             {
                 if (value == null)
@@ -85,6 +87,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
                 return lastPurge;
             }
+
             set
             {
                 File.WriteAllText(CachePath + "_lastpurge", string.Empty);

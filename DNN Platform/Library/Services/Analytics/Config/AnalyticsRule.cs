@@ -20,6 +20,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._roleId;
             }
+
             set
             {
                 this._roleId = value;
@@ -32,6 +33,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._tabId;
             }
+
             set
             {
                 this._tabId = value;
@@ -44,6 +46,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._label;
             }
+
             set
             {
                 this._label = value;

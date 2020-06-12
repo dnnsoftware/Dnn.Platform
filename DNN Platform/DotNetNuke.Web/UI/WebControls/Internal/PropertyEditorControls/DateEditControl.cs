@@ -8,6 +8,7 @@ using System.Collections.Specialized;
 using System.Data.SqlTypes;
 using System.Globalization;
 using System.Web.UI;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.UI.WebControls;
@@ -143,6 +144,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
                 return _StringValue;
             }
+
             set
             {
                 this.Value = DateTime.Parse(value);
@@ -155,6 +157,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             {
                 return base.ID + "_control";
             }
+
             set
             {
                 base.ID = value;

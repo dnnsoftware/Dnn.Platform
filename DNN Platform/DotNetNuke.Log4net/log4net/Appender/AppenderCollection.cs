@@ -234,6 +234,7 @@ namespace log4net.Appender
                 this.ValidateIndex(index); // throws
                 return this.m_array[index];
             }
+
             set
             {
                 this.ValidateIndex(index); // throws
@@ -436,6 +437,7 @@ namespace log4net.Appender
             {
                 return this.m_array.Length;
             }
+
             set
             {
                 if (value < this.m_count)

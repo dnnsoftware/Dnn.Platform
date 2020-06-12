@@ -8,6 +8,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         where T : class
     {
         T GetSettings(ModuleInfo moduleContext);
+
         void SaveSettings(ModuleInfo moduleContext, T settings);
     }
 }

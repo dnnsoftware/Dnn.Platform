@@ -103,6 +103,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return this._folder;
             }
+
             set
             {
                 // Make sure folder name ends with /
@@ -130,6 +131,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._height.Value;
             }
+
             set
             {
                 this._height = value;
@@ -210,6 +212,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._width.Value;
             }
+
             set
             {
                 this._width = value;
@@ -228,6 +231,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._sha1Hash;
             }
+
             set
             {
                 this._sha1Hash = value;
@@ -292,6 +296,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._lastModificationTime.Value;
             }
+
             set
             {
                 this._lastModificationTime = value;
@@ -334,6 +339,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._folderMappingID;
             }
+
             set
             {
                 this._folderMappingID = value;
@@ -429,6 +435,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return this.FileId;
             }
+
             set
             {
                 this.FileId = value;

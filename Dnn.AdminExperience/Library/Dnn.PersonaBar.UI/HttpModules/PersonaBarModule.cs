@@ -4,6 +4,7 @@
 
 using System;
 using System.Web;
+
 using Dnn.PersonaBar.Library.AppEvents;
 using Dnn.PersonaBar.Library.Common;
 using DotNetNuke.Application;

@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.Mvp
         where TModel : class, new()
     {
         protected INavigationManager NavigationManager { get; }
+
         public ProfileModuleViewBase()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

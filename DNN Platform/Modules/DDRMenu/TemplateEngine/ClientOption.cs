@@ -12,6 +12,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
     public class ClientOption
     {
         public string Name { get; set; }
+
         public string Value { get; set; }
 
         public ClientOption()

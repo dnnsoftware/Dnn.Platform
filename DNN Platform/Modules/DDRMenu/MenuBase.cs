@@ -12,6 +12,7 @@ using System.Web.Compilation;
 using System.Web.UI;
 using System.Xml;
 using System.Xml.Serialization;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
 using DotNetNuke.Entities.Portals;
@@ -41,17 +42,22 @@ namespace DotNetNuke.Web.DDRMenu
         }
 
         private Settings menuSettings;
+
         internal MenuNode RootNode { get; set; }
+
         internal bool SkipLocalisation { get; set; }
+
         public TemplateDefinition TemplateDef { get; set; }
 
         private HttpContext currentContext;
+
         private HttpContext CurrentContext
         {
             get { return this.currentContext ?? (this.currentContext = HttpContext.Current); }
         }
 
         private PortalSettings hostPortalSettings;
+
         internal PortalSettings HostPortalSettings
         {
             get { return this.hostPortalSettings ?? (this.hostPortalSettings = PortalController.Instance.GetCurrentPortalSettings()); }

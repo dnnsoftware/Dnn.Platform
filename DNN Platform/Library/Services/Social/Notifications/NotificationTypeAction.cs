@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 return this._notificationTypeActionId;
             }
+
             set
             {
                 this._notificationTypeActionId = value;

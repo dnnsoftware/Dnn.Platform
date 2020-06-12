@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using Dnn.ExportImport.Components.Common;
 using Newtonsoft.Json;
 
@@ -129,6 +130,7 @@ namespace Dnn.ExportImport.Components.Dto
 
         [JsonIgnore]
         public DateTime? FromDate => this.FromDateUtc;
+
         [JsonIgnore]
         public DateTime ToDate => this.ToDateUtc;
 
@@ -157,7 +159,9 @@ namespace Dnn.ExportImport.Components.Dto
     public class PageToExport
     {
         public int TabId { get; set; }
+
         public int ParentTabId { get; set; }
+
         public TriCheckedState CheckedState { get; set; }
     }
 

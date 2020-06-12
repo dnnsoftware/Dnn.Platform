@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Dnn.ExportImport.Components.Common;
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
@@ -443,7 +444,9 @@ namespace Dnn.ExportImport.Components.Services
         private struct RoleGroupItem
         {
             public int RoleGroupId { get; }
+
             public int CreatedBy { get; }
+
             public int ModifiedBy { get; }
 
             public RoleGroupItem(int roleGroupId, int createdBy, int modifiedBy)
@@ -457,7 +460,9 @@ namespace Dnn.ExportImport.Components.Services
         private struct RoleItem
         {
             public int RoleId { get; }
+
             public int CreatedBy { get; }
+
             public int ModifiedBy { get; }
 
             public RoleItem(int roleId, int createdBy, int modifiedBy)
@@ -471,8 +476,11 @@ namespace Dnn.ExportImport.Components.Services
         private struct SettingItem
         {
             public int RoleId { get; }
+
             public string Name { get; }
+
             public int CreatedBy { get; }
+
             public int ModifiedBy { get; }
 
             public SettingItem(int roleId, string settingName, int createdBy, int modifiedBy)

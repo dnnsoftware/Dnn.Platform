@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.IO;
+
 using Localization = DotNetNuke.Services.Localization.Localization;
 
 namespace Dnn.PersonaBar.Library.Prompt.Models

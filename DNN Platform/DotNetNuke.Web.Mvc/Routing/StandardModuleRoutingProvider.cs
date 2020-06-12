@@ -20,8 +20,10 @@ namespace DotNetNuke.Web.Mvc.Routing
     public class StandardModuleRoutingProvider : ModuleRoutingProvider
     {
         protected INavigationManager NavigationManager { get; }
+
         private const string ExcludedQueryStringParams = "tabid,mid,ctl,language,popup,action,controller";
         private const string ExcludedRouteValues = "mid,ctl,popup";
+
         public StandardModuleRoutingProvider()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Services.Social.Subscriptions;
 using DotNetNuke.Services.Social.Subscriptions.Data;

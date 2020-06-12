@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+
 using DotNetNuke.Common.Utilities;
 
 namespace Dnn.PersonaBar.Library.Data

@@ -121,6 +121,7 @@ namespace DotNetNuke.Collections.Internal
                 this.EnsureReadAccess();
                 return this._list[index];
             }
+
             set
             {
                 this.EnsureNotDisposed();

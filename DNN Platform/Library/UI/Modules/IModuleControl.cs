@@ -19,9 +19,13 @@ namespace DotNetNuke.UI.Modules
     public interface IModuleControl
     {
         Control Control { get; }
+
         string ControlPath { get; }
+
         string ControlName { get; }
+
         string LocalResourceFile { get; set; }
+
         ModuleInstanceContext ModuleContext { get; }
     }
 }

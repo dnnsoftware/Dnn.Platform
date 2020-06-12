@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using ClientDependency.Core.Config;
 
 namespace DotNetNuke.Web.Client.Providers

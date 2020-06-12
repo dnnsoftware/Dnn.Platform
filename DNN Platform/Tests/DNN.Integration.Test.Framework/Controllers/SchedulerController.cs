@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading;
+
 using DNN.Integration.Test.Framework.Helpers;
 
 namespace DNN.Integration.Test.Framework.Controllers
@@ -253,9 +254,13 @@ namespace DNN.Integration.Test.Framework.Controllers
     public class ScheduleHistoryInfo
     {
         public int ScheduleId { get; }
+
         public int ScheduleHistoryId { get; }
+
         public DateTime EndDate { get; }
+
         public bool Succeeded { get; }
+
         public string LogNotes { get; }
 
         public ScheduleHistoryInfo(IDictionary<string, object> queryResult)

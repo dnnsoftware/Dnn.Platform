@@ -11,6 +11,7 @@ using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+
 using Dnn.AuthServices.Jwt.Auth;
 using Dnn.AuthServices.Jwt.Components.Entity;
 using Dnn.AuthServices.Jwt.Data;
@@ -36,6 +37,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         private static readonly Encoding TextEncoder = Encoding.UTF8;
 
         public const string AuthScheme = "Bearer";
+
         public string SchemeType => "JWT";
 
         protected override Func<IJwtController> GetFactory()

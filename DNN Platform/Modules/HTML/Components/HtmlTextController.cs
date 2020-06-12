@@ -47,7 +47,9 @@ namespace DotNetNuke.Modules.Html
     {
         public const int MAX_DESCRIPTION_LENGTH = 100;
         private const string PortalRootToken = "{{PortalRoot}}";
+
         protected INavigationManager NavigationManager { get; }
+
         public HtmlTextController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

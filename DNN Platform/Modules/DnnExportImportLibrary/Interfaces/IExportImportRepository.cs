@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+
 using Dnn.ExportImport.Dto;
 
 namespace Dnn.ExportImport.Interfaces
@@ -13,8 +14,10 @@ namespace Dnn.ExportImport.Interfaces
     {
         T AddSingleItem<T>(T item)
             where T : class;
+
         T UpdateSingleItem<T>(T item)
             where T : class;
+
         T GetSingleItem<T>()
             where T : class;
 
@@ -41,6 +44,7 @@ namespace Dnn.ExportImport.Interfaces
 
         int GetCount<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto;
+
         T GetItem<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto;
 

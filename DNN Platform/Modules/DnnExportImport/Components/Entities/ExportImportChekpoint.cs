@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
@@ -18,12 +19,19 @@ namespace Dnn.ExportImport.Components.Entities
         private double _progress;
 
         public int CheckpointId { get; set; }
+
         public int JobId { get; set; }
+
         public string AssemblyName { get; set; }
+
         public string Category { get; set; }
+
         public int Stage { get; set; } // all stages start from 0 and increase
+
         public string StageData { get; set; } // discretionary data
+
         public DateTime StartDate { get; set; }
+
         public DateTime LastUpdateDate { get; set; }
 
         public bool Completed { get; set; }
@@ -31,6 +39,7 @@ namespace Dnn.ExportImport.Components.Entities
         public double Progress
         {
             get { return this._progress; }
+
             set
             {
                 if (value < 0)
@@ -47,6 +56,7 @@ namespace Dnn.ExportImport.Components.Entities
         }
 
         public int TotalItems { get; set; }
+
         public int ProcessedItems { get; set; }
 
         public int KeyID

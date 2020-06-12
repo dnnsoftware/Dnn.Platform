@@ -243,8 +243,11 @@ namespace DotNetNuke.UI.WebControls
         }
 
         public event DualListBoxEventHandler AddButtonClick;
+
         public event EventHandler AddAllButtonClick;
+
         public event DualListBoxEventHandler RemoveButtonClick;
+
         public event EventHandler RemoveAllButtonClick;
 
         private NameValueCollection GetList(string listType, object dataSource)

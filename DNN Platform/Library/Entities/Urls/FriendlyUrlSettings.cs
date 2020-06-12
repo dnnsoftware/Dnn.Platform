@@ -164,6 +164,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._autoAsciiConvert.Value;
             }
+
             internal set { this._autoAsciiConvert = value; }
         }
 
@@ -208,6 +209,7 @@ namespace DotNetNuke.Entities.Urls
                     ? DeletedTabHandlingType.Do301RedirectToPortalHome
                     : DeletedTabHandlingType.Do404Error;
             }
+
             internal set
             {
                 var newValue = value.ToString();
@@ -227,6 +229,7 @@ namespace DotNetNuke.Entities.Urls
                                KeepInQueryStringRegexSetting,
                                @"/nomo/\d+|/runningDefault/[^/]+|/popup/(?:true|false)|/(?:page|category|sort|tags)/[^/]+|tou/[^/]+|(/utm[^/]+/[^/]+)+"));
             }
+
             internal set { this._doNotIncludeInPathRegex = value; }
         }
 
@@ -239,6 +242,7 @@ namespace DotNetNuke.Entities.Urls
                     DoNotRedirectUrlRegexSetting,
                     @"(\.axd)|/Rss\.aspx|/SiteMap\.aspx|\.ashx|/LinkClick\.aspx|/Providers/|/DesktopModules/|ctl=MobilePreview|/ctl/MobilePreview|/API/"));
             }
+
             internal set { this._doNotRedirectRegex = value; }
         }
 
@@ -249,6 +253,7 @@ namespace DotNetNuke.Entities.Urls
                 // 541 moved doNotRedirect and doNotRedirectRegex from under 'redirectUnfriendly' code
                 return this._doNotRedirectSecureRegex ?? (this._doNotRedirectSecureRegex = this.GetStringSetting(DoNotRedirectHttpsUrlRegexSetting, string.Empty));
             }
+
             internal set { this._doNotRedirectSecureRegex = value; }
         }
 
@@ -260,6 +265,7 @@ namespace DotNetNuke.Entities.Urls
                        (this._doNotRewriteRegex =
                            this.GetStringSetting(DoNotRewriteRegExSetting, @"/DesktopModules/|/Providers/|/LinkClick\.aspx|/profilepic\.ashx|/DnnImageHandler\.ashx|/__browserLink/|/API/"));
             }
+
             internal set { this._doNotRewriteRegex = value; }
         }
 
@@ -274,6 +280,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._forceLowerCase.Value;
             }
+
             internal set { this._forceLowerCase = value; }
         }
 
@@ -295,6 +302,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._forcePortalDefaultLanguage.Value;
             }
+
             internal set { this._forcePortalDefaultLanguage = value; }
         }
 
@@ -317,6 +325,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._friendlyAdminHostUrls.Value;
             }
+
             internal set { this._friendlyAdminHostUrls = value; }
         }
 
@@ -344,6 +353,7 @@ namespace DotNetNuke.Entities.Urls
                                IgnoreRegexSetting,
                                @"(?<!linkclick\.aspx.+)(?:(?<!\?.+)(\.pdf$|\.gif$|\.png($|\?)|\.css($|\?)|\.js($|\?)|\.jpg$|\.axd($|\?)|\.swf$|\.flv$|\.ico$|\.xml($|\?)|\.txt$))"));
             }
+
             internal set { this._ignoreRegex = value; }
         }
 
@@ -367,6 +377,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._includePageName.Value;
             }
+
             internal set { this._includePageName = value; }
         }
 
@@ -390,6 +401,7 @@ namespace DotNetNuke.Entities.Urls
                 // 655 : new noFriendlyUrlRegex value to ignore generation of certain urls
                 return this._noFriendlyUrlRegex ?? (this._noFriendlyUrlRegex = this.GetStringSetting(DoNotUseFriendlyUrlRegexSetting, @"/Rss\.aspx"));
             }
+
             internal set { this._noFriendlyUrlRegex = value; }
         }
 
@@ -428,6 +440,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return val;
             }
+
             internal set
             {
                 var newValue = value.ToString();
@@ -446,6 +459,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._redirectDefaultPage.Value;
             }
+
             internal set { this._redirectUnfriendly = value; }
         }
 
@@ -460,6 +474,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._redirectOldProfileUrl.Value;
             }
+
             internal set { this._redirectOldProfileUrl = value; }
         }
 
@@ -474,6 +489,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._redirectUnfriendly.Value;
             }
+
             internal set { this._redirectUnfriendly = value; }
         }
 
@@ -488,6 +504,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._redirectWrongCase.Value;
             }
+
             internal set { this._redirectWrongCase = value; }
         }
 
@@ -546,6 +563,7 @@ namespace DotNetNuke.Entities.Urls
                 // 791 : use threadlocking option
                 return this._replaceSpaceWith ?? (this._replaceSpaceWith = this.GetStringSetting(ReplaceSpaceWithSetting, "-"));
             }
+
             internal set { this._replaceSpaceWith = value; }
         }
 
@@ -566,6 +584,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._sslClientRedirect.Value;
             }
+
             internal set { this._sslClientRedirect = value; }
         }
 
@@ -589,6 +608,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return this._urlFormat ?? (this._urlFormat = this.GetStringSetting(UrlFormatSetting, "advanced"));
             }
+
             internal set { this._urlFormat = value; }
         }
 
@@ -607,6 +627,7 @@ namespace DotNetNuke.Entities.Urls
 
                 return this._useBaseFriendlyUrls;
             }
+
             internal set { this._useBaseFriendlyUrls = value; }
         }
 
@@ -620,6 +641,7 @@ namespace DotNetNuke.Entities.Urls
                                SiteUrlsOnlyRegexSetting,
                                @"/rss\.aspx|Telerik.RadUploadProgressHandler\.ashx|BannerClickThrough\.aspx|(?:/[^/]+)*/Tabid/\d+/.*default\.aspx"));
             }
+
             internal set { this._useSiteUrlsRegex = value; }
         }
 
@@ -631,6 +653,7 @@ namespace DotNetNuke.Entities.Urls
                 return this._validExtensionlessUrlsRegex ??
                        (this._validExtensionlessUrlsRegex = this.GetStringSetting(UrlsWithNoExtensionRegexSetting, @"\.asmx/|\.ashx/|\.svc/|\.aspx/|\.axd/"));
             }
+
             internal set { this._validExtensionlessUrlsRegex = value; }
         }
 

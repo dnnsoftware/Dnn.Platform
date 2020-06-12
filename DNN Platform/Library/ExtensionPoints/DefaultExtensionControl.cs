@@ -5,6 +5,7 @@
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.ExtensionPoints
@@ -22,6 +23,7 @@ namespace DotNetNuke.ExtensionPoints
                 var s = (string)this.ViewState["Module"];
                 return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["Module"] = value;
@@ -37,6 +39,7 @@ namespace DotNetNuke.ExtensionPoints
                 var s = (string)this.ViewState["Group"];
                 return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["Group"] = value;
@@ -52,6 +55,7 @@ namespace DotNetNuke.ExtensionPoints
                 var s = (string)this.ViewState["Name"];
                 return s ?? string.Empty;
             }
+
             set
             {
                 this.ViewState["Name"] = value;

@@ -39,6 +39,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this._PortalID;
             }
+
             set
             {
                 this._PortalID = value;
@@ -57,6 +58,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this._TabID;
             }
+
             set
             {
                 this._TabID = value;
@@ -75,6 +77,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this._CreationDate;
             }
+
             set
             {
                 this._CreationDate = value;
@@ -93,6 +96,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this._LastActiveDate;
             }
+
             set
             {
                 this._LastActiveDate = value;

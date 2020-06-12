@@ -67,6 +67,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._desktopModulePermissionID;
             }
+
             set
             {
                 this._desktopModulePermissionID = value;
@@ -85,6 +86,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._portalDesktopModuleID;
             }
+
             set
             {
                 this._portalDesktopModuleID = value;
@@ -116,6 +118,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this.DesktopModulePermissionID;
             }
+
             set
             {
                 this.DesktopModulePermissionID = value;

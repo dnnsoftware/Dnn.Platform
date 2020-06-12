@@ -20,6 +20,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 return (PortalAliasInfo)this.Dictionary[key];
             }
+
             set
             {
                 this.Dictionary[key] = value;

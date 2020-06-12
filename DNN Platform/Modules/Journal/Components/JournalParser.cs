@@ -27,13 +27,21 @@ namespace DotNetNuke.Modules.Journal.Components
     public class JournalParser
     {
         protected INavigationManager NavigationManager { get; }
+
         private PortalSettings PortalSettings { get; set; }
+
         private int ProfileId { get; set; }
+
         private int SocialGroupId { get; set; }
+
         private int ModuleId { get; set; }
+
         private UserInfo CurrentUser { get; set; }
+
         private int OwnerPortalId { get; set; }
+
         public int JournalId { get; set; }
+
         private readonly string url = string.Empty;
         private bool isAdmin;
         private bool isUnverifiedUser;

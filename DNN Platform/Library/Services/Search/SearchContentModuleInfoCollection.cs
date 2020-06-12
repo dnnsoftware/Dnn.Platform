@@ -58,6 +58,7 @@ namespace DotNetNuke.Services.Search
             {
                 return (SearchContentModuleInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

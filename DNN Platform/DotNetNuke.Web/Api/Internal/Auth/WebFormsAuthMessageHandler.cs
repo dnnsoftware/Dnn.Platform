@@ -4,6 +4,7 @@
 
 using System.Net.Http;
 using System.Threading;
+
 using DotNetNuke.HttpModules.Membership;
 
 namespace DotNetNuke.Web.Api.Internal.Auth

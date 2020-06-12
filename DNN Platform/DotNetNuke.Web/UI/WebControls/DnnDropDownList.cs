@@ -71,6 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("UseUndefinedItem", false);
             }
+
             set
             {
                 this.ViewState.SetValue("UseUndefinedItem", value, false);
@@ -86,6 +87,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Events.AddHandler(EventSelectionChanged, value);
             }
+
             remove
             {
                 this.Events.RemoveHandler(EventSelectionChanged, value);
@@ -115,6 +117,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return null;
             }
+
             set
             {
                 this.StateControl.TypedValueOrDefault.SelectedItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
@@ -152,6 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.FirstItem;
             }
+
             set
             {
                 this.FirstItem = value;
@@ -168,6 +172,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return (this.Options.ItemList.FirstItem == null) ? null : new ListItem(this.Options.ItemList.FirstItem.Value, this.Options.ItemList.FirstItem.Key);
             }
+
             set
             {
                 this.Options.ItemList.FirstItem = (value == null) ? null : new SerializableKeyValuePair<string, string>(value.Value, value.Text);
@@ -212,6 +217,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("AutoPostBack", false);
             }
+
             set
             {
                 this.ViewState.SetValue("AutoPostBack", value, false);
@@ -227,6 +233,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("CausesValidation", false);
             }
+
             set
             {
                 this.ViewState.SetValue("CausesValidation", value, false);
@@ -242,6 +249,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("ValidationGroup", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("ValidationGroup", value, string.Empty);
@@ -269,6 +277,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return ClientAPI.GetClientVariable(this.Page, this.ClientID + "_expandPath");
             }
+
             set
             {
                 ClientAPI.RegisterClientVariable(this.Page, this.ClientID + "_expandPath", value, true);

@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._settingName;
             }
+
             set
             {
                 this._settingName = value;
@@ -31,6 +32,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 return this._settingValue;
             }
+
             set
             {
                 this._settingValue = value;

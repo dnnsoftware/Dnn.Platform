@@ -30,6 +30,7 @@ namespace DotNetNuke.UI.ControlPanel
     public partial class AddPage : UserControl, IDnnRibbonBarTool
     {
         private readonly INavigationManager _navigationManager;
+
         public AddPage()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -120,6 +121,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return base.Visible && TabPermissionController.CanAddPage();
             }
+
             set
             {
                 base.Visible = value;
@@ -132,6 +134,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickAddPage";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");

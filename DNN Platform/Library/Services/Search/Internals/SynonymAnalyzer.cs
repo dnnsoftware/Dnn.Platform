@@ -8,6 +8,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Services.Search.Entities;
 using Lucene.Net.Analysis;

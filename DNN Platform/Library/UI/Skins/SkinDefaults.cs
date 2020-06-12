@@ -41,6 +41,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._adminDefaultName;
             }
+
             set
             {
                 this._adminDefaultName = value;
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._defaultName;
             }
+
             set
             {
                 this._defaultName = value;
@@ -65,6 +67,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._folder;
             }
+
             set
             {
                 this._folder = value;

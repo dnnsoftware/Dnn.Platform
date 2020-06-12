@@ -6,6 +6,7 @@
 using System;
 using System.Data;
 using System.Xml.Serialization;
+
 using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Entities.Users.Social
@@ -70,6 +71,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 return this.UserRelationshipId;
             }
+
             set
             {
                 this.UserRelationshipId = value;

@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         public string Size
         {
             get { return this._size; }
+
             set
             {
                 long bytes;

@@ -54,6 +54,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.MaxInvalidPasswordAttempts;
             }
+
             set
             {
                 memberProvider.MaxInvalidPasswordAttempts = value;
@@ -74,6 +75,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.MinNonAlphanumericCharacters;
             }
+
             set
             {
                 memberProvider.MinNonAlphanumericCharacters = value;
@@ -94,6 +96,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.MinPasswordLength;
             }
+
             set
             {
                 memberProvider.MinPasswordLength = value;
@@ -114,6 +117,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.PasswordAttemptWindow;
             }
+
             set
             {
                 memberProvider.PasswordAttemptWindow = value;
@@ -134,6 +138,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.PasswordFormat;
             }
+
             set
             {
                 memberProvider.PasswordFormat = value;
@@ -154,6 +159,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.PasswordResetEnabled;
             }
+
             set
             {
                 memberProvider.PasswordResetEnabled = value;
@@ -182,6 +188,7 @@ namespace DotNetNuke.Security.Membership
 
                 return enabled;
             }
+
             set
             {
                 memberProvider.PasswordRetrievalEnabled = value;
@@ -202,6 +209,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.PasswordStrengthRegularExpression;
             }
+
             set
             {
                 memberProvider.PasswordStrengthRegularExpression = value;
@@ -222,6 +230,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.RequiresQuestionAndAnswer;
             }
+
             set
             {
                 memberProvider.RequiresQuestionAndAnswer = value;
@@ -242,6 +251,7 @@ namespace DotNetNuke.Security.Membership
             {
                 return memberProvider.RequiresUniqueEmail;
             }
+
             set
             {
                 memberProvider.RequiresUniqueEmail = value;

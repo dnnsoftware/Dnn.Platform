@@ -101,6 +101,7 @@ namespace log4net.Appender
             {
                 return this.m_listeningPort;
             }
+
             set
             {
                 if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)

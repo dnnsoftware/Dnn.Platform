@@ -5,6 +5,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Runtime.Serialization;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
 

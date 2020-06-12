@@ -37,6 +37,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 return this._messageattachmentID;
             }
+
             set
             {
                 this._messageattachmentID = value;
@@ -65,6 +66,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 return this.MessageAttachmentID;
             }
+
             set
             {
                 this.MessageAttachmentID = value;

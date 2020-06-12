@@ -57,6 +57,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._buttonSeparator;
             }
+
             set
             {
                 this._buttonSeparator = value;
@@ -75,6 +76,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._commandName;
             }
+
             set
             {
                 this._commandName = value;
@@ -101,6 +103,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._displayLink;
             }
+
             set
             {
                 this._displayLink = value;

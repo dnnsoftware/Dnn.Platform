@@ -68,6 +68,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return (ModulePermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

@@ -97,6 +97,7 @@ namespace DotNetNuke.Entities.Content
             {
                 return this.ContentTypeId;
             }
+
             set
             {
                 this.ContentTypeId = value;

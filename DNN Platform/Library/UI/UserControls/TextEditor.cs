@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Users;
@@ -64,6 +65,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.ViewState["DefaultMode"] == null || string.IsNullOrEmpty(this.ViewState["DefaultMode"].ToString()) ? "RICH" : this.ViewState["DefaultMode"].ToString();
             }
+
             set
             {
                 if (!value.Equals("BASIC", StringComparison.OrdinalIgnoreCase))
@@ -122,6 +124,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return strMode;
             }
+
             set
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -175,6 +178,7 @@ namespace DotNetNuke.UI.UserControls
                         return this.IsRichEditorAvailable ? this.Encode(RemoveBaseTags(this._richTextEditor.Text)) : this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
                 }
             }
+
             set
             {
                 this.TxtDesktopHTML.Text = HtmlUtils.ConvertToText(this.Decode(value));
@@ -192,6 +196,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["textrender"]);
             }
+
             set
             {
                 var strMode = value.ToUpper().Substring(0, 1);

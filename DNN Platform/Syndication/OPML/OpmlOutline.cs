@@ -33,6 +33,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._description;
             }
+
             set
             {
                 this._description = value;
@@ -45,6 +46,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._title;
             }
+
             set
             {
                 this._title = value;
@@ -57,6 +59,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._type;
             }
+
             set
             {
                 this._type = value;
@@ -69,6 +72,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._text;
             }
+
             set
             {
                 this._text = value;
@@ -87,6 +91,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._created;
             }
+
             set
             {
                 this._created = value;
@@ -103,6 +108,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._category;
             }
+
             set
             {
                 this._category = value;
@@ -115,6 +121,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._language;
             }
+
             set
             {
                 this._language = value;

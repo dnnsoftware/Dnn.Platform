@@ -30,6 +30,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._useSkinPath;
             }
+
             set
             {
                 this._useSkinPath = value;

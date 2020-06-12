@@ -450,6 +450,7 @@ namespace log4net.Appender
         public RollingMode RollingStyle
         {
             get { return this.m_rollingStyle; }
+
             set
             {
                 this.m_rollingStyle = value;

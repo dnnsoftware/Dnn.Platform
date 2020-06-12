@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Entities.Urls

@@ -22,6 +22,7 @@
 //
 using System;
 using System.Collections;
+
 using log4net.Appender;
 using log4net.Core;
 using log4net.Repository;
@@ -259,6 +260,7 @@ namespace log4net.Repository.Hierarchy
         public ILoggerFactory LoggerFactory
         {
             get { return this.m_defaultFactory; }
+
             set
             {
                 if (value == null)

@@ -283,6 +283,7 @@ namespace log4net.Util
 
                 return this.InnerHashtable[key];
             }
+
             set
             {
                 throw new NotSupportedException("This is a Read Only Dictionary and can not be modified");

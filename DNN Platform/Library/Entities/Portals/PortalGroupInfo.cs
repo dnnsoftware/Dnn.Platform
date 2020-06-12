@@ -51,6 +51,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 return this.PortalGroupId;
             }
+
             set
             {
                 this.PortalGroupId = value;

@@ -17,12 +17,19 @@ namespace DotNetNuke.Services.Journal
     public class CommentInfo : IHydratable, IPropertyAccess
     {
         public int CommentId { get; set; }
+
         public int JournalId { get; set; }
+
         public string Comment { get; set; }
+
         public DateTime DateCreated { get; set; }
+
         public DateTime DateUpdated { get; set; }
+
         public XmlDocument CommentXML { get; set; }
+
         public int UserId { get; set; }
+
         public string DisplayName { get; set; }
 
         public int KeyID
@@ -31,6 +38,7 @@ namespace DotNetNuke.Services.Journal
             {
                 return this.CommentId;
             }
+
             set
             {
                 this.CommentId = value;

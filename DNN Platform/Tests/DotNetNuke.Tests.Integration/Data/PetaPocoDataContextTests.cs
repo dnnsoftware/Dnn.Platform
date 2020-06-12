@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+
 using DotNetNuke.Data;
 using DotNetNuke.Data.PetaPoco;
 using DotNetNuke.Tests.Data.Models;

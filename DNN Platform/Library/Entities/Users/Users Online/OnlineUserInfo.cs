@@ -36,6 +36,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this._UserID;
             }
+
             set
             {
                 this._UserID = value;

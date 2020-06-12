@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.Api.Internal
             {
                 return this.permissionKey;
             }
+
             set
             {
                 this.permissionKey = value;

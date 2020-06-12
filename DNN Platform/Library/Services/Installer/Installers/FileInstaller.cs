@@ -122,6 +122,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 return this._DeleteFiles;
             }
+
             set
             {
                 this._DeleteFiles = value;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web.Caching;
+
 using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.Tests.Utilities.Fakes

@@ -2216,11 +2216,17 @@ namespace DotNetNuke.Services.FileSystem
         internal class MergedTreeItem
         {
             public bool ExistsInFileSystem { get; set; }
+
             public bool ExistsInDatabase { get; set; }
+
             public bool ExistsInFolderMapping { get; set; }
+
             public int FolderID { get; set; }
+
             public int FolderMappingID { get; set; }
+
             public string FolderPath { get; set; }
+
             public string MappedPath { get; set; }
         }
 
@@ -2241,6 +2247,7 @@ namespace DotNetNuke.Services.FileSystem
         internal class MoveFoldersInfo
         {
             public string Source { get; private set; }
+
             public string Target { get; private set; }
 
             public MoveFoldersInfo(string source, string target)
@@ -2279,7 +2286,9 @@ namespace DotNetNuke.Services.FileSystem
     internal class SyncFolderData
     {
         public int PortalId { get; set; }
+
         public string FolderPath { get; set; }
+
         public FolderPermissionCollection Permissions { get; set; }
     }
 }

@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.ComponentModel.Composition;
+
 using Dnn.PersonaBar.UI.Components.Controllers;
 using DotNetNuke.Entities.Tabs.Actions;
 

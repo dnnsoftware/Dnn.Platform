@@ -20,7 +20,9 @@ namespace DotNetNuke.UI.Containers
     public interface IActionControl
     {
         ActionManager ActionManager { get; }
+
         IModuleControl ModuleControl { get; set; }
+
         event ActionEventHandler Action;
     }
 }

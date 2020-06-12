@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("TextBoxCssClass", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("TextBoxCssClass", value, string.Empty);

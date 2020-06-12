@@ -5,6 +5,7 @@
 using System;
 using System.Web;
 using System.Web.Security;
+
 using DotNetNuke.Common;
 using DotNetNuke.Security.Membership;
 
@@ -13,12 +14,17 @@ namespace DotNetNuke.Entities.Users.Membership
     public class MembershipPasswordSettings
     {
         public bool EnableBannedList { get; set; }
+
         public bool EnableStrengthMeter { get; set; }
+
         public bool EnableIPChecking { get; set; }
+
         public bool EnablePasswordHistory { get; set; }
 
         public int NumberOfPasswordsStored { get; set; }
+
         public int NumberOfDaysBeforePasswordReuse { get; set; }
+
         public int ResetLinkValidity { get; set; }
 
         /// <summary>

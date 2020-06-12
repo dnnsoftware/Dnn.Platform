@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._LanguagePackID;
             }
+
             set
             {
                 this._LanguagePackID = value;
@@ -38,6 +39,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._LanguageID;
             }
+
             set
             {
                 this._LanguageID = value;
@@ -50,6 +52,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._PackageID;
             }
+
             set
             {
                 this._PackageID = value;
@@ -62,6 +65,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this._DependentPackageID;
             }
+
             set
             {
                 this._DependentPackageID = value;
@@ -100,6 +104,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return this.LanguagePackID;
             }
+
             set
             {
                 this.LanguagePackID = value;

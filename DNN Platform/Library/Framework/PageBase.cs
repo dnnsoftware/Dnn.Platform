@@ -136,6 +136,7 @@ namespace DotNetNuke.Framework
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;

@@ -19,12 +19,19 @@ namespace DotNetNuke.Web.DDRMenu
     public class SkinObject : SkinObjectBase
     {
         public string MenuStyle { get; set; }
+
         public string NodeXmlPath { get; set; }
+
         public string NodeSelector { get; set; }
+
         public bool IncludeContext { get; set; }
+
         public bool IncludeHidden { get; set; }
+
         public string IncludeNodes { get; set; }
+
         public string ExcludeNodes { get; set; }
+
         public string NodeManipulator { get; set; }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]

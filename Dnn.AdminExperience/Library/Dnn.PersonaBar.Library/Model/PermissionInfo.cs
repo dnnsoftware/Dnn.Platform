@@ -6,6 +6,7 @@
 using System;
 using System.Data;
 using System.Xml.Serialization;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
 using DotNetNuke.Entities.Modules;
@@ -65,6 +66,7 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return this.PermissionId;
             }
+
             set
             {
                 this.PermissionId = value;

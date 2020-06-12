@@ -42,6 +42,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.CommandName;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -65,6 +66,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.CssClass;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -88,6 +90,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.DisplayLink;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -111,6 +114,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.DisplayIcon;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -134,6 +138,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.ImageURL;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -157,6 +162,7 @@ namespace DotNetNuke.UI.Containers
                 this.EnsureChildControls();
                 return this._ButtonList.ButtonSeparator;
             }
+
             set
             {
                 this.EnsureChildControls();

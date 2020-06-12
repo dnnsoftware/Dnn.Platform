@@ -7,6 +7,7 @@ using System;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities;
@@ -32,8 +33,11 @@ namespace DotNetNuke.UI.UserControls
         private class EntityInfo
         {
             public int CreatedByUserID { get; set; }
+
             public DateTime CreatedOnDate { get; set; }
+
             public int LastModifiedByUserID { get; set; }
+
             public DateTime LastModifiedOnDate { get; set; }
         }
 

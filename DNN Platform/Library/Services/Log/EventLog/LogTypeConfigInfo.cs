@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     ? (portalSettings == null ? string.Empty : portalSettings.Email)
                     : this._mailFromAddress;
             }
+
             set { this._mailFromAddress = value; }
         }
 

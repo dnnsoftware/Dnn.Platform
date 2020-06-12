@@ -38,6 +38,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return string.IsNullOrEmpty(this._CSSClassLinkActive) ? string.Empty : this._CSSClassLinkActive;
             }
+
             set
             {
                 this._CSSClassLinkActive = value;
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return string.IsNullOrEmpty(this._CSSClassLinkInactive) ? string.Empty : this._CSSClassLinkInactive;
             }
+
             set
             {
                 this._CSSClassLinkInactive = value;
@@ -68,6 +70,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return string.IsNullOrEmpty(this._CSSClassPagingStatus) ? string.Empty : this._CSSClassPagingStatus;
             }
+
             set
             {
                 this._CSSClassPagingStatus = value;
@@ -85,6 +88,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._Mode;
             }
+
             set
             {
                 this._Mode = value;

@@ -14,6 +14,7 @@ namespace DotNetNuke.Modules.Html.Components
     public class HtmlModuleBase : PortalModuleBase
     {
         private HtmlModuleSettings _settings;
+
         public new HtmlModuleSettings Settings
         {
             get
@@ -26,6 +27,7 @@ namespace DotNetNuke.Modules.Html.Components
 
                 return this._settings;
             }
+
             set { this._settings = value; }
         }
     }

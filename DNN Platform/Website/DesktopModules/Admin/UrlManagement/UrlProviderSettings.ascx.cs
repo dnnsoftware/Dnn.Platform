@@ -17,7 +17,9 @@ namespace DotNetNuke.Modules.UrlManagement
     {
         private int _providerId;
         private IExtensionUrlProviderSettingsControl _providerSettingsControl;
+
         private string DisplayMode => (this.Request.QueryString["Display"] ?? string.Empty).ToLowerInvariant();
+
         private readonly INavigationManager _navigationManager;
 
         public ProviderSettings()

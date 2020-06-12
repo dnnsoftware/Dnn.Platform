@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Web.Compilation;
+
 using DotNetNuke.Services.Upgrade.Internals;
 
 namespace DotNetNuke.Services.Upgrade

@@ -12,6 +12,7 @@ namespace DotNetNuke.Tests.Data.Models
     public class Person
     {
         public int? Age { get; set; }
+
         public int ID { get; set; }
 
         [ColumnName(Constants.COLUMNNAME_PersonName)]

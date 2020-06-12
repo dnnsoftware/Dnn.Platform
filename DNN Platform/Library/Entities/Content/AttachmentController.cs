@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content.Common;
@@ -19,6 +20,7 @@ namespace DotNetNuke.Entities.Content
     public class AttachmentController : IAttachmentController
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
+
         public AttachmentController()
             : this(Util.GetContentController())
         {

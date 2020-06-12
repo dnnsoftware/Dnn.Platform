@@ -86,6 +86,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return authenticationType;
             }
+
             set
             {
                 this.ViewState["AuthenticationType"] = value;
@@ -107,6 +108,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return autoRegister;
             }
+
             set
             {
                 this.ViewState["AutoRegister"] = value;
@@ -125,6 +127,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return profile;
             }
+
             set
             {
                 this.ViewState["ProfileProperties"] = value;
@@ -146,6 +149,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return pageNo;
             }
+
             set
             {
                 this.ViewState["PageNo"] = value;
@@ -295,6 +299,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return rememberMe;
             }
+
             set
             {
                 this.ViewState["RememberMe"] = value;
@@ -325,6 +330,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return loginStatus;
             }
+
             set
             {
                 this.ViewState["LoginStatus"] = value;
@@ -346,6 +352,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return userToken;
             }
+
             set
             {
                 this.ViewState["UserToken"] = value;
@@ -367,6 +374,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 return userName;
             }
+
             set
             {
                 this.ViewState["UserName"] = value;

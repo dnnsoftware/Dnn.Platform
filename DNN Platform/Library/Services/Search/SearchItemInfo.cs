@@ -91,6 +91,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._SearchItemId;
             }
+
             set
             {
                 this._SearchItemId = value;
@@ -103,6 +104,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._Title;
             }
+
             set
             {
                 this._Title = value;
@@ -115,6 +117,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._Description;
             }
+
             set
             {
                 this._Description = value;
@@ -127,6 +130,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._Author;
             }
+
             set
             {
                 this._Author = value;
@@ -139,6 +143,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._PubDate;
             }
+
             set
             {
                 this._PubDate = value;
@@ -151,6 +156,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._ModuleId;
             }
+
             set
             {
                 this._ModuleId = value;
@@ -163,6 +169,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._SearchKey;
             }
+
             set
             {
                 this._SearchKey = value;
@@ -175,6 +182,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._Content;
             }
+
             set
             {
                 this._Content = value;
@@ -187,6 +195,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._GUID;
             }
+
             set
             {
                 this._GUID = value;
@@ -199,6 +208,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._ImageFileId;
             }
+
             set
             {
                 this._ImageFileId = value;
@@ -211,6 +221,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._HitCount;
             }
+
             set
             {
                 this._HitCount = value;
@@ -223,6 +234,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this._TabId;
             }
+
             set
             {
                 this._TabId = value;

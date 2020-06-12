@@ -155,6 +155,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return _defaultKeyName;
             }
+
             set
             {
                 _defaultKeyName = value;

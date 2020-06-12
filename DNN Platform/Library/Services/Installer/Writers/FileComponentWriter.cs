@@ -118,6 +118,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._InstallOrder;
             }
+
             set
             {
                 this._InstallOrder = value;
@@ -130,6 +131,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._UnInstallOrder;
             }
+
             set
             {
                 this._UnInstallOrder = value;

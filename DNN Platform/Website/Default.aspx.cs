@@ -90,6 +90,7 @@ namespace DotNetNuke.Framework
 
                 return pageScrollTop;
             }
+
             set { this.ScrollTop.Value = value.ToString(); }
         }
 

@@ -52,6 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var pageId = this.SelectedItemValueAsInt;
                 return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this._portalId.Value, false);
             }
+
             set
             {
                 this.SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;

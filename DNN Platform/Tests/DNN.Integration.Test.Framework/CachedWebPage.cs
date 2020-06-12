@@ -18,6 +18,7 @@ namespace DNN.Integration.Test.Framework
         }
 
         public DateTime FetchDateTime { get; private set; } // when was this loaded
+
         public string VerificationToken { get; private set; }
 
         public string[] InputFields

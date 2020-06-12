@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.Groups
     public partial class View : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public View()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

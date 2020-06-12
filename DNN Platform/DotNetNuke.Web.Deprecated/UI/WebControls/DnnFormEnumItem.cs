@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -18,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._enumType;
             }
+
             set
             {
                 this._enumType = value;

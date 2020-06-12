@@ -37,6 +37,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._DefaultKey;
             }
+
             set
             {
                 this._DefaultKey = value;
@@ -49,6 +50,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
+
             set
             {
                 this._Width = value;
@@ -61,6 +63,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinRoot"]);
             }
+
             set
             {
                 this._SkinRoot = value;
@@ -80,6 +83,7 @@ namespace DotNetNuke.UI.Skins
                     return string.Empty;
                 }
             }
+
             set
             {
                 this._SkinSrc = value;
@@ -102,6 +106,7 @@ namespace DotNetNuke.UI.Skins
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;

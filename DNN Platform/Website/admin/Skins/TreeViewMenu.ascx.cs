@@ -53,6 +53,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._bodyCssClass;
             }
+
             set
             {
                 this._bodyCssClass = value;
@@ -65,6 +66,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._cssClass;
             }
+
             set
             {
                 this._cssClass = value;
@@ -77,6 +79,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._headerCssClass;
             }
+
             set
             {
                 this._headerCssClass = value;
@@ -89,6 +92,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._headerTextCssClass;
             }
+
             set
             {
                 this._headerTextCssClass = value;
@@ -101,6 +105,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._headerText;
             }
+
             set
             {
                 this._headerText = value;
@@ -113,6 +118,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._includeHeader;
             }
+
             set
             {
                 this._includeHeader = value;
@@ -125,6 +131,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeChildCssClass;
             }
+
             set
             {
                 this._nodeChildCssClass = value;
@@ -137,6 +144,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeClosedImage;
             }
+
             set
             {
                 this._nodeClosedImage = value;
@@ -149,6 +157,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeCollapseImage;
             }
+
             set
             {
                 this._nodeCollapseImage = value;
@@ -161,6 +170,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeCssClass;
             }
+
             set
             {
                 this._nodeCssClass = value;
@@ -173,6 +183,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeExpandImage;
             }
+
             set
             {
                 this._nodeExpandImage = value;
@@ -185,6 +196,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeLeafImage;
             }
+
             set
             {
                 this._nodeLeafImage = value;
@@ -197,6 +209,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeOpenImage;
             }
+
             set
             {
                 this._nodeOpenImage = value;
@@ -209,6 +222,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeOverCssClass;
             }
+
             set
             {
                 this._nodeOverCssClass = value;
@@ -221,6 +235,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._nodeSelectedCssClass;
             }
+
             set
             {
                 this._nodeSelectedCssClass = value;
@@ -235,6 +250,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._resourceKey;
             }
+
             set
             {
                 this._resourceKey = value;
@@ -247,6 +263,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._treeCssClass;
             }
+
             set
             {
                 this._treeCssClass = value;
@@ -259,6 +276,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._treeGoUpImage;
             }
+
             set
             {
                 this._treeGoUpImage = value;
@@ -271,6 +289,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._treeIndentWidth;
             }
+
             set
             {
                 this._treeIndentWidth = value;
@@ -283,6 +302,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._width;
             }
+
             set
             {
                 this._width = value;

@@ -411,12 +411,19 @@ namespace DotNetNuke.Services.Search
     internal class UserSearch
     {
         public int UserId { get; set; }
+
         public string DisplayName { get; set; }
+
         public string FirstName { get; set; }
+
         public string Email { get; set; }
+
         public string UserName { get; set; }
+
         public bool SuperUser { get; set; }
+
         public DateTime LastModifiedOnDate { get; set; }
+
         public DateTime CreatedOnDate { get; set; }
     }
 }

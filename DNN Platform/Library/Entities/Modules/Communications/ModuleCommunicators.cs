@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Modules.Communications
             {
                 return (IModuleCommunicator)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

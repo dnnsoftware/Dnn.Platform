@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Linq;
+
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
 using DotNetNuke.Entities.Portals;

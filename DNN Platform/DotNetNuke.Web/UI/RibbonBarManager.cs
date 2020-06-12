@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.UI
     public class RibbonBarManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
+
         public static TabInfo InitTabInfoObject()
         {
             return InitTabInfoObject(null, TabRelativeLocation.AFTER);

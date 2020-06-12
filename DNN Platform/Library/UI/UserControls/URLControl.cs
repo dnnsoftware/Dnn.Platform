@@ -86,6 +86,7 @@ namespace DotNetNuke.UI.UserControls
                     return string.Empty;
                 }
             }
+
             set
             {
                 this.ViewState["FileFilter"] = value;
@@ -109,6 +110,7 @@ namespace DotNetNuke.UI.UserControls
                     return false; // Set as default
                 }
             }
+
             set
             {
                 this.ViewState["IncludeActiveTab"] = value;
@@ -135,6 +137,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;
@@ -172,6 +175,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return myMid;
             }
+
             set
             {
                 this.ViewState["ModuleId"] = value;
@@ -184,6 +188,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.chkNewWindow.Visible && this.chkNewWindow.Checked;
             }
+
             set
             {
                 this.chkNewWindow.Checked = this.chkNewWindow.Visible && value;
@@ -203,6 +208,7 @@ namespace DotNetNuke.UI.UserControls
                     return true; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["Required"] = value;
@@ -226,6 +232,7 @@ namespace DotNetNuke.UI.UserControls
                     return true; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["ShowFiles"] = value;
@@ -249,6 +256,7 @@ namespace DotNetNuke.UI.UserControls
                     return false;
                 }
             }
+
             set
             {
                 this.ViewState["ShowImages"] = value;
@@ -265,6 +273,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.chkLog.Visible;
             }
+
             set
             {
                 this.chkLog.Visible = value;
@@ -277,6 +286,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.chkNewWindow.Visible;
             }
+
             set
             {
                 this.chkNewWindow.Visible = value;
@@ -296,6 +306,7 @@ namespace DotNetNuke.UI.UserControls
                     return false; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["ShowNone"] = value;
@@ -319,6 +330,7 @@ namespace DotNetNuke.UI.UserControls
                     return true; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["ShowTabs"] = value;
@@ -335,6 +347,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.chkTrack.Visible;
             }
+
             set
             {
                 this.chkTrack.Visible = value;
@@ -354,6 +367,7 @@ namespace DotNetNuke.UI.UserControls
                     return true; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["ShowUpLoad"] = value;
@@ -377,6 +391,7 @@ namespace DotNetNuke.UI.UserControls
                     return true; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["ShowUrls"] = value;
@@ -400,6 +415,7 @@ namespace DotNetNuke.UI.UserControls
                     return false; // Set as default in the old variable
                 }
             }
+
             set
             {
                 this.ViewState["ShowUsers"] = value;
@@ -515,6 +531,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return r;
             }
+
             set
             {
                 this.ViewState["Url"] = value;
@@ -534,6 +551,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["UrlType"]);
             }
+
             set
             {
                 if (value != null && !string.IsNullOrEmpty(value.Trim()))
@@ -553,6 +571,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
+
             set
             {
                 if (!string.IsNullOrEmpty(value))

@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.Admin.Security
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager _navigationManager;
+
         public SendPassword()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

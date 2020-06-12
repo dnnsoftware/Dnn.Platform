@@ -8,15 +8,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Xml;
+
 using DotNetNuke.Services.Tokens;
+
 namespace DotNetNuke.Services.Journal
 {
         public class ItemData : IPropertyAccess
         {
             public string Url { get; set; }
+
             public string Title { get; set; }
+
             public string Description { get; set; }
+
             public string ImageUrl { get; set; }
+
             public CacheLevel Cacheability
             {
                 get

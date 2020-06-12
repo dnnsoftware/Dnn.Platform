@@ -25,6 +25,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this.m_strProviderName;
             }
+
             set
             {
             }

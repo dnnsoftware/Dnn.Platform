@@ -59,6 +59,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 return ScriptManager.GetCurrent(this.Page) != null && this._supportAjax;
             }
+
             set
             {
                 this._supportAjax = value;
@@ -682,6 +683,7 @@ namespace Dnn.EditBar.UI.Controllers
         public class ProxyPage : CDefault
         {
             private readonly Page _originalPage;
+
             public ProxyPage(Page originalPage)
             {
                 this._originalPage = originalPage;

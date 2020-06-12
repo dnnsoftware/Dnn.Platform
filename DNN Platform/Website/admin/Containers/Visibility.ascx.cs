@@ -92,6 +92,7 @@ namespace DotNetNuke.UI.Containers
             {
                 return this._animationFrames;
             }
+
             set
             {
                 this._animationFrames = value;
@@ -117,6 +118,7 @@ namespace DotNetNuke.UI.Containers
                         return true;
                 }
             }
+
             set
             {
                 DNNClientAPI.MinMaxContentVisibile(

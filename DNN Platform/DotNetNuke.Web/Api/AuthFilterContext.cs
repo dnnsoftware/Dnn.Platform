@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.Api
         }
 
         public HttpActionContext ActionContext { get; private set; }
+
         public string AuthFailureMessage { get; set; }
 
         /// <summary>

@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Dnn.PersonaBar.Library.Data;
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common.Utilities;

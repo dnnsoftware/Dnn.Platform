@@ -99,6 +99,7 @@ namespace DotNetNuke.UI.ControlPanels
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;

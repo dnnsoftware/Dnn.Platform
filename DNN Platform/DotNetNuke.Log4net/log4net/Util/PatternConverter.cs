@@ -86,6 +86,7 @@ namespace log4net.Util
         public virtual FormattingInfo FormattingInfo
         {
             get { return new FormattingInfo(this.m_min, this.m_max, this.m_leftAlign); }
+
             set
             {
                 this.m_min = value.Min;

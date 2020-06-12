@@ -18,8 +18,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         public string TabKey { get; set; }
+
         public string TabIdOriginal { get; set; }
+
         public string TabPath { get; set; }
+
         public bool IsDeleted { get; set; }
     }
 }

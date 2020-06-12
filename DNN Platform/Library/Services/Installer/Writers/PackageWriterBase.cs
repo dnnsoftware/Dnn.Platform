@@ -115,6 +115,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._BasePath;
             }
+
             set
             {
                 this._BasePath = value;
@@ -205,6 +206,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._Package;
             }
+
             set
             {
                 this._Package = value;

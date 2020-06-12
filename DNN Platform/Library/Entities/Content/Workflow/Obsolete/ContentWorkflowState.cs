@@ -34,6 +34,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         /// State Order
         /// </summary>
         public int Order { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool SendEmail { get; set; }

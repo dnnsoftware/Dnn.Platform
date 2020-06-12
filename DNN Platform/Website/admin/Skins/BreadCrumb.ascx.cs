@@ -30,6 +30,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _homeUrl = string.Empty;
         private string _homeTabName = "Root";
         private readonly INavigationManager _navigationManager;
+
         public BreadCrumb()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -53,6 +54,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public string RootLevel
         {
             get { return this._rootLevel.ToString(); }
+
             set
             {
                 this._rootLevel = int.Parse(value);

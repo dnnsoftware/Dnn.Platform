@@ -45,6 +45,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return (FolderPermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

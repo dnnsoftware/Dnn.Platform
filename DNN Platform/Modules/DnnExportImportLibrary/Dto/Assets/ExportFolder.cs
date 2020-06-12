@@ -11,22 +11,31 @@ namespace Dnn.ExportImport.Dto.Assets
         public int FolderId { get; set; }
 
         public string FolderPath { get; set; }
+
         public int StorageLocation { get; set; }
+
         public bool IsProtected { get; set; }
+
         public bool IsCached { get; set; }
+
         public DateTime? LastUpdated { get; set; }
 
         public int? CreatedByUserId { get; set; }
 
         public string CreatedByUserName { get; set; } // This could be used to find "CreatedByUserId"
+
         public DateTime? CreatedOnDate { get; set; }
 
         public int? LastModifiedByUserId { get; set; }
 
         public string LastModifiedByUserName { get; set; } // This could be used to find "LastModifiedByUserId"
+
         public DateTime? LastModifiedOnDate { get; set; }
+
         public Guid UniqueId { get; set; }
+
         public Guid VersionGuid { get; set; }
+
         public int FolderMappingId { get; set; }
 
         public string FolderMappingName { get; set; }

@@ -11,7 +11,9 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class JavaScriptLibraryInclude : SkinObjectBase
     {
         public string Name { get; set; }
+
         public Version Version { get; set; }
+
         public SpecificVersion? SpecificVersion { get; set; }
 
         protected override void OnInit(EventArgs e)

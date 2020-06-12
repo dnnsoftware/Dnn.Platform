@@ -49,6 +49,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._ServerVariable;
             }
+
             set
             {
                 this._ServerVariable = value;
@@ -61,6 +62,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Values;
             }
+
             set
             {
                 this._Values = value;
@@ -81,6 +83,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Action;
             }
+
             set
             {
                 this._Action = value;
@@ -93,6 +96,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Operator;
             }
+
             set
             {
                 this._Operator = value;
@@ -105,6 +109,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return this._Location;
             }
+
             set
             {
                 this._Location = value;

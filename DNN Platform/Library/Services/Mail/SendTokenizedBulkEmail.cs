@@ -120,6 +120,7 @@ namespace DotNetNuke.Services.Mail
             {
                 return this._body;
             }
+
             set
             {
                 this._body = value;
@@ -146,6 +147,7 @@ namespace DotNetNuke.Services.Mail
             {
                 return this._sendingUser;
             }
+
             set
             {
                 this._sendingUser = value;
@@ -169,6 +171,7 @@ namespace DotNetNuke.Services.Mail
             {
                 return this._replyToUser ?? this.SendingUser;
             }
+
             set
             {
                 this._replyToUser = value;
@@ -193,6 +196,7 @@ namespace DotNetNuke.Services.Mail
             {
                 return this.AddressMethod == AddressMethods.Send_Relay ? this._relayEmail : string.Empty;
             }
+
             set
             {
                 this._relayEmail = value;

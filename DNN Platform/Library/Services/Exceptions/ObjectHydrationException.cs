@@ -43,6 +43,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return this._Columns;
             }
+
             set
             {
                 this._Columns = value;
@@ -55,6 +56,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return this._Type;
             }
+
             set
             {
                 this._Type = value;

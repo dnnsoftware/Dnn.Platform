@@ -6,6 +6,7 @@ using System;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+
 using DNN.Integration.Test.Framework.Helpers;
 using DNN.Integration.Test.Framework.Scripts;
 
@@ -136,11 +137,17 @@ namespace DNN.Integration.Test.Framework.Controllers
         public class CreateUserParams
         {
             public string FirstName { get; set; }
+
             public string LastName { get; set; }
+
             public int PortalId { get; set; }
+
             public bool SuperUser { get; set; }
+
             public string Role { get; set; }
+
             public bool AutoCreateFriends { get; set; }
+
             public bool AutoCreateFollowersAndFollowings { get; set; }
         }
     }

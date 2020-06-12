@@ -65,6 +65,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this.Value as Dictionary<int, string>;
             }
+
             set
             {
                 this.Value = value;
@@ -83,6 +84,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this.OldValue as Dictionary<int, string>;
             }
+
             set
             {
                 this.OldValue = value;
@@ -133,6 +135,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return strValue;
             }
+
             set
             {
                 this.Value = value;
@@ -145,6 +148,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._AddedItem;
             }
+
             set
             {
                 this._AddedItem = value;

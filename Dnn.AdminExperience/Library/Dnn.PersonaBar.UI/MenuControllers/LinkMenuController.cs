@@ -21,6 +21,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
     public class LinkMenuController : IMenuItemController
     {
         protected INavigationManager NavigationManager { get; }
+
         public LinkMenuController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

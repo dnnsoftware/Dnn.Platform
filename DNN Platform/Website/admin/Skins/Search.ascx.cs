@@ -24,6 +24,7 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Search : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Search()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -59,6 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._showSite;
             }
+
             set
             {
                 this._showSite = value;
@@ -76,6 +78,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._showWeb;
             }
+
             set
             {
                 this._showWeb = value;
@@ -100,6 +103,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._siteIconURL;
             }
+
             set
             {
                 this._siteIconURL = value;
@@ -155,6 +159,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._siteText;
             }
+
             set
             {
                 this._siteText = value;
@@ -178,6 +183,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._siteToolTip;
             }
+
             set
             {
                 this._siteToolTip = value;
@@ -203,6 +209,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._siteURL;
             }
+
             set
             {
                 this._siteURL = value;
@@ -250,6 +257,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._webIconURL;
             }
+
             set
             {
                 this._webIconURL = value;
@@ -273,6 +281,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._webText;
             }
+
             set
             {
                 this._webText = value;
@@ -296,6 +305,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._webToolTip;
             }
+
             set
             {
                 this._webToolTip = value;
@@ -322,6 +332,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 return this._webURL;
             }
+
             set
             {
                 this._webURL = value;

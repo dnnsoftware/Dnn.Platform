@@ -188,6 +188,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_Message;
             }
+
             set
             {
                 this.m_Message = value;
@@ -357,6 +358,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     return this.m_RegisterList;
                 }
+
                 set
                 {
                     this.m_RegisterList = value;
@@ -377,6 +379,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     return this.m_Attributes;
                 }
+
                 set
                 {
                     this.m_Attributes = value;
@@ -389,6 +392,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     return this.m_ParseMessages;
                 }
+
                 set
                 {
                     this.m_ParseMessages = value;
@@ -631,6 +635,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     return this.m_RegisterList;
                 }
+
                 set
                 {
                     this.m_RegisterList = value;
@@ -651,6 +656,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     return this.m_ParseMessages;
                 }
+
                 set
                 {
                     this.m_ParseMessages = value;
@@ -950,6 +956,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     return this.m_SkinPath;
                 }
+
                 set
                 {
                     this.m_SkinPath = value;

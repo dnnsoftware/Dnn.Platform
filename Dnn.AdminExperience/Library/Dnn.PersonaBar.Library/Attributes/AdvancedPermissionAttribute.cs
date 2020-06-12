@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;

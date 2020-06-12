@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
+
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.HttpModules.Membership;
@@ -45,6 +46,7 @@ namespace DotNetNuke.Web.Mvc
 
                 return this._controllerBuilder;
             }
+
             set { this._controllerBuilder = value; }
         }
 

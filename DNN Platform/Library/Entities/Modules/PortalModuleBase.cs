@@ -69,6 +69,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleContext.Actions;
             }
+
             set
             {
                 this.ModuleContext.Actions = value;
@@ -108,6 +109,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleContext.HelpURL;
             }
+
             set
             {
                 this.ModuleContext.HelpURL = value;
@@ -132,6 +134,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleContext.Configuration;
             }
+
             set
             {
                 this.ModuleContext.Configuration = value;
@@ -166,6 +169,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleContext.TabModuleId;
             }
+
             set
             {
                 this.ModuleContext.TabModuleId = value;
@@ -180,6 +184,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleContext.ModuleId;
             }
+
             set
             {
                 this.ModuleContext.ModuleId = value;
@@ -290,6 +295,7 @@ namespace DotNetNuke.Entities.Modules
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;

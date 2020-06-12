@@ -25,6 +25,7 @@ namespace DotNetNuke.Modules.DigitalAssets
     public partial class FolderMappings : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public FolderMappings()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -69,6 +70,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
                 return new List<FolderMappingInfo>();
             }
+
             set { this.Session["FolderMappingsList"] = value; }
         }
 

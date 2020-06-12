@@ -58,6 +58,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return this.ViewState.GetValue("AuthenticationType", Null.NullString);
             }
+
             set
             {
                 this.ViewState.SetValue("AuthenticationType", value, Null.NullString);
@@ -94,6 +95,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return this.ViewState.GetValue("UserToken", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("UserToken", value, string.Empty);

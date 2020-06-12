@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Entities;
 
 namespace DotNetNuke.Modules.Html
@@ -35,6 +36,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._ItemID;
             }
+
             set
             {
                 this._ItemID = value;
@@ -67,6 +69,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._IsActive;
             }
+
             set
             {
                 this._IsActive = value;
@@ -79,6 +82,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._Comment;
             }
+
             set
             {
                 this._Comment = value;
@@ -91,6 +95,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return this._Approved;
             }
+
             set
             {
                 this._Approved = value;

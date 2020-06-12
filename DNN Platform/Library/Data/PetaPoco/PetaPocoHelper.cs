@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Instrumentation;
 using PetaPoco;

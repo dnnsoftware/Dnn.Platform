@@ -6,6 +6,7 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Web.Hosting;
+
 using DotNetNuke.ComponentModel;
 using DotNetNuke.Providers.AspNetClientCapabilityProvider;
 using DotNetNuke.Tests.Utilities.Mocks;

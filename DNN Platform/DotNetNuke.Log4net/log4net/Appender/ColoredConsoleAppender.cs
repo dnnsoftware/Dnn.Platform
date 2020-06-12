@@ -211,6 +211,7 @@ namespace log4net.Appender
         public virtual string Target
         {
             get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+
             set
             {
                 string v = value.Trim();

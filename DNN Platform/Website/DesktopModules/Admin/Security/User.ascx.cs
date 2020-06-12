@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return this.Password.Visible;
             }
+
             set
             {
                 this.Password.Visible = value;
@@ -85,6 +86,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return this.actionsRow.Visible;
             }
+
             set
             {
                 this.actionsRow.Visible = value;
@@ -100,6 +102,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return this.pnlAddUser.CssClass;
             }
+
             set
             {
                 this.userForm.CssClass = string.IsNullOrEmpty(this.userForm.CssClass) ? value : string.Format("{0} {1}", this.userForm.CssClass, value);

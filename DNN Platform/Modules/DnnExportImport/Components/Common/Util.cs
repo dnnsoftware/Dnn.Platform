@@ -31,7 +31,9 @@ namespace Dnn.ExportImport.Components.Common
 
         // some string extension helpers
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
+
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
+
         public static bool HasValue(this string s) => !string.IsNullOrEmpty(s);
 
         public static IEnumerable<BasePortableService> GetPortableImplementors()

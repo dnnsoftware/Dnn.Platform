@@ -4,6 +4,7 @@
 
 using System;
 using System.Linq;
+
 using DotNetNuke.Services.Cache;
 using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;

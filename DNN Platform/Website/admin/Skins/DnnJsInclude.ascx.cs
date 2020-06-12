@@ -13,13 +13,21 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class DnnJsInclude : SkinObjectBase
     {
         public string FilePath { get; set; }
+
         public string PathNameAlias { get; set; }
+
         public int Priority { get; set; }
+
         public bool AddTag { get; set; }
+
         public string Name { get; set; }
+
         public string Version { get; set; }
+
         public bool ForceVersion { get; set; }
+
         public string ForceProvider { get; set; }
+
         public bool ForceBundle { get; set; }
 
         protected override void OnLoad(EventArgs e)

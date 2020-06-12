@@ -132,6 +132,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.ModuleControlID;
             }
+
             set
             {
                 this.ModuleControlID = value;

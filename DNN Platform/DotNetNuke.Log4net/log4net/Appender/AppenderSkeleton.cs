@@ -117,6 +117,7 @@ namespace log4net.Appender
         public virtual IErrorHandler ErrorHandler
         {
             get { return this.m_errorHandler; }
+
             set
             {
                 lock (this)

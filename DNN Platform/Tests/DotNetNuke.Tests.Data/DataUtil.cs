@@ -7,6 +7,7 @@ using System.Data;
 using System.Data.SqlServerCe;
 using System.IO;
 using System.Text.RegularExpressions;
+
 using DotNetNuke.Data;
 using DotNetNuke.Tests.Utilities;
 

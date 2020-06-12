@@ -72,6 +72,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 return this.SkinControlID;
             }
+
             set
             {
                 this.SkinControlID = value;

@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
         }
 
         public string CultureCode { get; }
+
         public string Icon { get; }
     }
 }

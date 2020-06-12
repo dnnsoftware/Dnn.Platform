@@ -38,6 +38,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxWidth"]);
             }
+
             set
             {
                 this._ListBoxWidth = value;
@@ -50,6 +51,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState[this.ClientID + "_ListBoxHeight"]);
             }
+
             set
             {
                 this._ListBoxHeight = value;
@@ -68,6 +70,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return objList;
             }
+
             set
             {
                 this._Available = value;
@@ -86,6 +89,7 @@ namespace DotNetNuke.UI.UserControls
 
                 return objList;
             }
+
             set
             {
                 this._Assigned = value;

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.UI;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Modules.CoreMessaging
         public ModuleInfo ModuleConfiguration
         {
             get { return this.ModuleContext != null ? this.ModuleContext.Configuration : null; }
+
             set
             {
                 this.ModuleContext.Configuration = value;

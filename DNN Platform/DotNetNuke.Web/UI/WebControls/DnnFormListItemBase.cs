@@ -19,6 +19,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._listSource;
             }
+
             set
             {
                 var changed = !Equals(this._listSource, value);

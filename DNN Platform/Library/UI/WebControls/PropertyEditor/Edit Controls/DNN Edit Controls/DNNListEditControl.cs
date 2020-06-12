@@ -140,6 +140,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return this._listName;
             }
+
             set
             {
                 this._listName = value;
@@ -225,6 +226,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return Convert.ToString(this.Value);
             }
+
             set
             {
                 if (this.ValueField == ListBoundField.Id)

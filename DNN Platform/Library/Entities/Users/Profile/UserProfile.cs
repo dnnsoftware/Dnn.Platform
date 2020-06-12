@@ -82,6 +82,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Cell);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Cell, value);
@@ -99,6 +100,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_City);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_City, value);
@@ -116,6 +118,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Country);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Country, value);
@@ -133,6 +136,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Fax);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Fax, value);
@@ -150,6 +154,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_FirstName);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_FirstName, value);
@@ -180,6 +185,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_IM);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_IM, value);
@@ -210,6 +216,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_LastName);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_LastName, value);
@@ -222,6 +229,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Photo);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Photo, value);
@@ -327,6 +335,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_PostalCode);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_PostalCode, value);
@@ -344,6 +353,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_PreferredLocale);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_PreferredLocale, value);
@@ -378,6 +388,7 @@ namespace DotNetNuke.Entities.Users
                 // still we can't find it or it's somehow set to null
                 return _TimeZone ?? TimeZoneInfo.Local;
             }
+
             set
             {
                 if (value != null)
@@ -408,6 +419,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Region);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Region, value);
@@ -425,6 +437,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Street);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Street, value);
@@ -442,6 +455,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Telephone);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Telephone, value);
@@ -459,6 +473,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Title);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Title, value);
@@ -476,6 +491,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Unit);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Unit, value);
@@ -493,6 +509,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Website);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Website, value);
@@ -632,6 +649,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(USERPROFILE_Biography);
             }
+
             set
             {
                 this.SetProfileProperty(USERPROFILE_Biography, value);
@@ -644,6 +662,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this.GetPropertyValue(name);
             }
+
             set
             {
                 string stringValue;

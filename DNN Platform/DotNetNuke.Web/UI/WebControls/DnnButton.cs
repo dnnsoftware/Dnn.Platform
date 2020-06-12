@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["ConfirmMessage"] == null ? string.Empty : this.ViewState["ConfirmMessage"].ToString();
             }
+
             set
             {
                 this.ViewState["ConfirmMessage"] = value;
@@ -46,6 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["DisabledCssClass"] == null ? string.Empty : this.ViewState["DisabledCssClass"].ToString();
             }
+
             set
             {
                 this.ViewState["DisabledCssClass"] = value;
@@ -91,6 +93,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return this._Localize;
             }
+
             set
             {
                 this._Localize = value;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+
 using Dnn.PersonaBar.Library.DTO.Tabs;
 using Dnn.PersonaBar.Library.Security;
 using DotNetNuke.Common;
@@ -16,6 +17,7 @@ using DotNetNuke.Entities.Tabs;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Localization;
+
 using Localization = DotNetNuke.Services.Localization.Localization;
 
 namespace Dnn.PersonaBar.Library.Controllers

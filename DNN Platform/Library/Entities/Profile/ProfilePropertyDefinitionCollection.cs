@@ -68,6 +68,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return (ProfilePropertyDefinition)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

@@ -43,6 +43,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return base.HeaderText;
             }
+
             set
             {
                 this._HeaderText = value;

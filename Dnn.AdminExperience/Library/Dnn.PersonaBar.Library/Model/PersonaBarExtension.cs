@@ -5,6 +5,7 @@
 using System;
 using System.Data;
 using System.Runtime.Serialization;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 

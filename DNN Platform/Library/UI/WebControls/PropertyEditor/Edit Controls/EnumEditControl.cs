@@ -59,6 +59,7 @@ namespace DotNetNuke.UI.WebControls
                 var retValue = Convert.ToInt32(this.Value);
                 return retValue.ToString(CultureInfo.InvariantCulture);
             }
+
             set
             {
                 int setValue = int.Parse(value);

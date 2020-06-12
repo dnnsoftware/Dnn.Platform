@@ -4,6 +4,7 @@
 
 using System;
 using System.Threading;
+
 using Dnn.PersonaBar.Library.Controllers;
 using Dnn.PersonaBar.Library.Model;
 using Dnn.PersonaBar.Library.Repository;

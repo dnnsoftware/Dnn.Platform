@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Entities.Modules.Definitions;
@@ -57,6 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 return this._moduleCombo.Enabled;
             }
+
             set
             {
                 this._moduleCombo.Enabled = value;

@@ -5,6 +5,7 @@
 // See the LICENSE file in the project root for more information
 using System;
 using System.Collections.Generic;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Services.Authentication;
 using DotNetNuke.Services.Authentication.OAuth;

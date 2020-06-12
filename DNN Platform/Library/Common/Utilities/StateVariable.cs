@@ -106,6 +106,7 @@ namespace DotNetNuke.Common.Utilities
 
                 return (T)returnedValue;
             }
+
             set
             {
                 this[this._key] = value;

@@ -12,18 +12,27 @@ namespace DNN.Integration.Test.Framework
     public interface IWebApiConnector
     {
         int UserId { get; }
+
         string UserName { get; }
+
         bool IsLoggedIn { get; }
+
         CookieContainer SessionCookies { get; }
+
         DateTime LoggedInAtTime { get;  }
+
         TimeSpan Timeout { get; set; }
+
         Uri Domain { get; }
+
         string UserAgentValue { get; set; }
 
         void Logout();
+
         bool Login(string password);
 
         HttpResponseMessage UploadUserFile(string fileName, bool waitHttpResponse = true, int userId = -1);
+
         HttpResponseMessage ActivityStreamUploadUserFile(IDictionary<string, string> headers, string fileName);
 
         bool UploadCmsFile(string fileName, string portalFolder);

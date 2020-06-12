@@ -22,6 +22,7 @@ namespace DotNetNuke.Modules.Html
     public partial class Settings : ModuleSettingsBase
     {
         private HtmlModuleSettings _moduleSettings;
+
         private new HtmlModuleSettings ModuleSettings
         {
             get

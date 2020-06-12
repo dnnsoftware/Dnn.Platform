@@ -37,6 +37,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinControlBorder"]);
             }
+
             set
             {
                 this.ViewState["SkinControlBorder"] = value;
@@ -56,6 +57,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToInt32(this.ViewState["SkinControlColumns"]);
             }
+
             set
             {
                 this.ViewState["SkinControlColumns"] = value;
@@ -72,6 +74,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinControlHeight"]);
             }
+
             set
             {
                 this.ViewState["SkinControlHeight"] = value;
@@ -88,6 +91,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinRoot"]);
             }
+
             set
             {
                 this.ViewState["SkinRoot"] = value;
@@ -100,6 +104,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.OptSkin.SelectedItem != null ? this.OptSkin.SelectedItem.Value : string.Empty;
             }
+
             set
             {
                 // select current skin
@@ -121,6 +126,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return Convert.ToString(this.ViewState["SkinControlWidth"]);
             }
+
             set
             {
                 this.ViewState["SkinControlWidth"] = value;

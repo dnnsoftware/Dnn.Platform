@@ -64,6 +64,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._AllowAccess;
             }
+
             set
             {
                 this._AllowAccess = value;
@@ -83,6 +84,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._DisplayName;
             }
+
             set
             {
                 this._DisplayName = value;
@@ -102,6 +104,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._RoleID;
             }
+
             set
             {
                 this._RoleID = value;
@@ -121,6 +124,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._RoleName;
             }
+
             set
             {
                 this._RoleName = value;
@@ -140,6 +144,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._UserID;
             }
+
             set
             {
                 this._UserID = value;
@@ -159,6 +164,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return this._Username;
             }
+
             set
             {
                 this._Username = value;

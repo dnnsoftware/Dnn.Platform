@@ -80,6 +80,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._CacheByProperty;
             }
+
             set
             {
                 this._CacheByProperty = value;
@@ -100,6 +101,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._CacheTimeOutMultiplier;
             }
+
             set
             {
                 this._CacheTimeOutMultiplier = value;
@@ -130,6 +132,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._ObjectType;
             }
+
             set
             {
                 this._ObjectType = value;
@@ -148,6 +151,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._PrimaryKey;
             }
+
             set
             {
                 this._PrimaryKey = value;
@@ -179,6 +183,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return this._TableName;
             }
+
             set
             {
                 this._TableName = value;

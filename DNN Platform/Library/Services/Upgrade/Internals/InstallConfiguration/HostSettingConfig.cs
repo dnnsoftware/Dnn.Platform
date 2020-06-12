@@ -15,7 +15,9 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
     public class HostSettingConfig
     {
         public string Name { get; set; }
+
         public string Value { get; set; }
+
         public bool IsSecure { get; set; }
     }
 }

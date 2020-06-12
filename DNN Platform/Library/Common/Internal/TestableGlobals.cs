@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using DotNetNuke.Framework;
 
 namespace DotNetNuke.Common.Internal

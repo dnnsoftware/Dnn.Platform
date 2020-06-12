@@ -45,6 +45,7 @@
 // explicitly specified in the configuration (Console.BackgroundColor
 // isn't set if ommited).
 using System;
+
 using log4net.Util;
 
 namespace log4net.Appender
@@ -129,6 +130,7 @@ namespace log4net.Appender
         public virtual string Target
         {
             get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
+
             set
             {
                 string v = value.Trim();
@@ -312,6 +314,7 @@ namespace log4net.Appender
 
             private ConsoleColor foreColor;
             private bool hasForeColor;
+
             internal bool HasForeColor
             {
                 get
@@ -344,6 +347,7 @@ namespace log4net.Appender
 
             private ConsoleColor backColor;
             private bool hasBackColor;
+
             internal bool HasBackColor
             {
                 get

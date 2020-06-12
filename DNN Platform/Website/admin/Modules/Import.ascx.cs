@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class Import : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Import()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

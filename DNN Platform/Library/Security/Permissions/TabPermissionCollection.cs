@@ -58,6 +58,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return (TabPermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

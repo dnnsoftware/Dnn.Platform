@@ -111,6 +111,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 return this.AuthenticationID;
             }
+
             set
             {
                 this.AuthenticationID = value;

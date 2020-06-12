@@ -179,11 +179,17 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
     public class IntPoco
     {
         public int IntProp { get; set; }
+
         public string StringProp { get; set; }
+
         public DateTime DateTimeProp { get; set; }
+
         public byte[] ByteArrayProp { get; set; }
+
         public Array ArrayProp { get; set; }
+
         public bool BitProp { get; set; }
+
         public decimal DecimalProp { get; set; }
     }
 }

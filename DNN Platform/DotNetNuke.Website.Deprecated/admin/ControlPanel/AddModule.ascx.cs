@@ -311,6 +311,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return base.Visible && TabPermissionController.CanAddContentToPage();
             }
+
             set
             {
                 base.Visible = value;
@@ -323,6 +324,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return this._enabled && this.CanAddModuleToPage();
             }
+
             set
             {
                 this._enabled = value;
@@ -335,6 +337,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickAddModule";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");

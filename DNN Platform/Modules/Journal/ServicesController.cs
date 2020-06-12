@@ -43,17 +43,24 @@ namespace DotNetNuke.Modules.Journal
         public class CreateDTO
         {
             public string Text { get; set; }
+
             public int ProfileId { get; set; }
+
             public string JournalType { get; set; }
+
             public string ItemData { get; set; }
+
             public string SecuritySet { get; set; }
+
             public int GroupId { get; set; }
+
             public IList<MentionDTO> Mentions { get; set; }
         }
 
         public class MentionDTO
         {
             public string DisplayName { get; set; }
+
             public int UserId { get; set; }
         }
 
@@ -334,8 +341,11 @@ namespace DotNetNuke.Modules.Journal
         public class GetListForProfileDTO
         {
             public int ProfileId { get; set; }
+
             public int GroupId { get; set; }
+
             public int RowIndex { get; set; }
+
             public int MaxRows { get; set; }
         }
 
@@ -380,7 +390,9 @@ namespace DotNetNuke.Modules.Journal
         public class CommentSaveDTO
         {
             public int JournalId { get; set; }
+
             public string Comment { get; set; }
+
             public IList<MentionDTO> Mentions { get; set; }
         }
 
@@ -418,6 +430,7 @@ namespace DotNetNuke.Modules.Journal
         public class CommentDeleteDTO
         {
             public int JournalId { get; set; }
+
             public int CommentId { get; set; }
         }
 
@@ -459,8 +472,11 @@ namespace DotNetNuke.Modules.Journal
         public class SuggestDTO
         {
             public string displayName { get; set; }
+
             public int userId { get; set; }
+
             public string avatar { get; set; }
+
             public string key { get; set; }
         }
 

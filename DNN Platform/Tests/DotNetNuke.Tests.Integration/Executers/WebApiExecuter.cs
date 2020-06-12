@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
 using DotNetNuke.Tests.Utilities;
@@ -34,6 +35,7 @@ namespace DotNetNuke.Tests.Integration.Executers
             {
                 return this._loginAs;
             }
+
             set
             {
                 this._loginAs = value;
@@ -42,6 +44,7 @@ namespace DotNetNuke.Tests.Integration.Executers
         }
 
         public string UserFirstName { get; set; }
+
         public string UserLastName { get; set; }
 
         protected Func<string, IWebApiConnector> Anonymous;
@@ -82,6 +85,7 @@ namespace DotNetNuke.Tests.Integration.Executers
 
                 return this._connector;
             }
+
             set
             {
                 this._connector = value;

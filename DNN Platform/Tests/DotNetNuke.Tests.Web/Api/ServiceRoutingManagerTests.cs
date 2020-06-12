@@ -7,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Routing;
+
 using DotNetNuke.Abstractions;
 using DotNetNuke.Common;
 using DotNetNuke.DependencyInjection;
@@ -16,6 +17,7 @@ using DotNetNuke.Framework.Reflections;
 using Microsoft.Extensions.DependencyInjection;
 using Moq;
 using NUnit.Framework;
+
 using ServicesRoutingManager = DotNetNuke.Web.Api.Internal.ServicesRoutingManager;
 
 namespace DotNetNuke.Tests.Web.Api

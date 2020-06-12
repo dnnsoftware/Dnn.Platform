@@ -39,6 +39,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 return this._messageID;
             }
+
             set
             {
                 this._messageID = value;
@@ -126,6 +127,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 return this.MessageID;
             }
+
             set
             {
                 this.MessageID = value;

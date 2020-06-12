@@ -30,6 +30,7 @@ namespace DotNetNuke.UI.ControlPanel
     public partial class UpdatePage : UserControl, IDnnRibbonBarTool
     {
         private readonly INavigationManager _navigationManager;
+
         public UpdatePage()
         {
             this._navigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -129,6 +130,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return base.Visible && TabPermissionController.CanManagePage();
             }
+
             set
             {
                 base.Visible = value;
@@ -141,6 +143,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickUpdatePage";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");

@@ -177,6 +177,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return this._modules ?? (this._modules = TabModulesController.Instance.GetTabModules(this));
             }
+
             set
             {
                 this._modules = value;
@@ -351,6 +352,7 @@ namespace DotNetNuke.Entities.Tabs
 
                 return this.PortalID == Null.NullInteger;
             }
+
             set
             {
                 this._isSuperTab = value;
@@ -381,6 +383,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return this.TabID;
             }
+
             set
             {
                 this.TabID = value;
@@ -458,6 +461,7 @@ namespace DotNetNuke.Entities.Tabs
 
                 return this._skinDoctype;
             }
+
             set
             {
                 this._skinDoctype = value;

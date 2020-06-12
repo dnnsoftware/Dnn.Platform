@@ -12,6 +12,7 @@ namespace DotNetNuke.ExtensionPoints
     public interface IToolBarMenuButtonExtensionPoint : IToolBarButtonExtensionPoint
     {
         List<IMenuButtonItemExtensionPoint> Items { get; }
+
         string MenuCssClass { get; }
     }
 }

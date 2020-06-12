@@ -24,7 +24,9 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class Logo : SkinObjectBase
     {
         private readonly INavigationManager _navigationManager;
+
         public string BorderWidth { get; set; }
+
         public string CssClass { get; set; }
 
         public Logo()

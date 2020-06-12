@@ -9,6 +9,7 @@ using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+
 using DotNetNuke.Common.Utilities;
 
 namespace Dnn.PersonaBar.Library.DTO
@@ -26,6 +27,7 @@ namespace Dnn.PersonaBar.Library.DTO
             {
                 return Convert.ToBoolean(this["expandPersonaBar"]);
             }
+
             set
             {
                 this["expandPersonaBar"] = value;

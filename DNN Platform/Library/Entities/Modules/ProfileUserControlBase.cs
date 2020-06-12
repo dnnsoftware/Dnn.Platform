@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Modules
     public class ProfileUserControlBase : UserModuleBase
     {
         public event EventHandler ProfileUpdated;
+
         public event EventHandler ProfileUpdateCompleted;
 
         /// -----------------------------------------------------------------------------

@@ -5,6 +5,7 @@
 // See the LICENSE file in the project root for more information
 using System;
 using System.Text.RegularExpressions;
+
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Entities.Urls.Config
@@ -24,6 +25,7 @@ namespace DotNetNuke.Entities.Urls.Config
             {
                 return this._lookFor;
             }
+
             set
             {
                 if (this._lookFor != value)
@@ -40,6 +42,7 @@ namespace DotNetNuke.Entities.Urls.Config
             {
                 return this._sendTo;
             }
+
             set
             {
                 this._sendTo = value;

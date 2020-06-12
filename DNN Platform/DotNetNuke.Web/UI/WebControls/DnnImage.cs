@@ -12,7 +12,9 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnImage : Image
     {
         public string IconKey { get; set; }
+
         public string IconSize { get; set; }
+
         public string IconStyle { get; set; }
 
         protected override void OnPreRender(EventArgs e)

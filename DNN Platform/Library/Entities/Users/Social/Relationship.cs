@@ -123,6 +123,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 return this.RelationshipId;
             }
+
             set
             {
                 this.RelationshipId = value;

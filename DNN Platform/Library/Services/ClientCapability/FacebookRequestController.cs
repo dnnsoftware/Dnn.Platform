@@ -21,13 +21,21 @@ namespace DotNetNuke.Services.ClientCapability
     public class FacebookRequestController
     {
         public string AccessToken { get; set; }
+
         public DateTime Expires { get; set; }
+
         public long UserID { get; set; }
+
         public long ProfileId { get; set; }
+
         public static string API_SECRET { get; set; }
+
         public static string APP_ID { get; set; }
+
         public string RawSignedRequest { get; set; }
+
         private const string SignedRequestParameter = "signed_request";
+
         public bool IsValid { get; set; }
 
         public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
@@ -169,33 +177,46 @@ namespace DotNetNuke.Services.ClientCapability
     internal struct Page
     {
         public string id { get; set; }
+
         public bool liked { get; set; }
+
         public bool admin { get; set; }
     }
 
     internal struct Age
     {
         public long min { get; set; }
+
         public long max { get; set; }
     }
 
     internal struct User
     {
         public string locale { get; set; }
+
         public string country { get; set; }
+
         public Age age { get; set; }
     }
 
     internal struct FaceBookData
     {
         public User user { get; set; }
+
         public string algorithm { get; set; }
+
         public long issued_at { get; set; }
+
         public string user_id { get; set; }
+
         public string oauth_token { get; set; }
+
         public long expires { get; set; }
+
         public string app_data { get; set; }
+
         public Page page { get; set; }
+
         public long profile_id { get; set; }
     }
 }

@@ -48,6 +48,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _cachePath;
             }
+
             set
             {
                 if (string.IsNullOrEmpty(value))
@@ -67,6 +68,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return _purgeInterval;
             }
+
             set
             {
                 if (value == null)
@@ -94,6 +96,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
                 return this._lastPurge;
             }
+
             set
             {
                 this._lastPurge = value;

@@ -119,6 +119,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_strProviderName;
             }
+
             set
             {
                 this.m_strProviderName = value;
@@ -139,6 +140,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_strLevel;
             }
+
             set
             {
                 this.m_strLevel = value;
@@ -151,6 +153,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_strToolTip;
             }
+
             set
             {
                 this.m_strToolTip = value;
@@ -163,6 +166,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_blnPopulateNodesFromClient;
             }
+
             set
             {
                 this.m_blnPopulateNodesFromClient = value;
@@ -175,6 +179,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_intExpandDepth;
             }
+
             set
             {
                 this.m_intExpandDepth = value;
@@ -187,6 +192,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this.m_intStartTabId;
             }
+
             set
             {
                 this.m_intStartTabId = value;
@@ -206,6 +212,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.PathSystemImage;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -233,6 +240,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.PathImage;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -260,6 +268,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.WorkImage;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -286,6 +295,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.PathSystemScript;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -323,6 +333,7 @@ namespace DotNetNuke.UI.Skins
 
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -374,6 +385,7 @@ namespace DotNetNuke.UI.Skins
 
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -414,6 +426,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.ForceCrawlerDisplay;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -440,6 +453,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.ForceDownLevel;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -466,6 +480,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.MouseOutHideDelay.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -506,6 +521,7 @@ namespace DotNetNuke.UI.Skins
 
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -554,6 +570,7 @@ namespace DotNetNuke.UI.Skins
 
                 return retValue;
             }
+
             set
             {
                 if (this.Control == null)
@@ -587,6 +604,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildren.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -613,6 +631,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -640,6 +659,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -667,6 +687,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageExpandedRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -694,6 +715,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.IndicateChildImageExpandedSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -721,6 +743,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -748,6 +771,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -775,6 +799,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -802,6 +827,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -829,6 +855,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLBreadCrumbRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -856,6 +883,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeLeftHTMLBreadCrumbSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -883,6 +911,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLBreadCrumbRoot;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -910,6 +939,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.NodeRightHTMLBreadCrumbSub;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -937,6 +967,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorHTML;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -964,6 +995,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorLeftHTML;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -991,6 +1023,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorRightHTML;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1018,6 +1051,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorLeftHTMLActive;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1045,6 +1079,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorRightHTMLActive;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1072,6 +1107,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorLeftHTMLBreadCrumb;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1099,6 +1135,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.SeparatorRightHTMLBreadCrumb;
                 }
             }
+
             set
             {
                 value = this.GetPath(value);
@@ -1126,6 +1163,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSControl;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1152,6 +1190,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSContainerRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1178,6 +1217,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNode;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1204,6 +1244,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSIcon;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1230,6 +1271,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSContainerSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1256,6 +1298,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeHover;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1282,6 +1325,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSBreak;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1308,6 +1352,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSIndicateChildSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1334,6 +1379,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSIndicateChildRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1360,6 +1406,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSBreadCrumbRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1386,6 +1433,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSBreadCrumbSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1412,6 +1460,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1438,6 +1487,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeSelectedRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1464,6 +1514,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeSelectedSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1490,6 +1541,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeHoverRoot;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1516,6 +1568,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSNodeHoverSub;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1542,6 +1595,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSSeparator;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1568,6 +1622,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSLeftSeparator;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1594,6 +1649,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSRightSeparator;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1620,6 +1676,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSLeftSeparatorSelection;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1646,6 +1703,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSRightSeparatorSelection;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1672,6 +1730,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSLeftSeparatorBreadCrumb;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1698,6 +1757,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.CSSRightSeparatorBreadCrumb;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1724,6 +1784,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleBackColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1750,6 +1811,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleForeColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1776,6 +1838,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleHighlightColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1802,6 +1865,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleIconBackColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1828,6 +1892,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleSelectionBorderColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1854,6 +1919,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleSelectionColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1880,6 +1946,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleSelectionForeColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1906,6 +1973,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleControlHeight.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1932,6 +2000,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleBorderWidth.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1958,6 +2027,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleNodeHeight.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -1984,6 +2054,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleIconWidth.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2010,6 +2081,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleFontNames;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2036,6 +2108,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleFontSize.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2062,6 +2135,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.StyleFontBold;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2088,6 +2162,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsShadowColor;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2114,6 +2189,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsStyle;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2140,6 +2216,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsShadowStrength.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2166,6 +2243,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsTransition;
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2192,6 +2270,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsDuration.ToString();
                 }
             }
+
             set
             {
                 if (this.Control == null)
@@ -2218,6 +2297,7 @@ namespace DotNetNuke.UI.Skins
                     return this.Control.EffectsShadowDirection;
                 }
             }
+
             set
             {
                 if (this.Control == null)

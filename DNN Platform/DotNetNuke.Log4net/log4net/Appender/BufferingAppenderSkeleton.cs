@@ -223,6 +223,7 @@ namespace log4net.Appender
         public virtual bool OnlyFixPartialEventData
         {
             get { return this.Fix == FixFlags.Partial; }
+
             set
             {
                 if (value)

@@ -77,6 +77,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return strValue;
             }
+
             set
             {
                 this.Value = value;

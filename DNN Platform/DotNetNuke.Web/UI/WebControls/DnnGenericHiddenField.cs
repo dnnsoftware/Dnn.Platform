@@ -16,12 +16,14 @@ namespace DotNetNuke.Web.UI.WebControls
         private T _typedValue = null;
 
         private bool _isValueSerialized = false;
+
         public T TypedValue
         {
             get
             {
                 return this._typedValue;
             }
+
             set
             {
                 this._typedValue = value;

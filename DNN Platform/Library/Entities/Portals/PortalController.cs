@@ -3734,9 +3734,13 @@ namespace DotNetNuke.Entities.Portals
             }
 
             public string Name { get; private set; }
+
             public string CultureCode { get; private set; }
+
             public string TemplateFilePath { get; private set; }
+
             public string LanguageFilePath { get; private set; }
+
             public string Description { get; private set; }
 
             public string ResourceFilePath

@@ -37,6 +37,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         public event EventHandler ItemChanged;
+
         public event EventHandler ModeChanged;
 
         public DnnLanguageComboBox()
@@ -76,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._languagesListType;
             }
+
             set
             {
                 this._languagesListType = value;

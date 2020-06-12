@@ -6,6 +6,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -24,6 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("TextBoxCssClass", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("TextBoxCssClass", value, string.Empty);
@@ -36,6 +38,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue("ContainerCssClass", string.Empty);
             }
+
             set
             {
                 this.ViewState.SetValue("ContainerCssClass", value, string.Empty);

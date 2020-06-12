@@ -62,6 +62,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mAutoPostBack;
             }
+
             set
             {
                 this.mAutoPostBack = value;
@@ -89,6 +90,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mDataField;
             }
+
             set
             {
                 this.mDataField = value;
@@ -109,6 +111,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEnabled;
             }
+
             set
             {
                 this.mEnabled = value;
@@ -128,6 +131,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mEnabledField;
             }
+
             set
             {
                 this.mEnabledField = value;
@@ -147,6 +151,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mHeaderCheckBox;
             }
+
             set
             {
                 this.mHeaderCheckBox = value;

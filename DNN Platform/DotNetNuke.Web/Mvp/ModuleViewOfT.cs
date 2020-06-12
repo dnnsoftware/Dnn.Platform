@@ -27,6 +27,7 @@ namespace DotNetNuke.Web.Mvp
 
                 return this._model;
             }
+
             set { this._model = value; }
         }
 

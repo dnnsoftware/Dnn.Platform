@@ -32,6 +32,7 @@ namespace DotNetNuke.Common.Utilities
     public class XmlUtils
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(XmlUtils));
+
         public static void AppendElement(ref XmlDocument objDoc, XmlNode objNode, string attName, string attValue, bool includeIfEmpty)
         {
             AppendElement(ref objDoc, objNode, attName, attValue, includeIfEmpty, false);

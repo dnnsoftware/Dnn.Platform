@@ -176,12 +176,15 @@ namespace DotNetNuke.Entities.Users.Social
         void RemoveUserRelationship(int userRelationshipId);
 
         UserRelationship GetFollowerRelationship(UserInfo targetUser);
+
         UserRelationship GetFollowerRelationship(UserInfo initiatingUser, UserInfo targetUser);
 
         UserRelationship GetFollowingRelationship(UserInfo targetUser);
+
         UserRelationship GetFollowingRelationship(UserInfo initiatingUser, UserInfo targetUser);
 
         UserRelationship GetFriendRelationship(UserInfo targetUser);
+
         UserRelationship GetFriendRelationship(UserInfo initiatingUser, UserInfo targetUser);
 
         void CreateDefaultRelationshipsForPortal(int portalId);

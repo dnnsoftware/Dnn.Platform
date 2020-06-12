@@ -4,6 +4,7 @@
 
 using System;
 using System.ComponentModel.Composition;
+
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.UI.Modules;

@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.Groups
     public partial class GroupEdit : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public GroupEdit()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

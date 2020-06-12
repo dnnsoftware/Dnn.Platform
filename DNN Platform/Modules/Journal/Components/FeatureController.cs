@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.Journal.Components
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
         protected INavigationManager NavigationManager { get; }
+
         public FeatureController()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();

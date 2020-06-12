@@ -4,6 +4,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
 using System;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -46,6 +47,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 return this._AuthenticationType;
             }
+
             set
             {
                 this._AuthenticationType = value;
@@ -53,6 +55,7 @@ namespace DotNetNuke.Services.Authentication
         }
 
         public event EventHandler LogOff;
+
         public event EventHandler Redirect;
 
         protected virtual void OnLogOff(EventArgs a)

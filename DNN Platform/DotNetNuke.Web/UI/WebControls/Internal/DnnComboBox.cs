@@ -8,6 +8,7 @@ using System.Collections.Specialized;
 using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.JavaScriptLibraries;
@@ -31,6 +32,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 return base.SelectedValue;
             }
+
             set
             {
                 if (this.RequiresDataBinding)
@@ -62,6 +64,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                 return this.SelectedValue ?? string.Empty;
             }
+
             set
             {
                 if (this.TagKey == HtmlTextWriterTag.Input)

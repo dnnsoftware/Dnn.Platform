@@ -11,6 +11,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
     public class ResultCapturingActionInvoker : ControllerActionInvoker
     {
         public ActionResult ResultOfLastInvoke { get; set; }
+
         protected override ActionExecutedContext InvokeActionMethodWithFilters(ControllerContext controllerContext, IList<IActionFilter> filters, ActionDescriptor actionDescriptor, IDictionary<string, object> parameters)
         {
             var context = base.InvokeActionMethodWithFilters(controllerContext, filters, actionDescriptor, parameters);

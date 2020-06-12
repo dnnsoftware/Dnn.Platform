@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Mobile
             {
                 return this._id;
             }
+
             set
             {
                 this._id = value;
@@ -64,6 +65,7 @@ namespace DotNetNuke.Services.Mobile
             {
                 return this.Id;
             }
+
             set
             {
                 this.Id = value;

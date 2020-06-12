@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.MModControllerType;
             }
+
             set
             {
                 this.MModControllerType = value;
@@ -49,6 +50,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.SearchBaseControllerType;
             }
+
             set
             {
                 this.SearchBaseControllerType = value;
@@ -61,6 +63,7 @@ namespace DotNetNuke.Services.Search
             {
                 return this.MModInfo;
             }
+
             set
             {
                 this.MModInfo = value;

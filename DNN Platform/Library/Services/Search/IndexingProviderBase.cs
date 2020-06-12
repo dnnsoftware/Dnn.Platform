@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Common;
 using DotNetNuke.Services.Scheduling;
 using DotNetNuke.Services.Search.Entities;

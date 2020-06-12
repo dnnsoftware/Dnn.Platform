@@ -33,6 +33,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return (Locale)this.BaseGet(key);
             }
+
             set
             {
                 this.BaseSet(key, value);

@@ -57,6 +57,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._HelpKey;
             }
+
             set
             {
                 this._HelpKey = value;
@@ -77,6 +78,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblHelp.Text;
             }
+
             set
             {
                 this.lblHelp.Text = value;
@@ -104,6 +106,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._ResourceKey;
             }
+
             set
             {
                 this._ResourceKey = value;

@@ -19,6 +19,7 @@ namespace DotNetNuke.Common
     internal class NavigationManager : INavigationManager
     {
         private readonly IPortalController _portalController;
+
         public NavigationManager(IPortalController portalController)
         {
             this._portalController = portalController;

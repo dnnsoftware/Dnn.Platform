@@ -22,30 +22,55 @@ namespace DotNetNuke.Services.Journal
    public class JournalItem : IHydratable, IPropertyAccess
     {
         public int JournalId { get; set; }
+
         public int JournalTypeId { get; set; }
+
         public int PortalId { get; set; }
+
         public int UserId { get; set; }
+
         public int ProfileId { get; set; }
+
         public int SocialGroupId { get; set; }
+
         public string Title { get; set; }
+
         public string Summary { get; set; }
+
         public string Body { get; set; }
+
         public ItemData ItemData { get; set; }
+
         public XmlDocument JournalXML { get; set; }
+
         public DateTime DateCreated { get; set; }
+
         public DateTime DateUpdated { get; set; }
+
         public string ObjectKey { get; set; }
+
         public Guid AccessKey { get; set; }
+
         public string SecuritySet { get; set; }
+
         public int ContentItemId { get; set; }
+
         public JournalEntity JournalAuthor { get; set; }
+
         public JournalEntity JournalOwner { get; set; }
+
         public string TimeFrame { get; set; }
+
         public bool CurrentUserLikes { get; set; }
+
         public string JournalType { get; set; }
+
         public bool IsDeleted { get; set; }
+
         public bool CommentsDisabled { get; set; }
+
         public bool CommentsHidden { get; set; }
+
         public int SimilarCount { get; set; }
 
        /// <summary>
@@ -64,6 +89,7 @@ namespace DotNetNuke.Services.Journal
             {
                 return this.JournalId;
             }
+
             set
             {
                 this.JournalId = value;

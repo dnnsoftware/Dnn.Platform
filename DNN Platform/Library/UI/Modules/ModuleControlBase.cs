@@ -89,6 +89,7 @@ namespace DotNetNuke.UI.Modules
 
                 return fileRoot;
             }
+
             set
             {
                 this._localResourceFile = value;

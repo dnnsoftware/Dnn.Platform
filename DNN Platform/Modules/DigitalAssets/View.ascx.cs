@@ -49,6 +49,7 @@ namespace DotNetNuke.Modules.DigitalAssets
         private NameValueCollection damState;
 
         private readonly INavigationManager _navigationManager;
+
         public View()
         {
             this.controller = new Factory().DigitalAssetsController;

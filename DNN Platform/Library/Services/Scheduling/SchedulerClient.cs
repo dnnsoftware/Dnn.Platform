@@ -41,8 +41,11 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         public event WorkStarted ProcessStarted;
+
         public event WorkProgressing ProcessProgressing;
+
         public event WorkCompleted ProcessCompleted;
+
         public event WorkErrored ProcessErrored;
 
         public void Started()

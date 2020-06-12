@@ -617,6 +617,7 @@ namespace DotNetNuke.Entities.Portals
 
                 return this._users;
             }
+
             set { this._users = value; }
         }
 
@@ -653,6 +654,7 @@ namespace DotNetNuke.Entities.Portals
 
                 return this._administratorRoleName;
             }
+
             set
             {
                 this._administratorRoleName = value;
@@ -707,6 +709,7 @@ namespace DotNetNuke.Entities.Portals
 
                 return this._pages;
             }
+
             set
             {
                 this._pages = value;
@@ -737,6 +740,7 @@ namespace DotNetNuke.Entities.Portals
 
                 return this._registeredRoleName;
             }
+
             set
             {
                 this._registeredRoleName = value;
@@ -859,6 +863,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 return this.PortalID;
             }
+
             set
             {
                 this.PortalID = value;

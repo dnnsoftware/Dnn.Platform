@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Collections.Generic;
+
 using DotNetNuke.Entities.Portals;
 
 namespace DotNetNuke.Services.Localization
@@ -14,8 +15,11 @@ namespace DotNetNuke.Services.Localization
     public interface ILocalizationProvider
     {
         string GetString(string key, string resourceFileRoot);
+
         string GetString(string key, string resourceFileRoot, string language);
+
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings);
+
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys);
 
         /// <summary>

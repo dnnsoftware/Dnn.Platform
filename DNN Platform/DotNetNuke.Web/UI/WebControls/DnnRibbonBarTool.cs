@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnRibbonBarTool : Control, IDnnRibbonBarTool
     {
         protected INavigationManager NavigationManager { get; }
+
         public DnnRibbonBarTool()
         {
             this.NavigationManager = Globals.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -50,6 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return (RibbonBarToolInfo)this.ViewState["ToolInfo"];
             }
+
             set
             {
                 this.ViewState["ToolInfo"] = value;
@@ -62,6 +64,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return Utilities.GetViewStateAsString(this.ViewState["NavigateUrl"], Null.NullString);
             }
+
             set
             {
                 this.ViewState["NavigateUrl"] = value;
@@ -74,6 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return Utilities.GetViewStateAsString(this.ViewState["ToolCssClass"], Null.NullString);
             }
+
             set
             {
                 this.ViewState["ToolCssClass"] = value;
@@ -86,6 +90,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return Utilities.GetViewStateAsString(this.ViewState["Text"], Null.NullString);
             }
+
             set
             {
                 this.ViewState["Text"] = value;
@@ -98,6 +103,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return Utilities.GetViewStateAsString(this.ViewState["ToolTip"], Null.NullString);
             }
+
             set
             {
                 this.ViewState["ToolTip"] = value;
@@ -179,6 +185,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ToolInfo.ToolName;
             }
+
             set
             {
                 if (this.AllTools.ContainsKey(value))

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+
 using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Services.Tokens

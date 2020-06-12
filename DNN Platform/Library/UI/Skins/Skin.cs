@@ -98,6 +98,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         protected IModuleControlPipeline ModuleControlPipeline { get; }
+
         protected INavigationManager NavigationManager { get; }
 
         /// -----------------------------------------------------------------------------
@@ -139,6 +140,7 @@ namespace DotNetNuke.UI.Skins
             {
                 return this._actionEventListeners ?? (this._actionEventListeners = new ArrayList());
             }
+
             set
             {
                 this._actionEventListeners = value;

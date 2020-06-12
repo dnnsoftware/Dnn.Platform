@@ -5,6 +5,7 @@
 using System;
 using System.Collections;
 using System.ComponentModel;
+
 using Dnn.PersonaBar.Library.Prompt.Models;
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
@@ -15,11 +16,17 @@ namespace Dnn.PersonaBar.Library.Prompt
     public abstract class ConsoleCommandBase : IConsoleCommand
     {
         public abstract string LocalResourceFile { get; }
+
         protected PortalSettings PortalSettings { get; private set; }
+
         protected UserInfo User { get; private set; }
+
         protected int PortalId { get; private set; }
+
         protected int TabId { get; private set; }
+
         protected string[] Args { get; private set; }
+
         protected Hashtable Flags { get; private set; }
 
         protected bool HasFlag(string flagName)

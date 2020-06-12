@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
 using DotNetNuke.Entities.Modules;
@@ -17,7 +18,9 @@ namespace DotNetNuke.Security.Cookies
     public class PersistedAuthCookie : IHydratable
     {
         public int CookieId { get; private set; }
+
         public string CookieValue { get; private set; }
+
         public DateTime ExpiresOn { get; private set; } // UTC
 
         public int KeyID

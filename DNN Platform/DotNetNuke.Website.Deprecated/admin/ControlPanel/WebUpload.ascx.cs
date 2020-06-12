@@ -44,6 +44,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
         private readonly INavigationManager _navigationManager;
+
         public WebUpload()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             {
                 return this._messageID;
             }
+
             set
             {
                 this._messageID = value;
@@ -106,6 +107,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             {
                 return this.MessageID;
             }
+
             set
             {
                 this.MessageID = value;

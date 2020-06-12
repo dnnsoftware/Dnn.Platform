@@ -35,6 +35,7 @@ namespace DotNetNuke.Modules.Html
         private int WorkflowID;
 
         private readonly INavigationManager _navigationManager;
+
         public HtmlModule()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

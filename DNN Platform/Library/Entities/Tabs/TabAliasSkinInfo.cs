@@ -18,9 +18,13 @@ namespace DotNetNuke.Entities.Tabs
     public class TabAliasSkinInfo : BaseEntityInfo, IHydratable
     {
         public int TabAliasSkinId { get; set; }
+
         public string HttpAlias { get; set; }
+
         public int PortalAliasId { get; set; }
+
         public string SkinSrc { get; set; }
+
         public int TabId { get; set; }
 
         public int KeyID

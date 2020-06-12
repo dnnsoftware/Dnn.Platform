@@ -8,6 +8,7 @@ using System.Collections.Specialized;
 using System.Text.RegularExpressions;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Modules.HTMLEditorProvider;
 
@@ -47,6 +48,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return this._defaultTextEditor.Text;
             }
+
             set
             {
                 if (this._richTextEditor != null)

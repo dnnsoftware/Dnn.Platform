@@ -31,16 +31,22 @@ namespace DotNetNuke.Services.Journal
         void Journal_SoftDeleteByGroupId(int portalId, int groupId);
 
         IDataReader Journal_Get(int portalId, int currentUserId, int journalId);
+
         IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck);
+
         IDataReader Journal_GetByKey(int portalId, string objectKey);
+
         IDataReader Journal_GetByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted);
+
         int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
+
         int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
 
         int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet);
+
         int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title, string summary,
             string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsHidden, bool commentsDisabled);
 
@@ -63,7 +69,9 @@ namespace DotNetNuke.Services.Journal
         void Journal_Comment_Like(int journalId, int commentId, int userId, string displayName);
 
         IDataReader Journal_Comment_LikeList(int portalId, int journalId, int commentId);
+
         void Journal_Comments_ToggleDisable(int portalId, int journalId, bool disable);
+
         void Journal_Comments_ToggleHidden(int portalId, int journalId, bool hidden);
 
         IDataReader Journal_Types_List(int portalId);

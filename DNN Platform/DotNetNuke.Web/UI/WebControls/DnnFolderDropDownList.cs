@@ -70,6 +70,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var folderId = this.SelectedItemValueAsInt;
                 return (folderId == Null.NullInteger) ? null : FolderManager.Instance.GetFolder(folderId);
             }
+
             set
             {
                 var folderName = value != null ? value.FolderName : null;

@@ -13,23 +13,41 @@ namespace DotNetNuke.Security
     public class RegistrationSettings
     {
         public bool RandomPassword { get; set; }
+
         public int RedirectAfterRegistration { get; set; }
+
         public int RedirectAfterLogout { get; set; }
+
         public int RedirectAfterLogin { get; set; }
+
         public string RegistrationFields { get; set; }
+
         public string ExcludeTerms { get; set; }
+
         public string ExcludeTermsRegex { get; set; }
+
         public int RegistrationFormType { get; set; }
+
         public bool RequirePasswordConfirm { get; set; }
+
         public bool RequireUniqueDisplayName { get; set; }
+
         public bool UseAuthProviders { get; set; }
+
         public bool UseEmailAsUserName { get; set; }
+
         public bool UseProfanityFilter { get; set; }
+
         public bool RequireValidProfile { get; set; }
+
         public bool RequireValidProfileAtLogin { get; set; }
+
         public bool UseCaptcha { get; set; }
+
         public string UserNameValidator { get; set; }
+
         public string DisplayNameFormat { get; set; }
+
         public string EmailValidator { get; set; }
 
         public RegistrationSettings()

@@ -148,6 +148,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return _StringValue;
             }
+
             set
             {
                 this.Value = DateTime.Parse(value);

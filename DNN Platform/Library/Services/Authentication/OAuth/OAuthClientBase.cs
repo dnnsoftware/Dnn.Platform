@@ -91,9 +91,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
         }
 
         protected string APIKey { get; set; }
+
         protected string APISecret { get; set; }
+
         protected AuthMode Mode { get; set; }
+
         protected string OAuthVersion { get; set; }
+
         protected HttpMethod TokenMethod { get; set; }
 
         // oAuth 1
@@ -103,22 +107,33 @@ namespace DotNetNuke.Services.Authentication.OAuth
         }
 
         protected Uri RequestTokenEndpoint { get; set; }
+
         protected HttpMethod RequestTokenMethod { get; set; }
+
         protected string TokenSecret { get; set; }
+
         protected string UserGuid { get; set; }
 
         // oAuth 1 and 2
         protected Uri AuthorizationEndpoint { get; set; }
+
         protected string AuthToken { get; set; }
+
         protected TimeSpan AuthTokenExpiry { get; set; }
+
         protected Uri MeGraphEndpoint { get; set; }
+
         protected Uri TokenEndpoint { get; set; }
+
         protected string OAuthHeaderCode { get; set; }
 
         // oAuth 2
         protected string AuthTokenName { get; set; }
+
         protected string Scope { get; set; }
+
         protected string AccessToken { get; set; }
+
         protected string VerificationCode
         {
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
@@ -128,6 +143,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected string APIResource { get; set; }
 
         public Uri CallbackUri { get; set; }
+
         public string Service { get; set; }
 
         public virtual bool PrefixServiceToUserName

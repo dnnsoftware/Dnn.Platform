@@ -50,27 +50,39 @@ namespace DotNetNuke.Web.InternalServices
         public class ModuleDefDTO
         {
             public int ModuleID { get; set; }
+
             public string ModuleName { get; set; }
+
             public string ModuleImage { get; set; }
+
             public bool Bookmarked { get; set; }
+
             public bool ExistsInBookmarkCategory { get; set; }
         }
 
         public class PageDefDTO
         {
             public int TabID { get; set; }
+
             public string IndentedTabName { get; set; }
         }
 
         public class AddModuleDTO
         {
             public string Visibility { get; set; }
+
             public string Position { get; set; }
+
             public string Module { get; set; }
+
             public string Page { get; set; }
+
             public string Pane { get; set; }
+
             public string AddExistingModule { get; set; }
+
             public string CopyModule { get; set; }
+
             public string Sort { get; set; }
         }
 
@@ -463,6 +475,7 @@ namespace DotNetNuke.Web.InternalServices
         public class BookmarkDTO
         {
             public string Title { get; set; }
+
             public string Bookmark { get; set; }
         }
 

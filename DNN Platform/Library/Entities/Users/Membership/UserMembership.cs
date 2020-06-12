@@ -50,6 +50,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return this._approved;
             }
+
             set
             {
                 if (!this._approved && value)

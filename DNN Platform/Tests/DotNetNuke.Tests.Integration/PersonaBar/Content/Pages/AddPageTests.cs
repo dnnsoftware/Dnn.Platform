@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using DNN.Integration.Test.Framework;
 using DNN.Integration.Test.Framework.Helpers;
 using Newtonsoft.Json;
@@ -52,11 +53,17 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPage
         {
             public string BulkPages { get; set; }
+
             public int ParentId { get; set; }
+
             public string Keywords { get; set; }
+
             public string Tags { get; set; }
+
             public bool IncludeInMenu { get; set; }
+
             public DateTime? StartDate { get; set; }
+
             public DateTime? EndDate { get; set; }
         }
 
@@ -64,8 +71,11 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPageResponseItem
         {
             public string PageName { get; set; }
+
             public int Status { get; set; }
+
             public int TabId { get; set; }
+
             public string ErrorMessage { get; set; }
         }
 
@@ -73,6 +83,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPageResponse
         {
             public int OverallStatus { get; set; }
+
             public IEnumerable<BulkPageResponseItem> Pages { get; set; }
         }
 
@@ -80,6 +91,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
         public class BulkPageResponseWrapper
         {
             public int Status { get; set; }
+
             public BulkPageResponse Response { get; set; }
         }
     }

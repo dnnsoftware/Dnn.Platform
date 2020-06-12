@@ -15,6 +15,7 @@
 */
 
 using System;
+
 using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Modules.Journal

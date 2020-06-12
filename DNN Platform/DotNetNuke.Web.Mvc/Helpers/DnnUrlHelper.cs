@@ -6,6 +6,7 @@ using System;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+
 using DotNetNuke.Common;
 using DotNetNuke.UI.Modules;
 using DotNetNuke.Web.Mvc.Common;
@@ -19,6 +20,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         private readonly ViewContext _viewContext;
 
         private readonly IDnnController _controller;
+
         public DnnUrlHelper(ViewContext viewContext)
             : this(viewContext, RouteTable.Routes)
         {

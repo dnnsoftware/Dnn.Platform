@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Web.UI.WebControls
@@ -33,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.TextHyperlinkControl.Text;
             }
+
             set
             {
                 this.TextHyperlinkControl.Text = value;
@@ -49,6 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.TextHyperlinkControl.ToolTip;
             }
+
             set
             {
                 this.TextHyperlinkControl.ToolTip = value;
@@ -65,6 +68,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.TextHyperlinkControl.NavigateUrl;
             }
+
             set
             {
                 this.TextHyperlinkControl.NavigateUrl = value;
@@ -81,6 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.TextHyperlinkControl.Target;
             }
+
             set
             {
                 this.TextHyperlinkControl.Target = value;
@@ -97,6 +102,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState["DisabledCssClass"] == null ? string.Empty : (string)this.ViewState["DisabledCssClass"];
             }
+
             set
             {
                 this.ViewState["DisabledCssClass"] = value;
@@ -153,6 +159,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._localize;
             }
+
             set
             {
                 this._localize = value;

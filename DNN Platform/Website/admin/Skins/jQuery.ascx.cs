@@ -11,7 +11,9 @@ namespace DotNetNuke.UI.Skins.Controls
     public partial class jQuery : SkinObjectBase
     {
         public bool DnnjQueryPlugins { get; set; }
+
         public bool jQueryHoverIntent { get; set; }
+
         public bool jQueryUI { get; set; }
 
         protected override void OnInit(EventArgs e)

@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -20,6 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
     public class DnnDatePicker : TextBox
     {
         protected virtual string Format => "yyyy-MM-dd";
+
         protected virtual string ClientFormat => "YYYY-MM-DD";
 
         public DateTime? SelectedDate
@@ -34,6 +36,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                 return null;
             }
+
             set
             {
                 this.Text = value?.ToString(this.Format) ?? string.Empty;

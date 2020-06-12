@@ -38,6 +38,7 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class ManageUsers : UserModuleBase, IActionable
     {
         private readonly INavigationManager _navigationManager;
+
         public ManageUsers()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -174,6 +175,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 return _PageNo;
             }
+
             set
             {
                 this.ViewState["PageNo"] = value;

@@ -13,6 +13,7 @@ namespace DotNetNuke.UI.Skins.EventListeners
         }
 
         public SkinEventType EventType { get; private set; }
+
         public SkinEventHandler SkinEvent { get; private set; }
     }
 }

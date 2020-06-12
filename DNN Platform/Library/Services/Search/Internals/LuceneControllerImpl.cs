@@ -558,6 +558,7 @@ namespace DotNetNuke.Services.Search.Internals
         private class CachedReader : IDisposable
         {
             public DateTime LastUsed { get; private set; }
+
             private readonly IndexSearcher _searcher;
 
             public CachedReader(IndexSearcher searcher)

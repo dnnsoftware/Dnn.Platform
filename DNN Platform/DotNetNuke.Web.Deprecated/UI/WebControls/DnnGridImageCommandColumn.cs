@@ -4,6 +4,7 @@
 
 using System.Web;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Entities.Icons;
 using DotNetNuke.UI.WebControls;
 using Telerik.Web.UI;
@@ -48,6 +49,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
             }
+
             set { this._imageURL = value; }
         }
 

@@ -86,26 +86,44 @@ namespace DotNetNuke.Entities.Urls
         private PortalAliasInfo _portalAlias;
 
         public Uri Url { get; set; }
+
         public bool DoRewrite { get; set; }
+
         public bool FriendlyRewrite { get; set; }
 
         // friendlyRewrite means it was rewritten without looking up the tabid in the url
         public bool BypassCachedDictionary { get; set; }
+
         public string RewritePath { get; set; }
+
         public string RawUrl { get; set; }
+
         public string DebugData { get; set; }
+
         public string PhysicalPath { get; set; }
+
         public StateBoolean VirtualPath { get; set; }
+
         public string ApplicationPath { get; set; }
+
         public bool RebuildRequested { get; set; }
+
         public string FinalUrl { get; set; }
+
         public string Scheme { get; set; }
+
         public bool IsSecureConnection { get; set; }
+
         public bool IsSSLOffloaded { get; set; }
+
         public string DomainName { get; set; }
+
         public Exception Ex { get; set; }
+
         public string dictKey { get; set; }
+
         public string dictVal { get; set; }
+
         public List<string> DebugMessages { get; set; }
 
         public int TabId { get; set; }
@@ -132,6 +150,7 @@ namespace DotNetNuke.Entities.Urls
         public PortalAliasInfo PortalAlias
         {
             get { return this._portalAlias; }
+
             set
             {
                 if (value != null)
@@ -146,7 +165,9 @@ namespace DotNetNuke.Entities.Urls
 
         // the primary alias, if different to the current alias
         public PortalAliasInfo PrimaryAlias { get; set; }
+
         public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping { get; set; }
+
         public bool CustomParmRewrite { get; set; }
 
         // 737 : mobile browser identificatino

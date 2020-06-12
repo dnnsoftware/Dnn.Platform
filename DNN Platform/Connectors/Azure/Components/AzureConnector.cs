@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using DotNetNuke.Collections;
 using DotNetNuke.Data;
 using DotNetNuke.Services.Connections;
@@ -30,6 +31,7 @@ namespace Dnn.AzureConnector.Components
         }
 
         private string _displayName;
+
         public string DisplayName
         {
             get
@@ -37,6 +39,7 @@ namespace Dnn.AzureConnector.Components
                 return
                     string.IsNullOrEmpty(this._displayName) ? DefaultDisplayName : this._displayName;
             }
+
             set { this._displayName = value; }
         }
 

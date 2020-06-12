@@ -48,6 +48,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblTitle.CssClass;
             }
+
             set
             {
                 this.lblTitle.CssClass = value;
@@ -69,6 +70,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._includeRule;
             }
+
             set
             {
                 this._includeRule = value;
@@ -90,6 +92,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return DNNClientAPI.MinMaxContentVisibile(this.imgIcon, -1, !this._isExpanded, DNNClientAPI.MinMaxPersistanceType.Page);
             }
+
             set
             {
                 this._isExpanded = value;
@@ -111,6 +114,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._javaScript;
             }
+
             set
             {
                 this._javaScript = value;
@@ -132,6 +136,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._maxImageUrl;
             }
+
             set
             {
                 this._maxImageUrl = value;
@@ -153,6 +158,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this._minImageUrl;
             }
+
             set
             {
                 this._minImageUrl = value;
@@ -195,6 +201,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.lblTitle.Text;
             }
+
             set
             {
                 this.lblTitle.Text = value;

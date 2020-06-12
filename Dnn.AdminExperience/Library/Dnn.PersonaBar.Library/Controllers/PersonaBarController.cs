@@ -5,6 +5,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 using Dnn.PersonaBar.Library.Containers;
 using Dnn.PersonaBar.Library.Permissions;
 using Dnn.PersonaBar.Library.Repository;
@@ -13,6 +14,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Framework;
 using DotNetNuke.Instrumentation;
 using Newtonsoft.Json;
+
 using MenuItem = Dnn.PersonaBar.Library.Model.MenuItem;
 using PersonaBarMenu = Dnn.PersonaBar.Library.Model.PersonaBarMenu;
 

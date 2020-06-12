@@ -79,6 +79,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._Type;
             }
+
             set
             {
                 this._Type = value;

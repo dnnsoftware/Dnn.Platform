@@ -5,6 +5,7 @@
 // See the LICENSE file in the project root for more information
 using System;
 using System.Web.UI;
+
 using DotNetNuke.Web.UI;
 using Telerik.Web.UI;
 
@@ -33,6 +34,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             return this._localize;
          }
+
          set
          {
             this._localize = value;

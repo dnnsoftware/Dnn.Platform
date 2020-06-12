@@ -71,6 +71,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToInt32(this.ViewState["ModuleId"]);
             }
+
             set
             {
                 this._ModuleId = value;
@@ -83,6 +84,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["LabelColumnWidth"]);
             }
+
             set
             {
                 this._LabelColumnWidth = value;
@@ -95,6 +97,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return Convert.ToString(this.ViewState["ControlColumnWidth"]);
             }
+
             set
             {
                 this._ControlColumnWidth = value;
@@ -107,6 +110,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtFirstName.Text;
             }
+
             set
             {
                 this._FirstName = value;
@@ -119,6 +123,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtLastName.Text;
             }
+
             set
             {
                 this._LastName = value;
@@ -131,6 +136,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtUsername.Text;
             }
+
             set
             {
                 this._UserName = value;
@@ -143,6 +149,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtPassword.Text;
             }
+
             set
             {
                 this._Password = value;
@@ -155,6 +162,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtConfirm.Text;
             }
+
             set
             {
                 this._Confirm = value;
@@ -167,6 +175,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtEmail.Text;
             }
+
             set
             {
                 this._Email = value;
@@ -179,6 +188,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtWebsite.Text;
             }
+
             set
             {
                 this._Website = value;
@@ -191,6 +201,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 return this.txtIM.Text;
             }
+
             set
             {
                 this._IM = value;

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Web;
+
 using DotNetNuke.Entities.Portals;
 using DotNetNuke.Entities.Users;
 
@@ -26,6 +27,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         public string StaticRoles
         {
             get { return this._staticRoles; }
+
             set
             {
                 this._staticRoles = value;
@@ -39,6 +41,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         public string DenyRoles
         {
             get { return this._denyRoles; }
+
             set
             {
                 this._denyRoles = value;

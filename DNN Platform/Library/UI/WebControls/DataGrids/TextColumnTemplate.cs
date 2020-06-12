@@ -62,6 +62,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.mItemType;
             }
+
             set
             {
                 this.mItemType = value;

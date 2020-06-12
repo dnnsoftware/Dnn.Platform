@@ -33,6 +33,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 return this._captureStream;
             }
+
             set
             {
                 this._captureStream = value;
@@ -83,6 +84,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 throw new NotSupportedException();
             }
+
             set
             {
                 throw new NotSupportedException();

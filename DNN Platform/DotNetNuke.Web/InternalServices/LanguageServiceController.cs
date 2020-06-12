@@ -22,6 +22,7 @@ namespace DotNetNuke.Web.InternalServices
     public class LanguageServiceController : DnnApiController
     {
         protected INavigationManager NavigationManager { get; }
+
         public LanguageServiceController(INavigationManager navigationManager)
         {
             this.NavigationManager = navigationManager;
@@ -30,7 +31,9 @@ namespace DotNetNuke.Web.InternalServices
         public class PageDto
         {
             public string Name { get; set; }
+
             public string ViewUrl { get; set; }
+
             public string EditUrl { get; set; }
         }
 

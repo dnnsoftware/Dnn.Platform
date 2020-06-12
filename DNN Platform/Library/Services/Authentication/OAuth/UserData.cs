@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 return this.Name;
             }
+
             set { }
         }
 
@@ -36,6 +37,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(0, this.Name.IndexOf(" ", StringComparison.Ordinal)) : string.Empty;
             }
+
             set { this.Name = value + " " + this.LastName; }
         }
 
@@ -48,6 +50,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 return (!string.IsNullOrEmpty(this.Name) && this.Name.IndexOf(" ", StringComparison.Ordinal) > 0) ? this.Name.Substring(this.Name.IndexOf(" ", StringComparison.Ordinal) + 1) : this.Name;
             }
+
             set { this.Name = this.FirstName + " " + value; }
         }
 

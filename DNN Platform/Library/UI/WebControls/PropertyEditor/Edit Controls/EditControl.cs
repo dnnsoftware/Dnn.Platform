@@ -42,6 +42,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._CustomAttributes;
             }
+
             set
             {
                 this._CustomAttributes = value;
@@ -186,7 +187,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         public event PropertyChangedEventHandler ItemAdded;
+
         public event PropertyChangedEventHandler ItemDeleted;
+
         public event PropertyChangedEventHandler ValueChanged;
 
         /// -----------------------------------------------------------------------------

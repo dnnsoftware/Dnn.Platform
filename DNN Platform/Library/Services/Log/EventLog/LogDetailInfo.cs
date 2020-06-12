@@ -32,6 +32,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 return this._PropertyName;
             }
+
             set
             {
                 this._PropertyName = value;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 return this._PropertyValue;
             }
+
             set
             {
                 this._PropertyValue = value;

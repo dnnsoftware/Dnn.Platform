@@ -4,6 +4,7 @@
 
 using System.Collections.Generic;
 using System.Data;
+
 using DotNetNuke.Data;
 
 namespace DotNetNuke.Tests.Data.Fakes

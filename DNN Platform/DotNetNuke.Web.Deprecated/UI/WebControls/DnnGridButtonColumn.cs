@@ -76,6 +76,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return base.ImageUrl;
             }
+
             set
             {
                 base.ImageUrl = value;

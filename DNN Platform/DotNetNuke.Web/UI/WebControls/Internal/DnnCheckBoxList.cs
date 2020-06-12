@@ -7,6 +7,7 @@ using System;
 using System.ComponentModel;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client.ClientResourceManagement;
@@ -26,12 +27,14 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         }
 
         private string _initValue;
+
         public override string SelectedValue
         {
             get
             {
                 return base.SelectedValue;
             }
+
             set
             {
                 if (this.RequiresDataBinding)

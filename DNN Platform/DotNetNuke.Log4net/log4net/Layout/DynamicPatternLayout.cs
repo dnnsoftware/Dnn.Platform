@@ -105,6 +105,7 @@ namespace log4net.Layout
             {
                 return this.m_headerPatternString.Format();
             }
+
             set
             {
                 base.Header = value;
@@ -129,6 +130,7 @@ namespace log4net.Layout
             {
                 return this.m_footerPatternString.Format();
             }
+
             set
             {
                 base.Footer = value;

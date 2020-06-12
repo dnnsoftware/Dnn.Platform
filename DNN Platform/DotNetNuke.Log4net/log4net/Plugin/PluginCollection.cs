@@ -235,6 +235,7 @@ namespace log4net.Plugin
                 this.ValidateIndex(index); // throws
                 return this.m_array[index];
             }
+
             set
             {
                 this.ValidateIndex(index); // throws
@@ -440,6 +441,7 @@ namespace log4net.Plugin
             {
                 return this.m_array.Length;
             }
+
             set
             {
                 if (value < this.m_count)

@@ -31,6 +31,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._alignment;
             }
+
             set
             {
                 this._alignment = value.ToLowerInvariant();
@@ -45,6 +46,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._level;
             }
+
             set
             {
                 this._level = value.ToLowerInvariant();
@@ -61,6 +63,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._forceLinks;
             }
+
             set
             {
                 this._forceLinks = value;
@@ -73,6 +76,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return this._includeActiveTab;
             }
+
             set
             {
                 this._includeActiveTab = value;

@@ -80,6 +80,7 @@ namespace DotNetNuke.Entities.Modules.Actions
             {
                 return (ModuleAction)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

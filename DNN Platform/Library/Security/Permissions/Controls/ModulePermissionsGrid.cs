@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
@@ -57,6 +58,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this._InheritViewPermissionsFromTab;
             }
+
             set
             {
                 this._InheritViewPermissionsFromTab = value;
@@ -75,6 +77,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this._ModuleID;
             }
+
             set
             {
                 this._ModuleID = value;

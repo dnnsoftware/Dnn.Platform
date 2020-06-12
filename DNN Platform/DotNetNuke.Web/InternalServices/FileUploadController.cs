@@ -48,13 +48,16 @@ namespace DotNetNuke.Web.InternalServices
         public class FolderItemDTO
         {
             public int FolderId { get; set; }
+
             public string FileFilter { get; set; }
+
             public bool Required { get; set; }
         }
 
         public class SavedFileDTO
         {
             public string FileId { get; set; }
+
             public string FilePath { get; set; }
         }
 
@@ -338,12 +341,19 @@ namespace DotNetNuke.Web.InternalServices
         public class UploadByUrlDto
         {
             public string Url { get; set; }
+
             public string Folder { get; set; }
+
             public bool Overwrite { get; set; }
+
             public bool Unzip { get; set; }
+
             public string Filter { get; set; }
+
             public bool IsHostMenu { get; set; }
+
             public int PortalId { get; set; } = -1;
+
             public string ValidationCode { get; set; }
         }
 

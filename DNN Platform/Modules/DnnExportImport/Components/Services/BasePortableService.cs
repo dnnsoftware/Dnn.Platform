@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 using Dnn.ExportImport.Components.Dto;
 using Dnn.ExportImport.Components.Entities;
 using Dnn.ExportImport.Components.Models;
@@ -72,7 +73,9 @@ namespace Dnn.ExportImport.Components.Services
         public abstract uint Priority { get; }
 
         public abstract void ExportData(ExportImportJob exportJob, ExportDto exportDto);
+
         public abstract void ImportData(ExportImportJob importJob, ImportDto importDto);
+
         public abstract int GetImportTotal();
     }
 }

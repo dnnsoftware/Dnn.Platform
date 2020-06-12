@@ -6,6 +6,7 @@ using System;
 using System.Net.Http;
 using System.Security.Principal;
 using System.Threading;
+
 using Dnn.AuthServices.Jwt.Components.Common.Controllers;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Web.Api.Auth;
@@ -24,9 +25,11 @@ namespace Dnn.AuthServices.Jwt.Auth
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(JwtAuthMessageHandler));
 
         public override string AuthScheme => this._jwtController.SchemeType;
+
         public override bool BypassAntiForgeryToken => true;
 
         internal static bool IsEnabled { get; set; }
+
         private readonly IJwtController _jwtController = JwtController.Instance;
 
         public JwtAuthMessageHandler(bool includeByDefault, bool forceSsl)

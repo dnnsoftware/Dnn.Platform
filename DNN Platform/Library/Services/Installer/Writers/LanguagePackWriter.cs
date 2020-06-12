@@ -112,6 +112,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._Language;
             }
+
             set
             {
                 this._Language = value;
@@ -130,6 +131,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 return this._LanguagePack;
             }
+
             set
             {
                 this._LanguagePack = value;

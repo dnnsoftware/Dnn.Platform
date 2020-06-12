@@ -145,6 +145,7 @@ namespace log4net.Appender
         public virtual TextWriter Writer
         {
             get { return this.m_qtw; }
+
             set
             {
                 lock (this)
@@ -269,6 +270,7 @@ namespace log4net.Appender
         public override IErrorHandler ErrorHandler
         {
             get { return base.ErrorHandler; }
+
             set
             {
                 lock (this)

@@ -54,6 +54,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return (WorkflowStatePermissionInfo) this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

@@ -20,6 +20,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     public partial class ViewSource : PortalModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public ViewSource()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

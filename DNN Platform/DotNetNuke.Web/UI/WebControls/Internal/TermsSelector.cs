@@ -7,10 +7,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Entities.Content.Taxonomy;
 using DotNetNuke.Framework.JavaScriptLibraries;
 using DotNetNuke.Web.Client.ClientResourceManagement;
+
 using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Web.UI.WebControls.Internal
@@ -52,6 +54,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
                 return terms;
             }
+
             set
             {
                 this.Value = string.Join(",", value.Select(t => t.TermId.ToString()));

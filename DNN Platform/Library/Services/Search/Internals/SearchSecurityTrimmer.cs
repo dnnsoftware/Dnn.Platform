@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+
 using DotNetNuke.Services.Search.Entities;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;

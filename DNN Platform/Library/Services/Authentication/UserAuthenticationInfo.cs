@@ -84,6 +84,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 return this.UserAuthenticationID;
             }
+
             set
             {
                 this.UserAuthenticationID = value;

@@ -139,6 +139,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                 ? this.FoldersComboBox.SelectedFolder.FolderPath
                                 : string.Empty;
             }
+
             set
             {
                 this._folderPath = value;
@@ -152,6 +153,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._fileFilter;
             }
+
             set
             {
                 this._fileFilter = value;
@@ -176,6 +178,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return !this._portalId.HasValue ? PortalSettings.Current.PortalId : this._portalId.Value;
             }
+
             set
             {
                 this._portalId = value;

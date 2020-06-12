@@ -29,6 +29,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._CacheGeoIPData;
             }
+
             set
             {
                 this._CacheGeoIPData = value;
@@ -48,6 +49,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._GeoIPFile;
             }
+
             set
             {
                 this._GeoIPFile = value;
@@ -63,6 +65,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._TestIP;
             }
+
             set
             {
                 this._TestIP = value;
@@ -78,6 +81,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._LocalhostCountryCode;
             }
+
             set
             {
                 this._LocalhostCountryCode = value;

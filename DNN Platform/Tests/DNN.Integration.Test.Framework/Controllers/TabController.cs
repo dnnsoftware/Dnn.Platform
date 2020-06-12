@@ -4,6 +4,7 @@
 
 using System;
 using System.Collections.Generic;
+
 using DNN.Integration.Test.Framework.Helpers;
 
 namespace DNN.Integration.Test.Framework.Controllers

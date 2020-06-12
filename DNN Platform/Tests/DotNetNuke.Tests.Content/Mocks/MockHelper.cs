@@ -20,6 +20,7 @@ using DotNetNuke.Tests.Utilities;
 using DotNetNuke.Web.Validators;
 
 using Moq;
+
 using FileController = DotNetNuke.Entities.Content.AttachmentController;
 
 namespace DotNetNuke.Tests.Content.Mocks

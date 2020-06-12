@@ -18,6 +18,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         public UserRelationship Relationship { get; private set; }
+
         public int PortalID { get; private set; }
     }
 }

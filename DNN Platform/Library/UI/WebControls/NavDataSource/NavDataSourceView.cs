@@ -36,6 +36,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.m_sNamespace;
             }
+
             set
             {
                 this.m_sNamespace = value;

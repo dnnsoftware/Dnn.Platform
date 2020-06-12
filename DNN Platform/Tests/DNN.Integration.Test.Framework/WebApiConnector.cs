@@ -85,6 +85,7 @@ namespace DNN.Integration.Test.Framework
         }
 
         public string UserName { get; private set; }
+
         public bool IsLoggedIn { get; private set; }
 
         public const string RqVerifTokenName = "__RequestVerificationToken";
@@ -95,6 +96,7 @@ namespace DNN.Integration.Test.Framework
         private string _currentTabId;
 
         public TimeSpan Timeout { get; set; }
+
         public Uri Domain { get; }
 
         private WebApiConnector(string siteUrl)

@@ -46,6 +46,7 @@ namespace DotNetNuke.Modules.Admin.Modules
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleSettingsPage));
         private readonly INavigationManager _navigationManager;
+
         public ModuleSettingsPage()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -56,7 +57,9 @@ namespace DotNetNuke.Modules.Admin.Modules
         private ModuleInfo _module;
 
         private bool HideDeleteButton => this.Request.QueryString["HideDelete"] == "true";
+
         private bool HideCancelButton => this.Request.QueryString["HideCancel"] == "true";
+
         private bool DoNotRedirectOnUpdate => this.Request.QueryString["NoRedirectOnUpdate"] == "true";
 
         private ModuleInfo Module

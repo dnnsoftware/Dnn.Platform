@@ -47,6 +47,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._eventMessageID;
             }
+
             set
             {
                 this._eventMessageID = value;
@@ -66,6 +67,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._processorType;
                 }
             }
+
             set
             {
                 this._processorType = value;
@@ -85,6 +87,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._processorCommand;
                 }
             }
+
             set
             {
                 this._processorCommand = value;
@@ -104,6 +107,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._body;
                 }
             }
+
             set
             {
                 this._body = value;
@@ -123,6 +127,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._sender;
                 }
             }
+
             set
             {
                 this._sender = value;
@@ -142,6 +147,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._subscribers;
                 }
             }
+
             set
             {
                 this._subscribers = value;
@@ -161,6 +167,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._authorizedRoles;
                 }
             }
+
             set
             {
                 this._authorizedRoles = value;
@@ -173,6 +180,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._priority;
             }
+
             set
             {
                 this._priority = value;
@@ -192,6 +200,7 @@ namespace DotNetNuke.Services.EventQueue
                     return this._exceptionMessage;
                 }
             }
+
             set
             {
                 this._exceptionMessage = value;
@@ -204,6 +213,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._sentDate.ToLocalTime();
             }
+
             set
             {
                 this._sentDate = value.ToUniversalTime();
@@ -216,6 +226,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._expirationDate.ToLocalTime();
             }
+
             set
             {
                 this._expirationDate = value.ToUniversalTime();
@@ -228,6 +239,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return this._attributes;
             }
+
             set
             {
                 this._attributes = value;

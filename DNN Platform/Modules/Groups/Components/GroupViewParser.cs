@@ -20,11 +20,17 @@ namespace DotNetNuke.Modules.Groups.Components
     public class GroupViewParser
     {
         protected INavigationManager NavigationManager { get; }
+
         private PortalSettings PortalSettings { get; set; }
+
         private RoleInfo RoleInfo { get; set; }
+
         private UserInfo CurrentUser { get; set; }
+
         public string Template { get; set; }
+
         public int GroupViewTabId { get; set; }
+
         public string GroupEditUrl { get; set; }
 
         public GroupViewParser(PortalSettings portalSettings, RoleInfo roleInfo, UserInfo currentUser, string template, int groupViewTabId)

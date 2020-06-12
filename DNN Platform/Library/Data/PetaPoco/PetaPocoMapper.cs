@@ -6,6 +6,7 @@
 using System;
 using System.Reflection;
 using System.Threading;
+
 using DotNetNuke.ComponentModel.DataAnnotations;
 using PetaPoco;
 

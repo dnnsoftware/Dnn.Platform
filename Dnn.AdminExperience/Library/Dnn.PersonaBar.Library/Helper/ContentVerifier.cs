@@ -3,6 +3,7 @@
 // See the LICENSE file in the project root for more information
 
 using System.Linq;
+
 using DotNetNuke.Entities.Portals;
 
 namespace Dnn.PersonaBar.Library.Helper

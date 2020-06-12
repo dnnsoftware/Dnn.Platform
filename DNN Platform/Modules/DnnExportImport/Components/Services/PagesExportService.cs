@@ -2206,17 +2206,25 @@ namespace Dnn.ExportImport.Components.Services
             public int LastProcessedId { get; set; }
 
             public int TotalTabs { get; set; }
+
             public int TotalTabSettings { get; set; }
+
             public int TotalTabPermissions { get; set; }
+
             public int TotalTabUrls { get; set; }
 
             public int TotalModules { get; set; }
+
             public int TotalModulePermissions { get; set; }
+
             public int TotalModuleSettings { get; set; }
+
             public int TotalContents { get; set; }
+
             public int TotalPackages { get; set; }
 
             public int TotalTabModules { get; set; }
+
             public int TotalTabModuleSettings { get; set; }
         }
 

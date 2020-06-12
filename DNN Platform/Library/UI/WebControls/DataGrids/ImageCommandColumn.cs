@@ -6,6 +6,7 @@
 using System;
 using System.Web;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Entities.Icons;
 
 namespace DotNetNuke.UI.WebControls
@@ -51,6 +52,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
             }
+
             set { this._imageURL = value; }
         }
 

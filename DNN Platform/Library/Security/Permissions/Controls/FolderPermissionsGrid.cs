@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Portals;
@@ -59,6 +60,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return this._folderPath;
             }
+
             set
             {
                 this._folderPath = value;

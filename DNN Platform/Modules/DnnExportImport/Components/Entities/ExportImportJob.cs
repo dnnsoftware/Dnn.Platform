@@ -4,6 +4,7 @@
 
 using System;
 using System.Data;
+
 using Dnn.ExportImport.Components.Common;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.ComponentModel.DataAnnotations;
@@ -17,17 +18,29 @@ namespace Dnn.ExportImport.Components.Entities
     public class ExportImportJob : IHydratable
     {
         public int JobId { get; set; }
+
         public int PortalId { get; set; }
+
         public JobType JobType { get; set; }
+
         public JobStatus JobStatus { get; set; }
+
         public bool IsCancelled { get; set; }
+
         public string Name { get; set; }
+
         public string Description { get; set; }
+
         public int CreatedByUserId { get; set; }
+
         public DateTime CreatedOnDate { get; set; }
+
         public DateTime LastModifiedOnDate { get; set; }
+
         public DateTime? CompletedOnDate { get; set; }
+
         public string Directory { get; set; }
+
         public string JobObject { get; set; }
 
         public int KeyID

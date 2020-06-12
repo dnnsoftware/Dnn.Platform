@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return Convert.ToString(this.ViewState["CommandArgument"]);
             }
+
             set
             {
                 this.ViewState["CommandArgument"] = value;

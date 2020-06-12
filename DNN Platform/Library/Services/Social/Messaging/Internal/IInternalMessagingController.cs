@@ -18,14 +18,21 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         int ReplyMessage(int conversationId, string body, IList<int> fileIDs, UserInfo sender);
 
         Message GetMessage(int messageId);
+
         MessageRecipient GetMessageRecipient(int messageId, int userId);
+
         IList<MessageRecipient> GetMessageRecipients(int messageId);
+
         void DeleteMessageRecipient(int messageId, int userId);
+
         void DeleteUserFromConversation(int conversationId, int userId);
 
         void MarkRead(int conversationId, int userId);
+
         void MarkUnRead(int conversationId, int userId);
+
         void MarkArchived(int conversationId, int userId);
+
         void MarkUnArchived(int conversationId, int userId);
 
         /// <summary>How long a user needs to wait before user is allowed sending the next message</summary>
@@ -163,8 +170,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         IEnumerable<MessageFileView> GetAttachments(int messageId);
 
         IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);
+
         IList<MessageRecipient> GetNextMessagesForDigestDispatch(Frequency frequency, Guid schedulerInstance, int batchSize);
+
         void MarkMessageAsDispatched(int messageId, int recipientId);
+
         void MarkMessageAsSent(int messageId, int recipientId);
 
         int CheckReplyHasRecipients(int conversationId, int userId);

@@ -95,6 +95,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._displayName;
             }
+
             set
             {
                 this._displayName = value;
@@ -116,6 +117,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._displayPath;
             }
+
             set
             {
                 this._displayPath = value;
@@ -230,6 +232,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 return this._folderMappingId;
             }
+
             set
             {
                 this._folderMappingId = value;
@@ -283,6 +286,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return this.FolderID;
             }
+
             set
             {
                 this.FolderID = value;

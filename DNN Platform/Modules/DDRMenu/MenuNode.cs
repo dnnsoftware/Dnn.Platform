@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+
 using DotNetNuke.Common;
 using DotNetNuke.UI.WebControls;
 using DotNetNuke.Web.DDRMenu.DNNCommon;
@@ -29,17 +30,29 @@ namespace DotNetNuke.Web.DDRMenu
         }
 
         public int TabId { get; set; }
+
         public string Text { get; set; }
+
         public string Title { get; set; }
+
         public string Url { get; set; }
+
         public bool Enabled { get; set; }
+
         public bool Selected { get; set; }
+
         public bool Breadcrumb { get; set; }
+
         public bool Separator { get; set; }
+
         public string Icon { get; set; }
+
         public string LargeImage { get; set; }
+
         public string CommandName { get; set; }
+
         public string CommandArgument { get; set; }
+
         public bool First
         {
             get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
@@ -69,9 +82,11 @@ namespace DotNetNuke.Web.DDRMenu
         }
 
         public string Keywords { get; set; }
+
         public string Description { get; set; }
 
         private List<MenuNode> _Children;
+
         public List<MenuNode> Children
         {
             get { return this._Children ?? (this._Children = new List<MenuNode>()); } set { this._Children = value; }

@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.ModuleCache
     public class PurgeModuleCache : SchedulerClient
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
+
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
             this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED

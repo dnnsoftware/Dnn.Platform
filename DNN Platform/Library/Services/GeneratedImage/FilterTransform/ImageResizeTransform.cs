@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             {
                 return this._width;
             }
+
             set
             {
                 CheckValue(value);
@@ -51,6 +52,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             {
                 return this._maxWidth;
             }
+
             set
             {
                 CheckValue(value);
@@ -67,6 +69,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             {
                 return this._height;
             }
+
             set
             {
                 CheckValue(value);
@@ -83,6 +86,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             {
                 return this._maxHeight;
             }
+
             set
             {
                 CheckValue(value);
@@ -99,6 +103,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             {
                 return this._border;
             }
+
             set
             {
                 CheckValue(value);

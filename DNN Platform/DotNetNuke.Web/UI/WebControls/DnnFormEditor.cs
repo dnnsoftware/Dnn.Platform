@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Text;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using ClientDependency.Core;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -56,6 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this._dataSource;
             }
+
             set
             {
                 if (this._dataSource != value)

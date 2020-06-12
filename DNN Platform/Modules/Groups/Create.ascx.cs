@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.Groups
     public partial class Create : GroupsModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Create()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();

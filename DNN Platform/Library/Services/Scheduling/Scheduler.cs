@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+
 using DotNetNuke.Collections.Internal;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Host;
@@ -20,6 +21,7 @@ namespace DotNetNuke.Services.Scheduling
     internal static class Scheduler
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Scheduler));
+
         internal static class CoreScheduler
         {
             // This is the heart of the scheduler mechanism.
@@ -307,6 +309,7 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
+
             public static void FireEvents()
             {
                 // This method uses a thread pool to

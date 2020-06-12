@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 return this._notificationTypeId;
             }
+
             set
             {
                 this._notificationTypeId = value;
@@ -78,6 +79,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 return this._desktopModuleId;
             }
+
             set
             {
                 this._desktopModuleId = value;

@@ -11,6 +11,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
     public class EmailValidator
     {
         private bool _invalid;
+
         public bool IsValid(string emailToTest)
         {
             if (string.IsNullOrEmpty(emailToTest))

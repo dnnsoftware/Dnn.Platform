@@ -116,6 +116,7 @@ namespace DotNetNuke.Entities.Icons
         }
 
         private static readonly SharedDictionary<string, bool> _iconsStatusOnDisk = new SharedDictionary<string, bool>();
+
         private static void CheckIconOnDisk(string path)
         {
             using (_iconsStatusOnDisk.GetReadLock())

@@ -33,6 +33,7 @@ namespace DotNetNuke.Web.Mvp
         }
 
         public event EventHandler OnLoadSettings;
+
         public event EventHandler OnSaveSettings;
 
         /// <summary>

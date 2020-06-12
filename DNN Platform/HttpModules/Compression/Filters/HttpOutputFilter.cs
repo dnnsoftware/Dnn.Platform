@@ -63,6 +63,7 @@ namespace DotNetNuke.HttpModules.Compression
             {
                 throw new NotSupportedException();
             }
+
             set
             {
                 throw new NotSupportedException();

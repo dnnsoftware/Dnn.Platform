@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return this._imageHandlerUrl ?? string.Empty;
             }
+
             set
             {
                 this._imageHandlerUrl = value;
@@ -37,6 +38,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return this._timestamp ?? string.Empty;
             }
+
             set
             {
                 this._timestamp = value;

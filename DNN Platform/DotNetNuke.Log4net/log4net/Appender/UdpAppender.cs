@@ -211,6 +211,7 @@ namespace log4net.Appender
         public int RemotePort
         {
             get { return this.m_remotePort; }
+
             set
             {
                 if (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort)
@@ -248,6 +249,7 @@ namespace log4net.Appender
         public int LocalPort
         {
             get { return this.m_localPort; }
+
             set
             {
                 if (value != 0 && (value < IPEndPoint.MinPort || value > IPEndPoint.MaxPort))

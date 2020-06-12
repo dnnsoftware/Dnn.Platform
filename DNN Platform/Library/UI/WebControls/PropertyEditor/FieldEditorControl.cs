@@ -143,6 +143,7 @@ namespace DotNetNuke.UI.WebControls
                     return this._EditorInfoAdapter;
                 }
             }
+
             set
             {
                 this._EditorInfoAdapter = value;
@@ -332,8 +333,11 @@ namespace DotNetNuke.UI.WebControls
         public Style VisibilityStyle { get; private set; }
 
         public event PropertyChangedEventHandler ItemAdded;
+
         public event PropertyChangedEventHandler ItemChanged;
+
         public event EditorCreatedEventHandler ItemCreated;
+
         public event PropertyChangedEventHandler ItemDeleted;
 
         /// <summary>

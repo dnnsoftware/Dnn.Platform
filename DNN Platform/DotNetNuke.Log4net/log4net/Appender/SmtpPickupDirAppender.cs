@@ -148,6 +148,7 @@ namespace log4net.Appender
         public string FileExtension
         {
             get { return this.m_fileExtension; }
+
             set
             {
                 this.m_fileExtension = value;

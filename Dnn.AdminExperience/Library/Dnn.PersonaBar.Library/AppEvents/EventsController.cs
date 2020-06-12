@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+
 using Dnn.PersonaBar.Library.AppEvents.Attributes;
 using Dnn.PersonaBar.Library.Common;
 using DotNetNuke.Collections;

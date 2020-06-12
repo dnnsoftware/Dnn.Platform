@@ -34,6 +34,7 @@ namespace DotNetNuke.Modules.Admin.Users
     public partial class Membership : UserModuleBase
     {
         private readonly INavigationManager _navigationManager;
+
         public Membership()
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
@@ -64,10 +65,15 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         /// -----------------------------------------------------------------------------
         public event EventHandler MembershipAuthorized;
+
         public event EventHandler MembershipPasswordUpdateChanged;
+
         public event EventHandler MembershipUnAuthorized;
+
         public event EventHandler MembershipUnLocked;
+
         public event EventHandler MembershipPromoteToSuperuser;
+
         public event EventHandler MembershipDemoteFromSuperuser;
 
         /// -----------------------------------------------------------------------------

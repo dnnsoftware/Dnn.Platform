@@ -108,6 +108,7 @@ namespace DotNetNuke.Services.Search
             {
                 return (SearchCriteria)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

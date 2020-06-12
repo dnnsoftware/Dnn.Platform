@@ -44,6 +44,7 @@ namespace DotNetNuke.UI.Containers.Controls
                     return targetControl.ClientID;
                 }
             }
+
             set
             {
                 this._target = value;

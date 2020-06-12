@@ -107,6 +107,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 return PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId;
             }
+
             set
             {
                 this.InternalPortalId = value;
@@ -119,6 +120,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return this.ViewState.GetValue<int?>("PortalId", null);
             }
+
             set
             {
                 this.ViewState.SetValue<int?>("PortalId", value, null);
@@ -137,6 +139,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var pageId = this.SelectedItemValueAsInt;
                 return (pageId == Null.NullInteger) ? null : TabController.Instance.GetTab(pageId, this.PortalId, false);
             }
+
             set
             {
                 this.SelectedItem = (value != null) ? new ListItem() { Text = value.IndentedTabName, Value = value.TabID.ToString(CultureInfo.InvariantCulture) } : null;

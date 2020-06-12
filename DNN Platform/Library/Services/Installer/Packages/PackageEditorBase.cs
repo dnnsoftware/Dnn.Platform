@@ -64,6 +64,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 return this._PackageID;
             }
+
             set
             {
                 this._PackageID = value;
@@ -82,6 +83,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 return this._IsWizard;
             }
+
             set
             {
                 this._IsWizard = value;

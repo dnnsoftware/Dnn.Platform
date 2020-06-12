@@ -55,6 +55,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._FromUserName;
             }
+
             private set
             {
                 this._FromUserName = value;
@@ -67,6 +68,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._FromUserID;
             }
+
             set
             {
                 this._FromUserID = value;
@@ -79,6 +81,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ToRoleId;
             }
+
             set
             {
                 this._ToRoleId = value;
@@ -91,6 +94,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._allowReply;
             }
+
             set
             {
                 this._allowReply = value;
@@ -103,6 +107,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._skipInbox;
             }
+
             set
             {
                 this._skipInbox = value;
@@ -115,6 +120,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._EmailSent;
             }
+
             set
             {
                 this._EmailSent = value;
@@ -127,6 +133,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._Body;
             }
+
             set
             {
                 this._Body = value;
@@ -139,6 +146,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._MessageDate;
             }
+
             set
             {
                 this._MessageDate = value;
@@ -151,6 +159,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._Conversation;
             }
+
             set
             {
                 this._Conversation = value;
@@ -163,6 +172,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._MessageID;
             }
+
             private set
             {
                 this._MessageID = value;
@@ -175,6 +185,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._PortalID;
             }
+
             set
             {
                 this._PortalID = value;
@@ -187,6 +198,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ReplyTo;
             }
+
             private set
             {
                 this._ReplyTo = value;
@@ -199,6 +211,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._Status;
             }
+
             set
             {
                 this._Status = value;
@@ -212,6 +225,7 @@ namespace DotNetNuke.Services.Messaging.Data
                 var ps = PortalSecurity.Instance;
                 return ps.InputFilter(this._Subject, PortalSecurity.FilterFlag.NoMarkup);
             }
+
             set
             {
                 var ps = PortalSecurity.Instance;
@@ -226,6 +240,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ToUserID;
             }
+
             set
             {
                 this._ToUserID = value;
@@ -238,6 +253,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._ToUserName;
             }
+
             private set
             {
                 this._ToUserName = value;
@@ -250,6 +266,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._EmailSentDate;
             }
+
             private set
             {
                 this._EmailSentDate = value;
@@ -262,6 +279,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this._EmailSchedulerInstance;
             }
+
             private set
             {
                 this._EmailSchedulerInstance = value;
@@ -318,6 +336,7 @@ namespace DotNetNuke.Services.Messaging.Data
             {
                 return this.MessageID;
             }
+
             set
             {
                 this.MessageID = value;

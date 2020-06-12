@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+
 using Dnn.PersonaBar.Library.Model;
 using DotNetNuke.Common.Utilities;
 using DotNetNuke.Security.Permissions;
@@ -48,6 +49,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 return (MenuPermissionInfo)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

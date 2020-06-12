@@ -4,6 +4,7 @@
 
 using System;
 using System.Xml.Serialization;
+
 using DotNetNuke.Entities.Users;
 
 namespace DotNetNuke.Web.DDRMenu
@@ -14,6 +15,7 @@ namespace DotNetNuke.Web.DDRMenu
     {
 // ReSharper disable InconsistentNaming
         public MenuNode root { get; set; }
+
         public UserInfo user { get; set; }
 
 // ReSharper restore InconsistentNaming

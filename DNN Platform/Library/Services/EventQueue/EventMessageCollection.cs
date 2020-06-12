@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 return (EventMessage)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

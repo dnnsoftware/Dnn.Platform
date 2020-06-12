@@ -226,6 +226,7 @@ namespace log4net.Core
                 this.ValidateIndex(index); // throws
                 return this.m_array[index];
             }
+
             set
             {
                 this.ValidateIndex(index); // throws
@@ -428,6 +429,7 @@ namespace log4net.Core
             {
                 return this.m_array.Length;
             }
+
             set
             {
                 if (value < this.m_count)

@@ -17,6 +17,7 @@ namespace DotNetNuke.HttpModules.Config
             {
                 return (AnalyticsEngine)this.List[index];
             }
+
             set
             {
                 this.List[index] = value;

@@ -76,6 +76,7 @@ namespace DotNetNuke.UI.ControlPanel
 
                 return PortalSettings.Current.UserInfo.IsSuperUser && base.Visible;
             }
+
             set
             {
                 base.Visible = value;
@@ -88,6 +89,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return "QuickSwitchSite";
             }
+
             set
             {
                 throw new NotSupportedException("Set ToolName not supported");

@@ -44,6 +44,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.separator.Text;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -65,6 +66,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.CausesValidation;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -86,6 +88,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.CommandArgument;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -107,6 +110,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.CommandName;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -129,6 +133,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Visible;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -150,6 +155,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.icon.Visible;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -175,6 +181,7 @@ namespace DotNetNuke.UI.WebControls
 
                 return this.icon.ImageUrl;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -219,6 +226,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Attributes["onclick"];
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -248,6 +256,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.OnClientClick;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -269,6 +278,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Attributes["resourcekey"];
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -298,6 +308,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.Text;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -326,6 +337,7 @@ namespace DotNetNuke.UI.WebControls
                 this.EnsureChildControls();
                 return this.link.ValidationGroup;
             }
+
             set
             {
                 this.EnsureChildControls();
@@ -337,6 +349,7 @@ namespace DotNetNuke.UI.WebControls
         public string LocalResourceFile { get; set; }
 
         public event EventHandler Click;
+
         public event CommandEventHandler Command;
 
         /// -----------------------------------------------------------------------------

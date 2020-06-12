@@ -5,6 +5,7 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 using DotNetNuke.Web.DDRMenu.DNNCommon;
 
 namespace DotNetNuke.Web.DDRMenu
@@ -17,7 +18,9 @@ namespace DotNetNuke.Web.DDRMenu
         }
 
         internal MenuNode RootNode { get; set; }
+
         internal bool SkipLocalisation { get; set; }
+
         internal Settings MenuSettings { get; set; }
 
         public delegate void MenuClickEventHandler(string id);

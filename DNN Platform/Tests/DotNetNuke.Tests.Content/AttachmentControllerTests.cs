@@ -20,6 +20,7 @@ using DotNetNuke.Tests.Utilities.Mocks;
 using Moq;
 
 using NUnit.Framework;
+
 using FileController = DotNetNuke.Entities.Content.AttachmentController;
 using Util = DotNetNuke.Entities.Content.Common.Util;
 

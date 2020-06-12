@@ -37,6 +37,7 @@ namespace DotNetNuke.Common
             {
                 return this._errs;
             }
+
             set
             {
                 this._errs = value;

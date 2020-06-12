@@ -6,6 +6,7 @@
 using System;
 using System.Collections.Specialized;
 using System.Web;
+
 using DotNetNuke.Common;
 
 namespace DotNetNuke.Services.Authentication.OAuth

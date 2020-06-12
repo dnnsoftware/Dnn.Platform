@@ -24,6 +24,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this._theme;
             }
+
             set
             {
                 this._theme = value;
@@ -51,6 +52,7 @@ namespace DotNetNuke.UI.WebControls
                     return this._styleSheetUrl;
                 }
             }
+
             set
             {
                 this._styleSheetUrl = value;

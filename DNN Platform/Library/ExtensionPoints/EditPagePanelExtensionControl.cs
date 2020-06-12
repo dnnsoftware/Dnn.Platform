@@ -109,6 +109,7 @@ namespace DotNetNuke.ExtensionPoints
     public class PanelEditPagePanelExtensionControl : WebControl
     {
         public string PanelId { get; set; }
+
         public string Text { get; set; }
 
         protected override void RenderContents(HtmlTextWriter op)

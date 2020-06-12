@@ -4,6 +4,7 @@
 
 using System;
 using System.IO;
+
 using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Services.OutputCache.Providers
@@ -66,6 +67,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 return this._cacheExpiration;
             }
+
             set
             {
                 this._cacheExpiration = value;

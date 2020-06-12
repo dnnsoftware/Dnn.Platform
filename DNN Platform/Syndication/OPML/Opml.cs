@@ -44,6 +44,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._utcExpiry;
             }
+
             set
             {
                 this._utcExpiry = value;
@@ -56,6 +57,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._title;
             }
+
             set
             {
                 this._title = value;
@@ -68,6 +70,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._dateCreated;
             }
+
             set
             {
                 this._dateCreated = value;
@@ -80,6 +83,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._dateModified;
             }
+
             set
             {
                 this._dateModified = value;
@@ -92,6 +96,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._ownerName;
             }
+
             set
             {
                 this._ownerName = value;
@@ -104,6 +109,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._ownerEmail;
             }
+
             set
             {
                 this._ownerEmail = value;
@@ -116,6 +122,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._ownerId;
             }
+
             set
             {
                 this._ownerId = value;
@@ -128,6 +135,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._docs;
             }
+
             set
             {
                 this._docs = value;
@@ -140,6 +148,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._expansionState;
             }
+
             set
             {
                 this._expansionState = value;
@@ -152,6 +161,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._vertScrollState;
             }
+
             set
             {
                 this._vertScrollState = value;
@@ -164,6 +174,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowTop;
             }
+
             set
             {
                 this._windowTop = value;
@@ -176,6 +187,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowLeft;
             }
+
             set
             {
                 this._windowLeft = value;
@@ -188,6 +200,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowBottom;
             }
+
             set
             {
                 this._windowBottom = value;
@@ -200,6 +213,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._windowRight;
             }
+
             set
             {
                 this._windowRight = value;
@@ -212,6 +226,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return this._outlines;
             }
+
             set
             {
                 this._outlines = value;
