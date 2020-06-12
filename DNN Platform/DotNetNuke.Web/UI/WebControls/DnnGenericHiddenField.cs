@@ -11,7 +11,8 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    public class DnnGenericHiddenField<T> : HiddenField where T : class, new()
+    public class DnnGenericHiddenField<T> : HiddenField
+        where T : class, new()
     {
 
         private T _typedValue = null;

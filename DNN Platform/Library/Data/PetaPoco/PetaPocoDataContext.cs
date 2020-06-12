@@ -104,7 +104,8 @@ namespace DotNetNuke.Data.PetaPoco
             return this._database.SingleOrDefault<T>(DataUtil.ReplaceTokens(sql), args);
         }
 
-        public IRepository<T> GetRepository<T>() where T : class
+        public IRepository<T> GetRepository<T>()
+            where T : class
         {
             PetaPocoRepository<T> rep = null;
 

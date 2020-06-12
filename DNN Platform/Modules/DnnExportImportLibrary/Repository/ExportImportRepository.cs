@@ -42,28 +42,32 @@ namespace Dnn.ExportImport.Repository
                 GC.SuppressFinalize(this);
         }
 
-        public T AddSingleItem<T>(T item) where T : class
+        public T AddSingleItem<T>(T item)
+            where T : class
         {
             var collection = this.DbCollection<T>();
             collection.Insert(item);
             return item;
         }
 
-        public T UpdateSingleItem<T>(T item) where T : class
+        public T UpdateSingleItem<T>(T item)
+            where T : class
         {
             var collection = this.DbCollection<T>();
             collection.Update(item);
             return item;
         }
 
-        public T GetSingleItem<T>() where T : class
+        public T GetSingleItem<T>()
+            where T : class
         {
             var collection = this.DbCollection<T>();
             var first = collection.Min();
             return collection.FindById(first);
         }
 
-        public T CreateItem<T>(T item, int? referenceId) where T : BasicExportImportDto
+        public T CreateItem<T>(T item, int? referenceId)
+            where T : BasicExportImportDto
         {
             if (item == null) return null;
             var collection = this.DbCollection<T>();
@@ -75,7 +79,8 @@ namespace Dnn.ExportImport.Repository
             return item;
         }
 
-        public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null) where T : BasicExportImportDto
+        public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null)
+            where T : BasicExportImportDto
         {
             if (items == null) return;
             var allItems = items as List<T> ?? items.ToList();
@@ -89,7 +94,8 @@ namespace Dnn.ExportImport.Repository
             collection.Insert(allItems);
         }
 
-        public T GetItem<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
+        public T GetItem<T>(Expression<Func<T, bool>> predicate)
+            where T : BasicExportImportDto
         {
             return this.InternalGetItems(predicate).FirstOrDefault();
         }
@@ -102,18 +108,21 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate, orderKeySelector, asc, skip, max);
         }
 
-        public int GetCount<T>() where T : BasicExportImportDto
+        public int GetCount<T>()
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             return collection?.Count() ?? 0;
         }
-        public int GetCount<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
+        public int GetCount<T>(Expression<Func<T, bool>> predicate)
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             return collection?.Count(predicate) ?? 0;
         }
 
-        public void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false) where T : BasicExportImportDto
+        public void RebuildIndex<T>(Expression<Func<T, object>> predicate, bool unique = false)
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             collection.EnsureIndex(predicate, unique);
@@ -143,7 +152,8 @@ namespace Dnn.ExportImport.Repository
             return result.AsEnumerable();
         }
 
-        public T GetItem<T>(int id) where T : BasicExportImportDto
+        public T GetItem<T>(int id)
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             return collection.FindById(id);
@@ -163,13 +173,15 @@ namespace Dnn.ExportImport.Repository
             return this.InternalGetItems(predicate);
         }
 
-        public IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate) where T : BasicExportImportDto
+        public IEnumerable<T> FindItems<T>(Expression<Func<T, bool>> predicate)
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             return collection.Find(predicate);
         }
 
-        public void UpdateItem<T>(T item) where T : BasicExportImportDto
+        public void UpdateItem<T>(T item)
+            where T : BasicExportImportDto
         {
             if (item == null) return;
             var collection = this.DbCollection<T>();
@@ -177,7 +189,8 @@ namespace Dnn.ExportImport.Repository
             collection.Update(item);
         }
 
-        public void UpdateItems<T>(IEnumerable<T> items) where T : BasicExportImportDto
+        public void UpdateItems<T>(IEnumerable<T> items)
+            where T : BasicExportImportDto
         {
             var allItems = items as T[] ?? items.ToArray();
             if (allItems.Length == 0) return;
@@ -186,7 +199,8 @@ namespace Dnn.ExportImport.Repository
             collection.Update(allItems);
         }
 
-        public bool DeleteItem<T>(int id) where T : BasicExportImportDto
+        public bool DeleteItem<T>(int id)
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             var item = collection.FindById(id);
@@ -194,7 +208,8 @@ namespace Dnn.ExportImport.Repository
             return collection.Delete(id);
         }
 
-        public void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression) where T : BasicExportImportDto
+        public void DeleteItems<T>(Expression<Func<T, bool>> deleteExpression)
+            where T : BasicExportImportDto
         {
             var collection = this.DbCollection<T>();
             if (deleteExpression != null)

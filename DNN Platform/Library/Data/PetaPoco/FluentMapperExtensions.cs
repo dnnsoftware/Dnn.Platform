@@ -34,17 +34,20 @@ namespace DotNetNuke.Data.PetaPoco
             return mapper;
         }
 
-        public static FluentMapper<TModel> Property<TModel, TProperty>(this FluentMapper<TModel> mapper, Expression<Func<TModel, TProperty>> action, string column, bool primaryKey = false, bool readOnly = false) where TModel : class
+        public static FluentMapper<TModel> Property<TModel, TProperty>(this FluentMapper<TModel> mapper, Expression<Func<TModel, TProperty>> action, string column, bool primaryKey = false, bool readOnly = false)
+            where TModel : class
         {
             return mapper.Property(action, column, null, primaryKey, readOnly);
         }
 
-        public static FluentMapper<TModel> Property<TModel, TProperty>(this FluentMapper<TModel> mapper, Expression<Func<TModel, TProperty>> action, string column, Func<object, object> fromDbConverter, bool primaryKey = false, bool readOnly = false) where TModel : class
+        public static FluentMapper<TModel> Property<TModel, TProperty>(this FluentMapper<TModel> mapper, Expression<Func<TModel, TProperty>> action, string column, Func<object, object> fromDbConverter, bool primaryKey = false, bool readOnly = false)
+            where TModel : class
         {
             return mapper.Property(action, column, fromDbConverter, null, primaryKey, readOnly);
         }
 
-        public static FluentMapper<TModel> Property<TModel, TProperty>(this FluentMapper<TModel> mapper, Expression<Func<TModel, TProperty>> action, string column, Func<object, object> fromDbConverter, Func<object, object> toDbConverter, bool primaryKey = false, bool readOnly = false) where TModel : class
+        public static FluentMapper<TModel> Property<TModel, TProperty>(this FluentMapper<TModel> mapper, Expression<Func<TModel, TProperty>> action, string column, Func<object, object> fromDbConverter, Func<object, object> toDbConverter, bool primaryKey = false, bool readOnly = false)
+            where TModel : class
         {
             var expression = (MemberExpression)action.Body;
             string name = expression.Member.Name;

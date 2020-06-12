@@ -19,7 +19,8 @@ using DotNetNuke.Common.Utilities;
 
 namespace DotNetNuke.Entities.Modules.Settings
 {
-    public abstract class SettingsRepository<T> : ISettingsRepository<T> where T : class, new()
+    public abstract class SettingsRepository<T> : ISettingsRepository<T>
+        where T : class, new()
     {
         private IList<ParameterMapping> Mapping { get; }
 

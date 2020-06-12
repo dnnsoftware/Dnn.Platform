@@ -11,7 +11,8 @@ namespace DotNetNuke.Web.UI.WebControls
     /// Restricts the client to add only controls of specific type into the control collection
     /// </summary>
     /// <remarks></remarks>
-    public sealed class TypedControlCollection<T> : ControlCollection where T : Control
+    public sealed class TypedControlCollection<T> : ControlCollection
+        where T : Control
     {
 
         public TypedControlCollection(Control owner) : base(owner)

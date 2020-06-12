@@ -110,13 +110,15 @@ namespace DotNetNuke.ComponentModel
             return Container.GetComponentSettings<TComponent>();
         }
 
-        public static void RegisterComponent<TComponent>() where TComponent : class
+        public static void RegisterComponent<TComponent>()
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TComponent>();
         }
 
-        public static void RegisterComponent<TContract, TComponent>() where TComponent : class
+        public static void RegisterComponent<TContract, TComponent>()
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TContract, TComponent>();
@@ -134,13 +136,15 @@ namespace DotNetNuke.ComponentModel
             Container.RegisterComponent(contractType, componentType);
         }
 
-        public static void RegisterComponent<TComponent>(string name) where TComponent : class
+        public static void RegisterComponent<TComponent>(string name)
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TComponent>(name);
         }
 
-        public static void RegisterComponent<TContract, TComponent>(string name) where TComponent : class
+        public static void RegisterComponent<TContract, TComponent>(string name)
+            where TComponent : class
         {
             VerifyContainer();
             Container.RegisterComponent<TContract, TComponent>(name);

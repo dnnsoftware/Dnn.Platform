@@ -162,7 +162,8 @@ namespace DotNetNuke.Security.Permissions
             return new ArrayList(GetPermissions().Where(p => p.PermissionCode == "SYSTEM_TAB").ToArray());
         }
 
-        public T RemapPermission<T>(T permission, int portalId) where T : PermissionInfoBase
+        public T RemapPermission<T>(T permission, int portalId)
+            where T : PermissionInfoBase
         {
             PermissionInfo permissionInfo = this.GetPermissionByCodeAndKey(permission.PermissionCode, permission.PermissionKey).ToArray().Cast<PermissionInfo>().FirstOrDefault();
             T result = null;

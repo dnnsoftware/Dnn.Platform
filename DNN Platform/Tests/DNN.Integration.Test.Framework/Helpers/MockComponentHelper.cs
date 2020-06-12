@@ -20,7 +20,8 @@ namespace DNN.Integration.Test.Framework.Helpers
             return CreateNew<CachingProvider>();
         }
 
-        public static Mock<T> CreateNew<T>() where T : class
+        public static Mock<T> CreateNew<T>()
+            where T : class
         {
             if (ComponentFactory.Container == null)
             {

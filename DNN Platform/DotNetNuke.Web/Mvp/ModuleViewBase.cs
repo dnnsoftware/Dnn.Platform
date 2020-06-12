@@ -23,7 +23,8 @@ namespace DotNetNuke.Web.Mvp
             this.AutoDataBind = true;
         }
 
-        protected T DataItem<T>() where T : class, new()
+        protected T DataItem<T>()
+            where T : class, new()
         {
             var _T = this.Page.GetDataItem() as T ?? new T();
             return _T;

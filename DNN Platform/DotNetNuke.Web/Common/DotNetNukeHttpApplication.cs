@@ -108,7 +108,8 @@ namespace DotNetNuke.Web.Common.Internal
             // DotNetNukeSecurity.Initialize();
         }
 
-        private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
+        private static void RegisterIfNotAlreadyRegistered<TConcrete>()
+            where TConcrete : class, new()
         {
             RegisterIfNotAlreadyRegistered<TConcrete, TConcrete>(string.Empty);
         }

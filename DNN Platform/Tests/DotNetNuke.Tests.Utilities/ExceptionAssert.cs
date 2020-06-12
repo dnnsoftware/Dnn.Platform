@@ -22,12 +22,14 @@ namespace DotNetNuke.Tests.Utilities
         //    Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal));
         // }
 
-        public static void Throws<TException>(string message, Action act, Predicate<TException> checker) where TException : Exception
+        public static void Throws<TException>(string message, Action act, Predicate<TException> checker)
+            where TException : Exception
         {
             Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal) && checker(ex));
         }
 
-        public static void Throws<TException>(Action act, Predicate<TException> checker) where TException : Exception
+        public static void Throws<TException>(Action act, Predicate<TException> checker)
+            where TException : Exception
         {
             bool matched = false;
             bool thrown = false;

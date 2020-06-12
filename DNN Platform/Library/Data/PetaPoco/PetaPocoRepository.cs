@@ -14,7 +14,8 @@ using PetaPoco;
 
 namespace DotNetNuke.Data.PetaPoco
 {
-    public class PetaPocoRepository<T> : RepositoryBase<T> where T : class
+    public class PetaPocoRepository<T> : RepositoryBase<T>
+        where T : class
     {
         private readonly Database _database;
         private readonly IMapper _mapper;

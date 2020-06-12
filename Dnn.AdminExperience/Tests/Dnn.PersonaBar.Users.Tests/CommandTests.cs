@@ -11,7 +11,8 @@ using DotNetNuke.Entities.Users;
 
 namespace Dnn.PersonaBar.Users.Tests
 {
-    public abstract class CommandTests<T> where T : ConsoleCommandBase
+    public abstract class CommandTests<T>
+        where T : ConsoleCommandBase
     {
         protected abstract string CommandName { get; }
         protected abstract T CreateCommand();

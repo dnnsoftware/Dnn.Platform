@@ -18,7 +18,8 @@ namespace DotNetNuke.Data
         T ExecuteScalar<T>(CommandType type, string sql, params object[] args);
         T ExecuteSingleOrDefault<T>(CommandType type, string sql, params object[] args);
 
-        IRepository<T> GetRepository<T>() where T : class;
+        IRepository<T> GetRepository<T>()
+            where T : class;
         void RollbackTransaction();
     }
 }

@@ -13,7 +13,8 @@ namespace DotNetNuke.UI
 {
     public class ControlUtilities
     {
-        public static T FindParentControl<T>(Control control) where T : Control
+        public static T FindParentControl<T>(Control control)
+            where T : Control
         {
             T parent = default(T);
             if (control.Parent == null)
@@ -35,7 +36,8 @@ namespace DotNetNuke.UI
             return parent;
         }
 
-        public static T FindControl<T>(Control control, string id, bool recursive) where T : Control
+        public static T FindControl<T>(Control control, string id, bool recursive)
+            where T : Control
         {
             T target = null;
             if (control.Parent != null)
@@ -51,12 +53,14 @@ namespace DotNetNuke.UI
             return target;
         }
 
-        public static T FindFirstDescendent<T>(Control control) where T : Control
+        public static T FindFirstDescendent<T>(Control control)
+            where T : Control
         {
           return FindFirstDescendent<T>(control, idx => idx is T);
         }
 
-        public static T FindFirstDescendent<T>(Control control, Predicate<Control> predicate) where T : Control
+        public static T FindFirstDescendent<T>(Control control, Predicate<Control> predicate)
+            where T : Control
         {
           if (predicate(control)) return control as T;
 
@@ -80,7 +84,8 @@ namespace DotNetNuke.UI
         /// control.</param>
         /// <returns>A Control of type T</returns>
         /// -----------------------------------------------------------------------------
-        public static T LoadControl<T>(TemplateControl containerControl, string ControlSrc) where T : Control
+        public static T LoadControl<T>(TemplateControl containerControl, string ControlSrc)
+            where T : Control
         {
             T ctrl;
 

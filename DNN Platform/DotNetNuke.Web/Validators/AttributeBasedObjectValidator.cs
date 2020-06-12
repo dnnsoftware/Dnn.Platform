@@ -10,7 +10,8 @@ using System.Reflection;
 
 namespace DotNetNuke.Web.Validators
 {
-    public abstract class AttributeBasedObjectValidator<TAttribute> : PropertyBasedObjectValidator where TAttribute : Attribute
+    public abstract class AttributeBasedObjectValidator<TAttribute> : PropertyBasedObjectValidator
+        where TAttribute : Attribute
     {
         protected override ValidationResult ValidateProperty(object target, PropertyInfo targetProperty)
         {

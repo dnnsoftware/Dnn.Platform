@@ -14,7 +14,9 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     /// <typeparam name = "RssItemType"></typeparam>
     /// <typeparam name = "RssImageType"></typeparam>
-    public abstract class RssChannelBase<RssItemType, RssImageType> : RssElementBase where RssItemType : RssElementBase, new() where RssImageType : RssElementBase, new()
+    public abstract class RssChannelBase<RssItemType, RssImageType> : RssElementBase
+        where RssItemType : RssElementBase, new()
+        where RssImageType : RssElementBase, new()
     {
         private readonly List<RssItemType> _items = new List<RssItemType>();
         private RssImageType _image;

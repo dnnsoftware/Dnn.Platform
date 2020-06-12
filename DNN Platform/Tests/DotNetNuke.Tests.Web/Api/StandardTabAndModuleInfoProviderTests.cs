@@ -113,7 +113,8 @@ namespace DotNetNuke.Tests.Web.Api
             TabController.ClearInstance();
         }
 
-        private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance) where T : class
+        private void RegisterMock<T>(Action<T> register, out Mock<T> mock, out T instance)
+            where T : class
         {
             mock = new Mock<T>();
             instance = mock.Object;

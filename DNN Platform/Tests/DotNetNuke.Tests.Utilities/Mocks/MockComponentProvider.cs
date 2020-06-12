@@ -17,7 +17,8 @@ namespace DotNetNuke.Tests.Utilities.Mocks
 {
     public class MockComponentProvider
     {
-        public static Mock<T> CreateNew<T>() where T : class
+        public static Mock<T> CreateNew<T>()
+            where T : class
         {
             if (ComponentFactory.Container == null)
             {
@@ -42,7 +43,8 @@ namespace DotNetNuke.Tests.Utilities.Mocks
             return mockComp;
         }
 
-        public static Mock<T> CreateNew<T>(string name) where T : class
+        public static Mock<T> CreateNew<T>(string name)
+            where T : class
         {
             if (ComponentFactory.Container == null)
             {

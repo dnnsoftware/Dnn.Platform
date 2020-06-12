@@ -9,7 +9,9 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Data
 {
-    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf> where TSelf : ServiceLocator<TContract, TSelf>, new() where TEntity : class
+    public abstract class ControllerBase<TEntity, TContract, TSelf> : ServiceLocator<TContract, TSelf>
+        where TSelf : ServiceLocator<TContract, TSelf>, new()
+        where TEntity : class
     {
         protected readonly IDataContext DataContext;
 

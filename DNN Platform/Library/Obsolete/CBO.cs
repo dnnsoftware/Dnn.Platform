@@ -46,14 +46,16 @@ namespace DotNetNuke.Common.Utilities
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Obsolete in DotNetNuke 7.3.  Use FillDictionary<TKey, TValue>(string keyField, IDataReader dr). Scheduled removal in v10.0.0.")]
-        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr) where TItem : IHydratable
+        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr)
+            where TItem : IHydratable
         {
             return FillDictionaryFromReader("KeyID", dr, new Dictionary<int, TItem>(), true);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         [Obsolete("Obsolete in DotNetNuke 7.3.  Use FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary). Scheduled removal in v10.0.0.")]
-        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr, ref IDictionary<int, TItem> objToFill) where TItem : IHydratable
+        public static IDictionary<int, TItem> FillDictionary<TItem>(IDataReader dr, ref IDictionary<int, TItem> objToFill)
+            where TItem : IHydratable
         {
             return FillDictionaryFromReader("KeyID", dr, objToFill, true);
         }

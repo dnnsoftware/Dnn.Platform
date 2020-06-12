@@ -158,7 +158,8 @@ namespace DotNetNuke.Common
         /// <param name="item">The object to test.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <exception cref="ArgumentNullException"></exception>
-        public static void PropertyNotNull<T>(T item, string propertyName) where T : class
+        public static void PropertyNotNull<T>(T item, string propertyName)
+            where T : class
         {
             // Check first if the item is null
             NotNull(item);
@@ -221,7 +222,8 @@ namespace DotNetNuke.Common
         /// <param name="propertyValue">The property value.</param>
         /// <param name="testValue">The test value.</param>
         /// <exception cref="ArgumentException"></exception>
-        public static void PropertyNotEqualTo<TValue>(string argName, string argProperty, TValue propertyValue, TValue testValue) where TValue : IEquatable<TValue>
+        public static void PropertyNotEqualTo<TValue>(string argName, string argProperty, TValue propertyValue, TValue testValue)
+            where TValue : IEquatable<TValue>
         {
             if (propertyValue.Equals(testValue))
             {

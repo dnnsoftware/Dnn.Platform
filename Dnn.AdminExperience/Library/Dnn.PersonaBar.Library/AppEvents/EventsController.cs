@@ -71,7 +71,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
             });
         }
 
-        private static IEnumerable<T> GetEventsImplements<T>() where T : class
+        private static IEnumerable<T> GetEventsImplements<T>()
+            where T : class
         {
             var types = GetAllEventTypes<T>();
 
@@ -97,7 +98,8 @@ namespace Dnn.PersonaBar.Library.AppEvents
             }
         }
 
-        private static IEnumerable<Type> GetAllEventTypes<T>() where T : class
+        private static IEnumerable<Type> GetAllEventTypes<T>()
+            where T : class
         {
             var typeLocator = new TypeLocator();
             return typeLocator.GetAllMatchingTypes(

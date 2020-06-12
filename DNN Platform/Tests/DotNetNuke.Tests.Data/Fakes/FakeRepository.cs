@@ -9,7 +9,8 @@ using DotNetNuke.Data;
 
 namespace DotNetNuke.Tests.Data.Fakes
 {
-    public class FakeRepository<T> : RepositoryBase<T> where T : class
+    public class FakeRepository<T> : RepositoryBase<T>
+        where T : class
     {
         public override void Delete(string sqlCondition, params object[] args)
         {

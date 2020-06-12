@@ -13,7 +13,8 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 
 namespace DotNetNuke.Data
 {
-    public abstract class RepositoryBase<T> : IRepository<T> where T : class
+    public abstract class RepositoryBase<T> : IRepository<T>
+        where T : class
     {
         protected RepositoryBase()
         {

@@ -13,17 +13,23 @@ namespace DotNetNuke.ComponentModel
     {
         string Name { get; }
 
-        void RegisterComponent<TComponent>() where TComponent : class;
+        void RegisterComponent<TComponent>()
+            where TComponent : class;
 
-        void RegisterComponent<TComponent>(string name) where TComponent : class;
+        void RegisterComponent<TComponent>(string name)
+            where TComponent : class;
 
-        void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle) where TComponent : class;
+        void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle)
+            where TComponent : class;
 
-        void RegisterComponent<TContract, TComponent>() where TComponent : class;
+        void RegisterComponent<TContract, TComponent>()
+            where TComponent : class;
 
-        void RegisterComponent<TContract, TComponent>(string name) where TComponent : class;
+        void RegisterComponent<TContract, TComponent>(string name)
+            where TComponent : class;
 
-        void RegisterComponent<TContract, TComponent>(string name, ComponentLifeStyleType lifestyle) where TComponent : class;
+        void RegisterComponent<TContract, TComponent>(string name, ComponentLifeStyleType lifestyle)
+            where TComponent : class;
 
         void RegisterComponent(Type componentType);
 

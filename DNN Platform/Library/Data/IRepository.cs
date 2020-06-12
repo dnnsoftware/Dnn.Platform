@@ -8,7 +8,8 @@ using DotNetNuke.Collections;
 
 namespace DotNetNuke.Data
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T>
+        where T : class
     {
         /// <summary>
         /// Delete an Item from the repository

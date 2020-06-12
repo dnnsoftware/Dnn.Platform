@@ -179,7 +179,8 @@ namespace DotNetNuke.Tests.Content.Mocks
             return table;
         }
 
-        private static Mock<TMock> RegisterMockController<TMock>(Mock<TMock> mock) where TMock : class
+        private static Mock<TMock> RegisterMockController<TMock>(Mock<TMock> mock)
+            where TMock : class
         {
             if (ComponentFactory.Container == null)
             {

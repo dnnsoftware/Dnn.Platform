@@ -20,8 +20,9 @@ namespace DotNetNuke.Services.Syndication
     /// <typeparam name = "RssChannelType"></typeparam>
     /// <typeparam name = "RssItemType"></typeparam>
     /// <typeparam name = "RssImageType"></typeparam>
-    public abstract class RssHttpHandlerBase<RssChannelType, RssItemType, RssImageType> : IHttpHandler where RssChannelType : RssChannelBase<RssItemType, RssImageType>, new()
-                                                                                                       where RssItemType : RssElementBase, new()
+    public abstract class RssHttpHandlerBase<RssChannelType, RssItemType, RssImageType> : IHttpHandler
+        where RssChannelType : RssChannelBase<RssItemType, RssImageType>, new()
+        where RssItemType : RssElementBase, new()
                                                                                                        where RssImageType : RssElementBase, new()
     {
         private RssChannelType _channel;

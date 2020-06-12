@@ -11,7 +11,9 @@ using System.Threading;
 namespace DotNetNuke.Web.UI.WebControls
 {
 
-    public sealed class UniformControlCollection<TOwner, TChildren> : IList<TChildren> where TOwner : Control where TChildren : Control
+    public sealed class UniformControlCollection<TOwner, TChildren> : IList<TChildren>
+        where TOwner : Control
+        where TChildren : Control
     {
 
         private readonly TOwner _owner;

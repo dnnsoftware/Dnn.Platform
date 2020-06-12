@@ -75,32 +75,38 @@ namespace DotNetNuke.ComponentModel
             this.RegisterComponent(componentType.FullName, componentType, componentType, ComponentLifeStyleType.Singleton);
         }
 
-        public virtual void RegisterComponent<TComponent>() where TComponent : class
+        public virtual void RegisterComponent<TComponent>()
+            where TComponent : class
         {
             this.RegisterComponent(typeof(TComponent));
         }
 
-        public virtual void RegisterComponent<TComponent>(string name) where TComponent : class
+        public virtual void RegisterComponent<TComponent>(string name)
+            where TComponent : class
         {
             this.RegisterComponent(name, typeof(TComponent), typeof(TComponent), ComponentLifeStyleType.Singleton);
         }
 
-        public virtual void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle) where TComponent : class
+        public virtual void RegisterComponent<TComponent>(string name, ComponentLifeStyleType lifestyle)
+            where TComponent : class
         {
             this.RegisterComponent(name, typeof(TComponent), typeof(TComponent), lifestyle);
         }
 
-        public virtual void RegisterComponent<TContract, TComponent>() where TComponent : class
+        public virtual void RegisterComponent<TContract, TComponent>()
+            where TComponent : class
         {
             this.RegisterComponent(typeof(TContract), typeof(TComponent));
         }
 
-        public virtual void RegisterComponent<TContract, TComponent>(string name) where TComponent : class
+        public virtual void RegisterComponent<TContract, TComponent>(string name)
+            where TComponent : class
         {
             this.RegisterComponent(name, typeof(TContract), typeof(TComponent), ComponentLifeStyleType.Singleton);
         }
 
-        public virtual void RegisterComponent<TContract, TComponent>(string name, ComponentLifeStyleType lifestyle) where TComponent : class
+        public virtual void RegisterComponent<TContract, TComponent>(string name, ComponentLifeStyleType lifestyle)
+            where TComponent : class
         {
             this.RegisterComponent(name, typeof(TContract), typeof(TComponent), lifestyle);
         }

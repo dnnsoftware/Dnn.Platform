@@ -731,7 +731,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             return this.GenerateSignatureUsingHash(signatureBase, hmacsha1);
         }
 
-        public virtual TUserData GetCurrentUser<TUserData>() where TUserData : UserData
+        public virtual TUserData GetCurrentUser<TUserData>()
+            where TUserData : UserData
         {
             this.LoadTokenCookie(string.Empty);
 

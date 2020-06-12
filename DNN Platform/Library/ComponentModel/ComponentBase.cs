@@ -8,7 +8,8 @@ using System;
 
 namespace DotNetNuke.ComponentModel
 {
-    public abstract class ComponentBase<TContract, TType> where TType : class, TContract
+    public abstract class ComponentBase<TContract, TType>
+        where TType : class, TContract
     {
         private static TContract _testableInstance;
         private static bool _useTestable = false;
