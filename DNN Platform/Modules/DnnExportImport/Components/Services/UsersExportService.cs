@@ -165,7 +165,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     catch (Exception ex)
                     {
-                        this.Result.AddLogEntry($"Exporting Users from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
+                        this.Result.AddLogEntry($"Exporting Users from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                     }
                     this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                     this.CheckPoint.Stage++;
@@ -224,7 +224,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var pageIndex = this.CheckPoint.Stage;
 
-            var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
+            var totalUsersToBeProcessed = totalUsers - (pageIndex * pageSize);
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this)) return;
@@ -365,7 +365,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         catch (Exception ex)
                         {
-                            this.Result.AddLogEntry($"Importing Users from {pageIndex * pageSize} to {pageIndex * pageSize + pageSize} exception", ex.Message, ReportLevel.Error);
+                            this.Result.AddLogEntry($"Importing Users from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                         }
                         table.Rows.Clear();
                         pageIndex++;

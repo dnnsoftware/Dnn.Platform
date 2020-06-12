@@ -271,7 +271,7 @@ namespace Dnn.ExportImport.Components.Services
 
                         currentIndex++;
                         this.CheckPoint.ProcessedItems++;
-                        this.CheckPoint.Progress = 10 + this.CheckPoint.ProcessedItems * 90.0 / totalFolders;
+                        this.CheckPoint.Progress = 10 + (this.CheckPoint.ProcessedItems * 90.0 / totalFolders);
                         // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
                     }

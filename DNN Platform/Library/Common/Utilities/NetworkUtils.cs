@@ -66,7 +66,7 @@ namespace DotNetNuke.Common.Utils
 
             for (int x = 0; x <= 3; x++)
             {
-                addr = addr | (Convert.ToInt64(addressBytes[x]) << (3 - x) * 8);
+                addr = addr | (Convert.ToInt64(addressBytes[x]) << ((3 - x) * 8));
             }
             return addr;
         }

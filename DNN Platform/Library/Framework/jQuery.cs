@@ -401,7 +401,7 @@ namespace DotNetNuke.Framework
             }
             JavaScript.RequestRegistration(CommonJs.jQuery);
 
-            var seconds = (cookieTimeout * 60 - 30) * 1000; // ping server 30 seconds before cookie is time out.
+            var seconds = ((cookieTimeout * 60) - 30) * 1000; // ping server 30 seconds before cookie is time out.
             var scriptBlock = string.Format("(function($){{setInterval(function(){{$.get(location.href)}}, {1});}}(jQuery));", Globals.ApplicationPath, seconds);
             ScriptManager.RegisterClientScriptBlock(page, page.GetType(), "PageKeepAlive", scriptBlock, true);
         }

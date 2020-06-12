@@ -136,7 +136,7 @@ namespace Dnn.ExportImport.Components.Common
 
         public static int CalculateTotalPages(int totalRecords, int pageSize)
         {
-            return totalRecords % pageSize == 0 ? totalRecords / pageSize : totalRecords / pageSize + 1;
+            return totalRecords % pageSize == 0 ? totalRecords / pageSize : (totalRecords / pageSize) + 1;
         }
 
         public static void WriteJson<T>(string filePath, T item)

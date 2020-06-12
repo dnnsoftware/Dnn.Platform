@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.WebControls
             string[] _Address = _IPAddress.ToString().Split('.');
             if (_Address.Length == 4)
             {
-                return Convert.ToInt64(16777216 * Convert.ToDouble(_Address[0]) + 65536 * Convert.ToDouble(_Address[1]) + 256 * Convert.ToDouble(_Address[2]) + Convert.ToDouble(_Address[3]));
+                return Convert.ToInt64((16777216 * Convert.ToDouble(_Address[0])) + (65536 * Convert.ToDouble(_Address[1])) + (256 * Convert.ToDouble(_Address[2])) + Convert.ToDouble(_Address[3]));
             }
             else
             {
@@ -200,7 +200,7 @@ namespace DotNetNuke.UI.WebControls
                         X[I] = 0;
                         for (J = 0; J <= 2; J++)
                         {
-                            Y = Buffer[I * 3 + J];
+                            Y = Buffer[(I * 3) + J];
                             if (Y < 0)
                             {
                                 Y = Convert.ToByte(Y + 256);

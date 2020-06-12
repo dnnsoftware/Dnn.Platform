@@ -138,7 +138,7 @@ namespace DotNetNuke.UI.WebControls
                 var LowNum = 1;
                 var HighNum = Convert.ToInt32(this._totalPages);
                 double tmpNum;
-                tmpNum = this.CurrentPage - pageLinksPerPage / 2;
+                tmpNum = this.CurrentPage - (pageLinksPerPage / 2);
                 if (tmpNum < 1)
                 {
                     tmpNum = 1;

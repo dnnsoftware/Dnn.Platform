@@ -1277,7 +1277,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var ids = result.Results.Select(doc => doc.AuthorUserId).ToArray();
 
             // Assert
-            Assert.AreEqual(maxDocs - 10 * 6, result.TotalHits);
+            Assert.AreEqual(maxDocs - (10 * 6), result.TotalHits);
             Assert.AreEqual(queryPg3.PageSize, result.Results.Count);
             Assert.AreEqual(new int[] { 86, 87, 88, 89, 96, 97, 98, 99 }, ids);
         }

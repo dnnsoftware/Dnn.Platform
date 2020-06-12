@@ -1652,7 +1652,7 @@ namespace DotNetNuke.Services.Upgrade
             Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
 
             var properties = ProfileController.GetPropertyDefinitionsByPortal(Null.NullInteger);
-            ProfileController.AddDefaultDefinition(Null.NullInteger, "Preferences", "Photo", "Image", 0, properties.Count * 2 + 2, UserVisibilityMode.AllUsers, dataTypes);
+            ProfileController.AddDefaultDefinition(Null.NullInteger, "Preferences", "Photo", "Image", 0, (properties.Count * 2) + 2, UserVisibilityMode.AllUsers, dataTypes);
 
             string installTemplateFile = string.Format("{0}Template\\UserProfile.page.template", Globals.InstallMapPath);
             string hostTemplateFile = string.Format("{0}Templates\\UserProfile.page.template", Globals.HostMapPath);
@@ -1671,7 +1671,7 @@ namespace DotNetNuke.Services.Upgrade
                     properties = ProfileController.GetPropertyDefinitionsByPortal(portal.PortalID);
 
                     // Add new Photo Profile field to Portal
-                    ProfileController.AddDefaultDefinition(portal.PortalID, "Preferences", "Photo", "Image", 0, properties.Count * 2 + 2, UserVisibilityMode.AllUsers, dataTypes);
+                    ProfileController.AddDefaultDefinition(portal.PortalID, "Preferences", "Photo", "Image", 0, (properties.Count * 2) + 2, UserVisibilityMode.AllUsers, dataTypes);
 
                     // Rename old Default Page template
                     string defaultPageTemplatePath = string.Format("{0}Templates\\Default.page.template", portal.HomeDirectoryMapPath);
@@ -1913,7 +1913,7 @@ namespace DotNetNuke.Services.Upgrade
             Dictionary<string, ListEntryInfo> dataTypes = listController.GetListEntryInfoDictionary("DataType");
 
             var properties = ProfileController.GetPropertyDefinitionsByPortal(Null.NullInteger);
-            ProfileController.AddDefaultDefinition(Null.NullInteger, "Preferences", "Photo", "Image", 0, properties.Count * 2 + 2, UserVisibilityMode.AllUsers, dataTypes);
+            ProfileController.AddDefaultDefinition(Null.NullInteger, "Preferences", "Photo", "Image", 0, (properties.Count * 2) + 2, UserVisibilityMode.AllUsers, dataTypes);
 
             HostController.Instance.Update("AutoAddPortalAlias", Globals.Status == Globals.UpgradeStatus.Install ? "Y" : "N");
 

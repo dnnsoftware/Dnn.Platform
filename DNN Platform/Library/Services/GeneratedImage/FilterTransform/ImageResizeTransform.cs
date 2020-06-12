@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 }
             }
 
-            var newimage = new Bitmap(resizeWidth + 2 * this._border, resizeHeight + 2 * this._border);
+            var newimage = new Bitmap(resizeWidth + (2 * this._border), resizeHeight + (2 * this._border));
             var graphics = Graphics.FromImage(newimage);
 
             graphics.CompositingMode = CompositingMode.SourceCopy;
@@ -197,7 +197,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             graphics.InterpolationMode = this.InterpolationMode;
             graphics.SmoothingMode = this.SmoothingMode;
 
-            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + 2 * this._border, resizeHeight + 2 * this._border));
+            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, resizeWidth + (2 * this._border), resizeHeight + (2 * this._border)));
             graphics.DrawImage(img, this._border, this._border, resizeWidth, resizeHeight);
 
             return newimage;
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 resizeHeight = Convert.ToInt32((float)img.Height / (float)img.Width * newDim);
             }
 
-            var newimage = new Bitmap(newDim + 2 * this._border, newDim + 2 * this._border);
+            var newimage = new Bitmap(newDim + (2 * this._border), newDim + (2 * this._border));
             var graphics = Graphics.FromImage(newimage);
 
             graphics.CompositingMode = CompositingMode.SourceCopy;
@@ -229,8 +229,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             graphics.InterpolationMode = this.InterpolationMode;
             graphics.SmoothingMode = this.SmoothingMode;
 
-            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + 2 * this._border, newDim + 2 * this._border));
-            graphics.DrawImage(img, (newDim - resizeWidth) / 2 + this._border, (newDim - resizeHeight) / 2 + this._border, resizeWidth, resizeHeight);
+            graphics.FillRectangle(new SolidBrush(this.BackColor), new Rectangle(0, 0, newDim + (2 * this._border), newDim + (2 * this._border)));
+            graphics.DrawImage(img, ((newDim - resizeWidth) / 2) + this._border, ((newDim - resizeHeight) / 2) + this._border, resizeWidth, resizeHeight);
             return newimage;
         }
 
