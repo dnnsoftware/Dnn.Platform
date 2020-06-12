@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -180,11 +181,13 @@ namespace DotNetNuke.UI.UserControls
                 if (!string.IsNullOrEmpty(localText))
                 {
                     this.Text = localText + this.Suffix;
+
                     // NoHelpLabelText = Text;
                 }
                 else
                 {
                     this.Text += this.Suffix;
+
                     // NoHelpLabelText = Text;
                 }
             }
@@ -204,6 +207,7 @@ namespace DotNetNuke.UI.UserControls
             if (string.IsNullOrEmpty(this.HelpText))
             {
                 this.pnlHelp.Visible = this.cmdHelp.Visible = false;
+
                 // lblHelp.Visible = false;
                 // lblNoHelpLabel.Visible = true;
             }
@@ -236,6 +240,7 @@ namespace DotNetNuke.UI.UserControls
         {
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
             // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
         }
     }

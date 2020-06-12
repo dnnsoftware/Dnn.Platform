@@ -90,6 +90,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 if (portalSettings.ContentLocalizationEnabled)
                 {
                     var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId);
+
                     // check whether original tab is exists, if true then set culture code to default language,
                     // otherwise set culture code to current.
                     objModule.CultureCode =

@@ -423,6 +423,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         public void UnlinkFolder(int folderID)
         {
             var folder = FolderManager.Instance.GetFolder(folderID);
+
             // Check if user has appropiate permissions
             if (!this.HasPermission(folder, "DELETE"))
             {

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -201,8 +202,10 @@ namespace DotNetNuke.Framework
                 {
                     // if ID matches
                     objControl.Parent.Controls.AddAt(i, updatePanel);
+
                     // insert update panel in that position
                     objContentTemplateContainer.Controls.Add(objControl);
+
                     // inject passed in control into update panel
                     break;
                 }
@@ -213,6 +216,7 @@ namespace DotNetNuke.Framework
                 // create image for update progress control
                 var objImage = new Image();
                 objImage.ImageUrl = "~/images/progressbar.gif";
+
                 // hardcoded
                 objImage.AlternateText = "ProgressBar";
 

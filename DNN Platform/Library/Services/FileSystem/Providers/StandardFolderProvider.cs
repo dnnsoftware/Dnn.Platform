@@ -15,6 +15,7 @@ using DotNetNuke.Services.FileSystem.Internal;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
+
 // ReSharper restore CheckNamespace
 {
     public class StandardFolderProvider : FolderProvider

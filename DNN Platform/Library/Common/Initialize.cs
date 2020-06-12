@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -194,21 +195,26 @@ namespace DotNetNuke.Common
                 if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
                 {
                     Logger.Info("Application Initializing");
+
                     // Set globals
                     Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                     Globals.OperatingSystemVersion = Environment.OSVersion.Version;
                     Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                     Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
+
                     // Try and Upgrade to Current Framewok
                     Upgrade.TryUpgradeNETFramework();
                     Upgrade.CheckFipsCompilanceAssemblies();
 
                     // Log Server information
                     ServerController.UpdateServerActivity(new ServerInfo());
+
                     // Start Scheduler
                     StartScheduler();
+
                     // Log Application Start
                     LogStart();
+
                     // Process any messages in the EventQueue for the Application_Start event
                     EventQueueController.ProcessMessages("Application_Start");
 
@@ -255,6 +261,7 @@ namespace DotNetNuke.Common
         public static void Init(HttpApplication app)
         {
             string redirect;
+
             // Check if app is initialised
             if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
             {

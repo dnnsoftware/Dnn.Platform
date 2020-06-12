@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -29,6 +30,7 @@ namespace DotNetNuke.Entities.Urls
             result.Action = ActionType.Continue;
             result.Reason = RedirectReason.Not_Redirected;
             result.FinalUrl = null;
+
             // clean the path for the rewrite
             NameValueCollection queryString = null;
             if (context != null)
@@ -37,8 +39,10 @@ namespace DotNetNuke.Entities.Urls
             }
 
             result.RewritePath = RedirectTokens.RemoveAnyRedirectTokens(result.RewritePath, queryString);
+
             // redo the rewrite to fix up the problem.  The user has ticked 'permanent redirect' but hasn't supplied a forwarding Url
             if (context != null)
+
             // if no context supplied, means no rewrite was required because querystring didn't contain do301 action
             {
                 // RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
@@ -99,6 +103,7 @@ namespace DotNetNuke.Entities.Urls
             // them agains the list of regex expressions on the friendlyurls.config file, and redirecting to the same page
             // but with new parameters, if there was a match
             bool redirect = false;
+
             // get the redirect actions for this portal
             var messages = new List<string>();
             Dictionary<int, List<ParameterRedirectAction>> redirectActions = CacheController.GetParameterRedirects(settings, result.PortalId, ref messages);
@@ -109,6 +114,7 @@ namespace DotNetNuke.Entities.Urls
                     string rewrittenUrl = result.RewritePath ?? result.RawUrl;
 
                     List<ParameterRedirectAction> parmRedirects = null;
+
                     // find the matching redirects for the tabid
                     int tabId = result.TabId;
                     if (tabId > -1)
@@ -176,6 +182,7 @@ namespace DotNetNuke.Entities.Urls
                             Match regexMatch = redirectRegex.Match(compareWith);
                             bool success = regexMatch.Success;
                             bool siteRootTried = false;
+
                             // if no match, but there is a site root redirect to try
                             if (!success && parmRedirect.TabId == -3)
                             {
@@ -211,6 +218,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 string finalUrl = string.Empty;
+
                                 // now we need to generate the friendly Url
 
                                 // first check to see if the parameter replacement string has a destination tabid specified
@@ -227,6 +235,7 @@ namespace DotNetNuke.Entities.Urls
                                             // changes the tabid of page, effects a page redirect along with a parameter redirect
                                             int.TryParse(parmPart, out tabId);
                                             parms = parms.Replace("tabid/" + tabId.ToString(), string.Empty);
+
                                             // remove the tabid/xx from the path
                                             break; // that's it, we're finished
                                         }
@@ -318,6 +327,7 @@ namespace DotNetNuke.Entities.Urls
                                         // from the parameter list
                                         // 946 : exception when settings.PageExtension value is empty
                                         parms += settings.PageExtension;
+
                                         // 816: if page extension is /, then don't do this
                                         if (settings.PageExtension != "/" &&
                                             string.IsNullOrEmpty(settings.PageExtension) == false)
@@ -403,6 +413,7 @@ namespace DotNetNuke.Entities.Urls
             Guid parentTraceId)
         {
             string bestFriendlyUrl = null;
+
             // 592 : check for permanent redirect
             permRedirect = tab.PermanentRedirect;
             int redirectTabId;

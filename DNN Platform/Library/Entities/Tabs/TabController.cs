@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -1639,6 +1640,7 @@ namespace DotNetNuke.Entities.Tabs
         public bool IsTabPublished(TabInfo publishTab)
         {
             bool returnValue = true;
+
             // To publish a subsidiary language tab we need to enable the View Permissions
             if (publishTab != null && publishTab.DefaultLanguageTab != null)
             {
@@ -2259,6 +2261,7 @@ namespace DotNetNuke.Entities.Tabs
                 foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules)
                 {
                     var module = kvp.Value;
+
                     // when the modules show on all pages are included by the same import process, it need removed.
                     if (!module.AllTabs || hModules.ContainsValue(module.ModuleID))
                     {
@@ -2359,6 +2362,7 @@ namespace DotNetNuke.Entities.Tabs
                 tab.IsSecure = XmlUtils.GetNodeValueBoolean(tabNode, "issecure", false);
                 tab.SiteMapPriority = XmlUtils.GetNodeValueSingle(tabNode, "sitemappriority", 0.5F);
                 tab.CultureCode = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "cultureCode");
+
                 // objTab.UniqueId = New Guid(XmlUtils.GetNodeValue(nodeTab, "guid", Guid.NewGuid.ToString()));
                 // objTab.VersionGuid = New Guid(XmlUtils.GetNodeValue(nodeTab, "versionGuid", Guid.NewGuid.ToString()));
                 tab.UseBaseFriendlyUrls = XmlUtils.GetNodeValueBoolean(tabNode, "UseBaseFriendlyUrls", false);
@@ -2873,6 +2877,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case TabType.Tab:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
+
                     // Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(int.Parse(tab.Url), tab.PortalID, false);
                     if (tempTab != null)

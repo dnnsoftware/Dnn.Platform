@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -19,6 +20,7 @@ using DotNetNuke.Services.Localization;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.UI.WebControls
+
 // ReSharper restore CheckNamespace
 {
     public class RolesSelectionGrid : Control, INamingContainer
@@ -345,6 +347,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Save the Base Controls ViewState
             allStates[0] = base.SaveViewState();
+
             // Persist the TabPermisisons
             var sb = new StringBuilder();
             bool addDelimiter = false;

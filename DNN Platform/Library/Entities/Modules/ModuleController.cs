@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -149,8 +150,10 @@ namespace DotNetNuke.Entities.Modules
             if (permission != null && perm == null)
             {
                 var modulePermission = new ModulePermissionInfo(permission);
+
 // ReSharper disable ImplicitlyCapturedClosure
                 var role = RoleController.Instance.GetRole(portalId, r => (r.RoleName == roleName));
+
 // ReSharper restore ImplicitlyCapturedClosure
                 if (role != null)
                 {
@@ -924,6 +927,7 @@ namespace DotNetNuke.Entities.Modules
                 if (!uncopy)
                 {
                     this.UpdateTabModuleOrder(moduleInfo.TabID);
+
                     // ModuleRemove is only raised when doing a soft delete of the module
                     if (softDelete)
                     {
@@ -1155,6 +1159,7 @@ namespace DotNetNuke.Entities.Modules
             try
             {
                 var userId = UserController.Instance.GetCurrentUserInfo().UserID;
+
                 // Add a copy of the module to the bottom of the Pane for the new Tab
                 dataProvider.AddTabModule(
                     destinationModule.TabID,
@@ -1263,6 +1268,7 @@ namespace DotNetNuke.Entities.Modules
         public void CreateContentItem(ModuleInfo module)
         {
             ContentType contentType = ContentType.Module;
+
             // This module does not have a valid ContentItem
             // create ContentItem
             IContentController contentController = Util.GetContentController();
@@ -1330,6 +1336,7 @@ namespace DotNetNuke.Entities.Modules
         {
             // Get the module
             ModuleInfo module = this.GetModule(moduleId, Null.NullInteger, true);
+
             // Delete Module
             dataProvider.DeleteModule(moduleId);
 
@@ -1815,6 +1822,7 @@ namespace DotNetNuke.Entities.Modules
 
                 // get the system module permissions for the permissionkey
                 ArrayList systemModulePermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", tabPermission.PermissionKey);
+
                 // loop through the system module permissions
                 int j;
                 for (j = 0; j <= systemModulePermissions.Count - 1; j++)
@@ -2169,6 +2177,7 @@ namespace DotNetNuke.Entities.Modules
 
                 dataProvider.UpdateModuleOrder(tabId, moduleId, moduleOrder, paneName);
                 TabChangeTracker.Instance.TrackModuleModification(this.GetModule(moduleId, tabId, true), Null.NullInteger, UserController.Instance.GetCurrentUserInfo().UserID);
+
                 // clear cache
                 this.ClearCache(tabId);
             }
@@ -2412,6 +2421,7 @@ namespace DotNetNuke.Entities.Modules
         public static void DeserializeModule(XmlNode nodeModule, XmlNode nodePane, int portalId, int tabId, PortalTemplateModuleAction mergeTabs, Hashtable hModules)
         {
             var moduleDefinition = GetModuleDefinition(nodeModule);
+
             // will be instance or module?
             int templateModuleID = XmlUtils.GetNodeValueInt(nodeModule, "moduleID");
             bool isInstance = CheckIsInstance(templateModuleID, hModules);
@@ -2421,6 +2431,7 @@ namespace DotNetNuke.Entities.Modules
                 if (!FindModule(nodeModule, tabId, mergeTabs))
                 {
                     ModuleInfo module = DeserializeModule(nodeModule, nodePane, portalId, tabId, moduleDefinition.ModuleDefID);
+
                     // if the module is marked as show on all tabs, then check whether the module is exist in current website and it also
                     // still marked as shown on all tabs, this action will make sure there is no duplicate modules created on new tab.
                     if (module.AllTabs)

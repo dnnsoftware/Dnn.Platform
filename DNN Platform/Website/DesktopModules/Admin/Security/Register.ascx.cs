@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -167,6 +168,7 @@ namespace DotNetNuke.Modules.Admin.Users
             else
             {
                 var fields = this.PortalSettings.Registration.RegistrationFields.Split(',').ToList();
+
                 // append question/answer field when RequiresQuestionAndAnswer is enabled in config.
                 if (MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
@@ -246,6 +248,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         if (authSystem.AuthenticationType != "DNN")
                         {
                             this.BindLoginControl(authLoginControl, authSystem);
+
                             // Check if AuthSystem is Enabled
                             if (authLoginControl.Enabled && authLoginControl.SupportsRegistration)
                             {
@@ -446,6 +449,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     Visible = property.Visible,
                     Required = property.Required,
                 };
+
                 // To check if the property has a deafult value
                 if (!string.IsNullOrEmpty(property.DefaultValue))
                 {

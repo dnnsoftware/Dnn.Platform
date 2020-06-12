@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -203,6 +204,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string debugValue = string.Empty;
             const string debugToken = "_FUGDEBUG";
+
             // 798 : change reference to debug parameters
             if (request != null)
             {
@@ -241,6 +243,7 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 finalPathBuilder.Append(Globals.AddHTTP(portalAlias + "/"));
+
                 // don't show lang parms for site-root set values
                 finalPathBuilder.Append(newPath);
                 finalPathBuilder.Append(newPageName);
@@ -262,6 +265,7 @@ namespace DotNetNuke.Entities.Urls
                 if (newPath == string.Empty // no path (no querystring when rewritten)
                     && (isHomePage && newTabPath == "/") // is the home page, and we're not using 'home' for it
                     && (langParms == string.Empty || dropLangParms)
+
                     // doesn't have any language parms, or we're intentionally getting rid of them
                     && !builtInUrl) // builtin Url == login, terms, privacy, register
                 {
@@ -280,6 +284,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 else
+
                 // this is the normal case
                 {
                     // finalPath += newTabPath.TrimStart('/') + newPath + newPageName + pageAndExtension + qs;
@@ -311,6 +316,7 @@ namespace DotNetNuke.Entities.Urls
                     else
                     {
                         extension = settings.PageExtension;
+
                         // default page pageAndExtension
                     }
                 }
@@ -352,12 +358,14 @@ namespace DotNetNuke.Entities.Urls
                     else
                     {
                         pageAndExtension = "/" + pageName.Replace(".aspx", string.Empty); // 610 + "/";
+
                         // get rid of the .aspx on the page if it was there
                     }
                 }
                 else
                 {
                     pageAndExtension = string.Empty; // 610 don't end with "/";
+
                     // no pageAndExtension
                 }
             }
@@ -382,6 +390,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     pageAndExtension = settings.PageExtension;
+
                     // default page extension
                 }
             }
@@ -537,6 +546,7 @@ namespace DotNetNuke.Entities.Urls
             string friendlyPath = path;
             bool done = false;
             string httpAliasFull = null;
+
             // this regex identifies if the correct http(s)://portalAlias already is in the path
             var portalMatchRegex = RegexUtils.GetCachedRegex("^https?://" + httpAlias, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             string cultureCode = GetCultureOfPath(path);
@@ -546,6 +556,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     // get the portal alias mapping for this portal, which tells whether to enforce a primary portal alias or not
                     PortalSettings.PortalAliasMapping aliasMapping = PortalSettingsController.Instance().GetPortalAliasMappingMode(portalId);
+
                     // check to see if we should be specifying this based on the culture code
                     var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
 
@@ -555,6 +566,7 @@ namespace DotNetNuke.Entities.Urls
                     if (string.IsNullOrEmpty(cultureCode))
                     {
                         cultureCode = GetCultureOfSettings(portalSettings);
+
                         // lookup the culture code of the portal settings object
                     }
 
@@ -587,6 +599,7 @@ namespace DotNetNuke.Entities.Urls
                             else if (redirectAlias.CultureCode == string.Empty)
                             {
                                 cultureSpecificAlias = true;
+
                                 // 770: hacking this so that a change is forced to portal settings when a non-chosen alias is requested.
                             }
                         }
@@ -611,6 +624,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     // splits the key/value pair into a two-element array
                                     string[] keyValue = parmPair.Split('=');
+
                                     // check to see if it was a full skinsrc=xyz pair
                                     if (keyValue.GetUpperBound(0) >= 1)
                                     {
@@ -638,6 +652,7 @@ namespace DotNetNuke.Entities.Urls
                     if (HttpContext.Current != null && HttpContext.Current.Items["UrlRewrite:OriginalUrl"] != null)
                     {
                         string originalUrl = HttpContext.Current.Items["UrlRewrite:OriginalUrl"].ToString();
+
                         // confirming this portal was the original one requested, making all the generated aliases
                         // for the same portal
                         var fullALiasRx = RegexUtils.GetCachedRegex("^" + httpAliasFull, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -685,6 +700,7 @@ namespace DotNetNuke.Entities.Urls
                 friendlyPath = queryStringMatch.Groups[1].Value;
                 friendlyPath = DefaultPageRegex.Replace(friendlyPath, string.Empty);
                 if (string.Compare(pageName, Globals.glbDefaultPage, StringComparison.OrdinalIgnoreCase) != 0)
+
                 // take out the end page name, it will get re-added
                 {
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
@@ -763,6 +779,7 @@ namespace DotNetNuke.Entities.Urls
                                         {
                                             pathToAppend = pathToAppend + "/" +
                                                            pair[1].Replace(" ", settings.SpaceEncodingValue);
+
                                             // 625 : replace space with specified url encoding value
                                         }
                                     }
@@ -775,8 +792,10 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     var valueBuilder = new StringBuilder(pair.GetUpperBound(0));
                                     string key = pair[0];
+
                                     // string value = pair[1];
                                     valueBuilder.Append(pair[1]);
+
                                     // if the querystring has been decoded and has a '=' in it, the value will get split more times.  Put those back together with a loop.
                                     if (pair.GetUpperBound(0) > 1)
                                     {
@@ -803,6 +822,7 @@ namespace DotNetNuke.Entities.Urls
                             else
                             {
                                 pathToAppend = pathToAppend + "/" + settings.SpaceEncodingValue;
+
                                 // 625 : replace with specified space encoding value
                             }
                         }
@@ -879,6 +899,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             string httpAlias = portalSettings.PortalAlias.HTTPAlias;
+
             // invalid call just return the path
             if (tab == null)
             {
@@ -902,16 +923,19 @@ namespace DotNetNuke.Entities.Urls
             }
 
             string result = friendlyPath;
+
             // 821 : new 'CustomOnly' setting which allows keeping base Urls but also using Custom Urls.  Basically keeps search friendly
             // but allows for customised urls and redirects
             bool customOnly = settings.UrlFormat.Equals("customonly", StringComparison.InvariantCultureIgnoreCase);
             FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
+
             // determine if an improved friendly Url is wanted at all
             if ((settings.UrlFormat.Equals("advanced", StringComparison.InvariantCultureIgnoreCase) || customOnly) && !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false))
             {
                 string newTabPath;
                 string customHttpAlias;
                 bool isHomePage = TabPathHelper.IsTabHomePage(tab, portalSettings);
+
                 // do a regex check on the base friendly Path, to see if there is parameters on the end or not
                 var tabOnlyRegex = RegexUtils.GetCachedRegex(
                     "[^?]*/tabId/(?<tabid>\\d+)/" + pageName + "($|\\?(?<qs>.+$))",
@@ -931,6 +955,7 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     bool dropLangParms;
+
                     // 736: observe the culture code of the tab
                     string cultureCode = tab.CultureCode;
                     bool isDefaultLanguage = false;
@@ -938,6 +963,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         cultureCode = portalSettings.DefaultLanguage;
                         isDefaultLanguage = true;
+
                         // 751 when using the default culture code, the redirect doesn't need an explicit language
                     }
 
@@ -956,6 +982,7 @@ namespace DotNetNuke.Entities.Urls
                         out customHttpAlias,
                         out isCustomUrl,
                         parentTraceId);
+
                     // 770 : custom http alias found, merge into overall result
                     if (!string.IsNullOrEmpty(customHttpAlias))
                     {
@@ -1002,6 +1029,7 @@ namespace DotNetNuke.Entities.Urls
                         string newPath = string.Empty;
                         string qs = string.Empty;
                         string langParms = string.Empty;
+
                         // check we matched on some parms in the path
                         if (rgxMatch.Groups["parms"] != null && rgxMatch.Groups["parms"].Success)
                         {
@@ -1022,6 +1050,7 @@ namespace DotNetNuke.Entities.Urls
                                     langParms = langParms.TrimEnd('/');
                                     newPath = newPath.Replace(langParms, string.Empty);
                                     cultureCode = langMatch.Groups["code"].Value;
+
                                     // obtain the culture code for this language
                                     defaultCode = portalSettings.DefaultLanguage;
                                 }
@@ -1035,6 +1064,7 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         bool dropLangParms;
+
                         // determine if we allow the home page to be shown as the site root.  This is if :
                         // cultureCode = default culture, newPath is blank after removing languageParms
                         // allow site root for home page if it is the default culture and no other path items, or there is a specific alias for this culture and there are no other path items
@@ -1171,6 +1201,7 @@ namespace DotNetNuke.Entities.Urls
                             string pageAndExtension = customHttpAlias != null && newTabPath == string.Empty
                                                           ? string.Empty
                                                           : DeterminePageNameAndExtension(ref pageName, settings);
+
                             // prepend querystring qualifier if necessary
                             qs = !string.IsNullOrEmpty(qs) ? "?" + qs : string.Empty;
 
@@ -1180,6 +1211,7 @@ namespace DotNetNuke.Entities.Urls
                                 // 871 : case insensitive culture comparisons
                                 // drop the language parameters when the defaultCode is the cultureCode for this Url, or the portal alias defines the culture code
                                 dropLangParms = isDefaultLanguage || cultureSpecificAlias;
+
                                 // (defaultCode.ToLower() == cultureCode.ToLower()) || cultureSpecificAlias;
                             }
 
@@ -1257,6 +1289,7 @@ namespace DotNetNuke.Entities.Urls
                 if (debugCheck != string.Empty && debugCheck != "false")
                 {
                     int id = DateTime.Now.Millisecond;
+
                     // append the friendly url headers
                     HttpResponse response = HttpContext.Current.Response;
                     string msgId = id.ToString("000");

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -291,6 +292,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     // request is for a standard page
                     strURL = string.Empty;
+
                     // if SSL is enabled
                     if (portalSettings.SSLEnabled)
                     {
@@ -328,16 +330,20 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             response.RedirectPermanent(strURL);
                         }
                         else
+
                             // when switching to an unsecure page, use a clientside redirector to avoid the browser security warning
                         {
                             response.Clear();
+
                             // add a refresh header to the response
                             response.AddHeader("Refresh", "0;URL=" + strURL);
+
                             // add the clientside javascript redirection script
                             response.Write("<html><head><title></title>");
                             response.Write("<!-- <script language=\"javascript\">window.location.replace(\"" + strURL +
                                            "\")</script> -->");
                             response.Write("</head><body></body></html>");
+
                             // send the response
                             response.End();
                         }
@@ -445,12 +451,14 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                                                     RegexOptions.IgnoreCase));
 
                     string parameters = objMatch.Groups[2].Value;
+
                     // process the parameters
                     if (parameters.Trim().Length > 0)
                     {
                         // split the value into an array based on "/" ( ie. /tabid/##/ )
                         parameters = parameters.Replace("\\", "/");
                         string[] splitParameters = parameters.Split('/');
+
                         // icreate a well formed querystring based on the array of parameters
                         for (int parameterIndex = 0; parameterIndex < splitParameters.Length; parameterIndex++)
                         {
@@ -477,6 +485,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                         // get parameter delimiter
                                         string parameterDelimiter = sendTo.IndexOf("?", StringComparison.Ordinal) != -1 ? "&" : "?";
                                         sendTo = sendTo + parameterDelimiter + parameterName;
+
                                         // get parameter value
                                         string parameterValue = string.Empty;
                                         if (parameterIndex < splitParameters.Length - 1)
@@ -508,6 +517,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             {
                 // add querystring parameters back to SendTo
                 string[] parameters = strQueryString.Split('&');
+
                 // iterate through the array of parameters
                 for (int parameterIndex = 0; parameterIndex <= parameters.Length - 1; parameterIndex++)
                 {
@@ -564,6 +574,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (objPortalAlias != null)
                     {
                         int portalID = objPortalAlias.PortalID;
+
                         // Identify Tab Name
                         string tabPath = url;
                         if (tabPath.StartsWith(myAlias))

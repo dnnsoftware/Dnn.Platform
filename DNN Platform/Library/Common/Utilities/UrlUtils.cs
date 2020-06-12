@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -54,6 +55,7 @@ namespace DotNetNuke.Common.Utilities
         public static string DecryptParameter(string value, string encryptionKey)
         {
             var objSecurity = PortalSecurity.Instance;
+
             // [DNN-8257] - Can't do URLEncode/URLDecode as it introduces issues on decryption (with / = %2f), so we use a modifed Base64
             var toDecrypt = new StringBuilder(value);
             toDecrypt.Replace("_", "/");
@@ -223,6 +225,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             var popUpUrl = url;
+
             // ensure delimiters are not used
             if (!popUpUrl.Contains("dnnModal.show"))
             {
@@ -368,6 +371,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     var urlWithNoProtocol = url.Substring(2);
                     var portalSettings = PortalSettings.Current;
+
                     // note: this can redirict from parent to childe and vice versa
                     if (!urlWithNoProtocol.StartsWith(portalSettings.PortalAlias.HTTPAlias + "/", StringComparison.InvariantCultureIgnoreCase))
                     {

@@ -223,6 +223,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             const string fieldName = "content";
             const string fieldValue = "<script src='fox' type='text/javascript'></script>";
             const string expectedResult = " src=&#39;<b>fox</b>&#39; type=&#39;text/javascript&#39;&gt;&lt;/script&gt;";
+
             // Note that we mustn't get " src='<b>fox</b>' type='text/javascript'></script>" as this causes browser rendering issues
 
             // Act
@@ -252,6 +253,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             var doc = new Document();
             doc.Add(field);
             this._luceneController.Add(doc);
+
             // DONOT commit here to enable testing near-realtime of search writer
             // _luceneController.Commit();
             var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
@@ -347,6 +349,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Assert
             Assert.AreEqual(3, hits.TotalHits);
             Assert.AreEqual(1, hits.Results.Count());
+
             // for some reason, this search's docs have scoring as
             // Line1=0.3125, Line1=0.3125, Line2=0.3125, Line2=0.3750
             Assert.AreEqual(Line1, hits.Results.ElementAt(0).Document.GetField(Constants.ContentTag).StringValue);
@@ -450,6 +453,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_Search_With_Chinese_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
             this._mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
+
             // Arrange
             const string fieldName = "content";
             const string fieldValue = Line_Chinese;
@@ -489,6 +493,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_Search_With_English_Chars_And_Custom_Analyzer(string customAlalyzer = "")
         {
             this._mockHostController.Setup(c => c.GetString(Constants.SearchCustomAnalyzer, It.IsAny<string>())).Returns(customAlalyzer);
+
             // Arrange
             const string fieldName = "content";
             const string fieldValue = Line1;
@@ -697,6 +702,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             for (var i = 0; i < TotalTestDocs2Create; i++)
             {
                 var doc = new Document();
+
                 // format to "D#" because LengthFilter will not consider words of length < 3 or > 255 characters in length (defaults)
                 doc.Add(new Field(ContentFieldName, i.ToString("D" + Constants.DefaultMinLen), Field.Store.YES, Field.Index.ANALYZED));
                 this._luceneController.Add(doc);

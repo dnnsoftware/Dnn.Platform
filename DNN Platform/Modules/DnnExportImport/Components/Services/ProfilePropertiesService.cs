@@ -46,6 +46,7 @@ namespace Dnn.ExportImport.Components.Services
                         .GetPropertyDefinitionsByPortal(exportJob.PortalId, exportDto.IncludeDeletions, toDate,
                             fromDate)).ToList();
             this.CheckPoint.Progress = 50;
+
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? profileProperties.Count : this.CheckPoint.TotalItems;
             this.CheckPointStageCallback(this);
@@ -72,6 +73,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var profileProperties = this.Repository.GetAllItems<ExportProfileProperty>().ToList();
+
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? profileProperties.Count : this.CheckPoint.TotalItems;
             this.CheckPointStageCallback(this);

@@ -173,6 +173,7 @@ namespace Dnn.ExportImport.Components.Common
         {
             var entryName = file.Substring(folderOffset); // Makes the name in zip based on the folder
             ZipArchiveEntry existingEntry;
+
             // Deletes if the entry already exists in archive.
             if ((existingEntry = archive.GetEntry(entryName)) != null)
             {

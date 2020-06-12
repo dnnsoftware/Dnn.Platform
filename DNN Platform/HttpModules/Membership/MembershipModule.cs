@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -158,6 +159,7 @@ namespace DotNetNuke.HttpModules.Membership
             if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
+
                 // if current login is from windows authentication, the ignore the process
                 if (user == null && context.User is WindowsPrincipal)
                 {

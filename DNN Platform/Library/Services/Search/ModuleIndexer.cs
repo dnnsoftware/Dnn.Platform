@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -237,6 +238,7 @@ namespace DotNetNuke.Services.Search
                 PortalId = module.PortalID,
                 SearchTypeId = ModuleSearchTypeId,
                 CultureCode = module.CultureCode,
+
                 // Add Module MetaData
                 ModuleDefId = module.ModuleDefID,
                 ModuleId = module.ModuleID,
@@ -292,6 +294,7 @@ namespace DotNetNuke.Services.Search
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
             var searchModules = new List<ModuleIndexInfo>();
+
             // Only get modules that are set to be Indexed.
             var modules = ModuleController.Instance.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
 
@@ -300,6 +303,7 @@ namespace DotNetNuke.Services.Search
                 try
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, portalId, false);
+
                     // Only index modules on tabs that are set to be Indexed.
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {

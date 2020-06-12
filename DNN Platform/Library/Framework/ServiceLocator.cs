@@ -17,9 +17,11 @@ namespace DotNetNuke.Framework
 // ReSharper disable StaticFieldInGenericType
 // ReSharper disable InconsistentNaming
         private static Lazy<TContract> _instance = new Lazy<TContract>(InitInstance, true);
+
 // ReSharper restore InconsistentNaming
         private static TContract _testableInstance;
         private static bool _useTestable;
+
 // ReSharper restore StaticFieldInGenericType
         protected static Func<TContract> Factory { get; set; }
 

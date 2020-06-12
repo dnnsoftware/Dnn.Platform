@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -37,6 +38,7 @@ namespace DotNetNuke.Common.Lists
         private ListInfo FillListInfo(IDataReader dr, bool CheckForOpenDataReader)
         {
             ListInfo list = null;
+
             // read datareader
             bool canContinue = true;
             if (CheckForOpenDataReader)
@@ -188,6 +190,7 @@ namespace DotNetNuke.Common.Lists
 
             var lists = new SortedList<string, ListInfo>();
             lists.Add(list.Key, list);
+
             // add Children
             if (includeChildren)
             {

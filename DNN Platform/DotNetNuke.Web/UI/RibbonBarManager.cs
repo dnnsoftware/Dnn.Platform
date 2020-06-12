@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -71,6 +72,7 @@ namespace DotNetNuke.Web.UI
                 if (PortalSettings.Current.SSLEnabled)
                 {
                     newTab.IsSecure = parentTab.IsSecure;
+
                     // Inherit from parent
                 }
             }
@@ -238,6 +240,7 @@ namespace DotNetNuke.Web.UI
                         {
                             var defaultLanguageTabs = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
                             defaultLanguageSelectedTab = defaultLanguageTabs[defaultLanguageTabs.Count];
+
                             // get the last tab
                         }
                     }
@@ -256,6 +259,7 @@ namespace DotNetNuke.Web.UI
 
                 TabInfo parentTab = GetParentTab(relativeToTab, location);
                 string permissionList = "ADD,COPY,EDIT,MANAGE";
+
                 // Check permissions for Page Editors when moving or inserting
                 if (!PortalSecurity.IsInRole("Administrators"))
                 {
@@ -285,6 +289,7 @@ namespace DotNetNuke.Web.UI
             }
 
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
+
             // check whether have conflict between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(PortalSettings.Current.PortalId, tab.TabPath))
             {

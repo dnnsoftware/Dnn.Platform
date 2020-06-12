@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -493,6 +494,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             var fakeName = "{databaseOwner}[{objectQualifier}FakeTable_" + DateTime.Now.Ticks.ToString("x16") + "]";
             var databaseActions = string.Format(@"CREATE TABLE {0}([fakeColumn] [int] NULL); SELECT * FROM {0}; DROP TABLE {0};", fakeName);
             var strExceptions = DataProvider.Instance().ExecuteScript(connectionString, databaseActions);
+
             // if no exceptions we have necessary drop etc permissions
             return string.IsNullOrEmpty(strExceptions);
         }
@@ -523,6 +525,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string downloadUrl = UpdateService.GetLanguageDownloadUrl(cultureCode);
 
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
+
                 // no need to download english, always there
                 if (cultureCode != "en-us" && string.IsNullOrEmpty(downloadUrl) != true)
                 {
@@ -646,6 +649,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 "wpi://2.1.0.0/Microsoft Windows NT 6.1.7600.0",
                 out myfile,
                 10000);
+
             // use fixed name for later installation
             myfile = "installlanguage.resources";
             Util.DeployExtension(wr, myfile, installFolder);

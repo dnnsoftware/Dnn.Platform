@@ -78,6 +78,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
+
         // DNNPRO-13404 - Object does not implement IConvertible
         public void CBO_FillObject_binary()
         {

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -60,6 +61,7 @@ namespace DotNetNuke.UI.WebControls
             if (objProperty != null)
             {
                 PropertyName = Convert.ToString(objProperty.GetValue(this.DataSource, null));
+
                 // Do we have the item in the IEnumerable Collection being changed
                 PropertyName = PropertyName.Replace(" ", "_");
                 if (PropertyName == name)
@@ -100,12 +102,14 @@ namespace DotNetNuke.UI.WebControls
             if (property != null)
             {
                 string propertyName = Convert.ToString(property.GetValue(this.DataSource, null));
+
                 // Do we have the item in the IEnumerable Collection being changed
                 propertyName = propertyName.Replace(" ", "_");
                 if (propertyName == name)
                 {
                     // Get the Value Property
                     property = this.DataSource.GetType().GetProperty(dataField);
+
                     // Set the Value property to the new value
                     property.SetValue(this.DataSource, newValue, null);
                     dirty = true;

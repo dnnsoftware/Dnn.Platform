@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -96,6 +97,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var appConnectionString = Config.GetConnectionString();
 
             var modified = false;
+
             // save to web.config if different
             if (appConnectionString.ToLower() != connectionString.ToLower())
             {

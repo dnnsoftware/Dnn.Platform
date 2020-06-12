@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -224,6 +225,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.lastLockoutDate.Value = this.UserMembership.LastLockoutDate.Year > 2000
                                         ? (object)this.UserMembership.LastLockoutDate
                                         : this.LocalizeString("Never");
+
             // ReSharper disable SpecifyACultureInStringConversionExplicitly
             this.isOnLine.Value = this.LocalizeString(this.UserMembership.IsOnLine.ToString());
             this.lockedOut.Value = this.LocalizeString(this.UserMembership.LockedOut.ToString());
@@ -387,6 +389,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             var currentSuperUserState = this.User.IsSuperUser;
             this.User.IsSuperUser = !currentSuperUserState;
+
             // Update User
             UserController.UpdateUser(this.PortalId, this.User);
             DataCache.ClearCache();

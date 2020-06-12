@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -96,6 +97,7 @@ namespace DotNetNuke.UI.WebControls
                 }
 
                 this.EnsureChildControls();
+
                 // Check to see if a TestIP is specified
                 if (!string.IsNullOrEmpty(this._TestIP))
                 {
@@ -106,6 +108,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     // The country cannot be detected because the user is local.
                     IsLocal = true;
+
                     // Set the IP address in case they didn't specify LocalhostCountryCode
                     IP = this.Page.Request.UserHostAddress;
                 }
@@ -128,6 +131,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     // Bing the data
                     base.OnDataBinding(e);
+
                     // Pre-Select the value in the drop-down based
                     // on the LocalhostCountryCode specified.
                     if (this.Items.FindByValue(this._LocalhostCountryCode) != null)
@@ -178,6 +182,7 @@ namespace DotNetNuke.UI.WebControls
                             newItem.Value = _UserCountryCode;
                             newItem.Text = _UserCountry;
                             this.Items.Insert(0, newItem);
+
                             // Now let's Pre-Select it
                             this.Items.FindByValue(_UserCountryCode).Selected = true;
                         }

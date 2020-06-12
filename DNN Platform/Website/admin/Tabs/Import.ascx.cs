@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -262,6 +263,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     objTab = TabController.DeserializeTab(tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 
                     var exceptions = string.Empty;
+
                     // Create second tabs onwards. For firs tab, we like to use tab details from text box, for rest it'll come from template
                     for (var tab = 1; tab < tabNodes.Count; tab++)
                     {

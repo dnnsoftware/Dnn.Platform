@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -263,12 +264,14 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 const int commitBatchSize = 1024 * 16;
                 var idx = 0;
+
                 // var added = false;
                 foreach (var searchDoc in searchDocs)
                 {
                     try
                     {
                         this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
+
                         // added = true;
                     }
                     catch (Exception ex)
@@ -573,6 +576,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 // Remove all opening HTML Tags with no attributes
                 strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
+
                 // Remove all closing HTML Tags
                 strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
             }

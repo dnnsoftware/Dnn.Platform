@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -409,8 +410,10 @@ namespace DotNetNuke.UI.Skins
             public string Parse(ref string Source, XmlDocument Attributes)
             {
                 this.Messages = string.Empty;
+
                 // set the token attributes
                 this.Attributes = Attributes;
+
                 // clear register list
                 this.RegisterList.Clear();
 
@@ -474,10 +477,12 @@ namespace DotNetNuke.UI.Skins
                     {
                         // look for the the node of this instance of the token
                         XmlNode xmlSkinAttributeRoot = this.Attributes.DocumentElement.SelectSingleNode("descendant::Object[Token='[" + AttributeNode + "]']");
+
                         // if the token is found
                         if (xmlSkinAttributeRoot != null)
                         {
                             this.Messages += SkinController.FormatMessage(TOKEN_FOUND, "[" + AttributeNode + "]", 2, false);
+
                             // process each token attribute
                             foreach (XmlNode xmlSkinAttribute in xmlSkinAttributeRoot.SelectNodes(".//Settings/Setting"))
                             {
@@ -972,6 +977,7 @@ namespace DotNetNuke.UI.Skins
 
                 // set path propery which is file specific
                 this.SkinPath = SkinPath;
+
                 // set parse option
                 this.ParseOption = ParseOption;
 

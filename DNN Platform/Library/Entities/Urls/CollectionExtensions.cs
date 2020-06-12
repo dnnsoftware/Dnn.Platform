@@ -133,6 +133,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 var tabMessages = new List<string>();
                                 int actionCount = 0;
+
                                 // now set up the action
                                 string portalIdRaw = rdr.GetAttribute("rulePortalId");
                                 if (string.IsNullOrEmpty(portalIdRaw))
@@ -147,6 +148,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
 
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
+
                                 // if portal specific, all rules are assumed to belong to the portal
                                 {
                                     string tabIdRaw = rdr.GetAttribute("tabIds");

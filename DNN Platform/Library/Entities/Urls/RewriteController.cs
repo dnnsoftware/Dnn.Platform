@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -57,12 +58,15 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 string[] parms = queryString.Split('&');
+
                 // iterate through the array of parameters
                 for (int i = 0; i < parms.Length; i++)
                 {
                     bool hasValue = false;
+
                     // get parameter name
                     string parmName = parms[i];
+
                     // check if parm name contains a value as well
                     if (parmName.IndexOf("=", StringComparison.Ordinal) != -1)
                     {
@@ -92,6 +96,7 @@ namespace DotNetNuke.Entities.Urls
                         // 699 : reverses 622 because works from Request.QUeryString instead of Request.Url.Query
                         // string queryStringPiece = System.Web.HttpUtility.UrlDecode(parms[i]);
                         string queryStringPiece = parms[i];
+
                         // no decoding - querystring passes through rewriting process untouched
                         // add parameter to SendTo value
                         if (rewritePathHasQuery)
@@ -117,6 +122,7 @@ namespace DotNetNuke.Entities.Urls
 
             string defaultPage = Globals.glbDefaultPage.ToLowerInvariant();
             string portalAliasUrl = url.ToLowerInvariant().Replace("/" + defaultPage, string.Empty);
+
             // if there is a straight match on a portal alias, it's the home page for that portal requested
             var portalAlias = PortalAliasController.Instance.GetPortalAlias(portalAliasUrl);
             if (portalAlias != null)
@@ -179,6 +185,7 @@ namespace DotNetNuke.Entities.Urls
                         // 760: check for portal alias specific culture before choosing home tabid
                         bool checkForCustomAlias = false;
                         bool customTabAlias = false;
+
                         // check for culture-specific aliases
                         string culture = null;
                         var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).ToList();
@@ -283,6 +290,7 @@ namespace DotNetNuke.Entities.Urls
 
                             // DNN-3789 always call this method as culture is defined by GetPageLocale
                             AddLanguageCodeToRewritePath(ref newUrl, culture);
+
                             // add on language specified by current portal alias
                             reWritten = true;
                         }
@@ -312,6 +320,7 @@ namespace DotNetNuke.Entities.Urls
             bool found = false;
             int pathStart = tabKeyVal.LastIndexOf("::", StringComparison.Ordinal); // look for portal alias separator
             int lastPath = tabKeyVal.LastIndexOf('/');
+
             // get any path separator in the tab path portion
             if (pathStart > lastPath)
             {
@@ -321,15 +330,19 @@ namespace DotNetNuke.Entities.Urls
             if (lastPath >= 0)
             {
                 int defaultStart = tabKeyVal.IndexOf("default", lastPath, StringComparison.OrdinalIgnoreCase);
+
                 // no .aspx on the end anymore
                 if (defaultStart > 0 && defaultStart > lastPath)
+
                 // there is a default in the path, and it's not the entire path (ie pagnamedefault and not default)
                 {
                     tabKeyVal = tabKeyVal.Substring(0, defaultStart);
+
                     // get rid of the default.aspx part
                     using (tabDict.GetReadLock())
                     {
                         found = tabDict.ContainsKey(tabKeyVal);
+
                         // lookup the tabpath in the tab dictionary again
                     }
                 }
@@ -476,6 +489,7 @@ namespace DotNetNuke.Entities.Urls
                 // OK there is a language modifier in the path
                 // we want to shift this so it is back on the end where it belongs
                 langParms = langMatch.Value.TrimEnd('/'); // in the format of /language/en-US only
+
                 // it doesn't matter if you get /home.aspx/language/en-US in the url field because the .aspx gets
                 // removed when matching with the tab dictionary
                 url = url.Replace(langParms, string.Empty) + langParms;
@@ -503,6 +517,7 @@ namespace DotNetNuke.Entities.Urls
         private static string ReplaceDefaultPage(string newUrl, string requestUrl, IEnumerable<string> list)
         {
             string url = newUrl; // fall back case: we don't change anything
+
             // iterate the list and replace in the url is a match is found
             foreach (string requestPage in list)
             {
@@ -598,6 +613,7 @@ namespace DotNetNuke.Entities.Urls
         internal static bool AddLanguageCodeToRewritePath(ref string rewritePath, string cultureCode)
         {
             bool changed = false;
+
             // 758 : check for any language identifier in the Url before adding a new one, not just the same one
             if (!string.IsNullOrEmpty(cultureCode) && !rewritePath.ToLowerInvariant().Contains("language="))
             {
@@ -877,6 +893,7 @@ namespace DotNetNuke.Entities.Urls
 
                             // make up the index that is looked for in the Tab Dictionary
                             string urlPart = aliasPath + "::" + tabPath;
+
                             // the :: allows separation of pagename and portal alias
                             string tabKeyVal = urlPart.ToLowerInvariant(); // force lower case lookup, all keys are lower case
 
@@ -931,6 +948,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     // 708 : move result rewrite set so that downstream functions know the tabid
                                     SetRewriteParameters(ref result, newUrl);
+
                                     // found the correct rewrite page, now investigate whether there
                                     // is part of the url path that needs to be converted to tab id's
                                     //  Multi Language Urls not being rewritten
@@ -969,6 +987,7 @@ namespace DotNetNuke.Entities.Urls
                                         if (!rewriteParms && settings.EnableCustomProviders)
                                         {
                                             bool newAction;
+
                                             // newAction tracks whether or not a new 'action' (ie 301, 404, etc) has been requested.
                                             // call the module friendly url providers. Note that the rewriteParms value will be changed if there is a rewrite.
                                             List<string> messages = result.DebugMessages;
@@ -1011,6 +1030,7 @@ namespace DotNetNuke.Entities.Urls
 
                                         // if the parms weren't rewritten by means of a regex, then process them normally
                                         if (!rewriteParms && !isSiteRootMatch)
+
                                         // can only try other matches if it wasn't a site root match
                                         {
                                             // put those parms on the back of the url as a query string
@@ -1041,6 +1061,7 @@ namespace DotNetNuke.Entities.Urls
                                                 result.SetActionWithNoDowngrade(ActionType.CheckFor301);
                                             }
                                             else
+
                                                 // 866 : redirect back from no extension to extension if it didn't have one
                                                 if (settings.PageExtensionUsageType != PageExtensionUsageType.Never &&
                                                     hadExtension == false)
@@ -1051,6 +1072,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
 
                                         if (isSiteRootMatch && !finished)
+
                                         // when it was a site root match, this must be matched with a custom parameter regex
                                         {
                                             // only finished if the parms were rewritten by means of a regex rewrite
@@ -1070,6 +1092,7 @@ namespace DotNetNuke.Entities.Urls
                                         string resultUrl;
                                         RedirectReason reason;
                                         ActionType action;
+
                                         // add back language parameters if they were there
                                         if (string.IsNullOrEmpty(langParms) == false)
                                         {
@@ -1101,12 +1124,14 @@ namespace DotNetNuke.Entities.Urls
                                             parentTraceId))
                                         {
                                             bool newAction;
+
                                             // newAction tracks whether or not a new 'action' (ie 301, 404, etc) has been requested.
                                             // call the module friendly url providers. Note that the rewriteParms value will be changed if there is a rewrite.
                                             string[] urlParms = new List<string>().ToArray(); // empty parm array
                                             if (string.IsNullOrEmpty(langParms) == false)
                                             {
                                                 urlParms = langParms.Split('/');
+
                                                 // split the lang parms into the url Parms
                                             }
 
@@ -1163,6 +1188,7 @@ namespace DotNetNuke.Entities.Urls
                 if (!finished)
                 {
                     curAliasPathDepth += 1;
+
                     // gone too deep
                     if ((curAliasPathDepth > maxAliasPathDepth) && !reWritten)
                     {
@@ -1199,17 +1225,20 @@ namespace DotNetNuke.Entities.Urls
             if (requestUri.Query != string.Empty)
             {
                 urlWoutQuery = urlWoutQuery.Replace(requestUri.Query, string.Empty);
+
                 // replace the querystring on the reuqest absolute Uri
             }
 
             // 926 : do not use querystring.toString() because of encoding errors that restul,
             // the encoding type is changed from utf-8 to latin-1
             querystring = requestUri.Query;
+
             // get results
             fullUrl = urlWoutQuery;
             if (fullUrl.EndsWith("/_noext.aspx", StringComparison.InvariantCultureIgnoreCase))
             {
                 fullUrl = fullUrl.Replace("_noext.aspx", string.Empty);
+
                 // replace this marker pattern so it looks as though it isn't there *(leave on trailing slash)
             }
 
@@ -1297,6 +1326,7 @@ namespace DotNetNuke.Entities.Urls
 
                         result.DoRewrite = false;
                         checkFurtherForRewrite = false;
+
                         // no more checking for rewrites, we have our physical file and our query string
                         // the default.aspx is still a physical resource, but we want to do the rest of the processing
                     }
@@ -1329,6 +1359,7 @@ namespace DotNetNuke.Entities.Urls
             if (rewriterConfig != null)
             {
                 var url = absoluteUri; // get local copy because it gets hacked around
+
                 // Remove querystring if exists..
                 if (queryString != string.Empty)
                 {
@@ -1348,10 +1379,12 @@ namespace DotNetNuke.Entities.Urls
                     if (re.IsMatch(url))
                     {
                         var sendTo = rules[i].SendTo;
+
                         // get a new rewritePath location
                         var rewritePath = RewriterUtils.ResolveUrl(applicationPath, re.Replace(url, sendTo)); // no rewrite path unless we match by regex the intended tab
                         var sesMatch = re.Match(url);
                         var sesUrlParams = sesMatch.Groups[2].Value;
+
                         // a match by regex means it's probably not a 'friendly' Url, so assume at this stage that this request will end up a 301
                         if (settings.UrlFormat == "advanced" && settings.RedirectUnfriendly)
                         {
@@ -1431,8 +1464,10 @@ namespace DotNetNuke.Entities.Urls
 
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); // decode the incoming request
             string rewritePath = GetTabFromDictionary(absoluteUri, queryStringCol, settings, result, parentTraceId);
+
             // put the query string back on the end
             rewritePath = AddQueryStringToRewritePath(rewritePath, queryString);
+
             // 810 : if a culture code is not specified in the rewrite path
             if (result.DoRewrite && settings.ForcePortalDefaultLanguage && result.PortalId >= 0 &&
                 rewritePath.Contains("language=") == false)
@@ -1495,6 +1530,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             string adminPageName = adminTab.TabName;
+
             // we should be checking that the tab path matches //Admin//pagename or //admin
             // in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
@@ -1517,6 +1553,7 @@ namespace DotNetNuke.Entities.Urls
         {
             bool exclude = false;
             string tabPath = (tab.TabPath.Replace("//", "/") + ";").ToLowerInvariant();
+
             // 553 change for dnn 5.0 isAdminTab no longer returns true in any case, so
             // check custom admin tab path header
             // 811: allow for admin tabs to be friendly
@@ -1621,6 +1658,7 @@ namespace DotNetNuke.Entities.Urls
                             temp.RemoveAt(pos2);
                             temp.RemoveAt(pos1);
                             urlParms = temp.ToArray();
+
                             // 656 : don't allow forced lower case of the culture identifier - always convert the case to aa-AA to match the standard
                             string cultureId = langValues[1];
                             Match cultureMatch = CultureMatchRegex.Match(cultureId);
@@ -1646,12 +1684,14 @@ namespace DotNetNuke.Entities.Urls
                 for (int i = 0; i <= lastParmToProcessTo; i++)
                 {
                     string thisParm = urlParms[i];
+
                     // here's the thing - we either take the last one and put it at the start, or just go two-by-two
                     if (!thisParm.Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                     {
                         if (thisParm.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                         {
                             skip = true;
+
                             // discovering the tabid in the list of parameters means that
                             // it was likely a request for an old-style tab url that
                             // found a retVal due to match in the tab path.
@@ -1664,6 +1704,7 @@ namespace DotNetNuke.Entities.Urls
                                 // friendly url checking code is if it was a custom redirect set up
                                 result.Reason = RedirectReason.Not_Redirected;
                                 result.Action = ActionType.CheckFor301;
+
                                 // set the value field back to false, because, even if the parameter handling is
                                 // first parm last, this was an old style URl desitned to be redirected.
                                 // and we would expect old-style urls to have the correct parameter order
@@ -1707,6 +1748,7 @@ namespace DotNetNuke.Entities.Urls
                                 parmString.Append("&");
                                 parmString.Append(urlParm);
                                 valueField = true;
+
                                 // if we are looking for a userid parameter in this querystring, check for a match
                                 if (userIdParm != null)
                                 {
@@ -1726,6 +1768,7 @@ namespace DotNetNuke.Entities.Urls
 
                 // add back language parameters if they were found
                 AddLanguageCodeToRewritePath(ref newUrl, cultureCode);
+
                 // add on the parameter string
                 newUrl += parmString.ToString();
 
@@ -1770,6 +1813,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string result = newUrl;
             rewriteParms = false;
+
             // get the actions from the cache
             var messages = new List<string>();
             Dictionary<int, SharedList<ParameterRewriteAction>> rewriteActions = CacheController.GetParameterRewrites(
@@ -1840,15 +1884,18 @@ namespace DotNetNuke.Entities.Urls
                         foreach (ParameterRewriteAction rewrite in tabRewrites)
                         {
                             var parmRegex = RegexUtils.GetCachedRegex(rewrite.LookFor, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
+
                             // check the match, if a match found, do the replacement
                             if (parmRegex.IsMatch(parms))
                             {
                                 // rewrite the parameter
                                 string sendTo = rewrite.RewriteTo;
                                 string parmsOriginal = parms;
+
                                 // replace hte parameter with the rewrite string
                                 parms = parmRegex.Replace(parms, sendTo);
                                 messages.Add(rewrite.Name + " rewrite match (" + parmsOriginal + "), replaced to : " + parms);
+
                                 // makes sure the newUrl has got a trailing ampersand or a ? to start the query string
                                 if (newUrl.Contains("?"))
                                 {
@@ -1870,6 +1917,7 @@ namespace DotNetNuke.Entities.Urls
 
                                 // parameters are added to the back fo the newUrl
                                 newUrl += parms;
+
                                 // it's a rewrite, all right
                                 rewriteParms = true;
                                 result = newUrl;

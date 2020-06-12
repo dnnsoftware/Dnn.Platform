@@ -51,6 +51,7 @@ namespace DNN.Integration.Test.Framework
 
         private const string LoginPath = "/Login";
         private const string LogoffPath = "/Home/ctl/Logoff";
+
         // private const string LogoffPath = "/Home/ctl/Logoff.aspx";
         // private const string LogoffPath = "/Logoff.aspx");
         // private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
@@ -627,6 +628,7 @@ namespace DNN.Integration.Test.Framework
                 Console.WriteLine(
                     @"Either User '{0}' has no rights to post to this page {1} or " +
                     @"this page does not contain correct form ", this.UserName, relativeUrl);
+
                 // return null;
             }
 
@@ -687,6 +689,7 @@ namespace DNN.Integration.Test.Framework
                             }
 
                             break;
+
                             // other types as "submit", etc. are ignored/discarded
                     }
                 }

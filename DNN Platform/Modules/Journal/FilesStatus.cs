@@ -17,6 +17,7 @@ namespace DotNetNuke.Modules.Journal
         public string thumbnail_url { get; set; }
         public string message { get; set; }
         public int file_id { get; set; }
+
         // ReSharper restore InconsistentNaming
         public FilesStatus()
         {

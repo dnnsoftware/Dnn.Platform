@@ -141,6 +141,7 @@ namespace log4net.Config
                 pluginType = SystemInfo.GetTypeFromString(this.m_typeName, true, true);
             }
 #endif
+
             // Check that the type is a plugin
             if (! typeof(IPlugin).IsAssignableFrom(pluginType))
             {

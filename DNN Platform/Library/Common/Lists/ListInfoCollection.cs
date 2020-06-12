@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -29,6 +30,7 @@ namespace DotNetNuke.Common.Lists
         public void Add(string key, object value)
         {
             int index;
+
             // <tam:note key to be lowercase for appropiated seeking>
             try
             {
@@ -103,6 +105,7 @@ namespace DotNetNuke.Common.Lists
                 string listName = key.Substring(key.IndexOf(":") + 1);
                 string parentKey = key.Replace(listName, string.Empty).TrimEnd(':');
                 ListInfo listInfo = ctlLists.GetListInfo(listName, parentKey);
+
                 // the collection has been cache, so add this entry list into it if specified
                 if (Cache)
                 {

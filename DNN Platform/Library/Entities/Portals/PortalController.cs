@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -40,6 +41,7 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
+
 // using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 using DotNetNuke.Services.Search.Entities;
 using DotNetNuke.Web.Client;
@@ -192,6 +194,7 @@ namespace DotNetNuke.Entities.Portals
                     {
                         // create the upload directory for the new portal
                         Directory.CreateDirectory(mappedHomeDirectory);
+
                         // ensure that the Templates folder exists
                         string templateFolder = string.Format("{0}Templates", mappedHomeDirectory);
                         if (!Directory.Exists(templateFolder))
@@ -397,6 +400,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 // add profile definitions
                 XmlDocument xmlDoc = new XmlDocument { XmlResolver = null };
+
                 // open the XML template file
                 try
                 {
@@ -1046,6 +1050,7 @@ namespace DotNetNuke.Entities.Portals
             if (settingNode.Encrypt)
             {
                 return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
+
                 // return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
             }
 
@@ -1226,6 +1231,7 @@ namespace DotNetNuke.Entities.Portals
                         catch (Exception ex)
                         {
                             Logger.Error(ex);
+
                             // Retry with default folderMapping
                             var defaultFolderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                             if (folderMapping.FolderMappingID != defaultFolderMapping.FolderMappingID)
@@ -1469,6 +1475,7 @@ namespace DotNetNuke.Entities.Portals
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enableautosave", string.Empty)))
             {
                 UpdatePortalSetting(portalId, HtmlText_AutoSaveEnabled, XmlUtils.GetNodeValue(nodeSettings, "enableautosave", string.Empty));
+
                 // Time to autosave, only if enableautosave exists
                 if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timetoautosave", string.Empty)))
                 {
@@ -1827,6 +1834,7 @@ namespace DotNetNuke.Entities.Portals
 
             var folderManager = FolderManager.Instance;
             var fileManager = FileManager.Instance;
+
             // Process tabs that are linked to files
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab[url/@type = 'File']"))
             {
@@ -2332,6 +2340,7 @@ namespace DotNetNuke.Entities.Portals
                     if (createStatus == UserCreateStatus.Success)
                     {
                         administratorId = adminUser.UserID;
+
                         // reload the UserInfo as when it was first created, it had no portal id and therefore
                         // used host profile definitions
                         adminUser = UserController.GetUserById(adminUser.PortalID, adminUser.UserID);
@@ -2484,6 +2493,7 @@ namespace DotNetNuke.Entities.Portals
                     }
 
                     portal = GetPortalInternal(portalId, fallbackLanguage);
+
                     // if we cannot find any fallback, it mean's it's a non portal default langauge
                     if (portal == null)
                     {
@@ -2945,6 +2955,7 @@ namespace DotNetNuke.Entities.Portals
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
                         var homeDirectory = portal.HomeDirectoryMapPath;
+
                         // check whether home directory is not used by other portal
                         // it happens when new portal creation failed, but home directory defined by user is already in use with other portal
                         var homeDirectoryInUse = portals.OfType<PortalInfo>().Any(x =>
@@ -3599,6 +3610,7 @@ namespace DotNetNuke.Entities.Portals
         public static void UpdatePortalDefaultLanguage(int portalID, string CultureCode)
         {
             DataProvider.Instance().UpdatePortalDefaultLanguage(portalID, CultureCode);
+
             // ensure localization record exists as new portal default language may be relying on fallback chain
             // of which it is now the final part
             DataProvider.Instance().EnsureLocalizationExists(portalID, CultureCode);
@@ -3715,6 +3727,7 @@ namespace DotNetNuke.Entities.Portals
                 else
                 {
                     var portalSettings = PortalSettings.Current;
+
                     // DNN-6544 portal creation requires valid culture, if template has no culture defined, then use default language.
                     this.CultureCode = portalSettings != null ? GetPortalDefaultLanguage(portalSettings.PortalId) : Localization.SystemLocale;
                 }

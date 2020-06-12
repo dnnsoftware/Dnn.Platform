@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -30,8 +31,10 @@ namespace DotNetNuke.Entities.Modules
                     string Content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
                     string Version = message.Attributes["Version"];
                     int UserID = Convert.ToInt32(message.Attributes["UserId"]);
+
                     // call the IPortable interface for the module/version
                     ((IPortable)controller).ImportModule(ModuleId, Content, Version, UserID);
+
                     // Synchronize Module Cache
                     ModuleController.SynchronizeModule(ModuleId);
                 }
@@ -59,6 +62,7 @@ namespace DotNetNuke.Entities.Modules
                     {
                         // call the IUpgradeable interface for the module/version
                         string Results = ((IUpgradeable)controller).UpgradeModule(Version);
+
                         // log the upgrade results
                         var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString() };
                         log.AddProperty("Module Upgraded", BusinessControllerClass);

@@ -122,6 +122,7 @@ namespace Dnn.ExportImport.Components.Services
 
                             this.Repository.CreateItem(folder, null);
                             totalFolderExported++;
+
                             // Include permissions only if IncludePermissions=true
                             if (exportDto.IncludePermissions)
                             {
@@ -147,6 +148,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalFolders;
                             this.CheckPoint.StageData = null;
                             currentIndex++;
+
                             // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                             if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
                             {
@@ -213,6 +215,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     CompressionUtil.UnZipArchive(assetsFile, portal.HomeDirectoryMapPath,
                         importDto.CollisionResolution == CollisionResolution.Overwrite);
+
                     // Stage 1: Once unzipping of portal files is completed.
                     this.CheckPoint.Stage++;
                     this.CheckPoint.StageData = null;
@@ -232,6 +235,7 @@ namespace Dnn.ExportImport.Components.Services
                     var sourceFolders = this.Repository.GetAllItems<ExportFolder>(x => x.CreatedOnDate, true, skip).ToList();
 
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
+
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalFolders : this.CheckPoint.TotalItems;
                     if (this.CheckPointStageCallback(this))
@@ -258,6 +262,7 @@ namespace Dnn.ExportImport.Components.Services
                                 // PROCESS FOLDER PERMISSIONS
                                 var sourceFolderPermissions =
                                     this.Repository.GetRelatedItems<ExportFolderPermission>(sourceFolder.Id).ToList();
+
                                 // Replace folderId for each permission with new one.
                                 sourceFolderPermissions.ForEach(x =>
                                 {
@@ -284,6 +289,7 @@ namespace Dnn.ExportImport.Components.Services
                             // PROCESS FILES
                             var sourceFiles =
                                 this.Repository.GetRelatedItems<ExportFile>(sourceFolder.Id).ToList();
+
                             // Replace folderId for each file with new one.
                             sourceFiles.ForEach(x =>
                             {
@@ -308,6 +314,7 @@ namespace Dnn.ExportImport.Components.Services
                         currentIndex++;
                         this.CheckPoint.ProcessedItems++;
                         this.CheckPoint.Progress = 10 + (this.CheckPoint.ProcessedItems * 90.0 / totalFolders);
+
                         // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
                         {
@@ -581,6 +588,7 @@ namespace Dnn.ExportImport.Components.Services
                         file.FolderId,
                         createdBy, file.Sha1Hash, DateUtils.GetDatabaseLocalTime(), file.Title, file.Description,
                         file.StartDate, file.EndDate ?? Null.NullDate, file.EnablePublishPeriod,
+
                         // file.ContentItemId ?? Null.NullInteger);--If we keep it we will see FK_PK relationship errors.
                         Null.NullInteger);
 

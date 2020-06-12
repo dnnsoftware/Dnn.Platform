@@ -104,6 +104,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.IsMobile = GetBoolValue(this._properties, "IsMobile");
                 this.ScreenResolutionWidthInPixels = GetIntValue(this._properties, "ScreenPixelsWidth");
                 this.ScreenResolutionHeightInPixels = GetIntValue(this._properties, "ScreenPixelsHeight");
+
                 // Set Premium properties
                 this.IsTablet = GetBoolValue(this._properties, "IsTablet");
                 this.IsTouchScreen = GetBoolValue(this._properties, "HasTouchScreen");

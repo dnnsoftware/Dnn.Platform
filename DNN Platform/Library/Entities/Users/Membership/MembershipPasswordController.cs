@@ -116,6 +116,7 @@ namespace DotNetNuke.Entities.Users.Membership
         public bool IsPasswordPreviouslyUsed(int userId, string password)
         {
             bool foundMatch = false;
+
             // use default algorithm (SHA1CryptoServiceProvider )
             using (HashAlgorithm ha = HashAlgorithm.Create())
             {

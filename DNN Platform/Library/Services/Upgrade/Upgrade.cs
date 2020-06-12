@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -130,6 +131,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminPages:" + tabName);
+
             // Call overload with InheritPermisions=True
             AddAdminPages(tabName, description, tabIconFile, tabIconFileLarge, isVisible, moduleDefId, moduleTitle, moduleIconFile, true);
         }
@@ -207,6 +209,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL, bool supportsPartialRendering)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleControl:" + moduleDefId);
+
             // check if module control exists
             var moduleControl = ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefId);
             if (moduleControl == null)
@@ -269,6 +272,7 @@ namespace DotNetNuke.Services.Upgrade
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, string businessControllerClass, bool isPortable, bool premium, bool admin)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddModuleDefinition:" + desktopModuleName);
+
             // check if desktop module exists
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(desktopModuleName, Null.NullInteger);
             if (desktopModule == null)
@@ -499,6 +503,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void AddSkinControl(string controlKey, string packageName, string controlSrc)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddSkinControl:" + controlKey);
+
             // check if skin control exists
             SkinControlInfo skinControl = SkinControlController.GetSkinControlByKey(controlKey);
             if (skinControl == null)
@@ -887,8 +892,10 @@ namespace DotNetNuke.Services.Upgrade
 
                 // Install Common
                 exceptions += InstallMemberRoleProviderScript(providerPath, "InstallCommon", writeFeedback);
+
                 // Install Membership
                 exceptions += InstallMemberRoleProviderScript(providerPath, "InstallMembership", writeFeedback);
+
                 // Install Profile
                 // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallProfile", writeFeedback);
                 // Install Roles
@@ -1102,6 +1109,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void RemoveModuleControl(int moduleDefId, string controlKey)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "RemoveModuleControl:" + moduleDefId);
+
             // get Module Control
             var moduleControl = ModuleControlController.GetModuleControlByControlKey(controlKey, moduleDefId);
             if (moduleControl != null)
@@ -1394,6 +1402,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 // Module was incorrectly assigned as "IsPremium=False"
                 RemoveModuleFromPortals("Dashboard");
+
                 // fix path for dashboarcontrols
                 moduleDefId = GetModuleDefinition("Dashboard", "Dashboard");
                 RemoveModuleControl(moduleDefId, "DashboardControls");
@@ -3021,6 +3030,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var permCtl = new PermissionController();
             var desktopInfo = DesktopModuleController.GetDesktopModuleByModuleName("Security", Null.NullInteger);
+
             // add new user dialog
             var md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Account", desktopInfo.DesktopModuleID);
             try
@@ -3154,6 +3164,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpdateFoldersForParentId()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpgradeFolders");
+
             // Move old messages to new format. Do this in smaller batches so we can send feedback to browser and don't time out
             var foldersToConvert = DataProvider.Instance().GetLegacyFolderCount();
             var foldersRemaining = foldersToConvert;
@@ -3316,6 +3327,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void ConvertOldMessages()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ConvertOldMessages");
+
             // Move old messages to new format. Do this in smaller batches so we can send feedback to browser and don't time out
             var messagesToConvert = InternalMessagingController.Instance.CountLegacyMessages();
             var messagesRemaining = messagesToConvert;
@@ -3425,6 +3437,7 @@ namespace DotNetNuke.Services.Upgrade
         private static void UpdateChildPortalsDefaultPage()
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateChildPortalsDefaultPage");
+
             // Update Child Portal subHost.aspx
             foreach (PortalAliasInfo aliasInfo in PortalAliasController.Instance.GetPortalAliases().Values)
             {
@@ -3440,12 +3453,14 @@ namespace DotNetNuke.Services.Upgrade
                     }
 
                     childPath = childPath.Replace("/", "\\");
+
                     // check if File exists and make sure it's not the site's main default.aspx page
                     string childDefaultPage = childPath + "\\" + Globals.glbDefaultPage;
                     if (childPath != Globals.ApplicationMapPath && File.Exists(childDefaultPage))
                     {
                         var objDefault = new System.IO.FileInfo(childDefaultPage);
                         var objSubHost = new System.IO.FileInfo(Globals.HostMapPath + "subhost.aspx");
+
                         // check if upgrade is necessary
                         if (objDefault.Length != objSubHost.Length)
                         {
@@ -3455,6 +3470,7 @@ namespace DotNetNuke.Services.Upgrade
                             if ((attributes & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                             {
                                 wasReadonly = true;
+
                                 // remove readonly attribute
                                 File.SetAttributes(childDefaultPage, FileAttributes.Normal);
                             }
@@ -3840,6 +3856,7 @@ namespace DotNetNuke.Services.Upgrade
                     if (string.IsNullOrEmpty(email))
                     {
                         email = "admin@" + domain.Replace("www.", string.Empty);
+
                         // Remove any domain subfolder information ( if it exists )
                         if (email.IndexOf("/") != -1)
                         {
@@ -3986,6 +4003,7 @@ namespace DotNetNuke.Services.Upgrade
             // Load Template
             var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
+
             // Parse the root node
             XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
             string currentCulture = string.Empty;
@@ -4082,8 +4100,10 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     dr.Read();
                     int userCount = dr.GetInt32(0);
+
                     // ReSharper disable PossibleLossOfFraction
                     double time = userCount / 10834;
+
                     // ReSharper restore PossibleLossOfFraction
                     if (userCount > 1000)
                     {
@@ -4176,6 +4196,7 @@ namespace DotNetNuke.Services.Upgrade
                 Logger.Error("Error cleanup file " + listFile, ex);
 
                 exceptions += $"Error: {ex.Message + ex.StackTrace}{Environment.NewLine}";
+
                 // log the results
                 DnnInstallLogger.InstallLogError(exceptions);
                 try
@@ -4233,6 +4254,7 @@ namespace DotNetNuke.Services.Upgrade
                     if (file.IndexOf("." + DefaultProvider) != -1)
                     {
                         ExecuteScript(file, true);
+
                         // delete the file
                         try
                         {
@@ -4496,10 +4518,12 @@ namespace DotNetNuke.Services.Upgrade
                     if (GetFileName(file).Length == 9 + DefaultProvider.Length)
                     {
                         var version = new Version(GetFileNameWithoutExtension(file));
+
                         // check if script file is relevant for upgrade
                         if (version > databaseVersion && version <= ApplicationVersion && GetFileName(file).Length == 9 + DefaultProvider.Length)
                         {
                             scriptFiles.Add(file);
+
                             // check if any incrementals exist
                             var incrementalfiles = AddAvailableIncrementalFiles(providerPath, version);
                             if (incrementalfiles != null)
@@ -4794,6 +4818,7 @@ namespace DotNetNuke.Services.Upgrade
         public static void InstallFiles(XmlDocument xmlDoc, bool writeFeedback)
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallFiles");
+
             // Parse the file nodes
             XmlNode node = xmlDoc.SelectSingleNode("//dotnetnuke/files");
             if (node != null)
@@ -5425,6 +5450,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 Logger.Error(ex);
                 exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+
                 // log the results
                 if (string.IsNullOrEmpty(exceptions))
                 {
@@ -5821,6 +5847,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     Logger.Error(ex);
                     exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+
                     // log the results
                     try
                     {
@@ -5925,6 +5952,7 @@ namespace DotNetNuke.Services.Upgrade
             if (Host.CheckUpgrade && version != new Version(0, 0, 0))
             {
                 url = DotNetNukeContext.Current.Application.UpgradeUrl + "/update.aspx";
+
                 // use network path reference so it works in ssl-offload scenarios
                 url = url.Replace("http://", "//");
                 url += "?core=" + Globals.FormatVersion(Assembly.GetExecutingAssembly().GetName().Version, "00", 3, string.Empty);

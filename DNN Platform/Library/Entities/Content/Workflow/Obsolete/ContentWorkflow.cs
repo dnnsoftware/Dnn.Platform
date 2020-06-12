@@ -4,8 +4,10 @@
 
 using System;
 using System.Collections.Generic;
+
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+
 // ReSharper enable CheckNamespace
 {
     /// <summary>

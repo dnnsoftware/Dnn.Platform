@@ -141,6 +141,7 @@ namespace DotNetNuke.Web.InternalServices
             public string id;
             public string name;
             public string iconfile;
+
             // ReSharper restore NotAccessedField.Local
             // ReSharper restore InconsistentNaming
         }

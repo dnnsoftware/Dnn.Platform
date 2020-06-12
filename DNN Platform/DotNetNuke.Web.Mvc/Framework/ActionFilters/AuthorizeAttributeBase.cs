@@ -52,6 +52,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             const string failureMessage = "Authorization has been denied for this request.";
             var authFilterContext = new AuthFilterContext(filterContext, failureMessage);
             authFilterContext.HandleUnauthorizedRequest();
+
             // filterContext.HttpContext.Response.Redirect(Globals.AccessDeniedURL());
         }
 

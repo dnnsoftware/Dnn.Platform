@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -32,6 +33,7 @@ namespace DotNetNuke.HttpModules
                 case "advanced":
                     var advancedRewriter = new AdvancedUrlRewriter();
                     this._urlRewriter = advancedRewriter;
+
                     // bind the rewrite event to the begin request event
                     application.BeginRequest += this._urlRewriter.RewriteUrl;
                     break;

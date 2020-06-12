@@ -103,6 +103,7 @@ namespace DotNetNuke.Entities.Tabs
         private void ClearTabCache(TabInfo tabInfo)
         {
             TabController.Instance.ClearCache(tabInfo.PortalID);
+
             // Clear the Tab's Cached modules
             DataCache.ClearModuleCache(tabInfo.TabID);
         }

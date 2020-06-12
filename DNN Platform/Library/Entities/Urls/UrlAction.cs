@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -87,6 +88,7 @@ namespace DotNetNuke.Entities.Urls
         public Uri Url { get; set; }
         public bool DoRewrite { get; set; }
         public bool FriendlyRewrite { get; set; }
+
         // friendlyRewrite means it was rewritten without looking up the tabid in the url
         public bool BypassCachedDictionary { get; set; }
         public string RewritePath { get; set; }
@@ -262,6 +264,7 @@ namespace DotNetNuke.Entities.Urls
             catch (Exception ex)
             {
                 this.RedirectAllowed = true; // default : true, unless regex allows it.  So if regex causes an exception
+
                 // then we should allow the redirect
                 UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", this);
                 this.Ex = ex;

@@ -275,6 +275,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         public static IWebApiConnector ClearHostCache()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
+
             // connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
             connector.PostJson("API/PersonaBar/Server/ClearCache", null);
             return connector;

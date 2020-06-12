@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -528,6 +529,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                  PortalId = portalId,
                                                  UserId = Null.NullInteger,
                                                  DefaultResponse = RelationshipStatus.None,
+
                                                  // default response is None
                                                  RelationshipTypeId = (int)DefaultRelationshipTypes.Friends,
                                              };
@@ -545,6 +547,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                    PortalId = portalId,
                                                    UserId = Null.NullInteger,
                                                    DefaultResponse = RelationshipStatus.Accepted,
+
                                                    // default response is Accepted
                                                    RelationshipTypeId = (int)DefaultRelationshipTypes.Followers,
                                                };

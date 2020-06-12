@@ -27,6 +27,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Admin.Containers
+
 // ReSharper restore CheckNamespace
 {
     public partial class ModuleActions : ActionBase

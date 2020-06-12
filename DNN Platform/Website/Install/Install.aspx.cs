@@ -121,6 +121,7 @@ namespace DotNetNuke.Services.Install
                         }
 
                         var installConfig = InstallController.Instance.GetInstallConfig();
+
                         // Create Folder Mappings config
                         if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
                         {
@@ -128,6 +129,7 @@ namespace DotNetNuke.Services.Install
                         }
 
                         Upgrade.Upgrade.InstallDNN(strProviderPath);
+
                         // remove en-US from portal if installing in a different language
                         if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -451,6 +453,7 @@ namespace DotNetNuke.Services.Install
                             HtmlUtils.WriteHeader(this.Response, "none");
                             string currentAssembly = DotNetNukeContext.Current.Application.Version.ToString(3);
                             string currentDatabase = dr["Major"] + "." + dr["Minor"] + "." + dr["Build"];
+
                             // do not show versions if the same to stop information leakage
                             if (currentAssembly == currentDatabase)
                             {
@@ -459,6 +462,7 @@ namespace DotNetNuke.Services.Install
                             else
                             {
                                 this.Response.Write("<h2>Current Assembly Version: " + currentAssembly + "</h2>");
+
                                 // Call Upgrade with the current DB Version to upgrade an
                                 // existing DNN installation
                                 var strDatabaseVersion = ((int)dr["Major"]).ToString("00") + "." + ((int)dr["Minor"]).ToString("00") + "." + ((int)dr["Build"]).ToString("00");
@@ -528,6 +532,7 @@ namespace DotNetNuke.Services.Install
         {
             base.OnLoad(e);
             Config.AddFCNMode(Config.FcnMode.Single);
+
             // Get current Script time-out
             int scriptTimeOut = this.Server.ScriptTimeout;
 

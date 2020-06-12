@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 
 // ReSharper disable EmptyGeneralCatchClause
                 catch
+
 // ReSharper restore EmptyGeneralCatchClause
                 {
                 }

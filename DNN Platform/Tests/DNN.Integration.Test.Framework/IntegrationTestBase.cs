@@ -19,10 +19,12 @@ namespace DNN.Integration.Test.Framework
         static IntegrationTestBase()
         {
             ServicePointManager.Expect100Continue = false;
+
             // setup of the whole system: take a snapshot and keep using it for all tests
             Thread.CurrentThread.CurrentCulture =
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
             ConnectionString = AppConfigHelper.ConnectionString;
+
             // DatabaseName = GetDbNameFromConnectionString(ConnectionString);
 
             // SchedulerController.DisableAllSchedulers(false);

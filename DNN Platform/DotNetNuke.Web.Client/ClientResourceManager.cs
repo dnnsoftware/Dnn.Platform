@@ -41,6 +41,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             // remove query string for the file exists check, won't impact the absoluteness, so just do it either way.
             filePath = RemoveQueryString(filePath);
             var cacheKey = filePath.ToLowerInvariant();
+
             // cache css file paths
             if (!_fileExistsCache.ContainsKey(cacheKey))
             {

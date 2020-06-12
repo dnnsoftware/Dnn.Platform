@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -268,6 +269,7 @@ namespace DotNetNuke.Services.Installer
                         language.Text = Util.ReadAttribute(nav, "name");
                         language.Code = Util.ReadAttribute(nav, "key");
                         language.Fallback = Util.ReadAttribute(nav, "fallback");
+
                         // Save Language
                         Localization.Localization.SaveLanguage(language);
                         if (language.Code != Localization.Localization.SystemLocale)

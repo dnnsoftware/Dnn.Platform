@@ -239,6 +239,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             IList<QueryParameter> parameters = new List<QueryParameter>();
             parameters.Add(new QueryParameter(OAuthClientIdKey, this.APIKey));
             parameters.Add(new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())));
+
             // DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
             parameters.Add(new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(this.APISecret.ToString())));
             parameters.Add(new QueryParameter(OAuthGrantTyepKey, "authorization_code"));
@@ -292,6 +293,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string timeStamp = this.GenerateTimeStamp();
 
             string verifier = (uri == this.TokenEndpoint) ? this.OAuthVerifier : string.Empty;
+
             // Generate Signature
             string sig = this.GenerateSignature(
                 uri,
@@ -336,6 +338,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request = WebRequest.CreateDefault(uri);
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
+
                 // request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 
@@ -343,6 +346,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 {
                     byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret);
                     string Api64Encoded = System.Convert.ToBase64String(API64);
+
                     // Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
                     request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded);
                 }

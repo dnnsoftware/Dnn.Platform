@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -815,6 +816,7 @@ namespace log4net.Repository.Hierarchy
 
                 LoggerKey key = new LoggerKey(substr); // simple constructor
                 object node = this.m_ht[key];
+
                 // Create a provision node for a future parent.
                 if (node == null)
                 {

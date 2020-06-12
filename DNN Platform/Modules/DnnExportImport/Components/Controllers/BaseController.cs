@@ -85,6 +85,7 @@ namespace Dnn.ExportImport.Components.Controllers
             }
 
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
+
             // if the job is running; then it will create few exceptions in the log file
             controller.RemoveJob(job);
             DeleteJobData(job);

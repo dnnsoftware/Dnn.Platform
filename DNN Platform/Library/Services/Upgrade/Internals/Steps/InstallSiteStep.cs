@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -84,6 +85,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (string.IsNullOrEmpty(email))
             {
                 email = "admin@" + domain.Replace("www.", string.Empty);
+
                 // Remove any domain subfolder information ( if it exists )
                 if (email.IndexOf("/") != -1)
                 {

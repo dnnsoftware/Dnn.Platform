@@ -155,6 +155,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             var cacheKey = string.Format(this.ListObjectsCacheKey, folderMappingId);
             DataCache.RemoveCache(cacheKey);
+
             // Clear cached objects
             DataCache.ClearCache(string.Format(this.ObjectCacheKey, folderMappingId, string.Empty));
         }

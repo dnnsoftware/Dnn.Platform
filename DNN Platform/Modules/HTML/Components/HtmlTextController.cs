@@ -370,6 +370,7 @@ namespace DotNetNuke.Modules.Html
                     htmlText.StateID = htmlText.IsPublished
                                         ? workflowStateController.GetLastWorkflowStateID(workflowId)
                                         : workflowStateController.GetFirstWorkflowStateID(workflowId);
+
                     // update object
                     this.UpdateHtmlText(htmlText, this.GetMaximumVersionHistory(htmlText.PortalID));
 
@@ -470,10 +471,13 @@ namespace DotNetNuke.Modules.Html
                 while (P != -1)
                 {
                     sbBuff.Append(strHTML.Substring(S, P - S + tLen));
+
                     // keep charactes left of URL
                     S = P + tLen;
+
                     // save startpos of URL
                     R = strHTML.IndexOf("\"", S);
+
                     // end of URL
                     if (R >= 0)
                     {
@@ -674,6 +678,7 @@ namespace DotNetNuke.Modules.Html
             if (intMaximumVersionHistory == -1)
             {
                 intMaximumVersionHistory = 5;
+
                 // default
                 PortalController.UpdatePortalSetting(PortalID, "MaximumVersionHistory", intMaximumVersionHistory.ToString());
             }
@@ -695,6 +700,7 @@ namespace DotNetNuke.Modules.Html
             if (MaximumVersionHistory < 0)
             {
                 MaximumVersionHistory = 5;
+
                 // default
             }
 
@@ -750,6 +756,7 @@ namespace DotNetNuke.Modules.Html
 
             var htmlContent = new HtmlTextInfo();
             htmlContent.ModuleID = ModuleID;
+
             // convert Version to System.Version
             var objVersion = new Version(Version);
             if (objVersion >= new Version(5, 1, 0))
@@ -765,6 +772,7 @@ namespace DotNetNuke.Modules.Html
 
             htmlContent.WorkflowID = workflowID;
             htmlContent.StateID = workflowStateController.GetFirstWorkflowStateID(workflowID);
+
             // import
             this.UpdateHtmlText(htmlContent, this.GetMaximumVersionHistory(module.PortalID));
         }

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -1021,6 +1022,7 @@ namespace DotNetNuke.UI.UserControls
                         string LastFileName = string.Empty;
                         string LastFolderPath = string.Empty;
                         bool _MustRedrawFiles = false;
+
                         // Let's try to remember last selection
                         if (this.ViewState["LastFolderPath"] != null)
                         {
@@ -1193,6 +1195,7 @@ namespace DotNetNuke.UI.UserControls
                     this._doRenderTypes = true;
                     this._doChangeURL = true;
                     ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
+
                     // The following line was mover to the pre-render event to ensure render for the first time
                     // ViewState("IsUrlControlLoaded") = "Loaded"
                 }
@@ -1260,6 +1263,7 @@ namespace DotNetNuke.UI.UserControls
                 if (!this.txtFile.Visible)
                 {
                     this.cmdSave.Visible = false;
+
                     // only show if not already in upload mode and not disabled
                     this.cmdUpload.Visible = this.ShowUpLoad;
                 }

@@ -28,6 +28,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
         public string CompletedOnString => Util.GetDateTimeString(this.CompletedOn);
 
         public string ExportFile { get; set; }
+
         // public IEnumerable<LogItem> Summary { get; set; }
         public ImportExportSummary Summary { get; set; }
 

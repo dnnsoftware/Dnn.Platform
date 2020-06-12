@@ -73,8 +73,10 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
                             var containerRoot = (container == null)
                                                     ? context.SkinPath
+
 // ReSharper disable PossibleNullReferenceException
                                                     : Path.GetDirectoryName(((UI.Containers.Container)container).AppRelativeVirtualPath).Replace(
+
 // ReSharper restore PossibleNullReferenceException
                                                         '\\', '/') + "/";
                             resolvedPath = Path.Combine(containerRoot, path);

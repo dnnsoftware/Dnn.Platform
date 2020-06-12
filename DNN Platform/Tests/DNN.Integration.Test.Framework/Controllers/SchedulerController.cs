@@ -138,6 +138,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 }
 
                 var resp = TriggerScheduler(schedulInfo, moduleId);
+
                 // only OK is a successful POST in this case; all other codes are failures
                 if (resp.StatusCode != HttpStatusCode.OK)
                 {
@@ -196,6 +197,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 { "__EVENTTARGET", fieldsPrefix + "$cmdRun" }, // button action; if missing, no click action is performed
                 { "__EVENTARGUMENT", string.Empty },
                 { "__ASYNCPOST", string.Empty },
+
                 // all other inputs/fields are left as is
             };
 

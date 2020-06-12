@@ -28,6 +28,7 @@ namespace Dnn.ExportImport.Components.Common
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Util));
         private static int _noRole = Convert.ToInt32(Globals.glbRoleNothing);
+
         // some string extension helpers
         public static bool IsNullOrEmpty(this string s) => string.IsNullOrEmpty(s);
         public static bool IsNullOrWhiteSpace(this string s) => string.IsNullOrWhiteSpace(s);
@@ -180,6 +181,7 @@ namespace Dnn.ExportImport.Components.Common
             if (File.Exists(filePath))
             {
                 var content = File.ReadAllText(filePath);
+
                 // TODO: This might throw error if file is corrupt. Should we handle error here?
                 item = JsonConvert.DeserializeObject<T>(content);
             }

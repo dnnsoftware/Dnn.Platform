@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -68,6 +69,7 @@ namespace DotNetNuke.Entities.Urls
                     if (redirect.HttpStatus == "200")
                     {
                         string url = redirect.Url;
+
                         // 770 : add in custom alias into the tab path for the custom Urls
                         if (redirect.PortalAliasUsage != PortalAliasUsageType.Default && redirect.PortalAliasId > 0)
                         {
@@ -120,6 +122,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     SharedDictionary<string, string> entry = existingTabs[tabid];
+
                     // replace tab if existing but was retreieved from tabs call
                     if (tab.PortalID == portalId || portalId == -1)
                     {
@@ -157,8 +160,10 @@ namespace DotNetNuke.Entities.Urls
             Guid parentTraceId)
         {
             SharedDictionary<int, SharedDictionary<string, string>> urlDict;
+
             // this contains a list of all tabs for all the portals that have been retrieved
             ConcurrentBag<int> urlPortals; // this contains a list of the portals that have been retrieved
+
             // get the objects from the cache
             var cc = new CacheController();
             cc.GetFriendlyUrlIndexFromCache(out urlDict, out urlPortals, out customAliasForTabs);
@@ -166,6 +171,7 @@ namespace DotNetNuke.Entities.Urls
             if (urlDict != null && forceRebuild == false && bypassCache == false)
             {
                 if (urlPortals == null)
+
                 // no portals retrieved from cache, but was a dictionary.  Bit weird, but we'll run with it
                 {
                     urlPortals = new ConcurrentBag<int>();

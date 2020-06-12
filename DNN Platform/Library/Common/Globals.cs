@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -581,9 +582,11 @@ namespace DotNetNuke.Common
 
                     Logger.Trace("Getting application status");
                     tempStatus = UpgradeStatus.None;
+
                     // first call GetProviderPath - this insures that the Database is Initialised correctly
                     // and also generates the appropriate error message if it cannot be initialised correctly
                     string strMessage = DataProvider.Instance().GetProviderPath();
+
                     // get current database version from DB
                     if (!strMessage.StartsWith("ERROR:"))
                     {
@@ -657,6 +660,7 @@ namespace DotNetNuke.Common
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
+
             // If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
@@ -693,6 +697,7 @@ namespace DotNetNuke.Common
             int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
             int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
             int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
+
             // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
             // While it is possible that you might not have an installation date or that you have deleted log files
             // it is unlikely that you have removed every trace of an installation and yet still have a working install
@@ -713,6 +718,7 @@ namespace DotNetNuke.Common
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
+
             // If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
@@ -880,13 +886,17 @@ namespace DotNetNuke.Common
             string FieldType;
             int intColumn;
             int intKeyColumn;
+
             // create dataset
             var crosstab = new DataSet(DataSetName);
             crosstab.Namespace = "NetFrameWork";
+
             // create table
             var tab = new DataTable(DataSetName);
+
             // split fixed columns
             arrFixedColumns = FixedColumns.Split(',');
+
             // add fixed columns to table
             for (intColumn = 0; intColumn < arrFixedColumns.Length; intColumn++)
             {
@@ -899,6 +909,7 @@ namespace DotNetNuke.Common
             if (!string.IsNullOrEmpty(VariableColumns))
             {
                 arrVariableColumns = VariableColumns.Split(',');
+
                 // add varible columns to table
                 for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
                 {
@@ -911,6 +922,7 @@ namespace DotNetNuke.Common
 
             // add table to dataset
             crosstab.Tables.Add(tab);
+
             // add rows to table
             intKeyColumn = -1;
             DataRow row = null;
@@ -927,6 +939,7 @@ namespace DotNetNuke.Common
 
                     // create new row
                     row = tab.NewRow();
+
                     // assign fixed column values
                     for (intColumn = 0; intColumn < arrFixedColumns.Length; intColumn++)
                     {
@@ -997,6 +1010,7 @@ namespace DotNetNuke.Common
             }
 
             result.Close();
+
             // add row
             if (intKeyColumn != -1)
             {
@@ -1005,6 +1019,7 @@ namespace DotNetNuke.Common
 
             // finalize dataset
             crosstab.AcceptChanges();
+
             // return the dataset
             return crosstab;
         }
@@ -1147,10 +1162,13 @@ namespace DotNetNuke.Common
         public static string GetApplicationName(int PortalID)
         {
             string appName;
+
             // Get the Data Provider Configuration
             ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
+
             // Read the configuration specific information for the current Provider
             var objProvider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
+
             // Get the Object Qualifier frm the Provider Configuration
             string _objectQualifier = objProvider.Attributes["objectQualifier"];
             if (!string.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_") == false)
@@ -1436,10 +1454,12 @@ namespace DotNetNuke.Common
             int TabId = -1;
             int PortalId = -1;
             PortalAliasInfo objPortalAliasInfo = null;
+
             // if the portal alias exists
             if (Host.HostPortalID > Null.NullInteger)
             {
                 PortalId = Host.HostPortalID;
+
                 // use the host portal
                 objPortalAliasInfo = new PortalAliasInfo();
                 objPortalAliasInfo.PortalID = PortalId;
@@ -1495,6 +1515,7 @@ namespace DotNetNuke.Common
         public static PortalSettings GetPortalSettings()
         {
             PortalSettings portalSettings = null;
+
             // Try getting the settings from the Context
             if (HttpContext.Current != null)
             {
@@ -2082,6 +2103,7 @@ namespace DotNetNuke.Common
             {
                 tLen = strToken.Length + 2;
                 string _UploadDirectory = strUploadDirectory.ToLowerInvariant();
+
                 // find position of first occurrance:
                 P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
                 while (P != -1)
@@ -2200,6 +2222,7 @@ namespace DotNetNuke.Common
                         sb.Append("function SetInitialFocus() {");
                         sb.Append(Environment.NewLine);
                         sb.Append(" document.");
+
                         // Find the Form
                         Control objParent = control.Parent;
                         while (!(objParent is HtmlForm))
@@ -2216,6 +2239,7 @@ namespace DotNetNuke.Common
                         sb.Append("// -->");
                         sb.Append(Environment.NewLine);
                         sb.Append("</script>");
+
                         // Register Client Script
                         ClientAPI.RegisterClientScriptBlock(control.Page, "InitialFocus", sb.ToString());
                     }
@@ -2232,25 +2256,32 @@ namespace DotNetNuke.Common
         {
             // Obtain PortalSettings from Current Context
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
+
             // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
+
             // Set a time out to the request ... 10 seconds
             objRequest.Timeout = Host.WebRequestTimeout;
+
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
+
             // If there is Proxy info, apply it to the request
             if (!string.IsNullOrEmpty(Host.ProxyServer))
             {
                 // Create a new Proxy
                 WebProxy Proxy;
+
                 // Create a new Network Credentials item
                 NetworkCredential ProxyCredentials;
+
                 // Fill Proxy info from host settings
                 Proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
                 if (!string.IsNullOrEmpty(Host.ProxyUsername))
                 {
                     // Fill the credential info from host settings
                     ProxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+
                     // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
@@ -2272,10 +2303,13 @@ namespace DotNetNuke.Common
         {
             // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
+
             // Set a time out to the request ... 10 seconds
             objRequest.Timeout = Host.WebRequestTimeout;
+
             // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
+
             // Attach supplied credentials
             if (Credentials.UserName != null)
             {
@@ -2287,14 +2321,17 @@ namespace DotNetNuke.Common
             {
                 // Create a new Proxy
                 WebProxy Proxy;
+
                 // Create a new Network Credentials item
                 NetworkCredential ProxyCredentials;
+
                 // Fill Proxy info from host settings
                 Proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
                 if (!string.IsNullOrEmpty(Host.ProxyUsername))
                 {
                     // Fill the credential info from host settings
                     ProxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
+
                     // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
@@ -2967,6 +3004,7 @@ namespace DotNetNuke.Common
                 else
                 {
                     string strMessage = string.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
+
                     // No account module so use portal tab
                     loginUrl = string.IsNullOrEmpty(returnUrl)
                                  ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
@@ -3632,6 +3670,7 @@ namespace DotNetNuke.Common
                 // else
                 // {
                 HelpUrl = Host.HelpURL;
+
                 // }
             }
 

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -170,6 +171,7 @@ namespace DotNetNuke.Services.Installer
         public static string WRITER_SaveFileError = GetLocalizedString("WRITER_SaveFileError");
         public static string REGEX_Version = "\\d{2}.\\d{2}.\\d{2}";
         public const string BackupInstallPackageFolder = "App_Data/ExtensionPackages/";
+
         // ReSharper restore InconsistentNaming
 
         /// -----------------------------------------------------------------------------

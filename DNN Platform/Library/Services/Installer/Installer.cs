@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -49,6 +50,7 @@ namespace DotNetNuke.Services.Installer
         public Installer(string tempFolder, string manifest, string physicalSitePath, bool loadManifest)
         {
             this.Packages = new SortedList<int, PackageInstaller>();
+
             // Called from Interactive installer - default IgnoreWhiteList to false
             this.InstallerInfo = new InstallerInfo(tempFolder, manifest, physicalSitePath) { IgnoreWhiteList = false };
 
@@ -88,6 +90,7 @@ namespace DotNetNuke.Services.Installer
 
             this._inputStream = new MemoryStream();
             inputStream.CopyTo(this._inputStream);
+
             // Called from Batch installer - default IgnoreWhiteList to true
             this.InstallerInfo = new InstallerInfo(inputStream, physicalSitePath) { IgnoreWhiteList = true };
 
@@ -177,6 +180,7 @@ namespace DotNetNuke.Services.Installer
             for (int index = 0; index <= this.Packages.Count - 1; index++)
             {
                 PackageInstaller installer = this.Packages.Values[index];
+
                 // Check if package is valid
                 if (installer.Package.IsValid)
                 {
@@ -282,6 +286,7 @@ namespace DotNetNuke.Services.Installer
             {
                 case "package":
                     this.InstallerInfo.IsLegacyMode = false;
+
                     // Parse the package nodes
                     this.ProcessPackages(rootNav);
                     break;

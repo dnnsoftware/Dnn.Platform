@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -40,11 +41,13 @@ namespace DotNetNuke.Entities.Urls
             tabPathDepth = 1;
             var duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
             bool checkForDupUrls = settings.CheckForDuplicateUrls;
+
             // 697 : custom url rewrites with large number of path depths fail because of incorrect path depth calculation
             int maxTabPathDepth = 1;
             string origRewritePath = rewritePath;
             string newRewritePath = rewritePath;
             string aliasCulture = null;
+
             // get the culture for this alias
             var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(tab.PortalID).ToList();
 
@@ -56,6 +59,7 @@ namespace DotNetNuke.Entities.Urls
             foreach (var redirect in tab.TabUrls)
             {
                 rewritePath = origRewritePath;
+
                 // allow for additional qs parameters
                 if (!string.IsNullOrEmpty(redirect.QueryString))
                 {
@@ -75,6 +79,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // this will be used to add the Url to the dictionary
                         redirectAlias = customAlias.HTTPAlias;
+
                         // add to the list of custom aliases used by the portal
                         if (customHttpAliasesUsed == null)
                         {
@@ -115,6 +120,7 @@ namespace DotNetNuke.Entities.Urls
                             newRewritePath,
                             ActionType.CheckFor301,
                             RedirectReason.Custom_Redirect);
+
                         // 672 : replacement urls have preference over all redirects, deleted tabs and standard urls
                         duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabOK;
                         break;
@@ -170,6 +176,7 @@ namespace DotNetNuke.Entities.Urls
                         redirectedRewritePath,
                         ActionType.Redirect301,
                         RedirectReason.Custom_Tab_Alias);
+
                     // add in the entry with the specific redirectAlias
                     if (redirectTabPath == string.Empty)
                     {
@@ -190,6 +197,7 @@ namespace DotNetNuke.Entities.Urls
                             ref tabPathDepth,
                             checkForDupUrls,
                             isDeleted);
+
                         // then add in the portal alias with no tabpath (ie like a site root url)
                         AddToTabDict(
                             tabIndex,
@@ -202,6 +210,7 @@ namespace DotNetNuke.Entities.Urls
                             ref tabPathDepth,
                             checkForDupUrls,
                             isDeleted);
+
                         // 838 : disabled tabs with custom aliases - still load the settings page without redirect
                         // disabled / not active by date / external url pages cannot navigate to settings page
                         if (tab.DisableLink || !string.IsNullOrEmpty(tab.Url) ||
@@ -210,6 +219,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             string settingsUrl = tabPath + "/ctl/Tab";
                             string settingsRewritePath = CreateRewritePath(tab.TabID, redirect.CultureCode, "ctl=Tab");
+
                             // no redirect on the ctl/Tab url
                             // add in the ctl/tab Url for the custom alias, with no redirect so that the page settings can be loaded
                             AddToTabDict(
@@ -239,6 +249,7 @@ namespace DotNetNuke.Entities.Urls
                             ref tabPathDepth,
                             checkForDupUrls,
                             isDeleted);
+
                         // add in the entry with the original alias, plus an instruction to redirect if it's used
                         AddToTabDict(
                             tabIndex,
@@ -262,6 +273,7 @@ namespace DotNetNuke.Entities.Urls
 
             // return the highest tabpath depth found
             tabPathDepth = maxTabPathDepth;
+
             // return any changes to the rewritePath
             rewritePath = newRewritePath;
         }
@@ -303,6 +315,7 @@ namespace DotNetNuke.Entities.Urls
                 ref tabPathDepth,
                 checkForDupUrls,
                 isDeleted);
+
             // and put in the name-less one as well, just in case a prior version of the site was runnign without the tabnames (urlformat=sefriendly)
             AddToTabDict(
                 tabIndex,
@@ -315,6 +328,7 @@ namespace DotNetNuke.Entities.Urls
                 ref tabPathDepth,
                 checkForDupUrls,
                 isDeleted);
+
             // finally, put one in for the ctl/tab combination, so that you can actually get to the page settings
             AddToTabDict(
                 tabIndex,
@@ -373,6 +387,7 @@ namespace DotNetNuke.Entities.Urls
             string cultureCode)
         {
             int tabDepth = 0; // we ignore tab depth as it is only one for these in-built urls
+
             // 850 : add in the culture code to the redirect if supplied
             string portalRewritePath = "?PortalId=" + portalId.ToString();
             string cultureRewritePath = string.Empty;
@@ -492,12 +507,14 @@ namespace DotNetNuke.Entities.Urls
             }
 
             bool permanentRedirect = tab.PermanentRedirect;
+
             // determine the rewrite parameter
             // for deleted or pages not enabled yet, direct to the home page if the setting is enabled
             // 534 : tab is disabled, mark as deleted (don't want to cause duplicate tab warnings)
             // DNN-6186: add expired pages in dictionary as admin/host user should able to visit/edit them.
             bool isDeleted = tab.IsDeleted || tab.DisableLink;
             if (isDeleted)
+
             // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted &&
             // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
             {
@@ -578,6 +595,7 @@ namespace DotNetNuke.Entities.Urls
                 // this entry is the 'original' (spaces removed) version ie mypage
                 string substituteRewritePath = rewritePath;
                 if (!isDeleted)
+
                 // if it is deleted, we don't care if the spaces were replaced, or anything else, just take care in deleted handling
                 {
                     string replaceSpaceWith = string.Empty;
@@ -824,6 +842,7 @@ namespace DotNetNuke.Entities.Urls
         {
             // remove leading '/' and convert to lower for all keys
             string tabPathSimple = tabPath.Replace("//", "/").ToLowerInvariant();
+
             // the tabpath depth is only set if it's higher than the running highest tab path depth
             int thisTabPathDepth = tabPathSimple.Length - tabPathSimple.Replace("/", string.Empty).Length;
             if (thisTabPathDepth > tabPathDepth)
@@ -866,6 +885,7 @@ namespace DotNetNuke.Entities.Urls
                         if (dupCheckDict.ContainsKey(dupKey))
                         {
                             DupKeyCheck foundTab = dupCheckDict[dupKey];
+
                             // a redirected tab will replace a deleted tab
                             if (foundTab.IsDeleted && keyDupAction == UrlEnums.TabKeyPreference.TabRedirected)
                             {
@@ -883,6 +903,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // remove the previous one
                         tabIndex.Remove(tabKey);
+
                         // add the new one
                         tabIndex.Add(tabKey, Globals.glbDefaultPage + rewrittenPath);
                     }
@@ -901,10 +922,12 @@ namespace DotNetNuke.Entities.Urls
                 if ((foundTAb.IsDeleted == false && isDeleted == false) // found is not deleted, this tab is not deleted
                     && keyDupAction == UrlEnums.TabKeyPreference.TabOK
                     && foundTAb.TabIdOriginal != "-1")
+
                 // -1 tabs are login, register, privacy etc
                 {
                     // check whether to log for this or not
                     if (checkForDupUrls && foundTAb.TabIdOriginal != tabId.ToString())
+
                     // dont' show message for where same tab is being added twice)
                     {
                         // there is a naming conflict where this alias/tab path could be mistaken
@@ -966,6 +989,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     dupCheckDict.Remove(dupKey);
+
                     // add this tab to the duplicate key dictionary
                     dupCheckDict.Add(dupKey, new DupKeyCheck(dupKey, tabId.ToString(), dupKey, isDeleted));
                 }
@@ -981,6 +1005,7 @@ namespace DotNetNuke.Entities.Urls
         private static OrderedDictionary BuildPortalAliasesDictionary()
         {
            var aliases = PortalAliasController.Instance.GetPortalAliases();
+
             // create a new OrderedDictionary.  We use this because we
             // want to key by the correct regex pattern and return the
             // portalAlias that matches, and we want to preserve the
@@ -991,9 +1016,11 @@ namespace DotNetNuke.Entities.Urls
            foreach (string aliasKey in aliases.Keys)
             {
                 PortalAliasInfo alias = aliases[aliasKey];
+
                 // regex escape the portal alias for inclusion into a regex pattern
                 string plainAlias = alias.HTTPAlias;
                 var aliasesToAdd = new List<string> { plainAlias };
+
                 // check for existence of www. version of domain, if it doesn't have a www.
                 if (plainAlias.StartsWith("www.", StringComparison.InvariantCultureIgnoreCase))
                 {
@@ -1025,10 +1052,12 @@ namespace DotNetNuke.Entities.Urls
 
                     // work out how many path separators there are in the portalAlias (ie myalias/mychild = 1 path)
                     int pathLength = plainAlias.Split('/').GetUpperBound(0);
+
                     // now work out where in the list we should put this portalAlias regex pattern
                     // the list is to be sorted so that those aliases with the most paths
                     // are at the front of the list : ie, they are tested first
                     int insertPoint = pathLengths.Count - 1;
+
                     // walk through the existing list of path lengths,
                     // and ascertain where in the list this one falls
                     // if they are all the same path length, then place them in portal alias order
@@ -1096,6 +1125,7 @@ namespace DotNetNuke.Entities.Urls
                 const bool hasSiteRootRedirect = true;
 
                 /* for the requested build portal, add in the standard urls and special rules */
+
                 // 735 : switch to custom method for getting portal
                 PortalInfo thisPortal = CacheController.GetPortal(buildPortalId, true);
                 List<PortalAliasInfo> chosenAliases;
@@ -1171,13 +1201,16 @@ namespace DotNetNuke.Entities.Urls
                             }
 
                             bool ignoreTabWrongCulture = false;
+
                             // the tab is the wrong culture, so don't add it to the dictionary
                             if (aliasCulture != string.Empty)
                             {
                                 if (tabCulture != aliasCulture
+
                                     // this is a language-specific alias that's different to the culture for this alias
                                     && !string.IsNullOrEmpty(tabCulture) // and the tab culture is set
                                     && aliasSpecificCultures.Contains(tabCulture))
+
                                 // and there is a specific alias for this tab culture
                                 {
                                     ignoreTabWrongCulture = true;
@@ -1210,6 +1243,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     // 589 : custom redirects added as 200 status not causing base urls to redirect
                                     bool excludeFriendlyUrls = true;
+
                                     // 549 : detect excluded friendly urls by putting a known pattern into the dictionary
                                     // add this tab to the dictionary, but with the hack pattern [UseBase] to capture the fact it's a base Url
                                     // then, if there's redirects for it, add those as well.  It's possible to exclude a tab from friendly urls, but
@@ -1232,6 +1266,7 @@ namespace DotNetNuke.Entities.Urls
                                             tab.IsDeleted,
                                             parentTraceId);
                                         if (rewritePath != rewritePathKeep)
+
                                         // check to see the rewrite path is still the same, or did it get changed?
                                         {
                                             // OK, the rewrite path was modifed by the custom redirects dictionary add
@@ -1242,6 +1277,7 @@ namespace DotNetNuke.Entities.Urls
                                     if (excludeFriendlyUrls)
                                     {
                                         rewritePath = "[UseBase]";
+
                                         // use hack pattern to indicate not to rewrite on this Url
                                     }
 
@@ -1315,6 +1351,7 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     AddStandardPagesToDict(tabIndex, dupCheck, httpAlias, buildPortalId, cultureCode);
+
                     // if any site root, add those as well. So if any module providers or rules work
                     // on the custom http aliases, they will work as well.
                     if (hasSiteRootRedirect)
@@ -1374,8 +1411,10 @@ namespace DotNetNuke.Entities.Urls
         {
             useAliases = new List<PortalAliasInfo>();
             aliasCultures = new Dictionary<string, string>();
+
             // 761 : return list of chosen aliases as well, so that Urls can be d
             var aliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
+
             // list of portal aliases for this portal
             List<string> chosenAliases = null;
             var primaryAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).ToList();
@@ -1420,6 +1459,7 @@ namespace DotNetNuke.Entities.Urls
             }
 
             customAliasUsed = httpAliases.Contains(customHttpAlias);
+
             // if there is a custom alias for this tab, and it's not one of the ones in the alias list, put it in
             // so that this tab will be put into the dictionary with not only the standard alias(es) but also
             // the custom alias.  Other logic will decide if to redirect the 'wrong' alias if requested with this tab.
@@ -1438,6 +1478,7 @@ namespace DotNetNuke.Entities.Urls
         internal static string CreateRewritePath(int tabId, string cultureCode, params string[] keyValuePair)
         {
             string rewritePath = "?TabId=" + tabId.ToString();
+
             // 736 : 5.5 compatibility - identify tab rewriting at source by tab culture code
             RewriteController.AddLanguageCodeToRewritePath(ref rewritePath, cultureCode);
             return keyValuePair.Aggregate(rewritePath, (current, keyValue) => current + ("&" + keyValue));

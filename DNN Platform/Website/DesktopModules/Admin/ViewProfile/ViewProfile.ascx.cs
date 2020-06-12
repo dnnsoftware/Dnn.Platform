@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -258,6 +259,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             {
                 // current user, i.e. the one that the request was for
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
+
                 // the initiating user,i.e. the one who wanted to be friend
                 // note that in this case here currentUser is visiting the profile of initiatingUser, most likely from a link in the notification e-mail
                 var initiatingUser = UserController.Instance.GetUserById(PortalSettings.Current.PortalId, Convert.ToInt32(this.Request.QueryString["UserID"]));

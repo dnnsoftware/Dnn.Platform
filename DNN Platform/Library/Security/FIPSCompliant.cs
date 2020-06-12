@@ -71,6 +71,7 @@ namespace DotNetNuke.Security
         {
             Requires.PropertyNotNull("passPhrase", passPhrase);
             Requires.PropertyNotNull("salt", salt);
+
             // Throw exception if the password or salt are too short
             if (passPhrase.Length < 8)
             {

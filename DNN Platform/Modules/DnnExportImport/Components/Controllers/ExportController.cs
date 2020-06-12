@@ -34,6 +34,7 @@ namespace Dnn.ExportImport.Components.Controllers
             exportDto.IsDirty = false; // This should be set to false for new job.
             var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
                 JobType.Export, exportDto.ExportName, exportDto.ExportDescription, directory, dataObject);
+
             // Run the scheduler if required.
             if (exportDto.RunNow)
             {

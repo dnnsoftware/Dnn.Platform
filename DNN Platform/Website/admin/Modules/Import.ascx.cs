@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -81,6 +82,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                                 if (strType == Globals.CleanName(this.Module.DesktopModule.ModuleName) || strType == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
                                 {
                                     var strVersion = xmlDoc.DocumentElement.GetAttribute("version");
+
                                     // DNN26810 if rootnode = "content", import only content(the old way)
                                     if (xmlDoc.DocumentElement.Name.ToLowerInvariant() == "content")
                                     {

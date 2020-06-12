@@ -207,6 +207,7 @@ namespace log4net.Appender
 
             // Render the event to a string
             string strLoggingMessage = this.RenderLoggingEvent(loggingEvent);
+
             // and write it
             writer.Write(strLoggingMessage);
 
@@ -299,6 +300,7 @@ namespace log4net.Appender
             public ConsoleColor ForeColor
             {
                 get { return this.foreColor; }
+
                 // Keep a flag that the color has been set
                 // and is no longer the default.
                 set
@@ -330,6 +332,7 @@ namespace log4net.Appender
             public ConsoleColor BackColor
             {
                 get { return this.backColor; }
+
                 // Keep a flag that the color has been set
                 // and is no longer the default.
                 set

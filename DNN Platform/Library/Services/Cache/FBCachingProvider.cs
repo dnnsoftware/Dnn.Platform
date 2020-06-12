@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -32,8 +33,10 @@ namespace DotNetNuke.Services.Cache
                 // get hashed file name
                 var f = new string[1];
                 f[0] = GetFileName(cacheKey);
+
                 // create a cache file for item
                 CreateCacheFile(f[0], cacheKey);
+
                 // create a cache dependency on the cache file
                 d = new DNNCacheDependency(f, null, dependency);
             }
@@ -68,6 +71,7 @@ namespace DotNetNuke.Services.Cache
             {
                 // get hashed filename
                 string f = GetFileName(Key);
+
                 // delete cache file - this synchronizes the cache across servers in the farm
                 DeleteCacheFile(f);
             }
@@ -96,8 +100,10 @@ namespace DotNetNuke.Services.Cache
                 {
                     // create the cache file
                     s = File.CreateText(FileName);
+
                     // write the CacheKey to the file to provide a documented link between cache item and cache file
                     s.Write(CacheKey);
+
                     // close the stream
                 }
             }
@@ -160,11 +166,13 @@ namespace DotNetNuke.Services.Cache
                 // get last write time for file
                 DateTime dtLastWrite;
                 dtLastWrite = File.GetLastWriteTime(f[i]);
+
                 // if the cache file is more than 2 hours old ( no point in checking most recent cache files )
                 if (dtLastWrite < DateTime.Now.Subtract(new TimeSpan(2, 0, 0)))
                 {
                     // get cachekey
                     string strCacheKey = Path.GetFileNameWithoutExtension(f[i]);
+
                     // if the cache key does not exist in memory
                     if (DataCache.GetCache(strCacheKey) == null)
                     {

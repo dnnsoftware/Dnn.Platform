@@ -13,6 +13,7 @@ using DotNetNuke.Web.Mvc.Helpers;
 using DotNetNuke.Web.Mvc.Routing;
 using Moq;
 using NUnit.Framework;
+
 // ReSharper disable ObjectCreationAsStatement
 namespace DotNetNuke.Tests.Web.Mvc.Helpers
 {

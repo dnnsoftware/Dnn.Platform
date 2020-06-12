@@ -15,6 +15,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
     public class SimpleContainerTests
     {
         [Test]
+
         // DNN-17622  http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=17622&PROJID=2
         public void GetComponenetListSupportsInterfaces()
         {

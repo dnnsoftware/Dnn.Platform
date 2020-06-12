@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -219,6 +220,7 @@ namespace DotNetNuke.Entities.Modules
                     if (this.Request.QueryString["userid"] != null)
                     {
                         int userId;
+
                         // Use Int32.MaxValue as invalid UserId
                         _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
                         this.ViewState["UserId"] = _UserId;
@@ -341,6 +343,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 // 'The country cannot be detected because the user is local.
                 IsLocal = true;
+
                 // Set the IP address in case they didn't specify LocalhostCountryCode
                 IP = this.Page.Request.UserHostAddress;
             }

@@ -114,6 +114,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             // Create columns, ID and Name.
             DataColumn idColumn = table.Columns.Add("ContentTypeID", typeof(int));
             table.Columns.Add("ContentType", typeof(string));
+
             // Set the ID column as the primary key column.
             table.PrimaryKey = new[] { idColumn };
 
@@ -128,6 +129,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             // Create columns, ID and Name.
             DataColumn idColumn = table.Columns.Add("ScopeTypeID", typeof(int));
             table.Columns.Add("ScopeType", typeof(string));
+
             // Set the ID column as the primary key column.
             table.PrimaryKey = new[] { idColumn };
 

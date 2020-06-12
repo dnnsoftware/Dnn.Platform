@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -147,6 +148,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
             this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
             this.NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
+
             // add audit column data
             this.FillInternal(dr);
         }

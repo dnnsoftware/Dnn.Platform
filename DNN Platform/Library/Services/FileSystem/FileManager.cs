@@ -477,6 +477,7 @@ namespace DotNetNuke.Services.FileSystem
                         else
                         {
                             contentFileName = this.UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
+
                             // This case will be to overwrite an existing file or initial file workflow
                             this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
@@ -850,6 +851,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             FileDeletionController.Instance.DeleteFile(file);
             this.ClearFolderCache(file.PortalId);
+
             // Notify File Delete Event
             this.OnFileDeleted(file, this.GetCurrentUserID());
         }
@@ -2007,6 +2009,7 @@ namespace DotNetNuke.Services.FileSystem
         private static bool ValidMetadata(IFileInfo file, out string exceptionMessage)
         {
             exceptionMessage = string.Empty;
+
             // TODO check dynamically all required fields from MetadataInfo
 
             // TODO check dynamically all max lengths from MetadataInfo

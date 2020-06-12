@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -59,6 +60,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (tempDesktopModule != null)
                 {
                     var modules = ModuleController.Instance.GetModulesByDesktopModuleId(tempDesktopModule.DesktopModuleID);
+
                     // Remove CodeSubDirectory
                     if ((this._desktopModule != null) && (!string.IsNullOrEmpty(this._desktopModule.CodeSubDirectory)))
                     {
@@ -68,6 +70,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     var controller = new DesktopModuleController();
 
                     this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
+
                     // remove admin/host pages
                     if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
                     {
@@ -110,6 +113,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
 
                     controller.DeleteDesktopModule(tempDesktopModule);
+
                     // Remove all the tab versions related with the module.
                     foreach (var module in modules)
                     {
@@ -231,6 +235,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 if (this._installedDesktopModule != null)
                 {
                     this._desktopModule.DesktopModuleID = this._installedDesktopModule.DesktopModuleID;
+
                     // save the module's category
                     this._desktopModule.Category = this._installedDesktopModule.Category;
                 }

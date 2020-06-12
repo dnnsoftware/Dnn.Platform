@@ -264,6 +264,7 @@ namespace DotNetNuke.Services.Assets
             }
 
             var newFolderPath = this.GetNewFolderPath(newFolderName, folder);
+
             // Check if the new folder already exists
             if (FolderManager.Instance.FolderExists(folder.PortalID, newFolderPath))
             {

@@ -23,6 +23,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             strategy.Dispose();
             strategy.Dispose();
+
             // no exception on 2nd dispose
         }
 

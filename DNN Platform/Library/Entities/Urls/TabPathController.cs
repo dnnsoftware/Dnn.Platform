@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -25,6 +26,7 @@ namespace DotNetNuke.Entities.Urls
         {
             string tabName = tab.TabName;
             var result = new StringBuilder(tabName.Length);
+
             // 922 : change to harmonise cleaning of tab + other url name items
             tabName = FriendlyUrlController.CleanNameForUrl(tabName, options, out modified);
             if (!modified
@@ -33,6 +35,7 @@ namespace DotNetNuke.Entities.Urls
                 && tabName.Contains(" ") == false)
             {
                 modified = true;
+
                 // spaces replaced - the modified parameter is for all other replacements but space replacements
             }
 
@@ -159,6 +162,7 @@ namespace DotNetNuke.Entities.Urls
             customHttpAlias = null;
             isCustomPath = false;
             if (homePageSiteRoot && isHomeTab && !hasPath)
+
             // && !isDefaultCultureCode - not working for non-language specifc custom root urls
             {
                 newTabPath = "/"; // site root for home page
@@ -170,6 +174,7 @@ namespace DotNetNuke.Entities.Urls
 
                 // this is the new tab path
                 newTabPath = baseTabPath;
+
                 // 871 : case insensitive compare for culture code, all lookups done on lower case
                 string cultureCodeKey = string.Empty;
                 if (cultureCode != null)
@@ -178,9 +183,11 @@ namespace DotNetNuke.Entities.Urls
                 }
 
                 bool checkForCustomHttpAlias = false;
+
                 // get a custom tab name if redirects are being used
                 SharedDictionary<string, string> customAliasForTabs = null;
                 SharedDictionary<int, SharedDictionary<string, string>> urlDict;
+
                 // 886 : don't fetch custom urls for host tabs (host tabs can't have redirects or custom Urls)
                 if (tab.PortalID > -1)
                 {
@@ -189,6 +196,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     urlDict = new SharedDictionary<int, SharedDictionary<string, string>>();
+
                     // create dummy dictionary for this tab
                 }
 
@@ -210,6 +218,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     customTabPath = tabpaths[cultureCodeKey];
                                     dropLangParms = true;
+
                                     // the url is based on a custom value which has embedded language parms, therefore don't need them in the url
                                 }
                                 else
@@ -217,6 +226,7 @@ namespace DotNetNuke.Entities.Urls
                                     if (isDefaultCultureCode && tabpaths.ContainsKey(string.Empty))
                                     {
                                         customTabPath = tabpaths[string.Empty];
+
                                         // dropLangParms = true;//drop the language parms if they exist, because this is the default language
                                     }
                                 }
@@ -256,6 +266,7 @@ namespace DotNetNuke.Entities.Urls
                 else
                 {
                     checkForCustomHttpAlias = true;
+
                     // always want to check for custom alias, even when we don't want to see any custom redirects
                 }
 
@@ -280,6 +291,7 @@ namespace DotNetNuke.Entities.Urls
                     if (!string.IsNullOrEmpty(tabCultureCode))
                     {
                         dropLangParms = true;
+
                         // if the tab has a specified culture code, then drop the language parameters from the friendly Url
                     }
                 }
@@ -345,6 +357,7 @@ namespace DotNetNuke.Entities.Urls
             if (tab.ParentId > -1)
             {
                 TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
+
                 // 822 : don't assume parent tab is going to exist - database might be corrupted
                 // 896 : check to make sure tabid and parentid are different - or stack overflow occurs with terminal loop
                 if (parentTab != null && parentTab.TabID != tab.TabID)

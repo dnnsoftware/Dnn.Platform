@@ -280,6 +280,7 @@ namespace log4net.Util
         private static WindowsIdentity LogonUser(string userName, string domainName, string password)
         {
             const int LOGON32_PROVIDER_DEFAULT = 0;
+
             // This parameter causes LogonUser to create a primary token.
             const int LOGON32_LOGON_INTERACTIVE = 2;
 

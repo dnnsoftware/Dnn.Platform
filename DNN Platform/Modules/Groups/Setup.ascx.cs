@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -243,6 +244,7 @@ namespace DotNetNuke.Modules.Groups
 
                     // get the system module permissions for the permissionkey
                     ArrayList arrSystemModulePermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", objTabPermission.PermissionKey);
+
                     // loop through the system module permissions
                     for (j = 0; j <= arrSystemModulePermissions.Count - 1; j++)
                     {

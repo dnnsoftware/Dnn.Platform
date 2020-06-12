@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -28,6 +29,7 @@ namespace DotNetNuke.Entities.Urls
         private const string DisableRedirectPresistCookieName = "disableredirectpresist"; // dnn cookies
 
         private const string DisableMobileRedirectQueryStringName = "nomo";
+
                              // google uses the same name nomo=1 means do not redirect to mobile
         private const string MobileViewSiteCookieName = "dnn_IsMobile";
         private const string DisableMobileViewCookieName = "dnn_NoMobile";
@@ -612,6 +614,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls, FriendlyUrlSettings settings)
         {
             PortalSettings portalSettings = null;
+
             // 716 just ignore portal settings if we don't actually need it
             if (includeStdUrls)
             {
@@ -805,6 +808,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         public static string CleanNameForUrl(string urlName, FriendlyUrlOptions options, out bool replacedUnwantedChars)
         {
             replacedUnwantedChars = false;
+
             // get options
             if (options == null)
             {
@@ -869,6 +873,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     {
                         ch = string.Empty; // not a replacement or allowed char, so doesn't go into Url
                         replacedUnwantedChars = true;
+
                         // if we are here, this character isn't going into the output Url
                     }
                 }
@@ -1037,6 +1042,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 var friendlyUrlSettings = GetCurrentSettings(settings.PortalId);
                 var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
+
                 // DNN-6492: if content localize enabled, only check tab names in current culture.
                 if (settings.ContentLocalizationEnabled)
                 {

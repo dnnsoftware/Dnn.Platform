@@ -173,6 +173,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
+
             // Clear was not called a second time
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }

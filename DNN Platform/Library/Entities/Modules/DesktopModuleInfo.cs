@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -449,6 +450,7 @@ namespace DotNetNuke.Entities.Modules
             this.Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
             this.AdminPage = Null.SetNullString(dr["AdminPage"]);
             this.HostPage = Null.SetNullString(dr["HostPage"]);
+
             // Call the base classes fill method to populate base class proeprties
             this.FillInternal(dr);
         }
@@ -777,6 +779,7 @@ namespace DotNetNuke.Entities.Modules
         private void ReadPageInfo(XmlReader reader)
         {
             this.Page = new PageInfo();
+
             // Load it from the Xml
             this.Page.ReadXml(reader.ReadSubtree());
 

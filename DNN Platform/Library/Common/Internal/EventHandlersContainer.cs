@@ -9,6 +9,7 @@ using System.ComponentModel.Composition;
 using DotNetNuke.ComponentModel;
 using DotNetNuke.ExtensionPoints;
 using DotNetNuke.Instrumentation;
+
 // ReSharper disable ConvertPropertyToExpressionBody
 namespace DotNetNuke.Common.Internal
 {

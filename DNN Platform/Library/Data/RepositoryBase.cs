@@ -169,6 +169,7 @@ namespace DotNetNuke.Data
 
 // ReSharper disable PossibleNullReferenceException
             return firstComparable.CompareTo(secondComparable);
+
 // ReSharper restore PossibleNullReferenceException
         }
 

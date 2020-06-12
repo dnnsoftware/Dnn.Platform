@@ -72,6 +72,7 @@ namespace DotNetNuke.Tests.Web.Api
             UserController.SetTestableInstance(this._mockUserController.Object);
             this._mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
                 (int portalId, int userId) => GetUserByIdCallback(portalId, userId));
+
             // _mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
         }
 

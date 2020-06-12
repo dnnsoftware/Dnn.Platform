@@ -59,6 +59,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, Filters, true);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
@@ -75,6 +76,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.CleanWithTagInfo(HtmlStr, " ", true);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
@@ -92,6 +94,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, Filters, false);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 
@@ -108,6 +111,7 @@ namespace DotNetNuke.Tests.Core.Services
 
             // Act
             object retValue = HtmlUtils.StripUnspecifiedTags(HtmlStr, " ", false);
+
             // Assert
             Assert.AreEqual(this._expected, retValue);
 

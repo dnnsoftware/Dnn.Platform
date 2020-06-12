@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -124,6 +125,7 @@ namespace DotNetNuke.Entities.Urls
                 // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
                 // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();
+
                 // see if there is an existing object logged for this exception type
                 object existingEx = DataCache.GetCache(cacheKey);
                 if (existingEx == null)
@@ -131,6 +133,7 @@ namespace DotNetNuke.Entities.Urls
                     // if there was no existing object logged for this exception type, this is a new exception
                     DateTime expire = DateTime.Now.AddHours(1);
                     DataCache.SetCache(cacheKey, cacheKey, expire);
+
                     // just store the cache key - it doesn't really matter
                     // create a log event
                     var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };

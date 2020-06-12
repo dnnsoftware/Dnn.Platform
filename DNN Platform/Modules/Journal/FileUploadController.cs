@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.Journal
                 }
 
                 var fileName = Path.GetFileName(file.FileName);
+
                 // fix any filename issues that would cause double escaping exceptions
                 if (IsImageExtension(Path.GetExtension(fileName)))
                 {

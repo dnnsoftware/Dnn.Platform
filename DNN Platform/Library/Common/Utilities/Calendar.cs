@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -27,6 +28,7 @@ namespace DotNetNuke.Common.Utilities
         {
             // Define character array to trim from language strings
             char[] TrimChars = { ',', ' ' };
+
             // Get culture array of month names and convert to string for
             // passing to the popup calendar
             var monthBuilder = new StringBuilder();
@@ -36,6 +38,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             var MonthNameString = monthBuilder.ToString().TrimEnd(TrimChars);
+
             // Get culture array of day names and convert to string for
             // passing to the popup calendar
             var dayBuilder = new StringBuilder();
@@ -45,6 +48,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             var DayNameString = dayBuilder.ToString().TrimEnd(TrimChars);
+
             // Get the short date pattern for the culture
             string FormatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
             if (!Field.Page.ClientScript.IsClientScriptIncludeRegistered("PopupCalendar.js"))

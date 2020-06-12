@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -260,6 +261,7 @@ namespace DotNetNuke.Web.UI
         public static string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
         {
             AddMessageWindow(ctrl);
+
             // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle)
             return string.Format("return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');", message.Message, message.WindowWidth, message.WindowHeight, message.Title);
         }

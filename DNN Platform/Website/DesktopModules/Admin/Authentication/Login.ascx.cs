@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -192,6 +193,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                 var alias = this.PortalAlias.HTTPAlias;
                 var comparison = StringComparison.InvariantCultureIgnoreCase;
+
                 // we need .TrimEnd('/') because a portlalias for a specific culture will not have a trailing /, while a returnurl will.
                 var isDefaultPage = redirectURL == "/"
                     || (alias.Contains("/") && redirectURL.TrimEnd('/').Equals(alias.Substring(alias.IndexOf("/", comparison)), comparison));
@@ -961,6 +963,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     // When the user need update its profile to complete login, we need clear the login status because if the logrin is from
                     // 3rd party login provider, it may call UserController.UserLogin because they doesn't check this situation.
                     PortalSecurity.Instance.SignOut();
+
                     // Admin has forced profile update
                     this.AddModuleMessage("ProfileUpdate", ModuleMessage.ModuleMessageType.YellowWarning, true);
                     this.PageNo = 3;
@@ -1330,6 +1333,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         Body = Localization.GetSystemMessage(this.PortalSettings, "EMAIL_USER_LOCKOUT_BODY", Localization.GlobalResourceFile, Custom),
                         Status = MessageStatusType.Unread,
                     };
+
                     // _messagingController.SaveMessage(_message);
                     Mail.SendEmail(this.PortalSettings.Email, this.PortalSettings.Email, message.Subject, message.Body);
                     break;

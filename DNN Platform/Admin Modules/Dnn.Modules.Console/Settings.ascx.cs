@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -263,6 +264,7 @@ namespace Dnn.Modules.Console
                 var tabPathField = (HiddenField)e.Item.FindControl("tabPath");
 
                 visibilityDropDown.Items.Clear();
+
                 // visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));
                 visibilityDropDown.AddItem(this.LocalizeString("AllUsers"), "AllUsers");
                 if (this.modeList.SelectedValue == "Profile")

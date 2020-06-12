@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -170,6 +171,7 @@ namespace DotNetNuke.Entities.Host
             var denyRules = (from p in filterList
                              where p.RuleType == (int)FilterType.Deny
                              select p).ToList();
+
             // if global allow and no deny
             if (allowAllIPs & denyRules.Count == 0)
             {

@@ -216,6 +216,7 @@ namespace DotNetNuke.Security.Roles
             }
 
             EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = this.GetRoleById(portalId, roleId), User = user });
+
             // Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);

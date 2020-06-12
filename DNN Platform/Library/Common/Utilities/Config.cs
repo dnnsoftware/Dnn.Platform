@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -31,6 +32,7 @@ namespace DotNetNuke.Common.Utilities
         public enum ConfigFileType
         {
             DotNetNuke,
+
             // compatible with glbDotNetNukeConfig
             SiteAnalytics,
             Compression,
@@ -62,6 +64,7 @@ namespace DotNetNuke.Common.Utilities
             if (xmlAppSettings != null)
             {
                 XmlElement xmlElement;
+
                 // get the node based on key
                 XmlNode xmlNode = xmlAppSettings.SelectSingleNode("//add[@key='" + key + "']");
                 if (update && xmlNode != null)
@@ -141,6 +144,7 @@ namespace DotNetNuke.Common.Utilities
         public static void BackupConfig()
         {
             string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
+
             // save the current config files
             try
             {
@@ -183,6 +187,7 @@ namespace DotNetNuke.Common.Utilities
         public static string GetConnectionString(string name)
         {
             string connectionString = string.Empty;
+
             // First check if connection string is specified in <connectionstrings> (ASP.NET 2.0 / DNN v4.x)
             if (!string.IsNullOrEmpty(name))
             {
@@ -361,6 +366,7 @@ namespace DotNetNuke.Common.Utilities
         public static Provider GetDefaultProvider(string type)
         {
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
+
             // Read the configuration specific information for this provider
             return (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
         }
@@ -422,9 +428,11 @@ namespace DotNetNuke.Common.Utilities
         public static int GetAuthCookieTimeout()
         {
             XPathNavigator configNav = Load().CreateNavigator();
+
             // Select the location node
             XPathNavigator locationNav = configNav.SelectSingleNode("configuration/location");
             XPathNavigator formsNav;
+
             // Test for the existence of the location node if it exists then include that in the nodes of the XPath Query
             if (locationNav == null)
             {
@@ -459,6 +467,7 @@ namespace DotNetNuke.Common.Utilities
         public static Provider GetProvider(string type, string name)
         {
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
+
             // Read the configuration specific information for this provider
             return (Provider)providerConfiguration.Providers[name];
         }
@@ -495,6 +504,7 @@ namespace DotNetNuke.Common.Utilities
         public static string GetCustomErrorMode()
         {
             XPathNavigator configNav = Load().CreateNavigator();
+
             // Select the location node
             var customErrorsNav = configNav.SelectSingleNode("//configuration/system.web/customErrors|//configuration/location/system.web/customErrors");
 
@@ -512,6 +522,7 @@ namespace DotNetNuke.Common.Utilities
             // open the config file
             var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.Load(Globals.ApplicationMapPath + "\\" + filename);
+
             // test for namespace added by Web Admin Tool
             if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
             {
@@ -526,6 +537,7 @@ namespace DotNetNuke.Common.Utilities
         public static void RemoveCodeSubDirectory(string name)
         {
             XmlDocument xmlConfig = Load();
+
             // Select the location node
             XmlNode xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation");
             if (xmlCompilation == null)
@@ -576,6 +588,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // save current file attributes
                     objFileAttributes = File.GetAttributes(strFilePath);
+
                     // change to normal ( in case it is flagged as read-only )
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
                 }
@@ -842,6 +855,7 @@ namespace DotNetNuke.Common.Utilities
                 // we need to add the InstallVersion
                 string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                 var xmlConfig = new XmlDocument { XmlResolver = null };
+
                 // save the current config files
                 BackupConfig();
                 try

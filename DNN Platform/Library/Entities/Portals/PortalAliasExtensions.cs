@@ -50,6 +50,7 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, FriendlyUrlSettings settings)
         {
             var browserType = BrowserTypes.Normal;
+
             // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
@@ -65,6 +66,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var browserType = BrowserTypes.Normal;
             UrlAction result = null;
+
             // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
@@ -209,6 +211,7 @@ namespace DotNetNuke.Entities.Portals
                     // this is a match
                     culture = cpa.CultureCode;
                     browserType = cpa.BrowserType;
+
                     // 852 : add skin per portal alias
                     skin = cpa.Skin;
                     break;

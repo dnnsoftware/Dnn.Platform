@@ -129,6 +129,7 @@ namespace DotNetNuke.Modules.Journal.Components
                         while (reader.Read())
                         {
                             var journalId = Convert.ToInt32(reader["JournalId"]);
+
                             // var journalTypeId = reader["JournalTypeId"].ToString();
                             var userId = Convert.ToInt32(reader["UserId"]);
                             var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
@@ -265,6 +266,7 @@ namespace DotNetNuke.Modules.Journal.Components
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
+
             // var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 

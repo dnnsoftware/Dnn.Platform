@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -589,6 +590,7 @@ namespace DotNetNuke.UI.ControlPanel
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
+
                     // check whether original tab is exists, if true then set culture code to default language,
                     // otherwise set culture code to current.
                     if (TabController.Instance.GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
@@ -680,6 +682,7 @@ namespace DotNetNuke.UI.ControlPanel
             ITermController termController = Util.GetTermController();
             this.CategoryList.DataSource = termController.GetTermsByVocabulary("Module_Categories").OrderBy(t => t.Weight).Where(t => t.Name != "< None >").ToList();
             this.CategoryList.DataBind();
+
             // CategoryList.Items.Add(new ListItem(Localization.GetString("AllCategories", LocalResourceFile), "All"));
             this.CategoryList.AddItem(Localization.GetString("AllCategories", this.LocalResourceFile), "All");
             if (!this.IsPostBack)

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -291,6 +292,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.FromUserID = Null.SetNullInteger(dr["FromUserID"]);
             this.FromUserName = Null.SetNullString(dr["FromUserName"]);
             this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
+
             // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
             this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
             this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));

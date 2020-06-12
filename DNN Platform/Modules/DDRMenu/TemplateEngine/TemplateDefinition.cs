@@ -72,6 +72,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
                 // ReSharper disable PossibleNullReferenceException
                 foreach (XmlNode node in xml.DocumentElement.ChildNodes)
+
                     // ReSharper restore PossibleNullReferenceException
                 {
                     if (node.NodeType == XmlNodeType.Element)

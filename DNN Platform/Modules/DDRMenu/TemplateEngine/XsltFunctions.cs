@@ -53,9 +53,11 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         ? UserController.Instance.GetCurrentUserInfo().DisplayName
                         : Localization.GetString(
                             "Register",
+
                             // ReSharper disable PossibleNullReferenceException
                             (HttpContext.Current.Items["DDRMenuHostControl"] as Control).ResolveUrl(
                                 "~/Admin/Skins/" + Localization.LocalResourceDirectory + "/User.ascx"));
+
 // ReSharper restore PossibleNullReferenceException
             }
             catch (Exception exc)

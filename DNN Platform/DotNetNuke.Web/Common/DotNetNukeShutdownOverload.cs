@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.Common.Internal
                 if (fileChangesMonitor == null)
                 {
                     Logger.Info("fileChangesMonitor is null");
+
                     // AddSiteFilesMonitoring(true);
                 }
                 else
@@ -52,6 +53,7 @@ namespace DotNetNuke.Web.Common.Internal
                         BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.GetField,
                         null, null, null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
+
                     // enable our monitor only when fcnMode="Disabled"
                     // AddSiteFilesMonitoring(fcnVal.ToString() == "1");
                 }
@@ -133,6 +135,7 @@ namespace DotNetNuke.Web.Common.Internal
             if (_handleShutdowns && !_shutdownInprogress)
             {
                 _shutdownInprogress = true;
+
                 // delay for a very short period
                 _shutDownDelayTimer.Change(1500, Timeout.Infinite);
             }

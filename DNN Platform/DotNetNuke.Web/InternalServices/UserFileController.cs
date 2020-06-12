@@ -168,6 +168,7 @@ namespace DotNetNuke.Web.InternalServices
             public string size { get; set; }
             public string modified { get; set; }
             public List<Item> children { get; set; }
+
             // ReSharper restore UnusedAutoPropertyAccessor.Local
             // ReSharper restore InconsistentNaming
         }

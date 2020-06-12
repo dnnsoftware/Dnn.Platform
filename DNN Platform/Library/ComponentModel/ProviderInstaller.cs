@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -46,6 +47,7 @@ namespace DotNetNuke.ComponentModel
         public void InstallComponents(IContainer container)
         {
             ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this._ProviderType);
+
             // Register the default provider first (so it is the first component registered for its service interface
             if (config != null)
             {

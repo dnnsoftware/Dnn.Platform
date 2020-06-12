@@ -376,6 +376,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         [Test]
+
         // Arrange
         [TestCase("Cäu", "(Cau OR Cau*)")]
         [TestCase("Cäutätörül", "(Cautatorul OR Cautatorul*)")]

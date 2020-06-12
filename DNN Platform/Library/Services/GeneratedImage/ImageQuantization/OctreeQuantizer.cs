@@ -141,6 +141,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         this._root.AddColor(pixel, this._maxColorBits, 0, this);
                     }
                     else
+
                         // Just update the previous node
                         this._previousNode.Increment(pixel);
                 }
@@ -315,6 +316,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     if (this._leaf)
                     {
                         this.Increment(pixel);
+
                         // Setup the previous node
                         octree.TrackPrevious(this);
                     }

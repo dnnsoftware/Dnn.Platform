@@ -933,6 +933,7 @@ namespace DotNetNuke.Services.Scheduling
                             // not sure why R# thinks it is always false
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
                             while (FreeThreads > 0 && !refreshQueueSchedule && KeepRunning && !_forceReloadSchedule)
+
                             // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
                                 // Fire off the events that need running.
@@ -1010,6 +1011,7 @@ namespace DotNetNuke.Services.Scheduling
                         catch (Exception exc)
                         {
                             Exceptions.Exceptions.ProcessSchedulerException(exc);
+
                             // sleep for 10 minutes
                             Thread.Sleep(600000);
                         }
@@ -1377,6 +1379,7 @@ namespace DotNetNuke.Services.Scheduling
                         var scheduleHistoryItem = GetScheduleItemFromScheduleInProgress(scheduleItem);
                         scheduleHistoryItem.ScheduleHistoryID = runningscheduleHistoryItem.ScheduleHistoryID;
                         scheduleHistoryItem.StartDate = runningscheduleHistoryItem.StartDate;
+
                         // Remove the object in the ScheduleInProgress collection
                         RemoveFromScheduleInProgress(scheduleHistoryItem);
 

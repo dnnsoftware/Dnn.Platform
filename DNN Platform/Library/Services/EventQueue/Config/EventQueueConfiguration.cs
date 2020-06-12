@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -125,8 +126,10 @@ namespace DotNetNuke.Services.EventQueue.Config
                 if (File.Exists(filePath))
                 {
                     config = new EventQueueConfiguration();
+
                     // Deserialize into EventQueueConfiguration
                     config.Deserialize(FileSystemUtils.ReadFile(filePath));
+
                     // Set back into Cache
                     DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
                 }
@@ -151,6 +154,7 @@ namespace DotNetNuke.Services.EventQueue.Config
             StreamWriter oStream = File.CreateText(filePath);
             oStream.WriteLine(config.Serialize());
             oStream.Close();
+
             // Set back into Cache
             DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
         }

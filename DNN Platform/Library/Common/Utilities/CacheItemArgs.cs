@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -137,6 +138,7 @@ namespace DotNetNuke.Common.Utilities
                 if (this._paramList == null)
                 {
                     this._paramList = new ArrayList();
+
                     // add additional params to this list if its not null
                     if (this.Params != null)
                     {

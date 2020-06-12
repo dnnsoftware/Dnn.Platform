@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -314,6 +315,7 @@ namespace DotNetNuke.Security.Permissions
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
                    && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
+
             // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
             // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
         }
@@ -323,6 +325,7 @@ namespace DotNetNuke.Security.Permissions
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
+
             // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
             // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }

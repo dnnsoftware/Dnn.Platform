@@ -35,8 +35,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindPartialView(context, viewName))
                        .Returns(result);
@@ -64,9 +66,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             var viewName = "Foo";
             var masterName = "Bar";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindView(context, viewName, masterName))
                        .Returns(result);
@@ -96,9 +100,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
             string masterName = "Bar";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindView(context, viewName, masterName))
                        .Returns(result);
@@ -126,8 +132,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             var controller = new Mock<DnnController>();
             controller.SetupAllProperties();
             var context = MockHelper.CreateMockControllerContext(controller.Object);
+
             // ReSharper disable ConvertToConstant.Local
             string viewName = "Foo";
+
             // ReSharper restore ConvertToConstant.Local
             mockEngines.Setup(e => e.FindPartialView(context, viewName))
                        .Returns(result);

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -395,6 +396,7 @@ namespace log4net.Repository.Hierarchy
         protected void ParseRoot(XmlElement rootElement)
         {
             Logger root = this.m_hierarchy.Root;
+
             // logger configuration needs to be atomic
             lock (root)
             {
@@ -1104,6 +1106,7 @@ namespace log4net.Repository.Hierarchy
 
         // TODO: Deprecate use of category tags
         private const string CATEGORY_TAG = "category";
+
         // TODO: Deprecate use of priority tag
         private const string PRIORITY_TAG = "priority";
 

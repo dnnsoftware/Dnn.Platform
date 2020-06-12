@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -154,6 +155,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
             Requires.NotNull("sender", sender);
 
             var waitTime = 0;
+
             // MessagingThrottlingInterval contains the number of MINUTES to wait before sending the next message
             var interval = this.GetPortalSettingAsDouble("MessagingThrottlingInterval", sender.PortalID, DefaultMessagingThrottlingInterval) * 60;
             if (interval > 0 && !this.IsAdminOrHost(sender))

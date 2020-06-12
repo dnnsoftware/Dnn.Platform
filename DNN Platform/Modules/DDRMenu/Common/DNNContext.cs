@@ -88,8 +88,10 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
         private static string GetModuleNameFromAssembly()
         {
             var moduleFullName = Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().CodeBase);
+
 // ReSharper disable PossibleNullReferenceException
             return moduleFullName.Substring(moduleFullName.LastIndexOf('.') + 1);
+
 // ReSharper restore PossibleNullReferenceException
         }
 

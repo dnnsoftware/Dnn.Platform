@@ -36,6 +36,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPoint.TotalItems = 0;
             this.CheckPoint.ProcessedItems = 0;
             this.CheckPointStageCallback(this);
+
             // No implementation required in export users child as everything is exported in parent service.
         }
 
@@ -60,6 +61,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
+
             // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
             {
@@ -184,6 +186,7 @@ namespace Dnn.ExportImport.Components.Services
                             }
 
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
+
                             // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUserRolesBulk", "@DataTable", tableUserRoles, new Dictionary<string, object> { { "Overwrite", overwrite } });

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -212,6 +213,7 @@ namespace Dnn.Module.ModuleCreator
         {
             var strFolder = Null.NullString;
             strFolder += this.txtOwner.Text + "/" + this.txtModule.Text;
+
             // return folder and remove any spaces that might appear in folder structure
             return strFolder.Replace(" ", string.Empty);
         }
@@ -220,6 +222,7 @@ namespace Dnn.Module.ModuleCreator
         {
             var strClass = Null.NullString;
             strClass += this.txtOwner.Text + "." + this.txtModule.Text;
+
             // return class and remove any spaces that might appear in class name
             return strClass.Replace(" ", string.Empty);
         }
@@ -309,8 +312,10 @@ namespace Dnn.Module.ModuleCreator
                         var objModuleDefinition = new ModuleDefinitionInfo();
                         objModuleDefinition.ModuleDefID = Null.NullInteger;
                         objModuleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
+
                         // need core enhancement to have a unique DefinitionName
                         objModuleDefinition.FriendlyName = this.GetClassName();
+
                         // objModuleDefinition.FriendlyName = txtModule.Text;
                         // objModuleDefinition.DefinitionName = GetClassName();
                         objModuleDefinition.DefaultCacheTime = 0;

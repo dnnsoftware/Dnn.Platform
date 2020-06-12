@@ -216,6 +216,7 @@ namespace Dnn.EditBar.UI.Controllers
         private void RegisterClientResources()
         {
             ClientResourceManager.EnableAsyncPostBackHandler();
+
             // register drop down list required resources
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
@@ -240,6 +241,7 @@ namespace Dnn.EditBar.UI.Controllers
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
+
             // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 

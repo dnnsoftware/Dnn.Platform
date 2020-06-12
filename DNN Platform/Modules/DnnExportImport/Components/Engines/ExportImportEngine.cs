@@ -221,6 +221,7 @@ namespace Dnn.ExportImport.Components.Engines
                 }
 
                 DoPacking(exportJob, dbName);
+
                 // Complete the job.
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);

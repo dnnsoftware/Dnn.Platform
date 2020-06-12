@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -23,6 +24,7 @@ namespace DotNetNuke.Entities.Urls
         public int MaxUrlPathLength;
         public string PageExtension;
         public string PunctuationReplacement;
+
         // 922 : change to use regexMatch pattern for allowable characters
         public string RegexMatch;
         public Dictionary<string, string> ReplaceCharWithChar = new Dictionary<string, string>();

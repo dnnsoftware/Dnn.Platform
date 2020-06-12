@@ -117,6 +117,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 // sort bookmarked modules
                 filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
+
                 // move Html on top
                 filteredList = filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()).
                                 Concat(filteredList.Except(filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())));
@@ -583,6 +584,7 @@ namespace DotNetNuke.Web.InternalServices
         public bool CanAddModuleToPage()
         {
             return true;
+
             // If we are not in an edit page
             // return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
@@ -851,6 +853,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
+
                     // set the culture of the module to that of the tab
                     var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;

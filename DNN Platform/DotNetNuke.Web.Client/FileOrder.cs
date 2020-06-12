@@ -24,6 +24,7 @@ namespace DotNetNuke.Web.Client
             /// </summary>
             // ReSharper disable InconsistentNaming
             jQuery = 5,
+
             // ReSharper restore InconsistentNaming
 
             /// <summary>
@@ -31,6 +32,7 @@ namespace DotNetNuke.Web.Client
             /// </summary>
             // ReSharper disable InconsistentNaming
             jQueryMigrate = 6,
+
             // ReSharper restore InconsistentNaming
 
             /// <summary>
@@ -38,6 +40,7 @@ namespace DotNetNuke.Web.Client
             /// </summary>
 // ReSharper disable InconsistentNaming
             jQueryUI = 10,
+
 // ReSharper restore InconsistentNaming
 
             /// <summary>

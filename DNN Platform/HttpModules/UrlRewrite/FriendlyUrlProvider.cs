@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -12,6 +13,7 @@ using DotNetNuke.HttpModules.UrlRewrite;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.Url.FriendlyUrl
+
 // ReSharper restore CheckNamespace
 {
     public class DNNFriendlyUrlProvider : FriendlyUrlProvider

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -46,6 +47,7 @@ namespace DotNetNuke.Entities.Urls
 
             // rewrite the path..
             context.RewritePath(sendToUrlLessQString, string.Empty, queryString);
+
             // NOTE!  The above RewritePath() overload is only supported in the .NET Framework 1.1
             // If you are using .NET Framework 1.0, use the below form instead:
             // context.RewritePath(sendToUrl);

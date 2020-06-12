@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -65,6 +66,7 @@ namespace log4net.Util
         public static void WriteEscapedXmlString(XmlWriter writer, string textData, string invalidCharReplacement)
         {
             string stringData = MaskXmlInvalidCharacters(textData, invalidCharReplacement);
+
             // Write either escaped text or CDATA sections
             int weightCData = 12 * (1 + CountSubstrings(stringData, CDATA_END));
             int weightStringEscapes = (3 * (CountSubstrings(stringData, "<") + CountSubstrings(stringData, ">"))) + (4 * CountSubstrings(stringData, "&"));

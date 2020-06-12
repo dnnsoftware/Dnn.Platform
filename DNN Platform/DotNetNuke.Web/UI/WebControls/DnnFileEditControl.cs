@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -13,6 +14,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFileEditControl : IntegerEditControl
     {
         private DnnFilePickerUploader _fileControl;
+
         // private DnnFilePicker _fileControl;
 
         /// -----------------------------------------------------------------------------
@@ -109,6 +111,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             bool dataChanged = false;
             string presentValue = this.StringValue;
+
             // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
             string postedValue = this._fileControl.FileID.ToString();
             if (!presentValue.Equals(postedValue))

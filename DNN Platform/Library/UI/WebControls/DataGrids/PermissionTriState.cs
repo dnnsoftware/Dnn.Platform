@@ -123,6 +123,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             {
                 imagePath = this._lockImagePath;
                 cssClass += " lockedPerm";
+
                 // altText is set based on Value
             }
 

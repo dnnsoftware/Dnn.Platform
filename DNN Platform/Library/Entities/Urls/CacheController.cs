@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -234,8 +235,10 @@ namespace DotNetNuke.Entities.Urls
             customAliasTabs = null;
             object rawDict = DataCache.GetCache(UrlDictKey); // contains a dictionary of tabs for all portals
             object rawPortals = DataCache.GetCache(UrlPortalsKey);
+
             // contains a list of portals for which we have retrieved the tabs
             object rawCustomAliasTabs = DataCache.GetCache(CustomAliasTabsKey);
+
             // contains a dictionary of tabs with custom aliases, for all portals
             if (rawDict != null)
             {
@@ -306,6 +309,7 @@ namespace DotNetNuke.Entities.Urls
                 try
                 {
                     redirectActions = new Dictionary<int, List<ParameterRedirectAction>>();
+
                     // 807 : look for portal specific files
                     bool portalSpecific;
                     string fileName = FindFriendlyUrlParmsConfigFilePath(portalId, out portalSpecific);
@@ -397,6 +401,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     rewriteActions = new Dictionary<int, SharedList<ParameterRewriteAction>>();
                     bool portalSpecific;
+
                     // 807 : new change to look for portal rule files in portal specific locations
                     string filename = FindFriendlyUrlParmsConfigFilePath(portalId, out portalSpecific);
                     if (!string.IsNullOrEmpty(filename))
@@ -634,8 +639,10 @@ namespace DotNetNuke.Entities.Urls
         {
             // get the key for the portal module providers
             string allTabsKey = string.Format(PortalModuleProvidersAllTabsKey, portalId);
+
             // get the providers that are on all tabs
             var allTabsProviders = new List<ExtensionUrlProvider>();
+
             // holds all providers, indexed by tabId
             var tabsProviders = new Dictionary<int, List<ExtensionUrlProvider>>();
             var tabIdStr = new List<string>();
@@ -674,12 +681,14 @@ namespace DotNetNuke.Entities.Urls
                 if (provider.AlwaysUsesDnnPagePath(portalId) == false)
                 {
                     List<ExtensionUrlProvider> noPathProviders;
+
                     // add this one
                     if (tabsProviders.ContainsKey(RewriteController.SiteRootRewrite))
                     {
                         noPathProviders = tabsProviders[RewriteController.SiteRootRewrite];
                         noPathProviders.Add(provider);
                         tabsProviders[RewriteController.SiteRootRewrite] = noPathProviders;
+
                         // assign back to position in tabs
                     }
                     else
@@ -803,6 +812,7 @@ namespace DotNetNuke.Entities.Urls
         public static PortalInfo GetPortal(int portalId, bool exceptionOnNull)
         {
             PortalInfo pi = null;
+
             // 775 : change to use threadsafe dictionary
             SharedDictionary<int, PortalInfo> portals = (SharedDictionary<int, PortalInfo>)DataCache.GetCache(PortalsKey) ??
                                                             new SharedDictionary<int, PortalInfo>();
@@ -858,6 +868,7 @@ namespace DotNetNuke.Entities.Urls
 
 // ReSharper disable EmptyGeneralCatchClause
                     catch
+
 // ReSharper restore EmptyGeneralCatchClause
                     {
                         // 912: capture as fall back any exception resulting from doing a portal lookup in 6.x
@@ -890,6 +901,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     case "DNN_" + PageIndexKey:
                         itemName = "Page Index";
+
                         // user profile actions
                         try
                         {

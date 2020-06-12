@@ -102,6 +102,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             includeVaryByKeys.Add("portalid");
             includeVaryByKeys.Add("locale");
             includeVaryByKeys.Add("alias");
+
             // make sure to always add keys in lowercase only
             if (includeExclude == IncludeExcludeType.ExcludeByDefault)
             {
@@ -198,6 +199,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             {
                 // output the content type heade when read content from cache.
                 this._app.Context.Response.AddHeader("Content-Type", string.Format("{0}; charset={1}", this._app.Response.ContentType, this._app.Response.Charset));
+
                 // This is to give a site owner the ability
                 // to visually verify that a page was rendered via
                 // the output cache.  Use FireFox FireBug or another

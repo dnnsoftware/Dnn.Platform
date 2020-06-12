@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -81,6 +82,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
+
                 // if not host tab but current edit user is a host user, then return true
                 if (!isHost && this.User != null && this.User.IsSuperUser)
                 {
@@ -803,6 +805,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             // Add User folder
                             var user = this.User ?? UserController.Instance.GetCurrentUserInfo();
+
                             // fix user's portal id
                             user.PortalID = this.PortalId;
                             folder = ((FolderManager)folderManager).AddUserFolder(user);

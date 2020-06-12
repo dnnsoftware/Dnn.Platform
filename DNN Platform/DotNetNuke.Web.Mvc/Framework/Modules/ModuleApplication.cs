@@ -48,10 +48,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)
         {
             this.RequestContext = requestContext;
+
             // ReSharper disable once DoNotCallOverridableMethodsInConstructor
             DisableMvcResponseHeader = disableMvcResponseHeader;
             this.ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
             this.ViewEngines = new ViewEngineCollection();
+
             // ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
@@ -136,6 +138,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     controllerName);
 
                 moduleController.ViewEngineCollectionEx = this.ViewEngines;
+
                 // Execute the controller and capture the result
                 // if our ActionFilter is executed after the ActionResult has triggered an Exception the filter
                 // MUST explicitly flip the ExceptionHandled bit otherwise the view will not render

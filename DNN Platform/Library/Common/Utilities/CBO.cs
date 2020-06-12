@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -59,6 +60,7 @@ namespace DotNetNuke.Common.Utilities
             if (closeReader)
             {
                 canRead = false;
+
                 // read datareader
                 if (dr.Read())
                 {
@@ -167,6 +169,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // Create the Object
                     objObject = CreateObjectFromReader(objType, dr, false);
+
                     // add to collection
                     objList.Add(objObject);
                 }
@@ -198,6 +201,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // Create the Object
                     objObject = (TItem)CreateObjectFromReader(typeof(TItem), dr, false);
+
                     // add to collection
                     objList.Add(objObject);
                 }
@@ -259,6 +263,7 @@ namespace DotNetNuke.Common.Utilities
             object coloumnValue;
             Type objDataType;
             int intIndex;
+
             // get cached object mapping for type
             ObjectMappingInfo objMappingInfo = GetObjectMapping(hydratedObject.GetType());
             if (hydratedObject is BaseEntityInfo && !(hydratedObject is ScheduleItem))
@@ -275,11 +280,13 @@ namespace DotNetNuke.Common.Utilities
                 {
                     // Get its type
                     propType = objPropertyInfo.PropertyType;
+
                     // If property can be set
                     if (objPropertyInfo.CanWrite)
                     {
                         // Get the Data Value from the data reader
                         coloumnValue = dr.GetValue(intIndex);
+
                         // Get the Data Value's type
                         objDataType = coloumnValue.GetType();
                         if (coloumnValue == null || coloumnValue == DBNull.Value)
@@ -380,9 +387,11 @@ namespace DotNetNuke.Common.Utilities
                 // Create an ObjectMappingInfo instance
                 objMap = new ObjectMappingInfo();
                 objMap.ObjectType = objType.FullName;
+
                 // Reflect on class to create Object Map
                 objMap.PrimaryKey = GetPrimaryKey(objType);
                 objMap.TableName = GetTableName(objType);
+
                 // Iterate through the objects properties and add each one to the ObjectMappingInfo's Properties Dictionary
                 foreach (PropertyInfo objProperty in objType.GetProperties())
                 {
@@ -407,6 +416,7 @@ namespace DotNetNuke.Common.Utilities
         private static string GetTableName(Type objType)
         {
             string tableName = string.Empty;
+
             // If no attrubute then use Type Name
             if (string.IsNullOrEmpty(tableName))
             {
@@ -454,6 +464,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 Type objType = objObject.GetType();
                 object objNewObject = Activator.CreateInstance(objType);
+
                 // get cached object mapping for type
                 ObjectMappingInfo objMappingInfo = GetObjectMapping(objType);
                 foreach (KeyValuePair<string, PropertyInfo> kvp in objMappingInfo.Properties)
@@ -555,6 +566,7 @@ namespace DotNetNuke.Common.Utilities
         {
             // First Create the Object
             var objObject = CreateObject<TObject>(true);
+
             // Try to cast the Object as IXmlSerializable
             var xmlSerializableObject = objObject as IXmlSerializable;
             if (xmlSerializableObject == null)
@@ -974,6 +986,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 // Serialize the object
                 SerializeObject(objObject, writer);
+
                 // Load XmlDocument
                 document.LoadXml(sb.ToString());
             }

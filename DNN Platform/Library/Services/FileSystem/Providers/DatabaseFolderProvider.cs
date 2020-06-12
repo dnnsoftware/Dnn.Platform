@@ -15,6 +15,7 @@ using DotNetNuke.Data;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
+
 // ReSharper restore CheckNamespace
 {
     public class DatabaseFolderProvider : SecureFolderProvider

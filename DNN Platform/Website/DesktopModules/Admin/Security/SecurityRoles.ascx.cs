@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -500,6 +501,7 @@ namespace DotNetNuke.Modules.Admin.Security
             if (this.Request.QueryString["UserId"] != null)
             {
                 int userId;
+
                 // Use Int32.MaxValue as invalid UserId
                 this.UserId = int.TryParse(this.Request.QueryString["UserId"], out userId) ? userId : int.MaxValue;
             }

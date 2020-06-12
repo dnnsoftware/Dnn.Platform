@@ -388,6 +388,7 @@ namespace Dnn.ExportImport.Components.Services
                             localRoleInfo.Settings[other.SettingName] = other.SettingValue;
                             RoleController.Instance.UpdateRoleSettings(localRoleInfo, false);
                             this.Result.AddLogEntry("Updated role setting", other.SettingName);
+
                             // No need to clear cache as the caller will do it one time at end
                         }
                         else

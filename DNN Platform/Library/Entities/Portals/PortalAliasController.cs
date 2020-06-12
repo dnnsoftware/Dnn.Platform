@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -122,6 +123,7 @@ namespace DotNetNuke.Entities.Portals
 
                     // clear the cachekey "GetPortalByAlias" otherwise portalalias "_default" stays in cache after first install
                     DataCache.RemoveCache("GetPortalByAlias");
+
                     // try again
                     portalAlias = this.GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
                 }
@@ -267,6 +269,7 @@ namespace DotNetNuke.Entities.Portals
                 portalAlias.BrowserType.ToString(),
                 portalAlias.IsPrimary,
                 UserController.Instance.GetCurrentUserInfo().UserID);
+
             // Log Event
             LogEvent(portalAlias, EventLogController.EventLogType.PORTALALIAS_UPDATED);
 

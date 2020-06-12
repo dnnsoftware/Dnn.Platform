@@ -3,8 +3,10 @@
 // See the LICENSE file in the project root for more information
 
 using System;
+
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Content.Workflow
+
 // ReSharper enable CheckNamespace
 {
     [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]

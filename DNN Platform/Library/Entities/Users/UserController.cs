@@ -799,6 +799,7 @@ namespace DotNetNuke.Entities.Users
             Guid resetTokenGuid = new Guid(resetToken);
 
             var user = GetUserByName(portalid, username);
+
             // if user does not exist return false
             if (user == null)
             {
@@ -857,6 +858,7 @@ namespace DotNetNuke.Entities.Users
             Guid resetTokenGuid = new Guid(resetToken);
 
             var user = GetUserByName(portalid, username);
+
             // if user does not exist return false
             if (user == null)
             {
@@ -1022,6 +1024,7 @@ namespace DotNetNuke.Entities.Users
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
+
             // ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
             var passwordExpiry = DateTime.Now.AddMinutes(1440);
             var passwordGuid = Guid.NewGuid();
@@ -1199,6 +1202,7 @@ namespace DotNetNuke.Entities.Users
         public static UserInfo GetCachedUser(int portalId, string username)
         {
             var masterPortalId = GetEffectivePortalId(portalId);
+
             // user is cached inside the MembershipProvider.Instance().GetUserByUserName method
             var user = MembershipProvider.Instance().GetUserByUserName(masterPortalId, username);
             FixMemberPortalId(user, portalId);

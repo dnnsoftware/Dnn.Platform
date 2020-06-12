@@ -9,6 +9,7 @@ using DotNetNuke.Services.FileSystem.Internal;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Services.FileSystem
+
 // ReSharper restore CheckNamespace
 {
     public class SecureFolderProvider : StandardFolderProvider

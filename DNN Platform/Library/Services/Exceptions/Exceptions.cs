@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -75,10 +76,13 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     // Get the corresponding method for that stack frame.
                     MemberInfo mi = sf.GetMethod();
+
                     // Get the namespace where that method is defined.
                     string res = mi.DeclaringType.Namespace + ".";
+
                     // Append the type name.
                     res += mi.DeclaringType.Name + ".";
+
                     // Append the name of the method.
                     res += mi.Name;
                     objExceptionInfo.Method = res;
@@ -315,6 +319,7 @@ namespace DotNetNuke.Services.Exceptions
                     // publish the exception
                     var objExceptionLog = new ExceptionLogController();
                     objExceptionLog.AddLog(lex);
+
                     // Some modules may want to suppress an error message
                     // and just log the exception.
                     if (DisplayErrorMessage)
@@ -390,6 +395,7 @@ namespace DotNetNuke.Services.Exceptions
             else
             {
                 var lex = new PageLoadException(exc == null ? string.Empty : exc.Message, exc);
+
                 // publish the exception
                 var objExceptionLog = new ExceptionLogController();
                 objExceptionLog.AddLog(lex);

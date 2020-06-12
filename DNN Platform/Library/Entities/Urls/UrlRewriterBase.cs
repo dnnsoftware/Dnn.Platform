@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -22,6 +23,7 @@ namespace DotNetNuke.Entities.Urls
         protected static void AutoAddAlias(HttpContext context)
         {
             var portalId = Host.Host.HostPortalID;
+
             // the domain name was not found so try using the host portal's first alias
             if (portalId > Null.NullInteger)
             {

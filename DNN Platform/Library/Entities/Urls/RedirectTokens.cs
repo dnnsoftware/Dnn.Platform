@@ -155,11 +155,13 @@ namespace DotNetNuke.Entities.Urls
             GetRedirectActionTokenAndValue(action, out token, out value);
             string tokenAndValue = token + "=" + value;
             bool addToken = true;
+
             // look for existing action
             bool hasDupes;
             Dictionary<string, string> tokensAndValues = GetRedirectTokensAndValuesFromRewritePath(
                 existingRewritePath,
                 out hasDupes);
+
             // can't overwrite existing tokens in certain cases
             if (tokensAndValues.Count > 0)
             {
@@ -239,6 +241,7 @@ namespace DotNetNuke.Entities.Urls
             // get the action type from the rewrite path
             ActionType foundAction;
             bool actionInPath = GetActionFromRewritePath(rewrittenUrl, out foundAction);
+
             // only overrwrite action if it was found in the rewrite path
             if (actionInPath)
             {
@@ -281,6 +284,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             // if no parms, then we're not doing a userprofileaction redirect
                             reason = RedirectReason.Custom_Redirect;
+
                             // then check for a 301 redirect
                             action = ActionType.CheckFor301;
                         }
@@ -292,6 +296,7 @@ namespace DotNetNuke.Entities.Urls
                         // deleted tab dl
                         // disabled tab db
                         clearActionToken = true;
+
                         // 626 Deleted tab hanlding not working properyly - override
                         if (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
                         {
@@ -481,12 +486,14 @@ namespace DotNetNuke.Entities.Urls
         internal static string RemoveAnyRedirectTokensAndReasons(string rewritePath)
         {
             string result = RemoveAnyRedirectReasons(rewritePath);
+
             // regex expression matches a token and removes it
             Match tokenMatch = RedirectTokensRx.Match(result);
             if (tokenMatch.Success)
             {
                 // tokenAndValue is the do301=true
                 string tokenAndValue = tokenMatch.Value;
+
                 // p is either a ? or a &
                 string p = tokenMatch.Groups["p"].Value;
                 if (p == "?")

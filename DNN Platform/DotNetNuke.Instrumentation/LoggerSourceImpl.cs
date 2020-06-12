@@ -37,6 +37,7 @@ namespace DotNetNuke.Instrumentation
             private static Level _levelWarn;
             private static Level _levelError;
             private static Level _levelFatal;
+
             // add custom logging levels (below trace value of 20000)
 //            internal static Level LevelLogInfo = new Level(10001, "LogInfo");
 //            internal static Level LevelLogError = new Level(10002, "LogError");
@@ -90,6 +91,7 @@ namespace DotNetNuke.Instrumentation
                 _levelWarn = levelMap.LookupWithDefault(Level.Warn);
                 _levelError = levelMap.LookupWithDefault(Level.Error);
                 _levelFatal = levelMap.LookupWithDefault(Level.Fatal);
+
 // LevelLogError = levelMap.LookupWithDefault(LevelLogError);
 //                LevelLogInfo = levelMap.LookupWithDefault(LevelLogInfo);
 
@@ -103,6 +105,7 @@ namespace DotNetNuke.Instrumentation
                 try
                 {
                     GlobalContext.Properties["appdomain"] = AppDomain.CurrentDomain.Id.ToString("D");
+
                     // bool isFullTrust = false;
                     // try
                     // {
@@ -123,6 +126,7 @@ namespace DotNetNuke.Instrumentation
 
 // ReSharper disable EmptyGeneralCatchClause
                 catch
+
 // ReSharper restore EmptyGeneralCatchClause
                 {
                     // do nothing but just make sure no exception here.

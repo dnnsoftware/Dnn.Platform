@@ -90,6 +90,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.CheckPoint.ProcessedItems++;
                             this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalThemes;
                             currentIndex++;
+
                             // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                             if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
                             {

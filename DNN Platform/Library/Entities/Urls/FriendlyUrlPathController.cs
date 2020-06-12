@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -33,6 +34,7 @@ namespace DotNetNuke.Entities.Urls
             string regexPattern;
             rawUserId = null;
             remainingPath = string.Empty;
+
             // generally the path will start with a / and not end with one, but it's possible to get all sorts of things
             if (!string.IsNullOrEmpty(otherParametersPath))
             {
@@ -191,6 +193,7 @@ namespace DotNetNuke.Entities.Urls
                                 replacedPath = parmRegex.Replace(parameterPath, parmReplace.ReplaceWith);
                                 messages.Add(parmReplace.Name + " replace rule match, replaced : " + parameterPath + " with: " + replacedPath);
                                 replaced = true;
+
                                 // 593: if this replacement is marked as a site root replacement, we will be
                                 // removing the page path from the final url
                                 changeToSiteRoot = parmReplace.ChangeToSiteRoot;
@@ -244,6 +247,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 int userId;
                 string rawUserId, remainingPath;
+
                 // split the userid and other profile parameters from the friendly url path,
                 // and return the userid and remaining parts as separate items
                 SplitUserIdFromFriendlyUrlPath(
@@ -303,6 +307,7 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         changedPath = "/" + urlName;
+
                         // append any extra remaining path value to the end
                         if (!string.IsNullOrEmpty(remainingPath))
                         {
@@ -319,6 +324,7 @@ namespace DotNetNuke.Entities.Urls
                         urlWasChanged = true;
                         changeToSiteRoot = true; // we will be doing domain.com/urlname
                         allowOtherParameters = false;
+
                         // can't have any others (wouldn't have matched in the regex if there were)
                     }
                     else

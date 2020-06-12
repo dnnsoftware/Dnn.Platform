@@ -34,6 +34,7 @@ namespace DotNetNuke.Tests.Content
         {
             Mock<IVocabularyController> vocabularyController = MockHelper.CreateMockVocabularyController();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
+
             // Register MockCachingProvider
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
         }

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -43,6 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
             // _textBox = new DnnNumericTextBox {EmptyMessage = LocalizeString(ResourceKey + ".Hint"), ID = ID + "_TextBox", Width = TextBoxWidth };
             this._textBox = new TextBox();
             this._textBox.CssClass = "DnnNumericTextBox";
+
             // _textBox.Style.Add("float", "none");
             // _textBox.EmptyMessageStyle.CssClass += "dnnformHint";
             // _textBox.Type = Type;

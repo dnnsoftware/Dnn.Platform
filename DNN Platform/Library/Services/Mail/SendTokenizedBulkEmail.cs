@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -330,6 +331,7 @@ namespace DotNetNuke.Services.Mail
                     newAttachment = new Attachment(memoryStream, attachment.ContentType);
                     newAttachment.ContentStream.Position = 0;
                     attachments.Add(newAttachment);
+
                     // reset original position
                     attachment.ContentStream.Position = 0;
                     memoryStream = null;
@@ -416,6 +418,7 @@ namespace DotNetNuke.Services.Mail
                     UserInfo user = objUser;
                     ProfileController.GetUserProfile(ref user);
                     var userRole = RoleController.Instance.GetUserRole(this._portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
+
                     // only add if user role has not expired and effectivedate has been passed
                     if ((userRole.EffectiveDate <= DateTime.Now || Null.IsNull(userRole.EffectiveDate)) && (userRole.ExpiryDate >= DateTime.Now || Null.IsNull(userRole.ExpiryDate)))
                     {

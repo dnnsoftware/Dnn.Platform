@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -30,6 +31,7 @@ namespace DotNetNuke.Services.Scheduling
         {
             // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
+
             // save item
             scheduleItem.ScheduleID = SchedulingController.AddSchedule(
                 scheduleItem.TypeFullName,
@@ -45,6 +47,7 @@ namespace DotNetNuke.Services.Scheduling
                 scheduleItem.Servers,
                 scheduleItem.FriendlyName,
                 scheduleItem.ScheduleStartDate);
+
             // Add schedule to queue
             this.RunScheduleItemNow(scheduleItem);
 
@@ -232,8 +235,10 @@ namespace DotNetNuke.Services.Scheduling
         {
             // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
+
             // save item
             SchedulingController.UpdateSchedule(scheduleItem);
+
             // Update items that are already scheduled
             var futureHistory = this.GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 

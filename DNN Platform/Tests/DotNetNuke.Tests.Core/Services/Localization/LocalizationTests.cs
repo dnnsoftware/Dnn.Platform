@@ -30,6 +30,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         public void NoMatchReturnsFallback()
         {
             const string fallback = "fallback";
+
             // Arrange
 
             // Act

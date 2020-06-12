@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -363,6 +364,7 @@ namespace DotNetNuke.Services.Search
                         keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
+
                         // max cluaseCount is 1024, if reach the max value, perform a delete action.
                     {
                         keyword.Append(")");

@@ -131,6 +131,7 @@ namespace DotNetNuke.Tests.Content
             // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
+
             // Act, Arrange
             controller.DeleteContentItem(null);
         }

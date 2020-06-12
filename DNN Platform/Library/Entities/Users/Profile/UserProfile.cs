@@ -18,6 +18,7 @@ using DotNetNuke.Services.FileSystem;
 
 // ReSharper disable CheckNamespace
 namespace DotNetNuke.Entities.Users
+
 // ReSharper restore CheckNamespace
 {
     /// <summary>

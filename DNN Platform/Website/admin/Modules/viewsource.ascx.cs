@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -57,6 +58,7 @@ namespace DotNetNuke.Modules.Admin.Modules
         private void BindFiles(string controlSrc)
         {
             this.cboFile.Items.Clear();
+
             // cboFile.Items.Add(new ListItem(Localization.GetString("None_Specified"), "None"));
             // cboFile.Items.Add(new ListItem("User Control", "UserControl"));
             this.cboFile.AddItem(Localization.GetString("None_Specified"), "None");

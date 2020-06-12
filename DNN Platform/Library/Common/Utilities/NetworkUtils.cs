@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -61,8 +62,10 @@ namespace DotNetNuke.Common.Utils
         {
             // convert IP to number
             byte[] addressBytes = ip.GetAddressBytes();
+
             // get the octets
             long addr = 0;
+
             // accumulator for address
             for (int x = 0; x <= 3; x++)
             {
@@ -81,10 +84,13 @@ namespace DotNetNuke.Common.Utils
         {
             // convert number back to IP
             var ipByte = new byte[4];
+
             // 4 octets
             string addr = string.Empty;
+
             // accumulator for address
             long mask8 = MaskFromCidr(8);
+
             // create eight bit mask
 
             // get the octets
@@ -93,6 +99,7 @@ namespace DotNetNuke.Common.Utils
                 ipByte[x] = Convert.ToByte((ip & mask8) >> ((3 - x) * 8));
                 mask8 = mask8 >> 8;
                 addr += ipByte[x].ToString() + ".";
+
                 // add current octet to string
             }
 

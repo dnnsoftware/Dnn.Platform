@@ -635,6 +635,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             // Run
             var search = this.GetGroupBasicViewResults(query);
+
             // Assert - overall 2 groups: tabs and users
             var groupedBasicViews = search as List<GroupedBasicView> ?? search.ToList();
             Assert.AreEqual(2, groupedBasicViews.Count());

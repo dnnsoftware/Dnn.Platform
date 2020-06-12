@@ -516,6 +516,7 @@ namespace log4net.Appender
 
                     // Set the command type
                     dbCmd.CommandType = this.CommandType;
+
                     // Send buffer using the prepared command object
                     if (dbTran != null)
                     {
@@ -524,6 +525,7 @@ namespace log4net.Appender
 
                     // prepare the command, which is significantly faster
                     dbCmd.Prepare();
+
                     // run for all events
                     foreach (LoggingEvent e in events)
                     {

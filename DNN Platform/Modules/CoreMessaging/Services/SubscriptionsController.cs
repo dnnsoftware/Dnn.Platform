@@ -242,11 +242,13 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 var headers = document.SelectNodes(@"/root/resheader").Cast<XmlNode>().ToArray();
+
                 // ReSharper restore AssignNullToNotNullAttribute
                 AssertHeaderValue(headers, "resmimetype", "text/microsoft-resx");
 
                 // ReSharper disable AssignNullToNotNullAttribute
                 foreach (var xmlNode in document.SelectNodes("/root/data").Cast<XmlNode>())
+
                 // ReSharper restore AssignNullToNotNullAttribute
                 {
                     var name = GetNameAttribute(xmlNode).Replace(".Text", string.Empty);

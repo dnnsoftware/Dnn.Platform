@@ -170,6 +170,7 @@ namespace DotNetNuke.Web.Services
             {
                 // add current tab
                 tabsInOrder.Add(currentTab.TabID, currentTab);
+
                 // add children of current tab
                 foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {

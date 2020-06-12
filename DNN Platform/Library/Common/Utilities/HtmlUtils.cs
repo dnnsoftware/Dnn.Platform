@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -77,6 +78,7 @@ namespace DotNetNuke.Common.Utilities
             if (RemovePunctuation)
             {
                 HTML = StripPunctuation(HTML, true);
+
                 // When RemovePunctuation is false, HtmlDecode() would have already had removed these
                 // Finally remove extra whitespace
                 HTML = StripWhiteSpace(HTML, true);
@@ -292,6 +294,7 @@ namespace DotNetNuke.Common.Utilities
         public static string StripEntities(string HTML, bool RetainSpace)
         {
             var repString = RetainSpace ? " " : string.Empty;
+
             // Replace Entities by replacement String and return mofified string
             return EntityRegEx.Replace(HTML, repString);
         }

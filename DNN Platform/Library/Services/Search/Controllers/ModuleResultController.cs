@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 // Get All related tabIds from moduleId (while minimizing DB access; using caching)
                 var moduleId = searchResult.ModuleId;
+
                 // The next call has over 30% performance enhancement over the above one
                 var tabModules = TabController.Instance.GetTabsByPortal(searchResult.PortalId).Values
                     .SelectMany(tabinfo => tabinfo.ChildModules.Where(kv => kv.Key == moduleId)).Select(m => m.Value);
@@ -91,6 +93,7 @@ namespace DotNetNuke.Services.Search.Controllers
             }
 
             var url = Localization.Localization.GetString("SEARCH_NoLink");
+
             // Get All related tabIds from moduleId
             var tabModules = GetModuleTabs(searchResult.ModuleId);
 

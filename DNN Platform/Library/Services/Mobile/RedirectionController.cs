@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -136,6 +137,7 @@ namespace DotNetNuke.Services.Mobile
             string redirectUrl = string.Empty;
 
             IList<IRedirection> redirections = this.GetRedirectionsByPortal(portalId);
+
             // check for redirect only when redirect rules are defined
             if (redirections == null || redirections.Count == 0)
             {
@@ -157,6 +159,7 @@ namespace DotNetNuke.Services.Mobile
                 if (redirection.Enabled)
                 {
                     bool checkFurther = false;
+
                     // redirection is based on source tab
                     if (redirection.SourceTabId != Null.NullInteger)
                     {
@@ -241,6 +244,7 @@ namespace DotNetNuke.Services.Mobile
             string fullSiteUrl = string.Empty;
 
             IList<IRedirection> redirections = this.GetAllRedirections();
+
             // check for redirect only when redirect rules are defined
             if (redirections == null || redirections.Count == 0)
             {
@@ -342,6 +346,7 @@ namespace DotNetNuke.Services.Mobile
         {
             string mobileSiteUrl = string.Empty;
             IList<IRedirection> redirections = this.GetRedirectionsByPortal(portalId);
+
             // check for redirect only when redirect rules are defined
             if (redirections == null || redirections.Count == 0)
             {

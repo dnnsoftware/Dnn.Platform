@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.DDRMenu
 // ReSharper disable InconsistentNaming
         public MenuNode root { get; set; }
         public UserInfo user { get; set; }
+
 // ReSharper restore InconsistentNaming
     }
 }

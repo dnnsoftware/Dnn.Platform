@@ -413,6 +413,7 @@ namespace DotNetNuke.Services.GeneratedImage
 
             this.ImageStore.ForcePurgeFromServerCache(cacheId);
             DateTime expiry;
+
             // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
             if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration))
             {

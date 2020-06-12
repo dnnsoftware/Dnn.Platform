@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -127,6 +128,7 @@ namespace log4net.Core
             set
             {
                 this._timeStampUtc = value;
+
                 // For backwards compatibility
                 this.TimeStamp = this._timeStampUtc.ToLocalTime();
             }
@@ -1103,6 +1105,7 @@ namespace log4net.Core
             info.AddValue("Level", this.m_data.Level);
             info.AddValue("Message", this.m_data.Message);
             info.AddValue("ThreadName", this.m_data.ThreadName);
+
             // TODO: consider serializing UTC rather than local time.  Not implemented here because it
             // would give an unexpected result if client and server have different versions of this class.
             // info.AddValue("TimeStamp", m_data.TimeStampUtc);

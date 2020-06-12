@@ -45,6 +45,7 @@ namespace DotNetNuke.Modules.Journal
                 if (this.Page.IsPostBack == false)
                 {
                     this.BindJournalTypes();
+
                     // Check for existing settings and use those on this page
                     if (this.Settings.ContainsKey(Constants.DefaultPageSize))
                     {

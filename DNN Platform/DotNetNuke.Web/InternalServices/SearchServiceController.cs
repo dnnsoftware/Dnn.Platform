@@ -59,6 +59,7 @@ namespace DotNetNuke.Web.InternalServices
         internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
         {
             this.HtmlModuleDefitionId = htmlModuleDefitionId;
+
             // _tabController = newtabController;
             // _moduleController = newmoduleController;
         }

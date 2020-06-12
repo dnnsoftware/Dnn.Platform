@@ -47,6 +47,7 @@ namespace DotNetNuke.Modules.UrlManagement
 
 // ReSharper disable SuspiciousTypeConversion.Global
                 this._providerSettingsControl = settingsControl as IExtensionUrlProviderSettingsControl;
+
 // ReSharper restore SuspiciousTypeConversion.Global
                 if (this._providerSettingsControl != null)
                 {

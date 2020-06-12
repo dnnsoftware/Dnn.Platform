@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -386,6 +387,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             // Redirect to same page to update all controls for newly selected culture
             this.LocalTokenReplace.Language = this.selectCulture.SelectedItem.Value;
+
             // DNN-6170 ensure skin value is culture specific in case of  static localization
             DataCache.RemoveCache(string.Format(DataCache.PortalSettingsCacheKey, this.PortalSettings.PortalId, Null.NullString));
             this.Response.Redirect(this.LocalTokenReplace.ReplaceEnvironmentTokens("[URL]"));

@@ -73,6 +73,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
             fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MIN(FileId) FROM {{objectQualifier}}Files WHERE PortalId = {this.PortalId}");
+
             // POST JOURNAL
             var postData = new
             {

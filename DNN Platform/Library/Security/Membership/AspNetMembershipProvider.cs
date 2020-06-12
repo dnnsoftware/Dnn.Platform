@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -23,6 +24,7 @@ using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
+
 // DNN-4016
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
@@ -329,6 +331,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     // fill business object
                     UserInfo user = FillUserInfo(portalId, dr, false);
+
                     // add to collection
                     arrUsers.Add(user);
                 }
@@ -361,6 +364,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     // fill business object
                     UserInfo user = FillUserAndProfile(portalId, dr);
+
                     // add to collection
                     users.Add(user);
                 }
@@ -1964,6 +1968,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     // fill business object
                     UserInfo user = FillUserInfo(portalId, dr, false);
+
                     // add to collection
                     arrUsers.Add(user);
                 }

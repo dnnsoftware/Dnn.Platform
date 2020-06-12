@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -42,12 +43,15 @@ namespace DotNetNuke.Modules.Admin.Sales
             try
             {
                 bool blnValid = true;
+
 // string strTransactionID;
                 int intRoleID = 0;
                 int intPortalID = this.PortalSettings.PortalId;
                 int intUserID = 0;
+
 // string strDescription;
                 double dblAmount = 0;
+
 // string strEmail;
                 bool blnCancel = false;
                 string strPayPalID = Null.NullString;
@@ -92,6 +96,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             break;
                         case "item_number": // get the RoleID
                             intRoleID = int.Parse(strValue);
+
                             // RoleInfo objRole = objRoles.GetRole(intRoleID, intPortalID);
                             break;
                         case "item_name": // get the product description

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -70,6 +71,7 @@ namespace DotNetNuke.Services.Scheduling
                 Process.ProcessProgressing += Scheduler.CoreScheduler.WorkProgressing;
                 Process.ProcessCompleted += Scheduler.CoreScheduler.WorkCompleted;
                 Process.ProcessErrored += Scheduler.CoreScheduler.WorkErrored;
+
                 // This kicks off the DoWork method of the class
                 // type specified in the configuration.
                 Process.Started();
@@ -180,6 +182,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 // Create a callback to subroutine RunPooledThread
                 WaitCallback callback = this.RunPooledThread;
+
                 // And put in a request to ThreadPool to run the process.
                 ThreadPool.QueueUserWorkItem(callback, obj);
             }

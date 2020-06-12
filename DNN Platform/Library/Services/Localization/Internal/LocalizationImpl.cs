@@ -30,6 +30,7 @@ namespace DotNetNuke.Services.Localization.Internal
             foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? new string[0])
             {
                 string lang = langHeader;
+
                 // strip any ;q=xx
                 lang = lang.Split(';')[0];
 

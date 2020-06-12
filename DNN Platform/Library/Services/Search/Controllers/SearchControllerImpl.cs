@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -71,6 +72,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     var allowLeadingWildcard = HostController.Instance.GetString("Search_AllowLeadingWildcard", "N") == "Y" || searchQuery.AllowLeadingWildcard;
                     var keywords = SearchHelper.Instance.RephraseSearchText(searchQuery.KeyWords, searchQuery.WildCardSearch, allowLeadingWildcard);
+
                     // don't use stemming analyzer for exact matches or non-analyzed fields (e.g. Tags)
                     var analyzer = LuceneController.Instance.GetCustomAnalyzer() ?? new SearchQueryAnalyzer(true);
                     var nonStemmerAnalyzer = new SearchQueryAnalyzer(false);

@@ -11,6 +11,7 @@ namespace DotNetNuke.Collections.Internal
     public class NaiveLockingList<T> : IList<T>
     {
         private readonly SharedList<T> _list = new SharedList<T>();
+
         // TODO is no recursion the correct policy
         private void DoInReadLock(Action action)
         {

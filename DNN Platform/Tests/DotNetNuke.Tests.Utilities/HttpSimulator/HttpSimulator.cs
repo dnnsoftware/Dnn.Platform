@@ -600,6 +600,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             set
             {
                 this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
+
                 // strip trailing backslashes.
                 this._physicalApplicationPath = StripTrailingBackSlashes(this._physicalApplicationPath) + @"\";
             }
@@ -645,6 +646,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             // set app path property value
             ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);
+
             // set app virtual path property value
             const string vpathTypeName = "System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a";
             var virtualPath = ReflectionHelper.Instantiate(vpathTypeName, new[] { typeof(string) }, new object[] { this.ApplicationPath });
@@ -686,8 +688,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             // Reduce multiple slashes in row to single.
             var normalized = Regex.Replace(s, "(/)/+", "$1");
+
             // Strip left.
             normalized = StripPrecedingSlashes(normalized);
+
             // Strip right.
             normalized = StripTrailingSlashes(normalized);
             return "/" + normalized;

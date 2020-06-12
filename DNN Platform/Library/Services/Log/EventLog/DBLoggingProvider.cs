@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -441,6 +442,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 for (int i = LogQueue.Count - 1; i >= 0; i += -1)
                 {
                     LogQueueItem logQueueItem = LogQueue[i];
+
                     // in case the log was removed
                     // by another thread simultaneously
                     if (logQueueItem != null)

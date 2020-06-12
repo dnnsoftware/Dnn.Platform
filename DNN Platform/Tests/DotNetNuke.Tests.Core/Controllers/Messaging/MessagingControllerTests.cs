@@ -661,6 +661,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._dtMessageRecipients.Clear();
             var recipientId = 0;
+
             // _dtMessageRecipients.Rows.Add(Constants.Messaging_RecipientId_2, Constants.USER_Null, Constants.Messaging_UnReadMessage, Constants.Messaging_UnArchivedMessage);
             mockDataService.Setup(md => md.GetMessageRecipientByMessageAndUser(It.IsAny<int>(), It.IsAny<int>()))
                 .Callback(() => this._dtMessageRecipients.Rows.Add(recipientId++, Constants.USER_Null, Constants.Messaging_UnReadMessage, Constants.Messaging_UnArchivedMessage))

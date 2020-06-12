@@ -49,6 +49,7 @@ namespace DotNetNuke.ModulePipeline
     /// to invoke based on the input module type.
     /// </summary>
     public class ModuleControlPipeline
+
         // MULTI-TARGETTING PIPELINE
         // -------------------------
         // This file multi-targets .NET Framework and .NET Standard,

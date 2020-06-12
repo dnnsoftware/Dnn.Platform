@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -106,6 +107,7 @@ namespace log4net.DateFormatter
             long currentTimeToTheSecond = dateToFormat.Ticks - (dateToFormat.Ticks % TimeSpan.TicksPerSecond);
 
             string timeString = null;
+
             // Compare this time with the stored last time
             // If we are in the same second then append
             // the previously calculated time string
@@ -144,6 +146,7 @@ namespace log4net.DateFormatter
 						// This is only required on multiprocessor machines with weak memeory models
 						System.Threading.Thread.MemoryBarrier();
 #endif
+
                         // Store the time as a string (we only have to do this once per second)
                         s_lastTimeStrings[this.GetType()] = timeString;
                         s_lastTimeToTheSecond = currentTimeToTheSecond;

@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -20,6 +21,7 @@ using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Security.Cookies;
 using DotNetNuke.Services.Cryptography;
+
 // ReSharper disable MemberCanBeMadeStatic.Global
 namespace DotNetNuke.Security
 {
@@ -201,6 +203,7 @@ namespace DotNetNuke.Security
         private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
         {
             roleAllowed = null;
+
             // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
             if (!string.IsNullOrEmpty(roleName))
             {
@@ -839,11 +842,13 @@ namespace DotNetNuke.Security
         {
             // get current url
             var url = HttpContext.Current.Request.Url.ToString();
+
             // if unsecure connection
             if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
                 // switch to secure connection
                 url = "https://" + url.Substring("http://".Length);
+
                 // append ssl parameter to querystring to indicate secure connection processing has already occurred
                 if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                 {

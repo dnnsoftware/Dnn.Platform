@@ -686,10 +686,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             });
 
             t.Start(); // start running 'proc' thread wrapper
+
             // from docs: "The Start method does not return until the new thread has started running."
             if (t.Join(timeout) == false)
             {
                 t.Abort(); // die evil thread!
+
                 // Abort raises the ThreadAbortException
                 int i = 0;
                 while ((t.Join(1) == false) && (i < 20))
@@ -832,6 +834,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.AreEqual(docs.Length, search.Results.Count);
+
             // Assert.AreEqual("brown <b>fox jumps</b> over the lazy dog ", search.Results[0].Snippet);
             // Assert.AreEqual("quick <b>fox jumps</b> over the black dog ", search.Results[1].Snippet);
         }
@@ -856,6 +859,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Assert
             Assert.AreEqual(docs.Length, search.Results.Count);
+
             // Assert.AreEqual("brown <b>fox jumps</b> over the lazy dog ", search.Results[0].Snippet);
             // Assert.AreEqual("quick <b>fox jumps</b> over the black dog ", search.Results[1].Snippet);
         }
@@ -2027,6 +2031,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this._mockHostController.Setup(c => c.GetInteger(Constants.SearchContentBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
             this.CreateNewLuceneControllerInstance(true);
+
             // Arrange
             var added = this.AddSearchDocsForCustomBoost();
 
@@ -2049,6 +2054,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this._mockHostController.Setup(c => c.GetInteger(Constants.SearchDescriptionBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
             this.CreateNewLuceneControllerInstance(true);
+
             // Arrange
             var added = this.AddSearchDocsForCustomBoost();
 
@@ -2071,6 +2077,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             this._mockHostController.Setup(c => c.GetInteger(Constants.SearchAuthorBoostSetting, It.IsAny<int>())).Returns(CustomBoost);
             this.CreateNewLuceneControllerInstance(true);
+
             // Arrange
             var added = this.AddSearchDocsForCustomBoost();
 

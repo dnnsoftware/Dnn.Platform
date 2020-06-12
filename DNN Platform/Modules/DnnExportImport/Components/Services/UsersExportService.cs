@@ -250,6 +250,7 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
+
             // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
             {
@@ -259,6 +260,7 @@ namespace Dnn.ExportImport.Components.Services
             var pageIndex = this.CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - (pageIndex * pageSize);
+
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this))
@@ -306,6 +308,7 @@ namespace Dnn.ExportImport.Components.Services
 
                                 var userPortal = this.Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
                                 var userAuthentication = this.Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
+
                                 // Aspnet Users and Membership
                                 var aspNetUser = this.Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
                                 var aspnetMembership = aspNetUser != null
@@ -401,6 +404,7 @@ namespace Dnn.ExportImport.Components.Services
                             }
 
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
+
                             // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUsersBulk", "@DataTable", table, new Dictionary<string, object> { { "Overwrite", overwrite } });

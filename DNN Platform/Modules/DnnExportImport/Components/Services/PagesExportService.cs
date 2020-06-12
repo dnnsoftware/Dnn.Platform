@@ -240,6 +240,7 @@ namespace Dnn.ExportImport.Components.Services
                         // this is not saved when adding the tab; so set it explicitly
                         localTab.IsVisible = otherTab.IsVisible;
                         EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
+
                         // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                         if (localTab.UniqueId != otherTab.UniqueId && !DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                         {
@@ -332,6 +333,7 @@ namespace Dnn.ExportImport.Components.Services
                 // this is not saved upon updating the tab
                 localTab.IsVisible = otherTab.IsVisible;
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
+
                 // _tabController.UpdateTab(localTab); // to clear cache
                 // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                 if (!DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
@@ -594,6 +596,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
 
                         localTab.TabPermissions.Add(local, true);
+
                         // UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
                         // var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
                         // var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
@@ -760,6 +763,7 @@ namespace Dnn.ExportImport.Components.Services
                         Header = other.Header,
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
+
                         // UniqueId = other.UniqueId,
                         UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
@@ -859,6 +863,7 @@ namespace Dnn.ExportImport.Components.Services
                                     Header = other.Header,
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
+
                                     // UniqueId = other.UniqueId,
                                     UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                                     VersionGuid = other.VersionGuid,
@@ -1458,6 +1463,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.Title = otherTab.Title;
             localTab.Description = otherTab.Description;
             localTab.KeyWords = otherTab.KeyWords;
+
             // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
             localTab.Url = otherTab.Url;
             localTab.SkinSrc = otherTab.SkinSrc;
@@ -1471,6 +1477,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
+
             // localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
@@ -1604,6 +1611,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (this.IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = this._tabController.GetTab(otherPg.TabID, portalId);
+
                     // Do not export tab which has never been published.
                     if (tab.HasBeenPublished)
                     {
@@ -1799,6 +1807,7 @@ namespace Dnn.ExportImport.Components.Services
         // Note: until now there is no use of time range for content
         // ReSharper disable UnusedParameter.Local
         private int ExportPortableContent(ExportTab exportPage, ExportModule exportModule, DateTime toDate, DateTime? fromDat)
+
         // ReSharper enable UnusedParameter.Local
         {
             // check if module's contnt was exported before

@@ -260,6 +260,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
                         {
                             var url = parameters["Url"];
+
                             // allow only site resources when using the url parameter
                             if (!url.StartsWith("http") || !UriBelongsToSite(new Uri(url)))
                             {

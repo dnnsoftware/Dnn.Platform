@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -209,6 +210,7 @@ namespace DotNetNuke.Modules.Html
             this.cmdEdit.Enabled = false;
             this.cmdPreview.Enabled = true;
             this.cmdHistory.Enabled = true;
+
             // DisplayMasterLanguageContent();
             this.DisplayMasterContentButton();
             this.ddlRender.Visible = true;
@@ -294,6 +296,7 @@ namespace DotNetNuke.Modules.Html
         {
             this.txtContent.Visible = false;
             this.cmdSave.Visible = false;
+
             // cmdPreview.Enabled = false;
             this.divPublish.Visible = false;
 
@@ -309,6 +312,7 @@ namespace DotNetNuke.Modules.Html
             if (lastPublishedContent != null)
             {
                 this.DisplayPreview(lastPublishedContent);
+
                 // DisplayHistory(lastPublishedContent);
             }
             else
@@ -465,6 +469,7 @@ namespace DotNetNuke.Modules.Html
                     if (htmlContentItemID != -1)
                     {
                         this.DisplayContent(htmlContent);
+
                         // DisplayPreview(htmlContent);
                         this.DisplayHistory(htmlContent);
                     }
@@ -476,6 +481,7 @@ namespace DotNetNuke.Modules.Html
                     this.divPublish.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phCurrentVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phPreviewVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
+
                     // DisplayVersions();
                     this.BindRenderItems();
                     this.ddlRender.SelectedValue = this.txtContent.Mode;
@@ -535,6 +541,7 @@ namespace DotNetNuke.Modules.Html
                             else
                             {
                                 htmlContent.StateID = publishedStateID;
+
                                 // here it's in published mode
                             }
                         }
@@ -685,6 +692,7 @@ namespace DotNetNuke.Modules.Html
                     else
                     {
                         this.DisplayContent(latestContent);
+
                         // DisplayPreview(latestContent);
                         // DisplayVersions();
                     }
@@ -749,6 +757,7 @@ namespace DotNetNuke.Modules.Html
                                         msg.Replace("[VERSION]", htmlContent.Version.ToString()).Replace("[STATE]", htmlContent.StateName).Replace("[DATECREATED]", htmlContent.CreatedOnDate.ToString())
                                             .Replace("[USERNAME]", createdBy);
                                     imageButton.OnClientClick = "return confirm(\"" + msg + "\");";
+
                                     // hide the delete button
                                     var showDelete = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 

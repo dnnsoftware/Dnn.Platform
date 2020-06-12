@@ -137,6 +137,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         private void ParseFlags()
         {
             this.Flags = new Hashtable();
+
             // loop through arguments, skipping the first one (the command)
             for (var i = 1; i <= this.Args.Length - 1; i++)
             {

@@ -26,6 +26,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         public void Setup()
         {
             this._settingName = "NameToCheckFor";
+
             // we need different value so when we save we force going to database
             this._settingValue = "ValueToCheckFor_" + new Random().Next(1, 100);
         }

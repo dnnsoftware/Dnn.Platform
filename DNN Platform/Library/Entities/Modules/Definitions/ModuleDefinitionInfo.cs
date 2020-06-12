@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -236,6 +237,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
             // Write start of Module Controls
             writer.WriteStartElement("moduleControls");
+
             // Iterate through controls
             foreach (ModuleControlInfo control in this.ModuleControls.Values)
             {

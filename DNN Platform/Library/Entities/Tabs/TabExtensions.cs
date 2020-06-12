@@ -29,6 +29,7 @@ namespace DotNetNuke.Entities.Tabs
                     if (redirect.SeqNum >= seqNum)
                     {
                         seqNum = redirect.SeqNum + 1;
+
                         // 602 : when seqnum == 0, then duplicate key problems arise
                         if (seqNum == 0)
                         {
@@ -42,6 +43,7 @@ namespace DotNetNuke.Entities.Tabs
                     if (redirect.SeqNum <= seqNum)
                     {
                         seqNum = redirect.SeqNum - 1;
+
                         // 602 : don't allow seqnum to become zero
                         if (seqNum == 0)
                         {

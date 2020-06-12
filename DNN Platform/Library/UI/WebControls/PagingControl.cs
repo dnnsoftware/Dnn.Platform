@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -295,6 +296,7 @@ namespace DotNetNuke.UI.WebControls
             this.tablePageNumbers = new Table();
             this.cellDisplayStatus = new TableCell();
             this.cellDisplayLinks = new TableCell();
+
             // cellDisplayStatus.CssClass = "Normal";
             // cellDisplayLinks.CssClass = "Normal";
             this.tablePageNumbers.CssClass = string.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
@@ -304,8 +306,10 @@ namespace DotNetNuke.UI.WebControls
             this.PageNumbers.ItemTemplate = I;
             this.BindPageNumbers(this.TotalRecords, this.PageSize);
             this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
+
             // cellDisplayStatus.Width = new Unit("50%");
             this.cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
+
             // cellDisplayLinks.Width = new Unit("50%");
             var intTotalPages = this._totalPages;
             if (intTotalPages == 0)

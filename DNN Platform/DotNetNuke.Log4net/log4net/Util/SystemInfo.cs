@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -732,6 +733,7 @@ namespace log4net.Util
                 if (loadedAssemblies != null)
                 {
                     Type fallback = null;
+
                     // Search the loaded assemblies for the type
                     foreach (Assembly assembly in loadedAssemblies)
                     {

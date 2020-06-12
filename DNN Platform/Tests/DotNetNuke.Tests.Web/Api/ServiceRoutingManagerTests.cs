@@ -26,6 +26,7 @@ namespace DotNetNuke.Tests.Web.Api
         // ReSharper disable UnusedMember.Local
         private readonly List<string[]> _emptyStringArrays = new List<string[]>
                                                         { null, new string[0], new[] { string.Empty }, new string[] { null } };
+
         // ReSharper restore UnusedMember.Local
         private Mock<IPortalController> _mockPortalController;
         private IPortalController _portalController;

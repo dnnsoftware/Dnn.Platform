@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -27,6 +28,7 @@ namespace DotNetNuke.Instrumentation
         internal static Level LevelWarn;
         internal static Level LevelError;
         internal static Level LevelFatal;
+
         // add custom logging levels (below trace value of 20000)
         internal static Level LevelLogInfo = new Level(10001, "LogInfo");
         internal static Level LevelLogError = new Level(10002, "LogError");

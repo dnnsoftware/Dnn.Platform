@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -417,6 +418,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
 
                 this.CheckDisposed();
+
                 // optimize down to "> 1 segments" for better performance than down to 1
                 this._writer.Optimize(4, doWait);
 

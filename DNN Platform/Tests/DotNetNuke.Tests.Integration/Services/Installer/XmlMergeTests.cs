@@ -100,6 +100,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         {
 // ReSharper disable ConditionIsAlwaysTrueOrFalse
             if (OutputXml)
+
 // ReSharper restore ConditionIsAlwaysTrueOrFalse
             {
                 using (var writer = new StreamWriter(new MemoryStream()))

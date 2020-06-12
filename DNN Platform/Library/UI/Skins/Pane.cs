@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -52,6 +53,7 @@ namespace DotNetNuke.UI.Skins
         public Pane(HtmlContainerControl pane)
         {
             this.PaneControl = pane;
+
             // Disable ViewState (we enable it later in the process)
             this.PaneControl.ViewStateMode = ViewStateMode.Disabled;
             this.Name = pane.ID;
@@ -171,6 +173,7 @@ namespace DotNetNuke.UI.Skins
 
                 container = ControlUtilities.LoadControl<Containers.Container>(this.PaneControl.Page, containerPath);
                 container.ContainerSrc = containerSrc;
+
                 // call databind so that any server logic in the container is executed
                 container.DataBind();
             }
@@ -272,6 +275,7 @@ namespace DotNetNuke.UI.Skins
             {
                 // always display container if the current user is the administrator or the module is being used in an admin case
                 bool displayTitle = ModulePermissionController.CanEditModuleContent(module) || Globals.IsAdminSkin();
+
                 // unless the administrator is in view mode
                 if (displayTitle)
                 {
@@ -296,6 +300,7 @@ namespace DotNetNuke.UI.Skins
             if (this.PortalSettings.EnablePopUps && UrlUtils.InPopUp())
             {
                 containerSrc = module.ContainerPath + "popUpContainer.ascx";
+
                 // Check Skin for a popup Container
                 if (module.ContainerSrc == this.PortalSettings.ActiveTab.ContainerSrc)
                 {
@@ -367,6 +372,7 @@ namespace DotNetNuke.UI.Skins
 
             // set container id to an explicit short name to reduce page payload
             container.ID = "ctr";
+
             // make the container id unique for the page
             if (module.ModuleID > -1)
             {
@@ -473,6 +479,7 @@ namespace DotNetNuke.UI.Skins
                     // provide Drag-N-Drop capabilities
                     var dragDropContainer = new Panel();
                     Control title = container.FindControl("dnnTitle");
+
                     // Assume that the title control is named dnnTitle.  If this becomes an issue we could loop through the controls looking for the title type of skin object
                     dragDropContainer.ID = container.ID + "_DD";
                     this._containerWrapperControl.Controls.Add(dragDropContainer);

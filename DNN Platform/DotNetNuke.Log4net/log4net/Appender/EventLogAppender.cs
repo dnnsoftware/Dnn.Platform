@@ -407,6 +407,7 @@ namespace log4net.Appender
             }
 
             short category = this.m_category;
+
             // Look for the Category property
             object categoryPropertyObj = loggingEvent.LookupProperty("Category");
             if (categoryPropertyObj != null)

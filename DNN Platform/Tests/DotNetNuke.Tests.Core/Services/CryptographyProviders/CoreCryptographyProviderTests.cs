@@ -27,6 +27,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         {
             var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
+
             // Arrange
 
             // Act
@@ -41,6 +42,7 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         {
             var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
+
             // Arrange
 
             // Act

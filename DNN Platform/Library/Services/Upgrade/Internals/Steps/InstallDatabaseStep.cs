@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -62,6 +63,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 Globals.UpdateDataBaseVersion(new Version(installConfig.Version));
 
                 this.Details = Localization.Localization.GetString("InstallingMembershipDatabaseScriptStep", this.LocalInstallResourceFile);
+
                 // Optionally Install the memberRoleProvider
                 var exceptions = Upgrade.InstallMemberRoleProvider(providerPath, false);
                 if (!string.IsNullOrEmpty(exceptions))

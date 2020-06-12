@@ -79,6 +79,7 @@ namespace DotNetNuke.Web.Mvc
             try
             {
                 var moduleExecutionEngine = this.GetModuleExecutionEngine();
+
                 // Check if the controller supports IDnnController
                 var moduleResult =
                     moduleExecutionEngine.ExecuteModule(this.GetModuleRequestContext(httpContext));

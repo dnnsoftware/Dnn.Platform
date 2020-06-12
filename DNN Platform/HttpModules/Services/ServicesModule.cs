@@ -29,6 +29,7 @@ namespace DotNetNuke.HttpModules.Services
                 // they reveal too much info and are security risk
                 var headers = app.Response.Headers;
                 headers.Remove("Server");
+
                 // DNN-8325
                 // if (ServiceApi.IsMatch(app.Context.Request.RawUrl.ToLowerInvariant()))
                 // {

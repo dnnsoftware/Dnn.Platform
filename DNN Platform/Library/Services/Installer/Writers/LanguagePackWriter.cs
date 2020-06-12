@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -447,6 +448,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         break;
                     case "LocalResource":
                         filePath = Path.Combine("DesktopModules", Path.Combine(moduleName, "App_LocalResources"));
+
                         // Two assumptions are made here
                         // 1. Core files appear in the package before extension files
                         // 2. Module packages only include one module

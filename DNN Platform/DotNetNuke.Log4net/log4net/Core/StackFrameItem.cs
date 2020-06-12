@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -54,6 +55,7 @@ namespace log4net.Core
                 // get frame values
                 this.m_lineNumber = frame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
                 this.m_fileName = frame.GetFileName();
+
                 // get method values
                 MethodBase method = frame.GetMethod();
                 if (method != null)

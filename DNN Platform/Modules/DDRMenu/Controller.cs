@@ -89,8 +89,10 @@ namespace DotNetNuke.Web.DDRMenu
             var configXml = new XmlDocument { XmlResolver = null };
             configXml.Load(webConfig);
             var navProviders = configXml.SelectSingleNode("/configuration/dotnetnuke/navigationControl/providers") as XmlElement;
+
 // ReSharper disable PossibleNullReferenceException
             var addProvider = navProviders.SelectSingleNode("add[@name='" + navName + "']") as XmlElement;
+
 // ReSharper restore PossibleNullReferenceException
             var needsUpdate = true;
             if (addProvider == null)

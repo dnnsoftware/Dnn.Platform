@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -65,6 +66,7 @@ namespace DotNetNuke.Entities.Urls
             lock (providersBuildLock)
             {
                 bool definitelyNoProvider;
+
                 // 887 : use cached list of tabs instead of per-tab cache of provider
                 // get the list of providers to call based on the tab and the portal
                 var providersToCall = CacheController.GetProvidersForTabAndPortal(
@@ -74,6 +76,7 @@ namespace DotNetNuke.Entities.Urls
                     out definitelyNoProvider,
                     parentTraceId);
                 if (definitelyNoProvider == false && providersToCall == null)
+
                 // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                 {
                     // get all providers for the portal
@@ -117,6 +120,7 @@ namespace DotNetNuke.Entities.Urls
             if (alwaysCallTabids == null)
             {
                 alwaysCallTabids = new List<int>(); // create new list
+
                 // nothing in cache, build list
                 List<ExtensionUrlProvider> providers = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
                 foreach (ExtensionUrlProvider provider in providers)
@@ -194,6 +198,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 // log module provider exception
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, result, messages);
+
                 // return defaults
                 redirected = false;
                 location = string.Empty;
@@ -254,6 +259,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     activeProvider = provider; // keep for exception purposes
                     bool useDnnPagePath;
+
                     // go through and call each provider to generate the friendly urls for the module
                     string customPath = provider.ChangeFriendlyUrl(
                         tab,
@@ -288,6 +294,7 @@ namespace DotNetNuke.Entities.Urls
             catch (Exception ex)
             {
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, null, messages);
+
                 // reset all values to defaults
                 wasChanged = false;
                 changedPath = friendlyUrlPath;
@@ -330,6 +337,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     // now check for providers by calling the providers
                     int upperBound = urlParms.GetUpperBound(0);
+
                     // clean extension off parameters array
                     var parms = new string[upperBound + 1];
                     Array.ConstrainedCopy(urlParms, 0, parms, 0, upperBound + 1);
@@ -345,6 +353,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // set active provider for exception handling
                         activeProvider = provider;
+
                         // call down to specific providers and see if we get a rewrite
                         string location;
                         int status;
@@ -363,6 +372,7 @@ namespace DotNetNuke.Entities.Urls
                             if (!string.IsNullOrEmpty(queryString) && queryString != newUrl)
                             {
                                 rewriteDone = true;
+
                                 // check for duplicate tabIds.
                                 string qsRemainder = null;
                                 if (Regex.IsMatch(queryString, @"tabid=\d+", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
@@ -436,6 +446,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 // log module provider exception
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, result, messages);
+
                 // reset values to initial
                 rewriteDone = false;
                 rewrittenUrl = newUrl;
@@ -612,6 +623,7 @@ namespace DotNetNuke.Entities.Urls
                 // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
                 // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();
+
                 // see if there is an existing object logged for this exception type
                 object existingEx = DataCache.GetCache(cacheKey);
                 if (existingEx == null)
@@ -619,6 +631,7 @@ namespace DotNetNuke.Entities.Urls
                     // if there was no existing object logged for this exception type, this is a new exception
                     DateTime expire = DateTime.Now.AddHours(1);
                     DataCache.SetCache(cacheKey, cacheKey, expire);
+
                     // just store the cache key - it doesn't really matter
                     // create a log event
                     string productVer = DotNetNukeContext.Current.Application.Version.ToString();

@@ -109,10 +109,12 @@ namespace DotNetNuke.Web.Api.Internal
                 GlobalConfiguration.Configuration.MessageHandlers.Add(new DnnContextMessageHandler());
 
                 RegisterAuthenticationHandlers();
+
                 // this must run after all other auth message handlers
                 var handler = new WebFormsAuthMessageHandler();
                 GlobalConfiguration.Configuration.MessageHandlers.Add(handler);
                 DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
+
                 // Add Windows Authentication type to make API request works when windows authentication enabled.
                 DnnAuthorizeAttribute.AppendToDefaultAuthTypes("Negotiate");
 

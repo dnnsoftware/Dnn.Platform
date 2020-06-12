@@ -1,4 +1,5 @@
 ﻿
+
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file in the project root for more information
@@ -103,6 +104,7 @@ namespace DotNetNuke.Services.Localization
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Localization));
         private static string _defaultKeyName = "resourcekey";
+
         // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
         // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? _showMissingKeys;
@@ -1679,6 +1681,7 @@ namespace DotNetNuke.Services.Localization
             else
             {
                 bool isAdminPage = false;
+
                 // we should be checking that the tab path matches //Admin//pagename or //admin
                 // in this way we should avoid partial matches (ie //Administrators
                 if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||

@@ -121,6 +121,7 @@ namespace DotNetNuke.Services.Journal
                 PortalId = portalId,
                 AuthorUserId = currentUserId,
                 UniqueKey = ji.ContentItemId.ToString("D"),
+
                 // QueryString = "journalid=" + journalId,
                 SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId,
             };
@@ -736,6 +737,7 @@ namespace DotNetNuke.Services.Journal
         public void DeleteComment(int journalId, int commentId)
         {
             this._dataService.Journal_Comment_Delete(journalId, commentId);
+
             // UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 

@@ -170,6 +170,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                 this.ScheduleHistoryItem.Succeeded = false;
                 this.ScheduleHistoryItem.AddLogNote("<br/>Export/Import EXCEPTION: " + ex.Message);
                 this.Errored(ref ex);
+
                 // this duplicates the logging
                 // if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
                 // {

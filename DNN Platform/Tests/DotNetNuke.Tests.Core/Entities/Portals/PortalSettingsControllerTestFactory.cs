@@ -14,6 +14,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Entities.Portals
 {
     public class PortalSettingsControllerTestFactory
+
     // ReSharper disable once InconsistentNaming
     {
         internal static string FilePath
