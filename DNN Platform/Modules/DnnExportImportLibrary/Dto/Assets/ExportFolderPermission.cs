@@ -6,7 +6,7 @@ using System;
 
 namespace Dnn.ExportImport.Dto.Assets
 {
-    public class ExportFolderPermission:BasicExportImportDto
+    public class ExportFolderPermission : BasicExportImportDto
     {
         public int FolderPermissionId { get; set; }
 

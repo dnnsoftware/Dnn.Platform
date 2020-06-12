@@ -17,7 +17,7 @@ using DotNetNuke.UI.Skins;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    public class TabModulesController: ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
+    public class TabModulesController : ServiceLocator<ITabModulesController, TabModulesController>, ITabModulesController
     {
         #region Public Methods
 

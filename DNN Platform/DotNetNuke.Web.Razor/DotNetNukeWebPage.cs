@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Razor
     }
 
     [Obsolete("Deprecated in 9.3.2, will be removed in 11.0.0, use Razor Pages instead")]
-    public abstract class DotNetNukeWebPage<TModel> :DotNetNukeWebPage where TModel : class
+    public abstract class DotNetNukeWebPage<TModel> : DotNetNukeWebPage where TModel : class
     {
         private TModel _model;
 

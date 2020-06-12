@@ -9,7 +9,7 @@ using System.Text;
 
 namespace DotNetNuke.ExtensionPoints
 {
-    public interface IToolBarMenuButtonExtensionPoint: IToolBarButtonExtensionPoint
+    public interface IToolBarMenuButtonExtensionPoint : IToolBarButtonExtensionPoint
     {
         List<IMenuButtonItemExtensionPoint> Items { get; }
         string MenuCssClass { get; }

@@ -10,7 +10,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     /// Class to represent a Tab Version Detail object. Each detail is related with a TabVersion and also with a ModuleInfo
     /// </summary>    
     [Serializable]
-    public class TabVersionDetail: BaseEntityInfo
+    public class TabVersionDetail : BaseEntityInfo
     {
       #region Public Properties
 

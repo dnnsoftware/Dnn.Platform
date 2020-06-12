@@ -12,7 +12,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Web.Mvc.Common
 {
-    public class ModuleControlControllerAdapter: ServiceLocator<IModuleControlController, ModuleControlControllerAdapter>, IModuleControlController
+    public class ModuleControlControllerAdapter : ServiceLocator<IModuleControlController, ModuleControlControllerAdapter>, IModuleControlController
     {
         protected override Func<IModuleControlController> GetFactory()
         {

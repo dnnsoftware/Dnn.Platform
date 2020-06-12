@@ -102,7 +102,7 @@ namespace log4net.Appender
 	/// <author>Rick Hobbs</author>
 	/// <author>Nicko Cadell</author>
 	/// <author>Pavlos Touboulidis</author>
-	public class ManagedColoredConsoleAppender: AppenderSkeleton
+	public class ManagedColoredConsoleAppender : AppenderSkeleton
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ManagedColoredConsoleAppender" /> class.

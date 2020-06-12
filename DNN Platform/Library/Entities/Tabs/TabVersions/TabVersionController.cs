@@ -14,7 +14,7 @@ using DotNetNuke.Services.Localization;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public class TabVersionController: ServiceLocator<ITabVersionController, TabVersionController>, ITabVersionController
+    public class TabVersionController : ServiceLocator<ITabVersionController, TabVersionController>, ITabVersionController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 

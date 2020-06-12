@@ -17,7 +17,7 @@ using DotNetNuke.Web.Components.Controllers.Models;
 
 namespace DotNetNuke.Web.Components.Controllers
 {
-    public class ControlBarController: ServiceLocator<IControlBarController, ControlBarController>, IControlBarController
+    public class ControlBarController : ServiceLocator<IControlBarController, ControlBarController>, IControlBarController
     {
         private const string BookmarkModulesTitle = "module";
         private const string BookmarkCategoryProperty = "ControlBar_BookmarkCategory";

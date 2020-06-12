@@ -6,7 +6,7 @@ using System;
 
 namespace Dnn.ExportImport.Dto.Assets
 {
-    public class ExportFolderMapping: BasicExportImportDto
+    public class ExportFolderMapping : BasicExportImportDto
     {
         public int FolderMappingId { get; set; }
 

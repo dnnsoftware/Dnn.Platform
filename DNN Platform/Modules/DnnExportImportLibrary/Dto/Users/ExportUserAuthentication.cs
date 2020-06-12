@@ -6,7 +6,7 @@ using System;
 
 namespace Dnn.ExportImport.Dto.Users
 {
-    public class ExportUserAuthentication:BasicExportImportDto
+    public class ExportUserAuthentication : BasicExportImportDto
     {
         public int UserAuthenticationId { get; set; }
 

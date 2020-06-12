@@ -54,7 +54,7 @@ namespace log4net.Layout
 	/// &lt;/layout&gt;
 	/// </example>
 	/// </remarks>
-	public class DynamicPatternLayout: PatternLayout
+	public class DynamicPatternLayout : PatternLayout
 	{
 		#region Member Variables
 		/// <summary>

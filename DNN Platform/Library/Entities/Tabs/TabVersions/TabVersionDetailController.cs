@@ -11,7 +11,7 @@ using DotNetNuke.Framework;
 
 namespace DotNetNuke.Entities.Tabs.TabVersions
 {
-    public class TabVersionDetailController: ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
+    public class TabVersionDetailController : ServiceLocator<ITabVersionDetailController, TabVersionDetailController>, ITabVersionDetailController
     {
         private static readonly DataProvider Provider = DataProvider.Instance();
 

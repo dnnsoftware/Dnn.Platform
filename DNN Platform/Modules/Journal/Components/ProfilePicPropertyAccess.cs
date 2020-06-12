@@ -9,7 +9,7 @@ using DotNetNuke.Common;
 
 namespace DotNetNuke.Modules.Journal.Components
 {
-    public class ProfilePicPropertyAccess: IPropertyAccess
+    public class ProfilePicPropertyAccess : IPropertyAccess
     {
         private readonly int _userId;
 
