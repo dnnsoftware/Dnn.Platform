@@ -520,7 +520,8 @@ namespace DotNetNuke.Services.Localization
                 }
 
                 counter++;
-            } while (!isValid);
+            }
+            while (!isValid);
 
             return alias;
         }

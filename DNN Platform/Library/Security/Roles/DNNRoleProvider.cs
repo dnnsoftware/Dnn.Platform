@@ -129,8 +129,10 @@ namespace DotNetNuke.Security.Roles
         public override IDictionary<string, string> GetRoleSettings(int roleId)
         {
             var settings = new Dictionary<string, string> { };
-            using (IDataReader dr = this.dataProvider.GetRoleSettings(roleId)) {
-                while (dr.Read()) {
+            using (IDataReader dr = this.dataProvider.GetRoleSettings(roleId))
+            {
+                while (dr.Read())
+                {
                     settings.Add(dr["SettingName"].ToString(), dr["SettingValue"].ToString());
                 }
                 dr.Close();

@@ -136,7 +136,8 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 reader.ReadEndElement();
                 reader.Read();
-            } while (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName));
+            }
+            while (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName));
         }
 
         public string Serialize()

@@ -267,7 +267,8 @@ namespace DotNetNuke.Services.EventQueue
 
                     // Add attribute to the collection
                     this._attributes.Add(attName, attValue);
-                } while (reader.ReadToNextSibling("Attribute"));
+                }
+                while (reader.ReadToNextSibling("Attribute"));
             }
         }
 

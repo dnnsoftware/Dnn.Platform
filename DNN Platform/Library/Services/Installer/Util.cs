@@ -193,7 +193,8 @@ namespace DotNetNuke.Services.Installer
 
                 // Write the chunk to the destination
                 destStream.Write(buf, 0, count);
-            } while (count > 0);
+            }
+            while (count > 0);
             destStream.Flush();
         }
 
@@ -751,7 +752,8 @@ namespace DotNetNuke.Services.Installer
 
                     // Write the data to the local file
                     localStream.Write(buffer, 0, bytesRead);
-                } while (bytesRead > 0);
+                }
+                while (bytesRead > 0);
             }
             finally
             {

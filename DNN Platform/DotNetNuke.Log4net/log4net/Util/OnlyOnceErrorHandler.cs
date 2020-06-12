@@ -119,14 +119,16 @@ namespace log4net.Util
         /// Sends the error information to <see cref="LogLog"/>'s Error method.
         /// </para>
         /// </remarks>
-        public virtual void FirstError(string message, Exception e, ErrorCode errorCode) {
+        public virtual void FirstError(string message, Exception e, ErrorCode errorCode)
+        {
             this.m_enabledDateUtc = DateTime.UtcNow;
             this.m_errorCode = errorCode;
             this.m_exception = e;
             this.m_message = message;
             this.m_firstTime = false;
 
-            if (LogLog.InternalDebugging && !LogLog.QuietMode) {
+            if (LogLog.InternalDebugging && !LogLog.QuietMode)
+            {
                 LogLog.Error(declaringType, "[" + this.m_prefix + "] ErrorCode: " + errorCode.ToString() + ". " + message, e);
             }
         }

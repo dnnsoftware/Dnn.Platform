@@ -641,7 +641,8 @@ namespace log4net.Repository.Hierarchy
                     {
                         // Expand environment variables in the string.
                         IDictionary environmentVariables = Environment.GetEnvironmentVariables();
-                        if (this.HasCaseInsensitiveEnvironment) {
+                        if (this.HasCaseInsensitiveEnvironment)
+                        {
                         environmentVariables = this.CreateCaseInsensitiveWrapper(environmentVariables);
                         }
                         propertyValue = OptionConverter.SubstituteVariables(propertyValue, environmentVariables);
@@ -1088,7 +1089,8 @@ namespace log4net.Repository.Hierarchy
             return dict;
             }
             Hashtable hash = SystemInfo.CreateCaseInsensitiveHashtable();
-            foreach (DictionaryEntry entry in dict) {
+            foreach (DictionaryEntry entry in dict)
+            {
             hash[entry.Key] = entry.Value;
             }
             return hash;

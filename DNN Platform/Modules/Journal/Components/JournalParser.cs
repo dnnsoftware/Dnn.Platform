@@ -59,7 +59,8 @@ namespace DotNetNuke.Modules.Journal.Components
                 this.OwnerPortalId = moduleInfo.OwnerPortalID;
             }
 
-            if (string.IsNullOrEmpty(this.url)) {
+            if (string.IsNullOrEmpty(this.url))
+            {
                 this.url = HttpContext.Current.Request.Url.Host;
             }
             this.url = string.Format(
@@ -73,7 +74,8 @@ namespace DotNetNuke.Modules.Journal.Components
 
         public string GetList(int currentIndex, int rows)
         {
-            if (this.CurrentUser.UserID > 0) {
+            if (this.CurrentUser.UserID > 0)
+            {
                 this.isAdmin = this.CurrentUser.IsInRole(this.PortalSettings.AdministratorRoleName);
             }
             this.isUnverifiedUser = !this.CurrentUser.IsSuperUser && this.CurrentUser.IsInRole("Unverified Users");
@@ -120,23 +122,33 @@ namespace DotNetNuke.Modules.Journal.Components
             var journalIds = journalList.Select(ji => ji.JournalId).ToList();
             IList<CommentInfo> comments = JournalController.Instance.GetCommentsByJournalIds(journalIds);
 
-            foreach (JournalItem ji in journalList) {
+            foreach (JournalItem ji in journalList)
+            {
                 string replacement = this.GetStringReplacement(ji);
 
                 string rowTemplate;
-                if (ji.JournalType == "status") {
+                if (ji.JournalType == "status")
+                {
                     rowTemplate = statusTemplate;
                     rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
-                } else if (ji.JournalType == "link") {
+                }
+                else if (ji.JournalType == "link")
+                {
                     rowTemplate = linkTemplate;
                     rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
-                } else if (ji.JournalType == "photo") {
+                }
+                else if (ji.JournalType == "photo")
+                {
                     rowTemplate = photoTemplate;
                     rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
-                } else if (ji.JournalType == "file") {
+                }
+                else if (ji.JournalType == "file")
+                {
                     rowTemplate = fileTemplate;
                     rowTemplate = TemplateRegex.Replace(rowTemplate, replacement);
-                } else {
+                }
+                else
+                {
                     rowTemplate = this.GetJournalTemplate(ji.JournalType, ji);
                 }
 
@@ -183,7 +195,8 @@ namespace DotNetNuke.Modules.Journal.Components
                 string tmp = tokenReplace.ReplaceJournalItemTokens(rowTemplate);
                 tmp = tmp.Replace("<br>", "<br />");
                 sb.Append("<div class=\"journalrow\" id=\"jid-" + ji.JournalId + "\">");
-                if (this.isAdmin || this.CurrentUser.UserID == ji.UserId || (this.ProfileId > Null.NullInteger && this.CurrentUser.UserID == this.ProfileId)) {
+                if (this.isAdmin || this.CurrentUser.UserID == ji.UserId || (this.ProfileId > Null.NullInteger && this.CurrentUser.UserID == this.ProfileId))
+                {
                     sb.Append("<div class=\"minidel\" onclick=\"journalDelete(this);\"></div>");
                 }
                 sb.Append(tmp);
@@ -212,15 +225,19 @@ namespace DotNetNuke.Modules.Journal.Components
         {
             var sb = new StringBuilder();
             isLiked = false;
-            if (ji.JournalXML == null) {
+            if (ji.JournalXML == null)
+            {
                 return string.Empty;
             }
             XmlNodeList xLikes = ji.JournalXML.DocumentElement.SelectNodes("//likes/u");
-            if (xLikes == null) {
+            if (xLikes == null)
+            {
                 return string.Empty;
             }
-            foreach (XmlNode xLike in xLikes) {
-                if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID) {
+            foreach (XmlNode xLike in xLikes)
+            {
+                if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID)
+                {
                     ji.CurrentUserLikes = true;
                     isLiked = true;
                     break;
@@ -229,27 +246,41 @@ namespace DotNetNuke.Modules.Journal.Components
             }
             int xc = 0;
             sb.Append("<div class=\"likes\">");
-            if (xLikes.Count == 1 && ji.CurrentUserLikes) {
+            if (xLikes.Count == 1 && ji.CurrentUserLikes)
+            {
                 sb.Append("{resx:youlikethis}");
-            } else if (xLikes.Count > 1) {
-                if (ji.CurrentUserLikes) {
+            }
+            else if (xLikes.Count > 1)
+            {
+                if (ji.CurrentUserLikes)
+                {
                     sb.Append("{resx:you}");
                     xc += 1;
                 }
-                foreach (XmlNode l in xLikes) {
+                foreach (XmlNode l in xLikes)
+                {
                     int userId = Convert.ToInt32(l.Attributes["uid"].Value);
                     string name = l.Attributes["un"].Value;
-                    if (userId != this.CurrentUser.UserID) {
-                        if (xc < xLikes.Count - 1 && xc > 0 && xc < 3) {
+                    if (userId != this.CurrentUser.UserID)
+                    {
+                        if (xc < xLikes.Count - 1 && xc > 0 && xc < 3)
+                        {
                             sb.Append(", ");
-                        } else if (xc > 0 & xc < xLikes.Count & xc < 3) {
+                        }
+                        else if (xc > 0 & xc < xLikes.Count & xc < 3)
+                        {
                             sb.Append(" {resx:and} ");
-                        } else if (xc >= 3) {
+                        }
+                        else if (xc >= 3)
+                        {
                             int diff = xLikes.Count - xc;
                             sb.Append(" {resx:and} " + (xLikes.Count - xc).ToString(CultureInfo.InvariantCulture));
-                            if (diff > 1) {
+                            if (diff > 1)
+                            {
                                 sb.Append(" {resx:others}");
-                            } else {
+                            }
+                            else
+                            {
                                 sb.Append(" {resx:other}");
                             }
                             break;
@@ -258,27 +289,39 @@ namespace DotNetNuke.Modules.Journal.Components
                         xc += 1;
                     }
                 }
-                if (xc == 1) {
+                if (xc == 1)
+                {
                     sb.Append(" {resx:likesthis}");
-                } else if (xc > 1) {
+                }
+                else if (xc > 1)
+                {
                     sb.Append(" {resx:likethis}");
                 }
 
-        } else {
-            foreach (XmlNode l in xLikes) {
+        }
+            else
+        {
+            foreach (XmlNode l in xLikes)
+            {
                 int userId = Convert.ToInt32(l.Attributes["uid"].Value);
                 string name = l.Attributes["un"].Value;
                 sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
                 xc += 1;
-                if (xc == xLikes.Count - 1) {
+                if (xc == xLikes.Count - 1)
+                {
                     sb.Append(" {resx:and} ");
-                } else if (xc < xLikes.Count - 1) {
+                }
+                else if (xc < xLikes.Count - 1)
+                {
                     sb.Append(", ");
                 }
             }
-            if (xc == 1) {
+            if (xc == 1)
+            {
                 sb.Append(" {resx:likesthis}");
-            } else if (xc > 1) {
+            }
+            else if (xc > 1)
+            {
                 sb.Append(" {resx:likethis}");
             }
         }
@@ -288,14 +331,16 @@ namespace DotNetNuke.Modules.Journal.Components
             return sb.ToString();
         }
 
-        internal string GetCommentAreaHTML(JournalItem journal, IList<CommentInfo> comments) {
+        internal string GetCommentAreaHTML(JournalItem journal, IList<CommentInfo> comments)
+        {
             if (journal.CommentsHidden)
             {
                 return string.Empty;
             }
             var sb = new StringBuilder();
             sb.AppendFormat("<ul class=\"jcmt\" id=\"jcmt-{0}\">", journal.JournalId);
-            foreach (CommentInfo ci in comments) {
+            foreach (CommentInfo ci in comments)
+            {
                 if (ci.JournalId == journal.JournalId)
                 {
                     sb.Append(this.GetCommentRow(journal, ci));
@@ -314,11 +359,13 @@ namespace DotNetNuke.Modules.Journal.Components
             return sb.ToString();
         }
 
-        internal string GetCommentRow(JournalItem journal, CommentInfo comment) {
+        internal string GetCommentRow(JournalItem journal, CommentInfo comment)
+        {
             var sb = new StringBuilder();
             string pic = UserController.Instance.GetUserProfilePictureUrl(comment.UserId, 32, 32);
             sb.AppendFormat("<li id=\"cmt-{0}\">", comment.CommentId);
-            if (comment.UserId == this.CurrentUser.UserID || journal.UserId == this.CurrentUser.UserID || this.isAdmin) {
+            if (comment.UserId == this.CurrentUser.UserID || journal.UserId == this.CurrentUser.UserID || this.isAdmin)
+            {
                 sb.Append("<div class=\"miniclose\"></div>");
             }
             sb.AppendFormat("<img src=\"{0}\" />", pic);

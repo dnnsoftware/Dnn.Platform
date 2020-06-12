@@ -985,13 +985,16 @@ namespace DotNetNuke.Web.InternalServices
                 this.HasPermission(parentFolder, permission.ToUpper());
             if (!hasPermission) return new List<ItemDto>();
 
-            if (parentId < 1) return new List<ItemDto> { new ItemDto
+            if (parentId < 1) return new List<ItemDto>
+            {
+                new ItemDto
                 {
                     Key = parentFolder.FolderID.ToString(CultureInfo.InvariantCulture),
                     Value = portalId == -1 ? DynamicSharedConstants.HostRootFolder : DynamicSharedConstants.RootFolder,
                     HasChildren = this.HasChildren(parentFolder, permission),
                     Selectable = true
-                }, };
+                },
+            };
 
             var childrenFolders = this.GetFolderDescendants(parentFolder, searchText, permission);
 
@@ -1321,9 +1324,12 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (var v in vocabularies)
             {
-                terms.AddRange(new[] { from t in termRep.GetTermsByVocabulary(v.VocabularyId)
+                terms.AddRange(new[]
+                {
+                    from t in termRep.GetTermsByVocabulary(v.VocabularyId)
                                       where string.IsNullOrEmpty(q) || t.Name.IndexOf(q, StringComparison.InvariantCultureIgnoreCase) > -1
-                                        select new { text = t.Name, value = t.TermId }, });
+                                        select new { text = t.Name, value = t.TermId },
+                });
             }
 
             return this.Request.CreateResponse(HttpStatusCode.OK, terms);

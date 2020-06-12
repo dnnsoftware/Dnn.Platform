@@ -297,7 +297,8 @@ namespace DotNetNuke.Security.Roles
                 var role = new RoleInfo();
                 role.ReadXml(reader);
                 this._Roles.Add(role.RoleName, role);
-            } while (reader.ReadToNextSibling("role"));
+            }
+            while (reader.ReadToNextSibling("role"));
         }
     }
 }

@@ -55,8 +55,10 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                if (this.GroupId < 0) {
-                    if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName)) {
+                if (this.GroupId < 0)
+                {
+                    if (this.TabId != this.GroupListTabId && !this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
+                    {
                        this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
                     }
                 }

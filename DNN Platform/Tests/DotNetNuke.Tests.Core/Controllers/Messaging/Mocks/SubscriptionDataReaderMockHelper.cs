@@ -47,7 +47,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 
         private static void AddSubscriptionToTable(DataTable table, Subscription subscription)
         {
-            table.Rows.Add(new object[] {
+            table.Rows.Add(new object[]
+            {
                 subscription.SubscriptionId,
                 subscription.UserId,
                 subscription.PortalId,

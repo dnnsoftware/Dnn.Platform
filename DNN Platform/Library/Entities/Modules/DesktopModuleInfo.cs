@@ -722,7 +722,8 @@ namespace DotNetNuke.Entities.Modules
                             break;
                     }
                 }
-            } while (reader.ReadToNextSibling("supportedFeature"));
+            }
+            while (reader.ReadToNextSibling("supportedFeature"));
         }
 
         private void ReadModuleSharing(XmlReader reader)
@@ -772,7 +773,8 @@ namespace DotNetNuke.Entities.Modules
 
                 // Add to the collection
                 this.ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
-            } while (reader.ReadToNextSibling("moduleDefinition"));
+            }
+            while (reader.ReadToNextSibling("moduleDefinition"));
         }
 
         private void ReadPageInfo(XmlReader reader)

@@ -18,10 +18,12 @@ namespace DotNetNuke.Entities.Groups
     public class GroupInfo : RoleInfo, IPropertyAccess
     {
         // private RoleInfo roleInfo;
-        public GroupInfo() {
+        public GroupInfo()
+        {
 
         }
-        public GroupInfo(RoleInfo roleInfo) {
+        public GroupInfo(RoleInfo roleInfo)
+        {
             this.RoleID = roleInfo.RoleID;
             this.RoleName = roleInfo.RoleName;
             this.Description = roleInfo.Description;
@@ -52,65 +54,86 @@ namespace DotNetNuke.Entities.Groups
         // public int ModuleId { get; set; }
 
 
-        public string Street {
-            get {
+        public string Street
+        {
+            get
+            {
                 return this.GetString("Street", string.Empty);
             }
-            set {
+            set
+            {
                 this.SetString("Street", value);
             }
         }
-        public string City {
-            get {
+        public string City
+        {
+            get
+            {
                 return this.GetString("City", string.Empty);
             }
-            set {
+            set
+            {
                 this.SetString("City", value);
             }
         }
 
-        public string Region {
-            get {
+        public string Region
+        {
+            get
+            {
                 return this.GetString("Region", string.Empty);
             }
-            set {
+            set
+            {
                 this.SetString("Region", value);
             }
         }
 
-        public string Country {
-            get {
+        public string Country
+        {
+            get
+            {
                 return this.GetString("Country", string.Empty);
             }
-            set {
+            set
+            {
                 this.SetString("Country", value);
             }
         }
 
-        public string PostalCode {
-            get {
+        public string PostalCode
+        {
+            get
+            {
                 return this.GetString("PostalCode", string.Empty);
             }
-            set {
+            set
+            {
                 this.SetString("PostalCode", value);
             }
         }
 
-        public string Website {
-            get {
+        public string Website
+        {
+            get
+            {
                 return this.GetString("Website", string.Empty);
             }
-            set {
+            set
+            {
                 this.SetString("Website", value);
             }
         }
 
 
-        public bool Featured {
-            get {
+        public bool Featured
+        {
+            get
+            {
                 return Convert.ToBoolean(this.GetString("Featured", "false"));
             }
-            set {
+            set
+            {
                 this.SetString("Featured", value.ToString());
             }
         }
@@ -118,20 +141,29 @@ namespace DotNetNuke.Entities.Groups
 
 
 
-        private string GetString(string keyName, string defaultValue) {
-            if (this.Settings == null) {
+        private string GetString(string keyName, string defaultValue)
+        {
+            if (this.Settings == null)
+            {
                 return defaultValue;
             }
-            if (this.Settings.ContainsKey(keyName)) {
+            if (this.Settings.ContainsKey(keyName))
+            {
                 return this.Settings[keyName];
-            } else {
+            }
+            else
+            {
                 return defaultValue;
             }
         }
-        private void SetString(string keyName, string value) {
-            if (this.Settings.ContainsKey(keyName)) {
+        private void SetString(string keyName, string value)
+        {
+            if (this.Settings.ContainsKey(keyName))
+            {
                 this.Settings[keyName] = value;
-            } else {
+            }
+            else
+            {
                 this.Settings.Add(keyName, value);
             }
         }

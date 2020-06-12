@@ -24,14 +24,16 @@ using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Journal.Internal;
 using DotNetNuke.Services.Localization;
 
-namespace DotNetNuke.Modules.Journal {
+namespace DotNetNuke.Modules.Journal
+{
 
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Settings class manages Module Settings
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class Settings : JournalSettingsBase {
+    public partial class Settings : JournalSettingsBase
+    {
 
 
         /// -----------------------------------------------------------------------------
@@ -39,31 +41,46 @@ namespace DotNetNuke.Modules.Journal {
         /// LoadSettings loads the settings from the Database and displays them
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public override void LoadSettings() {
-            try {
-                if (this.Page.IsPostBack == false) {
+        public override void LoadSettings()
+        {
+            try
+            {
+                if (this.Page.IsPostBack == false)
+                {
                     this.BindJournalTypes();
                     // Check for existing settings and use those on this page
-                    if (this.Settings.ContainsKey(Constants.DefaultPageSize)) {
+                    if (this.Settings.ContainsKey(Constants.DefaultPageSize))
+                    {
                         this.drpDefaultPageSize.SelectedIndex = this.drpDefaultPageSize.Items.IndexOf(this.drpDefaultPageSize.Items.FindByValue(this.Settings[Constants.DefaultPageSize].ToString()));
-                    } else {
+                    }
+                    else
+                    {
                         this.drpDefaultPageSize.SelectedIndex = this.drpDefaultPageSize.Items.IndexOf(this.drpDefaultPageSize.Items.FindByValue("20"));
 
                     }
-                    if (this.Settings.ContainsKey(Constants.MaxCharacters)) {
+                    if (this.Settings.ContainsKey(Constants.MaxCharacters))
+                    {
                         this.drpMaxMessageLength.SelectedIndex = this.drpMaxMessageLength.Items.IndexOf(this.drpMaxMessageLength.Items.FindByValue(this.Settings[Constants.MaxCharacters].ToString()));
-                    } else {
+                    }
+                    else
+                    {
                         this.drpMaxMessageLength.SelectedIndex = this.drpMaxMessageLength.Items.IndexOf(this.drpMaxMessageLength.Items.FindByValue("250"));
 
                     }
-                    if (this.Settings.ContainsKey(Constants.AllowFiles)) {
+                    if (this.Settings.ContainsKey(Constants.AllowFiles))
+                    {
                         this.chkAllowFiles.Checked = Convert.ToBoolean(this.Settings[Constants.AllowFiles].ToString());
-                    } else {
+                    }
+                    else
+                    {
                         this.chkAllowFiles.Checked = true;
                     }
-                    if (this.Settings.ContainsKey(Constants.AllowPhotos)) {
+                    if (this.Settings.ContainsKey(Constants.AllowPhotos))
+                    {
                         this.chkAllowPhotos.Checked = Convert.ToBoolean(this.Settings[Constants.AllowPhotos].ToString());
-                    } else {
+                    }
+                    else
+                    {
                         this.chkAllowPhotos.Checked = true;
                     }
 
@@ -79,7 +96,8 @@ namespace DotNetNuke.Modules.Journal {
                     if (this.Settings.ContainsKey(Constants.JournalEditorEnabled))
                     {
                         this.chkEnableEditor.Checked = Convert.ToBoolean(this.Settings[Constants.JournalEditorEnabled].ToString());
-                    } else
+                    }
+                    else
                     {
                         this.chkEnableEditor.Checked = true;
                     }
@@ -91,21 +109,31 @@ namespace DotNetNuke.Modules.Journal {
 
                     this.chkAllowResize.Enabled = this.chkEnableEditor.Checked && this.chkAllowPhotos.Checked;
 
-                    foreach (ListItem li in this.chkJournalFilters.Items) {
+                    foreach (ListItem li in this.chkJournalFilters.Items)
+                    {
                         li.Selected = true;
                     }
-                    if (this.Settings.ContainsKey(Constants.JournalFilters)) {
-                        if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilters].ToString())) {
-                            foreach (ListItem li in this.chkJournalFilters.Items) {
+                    if (this.Settings.ContainsKey(Constants.JournalFilters))
+                    {
+                        if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilters].ToString()))
+                        {
+                            foreach (ListItem li in this.chkJournalFilters.Items)
+                            {
                                 li.Selected = true;
                             }
-                        } else {
-                            foreach (ListItem li in this.chkJournalFilters.Items) {
+                        }
+                        else
+                        {
+                            foreach (ListItem li in this.chkJournalFilters.Items)
+                            {
                                 li.Selected = false;
                             }
-                            foreach (string s in this.Settings[Constants.JournalFilters].ToString().Split(';')) {
-                                foreach (ListItem li in this.chkJournalFilters.Items) {
-                                    if (li.Value == s) {
+                            foreach (string s in this.Settings[Constants.JournalFilters].ToString().Split(';'))
+                            {
+                                foreach (ListItem li in this.chkJournalFilters.Items)
+                                {
+                                    if (li.Value == s)
+                                    {
                                         li.Selected = true;
                                     }
                                 }
@@ -114,7 +142,8 @@ namespace DotNetNuke.Modules.Journal {
                     }
 
                 }
-            } catch (Exception exc) // Module failed to load
+            }
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -125,8 +154,10 @@ namespace DotNetNuke.Modules.Journal {
         /// UpdateSettings saves the modified settings to the Database
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public override void UpdateSettings() {
-            try {
+        public override void UpdateSettings()
+        {
+            try
+            {
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.DefaultPageSize, this.drpDefaultPageSize.SelectedItem.Value);
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.AllowFiles, this.chkAllowFiles.Checked.ToString());
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.AllowPhotos, this.chkAllowPhotos.Checked.ToString());
@@ -135,17 +166,22 @@ namespace DotNetNuke.Modules.Journal {
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.MaxCharacters, this.drpMaxMessageLength.SelectedItem.Value);
                 string journalTypes = string.Empty;
                 bool allTypes = true;
-                foreach (ListItem li in this.chkJournalFilters.Items) {
-                    if (!li.Selected) {
+                foreach (ListItem li in this.chkJournalFilters.Items)
+                {
+                    if (!li.Selected)
+                    {
                         allTypes = false;
                     }
                 }
                 var jc = InternalJournalController.Instance;
                 jc.DeleteFilters(this.PortalId, this.ModuleId);
 
-                foreach (ListItem li in this.chkJournalFilters.Items) {
-                    if (li.Selected) {
-                        if (!allTypes) {
+                foreach (ListItem li in this.chkJournalFilters.Items)
+                {
+                    if (li.Selected)
+                    {
+                        if (!allTypes)
+                        {
                             jc.SaveFilters(this.PortalId, this.ModuleId, Convert.ToInt32(li.Value));
                             journalTypes += li.Value + ";";
                         }
@@ -154,13 +190,15 @@ namespace DotNetNuke.Modules.Journal {
                 }
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.JournalFilters, journalTypes);
 
-            } catch (Exception exc) // Module failed to load
+            }
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
 
-        private void BindJournalTypes() {
+        private void BindJournalTypes()
+        {
             foreach (JournalTypeInfo journalTypeInfo in JournalController.Instance.GetJournalTypes(this.PortalId))
             {
                 this.chkJournalFilters.Items.Add(new ListItem(Localization.GetString(journalTypeInfo.JournalType, "~/desktopmodules/journal/app_localresources/sharedresources.resx"), journalTypeInfo.JournalTypeId.ToString()));

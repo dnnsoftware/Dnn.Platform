@@ -30,14 +30,16 @@ using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Web.Client.ClientResourceManagement;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.Journal {
+namespace DotNetNuke.Modules.Journal
+{
 
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ViewJournal class displays the content
     /// </summary>
     /// -----------------------------------------------------------------------------
-    public partial class View : JournalModuleBase {
+    public partial class View : JournalModuleBase
+    {
 
         private readonly INavigationManager _navigationManager;
         public int PageSize = 20;
@@ -125,7 +127,8 @@ namespace DotNetNuke.Modules.Journal {
                                 this.ShowEditor = true;
                                 this.CanComment = true;
                                 this.IsGroup = true;
-                            } else
+                            }
+                            else
                             {
                                 this.ShowEditor = false;
                                 this.CanComment = false;
@@ -175,7 +178,8 @@ namespace DotNetNuke.Modules.Journal {
             base.OnInit(e);
         }
 
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this.Load += this.Page_Load;
         }
 
@@ -184,7 +188,8 @@ namespace DotNetNuke.Modules.Journal {
         /// Page_Load runs when the control is loaded
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void Page_Load(object sender, EventArgs e) {
+        private void Page_Load(object sender, EventArgs e)
+        {
             try
             {
                 this.BaseUrl = Globals.ApplicationPath;

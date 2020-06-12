@@ -203,7 +203,8 @@ namespace DotNetNuke.Web.UI.WebControls
                                     ViewStateMode = ViewStateMode.Disabled,
                                 };
 
-            if (this.Required) {
+            if (this.Required)
+            {
 
                 label.RequiredField = true;
             }

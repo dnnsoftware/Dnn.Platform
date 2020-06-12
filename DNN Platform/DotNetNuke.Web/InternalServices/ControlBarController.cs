@@ -877,9 +877,12 @@ namespace DotNetNuke.Web.InternalServices
         {
             if (this._nameDics == null)
             {
-                this._nameDics = new Dictionary<string, string> { { "SearchCrawlerAdmin", "SearchCrawler Admin" },
+                this._nameDics = new Dictionary<string, string>
+                {
+                    { "SearchCrawlerAdmin", "SearchCrawler Admin" },
                                                              { "SearchCrawlerInput", "SearchCrawler Input" },
-                                                             { "SearchCrawlerResults", "SearchCrawler Results" }, };
+                                                             { "SearchCrawlerResults", "SearchCrawler Results" },
+                };
             }
 
             return this._nameDics.ContainsKey(moduleName) ? this._nameDics[moduleName] : moduleName;

@@ -129,7 +129,8 @@ namespace DotNetNuke.Entities.Modules
         [XmlIgnore]
         public DesktopModuleInfo DesktopModule
         {
-            get {
+            get
+            {
                 return this._desktopModule ??
                        (this._desktopModule = this.DesktopModuleID > Null.NullInteger
                             ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID)
@@ -213,7 +214,8 @@ namespace DotNetNuke.Entities.Modules
 
         public ModuleControlInfo ModuleControl
         {
-            get {
+            get
+            {
                 return this._moduleControl ??
                        (this._moduleControl = this.ModuleControlId > Null.NullInteger
                             ? ModuleControlController.GetModuleControl(this.ModuleControlId)
@@ -242,7 +244,8 @@ namespace DotNetNuke.Entities.Modules
         [XmlIgnore]
         public ModuleDefinitionInfo ModuleDefinition
         {
-            get {
+            get
+            {
                 return this._moduleDefinition ??
                        (this._moduleDefinition = this.ModuleDefID > Null.NullInteger
                             ? ModuleDefinitionController.GetModuleDefinitionByID(this.ModuleDefID)

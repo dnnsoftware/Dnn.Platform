@@ -253,7 +253,8 @@ namespace Dnn.PersonaBar.Library.Controllers
                     {
                         parentTab = this.GetTabByCulture(parentTab.ParentTabId, portalInfo.PortalID, locale);
                         if (parentTab != null) tempTabs.Add(Convert.ToInt32(parentTab.TabId));
-                    } while (parentTab != null && parentTab.ParentTabId > Null.NullInteger);
+                    }
+                    while (parentTab != null && parentTab.ParentTabId > Null.NullInteger);
                 }
             }
             tempTabs.Reverse();

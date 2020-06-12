@@ -91,7 +91,9 @@ namespace DotNetNuke.Tests.Web.Api
 
             var mockPortalAliasController = new Mock<IPortalAliasController>();
             mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
-                { new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" } });
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me/vdir" }
+                });
             PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
 
             var mockGlobals = new Mock<IGlobals>();
@@ -116,7 +118,9 @@ namespace DotNetNuke.Tests.Web.Api
 
             var mockPortalAliasController = new Mock<IPortalAliasController>();
             mockPortalAliasController.Setup(x => x.GetPortalAliasesByPortalId(It.IsAny<int>())).Returns(new[]
-                { new PortalAliasInfo { HTTPAlias = "valid.lvh.me" } });
+                {
+                    new PortalAliasInfo { HTTPAlias = "valid.lvh.me" }
+                });
             PortalAliasController.SetTestableInstance(mockPortalAliasController.Object);
 
             var mockGlobals = new Mock<IGlobals>();

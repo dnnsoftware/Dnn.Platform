@@ -270,7 +270,8 @@ namespace DotNetNuke.Entities.Portals
         /// <returns>Portal home system directory in local filesystem</returns>
         /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
         [XmlElement("homesystemdirectory")]
-        public string HomeSystemDirectory {
+        public string HomeSystemDirectory
+        {
             get { return string.Format("{0}-System", this.HomeDirectory); }
         }
 

@@ -112,7 +112,8 @@ namespace DotNetNuke.Services.Search
                         searchDocuments.Clear();
                         checkpointModified = true;
                     }
-                } while (rowsAffected > 0);
+                }
+                while (rowsAffected > 0);
 
                 if (searchDocuments.Count > 0)
                 {

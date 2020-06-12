@@ -38,7 +38,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
 
         private static void AddUserPreferenceToTable(DataTable table, UserPreference userPreference)
         {
-            table.Rows.Add(new object[] {
+            table.Rows.Add(new object[]
+            {
                 1,
                 userPreference.PortalId,
                 userPreference.UserId,

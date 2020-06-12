@@ -1003,7 +1003,8 @@ namespace DotNetNuke.Common
                 do
                 {
                     objDataSet.Tables.Add(ConvertDataReaderToDataTable(reader, false));
-                } while (reader.NextResult());
+                }
+                while (reader.NextResult());
             }
             finally
             {

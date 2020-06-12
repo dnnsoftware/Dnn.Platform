@@ -21,22 +21,28 @@ using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Journal.Controls {
+namespace DotNetNuke.Modules.Journal.Controls
+{
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:JournalListControl runat=server></{0}:JournalListControl>")]
-    public class JournalListControl : WebControl {
+    public class JournalListControl : WebControl
+    {
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public PortalSettings portalSettings {
-            get {
+        public PortalSettings portalSettings
+        {
+            get
+            {
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        public UserInfo userInfo {
-            get {
+        public UserInfo userInfo
+        {
+            get
+            {
                 return UserController.Instance.GetCurrentUserInfo();
             }
         }
@@ -68,8 +74,10 @@ namespace DotNetNuke.Modules.Journal.Controls {
 
         protected override void Render(HtmlTextWriter output)
         {
-            if (this.Enabled) {
-                if (this.CurrentIndex < 0) {
+            if (this.Enabled)
+            {
+                if (this.CurrentIndex < 0)
+                {
                     this.CurrentIndex = 0;
                 }
                 JournalParser jp = new JournalParser(this.portalSettings, this.ModuleId, this.ProfileId, this.SocialGroupId, this.userInfo) { JournalId = this.JournalId };

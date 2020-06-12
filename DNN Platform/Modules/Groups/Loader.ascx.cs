@@ -10,11 +10,15 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using DotNetNuke.Modules.Groups.Components;
 
-namespace DotNetNuke.Modules.Groups {
-    public partial class Loader : GroupsModuleBase {
-        protected void Page_Load(object sender, EventArgs e) {
+namespace DotNetNuke.Modules.Groups
+{
+    public partial class Loader : GroupsModuleBase
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
             string path = Constants.ModulePath;
-            switch (this.LoadView) {
+            switch (this.LoadView)
+            {
                 case GroupMode.Setup:
                     path += "Setup.ascx";
                     break;

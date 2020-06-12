@@ -98,7 +98,8 @@ namespace DotNetNuke.Entities.Urls
                 omitSettings = HostController.Instance.GetString("OmitFromRewriteProcessing");
             }
 
-            if (string.IsNullOrEmpty(omitSettings)) {
+            if (string.IsNullOrEmpty(omitSettings))
+            {
                 omitSettings = "scriptresource.axd|webresource.axd|gif|ico|jpg|jpeg|png|css|js";
             }
             omitSettings = omitSettings.ToLowerInvariant();

@@ -128,7 +128,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         /// </summary>
         private void AddStandardDocs()
         {
-            string[] lines = {
+            string[] lines =
+            {
                 Line1, Line2, Line3, Line4,
                 };
 
@@ -314,7 +315,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddStandardDocs();
 
             var hits = this._luceneController.Search(this.CreateSearchContext(
-                new LuceneQuery {
+                new LuceneQuery
+                {
                         Query = new TermQuery(new Term(Constants.ContentTag, "fox")),
                         PageIndex = 5,
                         PageSize = 10,
@@ -514,7 +516,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_Search_Single_FuzzyQuery()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 "fuzzy",
                 "wuzzy",
                 };
@@ -534,14 +537,16 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void LuceneController_Search_Double_FuzzyQuery()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 "home",
                 "homez", // note home and homes could be returned by PorterFilter
                 "fuzzy",
                 "wuzzy",
                 };
 
-            string[] keywords = {
+            string[] keywords =
+            {
                 "wuzza",
                 "homy",
                 };

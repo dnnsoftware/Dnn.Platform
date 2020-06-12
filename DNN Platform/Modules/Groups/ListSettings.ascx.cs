@@ -41,15 +41,18 @@ namespace DotNetNuke.Modules.Groups
                     this.BindGroups();
                     this.BindPages();
 
-                    if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting)) {
+                    if (this.Settings.ContainsKey(Constants.DefaultRoleGroupSetting))
+                    {
                         this.drpRoleGroup.SelectedIndex = this.drpRoleGroup.Items.IndexOf(this.drpRoleGroup.Items.FindByValue(this.Settings[Constants.DefaultRoleGroupSetting].ToString()));
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupViewPage)) {
+                    if (this.Settings.ContainsKey(Constants.GroupViewPage))
+                    {
                         this.drpGroupViewPage.SelectedIndex = this.drpGroupViewPage.Items.IndexOf(this.drpGroupViewPage.Items.FindByValue(this.Settings[Constants.GroupViewPage].ToString()));
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupListTemplate)) {
+                    if (this.Settings.ContainsKey(Constants.GroupListTemplate))
+                    {
                         this.txtListTemplate.Text = this.Settings[Constants.GroupListTemplate].ToString();
                     }
 
@@ -63,7 +66,8 @@ namespace DotNetNuke.Modules.Groups
                         this.chkGroupModeration.Checked = Convert.ToBoolean(this.Settings[Constants.GroupModerationEnabled].ToString());
                     }
 
-                    if (this.Settings.ContainsKey(Constants.GroupLoadView)) {
+                    if (this.Settings.ContainsKey(Constants.GroupLoadView))
+                    {
                         this.drpViewMode.SelectedIndex = this.drpViewMode.Items.IndexOf(this.drpViewMode.Items.FindByValue(this.Settings[Constants.GroupLoadView].ToString()));
                     }
 
@@ -126,16 +130,19 @@ namespace DotNetNuke.Modules.Groups
             }
         }
 
-        private void BindGroups() {
+        private void BindGroups()
+        {
             var arrGroups = RoleController.GetRoleGroups(this.PortalId);
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("AllRoles"), "-2"));
             this.drpRoleGroup.Items.Add(new ListItem(Localization.GetString("GlobalRoles"), "-1"));
 
-            foreach (RoleGroupInfo roleGroup in arrGroups) {
+            foreach (RoleGroupInfo roleGroup in arrGroups)
+            {
                 this.drpRoleGroup.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString()));
             }
         }
-        private void BindPages() {
+        private void BindPages()
+        {
             foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId))
             {
                 if (moduleInfo.DesktopModule.ModuleName.Contains("Social Groups") && moduleInfo.IsDeleted == false)

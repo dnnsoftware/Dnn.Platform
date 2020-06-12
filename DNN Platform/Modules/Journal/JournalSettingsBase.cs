@@ -16,9 +16,11 @@
 
 using DotNetNuke.Entities.Modules;
 
-namespace DotNetNuke.Modules.Journal {
+namespace DotNetNuke.Modules.Journal
+{
 
-    public class JournalSettingsBase : ModuleSettingsBase {
+    public class JournalSettingsBase : ModuleSettingsBase
+    {
 
 
 

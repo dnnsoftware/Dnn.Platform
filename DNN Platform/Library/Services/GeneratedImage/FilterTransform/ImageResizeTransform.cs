@@ -29,7 +29,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <summary>
         /// Sets the width of the resulting image
         /// </summary>
-        public int Width {
+        public int Width
+        {
             get
             {
                 return this._width;
@@ -60,11 +61,14 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// <summary>
         /// Sets the height of the resulting image
         /// </summary>
-        public int Height {
-            get {
+        public int Height
+        {
+            get
+            {
                 return this._height;
             }
-            set {
+            set
+            {
                 CheckValue(value);
                 this._height = value;
             }
@@ -107,7 +111,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         /// </summary>
         public Color BackColor { get; set; } = Color.White;
 
-        public ImageResizeTransform() {
+        public ImageResizeTransform()
+        {
             this.InterpolationMode = InterpolationMode.HighQualityBicubic;
             this.SmoothingMode = SmoothingMode.HighQuality;
             this.PixelOffsetMode = PixelOffsetMode.HighQuality;
@@ -139,7 +144,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             int scaledWidth = (int)(image.Width * ((float)this.Height / (float)image.Height));
 
             Image procImage;
-            switch (this.Mode) {
+            switch (this.Mode)
+            {
                 case ImageResizeMode.Fit:
                     procImage = this.FitImage(image, scaledHeight, scaledWidth);
                     break;
@@ -167,23 +173,29 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             }
         }
 
-        private Image FitImage(Image img, int scaledHeight, int scaledWidth) {
+        private Image FitImage(Image img, int scaledHeight, int scaledWidth)
+        {
             int resizeWidth;
             int resizeHeight;
-            if (this.Height == 0) {
+            if (this.Height == 0)
+            {
                 resizeWidth = this.Width;
                 resizeHeight = scaledHeight;
             }
-            else if (this.Width == 0) {
+            else if (this.Width == 0)
+            {
                 resizeWidth = scaledWidth;
                 resizeHeight = this.Height;
             }
-            else {
-                if ((float)this.Width / (float)img.Width < this.Height / (float)img.Height) {
+            else
+            {
+                if ((float)this.Width / (float)img.Width < this.Height / (float)img.Height)
+                {
                     resizeWidth = this.Width;
                     resizeHeight = scaledHeight;
                 }
-                else {
+                else
+                {
                     resizeWidth = scaledWidth;
                     resizeHeight = this.Height;
                 }
@@ -234,10 +246,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
             return newimage;
         }
 
-        private Image CropImage(Image img, int scaledHeight, int scaledWidth) {
+        private Image CropImage(Image img, int scaledHeight, int scaledWidth)
+        {
             int resizeWidth;
             int resizeHeight;
-            if ((float)this.Width / (float)img.Width > this.Height / (float)img.Height) {
+            if ((float)this.Width / (float)img.Width > this.Height / (float)img.Height)
+            {
                 resizeWidth = this.Width;
                 resizeHeight = scaledHeight;
             }
@@ -284,7 +298,8 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         [Browsable(false)]
         public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;
 
-        public override string ToString() {
+        public override string ToString()
+        {
             return "ImageResizeTransform";
         }
     }

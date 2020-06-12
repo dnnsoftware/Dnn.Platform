@@ -11,16 +11,19 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace DotNetNuke.Modules.Journal {
+namespace DotNetNuke.Modules.Journal
+{
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:JournalList runat=server></{0}:JournalList>")]
-    public class JournalList : WebControl {
+    public class JournalList : WebControl
+    {
         public int PortalId { get; set; }
         public int ProfileId { get; set; }
         public int SocialGroupId { get; set; }
         public int DisplayMode { get; set; }
 
-        protected override void Render(HtmlTextWriter output) {
+        protected override void Render(HtmlTextWriter output)
+        {
             output.Write("Hello World");
         }
     }

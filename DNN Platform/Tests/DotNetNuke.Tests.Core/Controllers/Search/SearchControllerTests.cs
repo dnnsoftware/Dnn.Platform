@@ -392,7 +392,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         /// </summary>
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
-            var searchDocs = new List<SearchDocument> {
+            var searchDocs = new List<SearchDocument>
+            {
                 new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag0, Tag1, TagOldest, Tag0WithSpace }, Title = Line1 },
                 new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag1, Tag2, TagNeutral }, Title = Line2, CultureCode = CultureEnUs },
                 new SearchDocument { PortalId = PortalId0, Tags = new List<string> { Tag2, Tag3, TagIt }, Title = Line3, CultureCode = CultureItIt },
@@ -417,7 +418,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private IEnumerable<SearchDocument> GetSearchDocsForCustomBoost(int searchTypeId = ModuleSearchTypeId)
         {
-            var searchDocs = new List<SearchDocument> {
+            var searchDocs = new List<SearchDocument>
+            {
                 new SearchDocument { PortalId = PortalId0, Title = Line1, Keywords = { { "title", "Hello" } }, Body = "Hello1 World" },
                 new SearchDocument { PortalId = PortalId0, Title = Line2, Keywords = { { "subject", "Hello" } }, Body = "Hello2 World" },
                 new SearchDocument { PortalId = PortalId0, Title = Line3, Keywords = { { "comments", "Hello" } }, Body = "Hello3 World" },
@@ -772,7 +774,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_EnsureIndexIsAppended_When_Index_Is_NotDeleted_InBetween()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 Line1,
                 Line2,
                 };
@@ -807,7 +810,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_Getsearch_TwoTermsSearch()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 Line1,
                 Line2,
                 Line3,
@@ -830,7 +834,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_GetResult_TwoTermsSearch()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 Line1,
                 Line2,
                 Line3,
@@ -1382,7 +1387,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_GetsHighlightedDesc()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 Line1,
                 Line2,
                 Line3,
@@ -2126,7 +2132,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_EnsureOldDocument_Deleted_Upon_Second_Index_Content_With_Same_Key()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 Line1,
                 Line2,
                 };
@@ -2182,7 +2189,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_EnsureOldDocument_Deleted_Upon_Second_Index_When_IsActive_Is_False()
         {
             // Arrange
-            string[] docs = {
+            string[] docs =
+            {
                 Line1,
                 Line2,
                 };
@@ -2213,7 +2221,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_SearchFindsAccentedAndNonAccentedWords()
         {
             // Arrange
-            string[] lines = {
+            string[] lines =
+            {
                 "zèbre or panthère",
                 "zebre without accent",
                 "panthere without accent",
@@ -2239,7 +2248,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_PorterFilterTest()
         {
             // Arrange
-            string[] lines = {
+            string[] lines =
+            {
                 "field1_value",
                 "field2_value",
                 };
@@ -2262,7 +2272,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_SearchFindsStemmedWords()
         {
             // Arrange
-            string[] lines = {
+            string[] lines =
+            {
                 "I ride my bike to work",
                 "All team are riding their bikes",
                 "The boy rides his bike to school",

@@ -156,7 +156,8 @@ namespace DotNetNuke.Entities.Tabs
         public bool HasBeenPublished { get; set; }
 
         [XmlIgnore]
-        public bool HasAVisibleVersion {
+        public bool HasAVisibleVersion
+        {
             get
             {
                 return this.HasBeenPublished || TabVersionUtils.CanSeeVersionedPages(this);
@@ -762,26 +763,35 @@ namespace DotNetNuke.Entities.Tabs
 
             // loading an XML document from disk for each page request is expensive
             // let's implement some local caching
-            if (!_docTypeCache.ContainsKey(this.SkinSrc)) {
+            if (!_docTypeCache.ContainsKey(this.SkinSrc))
+            {
                 // appply lock after IF, locking is more expensive than worst case scenario (check disk twice)
                 _docTypeCacheLock.EnterWriteLock();
-                try {
+                try
+                {
 
                     var docType = this.LoadDocType();
                     _docTypeCache[this.SkinSrc] = docType == null ? string.Empty : docType.FirstChild.InnerText;
 
-                } catch (Exception ex) {
+                }
+                catch (Exception ex)
+                {
                     Exceptions.LogException(ex);
-                } finally {
+                }
+                finally
+                {
                     _docTypeCacheLock.ExitWriteLock();
                 }
             }
 
             // return if file exists from cache
             _docTypeCacheLock.EnterReadLock();
-            try {
+            try
+            {
                 return _docTypeCache[this.SkinSrc];
-            } finally {
+            }
+            finally
+            {
                 _docTypeCacheLock.ExitReadLock();
             }
         }
@@ -792,7 +802,8 @@ namespace DotNetNuke.Entities.Tabs
 
             // default to the skinname.doctype.xml to allow the individual skin to override the skin package
             var skinFileName = HttpContext.Current.Server.MapPath(this.SkinSrc.Replace(".ascx", ".doctype.xml"));
-            if (File.Exists(skinFileName)) {
+            if (File.Exists(skinFileName))
+            {
                 xmlSkinDocType.Load(skinFileName);
                 return xmlSkinDocType;
             }

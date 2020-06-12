@@ -15,8 +15,11 @@ namespace DotNetNuke.Collections.Internal
 
         private void DoInReadLock(Action action)
         {
-            this.DoInReadLock(() => { action.Invoke();
-                return true; });
+            this.DoInReadLock(() =>
+            {
+                action.Invoke();
+                return true;
+            });
         }
 
         private TRet DoInReadLock<TRet>(Func<TRet> func)
@@ -29,8 +32,11 @@ namespace DotNetNuke.Collections.Internal
 
         private void DoInWriteLock(Action action)
         {
-            this.DoInWriteLock(() => { action.Invoke();
-                return true; });
+            this.DoInWriteLock(() =>
+            {
+                action.Invoke();
+                return true;
+            });
         }
 
         private TRet DoInWriteLock<TRet>(Func<TRet> func)

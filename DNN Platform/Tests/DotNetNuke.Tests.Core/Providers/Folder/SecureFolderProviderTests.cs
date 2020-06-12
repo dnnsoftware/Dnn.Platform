@@ -462,7 +462,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
-            var subFolders = new[] {
+            var subFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderPath,
                 Constants.FOLDER_OtherValidSubFolderPath,
             };
@@ -477,7 +478,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Returns_Valid_SubFolders_When_Folder_Is_Not_Empty()
         {
-            var expectedSubFolders = new[] {
+            var expectedSubFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderRelativePath,
                 Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
@@ -488,7 +490,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_ValidSubFolderPath)).Returns(Constants.FOLDER_ValidSubFolderRelativePath);
             this._pathUtils.Setup(pu => pu.GetRelativePath(Constants.CONTENT_ValidPortalId, Constants.FOLDER_OtherValidSubFolderPath)).Returns(Constants.FOLDER_OtherValidSubFolderRelativePath);
 
-            var subFolders = new[] {
+            var subFolders = new[]
+            {
                 Constants.FOLDER_ValidSubFolderPath,
                 Constants.FOLDER_OtherValidSubFolderPath,
             };

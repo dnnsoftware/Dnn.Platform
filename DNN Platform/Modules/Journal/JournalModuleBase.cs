@@ -18,38 +18,57 @@ using System;
 
 using DotNetNuke.Modules.Journal.Components;
 
-namespace DotNetNuke.Modules.Journal {
+namespace DotNetNuke.Modules.Journal
+{
 
-    public class JournalModuleBase : DotNetNuke.Entities.Modules.PortalModuleBase {
-        public enum JournalMode {
+    public class JournalModuleBase : DotNetNuke.Entities.Modules.PortalModuleBase
+    {
+        public enum JournalMode
+        {
             Auto = 0,
             Profile = 1,
             Group = 2,
         }
-        public JournalMode FilterMode {
-            get {
-                if (!this.Settings.ContainsKey(Constants.JournalFilterMode)) {
+        public JournalMode FilterMode
+        {
+            get
+            {
+                if (!this.Settings.ContainsKey(Constants.JournalFilterMode))
+                {
                     return JournalMode.Auto;
-                } else {
-                    if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString())) {
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString()))
+                    {
                         return JournalMode.Auto;
-                    } else {
+                    }
+                    else
+                    {
                         return (JournalMode)Convert.ToInt16(this.Settings[Constants.JournalFilterMode].ToString());
                     }
                 }
 
             }
         }
-        public int GroupId {
-            get {
+        public int GroupId
+        {
+            get
+            {
                 int groupId = -1;
-                if (!string.IsNullOrEmpty(this.Request.QueryString["groupid"])) {
-                    if (int.TryParse(this.Request.QueryString["groupid"], out groupId)) {
+                if (!string.IsNullOrEmpty(this.Request.QueryString["groupid"]))
+                {
+                    if (int.TryParse(this.Request.QueryString["groupid"], out groupId))
+                    {
                         return groupId;
-                    } else {
+                    }
+                    else
+                    {
                         return -1;
                     }
-                } else {
+                }
+                else
+                {
                     return -1;
                 }
             }
@@ -61,12 +80,14 @@ namespace DotNetNuke.Modules.Journal {
                 if (!this.Settings.ContainsKey(Constants.JournalEditorEnabled))
                 {
                     return true;
-                } else
+                }
+                else
                 {
                     if (string.IsNullOrEmpty(this.Settings[Constants.JournalEditorEnabled].ToString()))
                     {
                         return true;
-                    } else
+                    }
+                    else
                     {
                         return (bool)Convert.ToBoolean(this.Settings[Constants.JournalEditorEnabled].ToString());
                     }

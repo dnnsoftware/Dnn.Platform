@@ -8,32 +8,40 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 
-namespace DotNetNuke.Services.Journal {
+namespace DotNetNuke.Services.Journal
+{
 
-    public class Content {
+    public class Content
+    {
 
         /// <summary>
         /// This should only run after the Post exists in the data store.
         /// </summary>
         /// <returns>The newly created ContentItemID from the data store.</returns>
         /// <remarks>This is for the first question in the thread. Not for replies or items with ParentID > 0.</remarks>
-        internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId, int moduleId) {
+        internal ContentItem CreateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
+        {
             var typeController = new ContentTypeController();
             string contentTypeName = "DNNCorp_JournalProfile";
-            if (objJournalItem.SocialGroupId > 0) {
+            if (objJournalItem.SocialGroupId > 0)
+            {
                 contentTypeName = "DNNCorp_JournalGroup";
             }
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeID;
 
-            if (colContentTypes.Count() > 0) {
+            if (colContentTypes.Count() > 0)
+            {
                 var contentType = colContentTypes.Single();
                 contentTypeID = contentType == null ? CreateContentType(contentTypeName) : contentType.ContentTypeId;
-            } else {
+            }
+            else
+            {
                 contentTypeID = CreateContentType(contentTypeName);
             }
 
-            var objContent = new ContentItem {
+            var objContent = new ContentItem
+            {
                 Content = GetContentBody(objJournalItem),
                 ContentTypeId = contentTypeID,
                 Indexed = false,
@@ -54,7 +62,8 @@ namespace DotNetNuke.Services.Journal {
         /// <summary>
         /// This is used to update the content in the ContentItems table. Should be called when a question is updated.
         /// </summary>
-        internal void UpdateContentItem(JournalItem objJournalItem, int tabId, int moduleId) {
+        internal void UpdateContentItem(JournalItem objJournalItem, int tabId, int moduleId)
+        {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
 
             if (objContent == null) return;
@@ -80,7 +89,8 @@ namespace DotNetNuke.Services.Journal {
         /// This removes a content item associated with a question/thread from the data store. Should run every time an entire thread is deleted.
         /// </summary>
         /// <param name="contentItemID"></param>
-        internal void DeleteContentItem(int contentItemID) {
+        internal void DeleteContentItem(int contentItemID)
+        {
             if (contentItemID <= Null.NullInteger) return;
             var objContent = Util.GetContentController().GetContentItem(contentItemID);
             if (objContent == null) return;
@@ -96,15 +106,19 @@ namespace DotNetNuke.Services.Journal {
         /// This is used to determine the ContentTypeID (part of the Core API) based on this module's content type. If the content type doesn't exist yet for the module, it is created.
         /// </summary>
         /// <returns>The primary key value (ContentTypeID) from the core API's Content Types table.</returns>
-        internal static int GetContentTypeID(string ContentTypeName) {
+        internal static int GetContentTypeID(string ContentTypeName)
+        {
             var typeController = new ContentTypeController();
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == ContentTypeName select t;
             int contentTypeId;
 
-            if (colContentTypes.Count() > 0) {
+            if (colContentTypes.Count() > 0)
+            {
                 var contentType = colContentTypes.Single();
                 contentTypeId = contentType == null ? CreateContentType(ContentTypeName) : contentType.ContentTypeId;
-            } else {
+            }
+            else
+            {
                 contentTypeId = CreateContentType(ContentTypeName);
             }
 
@@ -116,7 +130,8 @@ namespace DotNetNuke.Services.Journal {
         /// Creates a Content Type (for taxonomy) in the data store.
         /// </summary>
         /// <returns>The primary key value of the new ContentType.</returns>
-        private static int CreateContentType(string ContentTypeName) {
+        private static int CreateContentType(string ContentTypeName)
+        {
             var typeController = new ContentTypeController();
             var objContentType = new ContentType { ContentType = ContentTypeName };
 
@@ -127,14 +142,22 @@ namespace DotNetNuke.Services.Journal {
         /// </summary>
         /// <param name="objJournalItem"></param>
         /// <returns></returns>
-        private static string GetContentBody(JournalItem objJournalItem) {
-            if (!string.IsNullOrEmpty(objJournalItem.Title)) {
+        private static string GetContentBody(JournalItem objJournalItem)
+        {
+            if (!string.IsNullOrEmpty(objJournalItem.Title))
+            {
                 return objJournalItem.Title;
-            } else if (!string.IsNullOrEmpty(objJournalItem.Summary)) {
+            }
+            else if (!string.IsNullOrEmpty(objJournalItem.Summary))
+            {
                 return objJournalItem.Summary;
-            } else if (!string.IsNullOrEmpty(objJournalItem.Body)) {
+            }
+            else if (!string.IsNullOrEmpty(objJournalItem.Body))
+            {
                 return objJournalItem.Body;
-            } else {
+            }
+            else
+            {
                 return null;
             }
         }

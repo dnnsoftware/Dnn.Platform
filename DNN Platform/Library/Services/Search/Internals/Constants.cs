@@ -74,7 +74,9 @@ namespace DotNetNuke.Services.Search.Internals
 
         internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
 
-        internal static readonly string[] KeyWordSearchFields = { TitleTag,
+        internal static readonly string[] KeyWordSearchFields =
+        {
+            TitleTag,
                                                                 Tag,
                                                                 DescriptionTag,
                                                                 BodyTag,
@@ -82,7 +84,8 @@ namespace DotNetNuke.Services.Search.Internals
                                                                 KeywordsPrefixTag + TitleTag,
                                                                 KeywordsPrefixTag + SubjectTag,
                                                                 KeywordsPrefixTag + CommentsTag,
-                                                                KeywordsPrefixTag + AuthorNameTag, };
+                                                                KeywordsPrefixTag + AuthorNameTag,
+        };
 
         // search index tokenizers word lengths
         internal const int MinimumMinLen = 1;

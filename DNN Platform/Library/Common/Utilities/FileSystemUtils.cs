@@ -469,7 +469,8 @@ namespace DotNetNuke.Common.Utilities
         {
             strRoot = FixPath(strRoot);
             if (string.IsNullOrEmpty(strRoot) || !Directory.Exists(strRoot))
-            { Logger.Info(strRoot + " does not exist. ");
+            {
+                Logger.Info(strRoot + " does not exist. ");
                 return;
             }
 

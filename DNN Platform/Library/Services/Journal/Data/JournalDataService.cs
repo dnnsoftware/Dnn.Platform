@@ -12,7 +12,8 @@ using DotNetNuke.Entities.Content;
 using DotNetNuke.Entities.Content.Common;
 using DotNetNuke.Framework;
 
-namespace DotNetNuke.Services.Journal {
+namespace DotNetNuke.Services.Journal
+{
     public class JournalDataService : ServiceLocator<IJournalDataService, JournalDataService>
     {
         protected override Func<IJournalDataService> GetFactory()

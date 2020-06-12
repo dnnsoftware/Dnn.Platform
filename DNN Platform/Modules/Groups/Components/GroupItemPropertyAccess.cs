@@ -13,13 +13,16 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Journal;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Modules.Groups.Components {
-    public class GroupItemTokenReplace : Services.Tokens.BaseCustomTokenReplace {
+namespace DotNetNuke.Modules.Groups.Components
+{
+    public class GroupItemTokenReplace : Services.Tokens.BaseCustomTokenReplace
+    {
         public GroupItemTokenReplace(RoleInfo groupInfo)
         {
             this.PropertySource["groupitem"] = groupInfo;
         }
-        public string ReplaceGroupItemTokens(string source) {
+        public string ReplaceGroupItemTokens(string source)
+        {
             return this.ReplaceTokens(source);
         }
     }

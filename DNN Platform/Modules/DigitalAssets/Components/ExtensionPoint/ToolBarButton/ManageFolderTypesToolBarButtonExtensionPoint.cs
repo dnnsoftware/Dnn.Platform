@@ -83,8 +83,11 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButt
 
         public bool Enabled
         {
-            get { return this.ModuleContext != null
-                            && ModulePermissionController.CanManageModule(this.ModuleContext.Configuration); }
+            get
+            {
+                return this.ModuleContext != null
+                            && ModulePermissionController.CanManageModule(this.ModuleContext.Configuration);
+            }
         }
 
         public ModuleInstanceContext ModuleContext { get; set; }

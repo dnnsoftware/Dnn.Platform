@@ -825,7 +825,8 @@ namespace log4net.Appender
                 if (this.FileExists(this.m_baseFileName))
                 {
                     DateTime last;
-                    using (this.SecurityContext.Impersonate(this)) {
+                    using (this.SecurityContext.Impersonate(this))
+                    {
 #if !NET_1_0 && !CLI_1_0 && !NETCF
                         if (this.DateTimeStrategy is UniversalDateTime)
                         {

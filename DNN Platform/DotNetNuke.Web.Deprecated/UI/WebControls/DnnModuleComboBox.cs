@@ -54,7 +54,8 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public override bool Enabled {
+        public override bool Enabled
+        {
             get
             {
                 return this._moduleCombo.Enabled;

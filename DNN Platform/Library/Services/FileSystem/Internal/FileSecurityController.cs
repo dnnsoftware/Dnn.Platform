@@ -72,7 +72,8 @@ namespace DotNetNuke.Services.FileSystem.Internal
             do
             {
                 filePath = Path.Combine(folderPath, Path.GetRandomFileName()) + ".resx";
-            } while (File.Exists(filePath));
+            }
+            while (File.Exists(filePath));
 
             var fileStream = ((FileManager)FileManager.Instance).GetAutoDeleteFileStream(filePath);
 

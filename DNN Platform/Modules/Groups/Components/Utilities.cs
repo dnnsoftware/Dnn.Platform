@@ -10,9 +10,12 @@ using DotNetNuke.Common;
 using DotNetNuke.Common.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.Groups {
-    public class Utilities {
-        internal static string ParseTokenWrapper(string Template, string Token, bool Condition) {
+namespace DotNetNuke.Modules.Groups
+{
+    public class Utilities
+    {
+        internal static string ParseTokenWrapper(string Template, string Token, bool Condition)
+        {
             var pattern = "(\\[" + Token + "\\](.*?)\\[\\/" + Token + "\\])";
             var regExp = RegexUtils.GetCachedRegex(pattern, RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Multiline);
             var matches = regExp.Matches(Template);

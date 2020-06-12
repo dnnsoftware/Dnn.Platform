@@ -102,7 +102,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private UserInfo GetMockedUser(string timeZoneId)
         {
-            var profile = new UserProfile() {
+            var profile = new UserProfile()
+            {
                 PreferredTimeZone = this.GetMockedUserTimeZone(timeZoneId),
             };
 

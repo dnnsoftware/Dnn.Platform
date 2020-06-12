@@ -231,7 +231,8 @@ namespace log4net.Appender
         /// This property provides the fallback value which defaults to 0.
         /// </para>
         /// </remarks>
-        public int EventId {
+        public int EventId
+        {
             get { return this.m_eventId; }
             set { this.m_eventId = value; }
         }
@@ -288,7 +289,8 @@ namespace log4net.Appender
                 using (this.SecurityContext.Impersonate(this))
                 {
                     sourceAlreadyExists = EventLog.SourceExists(this.m_applicationName);
-                    if (sourceAlreadyExists) {
+                    if (sourceAlreadyExists)
+                    {
                         currentLogName = EventLog.LogNameFromSourceName(this.m_applicationName, this.m_machineName);
                     }
                 }

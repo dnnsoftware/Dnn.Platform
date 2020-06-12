@@ -51,7 +51,8 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return this.Request.CreateResponse(
                     HttpStatusCode.OK,
-                    new {
+                    new
+                    {
                             Result = "warning",
                             Title = Localization.GetString("CleanWarningTitle", Localization.SharedResourceFile),
                             Message = Localization.GetString("ProfileUrlCleaned", Localization.SharedResourceFile),

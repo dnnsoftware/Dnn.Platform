@@ -1005,7 +1005,8 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 }
                 isUnique = ValidateUrl(uniqueUrl, validateUrlForTabId, settings);
                 counter++;
-            } while (!isUnique);
+            }
+            while (!isUnique);
 
             return uniqueUrl;
         }

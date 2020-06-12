@@ -34,7 +34,8 @@ using DotNetNuke.Services.Search.Controllers;
 using DotNetNuke.Services.Search.Entities;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DotNetNuke.Modules.Journal.Components {
+namespace DotNetNuke.Modules.Journal.Components
+{
 
     /// -----------------------------------------------------------------------------
     /// <summary>
@@ -58,7 +59,8 @@ namespace DotNetNuke.Modules.Journal.Components {
         /// </summary>
         /// <param name="moduleID">The Id of the module to be exported</param>
         /// -----------------------------------------------------------------------------
-        public string ExportModule(int moduleID) {
+        public string ExportModule(int moduleID)
+        {
             // string strXML = "";
 
             // List<JournalInfo> colJournals = GetJournals(ModuleID);
@@ -89,7 +91,8 @@ namespace DotNetNuke.Modules.Journal.Components {
         /// <param name="version">The version of the module to be imported</param>
         /// <param name="userId">The Id of the user performing the import</param>
         /// -----------------------------------------------------------------------------
-        public void ImportModule(int moduleID, string content, string version, int userId) {
+        public void ImportModule(int moduleID, string content, string version, int userId)
+        {
             // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
             // foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
             // {
@@ -109,7 +112,8 @@ namespace DotNetNuke.Modules.Journal.Components {
         /// </summary>
         /// <param name="version">The current version of the module</param>
         /// -----------------------------------------------------------------------------
-        public string UpgradeModule(string version) {
+        public string UpgradeModule(string version)
+        {
             throw new NotImplementedException("The method or operation is not implemented.");
         }
 

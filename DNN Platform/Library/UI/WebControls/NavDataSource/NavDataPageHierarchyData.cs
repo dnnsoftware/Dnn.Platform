@@ -233,7 +233,8 @@ namespace DotNetNuke.UI.WebControls
                 }
                 strPath = this.GetSafeValue(objParent.Key, string.Empty) + "\\" + strPath;
                 objParent = objParent.ParentNode;
-            } while (true);
+            }
+            while (true);
             return strPath;
         }
     }

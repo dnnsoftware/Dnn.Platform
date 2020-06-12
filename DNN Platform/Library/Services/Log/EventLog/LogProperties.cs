@@ -57,7 +57,8 @@ namespace DotNetNuke.Services.Log.EventLog
                 // Add to the collection
                 this.Add(logDetail);
 
-            } while (reader.ReadToNextSibling("LogProperty"));
+            }
+            while (reader.ReadToNextSibling("LogProperty"));
         }
 
         public string Serialize()

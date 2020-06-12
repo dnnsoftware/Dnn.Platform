@@ -18,8 +18,10 @@ using DotNetNuke.Entities.Modules;
 using DotNetNuke.Security;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Services.Journal {
-   public class JournalItem : IHydratable, IPropertyAccess {
+namespace DotNetNuke.Services.Journal
+{
+   public class JournalItem : IHydratable, IPropertyAccess
+    {
         public int JournalId { get; set; }
         public int JournalTypeId { get; set; }
         public int PortalId { get; set; }
@@ -57,28 +59,34 @@ namespace DotNetNuke.Services.Journal {
         /// If you derive class has its own key id, please override this property and set the value to your own key id.
         /// </remarks>
         [XmlIgnore]
-        public virtual int KeyID {
-            get {
+        public virtual int KeyID
+        {
+            get
+            {
                 return this.JournalId;
             }
-            set {
+            set
+            {
                 this.JournalId = value;
             }
         }
 
-        public void Fill(IDataReader dr) {
+        public void Fill(IDataReader dr)
+        {
             this.JournalId = Null.SetNullInteger(dr["JournalId"]);
             this.JournalTypeId = Null.SetNullInteger(dr["JournalTypeId"]);
             this.PortalId = Null.SetNullInteger(dr["PortalId"]);
             this.UserId = Null.SetNullInteger(dr["UserId"]);
             this.ProfileId = Null.SetNullInteger(dr["ProfileId"]);
             this.SocialGroupId = Null.SetNullInteger(dr["GroupId"]);
-            if (!string.IsNullOrEmpty(Null.SetNullString(dr["JournalXML"]))) {
+            if (!string.IsNullOrEmpty(Null.SetNullString(dr["JournalXML"])))
+            {
                 this.JournalXML = new XmlDocument { XmlResolver = null };
                 this.JournalXML.LoadXml(dr["JournalXML"].ToString());
                 XmlNode xRoot = this.JournalXML.DocumentElement;
                 XmlNode xNode = xRoot.SelectSingleNode("//items/item/body");
-                if (xNode != null) {
+                if (xNode != null)
+                {
                     this.Body = xNode.InnerText;
                 }
             }
@@ -90,7 +98,8 @@ namespace DotNetNuke.Services.Journal {
             this.Summary = Null.SetNullString(dr["Summary"]);
             string itemd = Null.SetNullString(dr["ItemData"]);
             this.ItemData = new ItemData();
-            if (!string.IsNullOrEmpty(itemd)) {
+            if (!string.IsNullOrEmpty(itemd))
+            {
                 this.ItemData = itemd.FromJson<ItemData>();
             }
             this.ContentItemId = Null.SetNullInteger(dr["ContentItemId"]);
@@ -103,21 +112,28 @@ namespace DotNetNuke.Services.Journal {
             this.CommentsHidden = Null.SetNullBoolean(dr["CommentsHidden"]);
             this.SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
         }
-        public CacheLevel Cacheability {
-            get {
+        public CacheLevel Cacheability
+        {
+            get
+            {
                 return CacheLevel.fullyCacheable;
             }
         }
 
-        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound) {
+        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
             string OutputFormat = string.Empty;
-            if (format == string.Empty) {
+            if (format == string.Empty)
+            {
                 OutputFormat = "g";
-            } else {
+            }
+            else
+            {
                 OutputFormat = format;
             }
             propertyName = propertyName.ToLowerInvariant();
-            switch (propertyName) {
+            switch (propertyName)
+            {
                 case "journalid":
                     return PropertyAccess.FormatString(this.JournalId.ToString(), format);
                 case "journaltypeid":

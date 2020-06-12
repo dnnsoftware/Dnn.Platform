@@ -862,7 +862,8 @@ namespace log4net.Repository.Hierarchy
                         }
                     }
                 }
-                if (i == 0) {
+                if (i == 0)
+                {
                     // logger name starts with a dot
                     // and we've hit the start
                     break;

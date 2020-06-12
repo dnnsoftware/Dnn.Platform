@@ -268,7 +268,8 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 var moduleControl = new ModuleControlInfo();
                 moduleControl.ReadXml(reader);
                 this.ModuleControls.Add(moduleControl.ControlKey, moduleControl);
-            } while (reader.ReadToNextSibling("moduleControl"));
+            }
+            while (reader.ReadToNextSibling("moduleControl"));
         }
     }
 }

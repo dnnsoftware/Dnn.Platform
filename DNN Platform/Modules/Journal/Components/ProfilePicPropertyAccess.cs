@@ -29,7 +29,8 @@ namespace DotNetNuke.Modules.Journal.Components
             if (propertyName.ToLowerInvariant() == "relativeurl")
             {
                 int size;
-                if (int.TryParse(format, out size)) {
+                if (int.TryParse(format, out size))
+                {
                     this.Size = size;
                 }
                 return UserController.Instance.GetUserProfilePictureUrl(this._userId, this.Size, this.Size);

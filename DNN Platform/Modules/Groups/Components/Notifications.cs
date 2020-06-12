@@ -11,8 +11,10 @@ using DotNetNuke.Security.Roles;
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Social.Notifications;
 
-namespace DotNetNuke.Modules.Groups.Components {
-    public class Notifications {
+namespace DotNetNuke.Modules.Groups.Components
+{
+    public class Notifications
+    {
         internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators)
         {
             return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, null as UserInfo);
@@ -21,7 +23,8 @@ namespace DotNetNuke.Modules.Groups.Components {
         {
             return this.AddGroupNotification(notificationTypeName, tabId, moduleId, group, initiatingUser, moderators, recipient == null ? null : new List<UserInfo> { recipient });
         }
-        internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, IList<UserInfo> recipients) {
+        internal virtual Notification AddGroupNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo initiatingUser, IList<RoleInfo> moderators, IList<UserInfo> recipients)
+        {
             var notificationType = NotificationsController.Instance.GetNotificationType(notificationTypeName);
             var tokenReplace = new GroupItemTokenReplace(group);
 
@@ -92,7 +95,8 @@ namespace DotNetNuke.Modules.Groups.Components {
 
             return notification;
         }
-        internal virtual Notification AddMemberNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo sender, UserInfo recipient) {
+        internal virtual Notification AddMemberNotification(string notificationTypeName, int tabId, int moduleId, RoleInfo group, UserInfo sender, UserInfo recipient)
+        {
             var notificationType = NotificationsController.Instance.GetNotificationType(notificationTypeName);
 
             var subject = Localization.GetString(notificationTypeName + ".Subject", Constants.SharedResourcesPath);

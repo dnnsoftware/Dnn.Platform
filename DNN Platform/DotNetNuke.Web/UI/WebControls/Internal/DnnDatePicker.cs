@@ -23,7 +23,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         protected virtual string Format => "yyyy-MM-dd";
         protected virtual string ClientFormat => "YYYY-MM-DD";
 
-        public DateTime? SelectedDate {
+        public DateTime? SelectedDate
+        {
             get
             {
                 DateTime value;

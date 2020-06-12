@@ -403,7 +403,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 int slashIndex = myAlias.LastIndexOf('/');
                 myAlias = slashIndex > 1 ? myAlias.Substring(0, slashIndex) : string.Empty;
-            } while (myAlias.Length > 0);
+            }
+            while (myAlias.Length > 0);
 
 
             app.Context.Items.Add("UrlRewrite:OriginalUrl", app.Request.Url.AbsoluteUri);

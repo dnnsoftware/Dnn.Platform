@@ -377,7 +377,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var folderMapping = new FolderMappingInfo();
             folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
 
-            var subFolders = new List<IFolderInfo>() {
+            var subFolders = new List<IFolderInfo>()
+            {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
                 new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath },
             };
@@ -393,7 +394,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void GetSubFolders_Returns_Valid_SubFolders_When_Folder_Is_Not_Empty()
         {
-            var expectedResult = new List<string> {
+            var expectedResult = new List<string>
+            {
                 Constants.FOLDER_ValidSubFolderRelativePath,
                 Constants.FOLDER_OtherValidSubFolderRelativePath,
             };
@@ -401,7 +403,8 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var folderMapping = new FolderMappingInfo();
             folderMapping.PortalID = Constants.CONTENT_ValidPortalId;
 
-            var subFolders = new List<IFolderInfo> {
+            var subFolders = new List<IFolderInfo>
+            {
                 new FolderInfo { FolderPath = Constants.FOLDER_ValidSubFolderRelativePath },
                 new FolderInfo { FolderPath = Constants.FOLDER_OtherValidSubFolderRelativePath },
             };

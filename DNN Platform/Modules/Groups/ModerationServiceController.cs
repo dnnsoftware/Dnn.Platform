@@ -249,7 +249,8 @@ namespace DotNetNuke.Modules.Groups
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
-            } catch (Exception exc)
+            }
+            catch (Exception exc)
             {
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
@@ -291,7 +292,8 @@ namespace DotNetNuke.Modules.Groups
 
                     return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
                 }
-            } catch (Exception exc)
+            }
+            catch (Exception exc)
             {
                 Logger.Error(exc);
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);

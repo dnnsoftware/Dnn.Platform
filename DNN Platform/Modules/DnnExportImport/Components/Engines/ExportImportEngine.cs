@@ -198,7 +198,8 @@ namespace Dnn.ExportImport.Components.Engines
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0 && !this.TimeIsUp);
+                }
+                while (parentServices.Count > 0 && !this.TimeIsUp);
 
                 RemoveTokenFromCache(exportJob);
             }
@@ -374,7 +375,8 @@ namespace Dnn.ExportImport.Components.Engines
                         scheduleHistoryItem.AddLogNote(
                             "<br/><b>Orphaned services:</b> " + string.Join(",", parentServices.Select(x => x.Category)));
                     }
-                } while (parentServices.Count > 0 && !this.TimeIsUp);
+                }
+                while (parentServices.Count > 0 && !this.TimeIsUp);
 
                 RemoveTokenFromCache(importJob);
                 if (this.TimeIsUp)
@@ -439,7 +441,8 @@ namespace Dnn.ExportImport.Components.Engines
                 firstIteration = false;
                 parentServices = new List<BasePortableService>(nextLevelServices);
                 nextLevelServices.Clear();
-            } while (parentServices.Count > 0);
+            }
+            while (parentServices.Count > 0);
         }
 
         private static bool CheckCancelledCallBack(ExportImportJob job)

@@ -15,8 +15,10 @@ using System.Web;
 using DotNetNuke.Entities.Users;
 using DotNetNuke.Entities.Users.Social;
 
-namespace DotNetNuke.Modules.Journal.Components {
-    public class Utilities {
+namespace DotNetNuke.Modules.Journal.Components
+{
+    public class Utilities
+    {
 
         private static readonly Regex PageRegex = new Regex(
             "<(title)[^>]*?>((?:.|\\n)*?)</\\s*\\1\\s*>",
@@ -38,27 +40,39 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         private static readonly Regex HtmlTextRegex = new Regex("<(.|\\n)*?>", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        internal static Bitmap GetImageFromURL(string url) {
+        internal static Bitmap GetImageFromURL(string url)
+        {
             string sImgName = string.Empty;
             System.Net.WebRequest myRequest = default(System.Net.WebRequest);
             Bitmap bmp = null;
-            try {
+            try
+            {
                 myRequest = System.Net.WebRequest.Create(url);
                 myRequest.Proxy = null;
-                using (WebResponse myResponse = myRequest.GetResponse()) {
-                    using (Stream myStream = myResponse.GetResponseStream()) {
+                using (WebResponse myResponse = myRequest.GetResponse())
+                {
+                    using (Stream myStream = myResponse.GetResponseStream())
+                    {
                         string sContentType = myResponse.ContentType;
                         string sExt = string.Empty;
-                        if (sContentType.Contains("png")) {
+                        if (sContentType.Contains("png"))
+                        {
                             sExt = ".png";
-                        } else if (sContentType.Contains("jpg")) {
+                        }
+                        else if (sContentType.Contains("jpg"))
+                        {
                             sExt = ".jpg";
-                        } else if (sContentType.Contains("jpeg")) {
+                        }
+                        else if (sContentType.Contains("jpeg"))
+                        {
                             sExt = ".jpg";
-                        } else if (sContentType.Contains("gif")) {
+                        }
+                        else if (sContentType.Contains("gif"))
+                        {
                             sExt = ".gif";
                         }
-                        if (!string.IsNullOrEmpty(sExt)) {
+                        if (!string.IsNullOrEmpty(sExt))
+                        {
                             bmp = new Bitmap(myStream);
                         }
 
@@ -68,24 +82,31 @@ namespace DotNetNuke.Modules.Journal.Components {
                 return bmp;
 
 
-            } catch {
+            }
+            catch
+            {
                 return null;
             }
 
         }
 
-        internal static string PrepareURL(string url) {
+        internal static string PrepareURL(string url)
+        {
             url = url.Trim();
-            if (!url.StartsWith("http")) {
+            if (!url.StartsWith("http"))
+            {
                 url = "http://" + url;
             }
-            if (url.Contains("https://")) {
+            if (url.Contains("https://"))
+            {
                 url = url.Replace("https://", "http://");
             }
-            if (url.Contains("http://http://")) {
+            if (url.Contains("http://http://"))
+            {
                 url = url.Replace("http://http://", "http://");
             }
-            if (!(url.IndexOf("http://") == 0)) {
+            if (!(url.IndexOf("http://") == 0))
+            {
                 url = "http://" + url;
             }
             Uri objURI = null;
@@ -95,10 +116,12 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         }
 
-        internal static LinkInfo GetLinkData(string URL) {
+        internal static LinkInfo GetLinkData(string URL)
+        {
             string sPage = GetPageFromURL(ref URL, string.Empty, string.Empty);
             LinkInfo link = new LinkInfo();
-            if (string.IsNullOrEmpty(sPage)) {
+            if (string.IsNullOrEmpty(sPage))
+            {
                 return link;
             }
             string sTitle = string.Empty;
@@ -108,25 +131,33 @@ namespace DotNetNuke.Modules.Journal.Components {
             link.URL = URL;
             link.Images = new List<ImageInfo>();
             Match m = PageRegex.Match(sPage);
-            if (m.Success) {
+            if (m.Success)
+            {
                 link.Title = m.Groups[2].ToString().Trim();
             }
             MatchCollection matches = default(MatchCollection);
             matches = MetaRegex.Matches(sPage);
             int i = 0;
-            foreach (Match match in matches) {
+            foreach (Match match in matches)
+            {
                 string sTempDesc = match.Groups[0].Value;
-                foreach (Match subM in MetaSubRegex.Matches(sTempDesc)) {
-                    if (subM.Groups[4].Value.Equals("OG:DESCRIPTION", StringComparison.InvariantCultureIgnoreCase)) {
-                        link.Description = subM.Groups[9].Value;
-                    } else if (subM.Groups[4].Value.Equals("DESCRIPTION", StringComparison.InvariantCultureIgnoreCase)) {
+                foreach (Match subM in MetaSubRegex.Matches(sTempDesc))
+                {
+                    if (subM.Groups[4].Value.Equals("OG:DESCRIPTION", StringComparison.InvariantCultureIgnoreCase))
+                    {
                         link.Description = subM.Groups[9].Value;
                     }
-                    if (subM.Groups[4].Value.Equals("OG:TITLE", StringComparison.InvariantCultureIgnoreCase)) {
+                    else if (subM.Groups[4].Value.Equals("DESCRIPTION", StringComparison.InvariantCultureIgnoreCase))
+                    {
+                        link.Description = subM.Groups[9].Value;
+                    }
+                    if (subM.Groups[4].Value.Equals("OG:TITLE", StringComparison.InvariantCultureIgnoreCase))
+                    {
                         link.Title = subM.Groups[9].Value;
                     }
 
-                    if (subM.Groups[4].Value.Equals("OG:IMAGE", StringComparison.InvariantCultureIgnoreCase)) {
+                    if (subM.Groups[4].Value.Equals("OG:IMAGE", StringComparison.InvariantCultureIgnoreCase))
+                    {
                         sImage = subM.Groups[9].Value;
                         ImageInfo img = new ImageInfo();
                         img.URL = sImage;
@@ -135,44 +166,57 @@ namespace DotNetNuke.Modules.Journal.Components {
                     }
                 }
             }
-            if (!string.IsNullOrEmpty(link.Description)) {
+            if (!string.IsNullOrEmpty(link.Description))
+            {
                 link.Description = HttpUtility.HtmlDecode(link.Description);
                 link.Description = HttpUtility.UrlDecode(link.Description);
                 link.Description = RemoveHTML(link.Description);
             }
-            if (!string.IsNullOrEmpty(link.Title)) {
+            if (!string.IsNullOrEmpty(link.Title))
+            {
                 link.Title = link.Title.Replace("&amp;", "&");
             }
             matches = MetaSubRegex2.Matches(sPage);
 
             string imgList = string.Empty;
             string hostUrl = string.Empty;
-            if (!URL.Contains("http")) {
+            if (!URL.Contains("http"))
+            {
                 URL = "http://" + URL;
             }
             Uri uri = new Uri(URL);
             hostUrl = uri.Host;
-            if (URL.Contains("https:")) {
+            if (URL.Contains("https:"))
+            {
                 hostUrl = "https://" + hostUrl;
-            } else {
+            }
+            else
+            {
                 hostUrl = "http://" + hostUrl;
             }
-            foreach (Match match in matches) {
+            foreach (Match match in matches)
+            {
                 string sImg = match.Groups[5].Value;
-                if (string.IsNullOrEmpty(sImg)) {
+                if (string.IsNullOrEmpty(sImg))
+                {
                     sImg = match.Groups[8].Value;
                 }
-                if (!string.IsNullOrEmpty(sImg)) {
-                    if (!sImg.Contains("http")) {
+                if (!string.IsNullOrEmpty(sImg))
+                {
+                    if (!sImg.Contains("http"))
+                    {
                         sImg = hostUrl + sImg;
                     }
 
                     ImageInfo img = new ImageInfo();
                     img.URL = sImg;
-                    if (!imgList.Contains(sImg)) {
+                    if (!imgList.Contains(sImg))
+                    {
                         Bitmap bmp = Utilities.GetImageFromURL(sImg);
-                        if (bmp != null) {
-                            if (bmp.Height > 25 & bmp.Height < 500 & bmp.Width > 25 & bmp.Width < 500) {
+                        if (bmp != null)
+                        {
+                            if (bmp.Height > 25 & bmp.Height < 500 & bmp.Width > 25 & bmp.Width < 500)
+                            {
                                 link.Images.Add(img);
                                 imgList += sImg;
                                 i += 1;
@@ -180,7 +224,8 @@ namespace DotNetNuke.Modules.Journal.Components {
                             }
                         }
                     }
-                    if (i == 10) {
+                    if (i == 10)
+                    {
                         break;
                     }
                 }
@@ -188,7 +233,8 @@ namespace DotNetNuke.Modules.Journal.Components {
             }
             return link;
         }
-        internal static string GetPageFromURL(ref string url, string username, string password) {
+        internal static string GetPageFromURL(ref string url, string username, string password)
+        {
 
             url = PrepareURL(url);
             HttpWebRequest objWebRequest = default(HttpWebRequest);
@@ -199,19 +245,22 @@ namespace DotNetNuke.Modules.Journal.Components {
             objWebRequest.KeepAlive = false;
             objWebRequest.Proxy = null;
             objWebRequest.CookieContainer = cookies;
-            if (!string.IsNullOrEmpty(username) & !string.IsNullOrEmpty(password)) {
+            if (!string.IsNullOrEmpty(username) & !string.IsNullOrEmpty(password))
+            {
                 NetworkCredential nc = new NetworkCredential(username, password);
                 objWebRequest.Credentials = nc;
             }
             string sHTML = string.Empty;
-            try {
+            try
+            {
                 objWebResponse = (HttpWebResponse)objWebRequest.GetResponse();
                 Encoding enc = Encoding.UTF8;
 
 
                 string contentType = objWebResponse.ContentType;
 
-                if ((objWebRequest.HaveResponse == true) & objWebResponse.StatusCode == HttpStatusCode.OK) {
+                if ((objWebRequest.HaveResponse == true) & objWebResponse.StatusCode == HttpStatusCode.OK)
+                {
                     objWebResponse.Cookies = objWebRequest.CookieContainer.GetCookies(objWebRequest.RequestUri);
                     using (Stream objStream = objWebResponse.GetResponseStream())
                     using (StreamReader objStreamReader = new StreamReader(objStream, enc))
@@ -222,24 +271,29 @@ namespace DotNetNuke.Modules.Journal.Components {
                     }
                 }
                 objWebResponse.Close();
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Services.Exceptions.Exceptions.LogException(ex);
             }
 
             return sHTML;
         }
 
-        public static string LocalizeControl(string controlText) {
+        public static string LocalizeControl(string controlText)
+        {
             string sKey = string.Empty;
             string sReplace = string.Empty;
             MatchCollection matches = default(MatchCollection);
             matches = ResexRegex.Matches(controlText);
-            foreach (Match match in matches) {
+            foreach (Match match in matches)
+            {
                 sKey = match.Value;
                 sReplace = GetSharedResource(sKey);
 
                 string newValue = match.Value;
-                if (!string.IsNullOrEmpty(sReplace)) {
+                if (!string.IsNullOrEmpty(sReplace))
+                {
                     newValue = sReplace;
                 }
                 controlText = controlText.Replace(sKey, newValue);
@@ -247,12 +301,16 @@ namespace DotNetNuke.Modules.Journal.Components {
 
             return controlText;
         }
-        public static string GetSharedResource(string key) {
+        public static string GetSharedResource(string key)
+        {
             string sValue = key;
             sValue = DotNetNuke.Services.Localization.Localization.GetString(key, Constants.SharedResourcesPath);
-            if (sValue == string.Empty) {
+            if (sValue == string.Empty)
+            {
                 return key;
-            } else {
+            }
+            else
+            {
                 return sValue;
             }
         }

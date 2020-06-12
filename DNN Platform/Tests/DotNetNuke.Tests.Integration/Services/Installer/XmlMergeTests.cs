@@ -59,7 +59,8 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
             {
                 name = st.GetFrame(i).GetMethod().Name;
                 i++;
-            } while (name == "ExecuteMerge");
+            }
+            while (name == "ExecuteMerge");
 
             return name;
         }

@@ -12,8 +12,10 @@ using DotNetNuke.Common.Utilities;
 using DotNetNuke.Entities.Modules;
 using DotNetNuke.Services.Tokens;
 
-namespace DotNetNuke.Services.Journal {
-    public class CommentInfo : IHydratable, IPropertyAccess {
+namespace DotNetNuke.Services.Journal
+{
+    public class CommentInfo : IHydratable, IPropertyAccess
+    {
         public int CommentId { get; set; }
         public int JournalId { get; set; }
         public string Comment { get; set; }
@@ -24,22 +26,27 @@ namespace DotNetNuke.Services.Journal {
         public string DisplayName { get; set; }
 
 
-        public int KeyID {
-            get {
+        public int KeyID
+        {
+            get
+            {
                 return this.CommentId;
             }
-            set {
+            set
+            {
                 this.CommentId = value;
             }
         }
 
-        public void Fill(System.Data.IDataReader dr) {
+        public void Fill(System.Data.IDataReader dr)
+        {
             this.CommentId = Null.SetNullInteger(dr["CommentId"]);
             this.JournalId = Null.SetNullInteger(dr["JournalId"]);
             this.Comment = Null.SetNullString(dr["Comment"]);
             this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
             this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
-            if (!string.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"]))) {
+            if (!string.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"])))
+            {
                 this.CommentXML = new XmlDocument { XmlResolver = null };
                 this.CommentXML.LoadXml(dr["CommentXML"].ToString());
             }
@@ -49,14 +56,17 @@ namespace DotNetNuke.Services.Journal {
 
         }
 
-        public CacheLevel Cacheability {
-            get {
+        public CacheLevel Cacheability
+        {
+            get
+            {
                 return CacheLevel.fullyCacheable;
             }
 
         }
 
-        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound) {
+        public string GetProperty(string propertyName, string format, System.Globalization.CultureInfo formatProvider, Entities.Users.UserInfo accessingUser, Scope accessLevel, ref bool propertyNotFound)
+        {
             throw new NotImplementedException();
         }
     }

@@ -638,7 +638,8 @@ namespace log4net.Appender
             /// <summary>
             ///   trims leading and trailing commas or semicolons
             /// </summary>
-        private static string MaybeTrimSeparators(string s) {
+        private static string MaybeTrimSeparators(string s)
+        {
 #if NET_2_0 || MONO_2_0
                 return string.IsNullOrEmpty(s) ? s : s.Trim(ADDRESS_DELIMITERS);
 #else

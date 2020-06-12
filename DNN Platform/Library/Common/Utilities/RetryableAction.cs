@@ -119,7 +119,8 @@ namespace DotNetNuke.Common.Utilities.Internal
                     }
                 }
                 retrysRemaining--;
-            } while (true);
+            }
+            while (true);
         }
     }
 }
