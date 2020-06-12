@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.UI.Services
         private const string CriticalUpdateHash = "e67b666fb40c4f304a41d1706d455c09017b7bcf4ec1e411450ebfcd2c8f12d0";
         private const string NormalUpdateHash = "df29e1cda367bb8fa8534b5fb2415406100252dec057138b8d63cbadb44fb8e7";
 
-        enum UpdateType
+        private enum UpdateType
         {
             None,
             Normal,

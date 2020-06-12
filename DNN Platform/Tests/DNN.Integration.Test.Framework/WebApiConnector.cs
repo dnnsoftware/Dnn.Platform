@@ -56,14 +56,14 @@ namespace DNN.Integration.Test.Framework
         // private const string LogoffPath = "/Logoff.aspx");
         // private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
 
-        const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
-        const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
+        private const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
+        private const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
 
         private int _userId;
 
         public bool AvoidCaching { get; set; }
 
-        void ResetUserId()
+        private void ResetUserId()
         {
             this._userId = -1;
         }

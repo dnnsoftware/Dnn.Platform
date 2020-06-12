@@ -326,7 +326,7 @@ namespace DotNetNuke.Common.Utilities
             }
         }
 
-        static object ChangeType(object obj, Type type)
+        private static object ChangeType(object obj, Type type)
          {
              Type u = Nullable.GetUnderlyingType(type);
 
@@ -342,7 +342,7 @@ namespace DotNetNuke.Common.Utilities
              return Convert.ChangeType(obj, type);
          }
 
-        static object GetDefault(Type type)
+        private static object GetDefault(Type type)
          {
              if (type.IsValueType)
              {

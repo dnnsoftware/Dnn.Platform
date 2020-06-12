@@ -12,7 +12,7 @@ using DotNetNuke.Entities.Urls;
 
 namespace DotNetNuke.Services.Installer.Installers
 {
-    class UrlProviderInstaller : ComponentInstallerBase
+    internal class UrlProviderInstaller : ComponentInstallerBase
     {
         private ExtensionUrlProviderInfo _extensionUrlProvider;
         private ExtensionUrlProviderInfo _installedExtensionUrlProvider;

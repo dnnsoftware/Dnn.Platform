@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private static readonly string DefaultPath = MakePath(DefaultName);
         private static readonly string DefaultDePath = MakePath(DefaultName, "de-DE");
         private const string DefaultDeName = "Rückstellungs-Web site";
-        const string DefaultDeDescription = "A new german description";
+        private const string DefaultDeDescription = "A new german description";
         private static readonly Dictionary<string, string> DefaultExpectationsDe = new Dictionary<string, string>
                                                                                     {
                                                                                         { "Name", DefaultDeName },
@@ -44,9 +44,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                     };
 
         private const string StaticName = "Static";
-        static readonly string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
+        private static readonly string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
         private static readonly string StaticPath = MakePath(StaticName);
-        const string StaticDescription = "An description from a template file";
+        private const string StaticDescription = "An description from a template file";
         private static readonly Dictionary<string, string> StaticExpectations = new Dictionary<string, string>
                                                                                     {
                                                                                         { "Name", StaticName },
@@ -269,7 +269,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             return new StringReader(xml);
         }
 
-        TextReader CreateTemplateFileReader(string description)
+        private TextReader CreateTemplateFileReader(string description)
         {
             var xml = string.Format("<portal><description>{0}</description></portal>", description);
             return new StringReader(xml);

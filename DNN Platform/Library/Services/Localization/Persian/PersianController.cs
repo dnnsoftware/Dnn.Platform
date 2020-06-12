@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace DotNetNuke.Services.Localization.Persian
 {
-    class PersianController
+    internal class PersianController
     {
         public static CultureInfo GetPersianCultureInfo()
         {

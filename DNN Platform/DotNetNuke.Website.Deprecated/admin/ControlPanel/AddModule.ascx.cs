@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.CmdAddModuleClick(sender, e);
         }
 
-        void SiteList_SelectedIndexChanged(object sender, EventArgs e)
+        private void SiteList_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadModuleList();
             this.LoadPageList();

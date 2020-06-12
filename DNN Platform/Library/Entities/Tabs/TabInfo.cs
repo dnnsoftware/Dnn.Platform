@@ -786,7 +786,7 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        XmlDocument LoadDocType()
+        private XmlDocument LoadDocType()
         {
             var xmlSkinDocType = new XmlDocument { XmlResolver = null };
 

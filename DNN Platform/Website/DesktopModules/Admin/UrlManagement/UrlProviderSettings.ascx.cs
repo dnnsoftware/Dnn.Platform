@@ -69,12 +69,12 @@ namespace DotNetNuke.Modules.UrlManagement
             }
         }
 
-        void cmdCancel_Click(object sender, EventArgs e)
+        private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID));
         }
 
-        void cmdUpdate_Click(object sender, EventArgs e)
+        private void cmdUpdate_Click(object sender, EventArgs e)
         {
             if (!this.Page.IsValid)
             {

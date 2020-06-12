@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
             this.SortAlphabetically = true;
         }
 
-        void OnItemChanged(object sender, PropertyEditorEventArgs e)
+        private void OnItemChanged(object sender, PropertyEditorEventArgs e)
         {
             var regionContainer = ControlUtilities.FindControl<Control>(this.Parent, "Region", true);
             if (regionContainer != null)

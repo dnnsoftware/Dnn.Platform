@@ -497,7 +497,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
 // ReSharper restore PossibleNullReferenceException
     }
 
-    class TestLogSource : ILoggerSource
+    internal class TestLogSource : ILoggerSource
     {
 
         public ILog GetLogger(string name)
@@ -511,7 +511,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
         }
     }
 
-    class TestLogger : ILog
+    internal class TestLogger : ILog
     {
 
         public void Debug(object message, Exception exception)

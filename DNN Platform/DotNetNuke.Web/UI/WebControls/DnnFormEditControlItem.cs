@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             return this.control;
         }
 
-        void ValueChanged(object sender, PropertyEditorEventArgs e)
+        private void ValueChanged(object sender, PropertyEditorEventArgs e)
         {
             this.UpdateDataSource(this.Value, e.Value, this.DataField);
         }

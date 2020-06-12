@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.ClientCapability
         public static string API_SECRET { get; set; }
         public static string APP_ID { get; set; }
         public string RawSignedRequest { get; set; }
-        const string SignedRequestParameter = "signed_request";
+        private const string SignedRequestParameter = "signed_request";
         public bool IsValid { get; set; }
 
         public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
@@ -148,27 +148,27 @@ namespace DotNetNuke.Services.ClientCapability
         }
     }
 
-    struct Page
+    internal struct Page
     {
         public string id { get; set; }
         public bool liked { get; set; }
         public bool admin { get; set; }
     }
 
-    struct Age
+    internal struct Age
     {
         public long min { get; set; }
         public long max { get; set; }
     }
 
-    struct User
+    internal struct User
     {
         public string locale { get; set; }
         public string country { get; set; }
         public Age age { get; set; }
     }
 
-    struct FaceBookData
+    internal struct FaceBookData
     {
         public User user { get; set; }
         public string algorithm { get; set; }

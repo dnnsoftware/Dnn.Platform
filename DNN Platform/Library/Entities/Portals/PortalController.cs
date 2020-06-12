@@ -3594,7 +3594,7 @@ namespace DotNetNuke.Entities.Portals
                 }
             }
 
-            static string ReadLanguageFileValue(XDocument xmlDoc, string name)
+            private static string ReadLanguageFileValue(XDocument xmlDoc, string name)
             {
                 return (from f in xmlDoc.Descendants("data")
                         where (string)f.Attribute("name") == name

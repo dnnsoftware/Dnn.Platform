@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         }
 
         // Separate class only instantiated if Ealo is available.
-        static class EaloWorker
+        private static class EaloWorker
         {
             private static readonly Dictionary<string, Dictionary<int, EaloTabInfo>> ealoTabLookup =
                 new Dictionary<string, Dictionary<int, EaloTabInfo>>();

@@ -17,17 +17,17 @@ namespace Dnn.PersonaBar.Pages.Tests
     [TestFixture]
     public class RestorePageUnitTests
     {
-        TabInfo _tab;
-        string _message;
-        PortalSettings _portalSettings;
-        IConsoleCommand _restorePage;
+        private TabInfo _tab;
+        private string _message;
+        private PortalSettings _portalSettings;
+        private IConsoleCommand _restorePage;
 
-        Mock<ITabController> _tabControllerMock;
-        Mock<IRecyclebinController> _recyclebinControllerMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IRecyclebinController> _recyclebinControllerMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
 
-        int _tabId = 91;
-        int _testPortalId = 1;
+        private int _tabId = 91;
+        private int _testPortalId = 1;
 
         [SetUp]
         public void RunBeforeAnyTest()

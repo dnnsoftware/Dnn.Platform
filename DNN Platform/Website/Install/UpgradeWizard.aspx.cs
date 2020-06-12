@@ -374,9 +374,9 @@ namespace DotNetNuke.Services.Install
 
 
         // steps shown in UI
-        static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
-        static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
-        static IInstallationStep iisVerification = new IISVerificationStep();
+        private static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
+        private static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
+        private static IInstallationStep iisVerification = new IISVerificationStep();
 
         // Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>

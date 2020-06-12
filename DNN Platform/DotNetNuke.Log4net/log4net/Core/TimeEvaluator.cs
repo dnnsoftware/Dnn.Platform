@@ -49,7 +49,7 @@ namespace log4net.Core
         /// <summary>
         /// The default time threshold for triggering in seconds. Zero means it won't trigger at all.
         /// </summary>
-        const int DEFAULT_INTERVAL = 0;
+        private const int DEFAULT_INTERVAL = 0;
 
         /// <summary>
         /// Create a new evaluator using the <see cref="DEFAULT_INTERVAL"/> time threshold in seconds.

@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Dnn.PersonaBar.Library
 {
-    class Startup : IDnnStartup
+    internal class Startup : IDnnStartup
     {
         public void ConfigureServices(IServiceCollection services)
         {

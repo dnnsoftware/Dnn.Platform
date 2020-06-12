@@ -33,8 +33,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         internal const string DefaultCssProvider = "DnnPageHeaderProvider";
         internal const string DefaultJsProvider = "DnnBodyProvider";
 
-        static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
-        static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
+        private static Dictionary<string, bool> _fileExistsCache = new Dictionary<string, bool>();
+        private static ReaderWriterLockSlim _lockFileExistsCache = new ReaderWriterLockSlim();
 
         private static bool FileExists(Page page, string filePath)
         {

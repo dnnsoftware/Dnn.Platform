@@ -13,13 +13,13 @@ namespace DotNetNuke.Collections.Internal
         private readonly SharedList<T> _list = new SharedList<T>();
         // TODO is no recursion the correct policy
 
-        void DoInReadLock(Action action)
+        private void DoInReadLock(Action action)
         {
             this.DoInReadLock(() => { action.Invoke();
                 return true; });
         }
 
-        TRet DoInReadLock<TRet>(Func<TRet> func)
+        private TRet DoInReadLock<TRet>(Func<TRet> func)
         {
             using (this._list.GetReadLock())
             {
@@ -27,7 +27,7 @@ namespace DotNetNuke.Collections.Internal
             }
         }
 
-        void DoInWriteLock(Action action)
+        private void DoInWriteLock(Action action)
         {
             this.DoInWriteLock(() => { action.Invoke();
                 return true; });

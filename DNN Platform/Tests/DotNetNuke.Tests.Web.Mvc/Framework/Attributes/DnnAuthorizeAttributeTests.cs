@@ -14,7 +14,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
 {
     [TestFixture]
-    class DnnAuthorizeAttributeTests
+    internal class DnnAuthorizeAttributeTests
     {
         private MockRepository _mockRepository;
         private Mock<ActionDescriptor> _mockActionDescriptor;

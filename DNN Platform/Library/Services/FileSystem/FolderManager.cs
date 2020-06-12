@@ -2246,7 +2246,7 @@ namespace DotNetNuke.Services.FileSystem
         }
     }
 
-    class SyncFolderData
+    internal class SyncFolderData
     {
         public int PortalId { get; set; }
         public string FolderPath { get; set; }

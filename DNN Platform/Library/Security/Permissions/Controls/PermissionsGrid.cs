@@ -516,7 +516,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             grid.ItemCommand += this.grid_ItemCommand;
         }
 
-        void grid_ItemCommand(object source, DataGridCommandEventArgs e)
+        private void grid_ItemCommand(object source, DataGridCommandEventArgs e)
         {
             var entityID = int.Parse(e.CommandArgument.ToString());
             var command = this.GetGridCommand(e.CommandName);
@@ -760,7 +760,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.Controls.Add(this.pnlPermissions);
         }
 
-        void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
+        private void rolePermissionsGrid_ItemDataBound(object sender, DataGridItemEventArgs e)
         {
             var item = e.Item;
 
@@ -1219,7 +1219,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// AddRole runs when the Add Role linkbutton is clicked
         /// </summary>
-        void AddRole(object sender, EventArgs e)
+        private void AddRole(object sender, EventArgs e)
         {
             this.UpdatePermissions();
             int selectedRoleId;

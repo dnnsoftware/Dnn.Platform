@@ -13,7 +13,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
     /// </summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
-        readonly string _host;
+        private readonly string _host;
 
         /// <summary>
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.

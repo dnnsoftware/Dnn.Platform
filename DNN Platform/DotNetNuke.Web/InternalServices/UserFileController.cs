@@ -154,7 +154,7 @@ namespace DotNetNuke.Web.InternalServices
             return size.ToString(CultureInfo.InvariantCulture) + (biggerThanAMegabyte ? "Mb" : "k");
         }
 
-        class Item
+        private class Item
         {
             // ReSharper disable InconsistentNaming
             // ReSharper disable UnusedAutoPropertyAccessor.Local

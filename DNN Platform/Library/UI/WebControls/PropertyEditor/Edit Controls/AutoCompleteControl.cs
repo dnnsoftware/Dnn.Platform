@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
     /// the textbox. Selection is not enforced and if a user enters a new city it is added to the list.
     /// </summary>
     [ToolboxData("<{0}:TextEditControl runat=server></{0}:TextEditControl>")]
-    class AutoCompleteControl : TextEditControl
+    internal class AutoCompleteControl : TextEditControl
     {
         public AutoCompleteControl()
         {

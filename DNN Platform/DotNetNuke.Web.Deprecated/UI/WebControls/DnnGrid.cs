@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.MasterTableView.NoMasterRecordsText = Localization.GetString("NoRecords", Localization.SharedResourceFile);
         }
 
-        void DnnGrid_PreRender(object sender, EventArgs e)
+        private void DnnGrid_PreRender(object sender, EventArgs e)
         {
             var items = this.MasterTableView.Items;
             if (this.ScreenRowNumber == 0)

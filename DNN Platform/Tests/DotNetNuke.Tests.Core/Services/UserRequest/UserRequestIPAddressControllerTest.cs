@@ -16,7 +16,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Services.UserRequest
 {
     [TestFixture]
-    class UserRequestIPAddressControllerTest
+    internal class UserRequestIPAddressControllerTest
     {
         private Mock<IPortalController> _mockPortalController;
         private Mock<IHostController> _mockHostController;

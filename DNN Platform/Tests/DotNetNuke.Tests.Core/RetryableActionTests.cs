@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Core
         }
     }
 
-    class SleepMonitor
+    internal class SleepMonitor
     {
         private readonly List<int> _periods = new List<int>();
 
@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.Core
         }
     }
 
-    class ActionMonitor
+    internal class ActionMonitor
     {
         private int _failuresRemaining;
         private readonly List<DateTime> _callTimes = new List<DateTime>();

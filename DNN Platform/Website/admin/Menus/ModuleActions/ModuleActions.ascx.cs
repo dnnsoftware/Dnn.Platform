@@ -86,7 +86,7 @@ namespace DotNetNuke.Admin.Containers
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
         }
 
-        void actionButton_Click(object sender, EventArgs e)
+        private void actionButton_Click(object sender, EventArgs e)
         {
             this.ProcessAction(this.Request.Params["__EVENTARGUMENT"]);
         }

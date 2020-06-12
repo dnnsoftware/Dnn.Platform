@@ -246,7 +246,7 @@ namespace Dnn.Modules.Console
             this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
         }
 
-        void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)
+        private void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)
         {
 
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)

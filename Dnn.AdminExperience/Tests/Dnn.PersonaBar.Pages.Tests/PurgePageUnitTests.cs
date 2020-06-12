@@ -18,9 +18,9 @@ namespace Dnn.PersonaBar.Pages.Tests
     [TestFixture]
     public class PurgePageUnitTests
     {
-        Mock<ITabController> _tabControllerMock;
-        Mock<IRecyclebinController> _recyclebinControllerMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IRecyclebinController> _recyclebinControllerMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
 
         [SetUp]
         public void RunBeforeAnyTest()

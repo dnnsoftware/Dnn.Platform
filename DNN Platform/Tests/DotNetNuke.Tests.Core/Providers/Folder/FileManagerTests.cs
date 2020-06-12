@@ -212,7 +212,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._portalController.Verify(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length));
         }
 
-        class UnSeekableStream : MemoryStream
+        private class UnSeekableStream : MemoryStream
         {
             public override bool CanSeek
             {

@@ -7,7 +7,7 @@ using DotNetNuke.Services.Social.Subscriptions.Entities;
 
 namespace DotNetNuke.Tests.Core.Controllers.Messaging.Builders
 {
-    class SubscriptionTypeBuilder
+    internal class SubscriptionTypeBuilder
     {
         private int subscriptionTypeId;
         private string subscriptionName;

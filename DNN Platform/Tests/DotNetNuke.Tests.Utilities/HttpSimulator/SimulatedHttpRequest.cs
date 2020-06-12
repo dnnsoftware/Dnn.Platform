@@ -16,11 +16,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
     /// </summary>
     public class SimulatedHttpRequest : SimpleWorkerRequest
     {
-        Uri _referer;
-        readonly string _host;
-        readonly string _verb;
-        readonly int _port;
-        readonly string _physicalFilePath;
+        private Uri _referer;
+        private readonly string _host;
+        private readonly string _verb;
+        private readonly int _port;
+        private readonly string _physicalFilePath;
 
         /// <summary>
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.

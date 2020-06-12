@@ -20,15 +20,15 @@ namespace Dnn.PersonaBar.Pages.Tests
     [TestFixture]
     public class PagesControllerUnitTests
     {
-        Mock<ITabController> _tabControllerMock;
-        Mock<IModuleController> _moduleControllerMock;
-        Mock<IPageUrlsController> _pageUrlsControllerMock;
-        Mock<ITemplateController> _templateControllerMock;
-        Mock<IDefaultPortalThemeController> _defaultPortalThemeControllerMock;
-        Mock<ICloneModuleExecutionContext> _cloneModuleExecutionContextMock;
-        Mock<IUrlRewriterUtilsWrapper> _urlRewriterUtilsWrapperMock;
-        Mock<IFriendlyUrlWrapper> _friendlyUrlWrapperMock;
-        Mock<IContentVerifier> _contentVerifierMock;
+        private Mock<ITabController> _tabControllerMock;
+        private Mock<IModuleController> _moduleControllerMock;
+        private Mock<IPageUrlsController> _pageUrlsControllerMock;
+        private Mock<ITemplateController> _templateControllerMock;
+        private Mock<IDefaultPortalThemeController> _defaultPortalThemeControllerMock;
+        private Mock<ICloneModuleExecutionContext> _cloneModuleExecutionContextMock;
+        private Mock<IUrlRewriterUtilsWrapper> _urlRewriterUtilsWrapperMock;
+        private Mock<IFriendlyUrlWrapper> _friendlyUrlWrapperMock;
+        private Mock<IContentVerifier> _contentVerifierMock;
         PagesControllerImpl _pagesController;
         Mock<IPortalController> _portalControllerMock;
 

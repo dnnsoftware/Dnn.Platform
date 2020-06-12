@@ -10,7 +10,7 @@ using DotNetNuke.Services.Scheduling;
 
 namespace DotNetNuke.Services.ClientDependency
 {
-    class PurgeClientDependencyFiles : SchedulerClient
+    internal class PurgeClientDependencyFiles : SchedulerClient
     {
         public PurgeClientDependencyFiles(ScheduleHistoryItem objScheduleHistoryItem)
         {

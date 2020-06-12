@@ -29,7 +29,7 @@ namespace DotNetNuke.Instrumentation
             return new Logger(LogManager.GetLogger(name).Logger, null);
         }
 
-        class Logger : LoggerWrapperImpl, ILog
+        private class Logger : LoggerWrapperImpl, ILog
         {
             private static Level _levelTrace;
             private static Level _levelDebug;

@@ -14,7 +14,7 @@ using DotNetNuke.Services.Exceptions;
 
 namespace DotNetNuke.Entities.Tabs
 {
-    class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
+    internal class TabWorkflowTracker : ServiceLocator<ITabChangeTracker, TabWorkflowTracker>, ITabChangeTracker
     {
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(TabWorkflowTracker));
         private readonly ITabController _tabController;

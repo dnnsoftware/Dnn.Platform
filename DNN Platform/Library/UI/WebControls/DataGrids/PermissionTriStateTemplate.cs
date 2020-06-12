@@ -10,7 +10,7 @@ using DotNetNuke.Security.Permissions;
 
 namespace DotNetNuke.UI.WebControls.Internal
 {
-    class PermissionTriStateTemplate : ITemplate
+    internal class PermissionTriStateTemplate : ITemplate
     {
         private readonly PermissionInfo _permission;
 

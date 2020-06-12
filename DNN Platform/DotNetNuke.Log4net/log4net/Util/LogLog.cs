@@ -621,7 +621,7 @@ namespace log4net.Util
                 LogReceived += this.handler;
             }
 
-            void LogLog_LogReceived(object source, LogReceivedEventArgs e)
+            private void LogLog_LogReceived(object source, LogReceivedEventArgs e)
             {
                 this.items.Add(e.LogLog);
             }

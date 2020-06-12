@@ -680,8 +680,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
 
         // Arrange
-        const int TotalTestDocs2Create = 5;
-        const string ContentFieldName = "content";
+        private const int TotalTestDocs2Create = 5;
+        private const string ContentFieldName = "content";
 
         private int AddTestDocs()
         {

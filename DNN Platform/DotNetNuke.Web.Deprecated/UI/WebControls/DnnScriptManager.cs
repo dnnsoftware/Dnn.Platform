@@ -7,7 +7,7 @@ using Telerik.Web.UI;
 
 namespace DotNetNuke.Web.UI.WebControls
 {
-    class DnnScriptManager : RadScriptManager
+    internal class DnnScriptManager : RadScriptManager
     {
 
     }

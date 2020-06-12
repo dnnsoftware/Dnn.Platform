@@ -523,7 +523,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this._physicalPath = Path.Combine(this._physicalApplicationPath, this.Page.Replace("/", @"\"));
         }
 
-        static string RightAfter(string original, string search)
+        private static string RightAfter(string original, string search)
         {
             if (search.Length > original.Length || search.Length == 0)
                 return original;
@@ -618,7 +618,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return query.StartsWith("?") ? query.Substring(1) : query;
         }
 
-        void SetHttpRuntimeInternals()
+        private void SetHttpRuntimeInternals()
         {
             // We cheat by using reflection.
 

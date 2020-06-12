@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.FileSystem
         }
     }
 
-    class LinkClickPortalSettings
+    internal class LinkClickPortalSettings
     {
         public string PortalGUID;
         public bool EnableUrlLanguage;
