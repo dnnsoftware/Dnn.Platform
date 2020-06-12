@@ -136,28 +136,36 @@ namespace DotNetNuke.Services.Search.Internals
                     if (field.Type == SortField.INT || field.Type == SortField.LONG)
                     {
                         if (field.Reverse)
+                        {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                        .OrderByDescending(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
+                        }
                         else
+                        {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                        .OrderBy(rec => this.GetLongFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
+                        }
                     }
                     else
                     {
                         if (field.Reverse)
+                        {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                            .OrderByDescending(rec => this.GetStringFromField(rec.Document, field))
                                            .ThenByDescending(rec => rec.Document.Boost)
                                            .Select(rec => rec.SDoc);
+                        }
                         else
+                        {
                             tempDocs = this._hitDocs.Select(d => new { SDoc = d, Document = this._searcher.Doc(d.Doc) })
                                        .OrderBy(rec => this.GetStringFromField(rec.Document, field))
                                        .ThenByDescending(rec => rec.Document.Boost)
                                        .Select(rec => rec.SDoc);
+                        }
                     }
                 }
             }

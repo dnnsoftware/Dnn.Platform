@@ -77,8 +77,11 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 if (roles == null)
+                {
                     roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
+                }
+
                 this.Repository.CreateItems(roles);
                 this.Result.AddSummary("Exported Roles", roles.Count.ToString());
                 this.CheckPoint.Progress = 80;
@@ -98,8 +101,11 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 if (roleSettings == null)
+                {
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
+                }
+
                 this.Repository.CreateItems(roleSettings);
                 this.Result.AddSummary("Exported Role Settings", roleSettings.Count.ToString());
                 this.CheckPoint.Progress = 100;

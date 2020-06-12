@@ -1016,7 +1016,9 @@ namespace DotNetNuke.Web.InternalServices
                 return new List<ItemDto>();
             }
 
-            if (parentId < 1) return new List<ItemDto>
+            if (parentId < 1)
+            {
+                return new List<ItemDto>
             {
                 new ItemDto
                 {
@@ -1026,6 +1028,7 @@ namespace DotNetNuke.Web.InternalServices
                     Selectable = true
                 },
             };
+            }
 
             var childrenFolders = this.GetFolderDescendants(parentFolder, searchText, permission);
 

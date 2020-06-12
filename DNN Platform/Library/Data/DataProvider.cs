@@ -3339,6 +3339,7 @@ namespace DotNetNuke.Data
             if (exception != null)
             {
                 if (!string.IsNullOrEmpty(exception.ExceptionHash))
+                {
                     this.ExecuteNonQuery(
                         "AddException",
                         exception.ExceptionHash,
@@ -3347,6 +3348,7 @@ namespace DotNetNuke.Data
                         exception.InnerMessage,
                         exception.InnerStackTrace,
                         exception.Source);
+                }
 
                 // DNN-6218 + DNN-6239 + DNN-6242: Due to change in the AddEventLog stored
                 // procedure in 7.4.0, we need to try a fallback especially during upgrading

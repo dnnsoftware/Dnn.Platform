@@ -416,6 +416,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (groupedResult != null)
                 {
                     if (!groupedResult.Results.Any(r => string.Equals(r.DocumentUrl, preview.DocumentUrl)))
+                    {
                         groupedResult.Results.Add(new BasicView
                         {
                             Title = preview.Title.Contains("<") ? HttpUtility.HtmlEncode(preview.Title) : preview.Title,
@@ -424,6 +425,7 @@ namespace DotNetNuke.Web.InternalServices
                             DocumentUrl = preview.DocumentUrl,
                             Attributes = preview.Attributes,
                         });
+                    }
                 }
                 else
                 {

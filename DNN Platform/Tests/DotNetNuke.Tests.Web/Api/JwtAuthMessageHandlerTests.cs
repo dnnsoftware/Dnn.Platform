@@ -168,6 +168,7 @@ namespace DotNetNuke.Tests.Web.Api
         private static PersistedToken GetPersistedToken(string sessionId)
         {
             if ("0123456789ABCDEF".Equals(sessionId))
+            {
                 return new PersistedToken
                 {
                     TokenId = sessionId,
@@ -177,6 +178,7 @@ namespace DotNetNuke.Tests.Web.Api
                     TokenHash = GetHashedStr(ValidToken),
                     RenewalHash = "renewal-hash",
                 };
+            }
 
             return null;
         }

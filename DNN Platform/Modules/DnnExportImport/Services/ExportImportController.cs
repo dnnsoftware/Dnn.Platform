@@ -107,9 +107,11 @@ namespace Dnn.ExportImport.Services
             }
 
             if (portal < 0)
+            {
                 return this.Request.CreateErrorResponse(
                     HttpStatusCode.BadRequest,
                     Localization.GetString("InvalidPortal", Constants.SharedResources));
+            }
 
             var controller = new BaseController();
             var lastTime = controller.GetLastJobTime(portal, jobType);

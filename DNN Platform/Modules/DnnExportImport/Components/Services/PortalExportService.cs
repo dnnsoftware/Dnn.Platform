@@ -93,8 +93,10 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 if (portalLanguages == null)
+                {
                     portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
                         .GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
+                }
 
                 this.Repository.CreateItems(portalLanguages);
                 this.Result.AddSummary("Exported Portal Languages", portalLanguages.Count.ToString());

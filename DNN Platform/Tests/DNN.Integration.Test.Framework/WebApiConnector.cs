@@ -229,6 +229,7 @@ namespace DNN.Integration.Test.Framework
                 using (var rs = httpResponse.GetResponseStream())
                 {
                     if (rs != null && httpResponse.StatusCode == HttpStatusCode.OK)
+                    {
                         using (var sr = new StreamReader(rs, Encoding.UTF8))
                         {
                             var data = sr.ReadToEnd();
@@ -238,6 +239,7 @@ namespace DNN.Integration.Test.Framework
                                 this._inputFieldVerificationToken = token;
                             }
                         }
+                    }
                 }
             }
         }
