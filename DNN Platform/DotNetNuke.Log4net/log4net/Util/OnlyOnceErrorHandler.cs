@@ -46,6 +46,7 @@ namespace log4net.Util
     public class OnlyOnceErrorHandler : IErrorHandler
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="OnlyOnceErrorHandler"/> class.
         /// Default Constructor.
         /// </summary>
         /// <remarks>
@@ -59,6 +60,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="OnlyOnceErrorHandler"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="prefix">The prefix to use for each message.</param>

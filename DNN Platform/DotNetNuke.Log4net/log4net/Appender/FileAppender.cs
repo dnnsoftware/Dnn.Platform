@@ -887,6 +887,7 @@ namespace log4net.Appender
 #endif
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileAppender"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -899,6 +900,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileAppender"/> class.
         /// Construct a new appender using the layout, file and append mode.
         /// </summary>
         /// <param name="layout">the layout to use with this appender.</param>
@@ -919,6 +921,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FileAppender"/> class.
         /// Construct a new appender using the layout and file specified.
         /// The file will be appended to.
         /// </summary>

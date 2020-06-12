@@ -54,6 +54,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PageBase"/> class.
         /// Creates the Page.
         /// </summary>
         /// -----------------------------------------------------------------------------

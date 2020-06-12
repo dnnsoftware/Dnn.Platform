@@ -12,6 +12,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions.Exceptions
     public class DnnTabVersionException : ApplicationException
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DnnTabVersionException"/> class.
         ///   Constructs an instance of <see cref = "ApplicationException" /> class with the specified message.
         /// </summary>
         /// <param name = "message">The message to associate with the exception.</param>
@@ -21,6 +22,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions.Exceptions
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DnnTabVersionException"/> class.
         ///   Constructs an instance of <see cref = "ApplicationException" /> class with the specified message and
         ///   inner exception.
         /// </summary>

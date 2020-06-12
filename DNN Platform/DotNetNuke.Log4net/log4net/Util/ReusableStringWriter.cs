@@ -39,6 +39,7 @@ namespace log4net.Util
     public class ReusableStringWriter : StringWriter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReusableStringWriter"/> class.
         /// Create an instance of <see cref="ReusableStringWriter"/>.
         /// </summary>
         /// <param name="formatProvider">the format provider to use.</param>

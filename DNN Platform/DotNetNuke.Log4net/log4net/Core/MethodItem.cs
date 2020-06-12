@@ -39,6 +39,7 @@ namespace log4net.Core
     public class MethodItem
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="MethodItem"/> class.
         /// constructs a method item for an unknown method.
         /// </summary>
         public MethodItem()
@@ -48,6 +49,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MethodItem"/> class.
         /// constructs a method item from the name of the method.
         /// </summary>
         /// <param name="name"></param>
@@ -58,6 +60,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MethodItem"/> class.
         /// constructs a method item from the name of the method and its parameters.
         /// </summary>
         /// <param name="name"></param>
@@ -69,6 +72,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MethodItem"/> class.
         /// constructs a method item from a method base by determining the method name and its parameters.
         /// </summary>
         /// <param name="methodBase"></param>

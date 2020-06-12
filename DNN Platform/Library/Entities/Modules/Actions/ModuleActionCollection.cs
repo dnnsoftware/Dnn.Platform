@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Modules.Actions
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleActionCollection"/> class.
         /// Initializes a new, empty instance of the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleActionCollection" /> class.
         /// </summary>
         /// <remarks>The default constructor creates an empty collection of <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />
@@ -35,7 +36,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleActionCollection" />
+        /// Initializes a new instance of the <see cref="ModuleActionCollection"/>
         ///  class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleActionCollection" /> with which to initialize the collection.</param>
@@ -49,7 +50,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleActionCollection" />
+        /// Initializes a new instance of the <see cref="ModuleActionCollection"/>
         ///  class containing the specified array of <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> objects

@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Search
     public class SearchResultsInfoCollection : CollectionBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResultsInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> class.
         /// </summary>
         public SearchResultsInfoCollection()
@@ -31,6 +32,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResultsInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> with which to initialize the collection.</param>
@@ -40,6 +42,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResultsInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> class containing the specified array of <see cref="SearchResultsInfo">SearchResultsInfo</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchResultsInfo">SearchResultsInfo</see> objects with which to initialize the collection. </param>
@@ -49,6 +52,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResultsInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchResultsInfoCollection">SearchResultsInfoCollection</see> class containing the specified array of <see cref="SearchResultsInfo">SearchResultsInfo</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchResultsInfo">SearchResultsInfo</see> objects with which to initialize the collection. </param>

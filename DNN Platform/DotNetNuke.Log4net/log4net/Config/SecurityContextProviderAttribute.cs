@@ -51,6 +51,7 @@ namespace log4net.Config
     public sealed class SecurityContextProviderAttribute : ConfiguratorAttribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityContextProviderAttribute"/> class.
         /// Construct provider attribute with type specified.
         /// </summary>
         /// <param name="providerType">the type of the provider to use.</param>

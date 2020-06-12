@@ -56,6 +56,7 @@ namespace log4net.Filter
         private string m_loggerToMatch;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerMatchFilter"/> class.
         /// Default constructor.
         /// </summary>
         public LoggerMatchFilter()

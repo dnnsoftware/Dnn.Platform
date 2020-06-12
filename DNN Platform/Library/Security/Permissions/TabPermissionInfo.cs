@@ -32,6 +32,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
         /// Constructs a new TabPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -43,6 +44,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="TabPermissionInfo"/> class.
         /// Constructs a new TabPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>

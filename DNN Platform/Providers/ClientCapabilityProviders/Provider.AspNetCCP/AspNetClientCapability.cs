@@ -37,6 +37,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
         public AspNetClientCapability(string userAgent, HttpCapabilitiesBase browserCaps)
@@ -84,6 +85,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
         public AspNetClientCapability(HttpRequest request)
@@ -92,6 +94,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="AspNetClientCapability"/> class.
         /// Constructs a new instance of ClientCapability.
         /// </summary>
         public AspNetClientCapability(IDictionary<string, string> properties)

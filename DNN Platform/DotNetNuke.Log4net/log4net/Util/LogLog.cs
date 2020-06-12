@@ -150,6 +150,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes static members of the <see cref="LogLog"/> class.
         /// Static constructor that initializes logging by reading
         /// settings from the application configuration file.
         /// </summary>
@@ -599,7 +600,7 @@ namespace log4net.Util
             private readonly LogReceivedEventHandler handler;
 
             /// <summary>
-            ///
+            /// Initializes a new instance of the <see cref="LogReceivedAdapter"/> class.
             /// </summary>
             /// <param name="items"></param>
             public LogReceivedAdapter(IList items)
@@ -642,7 +643,7 @@ namespace log4net.Util
         private readonly LogLog loglog;
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="LogReceivedEventArgs"/> class.
         /// </summary>
         /// <param name="loglog"></param>
         public LogReceivedEventArgs(LogLog loglog)

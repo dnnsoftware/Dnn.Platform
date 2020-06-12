@@ -43,6 +43,7 @@ namespace log4net.Util
         private readonly object[] m_args;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SystemStringFormat"/> class.
         /// Initialise the <see cref="SystemStringFormat"/>.
         /// </summary>
         /// <param name="provider">An <see cref="System.IFormatProvider"/> that supplies culture-specific formatting information.</param>

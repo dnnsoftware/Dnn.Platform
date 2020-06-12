@@ -31,6 +31,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumn"/> class.
         /// Constructs the DNNMultiStateBoxColumn.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -41,6 +42,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="DNNMultiStateBoxColumn"/> class.
         /// Constructs the MultiStateBoxColumn, with an optional AutoPostBack (where each change
         /// of state of the control causes a Post Back).
         /// </summary>

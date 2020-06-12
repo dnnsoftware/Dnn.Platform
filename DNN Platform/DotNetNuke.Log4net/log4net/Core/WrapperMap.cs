@@ -67,6 +67,7 @@ namespace log4net.Core
     public class WrapperMap
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="WrapperMap"/> class.
         /// Initializes a new instance of the <see cref="WrapperMap" />.
         /// </summary>
         /// <param name="createWrapperHandler">The handler to use to create the wrapper objects.</param>

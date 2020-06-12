@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
         /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
         /// <param name="package">A PackageInfo instance.</param>
@@ -62,6 +63,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInstaller"/> class.
         /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
         /// <param name="info">An InstallerInfo instance.</param>

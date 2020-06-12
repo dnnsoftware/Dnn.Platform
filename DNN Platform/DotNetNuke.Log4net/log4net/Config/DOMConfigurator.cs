@@ -50,6 +50,7 @@ namespace log4net.Config
     public sealed class DOMConfigurator
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DOMConfigurator"/> class.
         /// Private constructor.
         /// </summary>
         private DOMConfigurator()

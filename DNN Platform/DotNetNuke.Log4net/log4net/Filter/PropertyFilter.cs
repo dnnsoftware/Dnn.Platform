@@ -47,6 +47,7 @@ namespace log4net.Filter
         private string m_key;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyFilter"/> class.
         /// Default constructor.
         /// </summary>
         public PropertyFilter()

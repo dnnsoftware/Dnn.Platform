@@ -18,6 +18,7 @@ namespace DotNetNuke.Web.Api
     public class StringPassThroughMediaTypeFormatter : MediaTypeFormatter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="StringPassThroughMediaTypeFormatter"/> class.
         /// Initialize a formatter that can handle text/plain and text/html.
         /// </summary>
         public StringPassThroughMediaTypeFormatter()
@@ -26,6 +27,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StringPassThroughMediaTypeFormatter"/> class.
         /// Initialize a formatter that can handle the specified media types.
         /// </summary>
         public StringPassThroughMediaTypeFormatter(IEnumerable<string> mediaTypes)

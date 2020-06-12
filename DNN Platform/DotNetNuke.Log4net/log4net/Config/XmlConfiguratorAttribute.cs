@@ -88,6 +88,7 @@ namespace log4net.Config
         //
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlConfiguratorAttribute"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

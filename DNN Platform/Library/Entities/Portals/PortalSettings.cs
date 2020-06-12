@@ -76,6 +76,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PortalSettings"/> class.
         /// The PortalSettings Constructor encapsulates all of the logic
         /// necessary to obtain configuration settings necessary to render
         /// a Portal Tab view for a given request.

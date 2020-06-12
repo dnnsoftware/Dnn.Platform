@@ -52,6 +52,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlHierarchyConfigurator"/> class.
         /// Construct the configurator for a hierarchy.
         /// </summary>
         /// <param name="hierarchy">The hierarchy to build.</param>

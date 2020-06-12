@@ -58,6 +58,7 @@ namespace DotNetNuke.Entities.Portals
         private string _registeredRoleName;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PortalInfo"/> class.
         /// Create new Portalinfo instance.
         /// </summary>
         /// <remarks>

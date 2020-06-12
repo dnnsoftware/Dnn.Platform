@@ -26,6 +26,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="DNNCountryEditControl"/> class.
         /// Constructs a DNNCountryEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------

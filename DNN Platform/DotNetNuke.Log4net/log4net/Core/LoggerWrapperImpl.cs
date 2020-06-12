@@ -35,6 +35,7 @@ namespace log4net.Core
     public abstract class LoggerWrapperImpl : ILoggerWrapper
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerWrapperImpl"/> class.
         /// Constructs a new wrapper for the specified logger.
         /// </summary>
         /// <param name="logger">The logger to wrap.</param>

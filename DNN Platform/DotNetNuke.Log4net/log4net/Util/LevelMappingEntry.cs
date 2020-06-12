@@ -40,6 +40,7 @@ namespace log4net.Util
     public abstract class LevelMappingEntry : IOptionHandler
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelMappingEntry"/> class.
         /// Default protected constructor.
         /// </summary>
         /// <remarks>

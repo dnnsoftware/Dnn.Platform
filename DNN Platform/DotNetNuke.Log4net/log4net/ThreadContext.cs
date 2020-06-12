@@ -73,6 +73,7 @@ namespace log4net
     public sealed class ThreadContext
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ThreadContext"/> class.
         /// Private Constructor.
         /// </summary>
         /// <remarks>

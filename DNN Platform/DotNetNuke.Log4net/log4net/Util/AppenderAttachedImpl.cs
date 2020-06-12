@@ -42,6 +42,7 @@ namespace log4net.Util
     public class AppenderAttachedImpl : IAppenderAttachable
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AppenderAttachedImpl"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>

@@ -23,6 +23,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -36,6 +37,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="FolderPermissionInfo"/> class.
         /// Constructs a new FolderPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>

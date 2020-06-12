@@ -32,6 +32,7 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
         /// Constructs a new MenuPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -43,6 +44,7 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="MenuPermissionInfo"/> class.
         /// Constructs a new MenuPermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>

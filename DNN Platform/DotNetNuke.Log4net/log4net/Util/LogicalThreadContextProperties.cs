@@ -59,6 +59,7 @@ namespace log4net.Util
         private bool m_disabled = false;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogicalThreadContextProperties"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>

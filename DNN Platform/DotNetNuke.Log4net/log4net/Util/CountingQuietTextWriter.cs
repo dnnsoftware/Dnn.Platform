@@ -41,6 +41,7 @@ namespace log4net.Util
     public class CountingQuietTextWriter : QuietTextWriter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CountingQuietTextWriter"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter" /> to actually write to.</param>

@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Installer.Writers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ContainerComponentWriter"/> class.
         /// Constructs the ContainerComponentWriter.
         /// </summary>
         /// <param name="containerName">The name of the Container.</param>

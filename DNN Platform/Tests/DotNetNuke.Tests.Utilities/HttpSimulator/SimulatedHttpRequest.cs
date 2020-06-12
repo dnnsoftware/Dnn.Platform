@@ -23,6 +23,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private readonly string _physicalFilePath;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedHttpRequest"/> class.
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.
         /// </summary>
         /// <param name="applicationPath">App virtual dir.</param>

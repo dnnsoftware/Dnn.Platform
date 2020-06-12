@@ -41,6 +41,7 @@ namespace log4net.Util
     public class ProtectCloseTextWriter : TextWriterAdapter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ProtectCloseTextWriter"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="writer">the writer to actually write to.</param>

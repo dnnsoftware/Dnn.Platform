@@ -29,6 +29,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CheckBoxColumn"/> class.
         /// Constructs the CheckBoxColumn.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -39,6 +40,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CheckBoxColumn"/> class.
         /// Constructs the CheckBoxColumn, with an optional AutoPostBack (where each change
         /// of state of a check box causes a Post Back).
         /// </summary>

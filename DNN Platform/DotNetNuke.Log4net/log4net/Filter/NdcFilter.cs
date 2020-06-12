@@ -48,6 +48,7 @@ namespace log4net.Filter
     public class NdcFilter : PropertyFilter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="NdcFilter"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

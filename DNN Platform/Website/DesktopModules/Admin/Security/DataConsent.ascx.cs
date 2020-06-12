@@ -117,6 +117,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="DataConsentEventArgs"/> class.
             /// Constructs a new DataConsentEventArgs.
             /// </summary>
             /// <param name="status">The Data Consent Status.</param>

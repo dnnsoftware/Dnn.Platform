@@ -46,6 +46,7 @@ namespace log4net.Util
         private TextWriter m_writer;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextWriterAdapter"/> class.
         /// Create an instance of <see cref="TextWriterAdapter"/> that forwards all
         /// messages to a <see cref="TextWriter"/>.
         /// </summary>

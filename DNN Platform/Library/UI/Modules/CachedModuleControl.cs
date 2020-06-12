@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CachedModuleControl"/> class.
         /// Constructs a new CachedModuleControl.
         /// </summary>
         /// <param name="cachedContent">The cached Content for this control.</param>

@@ -46,6 +46,7 @@ namespace log4net.Layout
     public class SimpleLayout : LayoutSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleLayout"/> class.
         /// Constructs a SimpleLayout.
         /// </summary>
         public SimpleLayout()

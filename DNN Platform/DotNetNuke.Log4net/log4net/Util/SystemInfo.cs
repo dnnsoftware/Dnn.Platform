@@ -53,6 +53,7 @@ namespace log4net.Util
         private const string DEFAULT_NOT_AVAILABLE_TEXT = "NOT AVAILABLE";
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SystemInfo"/> class.
         /// Private constructor to prevent instances.
         /// </summary>
         /// <remarks>
@@ -65,6 +66,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes static members of the <see cref="SystemInfo"/> class.
         /// Initialize default values for private static fields.
         /// </summary>
         /// <remarks>

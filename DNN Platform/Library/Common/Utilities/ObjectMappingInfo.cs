@@ -37,6 +37,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ObjectMappingInfo"/> class.
         /// Constructs a new ObjectMappingInfo Object.
         /// </summary>
         /// -----------------------------------------------------------------------------

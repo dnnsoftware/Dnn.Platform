@@ -24,6 +24,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="DualListBoxEventArgs"/> class.
         /// Constructs a new DualListBoxEventArgs.
         /// </summary>
         /// <param name="items">The items.</param>

@@ -62,6 +62,7 @@ namespace DotNetNuke.Services.Sitemap
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SitemapBuilder"/> class.
         ///   Creates an instance of the sitemap builder class.
         /// </summary>
         /// <param name = "ps">Current PortalSettings for the portal being processed.</param>

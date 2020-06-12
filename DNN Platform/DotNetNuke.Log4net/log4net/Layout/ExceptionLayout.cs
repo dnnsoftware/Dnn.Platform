@@ -46,6 +46,7 @@ namespace log4net.Layout
     public class ExceptionLayout : LayoutSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionLayout"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

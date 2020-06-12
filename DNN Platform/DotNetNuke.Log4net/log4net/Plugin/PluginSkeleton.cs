@@ -39,6 +39,7 @@ namespace log4net.Plugin
     public abstract class PluginSkeleton : IPlugin
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginSkeleton"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="name">the name of the plugin.</param>

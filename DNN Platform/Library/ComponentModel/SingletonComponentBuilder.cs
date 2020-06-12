@@ -16,7 +16,7 @@ namespace DotNetNuke.ComponentModel
         private object _Instance;
 
         /// <summary>
-        /// Initializes a new instance of the SingletonComponentBuilder class.
+        /// Initializes a new instance of the <see cref="SingletonComponentBuilder"/> class.
         /// </summary>
         /// <param name="name">The name of the component.</param>
         /// <param name="type">The type of the component.</param>

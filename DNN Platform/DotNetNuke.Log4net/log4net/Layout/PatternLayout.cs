@@ -837,6 +837,7 @@ namespace log4net.Layout
         private Hashtable m_instanceRulesRegistry = new Hashtable();
 
         /// <summary>
+        /// Initializes static members of the <see cref="PatternLayout"/> class.
         /// Initialize the global registry.
         /// </summary>
         /// <remarks>
@@ -929,6 +930,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PatternLayout"/> class.
         /// Constructs a PatternLayout using the DefaultConversionPattern.
         /// </summary>
         /// <remarks>
@@ -952,6 +954,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PatternLayout"/> class.
         /// Constructs a PatternLayout using the supplied conversion pattern.
         /// </summary>
         /// <param name="pattern">the pattern to use.</param>

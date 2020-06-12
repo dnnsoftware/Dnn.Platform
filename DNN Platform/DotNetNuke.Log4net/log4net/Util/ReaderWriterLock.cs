@@ -51,6 +51,7 @@ namespace log4net.Util
     public sealed class ReaderWriterLock
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReaderWriterLock"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>

@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextEditControl"/> class.
         /// Constructs a TextEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -36,6 +37,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="TextEditControl"/> class.
         /// Constructs a TextEditControl.
         /// </summary>
         /// <param name="type">The type of the property.</param>

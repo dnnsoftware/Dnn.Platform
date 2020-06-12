@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.ClientCapability
         private IDictionary<string, string> _capabilities;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ClientCapability"/> class.
         ///   Default Constructor.
         /// </summary>
         public ClientCapability()

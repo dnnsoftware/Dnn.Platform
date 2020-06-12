@@ -50,6 +50,7 @@ namespace log4net.Util
         public static readonly NullSecurityContext Instance = new NullSecurityContext();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NullSecurityContext"/> class.
         /// Private constructor.
         /// </summary>
         /// <remarks>

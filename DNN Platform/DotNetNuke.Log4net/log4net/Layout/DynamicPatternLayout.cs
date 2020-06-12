@@ -65,6 +65,7 @@ namespace log4net.Layout
         private PatternString m_footerPatternString = new PatternString(string.Empty);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicPatternLayout"/> class.
         /// Constructs a DynamicPatternLayout using the DefaultConversionPattern.
         /// </summary>
         /// <remarks>
@@ -78,6 +79,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DynamicPatternLayout"/> class.
         /// Constructs a DynamicPatternLayout using the supplied conversion pattern.
         /// </summary>
         /// <param name="pattern">the pattern to use.</param>

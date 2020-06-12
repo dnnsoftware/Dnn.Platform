@@ -47,6 +47,7 @@ namespace log4net.Layout
     public abstract class XmlLayoutBase : LayoutSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlLayoutBase"/> class.
         /// Protected constructor to support subclasses.
         /// </summary>
         /// <remarks>
@@ -62,6 +63,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlLayoutBase"/> class.
         /// Protected constructor to support subclasses.
         /// </summary>
         /// <remarks>

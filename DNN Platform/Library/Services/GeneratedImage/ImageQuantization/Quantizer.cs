@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public abstract class Quantizer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Quantizer"/> class.
         /// Construct the quantizer.
         /// </summary>
         /// <param name="singlePass">If true, the quantization only needs to loop through the source pixels once.</param>

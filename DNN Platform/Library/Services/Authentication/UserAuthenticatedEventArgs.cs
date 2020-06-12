@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.Authentication
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="UserAuthenticatedEventArgs"/> class.
         /// All properties Constructor.
         /// </summary>
         /// <param name="user">The user being authenticated.</param>

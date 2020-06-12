@@ -40,6 +40,7 @@ namespace log4net.Layout
     public class RawPropertyLayout : IRawLayout
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="RawPropertyLayout"/> class.
         /// Constructs a RawPropertyLayout.
         /// </summary>
         public RawPropertyLayout()

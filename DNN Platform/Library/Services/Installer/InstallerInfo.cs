@@ -31,6 +31,7 @@ namespace DotNetNuke.Services.Installer
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a
         /// string representing the physical path to the root of the site.
         /// </summary>
@@ -58,6 +60,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a Stream and a
         /// string representing the physical path to the root of the site.
         /// </summary>
@@ -76,6 +79,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a string representing
         /// the physical path to the temporary install folder and a string representing
         /// the physical path to the root of the site.
@@ -97,6 +101,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallerInfo"/> class.
         /// This Constructor creates a new InstallerInfo instance from a PackageInfo object.
         /// </summary>
         /// <param name="package">The PackageInfo instance.</param>

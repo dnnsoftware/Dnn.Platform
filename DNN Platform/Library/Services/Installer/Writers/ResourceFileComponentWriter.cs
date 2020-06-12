@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Installer.Writers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ResourceFileComponentWriter"/> class.
         /// Constructs the ResourceFileComponentWriter.
         /// </summary>
         /// <param name="basePath">The Base Path for the files.</param>

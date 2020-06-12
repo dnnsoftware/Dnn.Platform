@@ -46,6 +46,7 @@ namespace log4net.Config
         private int m_priority = 0;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ConfiguratorAttribute"/> class.
         /// Constructor used by subclasses.
         /// </summary>
         /// <param name="priority">the ordering priority for this configurator.</param>

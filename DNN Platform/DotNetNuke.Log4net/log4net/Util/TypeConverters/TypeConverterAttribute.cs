@@ -49,6 +49,7 @@ namespace log4net.Util.TypeConverters
         private string m_typeName = null;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TypeConverterAttribute"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -61,6 +62,7 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TypeConverterAttribute"/> class.
         /// Create a new type converter attribute for the specified type name.
         /// </summary>
         /// <param name="typeName">The string type name of the type converter.</param>
@@ -76,6 +78,7 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TypeConverterAttribute"/> class.
         /// Create a new type converter attribute for the specified type.
         /// </summary>
         /// <param name="converterType">The type of the type converter.</param>

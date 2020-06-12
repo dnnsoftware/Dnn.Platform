@@ -62,6 +62,7 @@ namespace log4net.Filter
         private Level m_levelMax;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelRangeFilter"/> class.
         /// Default constructor.
         /// </summary>
         public LevelRangeFilter()

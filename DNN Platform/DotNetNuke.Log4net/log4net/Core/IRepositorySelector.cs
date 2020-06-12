@@ -57,6 +57,7 @@ namespace log4net.Core
         private ILoggerRepository m_repository;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerRepositoryCreationEventArgs"/> class.
         /// Construct instance using <see cref="ILoggerRepository"/> specified.
         /// </summary>
         /// <param name="repository">the <see cref="ILoggerRepository"/> that has been created.</param>

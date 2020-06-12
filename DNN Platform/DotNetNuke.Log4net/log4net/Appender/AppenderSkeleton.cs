@@ -50,6 +50,7 @@ namespace log4net.Appender
     public abstract class AppenderSkeleton : IAppender, IBulkAppender, IOptionHandler, IFlushable
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="AppenderSkeleton"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

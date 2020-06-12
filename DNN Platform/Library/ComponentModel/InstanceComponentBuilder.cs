@@ -10,7 +10,7 @@ namespace DotNetNuke.ComponentModel
         private readonly string _Name;
 
         /// <summary>
-        /// Initializes a new instance of the InstanceComponentBuilder class.
+        /// Initializes a new instance of the <see cref="InstanceComponentBuilder"/> class.
         /// </summary>
         /// <param name="name"></param>
         /// <param name="instance"></param>

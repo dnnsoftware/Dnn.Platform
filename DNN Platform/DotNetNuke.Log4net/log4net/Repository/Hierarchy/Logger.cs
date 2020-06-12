@@ -57,6 +57,7 @@ namespace log4net.Repository.Hierarchy
     public abstract class Logger : IAppenderAttachable, ILogger
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Logger"/> class.
         /// This constructor created a new <see cref="Logger" /> instance and
         /// sets its name.
         /// </summary>

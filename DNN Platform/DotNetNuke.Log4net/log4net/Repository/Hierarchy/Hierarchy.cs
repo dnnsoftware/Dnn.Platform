@@ -59,6 +59,7 @@ namespace log4net.Repository.Hierarchy
         private Logger m_log;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerCreationEventArgs"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="log">The <see cref="Logger"/> that has been created.</param>
@@ -136,6 +137,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Hierarchy"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -149,6 +151,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Hierarchy"/> class.
         /// Construct with properties.
         /// </summary>
         /// <param name="properties">The properties to pass to this repository.</param>
@@ -163,6 +166,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Hierarchy"/> class.
         /// Construct with a logger factory.
         /// </summary>
         /// <param name="loggerFactory">The factory to use to create new logger instances.</param>
@@ -178,6 +182,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Hierarchy"/> class.
         /// Construct with properties and a logger factory.
         /// </summary>
         /// <param name="properties">The properties to pass to this repository.</param>

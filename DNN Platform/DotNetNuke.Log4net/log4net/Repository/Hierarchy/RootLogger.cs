@@ -47,6 +47,7 @@ namespace log4net.Repository.Hierarchy
     public class RootLogger : Logger
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="RootLogger"/> class.
         /// Construct a <see cref="RootLogger"/>.
         /// </summary>
         /// <param name="level">The level to assign to the root logger.</param>

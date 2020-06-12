@@ -41,6 +41,7 @@ namespace log4net.Util
         private ArrayList m_nestedProperties = new ArrayList();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CompositeProperties"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>

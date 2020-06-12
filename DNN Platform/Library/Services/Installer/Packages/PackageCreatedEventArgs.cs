@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackageCreatedEventArgs"/> class.
         /// Builds a new PackageCreatedEventArgs.
         /// </summary>
         /// <param name="package">The package associated with this event.</param>

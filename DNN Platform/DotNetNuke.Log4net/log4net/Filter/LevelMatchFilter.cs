@@ -58,6 +58,7 @@ namespace log4net.Filter
         private Level m_levelToMatch;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelMatchFilter"/> class.
         /// Default constructor.
         /// </summary>
         public LevelMatchFilter()

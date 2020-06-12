@@ -45,6 +45,7 @@ namespace log4net.Util
     public abstract class PatternConverter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PatternConverter"/> class.
         /// Protected constructor.
         /// </summary>
         /// <remarks>

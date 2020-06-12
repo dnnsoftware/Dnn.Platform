@@ -86,6 +86,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginCollection"/> class.
         ///     Initializes a new instance of the <c>PluginCollection</c> class
         ///     that is empty and has the default initial capacity.
         /// </summary>
@@ -95,6 +96,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginCollection"/> class.
         /// Initializes a new instance of the <c>PluginCollection</c> class
         /// that has the specified initial capacity.
         /// </summary>
@@ -107,6 +109,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginCollection"/> class.
         /// Initializes a new instance of the <c>PluginCollection</c> class
         /// that contains elements copied from the specified <c>PluginCollection</c>.
         /// </summary>
@@ -118,6 +121,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginCollection"/> class.
         /// Initializes a new instance of the <c>PluginCollection</c> class
         /// that contains elements copied from the specified <see cref="IPlugin"/> array.
         /// </summary>
@@ -129,6 +133,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginCollection"/> class.
         /// Initializes a new instance of the <c>PluginCollection</c> class
         /// that contains elements copied from the specified <see cref="IPlugin"/> collection.
         /// </summary>
@@ -153,6 +158,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginCollection"/> class.
         /// Allow subclasses to avoid our default constructors.
         /// </summary>
         /// <param name="tag"></param>
@@ -623,6 +629,7 @@ namespace log4net.Plugin
             private int m_version;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="Enumerator"/> class.
             /// Initializes a new instance of the <c>Enumerator</c> class.
             /// </summary>
             /// <param name="tc"></param>

@@ -47,6 +47,7 @@ namespace log4net.Layout
         private ILayout m_layout;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Layout2RawLayoutAdapter"/> class.
         /// Construct a new adapter.
         /// </summary>
         /// <param name="layout">the layout to adapt.</param>

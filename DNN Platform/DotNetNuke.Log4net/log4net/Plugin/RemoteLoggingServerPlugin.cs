@@ -52,6 +52,7 @@ namespace log4net.Plugin
     public class RemoteLoggingServerPlugin : PluginSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="RemoteLoggingServerPlugin"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -68,6 +69,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RemoteLoggingServerPlugin"/> class.
         /// Construct with sink Uri.
         /// </summary>
         /// <param name="sinkUri">The name to publish the sink under in the remoting infrastructure.
@@ -179,6 +181,7 @@ namespace log4net.Plugin
         private class RemoteLoggingSinkImpl : MarshalByRefObject, IRemoteLoggingSink
         {
             /// <summary>
+            /// Initializes a new instance of the <see cref="RemoteLoggingSinkImpl"/> class.
             /// Constructor.
             /// </summary>
             /// <param name="repository">The repository to log to.</param>

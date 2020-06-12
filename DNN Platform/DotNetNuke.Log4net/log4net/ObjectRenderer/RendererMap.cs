@@ -55,6 +55,7 @@ namespace log4net.ObjectRenderer
         private static IObjectRenderer s_defaultRenderer = new DefaultRenderer();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RendererMap"/> class.
         /// Default Constructor.
         /// </summary>
         /// <remarks>

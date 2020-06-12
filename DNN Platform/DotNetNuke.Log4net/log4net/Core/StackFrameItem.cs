@@ -38,6 +38,7 @@ namespace log4net.Core
     public class StackFrameItem
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="StackFrameItem"/> class.
         /// returns a stack frame item from a stack frame. This.
         /// </summary>
         /// <param name="frame"></param>

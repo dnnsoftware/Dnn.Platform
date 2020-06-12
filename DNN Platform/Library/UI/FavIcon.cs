@@ -22,6 +22,7 @@ namespace DotNetNuke.UI.Internals
         private readonly int _portalId;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FavIcon"/> class.
         /// Initializes a FavIcon instance.
         /// </summary>
         /// <param name="portalId">The id of the portal.</param>

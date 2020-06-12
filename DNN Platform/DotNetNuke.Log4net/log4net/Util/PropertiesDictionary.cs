@@ -49,6 +49,7 @@ namespace log4net.Util
 #endif
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertiesDictionary"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>
@@ -61,6 +62,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertiesDictionary"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="propertiesDictionary">properties to copy.</param>

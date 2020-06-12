@@ -13,7 +13,7 @@ namespace DotNetNuke.ComponentModel
         private readonly ComponentBuilderCollection _ComponentBuilders = new ComponentBuilderCollection();
 
         /// <summary>
-        /// Initializes a new instance of the ComponentType class.
+        /// Initializes a new instance of the <see cref="ComponentType"/> class.
         /// </summary>
         /// <param name="baseType">The base type of Components of this ComponentType.</param>
         public ComponentType(Type baseType)

@@ -38,6 +38,7 @@ namespace log4net.Util
         private readonly LogicalThreadContextProperties m_properties;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogicalThreadContextStacks"/> class.
         /// Internal constructor.
         /// </summary>
         /// <remarks>

@@ -11,6 +11,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
     public class CacheableAttribute : Attribute
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
         /// Construct a new CacheableAttribute.
         /// </summary>
         public CacheableAttribute()
@@ -20,6 +21,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
         /// Construct a new CacheableAttribute.
         /// </summary>
         /// <param name="cacheKey">The cacheKey to use.</param>
@@ -29,6 +31,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
         /// Construct a new CacheableAttribute.
         /// </summary>
         /// <param name="cacheKey">The cacheKey to use.</param>
@@ -39,6 +42,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheableAttribute"/> class.
         /// Construct a new CacheableAttribute.
         /// </summary>
         /// <param name="cacheKey">The cacheKey to use.</param>

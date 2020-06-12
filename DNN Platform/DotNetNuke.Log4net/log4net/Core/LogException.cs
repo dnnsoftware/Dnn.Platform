@@ -49,6 +49,7 @@ namespace log4net.Core
 #endif
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogException"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>
@@ -61,6 +62,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogException"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="message">A message to include with the exception.</param>
@@ -76,6 +78,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogException"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="message">A message to include with the exception.</param>
@@ -93,6 +96,7 @@ namespace log4net.Core
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogException"/> class.
         /// Serialization constructor.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>

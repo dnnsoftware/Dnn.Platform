@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.Api
     public class WebApiException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the WebApiException class, with the specified inner exception and response
+        /// Initializes a new instance of the <see cref="WebApiException"/> class, with the specified inner exception and response.
         /// message that caused the exception.
         /// </summary>
         /// <param name="innerException">The original exception.</param>

@@ -58,6 +58,7 @@ namespace log4net.Util
         private readonly Hashtable m_hashtable = new Hashtable();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>
@@ -70,6 +71,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary"/> class.
         /// Copy Constructor.
         /// </summary>
         /// <param name="propertiesDictionary">properties to copy.</param>
@@ -88,6 +90,7 @@ namespace log4net.Util
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
+        /// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary"/> class.
         /// Deserialization constructor.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>

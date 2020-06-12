@@ -22,6 +22,7 @@ namespace DotNetNuke.Services.Search
     public class SearchContentModuleInfoCollection : CollectionBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class.
         /// </summary>
         public SearchContentModuleInfoCollection()
@@ -29,6 +30,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> with which to initialize the collection.</param>
@@ -38,6 +40,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchContentModuleInfoCollection">SearchContentModuleInfoCollection</see> class containing the specified array of <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchContentModuleInfo">SearchContentModuleInfo</see> objects with which to initialize the collection. </param>

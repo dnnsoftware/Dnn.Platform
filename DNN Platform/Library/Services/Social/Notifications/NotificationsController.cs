@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.Social.Notifications
         private readonly Messaging.Data.IDataService _messagingDataService;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// Default constructor.
         /// </summary>
         public NotificationsController()
@@ -48,6 +49,7 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NotificationsController"/> class.
         /// Constructor from specifict data service.
         /// </summary>
         /// <param name="dataService">Class with methods to do CRUD in database for the entities of types <see cref="NotificationType"></see>, <see cref="NotificationTypeAction"></see> and <see cref="Notification"></see>.</param>

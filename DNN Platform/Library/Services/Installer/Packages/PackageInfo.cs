@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInfo"/> class.
         /// This Constructor creates a new InstallPackage instance as defined by the
         /// Parameters.
         /// </summary>
@@ -40,6 +41,7 @@ namespace DotNetNuke.Services.Installer.Packages
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PackageInfo"/> class.
         /// This Constructor creates a new InstallPackage instance.
         /// </summary>
         /// -----------------------------------------------------------------------------

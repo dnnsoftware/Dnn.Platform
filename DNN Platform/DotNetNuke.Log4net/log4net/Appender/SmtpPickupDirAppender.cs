@@ -56,6 +56,7 @@ namespace log4net.Appender
     public class SmtpPickupDirAppender : BufferingAppenderSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SmtpPickupDirAppender"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

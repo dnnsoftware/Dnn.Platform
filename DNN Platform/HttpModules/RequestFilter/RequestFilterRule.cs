@@ -20,7 +20,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         private List<string> _Values = new List<string>();
 
         /// <summary>
-        /// Initializes a new instance of the RequestFilterRule class.
+        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
         /// </summary>
         /// <param name="serverVariable"></param>
         /// <param name="values"></param>
@@ -37,7 +37,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         }
 
         /// <summary>
-        /// Initializes a new instance of the RequestFilterRule class.
+        /// Initializes a new instance of the <see cref="RequestFilterRule"/> class.
         /// </summary>
         public RequestFilterRule()
         {

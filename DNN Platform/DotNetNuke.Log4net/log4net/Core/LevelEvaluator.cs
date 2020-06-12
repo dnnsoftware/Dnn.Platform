@@ -46,6 +46,7 @@ namespace log4net.Core
         private Level m_threshold;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelEvaluator"/> class.
         /// Create a new evaluator using the <see cref="Level.Off"/> threshold.
         /// </summary>
         /// <remarks>
@@ -65,6 +66,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelEvaluator"/> class.
         /// Create a new evaluator using the specified <see cref="Level"/> threshold.
         /// </summary>
         /// <param name="threshold">the threshold to trigger at.</param>

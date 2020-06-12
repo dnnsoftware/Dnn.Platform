@@ -62,6 +62,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ModuleHost"/> class.
         /// Creates a Module Host control using the ModuleConfiguration for the Module.
         /// </summary>
         /// <remarks>

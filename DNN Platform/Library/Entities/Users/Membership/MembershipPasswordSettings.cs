@@ -77,6 +77,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="MembershipPasswordSettings"/> class.
         /// Initialiser for MembershipPasswordSettings provider object.
         /// </summary>
         public MembershipPasswordSettings(int portalId)

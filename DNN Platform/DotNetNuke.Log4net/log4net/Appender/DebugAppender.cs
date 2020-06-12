@@ -44,6 +44,7 @@ namespace log4net.Appender
     public class DebugAppender : AppenderSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DebugAppender"/> class.
         /// Initializes a new instance of the <see cref="DebugAppender" />.
         /// </summary>
         /// <remarks>
@@ -56,6 +57,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DebugAppender"/> class.
         /// Initializes a new instance of the <see cref="DebugAppender" />
         /// with a specified layout.
         /// </summary>

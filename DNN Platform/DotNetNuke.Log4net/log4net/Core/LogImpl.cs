@@ -102,6 +102,7 @@ namespace log4net.Core
     public class LogImpl : LoggerWrapperImpl, ILog
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogImpl"/> class.
         /// Construct a new wrapper for the specified logger.
         /// </summary>
         /// <param name="logger">The logger to wrap.</param>

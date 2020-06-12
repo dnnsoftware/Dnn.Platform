@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the XmlMerge class.
+        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
         /// </summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the XmlMerge class.
+        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
         /// </summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the XmlMerge class.
+        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
         /// </summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the XmlMerge class.
+        /// Initializes a new instance of the <see cref="XmlMerge"/> class.
         /// </summary>
         /// <param name="version"></param>
         /// <param name="sender"></param>

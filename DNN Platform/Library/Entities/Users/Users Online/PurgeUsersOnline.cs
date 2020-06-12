@@ -27,6 +27,7 @@ namespace DotNetNuke.Entities.Users
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PurgeUsersOnline"/> class.
         /// Constructs a PurgeUsesOnline SchedulerClient.
         /// </summary>
         /// <remarks>

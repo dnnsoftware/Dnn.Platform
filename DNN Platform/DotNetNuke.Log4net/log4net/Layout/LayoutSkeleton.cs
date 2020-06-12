@@ -84,6 +84,7 @@ namespace log4net.Layout
         private bool m_ignoresException = true;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LayoutSkeleton"/> class.
         /// Empty default constructor.
         /// </summary>
         /// <remarks>

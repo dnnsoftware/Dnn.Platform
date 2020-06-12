@@ -38,6 +38,7 @@ namespace log4net.DateFormatter
     public class Iso8601DateFormatter : AbsoluteTimeDateFormatter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Iso8601DateFormatter"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

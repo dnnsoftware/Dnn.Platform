@@ -28,6 +28,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CachePageStatePersister"/> class.
         /// Creates the CachePageStatePersister.
         /// </summary>
         /// -----------------------------------------------------------------------------

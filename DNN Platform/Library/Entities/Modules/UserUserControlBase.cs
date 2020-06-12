@@ -214,6 +214,7 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="UserCreatedEventArgs"/> class.
             /// Constructs a new UserCreatedEventArgs.
             /// </summary>
             /// <param name="newUser">The newly Created User.</param>
@@ -266,6 +267,7 @@ namespace DotNetNuke.Entities.Modules
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="UserDeletedEventArgs"/> class.
             /// Constructs a new UserDeletedEventArgs.
             /// </summary>
             /// <param name="id">The Id of the User.</param>
@@ -288,6 +290,7 @@ namespace DotNetNuke.Entities.Modules
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="UserRestoredEventArgs"/> class.
             /// Constructs a new UserRestoredEventArgs.
             /// </summary>
             /// <param name="id">The Id of the User.</param>
@@ -310,6 +313,7 @@ namespace DotNetNuke.Entities.Modules
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="UserRemovedEventArgs"/> class.
             /// Constructs a new UserRemovedEventArgs.
             /// </summary>
             /// <param name="id">The Id of the User.</param>
@@ -332,6 +336,7 @@ namespace DotNetNuke.Entities.Modules
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="UserUpdateErrorArgs"/> class.
             /// Constructs a new UserUpdateErrorArgs.
             /// </summary>
             /// <param name="id">The Id of the User.</param>

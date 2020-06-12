@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         public int DayTermUsage { get; set; }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TermUsage"/> class.
         /// parameterless constructor, so that it can be used in CBO.
         /// </summary>
         public TermUsage()

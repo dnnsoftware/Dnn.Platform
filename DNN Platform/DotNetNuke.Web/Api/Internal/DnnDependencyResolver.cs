@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.Api.Internal
         private readonly IServiceProvider _serviceProvider;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DnnDependencyResolver"/> class.
         /// Instantiate a new instance of the <see cref="DnnDependencyResolver"/>.
         /// </summary>
         /// <param name="serviceProvider">

@@ -44,6 +44,7 @@ namespace log4net.Util
     public sealed class PatternParser
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PatternParser"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="pattern">The pattern to parse.</param>

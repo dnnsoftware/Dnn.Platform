@@ -25,6 +25,7 @@ namespace DotNetNuke.Entities.Profile
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.
         /// Constructs a new default collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -34,6 +35,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.
         /// Constructs a new Collection from an ArrayList of ProfilePropertyDefinition objects.
         /// </summary>
         /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects.</param>
@@ -45,6 +47,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ProfilePropertyDefinitionCollection"/> class.
         /// Constructs a new Collection from a ProfilePropertyDefinitionCollection.
         /// </summary>
         /// <param name="collection">A ProfilePropertyDefinitionCollection.</param>

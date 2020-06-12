@@ -19,6 +19,7 @@ namespace DotNetNuke.Collections
     public class PagedList<T> : List<T>, IPagedList<T>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
         ///  Initializes a new instance of the <see cref="PagedList{T}"/> a paged list containing objects from the selected enumerable source.
         /// </summary>
         /// <param name = "source">The <see cref = "IEnumerable{T}" /> data store containing objects to be retrieved.</param>
@@ -31,6 +32,7 @@ namespace DotNetNuke.Collections
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PagedList{T}"/> class.
         ///  Initializes a new instance of the <see cref="PagedList{T}"/> a paged list containing objects from the selected enumerable source.
         /// </summary>
         /// <param name="items">The items that constitute the page.</param>

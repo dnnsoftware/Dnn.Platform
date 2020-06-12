@@ -39,6 +39,7 @@ namespace log4net.Util
     public class CyclicBuffer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="CyclicBuffer"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="maxSize">The maximum number of logging events in the buffer.</param>

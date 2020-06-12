@@ -59,6 +59,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkinFileProcessor"/> class.
         ///     SkinFileProcessor class constructor.
         /// </summary>
         /// <remarks>
@@ -78,6 +79,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkinFileProcessor"/> class.
         ///     SkinFileProcessor class constructor.
         /// </summary>
         /// <param name="SkinPath">File path to the portals upload directory.</param>
@@ -310,6 +312,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="ControlParser"/> class.
             ///     ControlParser class constructor.
             /// </summary>
             /// <remarks>
@@ -587,6 +590,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="ObjectParser"/> class.
             ///     ControlParser class constructor.
             /// </summary>
             /// <remarks>
@@ -1085,6 +1089,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="SkinFile"/> class.
             ///     SkinFile class constructor.
             /// </summary>
             /// <param name="SkinContents"></param>
@@ -1103,6 +1108,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="SkinFile"/> class.
             ///     SkinFile class constructor.
             /// </summary>
             /// <param name="SkinRoot"></param>

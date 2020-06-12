@@ -19,6 +19,7 @@ namespace DotNetNuke.Collections
         private readonly IEnumerable<T> _source;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PageSelector{T}"/> class.
         /// Initializes a new instance of the <see cref="PageSelector{T}"/> for use on the specified data store.
         /// </summary>
         /// <param name = "source">The data store to page.</param>

@@ -38,6 +38,7 @@ namespace log4net.DateFormatter
     public class SimpleDateFormatter : IDateFormatter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleDateFormatter"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="format">The format string.</param>

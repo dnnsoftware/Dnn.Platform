@@ -53,6 +53,7 @@ namespace log4net.Util
 #endif
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ThreadContextProperties"/> class.
         /// Internal constructor.
         /// </summary>
         /// <remarks>

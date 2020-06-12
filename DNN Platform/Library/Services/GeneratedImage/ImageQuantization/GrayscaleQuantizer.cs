@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class GrayscaleQuantizer : PaletteQuantizer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="GrayscaleQuantizer"/> class.
         /// Construct the palette quantizer.
         /// </summary>
         /// <remarks>

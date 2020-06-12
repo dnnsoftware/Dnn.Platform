@@ -66,6 +66,7 @@ namespace log4net.Config
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="RepositoryAttribute"/> class.
         /// Initialize a new instance of the <see cref="RepositoryAttribute" /> class
         /// with the name of the repository.
         /// </summary>

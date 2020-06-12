@@ -48,6 +48,7 @@ namespace log4net.Core
         private Hashtable m_mapName2Level = SystemInfo.CreateCaseInsensitiveHashtable();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelMap"/> class.
         /// Construct the level map.
         /// </summary>
         /// <remarks>

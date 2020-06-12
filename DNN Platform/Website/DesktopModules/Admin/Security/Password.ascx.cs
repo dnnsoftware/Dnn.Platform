@@ -589,6 +589,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="PasswordUpdatedEventArgs"/> class.
             /// Constructs a new PasswordUpdatedEventArgs.
             /// </summary>
             /// <param name="status">The Password Update Status.</param>

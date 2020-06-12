@@ -52,6 +52,7 @@ namespace log4net.Core
         private const int DEFAULT_INTERVAL = 0;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TimeEvaluator"/> class.
         /// Create a new evaluator using the <see cref="DEFAULT_INTERVAL"/> time threshold in seconds.
         /// </summary>
         /// <remarks>
@@ -69,6 +70,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TimeEvaluator"/> class.
         /// Create a new evaluator using the specified time threshold in seconds.
         /// </summary>
         /// <param name="interval">

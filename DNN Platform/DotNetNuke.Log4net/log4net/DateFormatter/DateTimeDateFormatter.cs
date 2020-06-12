@@ -42,6 +42,7 @@ namespace log4net.DateFormatter
     public class DateTimeDateFormatter : AbsoluteTimeDateFormatter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DateTimeDateFormatter"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

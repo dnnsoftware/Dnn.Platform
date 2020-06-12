@@ -39,6 +39,7 @@ namespace log4net.Repository.Hierarchy
     internal class DefaultLoggerFactory : ILoggerFactory
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultLoggerFactory"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -93,6 +94,7 @@ namespace log4net.Repository.Hierarchy
         internal sealed class LoggerImpl : Logger
         {
             /// <summary>
+            /// Initializes a new instance of the <see cref="LoggerImpl"/> class.
             /// Construct a new Logger.
             /// </summary>
             /// <param name="name">the name of the logger.</param>

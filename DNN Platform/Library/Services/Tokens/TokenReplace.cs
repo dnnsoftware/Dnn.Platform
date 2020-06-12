@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Tokens
         private ModuleInfo _moduleInfo;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for default context.
         /// </summary>
         public TokenReplace()
@@ -36,6 +37,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for default context and the current module.
         /// </summary>
         /// <param name="moduleID">ID of the current module.</param>
@@ -45,6 +47,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for custom context.
         /// </summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
@@ -54,6 +57,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for custom context.
         /// </summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
@@ -64,6 +68,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for custom context.
         /// </summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>
@@ -76,6 +81,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TokenReplace"/> class.
         /// creates a new TokenReplace object for custom context.
         /// </summary>
         /// <param name="accessLevel">Security level granted by the calling object.</param>

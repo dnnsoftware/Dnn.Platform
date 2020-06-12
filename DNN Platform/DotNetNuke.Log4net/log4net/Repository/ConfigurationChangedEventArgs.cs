@@ -36,7 +36,7 @@ namespace log4net.Repository
         private readonly ICollection configurationMessages;
 
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="ConfigurationChangedEventArgs"/> class.
         /// </summary>
         /// <param name="configurationMessages"></param>
         public ConfigurationChangedEventArgs(ICollection configurationMessages)

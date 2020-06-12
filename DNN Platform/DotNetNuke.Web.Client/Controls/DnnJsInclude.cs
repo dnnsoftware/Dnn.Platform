@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     public class DnnJsInclude : JsInclude
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DnnJsInclude"/> class.
         /// Sets up default settings for the control.
         /// </summary>
         public DnnJsInclude()

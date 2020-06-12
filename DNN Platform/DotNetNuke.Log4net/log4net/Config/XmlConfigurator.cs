@@ -47,6 +47,7 @@ namespace log4net.Config
     public sealed class XmlConfigurator
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlConfigurator"/> class.
         /// Private constructor.
         /// </summary>
         private XmlConfigurator()

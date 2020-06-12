@@ -75,6 +75,7 @@ namespace log4net.Appender
     public class SmtpAppender : BufferingAppenderSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SmtpAppender"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

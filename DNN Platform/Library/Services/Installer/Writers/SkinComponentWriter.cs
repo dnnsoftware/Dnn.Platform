@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkinComponentWriter"/> class.
         /// Constructs the SkinComponentWriter.
         /// </summary>
         /// <param name="skinName">The name of the Skin.</param>

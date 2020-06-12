@@ -51,6 +51,7 @@ namespace log4net.Core
         private bool m_triggerOnSubclass;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionEvaluator"/> class.
         /// Default ctor to allow dynamic creation through a configurator.
         /// </summary>
         public ExceptionEvaluator()
@@ -59,6 +60,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionEvaluator"/> class.
         /// Constructs an evaluator and initializes to trigger on <paramref name="exType"/>.
         /// </summary>
         /// <param name="exType">the type that triggers this evaluator.</param>

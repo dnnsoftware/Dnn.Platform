@@ -62,6 +62,7 @@ namespace log4net.Util
         private readonly object m_syncRoot = new object();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="GlobalContextProperties"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>

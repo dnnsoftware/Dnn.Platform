@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ActionEventArgs"/> class.
         /// </summary>
         /// <param name="Action"></param>
         /// <param name="ModuleConfiguration"></param>

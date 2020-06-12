@@ -59,6 +59,7 @@ namespace log4net.Core
     public sealed class LoggerManager
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerManager"/> class.
         /// Private constructor to prevent instances. Only static methods should be used.
         /// </summary>
         /// <remarks>
@@ -71,6 +72,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes static members of the <see cref="LoggerManager"/> class.
         /// Hook the shutdown event.
         /// </summary>
         /// <remarks>

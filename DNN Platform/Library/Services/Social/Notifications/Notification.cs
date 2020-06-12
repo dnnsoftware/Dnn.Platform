@@ -139,6 +139,7 @@ namespace DotNetNuke.Services.Social.Notifications
         public bool SendToast { get; set; }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Notification"/> class.
         /// Default constructor.
         /// </summary>
         public Notification()

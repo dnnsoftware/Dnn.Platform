@@ -75,6 +75,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultRepositorySelector"/> class.
         /// Creates a new repository selector.
         /// </summary>
         /// <param name="defaultRepositoryType">The type of the repositories to create, must implement <see cref="ILoggerRepository"/>.</param>

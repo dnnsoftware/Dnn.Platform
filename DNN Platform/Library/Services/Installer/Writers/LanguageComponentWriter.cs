@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageComponentWriter"/> class.
         /// Constructs the LanguageComponentWriter.
         /// </summary>
         /// <param name="language">Language Info.</param>
@@ -44,6 +45,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="LanguageComponentWriter"/> class.
         /// Constructs the LanguageComponentWriter.
         /// </summary>
         /// <param name="languagePack">Language Package info.</param>

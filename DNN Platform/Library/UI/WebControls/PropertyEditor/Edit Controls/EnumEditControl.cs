@@ -28,6 +28,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
         /// Constructs an EnumEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -37,6 +38,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="EnumEditControl"/> class.
         /// Constructs an EnumEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------

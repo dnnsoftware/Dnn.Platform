@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.WebControls
     public sealed class SortOrderAttribute : Attribute
     {
         /// <summary>
-        /// Initializes a new instance of the SortOrderAttribute class.
+        /// Initializes a new instance of the <see cref="SortOrderAttribute"/> class.
         /// </summary>
         /// <param name="order"></param>
         public SortOrderAttribute(int order)

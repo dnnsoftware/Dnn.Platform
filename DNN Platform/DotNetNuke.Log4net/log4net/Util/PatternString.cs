@@ -284,6 +284,7 @@ namespace log4net.Util
         private Hashtable m_instanceRulesRegistry = new Hashtable();
 
         /// <summary>
+        /// Initializes static members of the <see cref="PatternString"/> class.
         /// Initialize the global registry.
         /// </summary>
         static PatternString()
@@ -319,6 +320,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PatternString"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -331,6 +333,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="PatternString"/> class.
         /// Constructs a PatternString.
         /// </summary>
         /// <param name="pattern">The pattern to use with this PatternString.</param>

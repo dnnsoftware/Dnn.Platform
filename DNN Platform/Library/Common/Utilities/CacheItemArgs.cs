@@ -26,6 +26,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
@@ -37,6 +38,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
@@ -49,6 +51,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
@@ -61,6 +64,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
@@ -74,6 +78,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CacheItemArgs"/> class.
         /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>

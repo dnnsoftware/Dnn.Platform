@@ -15,6 +15,7 @@ namespace DotNetNuke.Common.Utilities
     public class SessionVariable<T> : StateVariable<T>
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SessionVariable{T}"/> class.
         /// Initializes a new HttpContext.Session item variable.
         /// </summary>
         /// <param name="key">
@@ -26,6 +27,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SessionVariable{T}"/> class.
         /// Initializes a new HttpContext.Session item variable with a initializer.
         /// </summary>
         /// <param name="key">The key to use for storing the value in the HttpContext.Current.Session.</param>

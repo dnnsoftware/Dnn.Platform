@@ -46,6 +46,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="Pane"/> class.
         /// Constructs a new Pane object from the Control in the Skin.
         /// </summary>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
@@ -61,6 +62,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="Pane"/> class.
         /// Constructs a new Pane object from the Control in the Skin.
         /// </summary>
         /// <param name="name">The name (ID) of the HtmlContainerControl.</param>

@@ -43,6 +43,7 @@ namespace log4net.Util
         private readonly PropertiesDictionary properties = new PropertiesDictionary();
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="ConverterInfo"/> class.
         /// default constructor.
         /// </summary>
         public ConverterInfo()

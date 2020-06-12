@@ -16,6 +16,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
         private readonly string _host;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SimulatedHttpRequest"/> class.
         /// Creates a new <see cref="SimulatedHttpRequest"/> instance.
         /// </summary>
         /// <param name="appVirtualDir">App virtual dir.</param>

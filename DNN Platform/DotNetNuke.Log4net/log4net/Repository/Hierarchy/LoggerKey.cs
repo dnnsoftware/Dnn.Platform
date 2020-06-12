@@ -44,6 +44,7 @@ namespace log4net.Repository.Hierarchy
     internal sealed class LoggerKey
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerKey"/> class.
         /// Construct key with string name.
         /// </summary>
         /// <remarks>

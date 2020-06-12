@@ -47,6 +47,7 @@ namespace log4net.Layout
         private static readonly DateTime s_date1970 = new DateTime(1970, 1, 1);
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlLayoutSchemaLog4j"/> class.
         /// Constructs an XMLLayoutSchemaLog4j.
         /// </summary>
         public XmlLayoutSchemaLog4j()
@@ -55,6 +56,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlLayoutSchemaLog4j"/> class.
         /// Constructs an XMLLayoutSchemaLog4j.
         /// </summary>
         /// <remarks>

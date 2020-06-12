@@ -45,6 +45,7 @@ namespace log4net.ObjectRenderer
     public sealed class DefaultRenderer : IObjectRenderer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DefaultRenderer"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

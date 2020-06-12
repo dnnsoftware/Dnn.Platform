@@ -23,6 +23,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyEditorEventArgs"/> class.
         /// Constructs a new PropertyEditorEventArgs.
         /// </summary>
         /// <param name="name">The name of the property.</param>
@@ -34,6 +35,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyEditorEventArgs"/> class.
         /// Constructs a new PropertyEditorEventArgs.
         /// </summary>
         /// <param name="name">The name of the property.</param>

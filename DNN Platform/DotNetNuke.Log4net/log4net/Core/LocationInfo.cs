@@ -65,6 +65,7 @@ namespace log4net.Core
     public class LocationInfo
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LocationInfo"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
@@ -164,6 +165,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LocationInfo"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="className">The fully qualified class name.</param>

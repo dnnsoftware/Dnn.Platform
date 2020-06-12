@@ -75,6 +75,7 @@ namespace log4net.Layout
     public class XmlLayout : XmlLayoutBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlLayout"/> class.
         /// Constructs an XmlLayout.
         /// </summary>
         public XmlLayout()
@@ -83,6 +84,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="XmlLayout"/> class.
         /// Constructs an XmlLayout.
         /// </summary>
         /// <remarks>

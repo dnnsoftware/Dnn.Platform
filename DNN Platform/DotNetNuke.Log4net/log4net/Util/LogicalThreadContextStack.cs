@@ -68,6 +68,7 @@ namespace log4net.Util
 #endif
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogicalThreadContextStack"/> class.
         /// Internal constructor.
         /// </summary>
         /// <remarks>
@@ -260,6 +261,7 @@ namespace log4net.Util
             private string m_fullMessage = null;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="StackFrame"/> class.
             /// Constructor.
             /// </summary>
             /// <param name="message">The message for this context.</param>
@@ -342,6 +344,7 @@ namespace log4net.Util
             private LogicalThreadContextStack m_logicalThreadContextStack;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="AutoPopStackFrame"/> struct.
             /// Constructor.
             /// </summary>
             /// <param name="logicalThreadContextStack">The internal stack used by the ThreadContextStack.</param>

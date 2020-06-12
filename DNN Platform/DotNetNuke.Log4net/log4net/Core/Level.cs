@@ -89,6 +89,7 @@ namespace log4net.Core
     public sealed class Level : IComparable
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="Level"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
@@ -122,6 +123,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="Level"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>

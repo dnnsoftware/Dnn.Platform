@@ -41,6 +41,7 @@ namespace log4net.Util
     public class QuietTextWriter : TextWriterAdapter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="QuietTextWriter"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="writer">the writer to actually write to.</param>

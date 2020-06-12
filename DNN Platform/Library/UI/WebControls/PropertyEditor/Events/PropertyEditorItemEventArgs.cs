@@ -23,6 +23,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="PropertyEditorItemEventArgs"/> class.
         /// Constructs a new PropertyEditorItemEventArgs.
         /// </summary>
         /// <param name="editor">The editor created.</param>

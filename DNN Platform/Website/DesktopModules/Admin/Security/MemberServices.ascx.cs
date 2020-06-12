@@ -461,6 +461,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
+            /// Initializes a new instance of the <see cref="SubscriptionUpdatedEventArgs"/> class.
             /// Constructs a new SubscriptionUpdatedEventArgs.
             /// </summary>
             /// <param name="cancel">Whether this is a subscription cancellation.</param>

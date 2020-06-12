@@ -47,6 +47,7 @@ namespace log4net.Layout.Pattern
     internal sealed class ExceptionPatternConverter : PatternLayoutConverter
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ExceptionPatternConverter"/> class.
         /// Default constructor.
         /// </summary>
         public ExceptionPatternConverter()

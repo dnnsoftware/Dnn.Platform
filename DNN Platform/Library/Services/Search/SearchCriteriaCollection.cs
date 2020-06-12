@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.Search
     public class SearchCriteriaCollection : CollectionBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class.
         /// </summary>
         public SearchCriteriaCollection()
@@ -30,6 +31,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> with which to initialize the collection.</param>
@@ -39,6 +41,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the specified array of <see cref="SearchCriteria">SearchCriteria</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchCriteria">SearchCriteria</see> objects with which to initialize the collection. </param>
@@ -48,6 +51,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchCriteriaCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A criteria string with which to initialize the collection.</param>

@@ -22,6 +22,7 @@ namespace DotNetNuke.HttpModules.Compression
         private bool _HasWrittenHeaders;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CompressingFilter"/> class.
         /// Protected constructor that sets up the underlying stream we're compressing into.
         /// </summary>
         /// <param name="baseStream">The stream we're wrapping up.</param>

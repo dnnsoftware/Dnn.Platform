@@ -17,6 +17,7 @@ namespace DotNetNuke.Common.Utilities
         private readonly Func<T> _initializer;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StateVariable{T}"/> class.
         /// Initializes a new item variable.
         /// </summary>
         /// <param name="key">
@@ -33,6 +34,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StateVariable{T}"/> class.
         /// Initializes a new item variable with a initializer.
         /// </summary>
         /// <param name="key">The key to use for storing the value in the dictionary.</param>

@@ -57,6 +57,7 @@ namespace DotNetNuke.Services.Search.Entities
         public IDictionary<string, string> SearchContext { get; set; }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchResult"/> class.
         /// Empty Constructor.
         /// </summary>
         public SearchResult()

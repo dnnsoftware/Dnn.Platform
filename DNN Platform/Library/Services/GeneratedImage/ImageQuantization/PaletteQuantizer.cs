@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class PaletteQuantizer : Quantizer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PaletteQuantizer"/> class.
         /// Construct the palette quantizer.
         /// </summary>
         /// <param name="palette">The color palette to quantize to.</param>

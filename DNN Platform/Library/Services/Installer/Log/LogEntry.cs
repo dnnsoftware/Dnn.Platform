@@ -21,6 +21,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="LogEntry"/> class.
         /// This Constructor builds a LogEntry from its type and description.
         /// </summary>
         /// <remarks>

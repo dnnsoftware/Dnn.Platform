@@ -13,7 +13,7 @@ namespace DotNetNuke.Common.Utilities
         private readonly List<string> _extensions;
 
         /// <summary>
-        /// Initializes a new instance of the FileExtensionWhiteList class.
+        /// Initializes a new instance of the <see cref="FileExtensionWhitelist"/> class.
         /// </summary>
         /// <param name="extensionList">a comma seperated list of file extensions with no '.'.</param>
         /// <remarks><paramref name="extensionList"/>should match the format used in the FileExtensions Host setting specifically it

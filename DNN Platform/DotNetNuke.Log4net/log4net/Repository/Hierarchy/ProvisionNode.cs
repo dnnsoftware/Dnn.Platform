@@ -44,6 +44,7 @@ namespace log4net.Repository.Hierarchy
     internal sealed class ProvisionNode : ArrayList
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ProvisionNode"/> class.
         /// Create a new provision node with child node.
         /// </summary>
         /// <param name="log">A child logger to add to this node.</param>

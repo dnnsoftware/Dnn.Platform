@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="CleanupComponentWriter"/> class.
         /// Constructs the ContainerComponentWriter.
         /// </summary>
         /// <param name="basePath">Base Path.</param>

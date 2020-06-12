@@ -42,6 +42,7 @@ namespace log4net.Plugin
     public sealed class PluginMap
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="PluginMap"/> class.
         /// Constructor.
         /// </summary>
         /// <param name="repository">The repository that the plugins should be attached to.</param>

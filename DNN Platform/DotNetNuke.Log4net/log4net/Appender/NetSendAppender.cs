@@ -164,6 +164,7 @@ namespace log4net.Appender
         private SecurityContext m_securityContext;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="NetSendAppender"/> class.
         /// Initializes the appender.
         /// </summary>
         /// <remarks>

@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///
+        /// Initializes a new instance of the <see cref="ModuleActionEventListener"/> class.
         /// </summary>
         /// <param name="ModID"></param>
         /// <param name="e"></param>

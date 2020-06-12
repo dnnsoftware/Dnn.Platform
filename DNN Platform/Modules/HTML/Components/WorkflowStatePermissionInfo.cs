@@ -29,6 +29,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
         ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -42,6 +43,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="WorkflowStatePermissionInfo"/> class.
         ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
         /// <param name = "permission">A PermissionInfo object.</param>

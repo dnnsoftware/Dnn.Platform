@@ -42,6 +42,7 @@ namespace log4net.Filter
     public sealed class DenyAllFilter : FilterSkeleton
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="DenyAllFilter"/> class.
         /// Default constructor.
         /// </summary>
         public DenyAllFilter()

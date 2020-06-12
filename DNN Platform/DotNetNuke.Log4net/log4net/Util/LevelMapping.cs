@@ -40,6 +40,7 @@ namespace log4net.Util
     public sealed class LevelMapping : IOptionHandler
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="LevelMapping"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>

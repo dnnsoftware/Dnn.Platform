@@ -53,6 +53,7 @@ namespace log4net.Util.TypeConverters
     public sealed class ConverterRegistry
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="ConverterRegistry"/> class.
         /// Private constructor.
         /// </summary>
         /// <remarks>
@@ -63,6 +64,7 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
+        /// Initializes static members of the <see cref="ConverterRegistry"/> class.
         /// Static constructor.
         /// </summary>
         /// <remarks>

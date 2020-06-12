@@ -57,6 +57,7 @@ namespace log4net.Core
         private event LoggerRepositoryCreationEventHandler m_loggerRepositoryCreatedEvent;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="CompactRepositorySelector"/> class.
         /// Create a new repository selector.
         /// </summary>
         /// <param name="defaultRepositoryType">the type of the repositories to create, must implement <see cref="ILoggerRepository"/>.</param>

@@ -35,6 +35,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkinsEditControl"/> class.
         /// Constructs a SkinsEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -44,6 +45,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="SkinsEditControl"/> class.
         /// Constructs a SkinsEditControl.
         /// </summary>
         /// <param name="type">The type of the property.</param>

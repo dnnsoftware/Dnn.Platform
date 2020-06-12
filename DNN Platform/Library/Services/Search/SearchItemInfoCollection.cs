@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Search
     public class SearchItemInfoCollection : CollectionBase
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class.
         /// </summary>
         public SearchItemInfoCollection()
@@ -31,6 +32,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class containing the elements of the specified source collection.
         /// </summary>
         /// <param name="value">A <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> with which to initialize the collection.</param>
@@ -40,6 +42,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollection</see> class containing the specified array of <see cref="SearchItemInfo">SearchItemInfo</see> objects.
         /// </summary>
         /// <param name="value">An array of <see cref="SearchItemInfo">SearchItemInfo</see> objects with which to initialize the collection. </param>
@@ -49,6 +52,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SearchItemInfoCollection"/> class.
         /// Initializes a new instance of the <see cref="SearchItemInfoCollection">SearchItemInfoCollectionSearchItemInfoCollection</see> class containing the specified array of <see cref="SearchItemInfo">SearchItemInfo</see> objects.
         /// </summary>
         /// <param name="value">An arraylist of <see cref="SearchItemInfo">SearchItemInfo</see> objects with which to initialize the collection. </param>

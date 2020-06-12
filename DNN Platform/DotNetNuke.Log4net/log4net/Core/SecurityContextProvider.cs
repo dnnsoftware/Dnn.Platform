@@ -94,6 +94,7 @@ namespace log4net.Core
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="SecurityContextProvider"/> class.
         /// Protected default constructor to allow subclassing.
         /// </summary>
         /// <remarks>

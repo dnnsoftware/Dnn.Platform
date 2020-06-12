@@ -42,6 +42,7 @@ namespace log4net.Util
     public class FormattingInfo
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="FormattingInfo"/> class.
         /// Defaut Constructor.
         /// </summary>
         /// <remarks>
@@ -54,6 +55,7 @@ namespace log4net.Util
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="FormattingInfo"/> class.
         /// Constructor.
         /// </summary>
         /// <remarks>

@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Controllers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
 
         /// <summary>
-        /// Initializes a new instance of the HostController class.
+        /// Initializes a new instance of the <see cref="HostController"/> class.
         /// </summary>
         internal HostController()
         {

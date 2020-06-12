@@ -41,6 +41,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ActionManager"/> class.
         /// Constructs a new ActionManager.
         /// </summary>
         /// -----------------------------------------------------------------------------

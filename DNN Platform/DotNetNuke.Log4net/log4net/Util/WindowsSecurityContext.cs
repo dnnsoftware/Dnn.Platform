@@ -81,6 +81,7 @@ namespace log4net.Util
         private WindowsIdentity m_identity;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="WindowsSecurityContext"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -344,6 +345,7 @@ namespace log4net.Util
             private readonly WindowsImpersonationContext m_impersonationContext;
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="DisposableImpersonationContext"/> class.
             /// Constructor.
             /// </summary>
             /// <param name="impersonationContext">the impersonation context being wrapped.</param>

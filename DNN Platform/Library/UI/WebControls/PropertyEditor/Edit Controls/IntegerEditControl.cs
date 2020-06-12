@@ -30,6 +30,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="IntegerEditControl"/> class.
         /// Constructs an IntegerEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------

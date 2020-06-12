@@ -64,6 +64,7 @@ namespace log4net.Repository
         private PropertiesDictionary m_properties;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerRepositorySkeleton"/> class.
         /// Default Constructor.
         /// </summary>
         /// <remarks>
@@ -77,6 +78,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggerRepositorySkeleton"/> class.
         /// Construct the repository using specific properties.
         /// </summary>
         /// <param name="properties">the properties to set for this repository.</param>

@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class OctreeQuantizer : Quantizer
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="OctreeQuantizer"/> class.
         /// Construct the octree quantizer.
         /// </summary>
         /// <remarks>
@@ -111,6 +112,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         private class Octree
         {
             /// <summary>
+            /// Initializes a new instance of the <see cref="Octree"/> class.
             /// Construct the octree.
             /// </summary>
             /// <param name="maxColorBits">The maximum number of significant bits in the image.</param>
@@ -276,6 +278,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             protected class OctreeNode
             {
                 /// <summary>
+                /// Initializes a new instance of the <see cref="OctreeNode"/> class.
                 /// Construct the node.
                 /// </summary>
                 /// <param name="level">The level in the tree = 0 - 7.</param>

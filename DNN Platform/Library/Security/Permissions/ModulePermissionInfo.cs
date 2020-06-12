@@ -31,6 +31,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
         /// Constructs a new ModulePermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -42,6 +43,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="ModulePermissionInfo"/> class.
         /// Constructs a new ModulePermissionInfo.
         /// </summary>
         /// <param name="permission">A PermissionInfo object.</param>

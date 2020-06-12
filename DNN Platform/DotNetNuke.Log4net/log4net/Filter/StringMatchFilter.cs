@@ -62,6 +62,7 @@ namespace log4net.Filter
         protected Regex m_regexToMatch;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="StringMatchFilter"/> class.
         /// Default constructor.
         /// </summary>
         public StringMatchFilter()

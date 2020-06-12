@@ -55,6 +55,7 @@ namespace log4net
     public sealed class GlobalContext
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="GlobalContext"/> class.
         /// Private Constructor.
         /// </summary>
         /// <remarks>

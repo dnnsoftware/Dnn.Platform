@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance from a ZipInputStream and a ZipEntry.
         /// </summary>
         /// <remarks>The ZipInputStream is read into a byte array (Buffer), and the ZipEntry is used to
@@ -43,6 +44,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
@@ -55,6 +57,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
@@ -69,6 +72,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The fileName of the File.</param>
@@ -85,6 +89,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
+        /// Initializes a new instance of the <see cref="InstallFile"/> class.
         /// This Constructor creates a new InstallFile instance.
         /// </summary>
         /// <param name="fileName">The file name of the File.</param>

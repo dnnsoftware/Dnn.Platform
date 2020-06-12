@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initializes a new instance of the <see cref="T:DotNetNuke.ModuleAction"/> class
+        /// Initializes a new instance of the <see cref="ModuleAction"/> class
         /// using the specified parameters.
         /// </summary>
         /// <param name="id">This is the identifier to use for this action.</param>

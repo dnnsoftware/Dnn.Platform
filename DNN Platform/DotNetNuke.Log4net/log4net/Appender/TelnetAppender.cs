@@ -61,6 +61,7 @@ namespace log4net.Appender
         private int m_listeningPort = 23;
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="TelnetAppender"/> class.
         /// Default constructor.
         /// </summary>
         /// <remarks>
@@ -234,6 +235,7 @@ namespace log4net.Appender
                 private StreamWriter m_writer;
 
                 /// <summary>
+                /// Initializes a new instance of the <see cref="SocketClient"/> class.
                 /// Create this <see cref="SocketClient"/> for the specified <see cref="Socket"/>.
                 /// </summary>
                 /// <param name="socket">the client's socket.</param>
@@ -318,6 +320,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
+            /// Initializes a new instance of the <see cref="SocketHandler"/> class.
             /// Opens a new server port on <paramref ref="port"/>.
             /// </summary>
             /// <param name="port">the local port to listen on for connections.</param>

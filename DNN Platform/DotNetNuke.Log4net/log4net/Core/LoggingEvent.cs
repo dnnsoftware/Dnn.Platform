@@ -467,6 +467,7 @@ namespace log4net.Core
 #if !(NETCF || NETSTANDARD1_3)
 
         /// <summary>
+        /// Initializes a new instance of the <see cref="LoggingEvent"/> class.
         /// Serialization constructor.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>

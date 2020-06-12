@@ -22,6 +22,7 @@ namespace DotNetNuke.Entities.Host
     public class IPFilterInfo : BaseEntityInfo, IHydratable
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="IPFilterInfo"/> class.
         /// Create new IPFilterInfo instance.
         /// </summary>
         /// <remarks>

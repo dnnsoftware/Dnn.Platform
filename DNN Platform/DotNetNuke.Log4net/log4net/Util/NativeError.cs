@@ -45,6 +45,7 @@ namespace log4net.Util
     public sealed class NativeError
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="NativeError"/> class.
         /// Create an instance of the <see cref="NativeError" /> class with the specified
         /// error number and message.
         /// </summary>

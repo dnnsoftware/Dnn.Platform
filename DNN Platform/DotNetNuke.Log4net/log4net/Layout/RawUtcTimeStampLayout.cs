@@ -41,6 +41,7 @@ namespace log4net.Layout
     public class RawUtcTimeStampLayout : IRawLayout
     {
         /// <summary>
+        /// Initializes a new instance of the <see cref="RawUtcTimeStampLayout"/> class.
         /// Constructs a RawUtcTimeStampLayout.
         /// </summary>
         public RawUtcTimeStampLayout()
