@@ -123,7 +123,7 @@ namespace log4net.Appender
             /// debug-level messages
             /// </summary>
             Debug = 7
-        };
+        }
 
         /// <summary>
         /// syslog facilities

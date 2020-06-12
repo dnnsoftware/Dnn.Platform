@@ -152,7 +152,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 int index;
 
                 // Find the deepest level containing at least one reducible node
-                for (index = this._maxColorBits - 1; (index > 0) && (null == this._reducibleNodes[index]); index--);
+                for (index = this._maxColorBits - 1; (index > 0) && (null == this._reducibleNodes[index]); index--)
+                {
+                }
 
                 // Reduce the node most recently added to the list at level 'index'
                 OctreeNode node = this._reducibleNodes[index];

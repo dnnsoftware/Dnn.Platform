@@ -302,7 +302,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void SetMaxUploadSize(long newSize)
         {
-            if (newSize < 12582912) { newSize = 12582912; }; // 12 Mb minimum
+            if (newSize < 12582912) { newSize = 12582912; } // 12 Mb minimum
 
             var configNav = Load();
 
@@ -433,7 +433,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 formsNav = configNav.SelectSingleNode("configuration/location/system.web/authentication/forms");
             }
-            return (formsNav != null) ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30; ;
+            return (formsNav != null) ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30;
 
         }
 
@@ -503,7 +503,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 customErrorMode = "RemoteOnly";
             }
-            return (customErrorsNav != null) ? customErrorMode : "RemoteOnly"; ;
+            return (customErrorsNav != null) ? customErrorMode : "RemoteOnly";
 
         }
 

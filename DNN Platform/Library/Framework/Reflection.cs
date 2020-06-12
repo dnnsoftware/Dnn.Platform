@@ -297,7 +297,7 @@ namespace DotNetNuke.Framework
                 {
                     if (!IgnoreErrors)
                     {
-                        Logger.Error(TypeName, exc);                        ;
+                        Logger.Error(TypeName, exc);
                     }
                 }
             }

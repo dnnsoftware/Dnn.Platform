@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Integration.Executers
         AnonymousUser,
         RegisteredUser,
         Host
-    };
+    }
 
     public abstract class WebApiExecuter
     {

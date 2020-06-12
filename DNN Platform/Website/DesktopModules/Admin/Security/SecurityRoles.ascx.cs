@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.RoleId != Null.NullInteger)
                     {
-                        this._Role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == this.RoleId); ;
+                        this._Role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == this.RoleId);
                     }
                     else if (this.cboRoles.SelectedItem != null)
                     {

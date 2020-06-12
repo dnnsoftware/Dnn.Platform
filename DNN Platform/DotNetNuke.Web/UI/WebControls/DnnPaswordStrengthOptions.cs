@@ -66,8 +66,8 @@ namespace DotNetNuke.Web.UI.WebControls
             // all the PasswordStrength related resources are located under the Website\App_GlobalResources\WebControls.resx
             this.MinLengthText = Utilities.GetLocalizedString("PasswordStrengthMinLength");
             this.WeakText = Utilities.GetLocalizedString("PasswordStrengthWeak");
-            this.FairText = Utilities.GetLocalizedString("PasswordStrengthFair"); ;
-            this.StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong"); ;
+            this.FairText = Utilities.GetLocalizedString("PasswordStrengthFair");
+            this.StrongText = Utilities.GetLocalizedString("PasswordStrengthStrong");
 
             this.CriteriaAtLeastNCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNChars");
             this.CriteriaAtLeastNSpecialCharsText = Utilities.GetLocalizedString("CriteriaAtLeastNSpecialChars");

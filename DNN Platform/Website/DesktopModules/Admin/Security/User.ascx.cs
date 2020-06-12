@@ -108,7 +108,7 @@ namespace DotNetNuke.Modules.Admin.Users
             set
             {
                 this.userForm.CssClass = string.IsNullOrEmpty(this.userForm.CssClass) ? value : string.Format("{0} {1}", this.userForm.CssClass, value);
-                this.pnlAddUser.CssClass = string.IsNullOrEmpty(this.pnlAddUser.CssClass) ? value : string.Format("{0} {1}", this.pnlAddUser.CssClass, value); ;
+                this.pnlAddUser.CssClass = string.IsNullOrEmpty(this.pnlAddUser.CssClass) ? value : string.Format("{0} {1}", this.pnlAddUser.CssClass, value);
             }
         }
 

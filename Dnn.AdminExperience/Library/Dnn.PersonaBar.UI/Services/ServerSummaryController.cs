@@ -97,7 +97,7 @@ namespace Dnn.PersonaBar.UI.Services
             var version = DotNetNukeContext.Current.Application.Version;
             var request = HttpContext.Current.Request;
 
-            var imageUrl = Upgrade.UpgradeIndicator(version, request.IsLocal, request.IsSecureConnection); ;
+            var imageUrl = Upgrade.UpgradeIndicator(version, request.IsLocal, request.IsSecureConnection);
             imageUrl = Globals.AddHTTP(imageUrl.TrimStart('/'));
 
             try

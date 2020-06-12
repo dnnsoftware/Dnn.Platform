@@ -840,7 +840,7 @@ namespace DotNetNuke.Services.Scheduling
                         finally
                         {
                             // Ensure that the lock is released.
-                            StatusLock.ExitWriteLock();;
+                            StatusLock.ExitWriteLock();
                         }
                     }
                 }

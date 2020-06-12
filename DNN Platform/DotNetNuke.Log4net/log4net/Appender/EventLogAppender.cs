@@ -183,7 +183,7 @@ namespace log4net.Appender
         public string MachineName
         {
             get { return this.m_machineName; }
-            set { /* Currently we do not allow the machine name to be changed */; }
+            set { /* Currently we do not allow the machine name to be changed */ }
         }
 
         /// <summary>

@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return Globals.UserProfileURL(this.PortalSettings.UserInfo.UserID); ;
+                return Globals.UserProfileURL(this.PortalSettings.UserInfo.UserID);
             }
         }
 

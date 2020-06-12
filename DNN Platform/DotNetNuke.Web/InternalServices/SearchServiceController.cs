@@ -212,7 +212,7 @@ namespace DotNetNuke.Web.InternalServices
             // check content source in configured list or not
             foreach (var contentSource in searchContentSources)
             {
-                if (contentSource.IsPrivate) continue; ;
+                if (contentSource.IsPrivate) continue;
                 if (configuredList.Count > 0)
                 {
                     if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0) // in configured list

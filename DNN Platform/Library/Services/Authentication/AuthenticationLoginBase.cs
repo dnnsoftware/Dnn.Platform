@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 var controller = UserRequestIPAddressController.Instance;
                 var request = new HttpRequestWrapper(HttpContext.Current.Request);
-                return controller.GetUserRequestIPAddress(request); ;
+                return controller.GetUserRequestIPAddress(request);
             }
         }
 

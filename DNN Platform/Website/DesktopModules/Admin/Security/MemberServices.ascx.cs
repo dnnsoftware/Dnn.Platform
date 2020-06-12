@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         private void UseTrial(int roleID)
         {
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
 
             if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
@@ -298,7 +298,7 @@ namespace DotNetNuke.Modules.Admin.Security
         protected bool ShowSubscribe(int roleID)
         {
             bool showSubscribe = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
             if (objRole.IsPublic)
             {
                 PortalInfo objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.Admin.Security
         protected bool ShowTrial(int roleID)
         {
             bool showTrial = Null.NullBoolean;
-            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID); ;
+            RoleInfo objRole = RoleController.Instance.GetRole(this.PortalSettings.PortalId, r => r.RoleID == roleID);
             if (string.IsNullOrEmpty(objRole.TrialFrequency) || objRole.TrialFrequency == "N" || (objRole.IsPublic && objRole.ServiceFee == 0.0))
             {
                 showTrial = Null.NullBoolean;
