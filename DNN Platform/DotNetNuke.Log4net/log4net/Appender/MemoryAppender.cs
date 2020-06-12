@@ -68,7 +68,8 @@ namespace log4net.Appender
         /// Default constructor.
         /// </para>
         /// </remarks>
-        public MemoryAppender() : base()
+        public MemoryAppender()
+            : base()
         {
             this.m_eventsList = new ArrayList();
         }

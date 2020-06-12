@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnTagCloudItem(string text) : base(text)
+        public DnnTagCloudItem(string text)
+            : base(text)
         {
         }
     }

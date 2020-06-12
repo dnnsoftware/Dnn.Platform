@@ -56,7 +56,8 @@ namespace DotNetNuke.Services.Installer.Writers
             this.Initialize(this.DesktopModule.FolderName);
         }
 
-        public ModulePackageWriter(DesktopModuleInfo desktopModule, XPathNavigator manifestNav, PackageInfo package) : base(package)
+        public ModulePackageWriter(DesktopModuleInfo desktopModule, XPathNavigator manifestNav, PackageInfo package)
+            : base(package)
         {
             this.DesktopModule = desktopModule;
 
@@ -69,13 +70,15 @@ namespace DotNetNuke.Services.Installer.Writers
             this.ProcessModuleFolders(physicalFolderPath, physicalFolderPath);
         }
 
-        public ModulePackageWriter(PackageInfo package) : base(package)
+        public ModulePackageWriter(PackageInfo package)
+            : base(package)
         {
             this.DesktopModule = DesktopModuleController.GetDesktopModuleByPackageID(package.PackageID);
             this.Initialize(this.DesktopModule.FolderName);
         }
 
-        public ModulePackageWriter(DesktopModuleInfo desktopModule, PackageInfo package) : base(package)
+        public ModulePackageWriter(DesktopModuleInfo desktopModule, PackageInfo package)
+            : base(package)
         {
             this.DesktopModule = desktopModule;
             this.Initialize(desktopModule.FolderName);

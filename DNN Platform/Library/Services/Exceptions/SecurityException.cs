@@ -26,18 +26,21 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
-        public SecurityException(string message) : base(message)
+        public SecurityException(string message)
+            : base(message)
         {
             this.InitilizePrivateVariables();
         }
 
         // constructor with message and inner exception
-        public SecurityException(string message, Exception inner) : base(message, inner)
+        public SecurityException(string message, Exception inner)
+            : base(message, inner)
         {
             this.InitilizePrivateVariables();
         }
 
-        protected SecurityException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected SecurityException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             this.InitilizePrivateVariables();
             this.m_IP = info.GetString("m_IP");

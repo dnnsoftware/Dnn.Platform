@@ -27,7 +27,8 @@ namespace DotNetNuke.Services.Search.Internals
         private readonly TermAttribute _termAtt;
         private readonly PositionIncrementAttribute _posIncrAtt;
 
-        public SynonymFilter(TokenStream input) : base(input)
+        public SynonymFilter(TokenStream input)
+            : base(input)
         {
             this._termAtt = (TermAttribute)this.AddAttribute<ITermAttribute>();
             this._posIncrAtt = (PositionIncrementAttribute)this.AddAttribute<IPositionIncrementAttribute>();

@@ -29,7 +29,8 @@ namespace DotNetNuke.Entities.Content
             return () => new ContentController();
         }
 
-        public ContentController() : this(Util.GetDataService())
+        public ContentController()
+            : this(Util.GetDataService())
         {
         }
 

@@ -35,7 +35,8 @@ namespace DotNetNuke.UI.WebControls
         /// Constructs the DNNMultiStateBoxColumn
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public DNNMultiStateBoxColumn() : this(false)
+        public DNNMultiStateBoxColumn()
+            : this(false)
         {
         }
 

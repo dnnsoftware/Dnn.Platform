@@ -106,7 +106,8 @@ namespace DotNetNuke.Tests.Core
         private int _failuresRemaining;
         private readonly List<DateTime> _callTimes = new List<DateTime>();
 
-        public ActionMonitor() : this(0) { }
+        public ActionMonitor()
+            : this(0) { }
 
         public ActionMonitor(int failureCount)
         {

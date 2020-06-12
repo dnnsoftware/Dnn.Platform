@@ -10,7 +10,8 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnGridEditFormSettings : GridEditFormSettings
     {
-        public DnnGridEditFormSettings(DnnGridTableView owner) : base(owner)
+        public DnnGridEditFormSettings(DnnGridTableView owner)
+            : base(owner)
         {
         }
     }

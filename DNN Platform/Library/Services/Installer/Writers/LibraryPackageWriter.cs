@@ -17,7 +17,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class LibraryPackageWriter : PackageWriterBase
     {
-        public LibraryPackageWriter(PackageInfo package) : base(package)
+        public LibraryPackageWriter(PackageInfo package)
+            : base(package)
         {
             this.BasePath = "DesktopModules\\Libraries";
             this.AssemblyPath = "bin";

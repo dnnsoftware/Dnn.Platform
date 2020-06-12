@@ -39,7 +39,8 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="key">The key to use for storing the value in the dictionary</param>
         /// <param name="initializer">A function that is called in order to create a default value per dictionary</param>
         /// <remarks></remarks>
-        protected StateVariable(string key, Func<T> initializer) : this(key)
+        protected StateVariable(string key, Func<T> initializer)
+            : this(key)
         {
             if (initializer == null)
             {

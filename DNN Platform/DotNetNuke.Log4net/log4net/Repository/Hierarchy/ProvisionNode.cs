@@ -53,7 +53,8 @@ namespace log4net.Repository.Hierarchy
         /// with the specified child logger.
         /// </para>
         /// </remarks>
-        internal ProvisionNode(Logger log) : base()
+        internal ProvisionNode(Logger log)
+            : base()
         {
             this.Add(log);
         }

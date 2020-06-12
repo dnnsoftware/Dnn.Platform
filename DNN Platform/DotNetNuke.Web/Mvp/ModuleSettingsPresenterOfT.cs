@@ -15,7 +15,8 @@ namespace DotNetNuke.Web.Mvp
         where TView : class, ISettingsView<TModel>
         where TModel : SettingsModel, new()
     {
-        protected ModuleSettingsPresenter(TView view) : base(view)
+        protected ModuleSettingsPresenter(TView view)
+            : base(view)
         {
             view.OnLoadSettings += this.OnLoadSettingsInternal;
             view.OnSaveSettings += this.OnSaveSettingsInternal;

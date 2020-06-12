@@ -21,13 +21,15 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class AuthenticationPackageWriter : PackageWriterBase
     {
-        public AuthenticationPackageWriter(PackageInfo package) : base(package)
+        public AuthenticationPackageWriter(PackageInfo package)
+            : base(package)
         {
             this.AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(package.PackageID);
             this.Initialize();
         }
 
-        public AuthenticationPackageWriter(AuthenticationInfo authSystem, PackageInfo package) : base(package)
+        public AuthenticationPackageWriter(AuthenticationInfo authSystem, PackageInfo package)
+            : base(package)
         {
             this.AuthSystem = authSystem;
             this.Initialize();

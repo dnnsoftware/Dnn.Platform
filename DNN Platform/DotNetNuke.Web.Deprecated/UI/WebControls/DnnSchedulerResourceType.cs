@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnSchedulerResourceType(string resourceTypeName) : base(resourceTypeName)
+        public DnnSchedulerResourceType(string resourceTypeName)
+            : base(resourceTypeName)
         {
         }
 
-        public DnnSchedulerResourceType(string resourceTypeName, bool allowMultipleResourceValues) : base(resourceTypeName, allowMultipleResourceValues)
+        public DnnSchedulerResourceType(string resourceTypeName, bool allowMultipleResourceValues)
+            : base(resourceTypeName, allowMultipleResourceValues)
         {
         }
     }

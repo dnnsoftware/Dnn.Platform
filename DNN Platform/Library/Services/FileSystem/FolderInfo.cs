@@ -31,7 +31,8 @@ namespace DotNetNuke.Services.FileSystem
         private FolderPermissionCollection _folderPermissions;
         private int _folderMappingId;
 
-        public FolderInfo() : this(false)
+        public FolderInfo()
+            : this(false)
         {
         }
 

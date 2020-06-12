@@ -105,7 +105,8 @@ namespace log4net.Repository.Hierarchy
             /// with the specified name.
             /// </para>
             /// </remarks>
-            internal LoggerImpl(string name) : base(name)
+            internal LoggerImpl(string name)
+                : base(name)
             {
             }
         }

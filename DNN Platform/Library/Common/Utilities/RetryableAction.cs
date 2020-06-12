@@ -69,7 +69,8 @@ namespace DotNetNuke.Common.Utilities.Internal
             Thread.Sleep(delay);
         }
 
-        public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay) : this(action, description, maxRetries, delay, 1) { }
+        public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay)
+            : this(action, description, maxRetries, delay, 1) { }
 
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay, float delayMultiplier)
         {

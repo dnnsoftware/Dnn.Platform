@@ -29,7 +29,8 @@ namespace DotNetNuke.Framework
         /// Creates the DiskPageStatePersister
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public DiskPageStatePersister(Page page) : base(page)
+        public DiskPageStatePersister(Page page)
+            : base(page)
         {
         }
 

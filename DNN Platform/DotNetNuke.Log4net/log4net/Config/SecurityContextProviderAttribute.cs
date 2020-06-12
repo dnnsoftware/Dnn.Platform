@@ -61,7 +61,8 @@ namespace log4net.Config
         /// class.
         /// </para>
         /// </remarks>
-        public SecurityContextProviderAttribute(Type providerType) : base(100) /* configurator priority 100 to execute before the XmlConfigurator */
+        public SecurityContextProviderAttribute(Type providerType)
+            : base(100) /* configurator priority 100 to execute before the XmlConfigurator */
         {
             this.m_providerType = providerType;
         }

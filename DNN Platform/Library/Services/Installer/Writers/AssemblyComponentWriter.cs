@@ -20,7 +20,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class AssemblyComponentWriter : FileComponentWriter
     {
-        public AssemblyComponentWriter(string basePath, Dictionary<string, InstallFile> assemblies, PackageInfo package) : base(basePath, assemblies, package)
+        public AssemblyComponentWriter(string basePath, Dictionary<string, InstallFile> assemblies, PackageInfo package)
+            : base(basePath, assemblies, package)
         {
         }
 

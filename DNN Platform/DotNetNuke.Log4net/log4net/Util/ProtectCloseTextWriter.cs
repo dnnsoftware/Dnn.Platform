@@ -50,7 +50,8 @@ namespace log4net.Util
         /// Create a new ProtectCloseTextWriter using a writer
         /// </para>
         /// </remarks>
-        public ProtectCloseTextWriter(TextWriter writer) : base(writer)
+        public ProtectCloseTextWriter(TextWriter writer)
+            : base(writer)
         {
         }
 

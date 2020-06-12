@@ -15,7 +15,8 @@ namespace DotNetNuke.Web.UI.WebControls
         where T : Control
     {
 
-        public TypedControlCollection(Control owner) : base(owner)
+        public TypedControlCollection(Control owner)
+            : base(owner)
         {
         }
 

@@ -24,11 +24,13 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     public class DNNDataGridCheckChangedEventArgs : DataGridItemEventArgs
     {
-        public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field) : this(item, isChecked, field, false)
+        public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field)
+            : this(item, isChecked, field, false)
         {
         }
 
-        public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field, bool isAll) : base(item)
+        public DNNDataGridCheckChangedEventArgs(DataGridItem item, bool isChecked, string field, bool isAll)
+            : base(item)
         {
             this.Checked = isChecked;
             this.IsAll = isAll;

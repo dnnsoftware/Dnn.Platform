@@ -22,7 +22,8 @@ namespace DotNetNuke.Web.UI.WebControls
     {
         private UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> _listItems = null;
 
-        public DnnUnsortedList() : base(HtmlTextWriterTag.Ul)
+        public DnnUnsortedList()
+            : base(HtmlTextWriterTag.Ul)
         {
         }
 

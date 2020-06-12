@@ -97,7 +97,8 @@ namespace DotNetNuke.Services.Syndication
 
         private class RssElementCustomPropertyDescriptor : PropertyDescriptor
         {
-            public RssElementCustomPropertyDescriptor(string propertyName) : base(propertyName, null)
+            public RssElementCustomPropertyDescriptor(string propertyName)
+                : base(propertyName, null)
             {
             }
 

@@ -147,7 +147,8 @@ namespace log4net.Repository.Hierarchy
         /// Initializes a new instance of the <see cref="Hierarchy" /> class.
         /// </para>
         /// </remarks>
-        public Hierarchy() : this(new DefaultLoggerFactory())
+        public Hierarchy()
+            : this(new DefaultLoggerFactory())
         {
         }
 
@@ -160,7 +161,8 @@ namespace log4net.Repository.Hierarchy
         /// Initializes a new instance of the <see cref="Hierarchy" /> class.
         /// </para>
         /// </remarks>
-        public Hierarchy(PropertiesDictionary properties) : this(properties, new DefaultLoggerFactory())
+        public Hierarchy(PropertiesDictionary properties)
+            : this(properties, new DefaultLoggerFactory())
         {
         }
 
@@ -174,7 +176,8 @@ namespace log4net.Repository.Hierarchy
         /// the specified <see cref="ILoggerFactory" />.
         /// </para>
         /// </remarks>
-        public Hierarchy(ILoggerFactory loggerFactory) : this(new PropertiesDictionary(), loggerFactory)
+        public Hierarchy(ILoggerFactory loggerFactory)
+            : this(new PropertiesDictionary(), loggerFactory)
         {
         }
 
@@ -189,7 +192,8 @@ namespace log4net.Repository.Hierarchy
         /// the specified <see cref="ILoggerFactory" />.
         /// </para>
         /// </remarks>
-        public Hierarchy(PropertiesDictionary properties, ILoggerFactory loggerFactory) : base(properties)
+        public Hierarchy(PropertiesDictionary properties, ILoggerFactory loggerFactory)
+            : base(properties)
         {
             if (loggerFactory == null)
             {

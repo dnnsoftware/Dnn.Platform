@@ -63,7 +63,8 @@ namespace log4net.Config
         /// Obsolete. Use RepositoryAttribute instead of DomainAttribute.
         /// </para>
         /// </remarks>
-        public DomainAttribute() : base()
+        public DomainAttribute()
+            : base()
         {
         }
 
@@ -77,7 +78,8 @@ namespace log4net.Config
         /// Obsolete. Use RepositoryAttribute instead of DomainAttribute.
         /// </para>
         /// </remarks>
-        public DomainAttribute(string name) : base(name)
+        public DomainAttribute(string name)
+            : base(name)
         {
         }
     }

@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnCalendarDay(RadCalendar calendar) : base(calendar)
+        public DnnCalendarDay(RadCalendar calendar)
+            : base(calendar)
         {
         }
     }

@@ -27,25 +27,29 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
-        public ModuleLoadException(string message) : base(message)
+        public ModuleLoadException(string message)
+            : base(message)
         {
             this.InitilizePrivateVariables();
         }
 
         // constructor with exception message
-        public ModuleLoadException(string message, Exception inner, ModuleInfo ModuleConfiguration) : base(message, inner)
+        public ModuleLoadException(string message, Exception inner, ModuleInfo ModuleConfiguration)
+            : base(message, inner)
         {
             this.m_ModuleConfiguration = ModuleConfiguration;
             this.InitilizePrivateVariables();
         }
 
         // constructor with message and inner exception
-        public ModuleLoadException(string message, Exception inner) : base(message, inner)
+        public ModuleLoadException(string message, Exception inner)
+            : base(message, inner)
         {
             this.InitilizePrivateVariables();
         }
 
-        protected ModuleLoadException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ModuleLoadException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             this.InitilizePrivateVariables();
             this.m_ModuleId = info.GetInt32("m_ModuleId");

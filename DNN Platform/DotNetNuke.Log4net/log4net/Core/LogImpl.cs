@@ -111,7 +111,8 @@ namespace log4net.Core
         /// Construct a new wrapper for the specified logger.
         /// </para>
         /// </remarks>
-        public LogImpl(ILogger logger) : base(logger)
+        public LogImpl(ILogger logger)
+            : base(logger)
         {
             // Listen for changes to the repository
             logger.Repository.ConfigurationChanged += new LoggerRepositoryConfigurationChangedEventHandler(this.LoggerRepositoryConfigurationChanged);

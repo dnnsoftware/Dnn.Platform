@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnSliderItem(string text) : base(text)
+        public DnnSliderItem(string text)
+            : base(text)
         {
         }
 
-        public DnnSliderItem(string text, string value) : base(text, value)
+        public DnnSliderItem(string text, string value)
+            : base(text, value)
         {
         }
     }

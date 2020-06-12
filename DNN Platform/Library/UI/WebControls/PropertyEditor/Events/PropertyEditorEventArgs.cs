@@ -28,7 +28,8 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <param name="name">The name of the property</param>
         /// -----------------------------------------------------------------------------
-        public PropertyEditorEventArgs(string name) : this(name, null, null)
+        public PropertyEditorEventArgs(string name)
+            : this(name, null, null)
         {
         }
 

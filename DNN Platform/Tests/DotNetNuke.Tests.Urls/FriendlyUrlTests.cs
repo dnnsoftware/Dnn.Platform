@@ -31,7 +31,8 @@ namespace DotNetNuke.Tests.Urls
         private Locale _customLocale;
         private PortalAliasInfo _primaryAlias;
 
-        public FriendlyUrlTests() : base(0) { }
+        public FriendlyUrlTests()
+            : base(0) { }
 
         [SetUp]
         public override void SetUp()

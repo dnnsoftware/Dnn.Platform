@@ -12,7 +12,8 @@ namespace Dnn.PersonaBar.Library.Helper
         private IPortalController _portalController;
         private IPortalGroupController _portalGroupController;
 
-        public ContentVerifier() : this(PortalController.Instance, PortalGroupController.Instance)
+        public ContentVerifier()
+            : this(PortalController.Instance, PortalGroupController.Instance)
         {
         }
 

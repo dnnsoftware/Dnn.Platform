@@ -16,7 +16,8 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
 {
     public class LiveClient : OAuthClientBase
     {
-        public LiveClient(int portalId, AuthMode mode) : base(portalId, mode, "Live")
+        public LiveClient(int portalId, AuthMode mode)
+            : base(portalId, mode, "Live")
         {
             // DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
             // Add TokenMethod of Post to conform to other OAuth extensions

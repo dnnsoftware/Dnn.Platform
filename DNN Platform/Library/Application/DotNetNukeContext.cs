@@ -25,7 +25,8 @@ namespace DotNetNuke.Application
         /// <summary>
         /// Initializes a new instance of the <see cref="DotNetNukeContext" /> class.
         /// </summary>
-        protected DotNetNukeContext() : this(new Application())
+        protected DotNetNukeContext()
+            : this(new Application())
         {
         }
 

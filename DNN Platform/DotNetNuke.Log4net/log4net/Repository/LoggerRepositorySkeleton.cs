@@ -68,7 +68,8 @@ namespace log4net.Repository
         /// Initializes the repository with default (empty) properties.
         /// </para>
         /// </remarks>
-        protected LoggerRepositorySkeleton() : this(new PropertiesDictionary())
+        protected LoggerRepositorySkeleton()
+            : this(new PropertiesDictionary())
         {
         }
 

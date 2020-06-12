@@ -20,7 +20,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <remarks>
         /// Palette quantization only requires a single quantization step
         /// </remarks>
-        public GrayscaleQuantizer() : base(new ArrayList())
+        public GrayscaleQuantizer()
+            : base(new ArrayList())
         {
             this._colors = new Color[256];
 

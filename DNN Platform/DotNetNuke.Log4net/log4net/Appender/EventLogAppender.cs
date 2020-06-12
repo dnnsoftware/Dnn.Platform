@@ -115,7 +115,8 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         [Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
-        public EventLogAppender(ILayout layout) : this()
+        public EventLogAppender(ILayout layout)
+            : this()
         {
             this.Layout = layout;
         }

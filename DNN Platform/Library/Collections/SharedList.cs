@@ -15,7 +15,8 @@ namespace DotNetNuke.Collections.Internal
         private readonly List<T> _list = new List<T>();
         private ILockStrategy _lockStrategy;
 
-        public SharedList() : this(LockingStrategy.ReaderWriter)
+        public SharedList()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
@@ -24,7 +25,8 @@ namespace DotNetNuke.Collections.Internal
             this._lockStrategy = lockStrategy;
         }
 
-        public SharedList(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        public SharedList(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 

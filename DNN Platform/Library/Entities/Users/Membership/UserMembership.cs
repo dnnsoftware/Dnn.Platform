@@ -29,7 +29,8 @@ namespace DotNetNuke.Entities.Users
         private readonly UserInfo _user;
         private bool _approved;
 
-        public UserMembership() : this(new UserInfo())
+        public UserMembership()
+            : this(new UserInfo())
         {
         }
 

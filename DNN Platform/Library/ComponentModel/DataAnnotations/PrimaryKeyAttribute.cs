@@ -10,7 +10,8 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
 {
     public class PrimaryKeyAttribute : Attribute
     {
-        public PrimaryKeyAttribute(string columnName) : this(columnName, columnName)
+        public PrimaryKeyAttribute(string columnName)
+            : this(columnName, columnName)
         {
         }
 

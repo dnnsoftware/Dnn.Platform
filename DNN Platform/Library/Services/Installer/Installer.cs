@@ -71,7 +71,8 @@ namespace DotNetNuke.Services.Installer
         /// <param name="physicalSitePath">The physical path to the root of the site</param>
         /// <param name="loadManifest">Flag that determines whether the manifest will be loaded</param>
         /// -----------------------------------------------------------------------------
-        public Installer(Stream inputStream, string physicalSitePath, bool loadManifest) : this(inputStream, physicalSitePath, loadManifest, true)
+        public Installer(Stream inputStream, string physicalSitePath, bool loadManifest)
+            : this(inputStream, physicalSitePath, loadManifest, true)
         {
         }
 

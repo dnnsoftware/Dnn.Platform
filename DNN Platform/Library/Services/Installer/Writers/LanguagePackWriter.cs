@@ -31,7 +31,8 @@ namespace DotNetNuke.Services.Installer.Writers
         private Locale _Language;
         private LanguagePackInfo _LanguagePack;
 
-        public LanguagePackWriter(PackageInfo package) : base(package)
+        public LanguagePackWriter(PackageInfo package)
+            : base(package)
         {
             this._LanguagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
             if (this.LanguagePack != null)
@@ -84,7 +85,8 @@ namespace DotNetNuke.Services.Installer.Writers
             this.BasePath = Null.NullString;
         }
 
-        public LanguagePackWriter(Locale language, PackageInfo package) : base(package)
+        public LanguagePackWriter(Locale language, PackageInfo package)
+            : base(package)
         {
             this._Language = language;
             this.BasePath = Null.NullString;

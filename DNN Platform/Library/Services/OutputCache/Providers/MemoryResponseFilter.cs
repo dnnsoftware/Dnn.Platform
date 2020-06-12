@@ -17,7 +17,8 @@ namespace DotNetNuke.Services.OutputCache.Providers
         // Private _content As StringBuilder
         private static System.Web.Caching.Cache runtimeCache;
 
-        internal MemoryResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration) : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
+        internal MemoryResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
+            : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
             if (maxVaryByCount > -1 && Services.OutputCache.Providers.MemoryProvider.GetCacheKeys(itemId).Count >= maxVaryByCount)
             {

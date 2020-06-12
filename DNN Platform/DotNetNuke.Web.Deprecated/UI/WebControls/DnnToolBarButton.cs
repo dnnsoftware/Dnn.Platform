@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnToolBarButton(string text) : base(text)
+        public DnnToolBarButton(string text)
+            : base(text)
         {
         }
 
-        public DnnToolBarButton(string text, bool isChecked, string @group) : base(text, isChecked, @group)
+        public DnnToolBarButton(string text, bool isChecked, string @group)
+            : base(text, isChecked, @group)
         {
         }
     }

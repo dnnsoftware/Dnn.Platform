@@ -65,19 +65,23 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private int _vocabularyId;
         private int _weight;
 
-        public Term() : this(Null.NullString, Null.NullString, Null.NullInteger)
+        public Term()
+            : this(Null.NullString, Null.NullString, Null.NullInteger)
         {
         }
 
-        public Term(int vocabularyId) : this(Null.NullString, Null.NullString, vocabularyId)
+        public Term(int vocabularyId)
+            : this(Null.NullString, Null.NullString, vocabularyId)
         {
         }
 
-        public Term(string name) : this(name, Null.NullString, Null.NullInteger)
+        public Term(string name)
+            : this(name, Null.NullString, Null.NullInteger)
         {
         }
 
-        public Term(string name, string description) : this(name, description, Null.NullInteger)
+        public Term(string name, string description)
+            : this(name, description, Null.NullInteger)
         {
         }
 

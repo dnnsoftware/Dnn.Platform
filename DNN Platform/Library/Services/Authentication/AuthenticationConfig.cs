@@ -24,7 +24,8 @@ namespace DotNetNuke.Services.Authentication
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationConfig));
         private const string CACHEKEY = "Authentication.DNN";
 
-        protected AuthenticationConfig(int portalID) : base(portalID)
+        protected AuthenticationConfig(int portalID)
+            : base(portalID)
         {
             this.UseCaptcha = Null.NullBoolean;
             this.Enabled = true;

@@ -699,7 +699,8 @@ namespace log4net.Plugin
         {
             private readonly PluginCollection m_collection;
 
-            internal ReadOnlyPluginCollection(PluginCollection list) : base(Tag.Default)
+            internal ReadOnlyPluginCollection(PluginCollection list)
+                : base(Tag.Default)
             {
                 this.m_collection = list;
             }

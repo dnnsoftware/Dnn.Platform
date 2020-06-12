@@ -34,7 +34,8 @@ namespace DotNetNuke.Services.Installer.Packages
         /// Parameters
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public PackageInfo(InstallerInfo info) : this()
+        public PackageInfo(InstallerInfo info)
+            : this()
         {
             this.AttachInstallerInfo(info);
         }

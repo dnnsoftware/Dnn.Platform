@@ -15,8 +15,10 @@ namespace DotNetNuke.Data.PetaPoco
         public Func<object, object> ToDbConverter { get; set; }
 
         public FluentColumnMap() { }
-        public FluentColumnMap(ColumnInfo columnInfo) : this(columnInfo, null) { }
-        public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter) : this(columnInfo, fromDbConverter, null) { }
+        public FluentColumnMap(ColumnInfo columnInfo)
+            : this(columnInfo, null) { }
+        public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter)
+            : this(columnInfo, fromDbConverter, null) { }
         public FluentColumnMap(ColumnInfo columnInfo, Func<object, object> fromDbConverter, Func<object, object> toDbConverter)
         {
             this.ColumnInfo = columnInfo;

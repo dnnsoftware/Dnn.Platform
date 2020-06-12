@@ -46,7 +46,8 @@ namespace DotNetNuke.Instrumentation
             private static bool _configured;
             private static readonly object ConfigLock = new object();
 
-            internal Logger(ILogger logger, Type type) : base(logger)
+            internal Logger(ILogger logger, Type type)
+                : base(logger)
             {
                 this._stackBoundary = type ?? typeof(Logger);
                 EnsureConfig();

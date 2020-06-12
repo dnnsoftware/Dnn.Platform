@@ -16,7 +16,8 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool _CheckToolVisibility = true;
         private HtmlGenericControl _contentContainer;
 
-        public DnnRibbonBarGroup() : base("div")
+        public DnnRibbonBarGroup()
+            : base("div")
         {
             this.CssClass = "dnnRibbonGroup";
         }

@@ -13,12 +13,14 @@ namespace DotNetNuke.Entities.Content.Workflow.Exceptions
 
         }
 
-        public WorkflowException(string message) : base(message)
+        public WorkflowException(string message)
+            : base(message)
         {
 
         }
 
-        public WorkflowException(string message, Exception innerException) : base(message, innerException)
+        public WorkflowException(string message, Exception innerException)
+            : base(message, innerException)
         {
 
         }

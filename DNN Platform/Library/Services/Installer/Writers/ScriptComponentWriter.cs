@@ -24,7 +24,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ScriptComponentWriter : FileComponentWriter
     {
-        public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package) : base(basePath, scripts, package)
+        public ScriptComponentWriter(string basePath, Dictionary<string, InstallFile> scripts, PackageInfo package)
+            : base(basePath, scripts, package)
         {
         }
 

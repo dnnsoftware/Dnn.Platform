@@ -10,7 +10,8 @@ namespace DotNetNuke.Entities.Tabs
 {
     public class TabException : Exception
     {
-        public TabException(int tabId, string message) : base(message)
+        public TabException(int tabId, string message)
+            : base(message)
         {
             this.TabId = tabId;
         }

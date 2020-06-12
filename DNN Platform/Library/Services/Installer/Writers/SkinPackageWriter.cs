@@ -25,25 +25,29 @@ namespace DotNetNuke.Services.Installer.Writers
         private readonly SkinPackageInfo _SkinPackage;
         private readonly string _SubFolder;
 
-        public SkinPackageWriter(PackageInfo package) : base(package)
+        public SkinPackageWriter(PackageInfo package)
+            : base(package)
         {
             this._SkinPackage = SkinController.GetSkinByPackageID(package.PackageID);
             this.SetBasePath();
         }
 
-        public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package) : base(package)
+        public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
+            : base(package)
         {
             this._SkinPackage = skinPackage;
             this.SetBasePath();
         }
 
-        public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath) : base(package)
+        public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath)
+            : base(package)
         {
             this._SkinPackage = skinPackage;
             this.BasePath = basePath;
         }
 
-        public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath, string subFolder) : base(package)
+        public SkinPackageWriter(SkinPackageInfo skinPackage, PackageInfo package, string basePath, string subFolder)
+            : base(package)
         {
             this._SkinPackage = skinPackage;
             this._SubFolder = subFolder;

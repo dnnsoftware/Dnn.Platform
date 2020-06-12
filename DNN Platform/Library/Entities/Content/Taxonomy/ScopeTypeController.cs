@@ -23,7 +23,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private readonly IDataService _DataService;
         private const int _CacheTimeOut = 20;
 
-        public ScopeTypeController() : this(Util.GetDataService())
+        public ScopeTypeController()
+            : this(Util.GetDataService())
         {
         }
 

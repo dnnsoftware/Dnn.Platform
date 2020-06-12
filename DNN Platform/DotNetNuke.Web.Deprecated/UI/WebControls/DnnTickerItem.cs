@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnTickerItem(string text) : base(text)
+        public DnnTickerItem(string text)
+            : base(text)
         {
         }
 
-        public DnnTickerItem(string text, string navigateUrl) : base(text, navigateUrl)
+        public DnnTickerItem(string text, string navigateUrl)
+            : base(text, navigateUrl)
         {
         }
     }

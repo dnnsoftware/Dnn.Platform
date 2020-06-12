@@ -32,7 +32,8 @@ namespace DotNetNuke.Framework
         /// Creates the CachePageStatePersister
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public CachePageStatePersister(Page page) : base(page)
+        public CachePageStatePersister(Page page)
+            : base(page)
         {
         }
 

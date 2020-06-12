@@ -11,7 +11,8 @@ namespace DotNetNuke.Web.Mvp
         where TView : class, IModuleView<TModel>
         where TModel : class, new()
     {
-        protected ModulePresenter(TView view) : base(view)
+        protected ModulePresenter(TView view)
+            : base(view)
         {
         }
     }

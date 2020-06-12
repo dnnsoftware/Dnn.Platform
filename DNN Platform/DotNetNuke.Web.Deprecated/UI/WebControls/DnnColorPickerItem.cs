@@ -16,11 +16,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnColorPickerItem(Color value) : base(value)
+        public DnnColorPickerItem(Color value)
+            : base(value)
         {
         }
 
-        public DnnColorPickerItem(Color value, string title) : base(value, title)
+        public DnnColorPickerItem(Color value, string title)
+            : base(value, title)
         {
         }
     }

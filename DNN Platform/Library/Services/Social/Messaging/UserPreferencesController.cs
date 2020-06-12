@@ -20,7 +20,8 @@ namespace DotNetNuke.Services.Social.Messaging
             return () => new UserPreferencesController();
         }
 
-        public UserPreferencesController() : this(DataService.Instance)
+        public UserPreferencesController()
+            : this(DataService.Instance)
         {
         }
 

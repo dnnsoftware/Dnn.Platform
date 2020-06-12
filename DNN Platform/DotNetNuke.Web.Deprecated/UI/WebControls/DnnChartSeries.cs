@@ -15,15 +15,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnChartSeries(string name) : base(name)
+        public DnnChartSeries(string name)
+            : base(name)
         {
         }
 
-        public DnnChartSeries(string name, ChartSeriesType type) : base(name, type)
+        public DnnChartSeries(string name, ChartSeriesType type)
+            : base(name, type)
         {
         }
 
-        public DnnChartSeries(string name, ChartSeriesType type, ChartSeriesCollection parent) : base(name, type, parent)
+        public DnnChartSeries(string name, ChartSeriesType type, ChartSeriesCollection parent)
+            : base(name, type, parent)
         {
         }
 
@@ -38,7 +41,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnChartSeries(ChartSeriesCollection parent) : base(parent)
+        public DnnChartSeries(ChartSeriesCollection parent)
+            : base(parent)
         {
         }
     }

@@ -49,7 +49,8 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="permission">A PermissionInfo object</param>
         /// -----------------------------------------------------------------------------
-        public TabPermissionInfo(PermissionInfo permission) : this()
+        public TabPermissionInfo(PermissionInfo permission)
+            : this()
         {
             this.ModuleDefID = permission.ModuleDefID;
             this.PermissionCode = permission.PermissionCode;

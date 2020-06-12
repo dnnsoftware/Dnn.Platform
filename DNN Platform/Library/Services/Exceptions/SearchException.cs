@@ -20,7 +20,8 @@ namespace DotNetNuke.Services.Exceptions
         {
         }
 
-        public SearchException(string message, Exception inner, SearchItemInfo searchItem) : base(message, inner)
+        public SearchException(string message, Exception inner, SearchItemInfo searchItem)
+            : base(message, inner)
         {
             this.m_SearchItem = searchItem;
         }

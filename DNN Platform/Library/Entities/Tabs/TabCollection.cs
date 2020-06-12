@@ -63,7 +63,8 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        public TabCollection(IEnumerable<TabInfo> tabs) : this()
+        public TabCollection(IEnumerable<TabInfo> tabs)
+            : this()
         {
             this.AddRange(tabs);
         }

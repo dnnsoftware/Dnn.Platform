@@ -23,7 +23,8 @@ namespace DotNetNuke.Services.EventQueue.Config
             this.PrivateKey = oPortalSecurity.CreateKey(16);
         }
 
-        public SubscriberInfo(string subscriberName) : this()
+        public SubscriberInfo(string subscriberName)
+            : this()
         {
             this.Name = subscriberName;
         }

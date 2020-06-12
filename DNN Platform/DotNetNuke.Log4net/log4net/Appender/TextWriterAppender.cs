@@ -73,7 +73,8 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         [Obsolete("Instead use the default constructor and set the Layout & Writer properties. Scheduled removal in v10.0.0.")]
-        public TextWriterAppender(ILayout layout, Stream os) : this(layout, new StreamWriter(os))
+        public TextWriterAppender(ILayout layout, Stream os)
+            : this(layout, new StreamWriter(os))
         {
         }
 

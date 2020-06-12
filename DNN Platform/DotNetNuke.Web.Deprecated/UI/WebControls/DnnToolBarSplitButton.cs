@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnToolBarSplitButton(string text) : base(text)
+        public DnnToolBarSplitButton(string text)
+            : base(text)
         {
         }
     }

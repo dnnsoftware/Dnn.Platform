@@ -15,11 +15,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnComboBoxItem(string text) : base(text)
+        public DnnComboBoxItem(string text)
+            : base(text)
         {
         }
 
-        public DnnComboBoxItem(string text, string value) : base(text, value)
+        public DnnComboBoxItem(string text, string value)
+            : base(text, value)
         {
         }
 

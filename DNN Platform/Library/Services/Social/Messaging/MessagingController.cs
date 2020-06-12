@@ -54,7 +54,8 @@ namespace DotNetNuke.Services.Social.Messaging
 
         private readonly IDataService _dataService;
 
-        public MessagingController() : this(DataService.Instance)
+        public MessagingController()
+            : this(DataService.Instance)
         {
         }
 

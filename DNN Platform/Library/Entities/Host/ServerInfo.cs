@@ -16,7 +16,8 @@ namespace DotNetNuke.Entities.Host
     [Serializable]
     public class ServerInfo : IHydratable
     {
-        public ServerInfo() : this(DateTime.Now, DateTime.Now)
+        public ServerInfo()
+            : this(DateTime.Now, DateTime.Now)
         {
         }
 

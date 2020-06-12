@@ -56,7 +56,8 @@ namespace log4net.Layout
         /// with no location info.
         /// </para>
         /// </remarks>
-        protected XmlLayoutBase() : this(false)
+        protected XmlLayoutBase()
+            : this(false)
         {
             this.IgnoresException = false;
         }

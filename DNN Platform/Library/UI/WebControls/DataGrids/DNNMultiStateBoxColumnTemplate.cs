@@ -32,7 +32,8 @@ namespace DotNetNuke.UI.WebControls
         private DNNMultiStateCollection mStates;
         private string mText = string.Empty;
 
-        public DNNMultiStateBoxColumnTemplate() : this(ListItemType.Item)
+        public DNNMultiStateBoxColumnTemplate()
+            : this(ListItemType.Item)
         {
         }
 

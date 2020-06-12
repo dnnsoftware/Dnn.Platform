@@ -28,7 +28,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="files">A Dictionary of files</param>
         /// <param name="package"></param>
         /// -----------------------------------------------------------------------------
-        public ResourceFileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
+        public ResourceFileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
+            : base(basePath, files, package)
         {
         }
 

@@ -29,7 +29,8 @@ namespace DotNetNuke.Web.Api.Internal
         private readonly RouteCollection _routes;
         private readonly PortalAliasRouteManager _portalAliasRouteManager;
 
-        public ServicesRoutingManager() : this(RouteTable.Routes)
+        public ServicesRoutingManager()
+            : this(RouteTable.Routes)
         {
         }
 

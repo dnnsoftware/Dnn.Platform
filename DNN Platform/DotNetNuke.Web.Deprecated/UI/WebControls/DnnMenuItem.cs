@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnMenuItem(string text) : base(text)
+        public DnnMenuItem(string text)
+            : base(text)
         {
         }
 
-        public DnnMenuItem(string text, string navigateUrl) : base(text, navigateUrl)
+        public DnnMenuItem(string text, string navigateUrl)
+            : base(text, navigateUrl)
         {
         }
     }

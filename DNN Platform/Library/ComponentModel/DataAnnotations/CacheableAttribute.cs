@@ -24,14 +24,16 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         /// Construct a new CacheableAttribute
         /// </summary>
         /// <param name="cacheKey">The cacheKey to use</param>
-        public CacheableAttribute(string cacheKey) : this(cacheKey, CacheItemPriority.Default, 20) { }
+        public CacheableAttribute(string cacheKey)
+            : this(cacheKey, CacheItemPriority.Default, 20) { }
 
         /// <summary>
         /// Construct a new CacheableAttribute
         /// </summary>
         /// <param name="cacheKey">The cacheKey to use</param>
         /// <param name="priority">The priority of the cached item</param>
-        public CacheableAttribute(string cacheKey, CacheItemPriority priority) : this(cacheKey, priority, 20) { }
+        public CacheableAttribute(string cacheKey, CacheItemPriority priority)
+            : this(cacheKey, priority, 20) { }
 
         /// <summary>
         /// Construct a new CacheableAttribute

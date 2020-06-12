@@ -52,7 +52,8 @@ namespace log4net.Util
         /// with the specified <see cref="TextWriter" /> and <see cref="IErrorHandler" />.
         /// </para>
         /// </remarks>
-        public CountingQuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer, errorHandler)
+        public CountingQuietTextWriter(TextWriter writer, IErrorHandler errorHandler)
+            : base(writer, errorHandler)
         {
             this.m_countBytes = 0;
         }

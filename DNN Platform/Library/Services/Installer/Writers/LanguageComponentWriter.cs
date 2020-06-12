@@ -38,7 +38,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="files">A Dictionary of files</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
-        public LanguageComponentWriter(Locale language, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
+        public LanguageComponentWriter(Locale language, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
+            : base(basePath, files, package)
         {
             this._Language = language;
             this._PackageType = LanguagePackType.Core;
@@ -53,7 +54,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="files">A Dictionary of files</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
-        public LanguageComponentWriter(LanguagePackInfo languagePack, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
+        public LanguageComponentWriter(LanguagePackInfo languagePack, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
+            : base(basePath, files, package)
         {
             this._Language = LocaleController.Instance.GetLocale(languagePack.LanguageID);
             this._PackageType = languagePack.PackageType;

@@ -12,7 +12,8 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFormLiteralItem : DnnFormItemBase
     {
-        public DnnFormLiteralItem() : base()
+        public DnnFormLiteralItem()
+            : base()
         {
             this.ViewStateMode = ViewStateMode.Disabled;
         }

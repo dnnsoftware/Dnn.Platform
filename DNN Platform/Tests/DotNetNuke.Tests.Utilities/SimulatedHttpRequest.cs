@@ -24,7 +24,8 @@ namespace DotNetNuke.Tests.Instance.Utilities
         /// <param name="query">Query.</param>
         /// <param name="output">Output.</param>
         /// <param name="host">Host.</param>
-        public SimulatedHttpRequest(string appVirtualDir, string appPhysicalDir, string page, string query, TextWriter output, string host) : base(appVirtualDir, appPhysicalDir, page, query, output)
+        public SimulatedHttpRequest(string appVirtualDir, string appPhysicalDir, string page, string query, TextWriter output, string host)
+            : base(appVirtualDir, appPhysicalDir, page, query, output)
         {
             if (string.IsNullOrEmpty(host))
                 throw new ArgumentNullException("host", "Host cannot be null nor empty.");

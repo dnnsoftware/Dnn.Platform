@@ -16,23 +16,28 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnChartAxisItem(string labelText) : base(labelText)
+        public DnnChartAxisItem(string labelText)
+            : base(labelText)
         {
         }
 
-        public DnnChartAxisItem(string labelText, Color color) : base(labelText, color)
+        public DnnChartAxisItem(string labelText, Color color)
+            : base(labelText, color)
         {
         }
 
-        public DnnChartAxisItem(string labelText, Color color, bool visible) : base(labelText, color, visible)
+        public DnnChartAxisItem(string labelText, Color color, bool visible)
+            : base(labelText, color, visible)
         {
         }
 
-        public DnnChartAxisItem(string labelText, Color color, bool visible, IContainer container) : base(labelText, color, visible, container)
+        public DnnChartAxisItem(string labelText, Color color, bool visible, IContainer container)
+            : base(labelText, color, visible, container)
         {
         }
 
-        public DnnChartAxisItem(IContainer container) : base(container)
+        public DnnChartAxisItem(IContainer container)
+            : base(container)
         {
         }
     }

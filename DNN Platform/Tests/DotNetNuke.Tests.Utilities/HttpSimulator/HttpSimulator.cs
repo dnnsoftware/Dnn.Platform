@@ -38,11 +38,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private readonly NameValueCollection _formVars = new NameValueCollection();
         private readonly NameValueCollection _headers = new NameValueCollection();
 
-        public HttpSimulator() : this("/", WebsitePhysicalAppPath)
+        public HttpSimulator()
+            : this("/", WebsitePhysicalAppPath)
         {
         }
 
-        public HttpSimulator(string applicationPath) : this(applicationPath, WebsitePhysicalAppPath)
+        public HttpSimulator(string applicationPath)
+            : this(applicationPath, WebsitePhysicalAppPath)
         {
 
         }

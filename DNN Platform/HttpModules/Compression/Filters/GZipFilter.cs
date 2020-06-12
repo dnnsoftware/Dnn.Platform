@@ -16,7 +16,8 @@ namespace DotNetNuke.HttpModules.Compression
     {
         private readonly GZipStream m_stream;
 
-        public GZipFilter(Stream baseStream) : base(baseStream)
+        public GZipFilter(Stream baseStream)
+            : base(baseStream)
         {
             this.m_stream = new GZipStream(baseStream, CompressionMode.Compress);
         }

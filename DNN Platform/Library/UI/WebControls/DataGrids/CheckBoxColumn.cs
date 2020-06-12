@@ -35,7 +35,8 @@ namespace DotNetNuke.UI.WebControls
         /// Constructs the CheckBoxColumn
         /// </summary>
         /// -----------------------------------------------------------------------------
-        public CheckBoxColumn() : this(false)
+        public CheckBoxColumn()
+            : this(false)
         {
         }
 

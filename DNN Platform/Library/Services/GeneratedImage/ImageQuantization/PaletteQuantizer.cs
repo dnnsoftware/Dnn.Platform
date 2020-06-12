@@ -22,7 +22,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <remarks>
         /// Palette quantization only requires a single quantization step
         /// </remarks>
-        public PaletteQuantizer(ArrayList palette) : base(true)
+        public PaletteQuantizer(ArrayList palette)
+            : base(true)
         {
             this._colorMap = new Hashtable();
 

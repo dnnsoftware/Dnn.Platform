@@ -24,7 +24,8 @@ namespace Dnn.PersonaBar.Library.Controllers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulesController));
         private IContentVerifier _contentVerifier;
 
-        public ModulesController() : this(new ContentVerifier())
+        public ModulesController()
+            : this(new ContentVerifier())
         {
         }
 

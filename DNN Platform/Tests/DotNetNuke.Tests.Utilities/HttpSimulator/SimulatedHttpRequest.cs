@@ -34,7 +34,8 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="host">Host.</param>
         /// <param name="port">Port to request.</param>
         /// <param name="verb">The HTTP Verb to use.</param>
-        public SimulatedHttpRequest(string applicationPath, string physicalAppPath, string physicalFilePath, string page, string query, TextWriter output, string host, int port, string verb) : base(applicationPath, physicalAppPath, page, query, output)
+        public SimulatedHttpRequest(string applicationPath, string physicalAppPath, string physicalFilePath, string page, string query, TextWriter output, string host, int port, string verb)
+            : base(applicationPath, physicalAppPath, page, query, output)
         {
             this.Form = new NameValueCollection();
             this.Headers = new NameValueCollection();

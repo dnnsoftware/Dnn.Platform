@@ -12,7 +12,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class HttpHandlerPresenter<TView> : Presenter<TView>
         where TView : class, IHttpHandlerView
     {
-        protected HttpHandlerPresenter(TView view) : base(view)
+        protected HttpHandlerPresenter(TView view)
+            : base(view)
         {
         }
     }

@@ -69,7 +69,8 @@ namespace log4net.Util
         /// Initializes a new instance of the <see cref="PropertiesDictionary" /> class.
         /// </para>
         /// </remarks>
-        public PropertiesDictionary(ReadOnlyPropertiesDictionary propertiesDictionary) : base(propertiesDictionary)
+        public PropertiesDictionary(ReadOnlyPropertiesDictionary propertiesDictionary)
+            : base(propertiesDictionary)
         {
         }
 
@@ -87,7 +88,8 @@ namespace log4net.Util
         /// Because this class is sealed the serialization constructor is private.
         /// </para>
         /// </remarks>
-        private PropertiesDictionary(SerializationInfo info, StreamingContext context) : base(info, context)
+        private PropertiesDictionary(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 #endif

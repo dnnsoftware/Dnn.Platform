@@ -20,7 +20,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class WidgetPackageWriter : PackageWriterBase
     {
-        public WidgetPackageWriter(PackageInfo package) : base(package)
+        public WidgetPackageWriter(PackageInfo package)
+            : base(package)
         {
             string company = package.Name;
             if (company.Contains("."))

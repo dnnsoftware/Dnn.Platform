@@ -12,7 +12,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnTab : WebControl
     {
-        public DnnTab() : base("div")
+        public DnnTab()
+            : base("div")
         {
         }
 

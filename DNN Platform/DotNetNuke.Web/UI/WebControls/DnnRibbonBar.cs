@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
     [ParseChildren(true)]
     public class DnnRibbonBar : WebControl
     {
-        public DnnRibbonBar() : base("div")
+        public DnnRibbonBar()
+            : base("div")
         {
             this.CssClass = "dnnRibbon";
             Control control = this;

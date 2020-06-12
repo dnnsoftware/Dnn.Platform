@@ -11,7 +11,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class WebServicePresenter<TView> : Presenter<TView>
         where TView : class, IWebServiceView
     {
-        protected WebServicePresenter(TView view) : base(view)
+        protected WebServicePresenter(TView view)
+            : base(view)
         {
         }
     }

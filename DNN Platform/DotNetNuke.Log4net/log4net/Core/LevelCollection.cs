@@ -680,7 +680,8 @@ namespace log4net.Core
         {
             private readonly LevelCollection m_collection;
 
-            internal ReadOnlyLevelCollection(LevelCollection list) : base(Tag.Default)
+            internal ReadOnlyLevelCollection(LevelCollection list)
+                : base(Tag.Default)
             {
                 this.m_collection = list;
             }

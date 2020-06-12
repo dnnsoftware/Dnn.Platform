@@ -41,7 +41,8 @@ namespace DotNetNuke.Services.Search
 
         private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;
 
-        public ModuleIndexer() : this(false)
+        public ModuleIndexer()
+            : this(false)
         {
         }
 

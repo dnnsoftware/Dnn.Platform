@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnSiteMapNode(string text, string navigateUrl) : base(text, navigateUrl)
+        public DnnSiteMapNode(string text, string navigateUrl)
+            : base(text, navigateUrl)
         {
         }
     }

@@ -29,7 +29,8 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// creates a new TokenReplace object for default context
         /// </summary>
-        public TokenReplace() : this(Scope.DefaultSettings, null, null, null, Null.NullInteger)
+        public TokenReplace()
+            : this(Scope.DefaultSettings, null, null, null, Null.NullInteger)
         {
         }
 
@@ -37,7 +38,8 @@ namespace DotNetNuke.Services.Tokens
         /// creates a new TokenReplace object for default context and the current module
         /// </summary>
         /// <param name="moduleID">ID of the current module</param>
-        public TokenReplace(int moduleID) : this(Scope.DefaultSettings, null, null, null, moduleID)
+        public TokenReplace(int moduleID)
+            : this(Scope.DefaultSettings, null, null, null, moduleID)
         {
         }
 
@@ -45,7 +47,8 @@ namespace DotNetNuke.Services.Tokens
         /// creates a new TokenReplace object for custom context
         /// </summary>
         /// <param name="accessLevel">Security level granted by the calling object</param>
-        public TokenReplace(Scope accessLevel) : this(accessLevel, null, null, null, Null.NullInteger)
+        public TokenReplace(Scope accessLevel)
+            : this(accessLevel, null, null, null, Null.NullInteger)
         {
         }
 
@@ -54,7 +57,8 @@ namespace DotNetNuke.Services.Tokens
         /// </summary>
         /// <param name="accessLevel">Security level granted by the calling object</param>
         /// <param name="moduleID">ID of the current module</param>
-        public TokenReplace(Scope accessLevel, int moduleID) : this(accessLevel, null, null, null, moduleID)
+        public TokenReplace(Scope accessLevel, int moduleID)
+            : this(accessLevel, null, null, null, moduleID)
         {
         }
 
@@ -65,7 +69,8 @@ namespace DotNetNuke.Services.Tokens
         /// <param name="language">Locale to be used for formatting etc.</param>
         /// <param name="portalSettings">PortalSettings to be used</param>
         /// <param name="user">user, for which the properties shall be returned</param>
-        public TokenReplace(Scope accessLevel, string language, PortalSettings portalSettings, UserInfo user) : this(accessLevel, language, portalSettings, user, Null.NullInteger)
+        public TokenReplace(Scope accessLevel, string language, PortalSettings portalSettings, UserInfo user)
+            : this(accessLevel, language, portalSettings, user, Null.NullInteger)
         {
         }
 

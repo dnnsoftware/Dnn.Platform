@@ -61,7 +61,8 @@ namespace log4net.Repository.Hierarchy
         /// logger cannot be retrieved by name.
         /// </para>
         /// </remarks>
-        public RootLogger(Level level) : base("root")
+        public RootLogger(Level level)
+            : base("root")
         {
             this.Level = level;
         }

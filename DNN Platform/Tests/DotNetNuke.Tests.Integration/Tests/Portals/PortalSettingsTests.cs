@@ -17,7 +17,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         private string _settingName;
         private string _settingValue;
 
-        public PortalSettingsTests() : base(Constants.PORTAL_Zero)
+        public PortalSettingsTests()
+            : base(Constants.PORTAL_Zero)
         {
         }
 

@@ -17,11 +17,13 @@ namespace DotNetNuke.Services.Exceptions
         private List<string> _Columns;
         private Type _Type;
 
-        public ObjectHydrationException(string message, Exception innerException) : base(message, innerException)
+        public ObjectHydrationException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
-        public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr) : base(message, innerException)
+        public ObjectHydrationException(string message, Exception innerException, Type type, IDataReader dr)
+            : base(message, innerException)
         {
             this._Type = type;
             this._Columns = new List<string>();
@@ -31,7 +33,8 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        protected ObjectHydrationException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ObjectHydrationException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

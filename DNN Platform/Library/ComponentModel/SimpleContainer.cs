@@ -27,7 +27,8 @@ namespace DotNetNuke.ComponentModel
         /// <summary>
         ///   Initializes a new instance of the SimpleContainer class.
         /// </summary>
-        public SimpleContainer() : this(string.Format("Container_{0}", Guid.NewGuid()))
+        public SimpleContainer()
+            : this(string.Format("Container_{0}", Guid.NewGuid()))
         {
         }
 

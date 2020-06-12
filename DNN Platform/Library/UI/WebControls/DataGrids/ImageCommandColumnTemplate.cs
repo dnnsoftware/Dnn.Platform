@@ -29,7 +29,8 @@ namespace DotNetNuke.UI.WebControls
         private bool mShowImage = true;
         private bool mVisible = true;
 
-        public ImageCommandColumnTemplate() : this(ListItemType.Item)
+        public ImageCommandColumnTemplate()
+            : this(ListItemType.Item)
         {
         }
 

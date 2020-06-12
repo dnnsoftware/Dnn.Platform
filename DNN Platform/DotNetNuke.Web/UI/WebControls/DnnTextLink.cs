@@ -17,7 +17,8 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool _localize = true;
         private HyperLink _textHyperlinkControl;
 
-        public DnnTextLink() : base("span")
+        public DnnTextLink()
+            : base("span")
         {
             this.CssClass = "dnnTextLink";
             this.DisabledCssClass = "dnnTextLink disabled";

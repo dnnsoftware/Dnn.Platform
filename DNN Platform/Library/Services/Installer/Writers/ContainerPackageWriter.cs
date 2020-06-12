@@ -20,12 +20,14 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ContainerPackageWriter : SkinPackageWriter
     {
-        public ContainerPackageWriter(PackageInfo package) : base(package)
+        public ContainerPackageWriter(PackageInfo package)
+            : base(package)
         {
             this.BasePath = "Portals\\_default\\Containers\\" + this.SkinPackage.SkinName;
         }
 
-        public ContainerPackageWriter(SkinPackageInfo skinPackage, PackageInfo package) : base(skinPackage, package)
+        public ContainerPackageWriter(SkinPackageInfo skinPackage, PackageInfo package)
+            : base(skinPackage, package)
         {
             this.BasePath = "Portals\\_default\\Containers\\" + skinPackage.SkinName;
         }

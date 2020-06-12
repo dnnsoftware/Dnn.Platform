@@ -132,7 +132,8 @@ namespace log4net.Core
         /// the specified level name and value.
         /// </para>
         /// </remarks>
-        public Level(int level, string levelName) : this(level, levelName, levelName)
+        public Level(int level, string levelName)
+            : this(level, levelName, levelName)
         {
         }
 

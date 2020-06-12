@@ -36,7 +36,8 @@ namespace DotNetNuke.Entities.Content
     {
         private readonly IDataService _DataService;
 
-        public ContentTypeController() : this(Util.GetDataService())
+        public ContentTypeController()
+            : this(Util.GetDataService())
         {
         }
 

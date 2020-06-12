@@ -54,7 +54,8 @@ namespace DotNetNuke.Services.GeneratedImage
             this.Parameters = new List<ImageParameter>();
         }
 
-        internal GeneratedImage(HttpContextBase context, Control bindingContainer) : this()
+        internal GeneratedImage(HttpContextBase context, Control bindingContainer)
+            : this()
         {
             this._context = context;
             this._bindingContainer = bindingContainer;

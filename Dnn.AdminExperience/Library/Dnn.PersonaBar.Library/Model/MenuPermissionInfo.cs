@@ -49,7 +49,8 @@ namespace Dnn.PersonaBar.Library.Model
         /// </summary>
         /// <param name="permission">A PermissionInfo object</param>
         /// -----------------------------------------------------------------------------
-        public MenuPermissionInfo(PermissionInfo permission) : this()
+        public MenuPermissionInfo(PermissionInfo permission)
+            : this()
         {
             this.ModuleDefID = Null.NullInteger;
             this.PermissionCode = "PERSONABAR_MENU";

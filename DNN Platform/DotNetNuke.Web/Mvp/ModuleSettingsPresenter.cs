@@ -11,7 +11,8 @@ namespace DotNetNuke.Web.Mvp
     public class ModuleSettingsPresenterBase<TView> : ModulePresenterBase<TView>
         where TView : class, ISettingsView
     {
-        public ModuleSettingsPresenterBase(TView view) : base(view)
+        public ModuleSettingsPresenterBase(TView view)
+            : base(view)
         {
             view.OnLoadSettings += this.OnLoadSettingsInternal;
             view.OnSaveSettings += this.OnSaveSettingsInternal;

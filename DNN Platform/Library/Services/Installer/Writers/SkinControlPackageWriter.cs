@@ -24,14 +24,16 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class SkinControlPackageWriter : PackageWriterBase
     {
-        public SkinControlPackageWriter(PackageInfo package) : base(package)
+        public SkinControlPackageWriter(PackageInfo package)
+            : base(package)
         {
             this.SkinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
             this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");
             this.AppCodePath = Path.Combine("App_Code", package.Name.ToLowerInvariant()).Replace("/", "\\");
         }
 
-        public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package) : base(package)
+        public SkinControlPackageWriter(SkinControlInfo skinControl, PackageInfo package)
+            : base(package)
         {
             this.SkinControl = skinControl;
             this.BasePath = Path.Combine("DesktopModules", package.Name.ToLowerInvariant()).Replace("/", "\\");

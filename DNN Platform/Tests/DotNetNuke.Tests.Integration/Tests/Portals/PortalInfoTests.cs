@@ -16,7 +16,8 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
     [TestFixture]
     public class PortalInfoTests : DnnWebTest
     {
-        public PortalInfoTests() : base(Constants.PORTAL_Zero)
+        public PortalInfoTests()
+            : base(Constants.PORTAL_Zero)
         {
         }
 

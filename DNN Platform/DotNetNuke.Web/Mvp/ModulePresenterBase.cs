@@ -24,7 +24,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ModulePresenterBase<TView> : Presenter<TView>
         where TView : class, IModuleViewBase
     {
-        protected ModulePresenterBase(TView view) : base(view)
+        protected ModulePresenterBase(TView view)
+            : base(view)
         {
             // Try and cast view to Control to get common control properties
             var control = view as Control;

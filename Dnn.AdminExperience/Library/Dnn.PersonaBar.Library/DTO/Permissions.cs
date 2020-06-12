@@ -21,7 +21,8 @@ namespace Dnn.PersonaBar.Library.DTO
         public IList<UserPermission> UserPermissions { get; set; }
         protected abstract void LoadPermissionDefinitions();
 
-        protected Permissions() : this(false)
+        protected Permissions()
+            : this(false)
         {
         }
 

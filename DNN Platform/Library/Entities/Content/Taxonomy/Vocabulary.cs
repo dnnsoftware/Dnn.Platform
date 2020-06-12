@@ -36,19 +36,23 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         private int _Weight;
 
-        public Vocabulary() : this(Null.NullString, Null.NullString, VocabularyType.Simple)
+        public Vocabulary()
+            : this(Null.NullString, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        public Vocabulary(string name) : this(name, Null.NullString, VocabularyType.Simple)
+        public Vocabulary(string name)
+            : this(name, Null.NullString, VocabularyType.Simple)
         {
         }
 
-        public Vocabulary(string name, string description) : this(name, description, VocabularyType.Simple)
+        public Vocabulary(string name, string description)
+            : this(name, description, VocabularyType.Simple)
         {
         }
 
-        public Vocabulary(VocabularyType type) : this(Null.NullString, Null.NullString, type)
+        public Vocabulary(VocabularyType type)
+            : this(Null.NullString, Null.NullString, type)
         {
         }
 

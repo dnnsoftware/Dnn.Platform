@@ -427,7 +427,8 @@ namespace log4net.Core
         /// parameter and no other data should be captured from the environment.
         /// </para>
         /// </remarks>
-        public LoggingEvent(Type callerStackBoundaryDeclaringType, log4net.Repository.ILoggerRepository repository, LoggingEventData data) : this(callerStackBoundaryDeclaringType, repository, data, FixFlags.All)
+        public LoggingEvent(Type callerStackBoundaryDeclaringType, log4net.Repository.ILoggerRepository repository, LoggingEventData data)
+            : this(callerStackBoundaryDeclaringType, repository, data, FixFlags.All)
         {
         }
 
@@ -452,7 +453,8 @@ namespace log4net.Core
         /// parameter and no other data should be captured from the environment.
         /// </para>
         /// </remarks>
-        public LoggingEvent(LoggingEventData data) : this(null, null, data)
+        public LoggingEvent(LoggingEventData data)
+            : this(null, null, data)
         {
         }
 

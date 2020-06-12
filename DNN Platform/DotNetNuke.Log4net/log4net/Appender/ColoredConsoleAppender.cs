@@ -174,7 +174,8 @@ namespace log4net.Appender
         /// to the standard output stream.
         /// </remarks>
         [Obsolete("Instead use the default constructor and set the Layout property. Scheduled removal in v10.0.0.")]
-        public ColoredConsoleAppender(ILayout layout) : this(layout, false)
+        public ColoredConsoleAppender(ILayout layout)
+            : this(layout, false)
         {
         }
 

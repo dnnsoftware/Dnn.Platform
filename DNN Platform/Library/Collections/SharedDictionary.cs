@@ -18,7 +18,8 @@ namespace DotNetNuke.Collections.Internal
         private bool _isDisposed;
         private ILockStrategy _lockController;
 
-        public SharedDictionary() : this(LockingStrategy.ReaderWriter)
+        public SharedDictionary()
+            : this(LockingStrategy.ReaderWriter)
         {
         }
 
@@ -28,7 +29,8 @@ namespace DotNetNuke.Collections.Internal
             this._lockController = lockStrategy;
         }
 
-        public SharedDictionary(LockingStrategy strategy) : this(LockingStrategyFactory.Create(strategy))
+        public SharedDictionary(LockingStrategy strategy)
+            : this(LockingStrategyFactory.Create(strategy))
         {
         }
 

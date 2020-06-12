@@ -71,7 +71,8 @@ namespace log4net.Core
         /// the specified message.
         /// </para>
         /// </remarks>
-        public LogException(string message) : base(message)
+        public LogException(string message)
+            : base(message)
         {
         }
 
@@ -86,7 +87,8 @@ namespace log4net.Core
         /// with the specified message and inner exception.
         /// </para>
         /// </remarks>
-        public LogException(string message, Exception innerException) : base(message, innerException)
+        public LogException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
@@ -104,7 +106,8 @@ namespace log4net.Core
         /// with serialized data.
         /// </para>
         /// </remarks>
-        protected LogException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected LogException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 #endif

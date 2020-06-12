@@ -8,7 +8,8 @@ namespace DotNetNuke.Services.Assets
 {
     public class AssetManagerException : Exception
     {
-        public AssetManagerException(string message) : base(message)
+        public AssetManagerException(string message)
+            : base(message)
         {
         }
     }

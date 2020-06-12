@@ -71,7 +71,8 @@ namespace DotNetNuke.Services.Syndication
     {
         private readonly RssDataSource _owner;
 
-        internal RssDataSourceView(RssDataSource owner, string viewName) : base(owner, viewName)
+        internal RssDataSourceView(RssDataSource owner, string viewName)
+            : base(owner, viewName)
         {
             this._owner = owner;
         }

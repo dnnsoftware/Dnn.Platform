@@ -10,7 +10,8 @@ namespace DotNetNuke.Web.Mvp
     public abstract class ModulePresenter<TView> : ModulePresenterBase<TView>
         where TView : class, IModuleView
     {
-        protected ModulePresenter(TView view) : base(view)
+        protected ModulePresenter(TView view)
+            : base(view)
         {
         }
     }

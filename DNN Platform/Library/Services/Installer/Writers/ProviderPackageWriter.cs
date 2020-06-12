@@ -21,7 +21,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ProviderPackageWriter : PackageWriterBase
     {
-        public ProviderPackageWriter(PackageInfo package) : base(package)
+        public ProviderPackageWriter(PackageInfo package)
+            : base(package)
         {
             XmlDocument configDoc = Config.Load();
             XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*/providers/add[@name='" + package.Name + "']");

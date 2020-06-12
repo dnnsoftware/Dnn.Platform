@@ -16,7 +16,8 @@ namespace DotNetNuke.HttpModules.Compression
     {
         private readonly DeflateStream m_stream;
 
-        public DeflateFilter(Stream baseStream) : base(baseStream)
+        public DeflateFilter(Stream baseStream)
+            : base(baseStream)
         {
             this.m_stream = new DeflateStream(baseStream, CompressionMode.Compress);
         }

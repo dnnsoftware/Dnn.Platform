@@ -14,15 +14,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnRatingItem(string imageUrl) : base(imageUrl)
+        public DnnRatingItem(string imageUrl)
+            : base(imageUrl)
         {
         }
 
-        public DnnRatingItem(string imageUrl, string selectedImageUrl) : base(imageUrl, selectedImageUrl)
+        public DnnRatingItem(string imageUrl, string selectedImageUrl)
+            : base(imageUrl, selectedImageUrl)
         {
         }
 
-        public DnnRatingItem(string imageUrl, string selectedImageUrl, string hoveredImageUrl) : base(imageUrl, selectedImageUrl, hoveredImageUrl)
+        public DnnRatingItem(string imageUrl, string selectedImageUrl, string hoveredImageUrl)
+            : base(imageUrl, selectedImageUrl, hoveredImageUrl)
         {
         }
 

@@ -9,7 +9,8 @@ namespace DotNetNuke.Web.Mvc
 {
     public class MvcSettingsControl : MvcHostControl, ISettingsControl
     {
-        public MvcSettingsControl() : base("Settings")
+        public MvcSettingsControl()
+            : base("Settings")
         {
             this.ExecuteModuleImmediately = false;
         }

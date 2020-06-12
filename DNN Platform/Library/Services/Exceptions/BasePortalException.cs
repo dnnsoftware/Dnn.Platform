@@ -36,18 +36,21 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
-        public BasePortalException(string message) : base(message)
+        public BasePortalException(string message)
+            : base(message)
         {
             this.InitializePrivateVariables();
         }
 
         // constructor with message and inner exception
-        public BasePortalException(string message, Exception inner) : base(message, inner)
+        public BasePortalException(string message, Exception inner)
+            : base(message, inner)
         {
             this.InitializePrivateVariables();
         }
 
-        protected BasePortalException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected BasePortalException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
             this.InitializePrivateVariables();
             this.AssemblyVersion = info.GetString("m_AssemblyVersion");

@@ -16,7 +16,8 @@ namespace DotNetNuke.Services.OutputCache.Providers
         // Private _content As StringBuilder
         private DateTime _cacheExpiration;
 
-        internal FileResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration) : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
+        internal FileResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
+            : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
             if (maxVaryByCount > -1 && Services.OutputCache.Providers.FileProvider.GetCachedItemCount(itemId) >= maxVaryByCount)
             {

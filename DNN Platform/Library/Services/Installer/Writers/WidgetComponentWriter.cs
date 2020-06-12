@@ -19,7 +19,8 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class WidgetComponentWriter : FileComponentWriter
     {
-        public WidgetComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
+        public WidgetComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
+            : base(basePath, files, package)
         {
         }
 

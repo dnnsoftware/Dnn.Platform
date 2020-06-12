@@ -28,7 +28,8 @@ namespace DotNetNuke.Services.Log.EventLog
             this.Exception = new ExceptionInfo();
         }
 
-        public LogInfo(string content) : this()
+        public LogInfo(string content)
+            : this()
         {
             this.Deserialize(content);
         }

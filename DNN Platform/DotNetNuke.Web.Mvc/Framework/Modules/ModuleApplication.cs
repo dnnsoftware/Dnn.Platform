@@ -34,10 +34,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         private bool _initialized;
         private readonly object _lock = new object();
 
-        public ModuleApplication() : this(null, false)
+        public ModuleApplication()
+            : this(null, false)
         {
         }
-        public ModuleApplication(bool disableMvcResponseHeader) : this(null, disableMvcResponseHeader)
+        public ModuleApplication(bool disableMvcResponseHeader)
+            : this(null, disableMvcResponseHeader)
         {
         }
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)

@@ -36,7 +36,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private const CacheItemPriority _CachePriority = CacheItemPriority.Normal;
         private const int _CacheTimeOut = 20;
 
-        public TermController() : this(Util.GetDataService())
+        public TermController()
+            : this(Util.GetDataService())
         {
         }
 

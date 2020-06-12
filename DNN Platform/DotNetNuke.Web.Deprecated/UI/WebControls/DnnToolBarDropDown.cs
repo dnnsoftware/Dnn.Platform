@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnToolBarDropDown(string text) : base(text)
+        public DnnToolBarDropDown(string text)
+            : base(text)
         {
         }
     }

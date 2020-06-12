@@ -23,7 +23,8 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// </remarks>
         /// <param name="maxColors">The maximum number of colors to return</param>
         /// <param name="maxColorBits">The number of significant bits</param>
-        public OctreeQuantizer(int maxColors, int maxColorBits) : base(false)
+        public OctreeQuantizer(int maxColors, int maxColorBits)
+            : base(false)
         {
             if (maxColors > 255)
                 throw new ArgumentOutOfRangeException(nameof(maxColors), maxColors, "The number of colors should be less than 256");

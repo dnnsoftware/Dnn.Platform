@@ -32,7 +32,8 @@ namespace DotNetNuke.Entities.Content
         private const string moduleContentTypeName = "Module";
         private const string tabContentTypeName = "Tab";
 
-        public ContentType() : this(Null.NullString)
+        public ContentType()
+            : this(Null.NullString)
         {
         }
 

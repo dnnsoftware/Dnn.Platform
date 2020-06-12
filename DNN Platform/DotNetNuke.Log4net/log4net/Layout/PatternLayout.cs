@@ -954,7 +954,8 @@ namespace log4net.Layout
         /// configured.
         /// </para>
         /// </remarks>
-        public PatternLayout() : this(DefaultConversionPattern)
+        public PatternLayout()
+            : this(DefaultConversionPattern)
         {
         }
 

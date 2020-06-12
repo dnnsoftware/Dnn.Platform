@@ -711,7 +711,8 @@ namespace log4net.Appender
         {
             private readonly AppenderCollection m_collection;
 
-            internal ReadOnlyAppenderCollection(AppenderCollection list) : base(Tag.Default)
+            internal ReadOnlyAppenderCollection(AppenderCollection list)
+                : base(Tag.Default)
             {
                 this.m_collection = list;
             }

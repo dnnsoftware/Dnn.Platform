@@ -26,7 +26,8 @@ namespace DotNetNuke.HttpModules.Compression
         /// Protected constructor that sets up the underlying stream we're compressing into
         /// </summary>
         /// <param name="baseStream">The stream we're wrapping up</param>
-        protected CompressingFilter(Stream baseStream) : base(baseStream)
+        protected CompressingFilter(Stream baseStream)
+            : base(baseStream)
         {
         }
 

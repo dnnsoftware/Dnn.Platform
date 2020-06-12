@@ -24,7 +24,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private readonly IDataService _DataService;
         private const int _CacheTimeOut = 20;
 
-        public VocabularyController() : this(Util.GetDataService())
+        public VocabularyController()
+            : this(Util.GetDataService())
         {
         }
 

@@ -95,7 +95,8 @@ namespace log4net.Config
         /// Default constructor
         /// </para>
         /// </remarks>
-        public XmlConfiguratorAttribute() : base(0) /* configurator priority 0 */
+        public XmlConfiguratorAttribute()
+            : base(0) /* configurator priority 0 */
         {
         }
 

@@ -59,7 +59,8 @@ namespace log4net.Core
         /// level.
         /// </para>
         /// </remarks>
-        public LevelEvaluator() : this(Level.Off)
+        public LevelEvaluator()
+            : this(Level.Off)
         {
         }
 

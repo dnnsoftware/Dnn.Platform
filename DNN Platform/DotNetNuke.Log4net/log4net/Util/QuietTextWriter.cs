@@ -51,7 +51,8 @@ namespace log4net.Util
         /// Create a new QuietTextWriter using a writer and error handler
         /// </para>
         /// </remarks>
-        public QuietTextWriter(TextWriter writer, IErrorHandler errorHandler) : base(writer)
+        public QuietTextWriter(TextWriter writer, IErrorHandler errorHandler)
+            : base(writer)
         {
             if (errorHandler == null)
             {

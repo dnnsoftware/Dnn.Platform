@@ -25,7 +25,8 @@ namespace DotNetNuke.UI.WebControls
     {
         private ListItemType mItemType = ListItemType.Item;
 
-        public TextColumnTemplate() : this(ListItemType.Item)
+        public TextColumnTemplate()
+            : this(ListItemType.Item)
         {
         }
 

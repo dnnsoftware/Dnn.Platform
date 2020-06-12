@@ -62,7 +62,8 @@ namespace log4net.Plugin
         /// The <see cref="SinkUri"/> property must be set.
         /// </para>
         /// </remarks>
-        public RemoteLoggingServerPlugin() : base("RemoteLoggingServerPlugin:Unset URI")
+        public RemoteLoggingServerPlugin()
+            : base("RemoteLoggingServerPlugin:Unset URI")
         {
         }
 
@@ -77,7 +78,8 @@ namespace log4net.Plugin
         /// with specified name.
         /// </para>
         /// </remarks>
-        public RemoteLoggingServerPlugin(string sinkUri) : base("RemoteLoggingServerPlugin:" + sinkUri)
+        public RemoteLoggingServerPlugin(string sinkUri)
+            : base("RemoteLoggingServerPlugin:" + sinkUri)
         {
             this.m_sinkUri = sinkUri;
         }

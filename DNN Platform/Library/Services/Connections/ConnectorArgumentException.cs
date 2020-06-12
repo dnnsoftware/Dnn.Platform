@@ -13,12 +13,14 @@ namespace DotNetNuke.Services.Connections
 
         }
 
-        public ConnectorArgumentException(string message) : base(message)
+        public ConnectorArgumentException(string message)
+            : base(message)
         {
 
         }
 
-        public ConnectorArgumentException(string message, Exception innerException) : base(message, innerException)
+        public ConnectorArgumentException(string message, Exception innerException)
+            : base(message, innerException)
         {
 
         }

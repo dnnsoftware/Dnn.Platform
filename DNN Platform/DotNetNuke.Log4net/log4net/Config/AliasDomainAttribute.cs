@@ -64,7 +64,8 @@ namespace log4net.Config
         /// Obsolete. Use <see cref="AliasRepositoryAttribute"/> instead of <see cref="AliasDomainAttribute"/>.
         /// </para>
         /// </remarks>
-        public AliasDomainAttribute(string name) : base(name)
+        public AliasDomainAttribute(string name)
+            : base(name)
         {
         }
     }

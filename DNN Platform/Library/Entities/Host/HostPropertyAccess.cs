@@ -14,7 +14,8 @@ namespace DotNetNuke.Entities.Host
 {
     public class HostPropertyAccess : DictionaryPropertyAccess
     {
-        public HostPropertyAccess() : base(HostController.Instance.GetSettingsDictionary())
+        public HostPropertyAccess()
+            : base(HostController.Instance.GetSettingsDictionary())
         {
         }
 

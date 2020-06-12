@@ -85,7 +85,8 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <summary>
         /// Constructs a new instance of ClientCapability.
         /// </summary>
-        public AspNetClientCapability(HttpRequest request) : this(request.UserAgent ?? string.Empty, request.Browser)
+        public AspNetClientCapability(HttpRequest request)
+            : this(request.UserAgent ?? string.Empty, request.Browser)
         {
 
         }

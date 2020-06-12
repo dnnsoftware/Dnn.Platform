@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnDockCommand(string clientTypeName, string cssClass, string name, string text, bool autoPostBack) : base(clientTypeName, cssClass, name, text, autoPostBack)
+        public DnnDockCommand(string clientTypeName, string cssClass, string name, string text, bool autoPostBack)
+            : base(clientTypeName, cssClass, name, text, autoPostBack)
         {
         }
     }

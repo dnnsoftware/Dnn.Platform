@@ -23,7 +23,8 @@ namespace DotNetNuke.Entities.Profile
             this.RelationshipVisibilities = new List<Relationship>();
         }
 
-        public ProfileVisibility(int portalId, string extendedVisibility) : this()
+        public ProfileVisibility(int portalId, string extendedVisibility)
+            : this()
         {
             if (!string.IsNullOrEmpty(extendedVisibility))
             {

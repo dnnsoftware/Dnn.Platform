@@ -481,25 +481,30 @@ namespace DotNetNuke.Web.UI
         {
         }
 
-        public DotNetNukeException(string message) : base(message)
+        public DotNetNukeException(string message)
+            : base(message)
         {
         }
 
-        public DotNetNukeException(string message, Exception innerException) : base(message, innerException)
+        public DotNetNukeException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
-        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode) : base(message)
-        {
-            this._ErrorCode = errorCode;
-        }
-
-        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode) : base(message, innerException)
+        public DotNetNukeException(string message, DotNetNukeErrorCode errorCode)
+            : base(message)
         {
             this._ErrorCode = errorCode;
         }
 
-        public DotNetNukeException(SerializationInfo info, StreamingContext context) : base(info, context)
+        public DotNetNukeException(string message, Exception innerException, DotNetNukeErrorCode errorCode)
+            : base(message, innerException)
+        {
+            this._ErrorCode = errorCode;
+        }
+
+        public DotNetNukeException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 

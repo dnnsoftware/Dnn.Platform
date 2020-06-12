@@ -82,7 +82,8 @@ namespace log4net.Appender
         /// Protected default constructor to allow subclassing.
         /// </para>
         /// </remarks>
-        protected BufferingAppenderSkeleton() : this(true)
+        protected BufferingAppenderSkeleton()
+            : this(true)
         {
         }
 
@@ -101,7 +102,8 @@ namespace log4net.Appender
         /// <see cref="BufferSize"/> is set to zero, i.e. when no buffering occurs.
         /// </para>
         /// </remarks>
-        protected BufferingAppenderSkeleton(bool eventMustBeFixed) : base()
+        protected BufferingAppenderSkeleton(bool eventMustBeFixed)
+            : base()
         {
             this.m_eventMustBeFixed = eventMustBeFixed;
         }

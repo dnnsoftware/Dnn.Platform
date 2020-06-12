@@ -33,7 +33,8 @@ namespace DotNetNuke.Services.Installer.Writers
         /// <param name="files">A Dictionary of files</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
-        public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package) : base(basePath, files, package)
+        public SkinComponentWriter(string skinName, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
+            : base(basePath, files, package)
         {
             this._SkinName = skinName;
         }

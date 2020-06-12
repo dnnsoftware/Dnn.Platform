@@ -18,16 +18,19 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
-        public SchedulerException(string message) : base(message)
+        public SchedulerException(string message)
+            : base(message)
         {
         }
 
         // constructor with message and inner exception
-        public SchedulerException(string message, Exception inner) : base(message, inner)
+        public SchedulerException(string message, Exception inner)
+            : base(message, inner)
         {
         }
 
-        protected SchedulerException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected SchedulerException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }

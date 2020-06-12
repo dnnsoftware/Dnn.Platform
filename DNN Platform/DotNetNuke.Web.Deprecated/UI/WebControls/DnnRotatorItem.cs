@@ -14,7 +14,8 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnRotatorItem(object dataItem) : base(dataItem)
+        public DnnRotatorItem(object dataItem)
+            : base(dataItem)
         {
         }
     }

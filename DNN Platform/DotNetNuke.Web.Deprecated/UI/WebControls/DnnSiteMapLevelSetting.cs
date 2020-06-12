@@ -14,15 +14,18 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnSiteMapLevelSetting(int level) : base(level)
+        public DnnSiteMapLevelSetting(int level)
+            : base(level)
         {
         }
 
-        public DnnSiteMapLevelSetting(int level, SiteMapLayout layout) : base(level, layout)
+        public DnnSiteMapLevelSetting(int level, SiteMapLayout layout)
+            : base(level, layout)
         {
         }
 
-        public DnnSiteMapLevelSetting(SiteMapLayout layout) : base(layout)
+        public DnnSiteMapLevelSetting(SiteMapLayout layout)
+            : base(layout)
         {
         }
     }

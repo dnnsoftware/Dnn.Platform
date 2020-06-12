@@ -78,7 +78,8 @@ namespace log4net.Layout
         /// <summary>
         /// Constructs an XmlLayout
         /// </summary>
-        public XmlLayout() : base()
+        public XmlLayout()
+            : base()
         {
         }
 
@@ -99,7 +100,8 @@ namespace log4net.Layout
         /// appender as well.
         /// </para>
         /// </remarks>
-        public XmlLayout(bool locationInfo) : base(locationInfo)
+        public XmlLayout(bool locationInfo)
+            : base(locationInfo)
         {
         }
 

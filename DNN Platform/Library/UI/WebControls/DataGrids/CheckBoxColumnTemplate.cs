@@ -30,7 +30,8 @@ namespace DotNetNuke.UI.WebControls
         private ListItemType mItemType = ListItemType.Item;
         private string mText = string.Empty;
 
-        public CheckBoxColumnTemplate() : this(ListItemType.Item)
+        public CheckBoxColumnTemplate()
+            : this(ListItemType.Item)
         {
         }
 

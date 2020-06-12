@@ -13,7 +13,8 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// </summary>
     public class DatabaseResponseFilter : OutputCacheResponseFilter
     {
-        internal DatabaseResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration) : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
+        internal DatabaseResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration)
+            : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
         {
             if (maxVaryByCount > -1 && DataProvider.Instance().GetOutputCacheItemCount(itemId) >= maxVaryByCount)
             {

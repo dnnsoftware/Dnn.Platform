@@ -11,7 +11,8 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnRibbonBarGroupCollection : ControlCollection
     {
-        public DnnRibbonBarGroupCollection(Control owner) : base(owner)
+        public DnnRibbonBarGroupCollection(Control owner)
+            : base(owner)
         {
         }
 

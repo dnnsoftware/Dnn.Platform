@@ -14,11 +14,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
         }
 
-        public DnnSchedulerResourceStyleMapping(string type, string key, string applyCssClass) : base(type, key, applyCssClass)
+        public DnnSchedulerResourceStyleMapping(string type, string key, string applyCssClass)
+            : base(type, key, applyCssClass)
         {
         }
 
-        public DnnSchedulerResourceStyleMapping(string type, string key, string text, string applyCssClass) : base(type, key, text, applyCssClass)
+        public DnnSchedulerResourceStyleMapping(string type, string key, string text, string applyCssClass)
+            : base(type, key, text, applyCssClass)
         {
         }
     }

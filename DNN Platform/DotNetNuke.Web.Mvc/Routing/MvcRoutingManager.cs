@@ -22,7 +22,8 @@ namespace DotNetNuke.Web.Mvc.Routing
         private readonly RouteCollection _routes;
         private readonly PortalAliasMvcRouteManager _portalAliasMvcRouteManager;
 
-        public MvcRoutingManager() : this(RouteTable.Routes)
+        public MvcRoutingManager()
+            : this(RouteTable.Routes)
         {
         }
 

@@ -11,7 +11,8 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnTabCollection : ControlCollection
     {
-        public DnnTabCollection(Control owner) : base(owner)
+        public DnnTabCollection(Control owner)
+            : base(owner)
         {
         }
 

@@ -18,7 +18,8 @@ namespace DotNetNuke.Web.Validators
             this._Validators = new List<ObjectValidator>();
         }
 
-        public Validator(ObjectValidator validator) : this()
+        public Validator(ObjectValidator validator)
+            : this()
         {
             this._Validators.Add(validator);
         }

@@ -30,7 +30,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
     [Serializable]
     public class ScopeType : ScopeTypeMemberNameFixer, IHydratable
     {
-        public ScopeType() : this(Null.NullString)
+        public ScopeType()
+            : this(Null.NullString)
         {
         }
 

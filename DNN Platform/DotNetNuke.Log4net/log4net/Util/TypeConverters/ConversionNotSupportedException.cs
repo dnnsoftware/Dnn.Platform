@@ -71,7 +71,8 @@ namespace log4net.Util.TypeConverters
         /// with the specified message.
         /// </para>
         /// </remarks>
-        public ConversionNotSupportedException(string message) : base(message)
+        public ConversionNotSupportedException(string message)
+            : base(message)
         {
         }
 
@@ -86,7 +87,8 @@ namespace log4net.Util.TypeConverters
         /// with the specified message and inner exception.
         /// </para>
         /// </remarks>
-        public ConversionNotSupportedException(string message, Exception innerException) : base(message, innerException)
+        public ConversionNotSupportedException(string message, Exception innerException)
+            : base(message, innerException)
         {
         }
 
@@ -104,7 +106,8 @@ namespace log4net.Util.TypeConverters
         /// with serialized data.
         /// </para>
         /// </remarks>
-        protected ConversionNotSupportedException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected ConversionNotSupportedException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
 #endif

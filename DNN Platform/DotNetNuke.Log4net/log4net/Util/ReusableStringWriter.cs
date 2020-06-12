@@ -48,7 +48,8 @@ namespace log4net.Util
         /// Create an instance of <see cref="ReusableStringWriter"/>
         /// </para>
         /// </remarks>
-        public ReusableStringWriter(IFormatProvider formatProvider) : base(formatProvider)
+        public ReusableStringWriter(IFormatProvider formatProvider)
+            : base(formatProvider)
         {
         }
 

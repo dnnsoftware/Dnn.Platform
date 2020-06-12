@@ -18,16 +18,19 @@ namespace DotNetNuke.Services.Exceptions
         }
 
         // constructor with exception message
-        public PageLoadException(string message) : base(message)
+        public PageLoadException(string message)
+            : base(message)
         {
         }
 
         // constructor with message and inner exception
-        public PageLoadException(string message, Exception inner) : base(message, inner)
+        public PageLoadException(string message, Exception inner)
+            : base(message, inner)
         {
         }
 
-        protected PageLoadException(SerializationInfo info, StreamingContext context) : base(info, context)
+        protected PageLoadException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
         {
         }
     }
