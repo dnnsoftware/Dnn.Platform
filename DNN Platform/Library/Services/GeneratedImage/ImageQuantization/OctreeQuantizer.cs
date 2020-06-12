@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 {
                     // If so, check if I have a previous node setup. This will only ocurr if the first color in the image
                     // happens to be black, with an alpha component of zero.
-                    if (null == this._previousNode)
+                    if (this._previousNode == null)
                     {
                         this._previousColor = pixel.ARGB;
                         this._root.AddColor(pixel, this._maxColorBits, 0, this);
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 int index;
 
                 // Find the deepest level containing at least one reducible node
-                for (index = this._maxColorBits - 1; (index > 0) && (null == this._reducibleNodes[index]); index--)
+                for (index = this._maxColorBits - 1; (index > 0) && (this._reducibleNodes[index] == null); index--)
                 {
                 }
 
@@ -321,7 +321,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                         OctreeNode  child = this._children[index];
 
-                        if (null == child)
+                        if (child == null)
                         {
                             // Create a new child node & store in the array
                             child = new OctreeNode(level + 1, colorBits, octree);
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     // Loop through all children and add their information to this node
                     for (int index = 0; index < 8; index++)
                     {
-                        if (null != this._children[index])
+                        if (this._children[index] != null)
                         {
                             this._red += this._children[index]._red;
                             this._green += this._children[index]._green;
@@ -401,7 +401,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         // Loop through children looking for leaves
                         for (int index = 0; index < 8; index++)
                         {
-                            if (null != this._children[index])
+                            if (this._children[index] != null)
                                 this._children[index].ConstructPalette(palette, ref paletteIndex);
                         }
                     }
@@ -421,7 +421,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                             ((pixel.Green & mask[level]) >> (shift - 1)) |
                             ((pixel.Blue & mask[level]) >> shift);
 
-                        if (null != this._children[index])
+                        if (this._children[index] != null)
                             paletteIndex = this._children[index].GetPaletteIndex(pixel, level + 1);
                         else
                             throw new Exception("Didn't expect this!");

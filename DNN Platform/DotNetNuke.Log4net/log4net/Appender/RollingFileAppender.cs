@@ -955,11 +955,11 @@ namespace log4net.Appender
                 // we're looking for
                 if (backup > this.m_curSizeRollBackups)
                 {
-                    if (0 == this.m_maxSizeRollBackups)
+                    if (this.m_maxSizeRollBackups == 0)
                     {
                         // Stay at zero when zero backups are desired
                     }
-                    else if (-1 == this.m_maxSizeRollBackups)
+                    else if (this.m_maxSizeRollBackups == -1)
                     {
                         // Infinite backups, so go as high as the highest value
                         this.m_curSizeRollBackups = backup;
@@ -1031,7 +1031,7 @@ namespace log4net.Appender
         /// <param name="arrayFiles"></param>
         private void InitializeRollBackups(string baseFile, ArrayList arrayFiles)
         {
-            if (null != arrayFiles)
+            if (arrayFiles != null)
             {
                 string baseFileLower = baseFile.ToLower(System.Globalization.CultureInfo.InvariantCulture);
 

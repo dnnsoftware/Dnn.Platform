@@ -48,12 +48,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             {
                 // Not found - loop through the palette and find the nearest match.
                 // Firstly check the alpha value - if 0, lookup the transparent color
-                if (0 == pixel.Alpha)
+                if (pixel.Alpha == 0)
                 {
                     // Transparent. Lookup the first color with an alpha value of 0
                     for (int index = 0; index < this._colors.Length; index++)
                     {
-                        if (0 == this._colors[index].A)
+                        if (this._colors[index].A == 0)
                         {
                             colorIndex = (byte)index;
                             break;
@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                             leastDistance = distance;
 
                             // And if it's an exact match, exit the loop
-                            if (0 == distance)
+                            if (distance == 0)
                                 break;
                         }
                     }

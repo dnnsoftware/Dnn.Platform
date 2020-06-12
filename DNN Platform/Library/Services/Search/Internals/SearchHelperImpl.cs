@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         public bool GetSearchCompactFlag()
         {
-            return "1" == HostController.Instance.GetString(Constants.SearchOptimizeFlagName, Null.NullString);
+            return HostController.Instance.GetString(Constants.SearchOptimizeFlagName, Null.NullString) == "1";
         }
 
         public void SetSearchReindexRequestTime(bool turnOn)

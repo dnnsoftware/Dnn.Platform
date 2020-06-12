@@ -523,7 +523,7 @@ namespace log4net.Repository.Hierarchy
             string levelStr = element.GetAttribute(VALUE_ATTR);
             LogLog.Debug(declaringType, "Logger [" + loggerName + "] Level string is [" + levelStr + "].");
 
-            if (INHERITED == levelStr)
+            if (levelStr == INHERITED)
             {
                 if (isRoot)
                 {

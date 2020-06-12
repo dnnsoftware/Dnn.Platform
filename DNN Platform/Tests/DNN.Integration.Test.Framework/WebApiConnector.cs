@@ -644,9 +644,9 @@ namespace DNN.Integration.Test.Framework
                                 ? new XAttribute[0]
                                 : xe.Attributes().ToArray();
 
-                var inputType = attrs.FirstOrDefault(a => "type" == a.Name);
-                var inputName = attrs.FirstOrDefault(a => "name" == a.Name);
-                var inputValue = attrs.FirstOrDefault(a => "value" == a.Name);
+                var inputType = attrs.FirstOrDefault(a => a.Name == "type");
+                var inputName = attrs.FirstOrDefault(a => a.Name == "name");
+                var inputValue = attrs.FirstOrDefault(a => a.Name == "value");
 
                 if (inputType != null && inputName != null)
                 {
