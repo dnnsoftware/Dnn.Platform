@@ -25,7 +25,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.Services.Installer
 {
-    using Entities.Controllers;
+    using DotNetNuke.Entities.Controllers;
 
     /// -----------------------------------------------------------------------------
     /// <summary>

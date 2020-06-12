@@ -35,7 +35,7 @@ using DotNetNuke.Web.Client.ClientResourceManagement;
 
 namespace DotNetNuke.UI.Containers
 {
-    using Web.Client;
+    using DotNetNuke.Web.Client;
 
     /// <summary>
     /// Container is the base for the Containers

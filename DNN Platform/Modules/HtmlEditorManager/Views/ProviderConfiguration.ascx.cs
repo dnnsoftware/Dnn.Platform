@@ -10,8 +10,8 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
     using System;
     using System.Web.UI.WebControls;
 
-    using ViewModels;
-    using Web.Mvp;
+    using DotNetNuke.Modules.HtmlEditorManager.ViewModels;
+    using DotNetNuke.Web.Mvp;
 
     /// <summary>
     /// View control for selecting an HTML provider

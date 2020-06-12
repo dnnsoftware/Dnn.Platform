@@ -24,7 +24,7 @@ namespace DotNetNuke.Entities.Host
 {
     using DotNetNuke.Entities.Portals;
 
-    using Web.Client;
+    using DotNetNuke.Web.Client;
 
     /// <summary>
     /// Contains most of the host settings.

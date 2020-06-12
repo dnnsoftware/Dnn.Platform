@@ -43,7 +43,7 @@ using Globals = DotNetNuke.Common.Globals;
 
 namespace DotNetNuke.Framework
 {
-    using Web.Client;
+    using DotNetNuke.Web.Client;
 
     /// -----------------------------------------------------------------------------
     /// Project  : DotNetNuke
