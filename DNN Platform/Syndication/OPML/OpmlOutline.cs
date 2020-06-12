@@ -192,8 +192,8 @@ namespace DotNetNuke.Services.Syndication
                     outlineNode.SetAttribute("url", this.Url.ToString());
                 }
 
-                outlineNode.SetAttribute("isComment", (this.IsComment ? "true" : "false"));
-                outlineNode.SetAttribute("isBreakpoint", (this.IsBreakpoint ? "true" : "false"));
+                outlineNode.SetAttribute("isComment", this.IsComment ? "true" : "false");
+                outlineNode.SetAttribute("isBreakpoint", this.IsBreakpoint ? "true" : "false");
 
                 foreach (OpmlOutline childOutline in this.Outlines)
                 {

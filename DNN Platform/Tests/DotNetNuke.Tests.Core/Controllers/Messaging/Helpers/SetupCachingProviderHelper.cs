@@ -14,7 +14,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Helpers
         public static void SetupCachingProvider(Mock<CachingProvider> mockCachingProvider)
         {
             mockCachingProvider.Setup(c => c.GetItem(It.IsAny<string>()))
-                .Returns<string>((key =>
+                .Returns<string>(key =>
                 {
                     if (key.Contains("Portal-1_"))
                     {
@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Helpers
                         return portals;
                     }
                     return key.Contains("PortalGroups") ? new List<PortalGroupInfo>() : null;
-                }));
+                });
         }
     }
 }

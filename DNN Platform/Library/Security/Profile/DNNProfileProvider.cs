@@ -209,7 +209,7 @@ namespace DotNetNuke.Security.Profile
 
             foreach (ProfilePropertyDefinition profProperty in properties)
             {
-                if ((profProperty.PropertyValue != null) && (profProperty.IsDirty))
+                if ((profProperty.PropertyValue != null) && profProperty.IsDirty)
                 {
                     var objSecurity = PortalSecurity.Instance;
                     string propertyValue = objSecurity.InputFilter(profProperty.PropertyValue, PortalSecurity.FilterFlag.NoScripting);

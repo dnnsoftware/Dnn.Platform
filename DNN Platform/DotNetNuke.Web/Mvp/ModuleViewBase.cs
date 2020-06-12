@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.Mvp
         {
             // This event is raised after any async page tasks have completed, so it
             // is safe to data-bind
-            if ((this.AutoDataBind))
+            if (this.AutoDataBind)
             {
                 this.DataBind();
             }

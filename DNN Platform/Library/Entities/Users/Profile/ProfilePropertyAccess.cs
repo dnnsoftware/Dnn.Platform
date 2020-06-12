@@ -64,12 +64,12 @@ namespace DotNetNuke.Entities.Users
 
         private static bool IsMember(UserInfo accessingUser)
         {
-            return (accessingUser != null && accessingUser.UserID != -1);
+            return accessingUser != null && accessingUser.UserID != -1;
         }
 
         private static bool IsUser(UserInfo accessingUser, UserInfo targetUser)
         {
-            return (accessingUser != null && accessingUser.UserID == targetUser.UserID);
+            return accessingUser != null && accessingUser.UserID == targetUser.UserID;
         }
 
         #endregion

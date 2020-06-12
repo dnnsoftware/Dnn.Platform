@@ -65,7 +65,7 @@ namespace log4net.Util.TypeConverters
         /// </remarks>
         public bool CanConvertTo(Type targetType)
         {
-            return (typeof(string).IsAssignableFrom(targetType));
+            return typeof(string).IsAssignableFrom(targetType);
         }
 
         /// <summary>
@@ -112,7 +112,7 @@ namespace log4net.Util.TypeConverters
         /// </remarks>
         public bool CanConvertFrom(System.Type sourceType)
         {
-            return (sourceType == typeof(string));
+            return sourceType == typeof(string);
         }
 
         /// <summary>

@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Analytics.Config
             try
             {
                 Config = (AnalyticsConfiguration)DataCache.GetCache(cacheKey);
-                if ((Config == null))
+                if (Config == null)
                 {
                     filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
 

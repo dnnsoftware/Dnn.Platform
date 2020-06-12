@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         protected override Func<IPackageController> GetFactory()
         {
-            return (() => new PackageController());
+            return () => new PackageController();
         }
 
         #region Private Methods
@@ -343,7 +343,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                 break;
                         }
                         XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*[@defaultProvider='" + providerName + "']");
-                        bCanDelete = (providerNavigator == null);
+                        bCanDelete = providerNavigator == null;
                         break;
                 }
             }

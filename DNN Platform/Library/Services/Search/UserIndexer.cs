@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.Search
                         var splitValues = Regex.Split(propertyValue, Regex.Escape(ValueSplitFlag));
 
                         propertyValue = splitValues[0];
-                        var visibilityMode = ((UserVisibilityMode)Convert.ToInt32(splitValues[1]));
+                        var visibilityMode = (UserVisibilityMode)Convert.ToInt32(splitValues[1]);
                         var extendedVisibility = splitValues[2];
                         var modifiedTime = Convert.ToDateTime(splitValues[3]).ToUniversalTime();
 

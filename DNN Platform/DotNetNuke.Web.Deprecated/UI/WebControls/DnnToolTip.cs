@@ -46,19 +46,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
       public virtual void LocalizeStrings()
       {
-         if ((this.Localize) && (!(String.IsNullOrEmpty(this.ResourceKey))))
+         if (this.Localize && (! String.IsNullOrEmpty(this.ResourceKey)))
          {
-            if (!(String.IsNullOrEmpty(this.ManualCloseButtonText)))
+            if (! String.IsNullOrEmpty(this.ManualCloseButtonText))
             {
                this.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
             }
 
-            if (!(String.IsNullOrEmpty(this.Text)))
+            if (! String.IsNullOrEmpty(this.Text))
             {
                this.Text = Utilities.GetLocalizedStringFromParent(String.Format("{0}.Text", this.ResourceKey), this);
             }
 
-            if (!(String.IsNullOrEmpty(this.ToolTip)))
+            if (! String.IsNullOrEmpty(this.ToolTip))
             {
                this.ToolTip = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ToolTip", this.ResourceKey), this);
             }

@@ -1280,7 +1280,7 @@ namespace DotNetNuke.Common
         public static bool UsePortNumber()
         {
             bool usePort = true;
-            if ((Config.GetSetting("UsePortNumber") != null))
+            if (Config.GetSetting("UsePortNumber") != null)
             {
                 usePort = bool.Parse(Config.GetSetting("UsePortNumber"));
             }
@@ -1912,7 +1912,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static bool IsLayoutMode()
         {
-            return (TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout);
+            return TabPermissionController.CanAddContentToPage() && PortalController.Instance.GetCurrentPortalSettings().UserMode == PortalSettings.Mode.Layout;
         }
 
         /// <summary>
@@ -2415,11 +2415,11 @@ namespace DotNetNuke.Common
                         returnValue = InvalidCharacters.Replace(inputValue, string.Empty);
 
                         // If we're asked to validate the first character...
-                        if ((validateFirstChar))
+                        if (validateFirstChar)
                         {
                             // classes should begin with a letter ([A-Za-z])'
                             // prepend a starting non-letter character with an A
-                            if ((InvalidCharacters.IsMatch(returnValue)))
+                            if (InvalidCharacters.IsMatch(returnValue))
                             {
                                 returnValue = "A" + returnValue;
                             }
@@ -2557,9 +2557,9 @@ namespace DotNetNuke.Common
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (_portalSettings != null && _portalSettings.ActiveTab.HasAVisibleVersion)
             {
-                return (ApplicationURL(_portalSettings.ActiveTab.TabID));
+                return ApplicationURL(_portalSettings.ActiveTab.TabID);
             }
-            return (ApplicationURL(-1));
+            return ApplicationURL(-1);
         }
 
         /// -----------------------------------------------------------------------------
@@ -3153,16 +3153,16 @@ namespace DotNetNuke.Common
                 return url;
             }
             // String does not contain a ~, so just return Url
-            if ((url.StartsWith("~") == false))
+            if (url.StartsWith("~") == false)
             {
                 return url;
             }
             // There is just the ~ in the Url, return the appPath
-            if ((url.Length == 1))
+            if (url.Length == 1)
             {
                 return ApplicationPath;
             }
-            if ((url.ToCharArray()[1] == '/' || url.ToCharArray()[1] == '\\'))
+            if (url.ToCharArray()[1] == '/' || url.ToCharArray()[1] == '\\')
             {
                 // Url looks like ~/ or ~\
                 if (!string.IsNullOrEmpty(ApplicationPath) && ApplicationPath.Length > 1)
@@ -3889,7 +3889,7 @@ namespace DotNetNuke.Common
         [Obsolete("Deprecated PreventSQLInjection Function to consolidate Security Filter functions in the PortalSecurity class. Scheduled removal in v11.0.0.")]
         public static string PreventSQLInjection(string strSQL)
         {
-            return (PortalSecurity.Instance).InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
+            return PortalSecurity.Instance.InputFilter(strSQL, PortalSecurity.FilterFlag.NoSQL);
         }
 
         #endregion

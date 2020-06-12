@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 {
     public partial class FileProperties : PortalModuleBase
     {
-        private readonly IDigitalAssetsController controller = (new Factory()).DigitalAssetsController;
+        private readonly IDigitalAssetsController controller = new Factory().DigitalAssetsController;
 
         private IFileInfo file;
         private IFolderInfo folder;

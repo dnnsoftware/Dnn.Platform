@@ -300,7 +300,7 @@ namespace DotNetNuke.Common.Utilities
         public static string GetNodeValue(XmlNode objNode, string nodeName, string defaultValue)
         {
             string strValue = defaultValue;
-            if ((objNode[nodeName] != null))
+            if (objNode[nodeName] != null)
             {
                 strValue = objNode[nodeName].InnerText;
                 if (String.IsNullOrEmpty(strValue) && !String.IsNullOrEmpty(defaultValue))
@@ -342,7 +342,7 @@ namespace DotNetNuke.Common.Utilities
         public static bool GetNodeValueBoolean(XmlNode objNode, string nodeName, bool defaultValue)
         {
             bool bValue = defaultValue;
-            if ((objNode[nodeName] != null))
+            if (objNode[nodeName] != null)
             {
                 string strValue = objNode[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
@@ -399,7 +399,7 @@ namespace DotNetNuke.Common.Utilities
         public static DateTime GetNodeValueDate(XmlNode objNode, string nodeName, DateTime defaultValue)
         {
             DateTime dateValue = defaultValue;
-            if ((objNode[nodeName] != null))
+            if (objNode[nodeName] != null)
             {
                 string strValue = objNode[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
@@ -473,7 +473,7 @@ namespace DotNetNuke.Common.Utilities
         public static int GetNodeValueInt(XmlNode node, string nodeName, int defaultValue)
         {
             int intValue = defaultValue;
-            if ((node[nodeName] != null))
+            if (node[nodeName] != null)
             {
                 string strValue = node[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
@@ -546,7 +546,7 @@ namespace DotNetNuke.Common.Utilities
         public static float GetNodeValueSingle(XmlNode node, string nodeName, float defaultValue)
         {
             float sValue = defaultValue;
-            if ((node[nodeName] != null))
+            if (node[nodeName] != null)
             {
                 string strValue = node[nodeName].InnerText;
                 if (!string.IsNullOrEmpty(strValue))
@@ -669,7 +669,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void UpdateAttribute(XmlNode node, string attName, string attValue)
         {
-            if ((node != null))
+            if (node != null)
             {
                 XmlAttribute attrib = node.Attributes[attName];
                 attrib.InnerText = attValue;
@@ -724,7 +724,7 @@ namespace DotNetNuke.Common.Utilities
         {
             string xmlObject;
             var dic = obj as IDictionary;
-            if ((dic != null))
+            if (dic != null)
             {
                 xmlObject = SerializeDictionary(dic, "dictionary");
             }

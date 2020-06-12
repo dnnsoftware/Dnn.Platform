@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.PropertyNotNull("fileName", fileName);
 
-            return (FileManager.Instance.GetFile(folder, fileName, true) != null);
+            return FileManager.Instance.GetFile(folder, fileName, true) != null;
         }
 
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            return (FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath) != null);
+            return FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath) != null;
         }
 
         public override FileAttributes? GetFileAttributes(IFileInfo file)

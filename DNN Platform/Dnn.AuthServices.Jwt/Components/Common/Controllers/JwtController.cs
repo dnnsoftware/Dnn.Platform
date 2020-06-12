@@ -226,7 +226,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 return EmptyWithError("not-found");
             }
 
-            if ((ptoken.UserId != userInfo.UserID))
+            if (ptoken.UserId != userInfo.UserID)
             {
                 if (Logger.IsTraceEnabled) Logger.Trace("Mismatch token and user");
                 return EmptyWithError("bad-token");

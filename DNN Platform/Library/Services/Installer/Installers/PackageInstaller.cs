@@ -261,7 +261,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
                 {
                     ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
-                    if ((this._installedPackage == null) || (compInstaller.Version > this.Package.InstalledVersion) || (this.Package.InstallerInfo.RepairInstall))
+                    if ((this._installedPackage == null) || (compInstaller.Version > this.Package.InstalledVersion) || this.Package.InstallerInfo.RepairInstall)
                     {
                         this.Log.AddInfo(Util.INSTALL_Start + " - " + compInstaller.Type);
                         compInstaller.Install();

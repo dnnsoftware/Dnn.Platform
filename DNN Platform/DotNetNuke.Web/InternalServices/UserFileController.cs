@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.InternalServices
             var biggerThanAMegabyte = size > 1024;
             if (biggerThanAMegabyte)
             {
-                size = (size / 1024);
+                size = size / 1024;
             }
             return size.ToString(CultureInfo.InvariantCulture) + (biggerThanAMegabyte ? "Mb" : "k");
         }

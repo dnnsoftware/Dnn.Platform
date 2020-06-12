@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Validators
         {
             get
             {
-                return (this._Errors.Count() == 0);
+                return this._Errors.Count() == 0;
             }
         }
 

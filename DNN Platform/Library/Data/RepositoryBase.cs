@@ -139,7 +139,7 @@ namespace DotNetNuke.Data
                 this.Scope = scopeAttribute.Scope;
             }
 
-            this.IsScoped = (!String.IsNullOrEmpty(this.Scope));
+            this.IsScoped = !String.IsNullOrEmpty(this.Scope);
 
             var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
             if (cacheableAttribute != null)
@@ -225,8 +225,8 @@ namespace DotNetNuke.Data
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
         {
             this.Scope = scope;
-            this.IsScoped = (!String.IsNullOrEmpty(this.Scope));
-            this.IsCacheable = (!String.IsNullOrEmpty(cacheKey));
+            this.IsScoped = !String.IsNullOrEmpty(this.Scope);
+            this.IsCacheable = !String.IsNullOrEmpty(cacheKey);
             if (this.IsCacheable)
             {
                 if (this.IsScoped)

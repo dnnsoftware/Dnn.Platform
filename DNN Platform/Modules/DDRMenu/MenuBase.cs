@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.DDRMenu
             using (var reader = XmlReader.Create(this.menuSettings.NodeXmlPath))
             {
                 reader.ReadToFollowing("root");
-                this.RootNode = (MenuNode)(new XmlSerializer(typeof(MenuNode), "").Deserialize(reader));
+                this.RootNode = (MenuNode) new XmlSerializer(typeof(MenuNode), "").Deserialize(reader);
             }
             cache.Insert(this.menuSettings.NodeXmlPath, this.RootNode, new CacheDependency(this.menuSettings.NodeXmlPath));
         }
@@ -194,7 +194,7 @@ namespace DotNetNuke.Web.DDRMenu
                                 n =>
                                 {
                                     var tab = tc.GetTab(n.TabId, Null.NullInteger, false);
-                                    return (tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName));
+                                    return tab.Terms.Any(x => x.Name.ToLowerInvariant() == tagName);
                                 }));
                     }
 

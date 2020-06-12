@@ -24,7 +24,7 @@
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-#if (!SSCLI)
+#if !SSCLI
 //
 // log4net makes use of static methods which cannot be made com visible
 //
@@ -36,14 +36,14 @@ using System.Runtime.CompilerServices;
 //
 [assembly: System.CLSCompliant(true)]
 
-#if (!NETCF)
+#if !NETCF
 //
 // If log4net is strongly named it still allows partially trusted callers
 //
 [assembly: System.Security.AllowPartiallyTrustedCallers]
 #endif
 
-#if (NET_4_0)
+#if NET_4_0
 //
 // Allows partial trust applications (e.g. ASP.NET shared hosting) on .NET 4.0 to work
 // given our implementation of ISerializable.
@@ -57,19 +57,19 @@ using System.Runtime.CompilerServices;
 // associated with an assembly.
 //
 
-#if (CLI_1_0)
+#if CLI_1_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.CLI 1.0")]
 [assembly: AssemblyTitle("Apache log4net for CLI 1.0 Compatible Frameworks")]
-#elif (NET_1_0)
+#elif NET_1_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 1.0")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 1.0")]
-#elif (NET_1_1)
+#elif NET_1_1
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 1.1")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 1.1")]
-#elif (NET_4_5)
+#elif NET_4_5
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 4.5")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 4.5")]
-#elif (NET_4_0)
+#elif NET_4_0
 #if CLIENT_PROFILE
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 4.0 CP")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 4.0 Client Profile")]
@@ -77,7 +77,7 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 4.0")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 4.0")]
 #endif // Client Profile
-#elif (NET_2_0)
+#elif NET_2_0
 #if CLIENT_PROFILE
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 3.5 CP")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 3.5 Client Profile")]
@@ -85,40 +85,40 @@ using System.Runtime.CompilerServices;
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET 2.0")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework 2.0")]
 #endif // Client Profile
-#elif (NETCF_1_0)
+#elif NETCF_1_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NETCF 1.0")]
 [assembly: AssemblyTitle("Apache log4net for .NET Compact Framework 1.0")]
-#elif (NETCF_2_0)
+#elif NETCF_2_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NETCF 2.0")]
 [assembly: AssemblyTitle("Apache log4net for .NET Compact Framework 2.0")]
-#elif (MONO_1_0)
+#elif MONO_1_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-Mono 1.0")]
 [assembly: AssemblyTitle("Apache log4net for Mono 1.0")]
-#elif (MONO_2_0)
+#elif MONO_2_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-Mono 2.0")]
 [assembly: AssemblyTitle("Apache log4net for Mono 2.0")]
-#elif (MONO_3_5)
+#elif MONO_3_5
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-Mono 3.5")]
 [assembly: AssemblyTitle("Apache log4net for Mono 3.5")]
-#elif (MONO_4_0)
+#elif MONO_4_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-Mono 4.0")]
 [assembly: AssemblyTitle("Apache log4net for Mono 4.0")]
-#elif (SSCLI_1_0)
+#elif SSCLI_1_0
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-SSCLI 1.0")]
 [assembly: AssemblyTitle("Apache log4net for Shared Source CLI 1.0")]
-#elif (NET)
+#elif NET
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET")]
 [assembly: AssemblyTitle("Apache log4net for .NET Framework")]
-#elif (NETSTANDARD1_3)
+#elif NETSTANDARD1_3
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NET Core 1.0")]
 [assembly: AssemblyTitle("DotNetNuke.log4net for .NET Core 1.0")]
-#elif (NETCF)
+#elif NETCF
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-.NETCF")]
 [assembly: AssemblyTitle("DotNetNuke.log4net for .NET Compact Framework")]
-#elif (MONO)
+#elif MONO
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-Mono")]
 [assembly: AssemblyTitle("DotNetNuke.log4net for Mono")]
-#elif (SSCLI)
+#elif SSCLI
 [assembly: AssemblyInformationalVersionAttribute("2.0.6.0-SSCLI")]
 [assembly: AssemblyTitle("DotNetNuke.log4net for Shared Source CLI")]
 #else

@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             else
             {
-                dbowner = (string.IsNullOrEmpty(this.GetUpgradeConnectionStringUserID()))
+                dbowner = string.IsNullOrEmpty(this.GetUpgradeConnectionStringUserID())
                                            ? connectionConfig.User + "."
                                            : this.GetUpgradeConnectionStringUserID();
             }

@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnPreRender(EventArgs e)
         {
-            if ((!this.Page.IsPostBack))
+            if (!this.Page.IsPostBack)
             {
                 this.TelerikTabs.SelectedIndex = 0;
                 this.TelerikPages.SelectedIndex = 0;

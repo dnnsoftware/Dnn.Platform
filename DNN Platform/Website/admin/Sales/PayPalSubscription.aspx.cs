@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 }
                 else
                 {
-                    if ((settings.ContainsKey("paypalsubscriptioncancelreturn") && !string.IsNullOrEmpty(settings["paypalsubscriptioncancelreturn"])))
+                    if (settings.ContainsKey("paypalsubscriptioncancelreturn") && !string.IsNullOrEmpty(settings["paypalsubscriptioncancelreturn"]))
                     {
                         strPayPalURL = settings["paypalsubscriptioncancelreturn"];
                     }

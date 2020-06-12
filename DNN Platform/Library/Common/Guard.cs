@@ -39,7 +39,7 @@ namespace DotNetNuke.Common
         /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c></exception>
         public static void Against(bool condition, string message)
         {
-            if ((condition))
+            if (condition)
             {
                 throw new InvalidOperationException(message);
             }

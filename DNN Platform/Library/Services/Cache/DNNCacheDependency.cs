@@ -253,7 +253,7 @@ namespace DotNetNuke.Services.Cache
         // Method that does the actual disposal of resources
         protected virtual void Dispose(bool disposing)
         {
-            if ((disposing))
+            if (disposing)
             {
                 if (this._cacheDependency != null)
                 {

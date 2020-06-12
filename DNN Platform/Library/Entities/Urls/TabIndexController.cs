@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Urls
                 // allow for additional qs parameters
                 if (!String.IsNullOrEmpty(redirect.QueryString))
                 {
-                    rewritePath += (redirect.QueryString.StartsWith("&")) ? redirect.QueryString : "&" + redirect.QueryString;
+                    rewritePath += redirect.QueryString.StartsWith("&") ? redirect.QueryString : "&" + redirect.QueryString;
                 }
 
                 string redirectTabPath = redirect.Url;
@@ -491,7 +491,7 @@ namespace DotNetNuke.Entities.Urls
             // for deleted or pages not enabled yet, direct to the home page if the setting is enabled
             // 534 : tab is disabled, mark as deleted (don't want to cause duplicate tab warnings)
             // DNN-6186: add expired pages in dictionary as admin/host user should able to visit/edit them.
-            bool isDeleted = (tab.IsDeleted || tab.DisableLink);
+            bool isDeleted = tab.IsDeleted || tab.DisableLink;
             if (isDeleted)
             // don't care what setting is, redirect code will decide whether to redirect or 404 - just mark as page deleted &&
             // settings.DeletedTabHandlingValue == DeletedTabHandlingTypes.Do301RedirectToPortalHome)
@@ -818,7 +818,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 tabPathDepth = thisTabPathDepth;
             }
-            if ((tabPathSimple.Length > 0 && tabPathSimple[0] == '/'))
+            if (tabPathSimple.Length > 0 && tabPathSimple[0] == '/')
             {
                 tabPathSimple = tabPathSimple.Substring(1);
             }
@@ -844,7 +844,7 @@ namespace DotNetNuke.Entities.Urls
                     // replace the entry regardless.  If the action is 'TabRedirected' it means
                     // replace the existing dictionary ONLY if the existing dictionary entry is a
                     // deleted tab.
-                    bool replaceTab = (keyDupAction == UrlEnums.TabKeyPreference.TabOK); // default, replace the tab
+                    bool replaceTab = keyDupAction == UrlEnums.TabKeyPreference.TabOK; // default, replace the tab
                     if (replaceTab == false)
                     {
                         // ok, the tab to be added is either a redirected or deleted tab
@@ -1709,7 +1709,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-            return tabPath ?? (TabPathHelper.GetFriendlyUrlTabPath(tab, options, parentTraceId));
+            return tabPath ?? TabPathHelper.GetFriendlyUrlTabPath(tab, options, parentTraceId);
         }
 
         #endregion

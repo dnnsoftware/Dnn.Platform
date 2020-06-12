@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 return null;
             }
 
-            if ((this.CaptureStream) != null)
+            if (this.CaptureStream != null)
             {
                 this.CaptureStream.Close();
 

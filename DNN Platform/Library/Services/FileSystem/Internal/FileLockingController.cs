@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         private bool IsFileOutOfPublishPeriod(IFileInfo file)
         {
             // Publish Period locks
-            return (file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate)));
+            return file.EnablePublishPeriod && (file.StartDate > DateTime.Today || (file.EndDate < DateTime.Today && file.EndDate != Null.NullDate));
         }
 
         protected override Func<IFileLockingController> GetFactory()

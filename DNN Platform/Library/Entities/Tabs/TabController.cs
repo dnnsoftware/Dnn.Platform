@@ -1622,7 +1622,7 @@ namespace DotNetNuke.Entities.Tabs
                                  locales.Values.Where(locale => !LocaleController.Instance.IsDefaultLanguage(locale.Code))
                                         .Count(locale => workingTab.LocalizedTabs.Values.Any(localizedTab => localizedTab.CultureCode == locale.Code));
 
-            return ((LocaleCount - localizedCount) != 0);
+            return (LocaleCount - localizedCount) != 0;
 
         }
 
@@ -1767,7 +1767,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tab">The tab.</param>
         public void PopulateBreadCrumbs(ref TabInfo tab)
         {
-            if ((tab.BreadCrumbs == null))
+            if (tab.BreadCrumbs == null)
             {
                 var crumbs = new ArrayList();
                 this.PopulateBreadCrumbs(tab.PortalID, ref crumbs, tab.TabID);

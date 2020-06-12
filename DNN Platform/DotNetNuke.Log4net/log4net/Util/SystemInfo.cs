@@ -297,7 +297,7 @@ namespace log4net.Util
                         {
 #if NETSTANDARD1_3
 							s_hostName = Environment.GetEnvironmentVariable("COMPUTERNAME");
-#elif (!SSCLI && !NETCF)
+#elif !SSCLI && !NETCF
                             s_hostName = Environment.MachineName;
 #endif
                         }

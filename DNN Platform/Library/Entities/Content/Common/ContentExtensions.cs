@@ -86,7 +86,7 @@ namespace DotNetNuke.Entities.Content.Common
             var sb = new StringBuilder();
             if (terms != null)
             {
-                foreach (Term _Term in (from term in terms orderby term.Name ascending select term))
+                foreach (Term _Term in from term in terms orderby term.Name ascending select term)
                 {
                     if (sb.Length > 0)
                     {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Content.Common
             var sb = new StringBuilder();
             if (terms != null)
             {
-                foreach (Term _Term in (from term in terms orderby term.Name ascending select term))
+                foreach (Term _Term in from term in terms orderby term.Name ascending select term)
                 {
                     if (sb.Length > 0)
                     {

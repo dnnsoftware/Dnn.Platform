@@ -44,13 +44,13 @@ namespace DotNetNuke.Services.Tokens
                     case "String":
                         return PropertyAccess.FormatString(Convert.ToString(valueObject), format);
                     case "Boolean":
-                        return (PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider));
+                        return PropertyAccess.Boolean2LocalizedYesNo(Convert.ToBoolean(valueObject), formatProvider);
                     case "DateTime":
                     case "Double":
                     case "Single":
                     case "Int32":
                     case "Int64":
-                        return (((IFormattable)valueObject).ToString(OutputFormat, formatProvider));
+                        return ((IFormattable)valueObject).ToString(OutputFormat, formatProvider);
                     default:
                         return PropertyAccess.FormatString(valueObject.ToString(), format);
                 }

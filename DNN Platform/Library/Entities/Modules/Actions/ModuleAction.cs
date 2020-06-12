@@ -303,7 +303,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         public bool HasChildren()
         {
-            return (this.Actions.Count > 0);
+            return this.Actions.Count > 0;
         }
     }
 }

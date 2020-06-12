@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Urls
         {
             get
             {
-                if (this.LastRow >= (this.TotalRows))
+                if (this.LastRow >= this.TotalRows)
                 {
                     return true;
                 }

@@ -104,10 +104,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
         private void DisplayNewRows()
         {
-            this.divTabName.Visible = (this.optMode.SelectedIndex == 0);
-            this.divParentTab.Visible = (this.optMode.SelectedIndex == 0);
-            this.divInsertPositionRow.Visible = (this.optMode.SelectedIndex == 0);
-            this.divInsertPositionRow.Visible = (this.optMode.SelectedIndex == 0);
+            this.divTabName.Visible = this.optMode.SelectedIndex == 0;
+            this.divParentTab.Visible = this.optMode.SelectedIndex == 0;
+            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
+            this.divInsertPositionRow.Visible = this.optMode.SelectedIndex == 0;
         }
 
         protected override void OnInit(EventArgs e)

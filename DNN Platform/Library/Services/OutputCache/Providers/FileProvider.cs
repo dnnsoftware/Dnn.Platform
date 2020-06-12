@@ -50,10 +50,10 @@ namespace DotNetNuke.Services.OutputCache.Providers
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
 
-            if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
+            if (! string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (!(Directory.Exists(cacheFolder)))
+                if (! Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 int i = 0;
                 foreach (string file in Directory.GetFiles(folder, "*.resources"))
                 {
-                    if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                    if (! FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                     {
                         filesNotDeleted.Append(file + ";");
                     }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         public override byte[] GetOutput(int tabId, string cacheKey)
         {
             string cachedOutput = GetCachedOutputFileName(tabId, cacheKey);
-            if (!(File.Exists(cachedOutput)))
+            if (! File.Exists(cachedOutput))
             {
                 return null;
             }
@@ -178,7 +178,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         public override void PurgeCache(int portalId)
         {
             string cacheFolder = GetCacheFolder(portalId);
-            if (!(string.IsNullOrEmpty(cacheFolder)))
+            if (! string.IsNullOrEmpty(cacheFolder))
             {
                 this.PurgeCache(cacheFolder);
             }
@@ -190,14 +190,14 @@ namespace DotNetNuke.Services.OutputCache.Providers
             int i = 0;
             string cacheFolder = GetCacheFolder(portalId);
 
-            if (!(string.IsNullOrEmpty(cacheFolder)))
+            if (! string.IsNullOrEmpty(cacheFolder))
             {
                 foreach (string file in Directory.GetFiles(cacheFolder, "*" + AttribFileExtension))
                 {
                     if (this.IsFileExpired(file))
                     {
                         string fileToDelete = file.Replace(AttribFileExtension, DataFileExtension);
-                        if (!(FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200)))
+                        if (! FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                         {
                             filesNotDeleted.Append(fileToDelete + ";");
                         }
@@ -225,11 +225,11 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     int i = 0;
                     string cacheFolder = GetCacheFolder(portals[tabId]);
 
-                    if (!(string.IsNullOrEmpty(cacheFolder)))
+                    if (! string.IsNullOrEmpty(cacheFolder))
                     {
                         foreach (string file in Directory.GetFiles(cacheFolder, string.Concat(tabId, "_*.*")))
                         {
-                            if (!(FileSystemUtils.DeleteFileWithWait(file, 100, 200)))
+                            if (! FileSystemUtils.DeleteFileWithWait(file, 100, 200))
                             {
                                 filesNotDeleted.Append(string.Concat(file, ";"));
                             }

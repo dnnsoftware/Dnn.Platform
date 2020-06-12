@@ -310,7 +310,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return cdnPath;
                 }
             }
-            return ("~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName);
+            return "~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
         }
 
         private static string GetScriptLocation(JavaScriptLibrary js)

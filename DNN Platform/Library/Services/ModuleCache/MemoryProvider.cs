@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.ModuleCache
         {
             var keys = new List<string>();
             IDictionaryEnumerator CacheEnum = CachingProvider.Instance().GetEnumerator();
-            while ((CacheEnum.MoveNext()))
+            while (CacheEnum.MoveNext())
             {
                 if (CacheEnum.Key.ToString().StartsWith(string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|")))
                 {

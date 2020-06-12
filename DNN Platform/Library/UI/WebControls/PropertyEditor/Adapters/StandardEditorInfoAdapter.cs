@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.WebControls
                 PropertyInfo objProperty = this.DataSource.GetType().GetProperty(e.Name);
                 if (objProperty != null)
                 {
-                    if ((!(ReferenceEquals(newValue, oldValue))) || changed)
+                    if ((! ReferenceEquals(newValue, oldValue)) || changed)
                     {
                         objProperty.SetValue(this.DataSource, newValue, null);
                         _IsDirty = true;

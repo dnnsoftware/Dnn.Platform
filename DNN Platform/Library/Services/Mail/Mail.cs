@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Mail
             string retValue = string.Empty;
 
             mailMessage.Priority = (System.Net.Mail.MailPriority)priority;
-            mailMessage.IsBodyHtml = (bodyFormat == MailFormat.Html);
+            mailMessage.IsBodyHtml = bodyFormat == MailFormat.Html;
 
 
             // Only modify senderAdress if smtpAuthentication is enabled
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Mail
 
         public static string SendEmail(string fromAddress, string senderAddress, string toAddress, string subject, string body, List<Attachment> attachments)
         {
-            if ((string.IsNullOrWhiteSpace(Host.SMTPServer)))
+            if (string.IsNullOrWhiteSpace(Host.SMTPServer))
             {
                 return "SMTP Server not configured";
             }

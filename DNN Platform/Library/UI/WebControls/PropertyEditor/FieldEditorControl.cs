@@ -372,7 +372,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.Controls.Add(visibility);
                 }
-                if ((propLabel != null))
+                if (propLabel != null)
                 {
                     this.Controls.Add(propLabel);
                 }

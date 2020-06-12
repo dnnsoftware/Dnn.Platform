@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 if (!this.Page.IsPostBack)
                 {
-                    if ((this.Request.QueryString["pageno"] != null))
+                    if (this.Request.QueryString["pageno"] != null)
                     {
                         this.PageNo = int.Parse(this.Request.QueryString["pageno"]);
                     }
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ctlPassword.User = this.User;
                 this.ctlPassword.DataBind();
 
-                if ((!this.DisplayServices))
+                if (!this.DisplayServices)
                 {
                     this.servicesTab.Visible = false;
                 }
@@ -310,7 +310,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     else
                     {
-                        if ((this.User.UserID > Null.NullInteger))
+                        if (this.User.UserID > Null.NullInteger)
                         {
                             this.AddModuleMessage("NotAuthorized", ModuleMessage.ModuleMessageType.YellowWarning, true);
                             this.DisableForm();

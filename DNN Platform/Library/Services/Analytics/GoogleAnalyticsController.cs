@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Analytics
                                 currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
                                 fileReader.Close();
 
-                                IEnumerable<string> result = (from h in TRADITIONAL_FILEHASHES where h == currFileHashValue select h);
+                                IEnumerable<string> result = from h in TRADITIONAL_FILEHASHES where h == currFileHashValue select h;
 
                                 // compare md5 hash
                                 if (result.Any())

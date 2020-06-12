@@ -338,7 +338,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (this.AffiliateID.ToString(outputFormat, formatProvider));
+                    return this.AffiliateID.ToString(outputFormat, formatProvider);
                 case "displayname":
                     if (internScope < Scope.Configuration)
                     {
@@ -352,63 +352,63 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(this.Email, format));
+                    return PropertyAccess.FormatString(this.Email, format);
                 case "firstname": // using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(this.FirstName, format));
+                    return PropertyAccess.FormatString(this.FirstName, format);
                 case "issuperuser":
                     if (internScope < Scope.Debug)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (this.IsSuperUser.ToString(formatProvider));
+                    return this.IsSuperUser.ToString(formatProvider);
                 case "lastname": // using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(this.LastName, format));
+                    return PropertyAccess.FormatString(this.LastName, format);
                 case "portalid":
                     if (internScope < Scope.Configuration)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (this.PortalID.ToString(outputFormat, formatProvider));
+                    return this.PortalID.ToString(outputFormat, formatProvider);
                 case "userid":
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (this.UserID.ToString(outputFormat, formatProvider));
+                    return this.UserID.ToString(outputFormat, formatProvider);
                 case "username":
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(this.Username, format));
+                    return PropertyAccess.FormatString(this.Username, format);
                 case "fullname": // fullname is obsolete, it will return DisplayName
                     if (internScope < Scope.Configuration)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(this.DisplayName, format));
+                    return PropertyAccess.FormatString(this.DisplayName, format);
                 case "roles":
                     if (currentScope < Scope.SystemMessages)
                     {
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
-                    return (PropertyAccess.FormatString(string.Join(", ", this.Roles), format));
+                    return PropertyAccess.FormatString(string.Join(", ", this.Roles), format);
             }
             propertyNotFound = true;
             return string.Empty;

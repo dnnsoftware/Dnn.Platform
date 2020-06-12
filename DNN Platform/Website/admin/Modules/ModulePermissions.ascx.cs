@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             base.OnInit(e);
 
             // get ModuleId
-            if ((this.Request.QueryString["ModuleId"] != null))
+            if (this.Request.QueryString["ModuleId"] != null)
             {
                 this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
             }

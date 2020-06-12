@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.Modules
         {
             // load from a typename in an assembly ( ie. server control)
             var objType = Reflection.CreateType(controlSrc);
-            return (containerControl.LoadControl(objType, null));
+            return containerControl.LoadControl(objType, null);
         }
 
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)

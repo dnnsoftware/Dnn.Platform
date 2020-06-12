@@ -798,7 +798,7 @@ namespace DotNetNuke.Web.InternalServices
             if (!isAdminUser) return false;
 
             var mygroup = GetMyPortalGroup();
-            return (mygroup != null && mygroup.Any(p => p.PortalID == portalId));
+            return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
         }
     }
 

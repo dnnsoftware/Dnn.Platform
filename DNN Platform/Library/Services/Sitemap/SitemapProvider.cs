@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Sitemap
             get
             {
                 float value = 0;
-                if ((this.OverridePriority))
+                if (this.OverridePriority)
                 {
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
                     value = float.Parse(PortalController.GetPortalSetting(this.Name + "Value", PortalController.Instance.GetCurrentPortalSettings().PortalId, "0.5"), NumberFormatInfo.InvariantInfo);

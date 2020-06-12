@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Personalization
                         var personalizationCookie = new HttpCookie("DNNPersonalization", string.Empty)
                         {
                             Expires = DateTime.Now.AddDays(-1),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                         };
                         context.Response.Cookies.Add(personalizationCookie);
                     }
@@ -140,7 +140,7 @@ namespace DotNetNuke.Services.Personalization
                         var personalizationCookie = new HttpCookie("DNNPersonalization", EncryptData(profileData))
                         {
                             Expires = DateTime.Now.AddDays(30),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                         };
                         context.Response.Cookies.Add(personalizationCookie);
                     }

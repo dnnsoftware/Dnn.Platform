@@ -336,8 +336,8 @@ namespace DotNetNuke.Services.Installer
 
             // Check the White Lists
             string strExtension = file.Extension.ToLowerInvariant();
-            if ((strExtension == "dnn" || whiteList.IsAllowedExtension(strExtension) || packageWhiteList.Contains(strExtension) ||
-                 (packageWhiteList.Contains("*dataprovider") && strExtension.EndsWith("dataprovider"))))
+            if (strExtension == "dnn" || whiteList.IsAllowedExtension(strExtension) || packageWhiteList.Contains(strExtension) ||
+                 (packageWhiteList.Contains("*dataprovider") && strExtension.EndsWith("dataprovider")))
             {
                 // Install File is Valid
                 return true;

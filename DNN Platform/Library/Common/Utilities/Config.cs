@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 XmlElement xmlElement;
                 // get the node based on key
-                XmlNode xmlNode = xmlAppSettings.SelectSingleNode(("//add[@key='" + key + "']"));
+                XmlNode xmlNode = xmlAppSettings.SelectSingleNode("//add[@key='" + key + "']");
                 if (update && xmlNode != null)
                 {
                     // update the existing element
@@ -605,7 +605,7 @@ namespace DotNetNuke.Common.Utilities
                         }
 
                         // try incremental delay; maybe the file lock is released by then
-                        Thread.Sleep(((int)(miltiplier * (maxRetires - retry + 1)) * 1000));
+                        Thread.Sleep((int)(miltiplier * (maxRetires - retry + 1)) * 1000);
                     }
                 }
 
@@ -805,7 +805,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 // Copy from \Config
                 string pathToDefault = Path.Combine(Globals.ApplicationMapPath + Globals.glbConfigFolder, fileName);
-                if ((File.Exists(pathToDefault)))
+                if (File.Exists(pathToDefault))
                 {
                     File.Copy(pathToDefault, path, true);
                 }
@@ -888,7 +888,7 @@ namespace DotNetNuke.Common.Utilities
             {
 
                 // check current .net version and if attribute has been added already
-                if ((IsNet45OrNewer()) && GetFcnMode() != fcnMode.ToString())
+                if (IsNet45OrNewer() && GetFcnMode() != fcnMode.ToString())
                 {
                     // open the web.config
                     var xmlConfig = Load();

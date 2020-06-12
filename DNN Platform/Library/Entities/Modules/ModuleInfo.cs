@@ -410,7 +410,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return (this.DefaultLanguageGuid == Null.NullGuid);
+                return this.DefaultLanguageGuid == Null.NullGuid;
             }
         }
 
@@ -445,7 +445,7 @@ namespace DotNetNuke.Entities.Modules
                 if (this.DefaultLanguageModule != null)
                 {
                     // Child language
-                    isTranslated = (this.LocalizedVersionGuid == this.DefaultLanguageModule.LocalizedVersionGuid);
+                    isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageModule.LocalizedVersionGuid;
                 }
                 return isTranslated;
             }
@@ -456,7 +456,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                if (this._localizedModules == null && (this.DefaultLanguageGuid.Equals(Null.NullGuid)) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
+                if (this._localizedModules == null && this.DefaultLanguageGuid.Equals(Null.NullGuid) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
                 {
                     // Cycle through all localized tabs looking for this module
                     this._localizedModules = new Dictionary<string, ModuleInfo>();
@@ -655,33 +655,33 @@ namespace DotNetNuke.Entities.Modules
             {
                 case "portalid":
                     propertyNotFound = false;
-                    result = (this.PortalID.ToString(outputFormat, formatProvider));
+                    result = this.PortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "displayportalid":
                     propertyNotFound = false;
-                    result = (this.OwnerPortalID.ToString(outputFormat, formatProvider));
+                    result = this.OwnerPortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabid":
                     propertyNotFound = false;
-                    result = (this.TabID.ToString(outputFormat, formatProvider));
+                    result = this.TabID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabmoduleid":
                     propertyNotFound = false;
-                    result = (this.TabModuleID.ToString(outputFormat, formatProvider));
+                    result = this.TabModuleID.ToString(outputFormat, formatProvider);
                     break;
                 case "moduleid":
                     propertyNotFound = false;
-                    result = (this.ModuleID.ToString(outputFormat, formatProvider));
+                    result = this.ModuleID.ToString(outputFormat, formatProvider);
                     break;
                 case "moduledefid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleDefID.ToString(outputFormat, formatProvider));
+                    result = this.ModuleDefID.ToString(outputFormat, formatProvider);
                     break;
                 case "moduleorder":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleOrder.ToString(outputFormat, formatProvider));
+                    result = this.ModuleOrder.ToString(outputFormat, formatProvider);
                     break;
                 case "panename":
                     propertyNotFound = false;
@@ -694,7 +694,7 @@ namespace DotNetNuke.Entities.Modules
                 case "cachetime":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.CacheTime.ToString(outputFormat, formatProvider));
+                    result = this.CacheTime.ToString(outputFormat, formatProvider);
                     break;
                 case "cachemethod":
                     isPublic = false;
@@ -720,12 +720,12 @@ namespace DotNetNuke.Entities.Modules
                 case "alltabs":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.AllTabs, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.AllTabs, formatProvider);
                     break;
                 case "isdeleted":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider);
                     break;
                 case "header":
                     propertyNotFound = false;
@@ -738,12 +738,12 @@ namespace DotNetNuke.Entities.Modules
                 case "startdate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.StartDate.ToString(outputFormat, formatProvider));
+                    result = this.StartDate.ToString(outputFormat, formatProvider);
                     break;
                 case "enddate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.EndDate.ToString(outputFormat, formatProvider));
+                    result = this.EndDate.ToString(outputFormat, formatProvider);
                     break;
                 case "containersrc":
                     isPublic = false;
@@ -753,22 +753,22 @@ namespace DotNetNuke.Entities.Modules
                 case "displaytitle":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisplayTitle, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplayTitle, formatProvider);
                     break;
                 case "displayprint":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisplayPrint, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplayPrint, formatProvider);
                     break;
                 case "displaysyndicate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisplaySyndicate, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisplaySyndicate, formatProvider);
                     break;
                 case "iswebslice":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsWebSlice, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsWebSlice, formatProvider);
                     break;
                 case "webslicetitle":
                     isPublic = false;
@@ -778,32 +778,32 @@ namespace DotNetNuke.Entities.Modules
                 case "websliceexpirydate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.WebSliceExpiryDate.ToString(outputFormat, formatProvider));
+                    result = this.WebSliceExpiryDate.ToString(outputFormat, formatProvider);
                     break;
                 case "webslicettl":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.WebSliceTTL.ToString(outputFormat, formatProvider));
+                    result = this.WebSliceTTL.ToString(outputFormat, formatProvider);
                     break;
                 case "inheritviewpermissions":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.InheritViewPermissions, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.InheritViewPermissions, formatProvider);
                     break;
                 case "isshareable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsShareable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsShareable, formatProvider);
                     break;
                 case "isshareableviewonly":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsShareableViewOnly, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsShareableViewOnly, formatProvider);
                     break;
                 case "desktopmoduleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.DesktopModuleID.ToString(outputFormat, formatProvider));
+                    result = this.DesktopModuleID.ToString(outputFormat, formatProvider);
                     break;
                 case "friendlyname":
                     propertyNotFound = false;
@@ -824,12 +824,12 @@ namespace DotNetNuke.Entities.Modules
                 case "ispremium":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPremium, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPremium, formatProvider);
                     break;
                 case "isadmin":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsAdmin, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsAdmin, formatProvider);
                     break;
                 case "businesscontrollerclass":
                     propertyNotFound = false;
@@ -842,7 +842,7 @@ namespace DotNetNuke.Entities.Modules
                 case "supportedfeatures":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.DesktopModule.SupportedFeatures.ToString(outputFormat, formatProvider));
+                    result = this.DesktopModule.SupportedFeatures.ToString(outputFormat, formatProvider);
                     break;
                 case "compatibleversions":
                     isPublic = false;
@@ -862,12 +862,12 @@ namespace DotNetNuke.Entities.Modules
                 case "defaultcachetime":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleDefinition.DefaultCacheTime.ToString(outputFormat, formatProvider));
+                    result = this.ModuleDefinition.DefaultCacheTime.ToString(outputFormat, formatProvider);
                     break;
                 case "modulecontrolid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ModuleControlId.ToString(outputFormat, formatProvider));
+                    result = this.ModuleControlId.ToString(outputFormat, formatProvider);
                     break;
                 case "controlsrc":
                     isPublic = false;
@@ -884,7 +884,7 @@ namespace DotNetNuke.Entities.Modules
                     break;
                 case "supportspartialrendering":
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.ModuleControl.SupportsPartialRendering, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.ModuleControl.SupportsPartialRendering, formatProvider);
                     break;
                 case "containerpath":
                     isPublic = false;
@@ -894,37 +894,37 @@ namespace DotNetNuke.Entities.Modules
                 case "panemoduleindex":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.PaneModuleIndex.ToString(outputFormat, formatProvider));
+                    result = this.PaneModuleIndex.ToString(outputFormat, formatProvider);
                     break;
                 case "panemodulecount":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.PaneModuleCount.ToString(outputFormat, formatProvider));
+                    result = this.PaneModuleCount.ToString(outputFormat, formatProvider);
                     break;
                 case "isdefaultmodule":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsDefaultModule, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDefaultModule, formatProvider);
                     break;
                 case "allmodules":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.AllModules, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.AllModules, formatProvider);
                     break;
                 case "isportable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPortable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsPortable, formatProvider);
                     break;
                 case "issearchable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsSearchable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsSearchable, formatProvider);
                     break;
                 case "isupgradeable":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsUpgradeable, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DesktopModule.IsUpgradeable, formatProvider);
                     break;
                 case "adminpage":
                     isPublic = false;

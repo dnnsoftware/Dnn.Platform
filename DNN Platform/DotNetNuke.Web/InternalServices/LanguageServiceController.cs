@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.InternalServices
             if (!this.IsDefaultLanguage(locale.Code))
             {
                 TabController ctl = new TabController();
-                var nonTranslated = (from t in ctl.GetTabsByPortal(this.PortalSettings.PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t);
+                var nonTranslated = from t in ctl.GetTabsByPortal(this.PortalSettings.PortalId).WithCulture(locale.Code, false).Values where !t.IsTranslated && !t.IsDeleted select t;
                 foreach (TabInfo page in nonTranslated)
                 {
                     pages.Add(new PageDto()

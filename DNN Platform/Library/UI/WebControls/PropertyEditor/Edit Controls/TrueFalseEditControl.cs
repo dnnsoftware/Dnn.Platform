@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            if ((this.BooleanValue))
+            if (this.BooleanValue)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
@@ -158,7 +158,7 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(Localization.GetString("True", Localization.SharedResourceFile));
             writer.RenderEndTag();
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
-            if ((!this.BooleanValue))
+            if (!this.BooleanValue)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }

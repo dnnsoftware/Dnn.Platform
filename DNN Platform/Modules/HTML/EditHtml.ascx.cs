@@ -88,7 +88,7 @@ namespace DotNetNuke.Modules.Html
             get
             {
                 var content = "";
-                if ((this.ViewState["TempContent"] != null))
+                if (this.ViewState["TempContent"] != null)
                 {
                     content = this.ViewState["TempContent"].ToString();
                 }
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.Html
             this.dnnSitePanelEditHTMLHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
             this.fsEditHtmlHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
 
-            if (((this.CurrentWorkflowType == WorkflowType.DirectPublish)))
+            if ((this.CurrentWorkflowType == WorkflowType.DirectPublish))
             {
                 return;
             }
@@ -314,7 +314,7 @@ namespace DotNetNuke.Modules.Html
             this.lblCurrentVersion.Text = htmlContent.Version.ToString();
             this.DisplayVersions();
 
-            if ((lastPublishedContent != null))
+            if (lastPublishedContent != null)
             {
                 this.DisplayPreview(lastPublishedContent);
                 // DisplayHistory(lastPublishedContent);
@@ -376,7 +376,7 @@ namespace DotNetNuke.Modules.Html
         private string GetLocalizedString(string str)
         {
             var localizedString = Localization.GetString(str, this.LocalResourceFile);
-            return (string.IsNullOrEmpty(localizedString) ? str : localizedString);
+            return string.IsNullOrEmpty(localizedString) ? str : localizedString;
         }
 
         /// <summary>
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.Html
                 var htmlContentItemID = -1;
                 var htmlContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
 
-                if ((htmlContent != null))
+                if (htmlContent != null)
                 {
                     htmlContentItemID = htmlContent.ItemID;
                 }
@@ -554,7 +554,7 @@ namespace DotNetNuke.Modules.Html
                         else
                         {
                             // if it's already published set it back to draft
-                            if ((htmlContent.StateID != draftStateID))
+                            if (htmlContent.StateID != draftStateID)
                             {
                                 htmlContent.StateID = draftStateID;
                             }
@@ -676,7 +676,7 @@ namespace DotNetNuke.Modules.Html
                         break;
                 }
 
-                if ((e.CommandName.ToLowerInvariant() != "preview"))
+                if (e.CommandName.ToLowerInvariant() != "preview")
                 {
                     var latestContent = this._htmlTextController.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
                     if (latestContent == null)
@@ -711,7 +711,7 @@ namespace DotNetNuke.Modules.Html
                 var htmlContent = e.Row.DataItem as HtmlTextInfo;
                 var createdBy = "Default";
 
-                if ((htmlContent.CreatedByUserID != -1))
+                if (htmlContent.CreatedByUserID != -1)
                 {
                     var createdByByUser = UserController.GetUserById(this.PortalId, htmlContent.CreatedByUserID);
                     if (createdByByUser != null)
@@ -734,7 +734,7 @@ namespace DotNetNuke.Modules.Html
                                     // hide rollback for the first item
                                     if (this.dgVersions.CurrentPageIndex == 0)
                                     {
-                                        if ((e.Row.RowIndex == 0))
+                                        if (e.Row.RowIndex == 0)
                                         {
                                             imageButton.Visible = false;
                                             break;

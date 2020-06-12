@@ -26,9 +26,9 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             var termController = new TermController();
             var vocabularyController = Util.GetVocabularyController();
-            var vocabulary = (vocabularyController.GetVocabularies()
+            var vocabulary = vocabularyController.GetVocabularies()
                                 .Cast<Vocabulary>()
-                                .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tabPortalId))
+                                .Where(v => v.Name == PageTagsVocabulary && v.ScopeId == tabPortalId)
                                 .SingleOrDefault();
 
             var vocabularyId = Null.NullInteger;
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             // get all terms info
             var allTerms = new List<Term>();
             var vocabularies = from v in vocabularyController.GetVocabularies()
-                               where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tabPortalId && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase))
+                               where v.ScopeType.ScopeType == "Portal" && v.ScopeId == tabPortalId && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase)
                                select v;
             foreach (var v in vocabularies)
             {

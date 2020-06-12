@@ -109,7 +109,7 @@ namespace DotNetNuke.HttpModules.Analytics
                     }
 
                     AnalyticsEngineBase objEngine;
-                    if ((!string.IsNullOrEmpty(engine.EngineType)))
+                    if (!string.IsNullOrEmpty(engine.EngineType))
                     {
                         var engineType = Type.GetType(engine.EngineType);
                         if (engineType == null)
@@ -124,10 +124,10 @@ namespace DotNetNuke.HttpModules.Analytics
                     if (objEngine == null) continue;
 
                     var script = engine.ScriptTemplate;
-                    if ((string.IsNullOrEmpty(script))) continue;
+                    if (string.IsNullOrEmpty(script)) continue;
 
                     script = objEngine.RenderScript(script);
-                    if ((string.IsNullOrEmpty(script))) continue;
+                    if (string.IsNullOrEmpty(script)) continue;
 
                     var element = (HtmlContainerControl)page.FindControl(engine.ElementId);
                     if (element == null) continue;

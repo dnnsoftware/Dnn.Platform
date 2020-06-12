@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         // Get the PortalInfo  based on the Portalid
                         var portal = PortalController.Instance.GetPortal(this.PortalId);
-                        if ((portal != null))
+                        if (portal != null)
                         {
                             physicalPath = portal.HomeDirectoryMapPath + this.RelativePath;
                         }
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.FileSystem
                     }
                 }
 
-                if ((!string.IsNullOrEmpty(physicalPath)))
+                if (!string.IsNullOrEmpty(physicalPath))
                 {
                     physicalPath = physicalPath.Replace("/", "\\");
                 }

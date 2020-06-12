@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Mvp
             {
                 // Determine if they are attributed with a ViewState Attribute
                 ViewStateAttribute attr = member.GetCustomAttributes(typeof(ViewStateAttribute), true).OfType<ViewStateAttribute>().FirstOrDefault();
-                if ((attr != null))
+                if (attr != null)
                 {
                     // Get object from ViewState bag
                     string viewStateKey = attr.ViewStateKey;
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Mvp
             {
                 // Determine if they are attributed with a ViewState Attribute
                 ViewStateAttribute attr = member.GetCustomAttributes(typeof(ViewStateAttribute), true).OfType<ViewStateAttribute>().FirstOrDefault();
-                if ((attr != null))
+                if (attr != null)
                 {
                     // Add property to ViewState bag
                     string viewStateKey = attr.ViewStateKey;

@@ -114,7 +114,7 @@ namespace DotNetNuke.Modules.Html
                         {
                             int roleId = permission.RoleID;
                             RoleInfo objRole = RoleController.Instance.GetRole(objHtmlText.PortalID, r => r.RoleID == roleId);
-                            if ((objRole != null))
+                            if (objRole != null)
                             {
                                 foreach (UserRoleInfo objUserRole in RoleController.Instance.GetUserRoles(objHtmlText.PortalID, null, objRole.RoleName))
                                 {
@@ -723,7 +723,7 @@ namespace DotNetNuke.Modules.Html
             int workflowID = this.GetWorkflow(moduleId, module.TabID, module.PortalID).Value;
 
             HtmlTextInfo content = this.GetTopHtmlText(moduleId, true, workflowID);
-            if ((content != null))
+            if (content != null)
             {
                 xml += "<htmltext>";
                 xml += "<content>" + XmlUtils.XMLEncode(this.TokeniseLinks(content.Content, module.PortalID)) + "</content>";

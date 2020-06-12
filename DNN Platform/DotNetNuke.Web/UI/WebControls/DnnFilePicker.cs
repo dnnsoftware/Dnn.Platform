@@ -512,7 +512,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private bool IsUserFolder(string folderPath)
         {
             UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
-            return (folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format("/{0}/", user.UserID)));
+            return folderPath.StartsWith("users/", StringComparison.InvariantCultureIgnoreCase) && folderPath.EndsWith(string.Format("/{0}/", user.UserID));
         }
 
         private void LoadFiles()
@@ -774,7 +774,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             // Show message Row
-            this._pnlMessage.Visible = (!string.IsNullOrEmpty(this._lblMessage.Text));
+            this._pnlMessage.Visible = !string.IsNullOrEmpty(this._lblMessage.Text);
         }
 
         #endregion

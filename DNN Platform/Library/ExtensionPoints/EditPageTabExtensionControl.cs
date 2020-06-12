@@ -22,7 +22,7 @@ namespace DotNetNuke.ExtensionPoints
             get
             {
                 var s = (String)this.ViewState["TabControlId"];
-                return (s ?? String.Empty);
+                return s ?? String.Empty;
             }
             set
             {
@@ -37,7 +37,7 @@ namespace DotNetNuke.ExtensionPoints
             get
             {
                 var s = (String)this.ViewState["PanelControlId"];
-                return (s ?? String.Empty);
+                return s ?? String.Empty;
             }
             set
             {

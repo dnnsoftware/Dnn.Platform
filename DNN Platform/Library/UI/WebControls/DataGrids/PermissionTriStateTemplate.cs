@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.WebControls.Internal
         public void BindToTriState(object sender, EventArgs e)
         {
             var triState = (PermissionTriState)sender;
-            var dataRowView = ((DataRowView)((DataGridItem)triState.NamingContainer).DataItem);
+            var dataRowView = (DataRowView)((DataGridItem)triState.NamingContainer).DataItem;
 
             triState.Value = dataRowView[this._permission.PermissionName].ToString();
             triState.Locked = !bool.Parse(dataRowView[this._permission.PermissionName + "_Enabled"].ToString());

@@ -94,17 +94,17 @@ namespace DotNetNuke.Entities.Modules
             try
             {
                 DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
-                if ((desktopModule != null))
+                if (desktopModule != null)
                 {
                     // Initialise the SupportedFeatures
                     desktopModule.SupportedFeatures = 0;
 
                     // Test the interfaces
-                    desktopModule.IsPortable = (objController is IPortable);
+                    desktopModule.IsPortable = objController is IPortable;
 #pragma warning disable 0618
                     desktopModule.IsSearchable = (objController is ModuleSearchBase) || (objController is ISearchable);
 #pragma warning restore 0618
-                    desktopModule.IsUpgradeable = (objController is IUpgradeable);
+                    desktopModule.IsUpgradeable = objController is IUpgradeable;
                     DesktopModuleController.SaveDesktopModule(desktopModule, false, false, false);
 
                     foreach (PortalInfo portal in PortalController.Instance.GetPortals())

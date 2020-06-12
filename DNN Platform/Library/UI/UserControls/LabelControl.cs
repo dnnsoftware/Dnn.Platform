@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.UserControls
                 // Set Resource Key to the ID of the control
                 this.ResourceKey = this.ID;
             }
-            if ((!string.IsNullOrEmpty(this.ResourceKey)))
+            if (!string.IsNullOrEmpty(this.ResourceKey))
             {
                 var localText = Localization.GetString(this.ResourceKey, this);
                 if (!string.IsNullOrEmpty(localText))
@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.UserControls
             }
 
             var helpText = Localization.GetString(this.HelpKey, this);
-            if ((!string.IsNullOrEmpty(helpText)) || (string.IsNullOrEmpty(this.HelpText)))
+            if ((!string.IsNullOrEmpty(helpText)) || string.IsNullOrEmpty(this.HelpText))
             {
                 this.HelpText = helpText;
             }

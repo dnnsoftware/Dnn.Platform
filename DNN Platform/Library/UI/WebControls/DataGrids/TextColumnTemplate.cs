@@ -157,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
                     if (container.DataItem != null)
                     {
                         object evaluation = DataBinder.Eval(container.DataItem, this.DataField);
-                        if ((evaluation != null))
+                        if (evaluation != null)
                         {
                             itemValue = evaluation.ToString();
                         }

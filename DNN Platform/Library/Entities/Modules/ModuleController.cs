@@ -645,7 +645,7 @@ namespace DotNetNuke.Entities.Modules
                                 return tabModuleSettingsDic;
                             });
 
-            return (tabModuleSettings.ContainsKey(tabmoduleId)) ? tabModuleSettings[tabmoduleId] : new Hashtable();
+            return tabModuleSettings.ContainsKey(tabmoduleId) ? tabModuleSettings[tabmoduleId] : new Hashtable();
         }
 
         private int LocalizeModuleInternal(ModuleInfo sourceModule)

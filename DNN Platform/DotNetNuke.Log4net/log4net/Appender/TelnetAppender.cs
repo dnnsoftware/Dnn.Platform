@@ -430,7 +430,7 @@ namespace log4net.Appender
                 {
                     ArrayList localClients = this.m_clients;
 
-                    return (localClients != null && localClients.Count > 0);
+                    return localClients != null && localClients.Count > 0;
                 }
             }
 

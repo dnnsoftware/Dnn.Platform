@@ -46,7 +46,7 @@ namespace Dnn.PersonaBar.Users.Tests
         protected ConsoleResultModel RunCommand(params string[] args)
         {
             var command = this.CreateCommand();
-            command.Initialize((new[] { this.CommandName }.Concat(args)).ToArray(), this.portalSettings, null, -1);
+            command.Initialize(new[] { this.CommandName }.Concat(args).ToArray(), this.portalSettings, null, -1);
             return command.Run();
         }
     }

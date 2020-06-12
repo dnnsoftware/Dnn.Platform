@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Analytics
             var tokenizer = new TokenReplace();
             tokenizer.AccessingUser = UserController.Instance.GetCurrentUserInfo();
             tokenizer.DebugMessages = false;
-            return (tokenizer.ReplaceEnvironmentTokens(s));
+            return tokenizer.ReplaceEnvironmentTokens(s);
         }
 
         public AnalyticsConfiguration GetConfig()

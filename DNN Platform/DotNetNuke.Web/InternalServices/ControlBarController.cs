@@ -117,8 +117,8 @@ namespace DotNetNuke.Web.InternalServices
                 // sort bookmarked modules
                 filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
                 // move Html on top
-                filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
-                                Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
+                filteredList = filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()).
+                                Concat(filteredList.Except(filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())));
             }
 
             filteredList = filteredList
@@ -295,10 +295,10 @@ namespace DotNetNuke.Web.InternalServices
                 try
                 {
                     int tabModuleId = -1;
-                    if ((moduleLstID > -1))
+                    if (moduleLstID > -1)
                     {
 
-                        if ((dto.AddExistingModule == "true"))
+                        if (dto.AddExistingModule == "true")
                         {
                             int pageID;
                             try
@@ -311,7 +311,7 @@ namespace DotNetNuke.Web.InternalServices
                                 pageID = -1;
                             }
 
-                            if ((pageID > -1))
+                            if (pageID > -1)
                             {
                                 tabModuleId = this.DoAddExistingModule(moduleLstID, pageID, dto.Pane, positionID, "", dto.CopyModule == "true");
                             }
@@ -374,12 +374,12 @@ namespace DotNetNuke.Web.InternalServices
             {
                 try
                 {
-                    if ((!string.IsNullOrEmpty(dto.Site)))
+                    if (!string.IsNullOrEmpty(dto.Site))
                     {
                         int selectedPortalID = int.Parse(dto.Site);
                         var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
-                        if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
+                        if (portalAliases.Count > 0 && (portalAliases[0] != null))
                         {
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { RedirectURL = Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias) });
                         }
@@ -406,7 +406,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 if (this.PortalSettings.AllowUserUICulture && this.PortalSettings.ContentLocalizationEnabled)
                 {
-                    if ((!string.IsNullOrEmpty(dto.Language)))
+                    if (!string.IsNullOrEmpty(dto.Language))
                     {
                         var personalizationController = new DotNetNuke.Services.Personalization.PersonalizationController();
                         var personalization = personalizationController.LoadProfile(this.UserInfo.UserID, this.PortalSettings.PortalId);
@@ -587,7 +587,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             var children = TabController.GetTabsByParent(this.PortalSettings.ActiveTab.TabID, this.PortalSettings.ActiveTab.PortalID);
 
-            if (((children == null) || children.Count < 1))
+            if ((children == null) || children.Count < 1)
             {
                 return false;
             }
@@ -608,7 +608,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
 
-            if ((moduleInfo != null))
+            if (moduleInfo != null)
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -639,7 +639,7 @@ namespace DotNetNuke.Web.InternalServices
                 newModule.PaneName = paneName;
                 newModule.Alignment = align;
 
-                if ((cloneModule))
+                if (cloneModule)
                 {
                     newModule.ModuleID = Null.NullInteger;
 
@@ -836,7 +836,7 @@ namespace DotNetNuke.Web.InternalServices
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
                         ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if ((defaultModule != null))
+                        if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
                         }

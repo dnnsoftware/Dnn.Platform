@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
         {
             get
             {
-                return (this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab);
+                return this.ModuleContext.PortalSettings.ActiveTab.IsSuperTab;
             }
         }
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
             get
             {
                 var packageID = Null.NullInteger;
-                if ((this.Request.QueryString["PackageID"] != null))
+                if (this.Request.QueryString["PackageID"] != null)
                 {
                     packageID = Int32.Parse(this.Request.QueryString["PackageID"]);
                 }
@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
                 this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
 
-                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && (PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings));
+                this.cmdDelete.Visible = this.IsSuperTab && (!this.Package.IsSystemPackage) && PackageController.CanDeletePackage(this.Package, this.ModuleContext.PortalSettings);
                 this.ctlAudit.Entity = this.Package;
 
                 this.packageForm.DataSource = this.Package;

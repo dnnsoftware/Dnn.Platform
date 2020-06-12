@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return (this.Type == VocabularyType.Hierarchy);
+                return this.Type == VocabularyType.Hierarchy;
             }
         }
 

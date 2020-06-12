@@ -93,7 +93,7 @@ namespace DotNetNuke.Common
                     else
                     {
                         // 500 Error - Redirect to ErrorPage
-                        if ((HttpContext.Current != null))
+                        if (HttpContext.Current != null)
                         {
                             if (!isInstalled)
                             {
@@ -431,7 +431,7 @@ namespace DotNetNuke.Common
                 {
                     if (SchedulingProvider.SchedulerMode == SchedulerMode.REQUEST_METHOD && SchedulingProvider.ReadyForPoll)
                     {
-                        Logger.Trace("Running Schedule " + (SchedulingProvider.SchedulerMode));
+                        Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
                         var scheduler = SchedulingProvider.Instance();
                         var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true };
                         requestScheduleThread.Start();

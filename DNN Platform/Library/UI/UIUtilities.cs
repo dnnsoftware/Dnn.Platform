@@ -77,7 +77,7 @@ namespace DotNetNuke.UI
 
             if (slaveModule == null)
             {
-                slaveModule = (new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true });
+                slaveModule = new ModuleInfo { ModuleID = moduleId, ModuleDefID = -1, TabID = tabId, InheritViewPermissions = true };
             }
 
             if (request.QueryString["moduleid"] != null && (key.ToLowerInvariant() == "module" || key.ToLowerInvariant() == "help"))
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI
                 if (ctrl is UserControl)
                 {
                     resourceFileName = string.Format("{0}/{1}/{2}.ascx.resx", ctrl.TemplateSourceDirectory, Localization.LocalResourceDirectory, ctrl.GetType().BaseType.Name);
-                    if ((File.Exists(ctrl.Page.Server.MapPath(resourceFileName))))
+                    if (File.Exists(ctrl.Page.Server.MapPath(resourceFileName)))
                     {
                         break;
                     }

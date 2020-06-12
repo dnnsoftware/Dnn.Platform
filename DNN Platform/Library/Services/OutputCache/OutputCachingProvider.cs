@@ -45,14 +45,14 @@ namespace DotNetNuke.Services.OutputCache
 
         protected void WriteStreamAsText(HttpContext context, Stream stream, long offset, long length)
         {
-            if ((length < 0))
+            if (length < 0)
             {
-                length = (stream.Length - offset);
+                length = stream.Length - offset;
             }
 
-            if ((length > 0))
+            if (length > 0)
             {
-                if ((offset > 0))
+                if (offset > 0)
                 {
                     stream.Seek(offset, SeekOrigin.Begin);
                 }
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.OutputCache
             if (varyBy != null)
             {
                 SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
-                while ((varyByParms.MoveNext()))
+                while (varyByParms.MoveNext())
                 {
                     string key = varyByParms.Current.Key.ToLowerInvariant();
                     if (includeVaryByKeys.Contains(key) && !excludeVaryByKeys.Contains(key))

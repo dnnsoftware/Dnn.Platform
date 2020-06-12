@@ -118,7 +118,7 @@ namespace DotNetNuke.Services.Tokens
                         case "String":
                             return FormatString(Convert.ToString(propValue), strFormat);
                         case "Boolean":
-                            return (Boolean2LocalizedYesNo(Convert.ToBoolean(propValue), formatProvider));
+                            return Boolean2LocalizedYesNo(Convert.ToBoolean(propValue), formatProvider);
                         case "DateTime":
                         case "Double":
                         case "Single":
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Tokens
                             {
                                 strFormat = "g";
                             }
-                            return (((IFormattable)propValue).ToString(strFormat, formatProvider));
+                            return ((IFormattable)propValue).ToString(strFormat, formatProvider);
                     }
                 }
                 else

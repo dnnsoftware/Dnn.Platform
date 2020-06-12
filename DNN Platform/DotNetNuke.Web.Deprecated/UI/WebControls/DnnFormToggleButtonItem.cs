@@ -43,13 +43,13 @@ namespace DotNetNuke.Web.UI.WebControls
             switch (this.Mode)
             {
                 case CheckBoxMode.YN:
-                    newValue = (this._checkBox.Checked) ? "Y" : "N";
+                    newValue = this._checkBox.Checked ? "Y" : "N";
                     break;
                 case CheckBoxMode.YesNo:
-                    newValue = (this._checkBox.Checked) ? "Yes" : "No";
+                    newValue = this._checkBox.Checked ? "Yes" : "No";
                     break;
                 default:
-                    newValue = (this._checkBox.Checked) ? "true" : "false";
+                    newValue = this._checkBox.Checked ? "true" : "false";
                     break;
             }
             this.UpdateDataSource(this.Value, newValue, this.DataField);

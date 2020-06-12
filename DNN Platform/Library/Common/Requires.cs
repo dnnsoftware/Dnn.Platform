@@ -26,7 +26,7 @@ namespace DotNetNuke.Common
         /// <exception cref="ArgumentException"></exception>
         public static void IsTypeOf<T>(string argName, object argValue)
         {
-            if (!((argValue) is T))
+            if (!(argValue is T))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage("ValueMustBeOfType", "The argument '{0}' must be of type '{1}'.", argName, typeof(T).FullName));
             }

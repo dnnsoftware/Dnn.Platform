@@ -131,7 +131,7 @@ namespace log4net.Core
                 throw new ArgumentNullException("loggingEvent");
             }
 
-            return (loggingEvent.Level >= this.m_threshold);
+            return loggingEvent.Level >= this.m_threshold;
         }
     }
 }

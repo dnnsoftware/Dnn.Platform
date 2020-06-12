@@ -342,7 +342,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                return (this.DefaultLanguageGuid == Null.NullGuid);
+                return this.DefaultLanguageGuid == Null.NullGuid;
             }
         }
 
@@ -364,7 +364,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     return this._isSuperTab;
                 }
-                return (this.PortalID == Null.NullInteger);
+                return this.PortalID == Null.NullInteger;
             }
             set
             {
@@ -382,7 +382,7 @@ namespace DotNetNuke.Entities.Tabs
                 if (this.DefaultLanguageTab != null)
                 {
                     // Child language
-                    isTranslated = (this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid);
+                    isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid;
                 }
                 return isTranslated;
             }
@@ -621,16 +621,16 @@ namespace DotNetNuke.Entities.Tabs
             {
                 case "tabid":
                     propertyNotFound = false;
-                    result = (this.TabID.ToString(outputFormat, formatProvider));
+                    result = this.TabID.ToString(outputFormat, formatProvider);
                     break;
                 case "taborder":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.TabOrder.ToString(outputFormat, formatProvider));
+                    result = this.TabOrder.ToString(outputFormat, formatProvider);
                     break;
                 case "portalid":
                     propertyNotFound = false;
-                    result = (this.PortalID.ToString(outputFormat, formatProvider));
+                    result = this.PortalID.ToString(outputFormat, formatProvider);
                     break;
                 case "tabname":
                     propertyNotFound = false;
@@ -639,17 +639,17 @@ namespace DotNetNuke.Entities.Tabs
                 case "isvisible":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsVisible, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsVisible, formatProvider);
                     break;
                 case "parentid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ParentId.ToString(outputFormat, formatProvider));
+                    result = this.ParentId.ToString(outputFormat, formatProvider);
                     break;
                 case "level":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.Level.ToString(outputFormat, formatProvider));
+                    result = this.Level.ToString(outputFormat, formatProvider);
                     break;
                 case "iconfile":
                     propertyNotFound = false;
@@ -662,7 +662,7 @@ namespace DotNetNuke.Entities.Tabs
                 case "disablelink":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.DisableLink, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.DisableLink, formatProvider);
                     break;
                 case "title":
                     propertyNotFound = false;
@@ -679,7 +679,7 @@ namespace DotNetNuke.Entities.Tabs
                 case "isdeleted":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsDeleted, formatProvider);
                     break;
                 case "url":
                     propertyNotFound = false;
@@ -702,22 +702,22 @@ namespace DotNetNuke.Entities.Tabs
                 case "startdate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.StartDate.ToString(outputFormat, formatProvider));
+                    result = this.StartDate.ToString(outputFormat, formatProvider);
                     break;
                 case "enddate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.EndDate.ToString(outputFormat, formatProvider));
+                    result = this.EndDate.ToString(outputFormat, formatProvider);
                     break;
                 case "haschildren":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.HasChildren, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.HasChildren, formatProvider);
                     break;
                 case "refreshinterval":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.RefreshInterval.ToString(outputFormat, formatProvider));
+                    result = this.RefreshInterval.ToString(outputFormat, formatProvider);
                     break;
                 case "pageheadtext":
                     isPublic = false;
@@ -742,7 +742,7 @@ namespace DotNetNuke.Entities.Tabs
                 case "issupertab":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (PropertyAccess.Boolean2LocalizedYesNo(this.IsSuperTab, formatProvider));
+                    result = PropertyAccess.Boolean2LocalizedYesNo(this.IsSuperTab, formatProvider);
                     break;
                 case "fullurl":
                     propertyNotFound = false;
@@ -996,7 +996,7 @@ namespace DotNetNuke.Entities.Tabs
                     url = tabUrl.Url;
                 }
             }
-            return url ?? ("");
+            return url ?? "";
         }
 
         public string GetTags()

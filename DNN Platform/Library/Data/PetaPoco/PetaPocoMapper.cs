@@ -57,7 +57,7 @@ namespace DotNetNuke.Data.PetaPoco
                 ci = ColumnInfo.FromProperty(pocoProperty);
                 ci.ColumnName = DataUtil.GetColumnName(pocoProperty, ci.ColumnName);
 
-                ci.ResultColumn = (pocoProperty.GetCustomAttributes(typeof(ReadOnlyColumnAttribute), true).Length > 0);
+                ci.ResultColumn = pocoProperty.GetCustomAttributes(typeof(ReadOnlyColumnAttribute), true).Length > 0;
             }
 
             return ci;

@@ -173,14 +173,14 @@ namespace DotNetNuke.Framework
         {
             if (this.Request.QueryString["error"] != null)
             {
-                url += string.Concat((url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"), "error=terminate");
+                url += string.Concat(url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&", "error=terminate");
             }
             else
             {
                 url += string.Concat(
-                    (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"),
+                    url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&",
                     "error=",
-                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message)));
+                    exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message));
                 if (!Globals.IsAdminControl() && hideContent)
                 {
                     url += "&content=0";
@@ -421,7 +421,7 @@ namespace DotNetNuke.Framework
                 var imgMatches = LinkItemMatchRegex.Matches(value);
                 foreach (Match match in imgMatches)
                 {
-                    if ((match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1))
+                    if (match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1)
                         continue;
                     var resolvedUrl = this.Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
                     value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
@@ -573,11 +573,11 @@ namespace DotNetNuke.Framework
             var ctrl = control as HyperLink;
             if (ctrl != null)
             {
-                if ((ctrl.NavigateUrl.IndexOf("~", StringComparison.Ordinal) != -1))
+                if (ctrl.NavigateUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
                     ctrl.NavigateUrl = this.Page.ResolveUrl(ctrl.NavigateUrl);
                 }
-                if ((ctrl.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1))
+                if (ctrl.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
                     ctrl.ImageUrl = this.Page.ResolveUrl(ctrl.ImageUrl);
                 }

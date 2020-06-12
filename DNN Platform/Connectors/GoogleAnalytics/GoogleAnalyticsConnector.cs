@@ -81,7 +81,7 @@ namespace DNN.Connectors.GoogleAnalytics
         {
             IDictionary<string, string> config = this.GetConfig(portalId);
 
-            return (config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"]));
+            return config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"]);
 
         }
 

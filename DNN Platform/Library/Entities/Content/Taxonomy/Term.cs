@@ -136,7 +136,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         {
             get
             {
-                return (this.Vocabulary.Type == VocabularyType.Hierarchy);
+                return this.Vocabulary.Type == VocabularyType.Hierarchy;
             }
         }
 

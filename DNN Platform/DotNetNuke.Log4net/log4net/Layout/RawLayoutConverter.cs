@@ -63,7 +63,7 @@ namespace log4net.Layout
         public bool CanConvertFrom(Type sourceType)
         {
             // Accept an ILayout object
-            return (typeof(ILayout).IsAssignableFrom(sourceType));
+            return typeof(ILayout).IsAssignableFrom(sourceType);
         }
 
         /// <summary>

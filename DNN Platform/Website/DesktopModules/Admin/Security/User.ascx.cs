@@ -290,9 +290,9 @@ namespace DotNetNuke.Modules.Admin.Users
             if (!this.AddUser)
             {
                 var deletePermitted = (this.User.UserID != this.PortalSettings.AdministratorId) && !(this.IsUser && this.User.IsSuperUser);
-                if ((deletePermitted))
+                if (deletePermitted)
                 {
-                    if ((this.User.IsDeleted))
+                    if (this.User.IsDeleted)
                     {
                         this.cmdRemove.Visible = true;
                         this.cmdRestore.Visible = true;

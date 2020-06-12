@@ -137,7 +137,7 @@ namespace DotNetNuke.Services.Log.EventLog
             if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
                 HttpContext.Current.Response.Cookies.Add(
-                    new HttpCookie("LogGUID", log.LogGUID) { HttpOnly = false, Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                    new HttpCookie("LogGUID", log.LogGUID) { HttpOnly = false, Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
             }
         }
     }

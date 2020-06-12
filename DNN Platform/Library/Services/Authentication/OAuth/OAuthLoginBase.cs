@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", this.RedirectURL)
                 {
                     Expires = DateTime.Now.AddMinutes(5),
-                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                 });
             }
 

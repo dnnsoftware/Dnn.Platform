@@ -93,10 +93,10 @@ namespace DotNetNuke.Services.Installer.Installers
                             var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
 
                             TabInfo temp = TabController.Instance.GetTab(tabID, portal.PortalID);
-                            if ((temp != null))
+                            if (temp != null)
                             {
 
-                                var mods = TabModulesController.Instance.GetTabModules((temp));
+                                var mods = TabModulesController.Instance.GetTabModules(temp);
                                 bool noOtherTabModule = true;
                                 foreach (ModuleInfo mod in mods)
                                 {

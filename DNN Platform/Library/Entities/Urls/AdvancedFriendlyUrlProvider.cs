@@ -220,7 +220,7 @@ namespace DotNetNuke.Entities.Urls
             // 798 : change reference to debug parameters
             if (request != null)
             {
-                debugValue = (request.Params.Get("HTTP_" + debugToken));
+                debugValue = request.Params.Get("HTTP_" + debugToken);
             }
             if (debugValue == null)
             {
@@ -690,7 +690,7 @@ namespace DotNetNuke.Entities.Urls
                     friendlyPath = pgNameRx.Replace(friendlyPath, "");
                 }
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
-                if ((queryString.StartsWith("?")))
+                if (queryString.StartsWith("?"))
                 {
                     queryString = queryString.TrimStart('?');
                 }
@@ -820,7 +820,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
 
-            if ((queryStringSpecialChars.Length > 0))
+            if (queryStringSpecialChars.Length > 0)
             {
                 return AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
             }
@@ -1028,10 +1028,10 @@ namespace DotNetNuke.Entities.Urls
                         // cultureCode = default culture, newPath is blank after removing languageParms
                         // allow site root for home page if it is the default culture and no other path items, or there is a specific alias for this culture and there are no other path items
                         bool homePageSiteRoot = (cultureCode == defaultCode && newPath == "") || (cultureSpecificAlias && newPath == "");
-                        bool hasPath = (newPath != "");
+                        bool hasPath = newPath != "";
 
                         // 871 : case insensitive comparison for culture
-                        bool isDefaultLanguage = (String.Compare(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase) == 0);
+                        bool isDefaultLanguage = String.Compare(cultureCode, defaultCode, StringComparison.OrdinalIgnoreCase) == 0;
                         bool isCustomUrl;
                         newTabPath = TabPathHelper.GetTabPath(
                             tab,
@@ -1057,7 +1057,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 // 956 : recheck the test for the homePagebeing a site root Url
                                 homePageSiteRoot = (cultureCode == defaultCode && newPath == "") || (cultureSpecificAlias && newPath == "");
-                                hasPath = (newPath != "");
+                                hasPath = newPath != "";
                                 if (homePageSiteRoot)
                                 {
                                     // special case - if the newPath is empty after removing the parameters, and it is the home page, and the home page is only to show the site root
@@ -1198,10 +1198,10 @@ namespace DotNetNuke.Entities.Urls
                     else
                     {
                         var re = RegexUtils.GetCachedRegex("[^?]*/tabId/(\\d+)/ctl/([A-Z][a-z]+)/" + pageName + "$", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
-                        if ((re.IsMatch(friendlyPath)))
+                        if (re.IsMatch(friendlyPath))
                         {
                             Match sesMatch = re.Match(friendlyPath);
-                            if ((sesMatch.Groups.Count > 2))
+                            if (sesMatch.Groups.Count > 2)
                             {
                                 switch (sesMatch.Groups[2].Value.ToLowerInvariant())
                                 {
@@ -1383,7 +1383,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!(tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
                 {
-                    bool forceLowerCase = (settings.ForceLowerCase);
+                    bool forceLowerCase = settings.ForceLowerCase;
                     if (forceLowerCase)
                     {
                         if (!string.IsNullOrEmpty(settings.ForceLowerCaseRegex))
@@ -1395,7 +1395,7 @@ namespace DotNetNuke.Entities.Urls
                     if (forceLowerCase)
                     {
                         // don't force lower case for Urls excluded from being 'friendly'
-                        forceLowerCase = (!RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false));
+                        forceLowerCase = !RewriteController.IsExcludedFromFriendlyUrls(tab, settings, false);
                     }
 
                     if (forceLowerCase)

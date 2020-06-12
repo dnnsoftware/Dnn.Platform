@@ -117,7 +117,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         public void SetValues(string values, RequestFilterOperatorType op)
         {
             this._Values.Clear();
-            if ((op != RequestFilterOperatorType.Regex))
+            if (op != RequestFilterOperatorType.Regex)
             {
                 string[] vals = values.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string value in vals)

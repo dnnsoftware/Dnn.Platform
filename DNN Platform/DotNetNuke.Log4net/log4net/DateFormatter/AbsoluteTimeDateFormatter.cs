@@ -108,7 +108,7 @@ namespace log4net.DateFormatter
                     lock (s_lastTimeStrings)
             {
             // Calculate the current time precise only to the second
-            long currentTimeToTheSecond = (dateToFormat.Ticks - (dateToFormat.Ticks % TimeSpan.TicksPerSecond));
+            long currentTimeToTheSecond = dateToFormat.Ticks - (dateToFormat.Ticks % TimeSpan.TicksPerSecond);
 
                         string timeString = null;
             // Compare this time with the stored last time

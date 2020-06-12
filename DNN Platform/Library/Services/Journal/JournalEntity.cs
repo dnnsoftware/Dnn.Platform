@@ -20,14 +20,14 @@ namespace DotNetNuke.Services.Journal {
             if (!string.IsNullOrEmpty(entityXML)) {
                 XmlDocument xDoc = new XmlDocument { XmlResolver = null };
                 xDoc.LoadXml(entityXML);
-                if ((xDoc != null)) {
+                if (xDoc != null) {
                     XmlNode xRoot = xDoc.DocumentElement;
                     XmlNode xNode = null;
                     xNode = xRoot.SelectSingleNode("//entity");
-                    if ((xNode != null)) {
+                    if (xNode != null) {
                         this.Id = int.Parse(xNode["id"].InnerText);
                         this.Name = xNode["name"].InnerText.ToString();
-                        if ((xNode["vanity"] != null)) {
+                        if (xNode["vanity"] != null) {
                             this.Vanity = xNode["vanity"].InnerText.ToString();
                         }
 

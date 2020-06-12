@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.Containers
         private string GetIconFileUrl()
         {
             var iconFile = this.ModuleControl.ModuleContext.Configuration.IconFile;
-            if ((string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~")))
+            if (string.IsNullOrEmpty(iconFile) || iconFile.StartsWith("~"))
             {
                 return iconFile;
             }

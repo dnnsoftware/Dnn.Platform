@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.Search
                             result.Delete = true;
                         }
                     }
-                    else if (hasExcluded && (excludedResults.ContainsKey(kvpResults.Key)))
+                    else if (hasExcluded && excludedResults.ContainsKey(kvpResults.Key))
                     {
                         // 2. Do not process results in the excludedResults Collection
                         foreach (SearchResultsInfo result in kvpResults.Value.Values)

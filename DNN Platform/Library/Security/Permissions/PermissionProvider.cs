@@ -651,7 +651,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public virtual void SaveFolderPermissions(IFolderInfo folder)
         {
-            if ((folder.FolderPermissions != null))
+            if (folder.FolderPermissions != null)
             {
                 // Ensure that if role/user has been given a permission that is not Read/Browse then they also need Read/Browse
                 var permController = new PermissionController();

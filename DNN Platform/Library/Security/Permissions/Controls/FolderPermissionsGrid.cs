@@ -282,7 +282,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override bool IsViewPermisison(PermissionInfo permissionInfo)
         {
-            return (permissionInfo.PermissionKey == "READ");
+            return permissionInfo.PermissionKey == "READ";
         }
 
         private bool IsPermissionAlwaysGrantedToAdmin(PermissionInfo permissionInfo)

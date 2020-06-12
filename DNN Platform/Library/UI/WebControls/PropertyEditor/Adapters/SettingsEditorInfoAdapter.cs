@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
                 if (key == name)
                 {
                     // Set the Value property to the new value
-                    if ((!(ReferenceEquals(newValue, oldValue))) || changed)
+                    if ((! ReferenceEquals(newValue, oldValue)) || changed)
                     {
                         settings[key] = newValue;
                         _IsDirty = true;

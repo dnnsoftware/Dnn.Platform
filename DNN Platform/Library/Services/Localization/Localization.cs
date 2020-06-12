@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Localization
             // Localize Header Text
             if (!string.IsNullOrEmpty(controlField.HeaderText))
             {
-                localizedText = GetString((controlField.HeaderText + ".Header"), resourceFile);
+                localizedText = GetString(controlField.HeaderText + ".Header", resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
                     controlField.HeaderText = localizedText;
@@ -516,12 +516,12 @@ namespace DotNetNuke.Services.Localization
                 alias = String.Format("{0}/{1}", httpAlias, modifiedLocale);
 
                 var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
-                isValid = (tab == null);
+                isValid = tab == null;
 
                 if (isValid)
                 {
                     var user = UserController.GetUserByVanityUrl(portalId, modifiedLocale);
-                    isValid = (user == null);
+                    isValid = user == null;
                 }
 
                 if (isValid)
@@ -1954,11 +1954,11 @@ namespace DotNetNuke.Services.Localization
 
                 // save the page culture as a cookie
                 HttpCookie cookie = response.Cookies.Get("language");
-                if ((cookie == null))
+                if (cookie == null)
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("language", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
+                        cookie = new HttpCookie("language", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
                         response.Cookies.Add(cookie);
                     }
                 }

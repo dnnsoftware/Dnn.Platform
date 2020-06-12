@@ -930,7 +930,7 @@ namespace DotNetNuke.UI.Skins
             string skinSource = Null.NullString;
 
             // skin preview
-            if ((page.Request.QueryString["SkinSrc"] != null))
+            if (page.Request.QueryString["SkinSrc"] != null)
             {
                 skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", page.PortalSettings);
                 skin = LoadSkin(page, skinSource);

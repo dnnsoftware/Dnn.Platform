@@ -106,7 +106,7 @@ namespace Dnn.PersonaBar.Library.Helper
 
         public static bool IsViewPermisison(PermissionInfo permissionInfo)
         {
-            return (permissionInfo.PermissionKey == "VIEW");
+            return permissionInfo.PermissionKey == "VIEW";
         }
 
         public static object GetRoles(int portalId)

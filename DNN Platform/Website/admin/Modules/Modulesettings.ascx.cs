@@ -329,7 +329,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 // get ModuleId
-                if ((this.Request.QueryString["ModuleId"] != null))
+                if (this.Request.QueryString["ModuleId"] != null)
                 {
                     this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
                 }

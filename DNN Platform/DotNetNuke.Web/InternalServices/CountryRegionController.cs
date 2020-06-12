@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage Regions(int country)
         {
             List<Region> res = new List<Region>();
-            foreach (ListEntryInfo r in (new ListController()).GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
+            foreach (ListEntryInfo r in new ListController().GetListEntryInfoItems("Region").Where(l => l.ParentID == country))
             {
                 res.Add(new Region
                 {

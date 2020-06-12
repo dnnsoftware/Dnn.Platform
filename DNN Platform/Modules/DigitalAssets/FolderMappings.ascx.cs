@@ -137,16 +137,16 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem) return;
 
-            var folderMapping = (e.Item.DataItem as FolderMappingInfo);
+            var folderMapping = e.Item.DataItem as FolderMappingInfo;
             if (folderMapping == null || !folderMapping.IsEditable)
             {
                 return;
             }
 
-            var cmdEditMapping = (e.Item.FindControl("EditMappingButton") as CommandButton);
+            var cmdEditMapping = e.Item.FindControl("EditMappingButton") as CommandButton;
             if (cmdEditMapping != null) cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
 
-            var cmdDeleteMapping = (e.Item.FindControl("DeleteMappingButton") as CommandButton);
+            var cmdDeleteMapping = e.Item.FindControl("DeleteMappingButton") as CommandButton;
             if (cmdDeleteMapping == null) return;
 
             cmdDeleteMapping.ToolTip = Localization.GetString("cmdDelete");

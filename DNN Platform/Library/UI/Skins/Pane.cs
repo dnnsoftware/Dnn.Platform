@@ -286,7 +286,7 @@ namespace DotNetNuke.UI.Skins
                 // unless the administrator is in view mode
                 if (displayTitle)
                 {
-                    displayTitle = (this.PortalSettings.UserMode != PortalSettings.Mode.View);
+                    displayTitle = this.PortalSettings.UserMode != PortalSettings.Mode.View;
                 }
 
                 if (displayTitle == false)
@@ -334,7 +334,7 @@ namespace DotNetNuke.UI.Skins
                         // look for a container specification in the skin pane
                         if (this.PaneControl != null)
                         {
-                            if ((this.PaneControl.Attributes["ContainerSrc"] != null))
+                            if (this.PaneControl.Attributes["ContainerSrc"] != null)
                             {
                                 container = this.LoadContainerFromPane();
                             }
@@ -465,7 +465,7 @@ namespace DotNetNuke.UI.Skins
                 this.Containers.Add(container.ID, container);
 
                 // hide anything of type ActionsMenu - as we're injecting our own menu now.
-                container.InjectActionMenu = (container.Controls.OfType<ActionBase>().Count() == 0);
+                container.InjectActionMenu = container.Controls.OfType<ActionBase>().Count() == 0;
                 if (!container.InjectActionMenu)
                 {
                     foreach (var actionControl in container.Controls.OfType<IActionControl>())

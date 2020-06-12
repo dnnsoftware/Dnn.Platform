@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if ((this._styleSheetUrl.StartsWith("~")))
+                if (this._styleSheetUrl.StartsWith("~"))
                 {
                     return Globals.ResolveUrl(this._styleSheetUrl);
                 }

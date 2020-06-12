@@ -140,7 +140,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         returnUrl = HttpUtility.UrlEncode(returnUrl);
 
-                        this.loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (this.Request.QueryString["override"] != null));
+                        this.loginLink.NavigateUrl = Globals.LoginURL(returnUrl, this.Request.QueryString["override"] != null);
                         this.enhancedLoginLink.NavigateUrl = this.loginLink.NavigateUrl;
 
                         // avoid issues caused by multiple clicks of login link

@@ -114,9 +114,9 @@ namespace DotNetNuke.Framework.Reflections
             // will vary depending on the test runner and test configuration
             get
             {
-                return (from assembly in AppDomain.CurrentDomain.GetAssemblies()
+                return from assembly in AppDomain.CurrentDomain.GetAssemblies()
                     where this.CanScan(assembly)
-                    select new AssemblyWrapper(assembly));
+                    select new AssemblyWrapper(assembly);
             }
         }
     }

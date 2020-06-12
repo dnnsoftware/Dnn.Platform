@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.SearchResults
         {
             try
             {
-                if ((this.Page.IsPostBack == false))
+                if (this.Page.IsPostBack == false)
                 {
                     if (!String.IsNullOrEmpty(Convert.ToString(this.Settings["LinkTarget"])))
                     {

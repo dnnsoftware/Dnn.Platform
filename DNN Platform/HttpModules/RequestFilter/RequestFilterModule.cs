@@ -68,7 +68,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 // below skip full processing of this method
                 app.Context.Items.Add(InstalledKey, true);
                 var settings = RequestFilterSettings.GetSettings();
-                if ((settings == null || settings.Rules.Count == 0 || !settings.Enabled))
+                if (settings == null || settings.Rules.Count == 0 || !settings.Enabled)
                 {
                     return;
                 }
@@ -91,9 +91,9 @@ namespace DotNetNuke.HttpModules.RequestFilter
                                 break;
                         }
                     }
-                    if ((!string.IsNullOrEmpty(varVal)))
+                    if (!string.IsNullOrEmpty(varVal))
                     {
-                        if ((rule.Matches(varVal)))
+                        if (rule.Matches(varVal))
                         {
                             rule.Execute();
                         }

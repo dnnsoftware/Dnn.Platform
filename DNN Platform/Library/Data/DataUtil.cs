@@ -91,7 +91,7 @@ namespace DotNetNuke.Data
 
         internal static bool GetIsCacheable(Type type)
         {
-            return (GetAttribute<CacheableAttribute>(type) != null);
+            return GetAttribute<CacheableAttribute>(type) != null;
         }
 
         internal static TProperty GetPrimaryKey<TEntity, TProperty>(TEntity item)
@@ -159,7 +159,7 @@ namespace DotNetNuke.Data
         internal static string ReplaceTokens(string sql)
         {
             var isSqlCe = DataProvider.Instance().Settings.GetValueOrDefault("isSqlCe", false);
-            return sql.Replace("{databaseOwner}", (isSqlCe) ? String.Empty : DataProvider.Instance().DatabaseOwner)
+            return sql.Replace("{databaseOwner}", isSqlCe ? String.Empty : DataProvider.Instance().DatabaseOwner)
                         .Replace("{objectQualifier}", DataProvider.Instance().ObjectQualifier);
         }
     }

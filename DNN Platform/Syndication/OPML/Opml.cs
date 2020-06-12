@@ -337,7 +337,7 @@ namespace DotNetNuke.Services.Syndication
 
         public static Opml LoadFromUrl(Uri uri)
         {
-            return (OpmlDownloadManager.GetOpmlFeed(uri));
+            return OpmlDownloadManager.GetOpmlFeed(uri);
         }
 
         public static Opml LoadFromFile(string path)
@@ -347,11 +347,11 @@ namespace DotNetNuke.Services.Syndication
                 var opmlDoc = new XmlDocument { XmlResolver = null };
                 opmlDoc.Load(path);
 
-                return (LoadFromXml(opmlDoc));
+                return LoadFromXml(opmlDoc);
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
         }
 
@@ -453,7 +453,7 @@ namespace DotNetNuke.Services.Syndication
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
         }
 
@@ -463,8 +463,8 @@ namespace DotNetNuke.Services.Syndication
 
             newOutline.Text = ParseElement(node, "text");
             newOutline.Type = ParseElement(node, "type");
-            newOutline.IsComment = (ParseElement(node, "isComment") == "true" ? true : false);
-            newOutline.IsBreakpoint = (ParseElement(node, "isBreakpoint") == "true" ? true : false);
+            newOutline.IsComment = ParseElement(node, "isComment") == "true" ? true : false;
+            newOutline.IsBreakpoint = ParseElement(node, "isBreakpoint") == "true" ? true : false;
             try
             {
                 newOutline.Created = DateTime.Parse(ParseElement(node, "created"));
@@ -521,7 +521,7 @@ namespace DotNetNuke.Services.Syndication
         private static string ParseElement(XmlElement node, string attribute)
         {
             string attrValue = node.GetAttribute(attribute);
-            return (!String.IsNullOrEmpty(attrValue) ? attrValue : string.Empty);
+            return !String.IsNullOrEmpty(attrValue) ? attrValue : string.Empty;
         }
     }
 }

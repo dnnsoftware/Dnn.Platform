@@ -240,8 +240,8 @@ namespace DotNetNuke.UI.Modules
             }
             else
             {
-                viewMode = !(ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
-                                                              moduleInfo));
+                viewMode = ! ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, Null.NullString,
+                                                              moduleInfo);
             }
 
             return viewMode || settings.UserMode == PortalSettings.Mode.View;

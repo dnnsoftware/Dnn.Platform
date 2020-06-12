@@ -577,7 +577,7 @@ namespace log4net.Appender
         /// </returns>
         virtual protected bool IsAsSevereAsThreshold(Level level)
         {
-            return ((this.m_threshold == null) || level >= this.m_threshold);
+            return (this.m_threshold == null) || level >= this.m_threshold;
         }
 
         /// <summary>

@@ -765,7 +765,7 @@ namespace DotNetNuke.Entities.Urls
                     canUseMobileDevice = false;
                     var cookie = new HttpCookie(DisableMobileViewCookieName)
                     {
-                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                     };
                     response.Cookies.Set(cookie);
                 }
@@ -779,7 +779,7 @@ namespace DotNetNuke.Entities.Urls
                         cookie = new HttpCookie(DisableMobileViewCookieName)
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
-                            Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                            Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                         };
                         response.Cookies.Set(cookie);
                     }
@@ -992,7 +992,7 @@ namespace DotNetNuke.Entities.Urls
                             if (viewMobileCookie == null)
                             {
                                 response.Cookies.Add(new HttpCookie(MobileViewSiteCookieName, isMobile.ToString())
-                                    { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                                    { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
                             else
                             {
@@ -1034,13 +1034,13 @@ namespace DotNetNuke.Entities.Urls
         {
             // Try and get a user by the url
             var user = UserController.GetUserByVanityUrl(settings.PortalId, url);
-            bool isUnique = (user == null);
+            bool isUnique = user == null;
 
             if (isUnique)
             {
                 // Try and get a tab by the url
                 int tabId = TabController.GetTabByTabPath(settings.PortalId, "//" + url, settings.CultureCode);
-                isUnique = (tabId == -1 || tabId == validateUrlForTabId);
+                isUnique = tabId == -1 || tabId == validateUrlForTabId;
             }
 
             if (isUnique) // check whether have a tab which use the url.

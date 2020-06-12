@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             this.PreviewInfo = previewInfoViewModel;
             if (this.FieldsControl != null && this.PreviewInfo != null)
             {
-                var fieldsControl = ((PreviewFieldsControl)this.FieldsControl);
+                var fieldsControl = (PreviewFieldsControl)this.FieldsControl;
                 fieldsControl.Fields = this.PreviewInfo.Fields;
                 fieldsControl.GenerateFieldsTable();
             }

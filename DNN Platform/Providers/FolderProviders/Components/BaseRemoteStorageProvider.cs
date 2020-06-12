@@ -224,7 +224,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var item = this.GetStorageItem(folderMapping, folder.MappedPath + fileName);
-            return (item != null);
+            return item != null;
         }
 
         /// <summary>
@@ -274,7 +274,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var pattern = "^" + mappedPath;
             return (from i in list
                     let f = i.Key
-                     let r = (!string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f)
+                     let r = !string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
                     select Path.GetFileName(f)).ToArray();
 
@@ -359,9 +359,9 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             return (from o in list
                 let f = o.Key
                 let r =
-                    (!string.IsNullOrEmpty(folderPath)
+                    !string.IsNullOrEmpty(folderPath)
                         ? Regex.Replace(f,  pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2))
-                        : f)
+                        : f
                 where f.StartsWith(folderPath, StringComparison.InvariantCultureIgnoreCase)
                                    && f.Length > folderPath.Length
                                    && r.IndexOf("/", StringComparison.Ordinal) > -1

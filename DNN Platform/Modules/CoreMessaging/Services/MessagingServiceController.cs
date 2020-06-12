@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 foreach (var notification in notificationsDomainModel)
                 {
                     var user = UserController.Instance.GetUser(this.PortalSettings.PortalId, notification.SenderUserID);
-                    var displayName = (user != null ? user.DisplayName : "");
+                    var displayName = user != null ? user.DisplayName : "";
 
                     var notificationViewModel = new NotificationViewModel
                     {

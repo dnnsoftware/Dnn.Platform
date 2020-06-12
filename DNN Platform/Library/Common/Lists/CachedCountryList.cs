@@ -33,7 +33,7 @@ namespace DotNetNuke.Common.Lists
             : base()
         {
 
-            foreach (ListEntryInfo li in (new ListController()).GetListEntryInfoItems("Country"))
+            foreach (ListEntryInfo li in new ListController().GetListEntryInfoItems("Country"))
             {
                 string text = li.Text;
                 Country c = new Country

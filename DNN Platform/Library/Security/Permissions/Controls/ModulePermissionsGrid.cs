@@ -416,7 +416,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected override bool IsViewPermisison(PermissionInfo permissionInfo)
         {
-            return (permissionInfo.PermissionKey == "VIEW");
+            return permissionInfo.PermissionKey == "VIEW";
         }
 
         /// -----------------------------------------------------------------------------

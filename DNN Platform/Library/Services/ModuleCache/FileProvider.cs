@@ -82,10 +82,10 @@ namespace DotNetNuke.Services.ModuleCache
             string homeDirectoryMapPath = portalInfo.HomeSystemDirectoryMapPath;
 
 
-            if (!(string.IsNullOrEmpty(homeDirectoryMapPath)))
+            if (! string.IsNullOrEmpty(homeDirectoryMapPath))
             {
                 cacheFolder = string.Concat(homeDirectoryMapPath, "Cache\\Pages\\");
-                if (!(Directory.Exists(cacheFolder)))
+                if (! Directory.Exists(cacheFolder))
                 {
                     Directory.CreateDirectory(cacheFolder);
                 }
@@ -172,7 +172,7 @@ namespace DotNetNuke.Services.ModuleCache
             if (varyBy != null)
             {
                 SortedDictionary<string, string>.Enumerator varyByParms = varyBy.GetEnumerator();
-                while ((varyByParms.MoveNext()))
+                while (varyByParms.MoveNext())
                 {
                     string key = varyByParms.Current.Key.ToLowerInvariant();
                     cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));

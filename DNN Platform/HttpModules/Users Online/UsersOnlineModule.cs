@@ -55,7 +55,7 @@ namespace DotNetNuke.HttpModules.UsersOnline
             var objUserOnlineController = new UserOnlineController();
 
             // Is Users Online Enabled?
-            if ((objUserOnlineController.IsEnabled()))
+            if (objUserOnlineController.IsEnabled())
             {
                 objUserOnlineController.TrackUsers();
             }

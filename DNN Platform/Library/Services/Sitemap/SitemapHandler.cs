@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Sitemap
 
                 var builder = new SitemapBuilder(ps);
 
-                if ((context.Request.QueryString["i"] != null))
+                if (context.Request.QueryString["i"] != null)
                 {
                     // This is a request for one of the files that build the sitemapindex
                     builder.GetSitemapIndexFile(context.Request.QueryString["i"], Response.Output);

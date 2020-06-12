@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Analytics
             }
 
             scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
-            if ((!String.IsNullOrEmpty(urlParameter)))
+            if (!String.IsNullOrEmpty(urlParameter))
             {
                 scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", urlParameter);
             }

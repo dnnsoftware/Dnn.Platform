@@ -296,7 +296,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal static bool IsTabHomePage(TabInfo tab, PortalSettings portalSettings)
         {
-            bool isTabHomePage = (tab.TabID == portalSettings.HomeTabId);
+            bool isTabHomePage = tab.TabID == portalSettings.HomeTabId;
             if (!isTabHomePage)
             {
                 // 756: check if content localization is switched on before checking for other languages
@@ -348,7 +348,7 @@ namespace DotNetNuke.Entities.Urls
         public static string BuildTabPathWithReplacement(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {
             string path = "";
-            if ((tab.ParentId > -1))
+            if (tab.ParentId > -1)
             {
                 TabInfo parentTab = TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false);
                 // 822 : don't assume parent tab is going to exist - database might be corrupted

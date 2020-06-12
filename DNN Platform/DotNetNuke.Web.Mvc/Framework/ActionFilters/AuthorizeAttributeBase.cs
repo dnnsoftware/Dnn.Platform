@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             Requires.NotNull("httpContext", httpContext);
 
             bool isAuthorized = this.AuthorizeCore(httpContext);
-            return (isAuthorized) ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
+            return isAuthorized ? HttpValidationStatus.Valid : HttpValidationStatus.IgnoreThisRequest;
         }
 
         /// <summary>

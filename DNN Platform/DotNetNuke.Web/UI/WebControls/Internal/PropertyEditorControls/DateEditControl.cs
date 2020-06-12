@@ -140,7 +140,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
             get
             {
                 string _StringValue = Null.NullString;
-                if ((this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate))
+                if (this.DateValue.ToUniversalTime().Date != (DateTime)SqlDateTime.MinValue && this.DateValue != Null.NullDate)
                 {
                     _StringValue = this.DateValue.ToString(this.Format);
                 }

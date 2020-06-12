@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
             term.Name = HttpUtility.HtmlEncode(term.Name);
 
-            if ((term.IsHeirarchical))
+            if (term.IsHeirarchical)
             {
                 term.TermId = this._DataService.AddHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }
@@ -123,7 +123,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNull("term", term);
             Requires.PropertyNotNegative("term", "TermId", term.TermId);
 
-            if ((term.IsHeirarchical))
+            if (term.IsHeirarchical)
             {
                 this._DataService.DeleteHeirarchicalTerm(term);
             }
@@ -202,8 +202,8 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.NotNullOrEmpty("vocabularyName", vocabularyName);
 
             IVocabularyController vocabularyController = Util.GetVocabularyController();
-            Vocabulary vocabulary = (vocabularyController.GetVocabularies()
-                                        .Cast<Vocabulary>().Where(v => v.Name == vocabularyName))
+            Vocabulary vocabulary = vocabularyController.GetVocabularies()
+                                        .Cast<Vocabulary>().Where(v => v.Name == vocabularyName)
                                     .SingleOrDefault();
 
             if (vocabulary == null)
@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             Requires.PropertyNotNegative("term", "Vocabulary.VocabularyId", term.VocabularyId);
             Requires.PropertyNotNullOrEmpty("term", "Name", term.Name);
 
-            if ((term.IsHeirarchical))
+            if (term.IsHeirarchical)
             {
                 this._DataService.UpdateHeirarchicalTerm(term, UserController.Instance.GetCurrentUserInfo().UserID);
             }

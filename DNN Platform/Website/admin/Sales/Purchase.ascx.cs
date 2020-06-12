@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 double dblTotal;
                 string strCurrency;
 
-                if ((this.Request.QueryString["RoleID"] != null))
+                if (this.Request.QueryString["RoleID"] != null)
                 {
                     this.RoleID = Int32.Parse(this.Request.QueryString["RoleID"]);
                 }

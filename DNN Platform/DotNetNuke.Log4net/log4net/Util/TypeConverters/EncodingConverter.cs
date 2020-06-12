@@ -56,7 +56,7 @@ namespace log4net.Util.TypeConverters
         /// </remarks>
         public bool CanConvertFrom(Type sourceType)
         {
-            return (sourceType == typeof(string));
+            return sourceType == typeof(string);
         }
 
         /// <summary>

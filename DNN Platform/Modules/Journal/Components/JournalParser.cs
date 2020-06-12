@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.Journal.Components
                         } else if (xc > 0 & xc < xLikes.Count & xc < 3) {
                             sb.Append(" {resx:and} ");
                         } else if (xc >= 3) {
-                            int diff = (xLikes.Count - xc);
+                            int diff = xLikes.Count - xc;
                             sb.Append(" {resx:and} " + (xLikes.Count - xc).ToString(CultureInfo.InvariantCulture));
                             if (diff > 1) {
                                 sb.Append(" {resx:others}");

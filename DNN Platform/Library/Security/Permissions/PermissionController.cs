@@ -175,15 +175,15 @@ namespace DotNetNuke.Security.Permissions
             PermissionInfo permissionInfo = this.GetPermissionByCodeAndKey(permission.PermissionCode, permission.PermissionKey).ToArray().Cast<PermissionInfo>().FirstOrDefault();
             T result = null;
 
-            if ((permissionInfo != null))
+            if (permissionInfo != null)
             {
                 int RoleID = int.MinValue;
                 int UserID = int.MinValue;
 
-                if ((string.IsNullOrEmpty(permission.RoleName)))
+                if (string.IsNullOrEmpty(permission.RoleName))
                 {
                     UserInfo _user = UserController.GetUserByName(portalId, permission.Username);
-                    if ((_user != null))
+                    if (_user != null)
                     {
                         UserID = _user.UserID;
                     }
@@ -200,7 +200,7 @@ namespace DotNetNuke.Security.Permissions
                             break;
                         default:
                             RoleInfo _role = RoleController.Instance.GetRole(portalId, r => r.RoleName == permission.RoleName);
-                            if ((_role != null))
+                            if (_role != null)
                             {
                                 RoleID = _role.RoleID;
                             }
@@ -212,11 +212,11 @@ namespace DotNetNuke.Security.Permissions
                 if (RoleID != int.MinValue || UserID != int.MinValue)
                 {
                     permission.PermissionID = permissionInfo.PermissionID;
-                    if ((RoleID != int.MinValue))
+                    if (RoleID != int.MinValue)
                     {
                         permission.RoleID = RoleID;
                     }
-                    if ((UserID != int.MinValue))
+                    if (UserID != int.MinValue)
                     {
                         permission.UserID = UserID;
                     }

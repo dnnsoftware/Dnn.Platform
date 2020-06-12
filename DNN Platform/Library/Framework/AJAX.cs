@@ -175,7 +175,7 @@ namespace DotNetNuke.Framework
             if (!IsEnabled())
             {
                 Control objControl = objPage.FindControl("ScriptManager");
-                if ((objControl != null))
+                if (objControl != null)
                 {
                     objPage.Form.Controls.Remove(objControl);
                 }

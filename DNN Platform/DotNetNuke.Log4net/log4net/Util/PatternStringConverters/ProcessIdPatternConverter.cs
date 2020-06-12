@@ -55,7 +55,7 @@ namespace log4net.Util.PatternStringConverters
 #endif
         override protected void Convert(TextWriter writer, object state)
         {
-#if (NETCF || SSCLI)
+#if NETCF || SSCLI
 			// On compact framework there is no System.Diagnostics.Process class
 			writer.Write( SystemInfo.NotAvailableText );
 #else

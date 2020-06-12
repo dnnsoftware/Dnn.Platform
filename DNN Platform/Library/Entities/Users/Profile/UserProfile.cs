@@ -253,7 +253,7 @@ namespace DotNetNuke.Entities.Users
             {
                 string photoURL = Globals.ApplicationPath + "/images/no_avatar.gif";
                 ProfilePropertyDefinition photoProperty = this.GetProperty(USERPROFILE_Photo);
-                if ((photoProperty != null))
+                if (photoProperty != null)
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Users
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
-                        if ((fileInfo != null))
+                        if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
                         }
@@ -282,12 +282,12 @@ namespace DotNetNuke.Entities.Users
             {
                 string photoURLFile = Globals.ApplicationPath + "/images/no_avatar.gif";
                 ProfilePropertyDefinition photoProperty = this.GetProperty(USERPROFILE_Photo);
-                if ((photoProperty != null))
+                if (photoProperty != null)
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
                     PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
 
-                    bool isVisible = (user.UserID == this._user.UserID);
+                    bool isVisible = user.UserID == this._user.UserID;
                     if (!isVisible)
                     {
                         switch (photoProperty.ProfileVisibility.VisibilityMode)
@@ -308,7 +308,7 @@ namespace DotNetNuke.Entities.Users
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
-                        if ((fileInfo != null))
+                        if (fileInfo != null)
                         {
                             string rootFolder = "";
                             if (fileInfo.PortalId == Null.NullInteger)
@@ -386,7 +386,7 @@ namespace DotNetNuke.Entities.Users
                 }
 
                 // still we can't find it or it's somehow set to null
-                return _TimeZone ?? (TimeZoneInfo.Local);
+                return _TimeZone ?? TimeZoneInfo.Local;
             }
             set
             {

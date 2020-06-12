@@ -49,8 +49,8 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             foreach (var server in additionalServers)
             {
                 // Setup parameters for sending
-                var commandParameter = (Host.DebugMode) ? command : UrlUtils.EncryptParameter(command, Host.GUID);
-                var detailParameter = (Host.DebugMode) ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
+                var commandParameter = Host.DebugMode ? command : UrlUtils.EncryptParameter(command, Host.GUID);
+                var detailParameter = Host.DebugMode ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
                 var protocol = HostController.Instance.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
                 var notificationUrl =
                     $"{protocol}{server.Url}/SimpleWebFarmSync.aspx?command={commandParameter}&detail={detailParameter}";
@@ -63,7 +63,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 notificationRequest.UseDefaultCredentials = true;
 
                 // Start the asynchronous request
-                var result = (notificationRequest.BeginGetResponse(this.OnServerNotificationCompleteCallback, notificationRequest));
+                var result = notificationRequest.BeginGetResponse(this.OnServerNotificationCompleteCallback, notificationRequest);
 
                 // Register timeout
                 // TODO: Review possible use of async/await C# 7 implementation
@@ -78,7 +78,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             try
             {
                 // Get the response
-                using (var response = (HttpWebResponse)(request.EndGetResponse(asynchronousResult)))
+                using (var response = (HttpWebResponse) request.EndGetResponse(asynchronousResult))
                 {
                     // If status code is ok do nothing
                     if (response.StatusCode == HttpStatusCode.OK)

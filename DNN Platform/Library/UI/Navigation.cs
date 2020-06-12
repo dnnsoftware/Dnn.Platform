@@ -387,11 +387,11 @@ namespace DotNetNuke.UI
         public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
         {
             // if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
-            return ((tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
+            return (tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
                     (!tab.DisableLink || showDisabled) &&
                     (((tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate) &&
                       (tab.EndDate > DateTime.Now || tab.EndDate == Null.NullDate)) || isAdminMode) &&
-                    TabPermissionController.CanNavigateToPage(tab));
+                    TabPermissionController.CanNavigateToPage(tab);
         }
 
         /// -----------------------------------------------------------------------------

@@ -266,13 +266,13 @@ namespace DotNetNuke.Security.Roles
             {
                 string photoURL = Globals.ApplicationPath + "/images/sample-group-profile.jpg";
 
-                if ((this.IconFile != null))
+                if (this.IconFile != null)
                 {
                     if (!string.IsNullOrEmpty(this.IconFile))
                     {
                         IFileInfo fileInfo =
                             FileManager.Instance.GetFile(int.Parse(this.IconFile.Replace("FileID=", string.Empty)));
-                        if ((fileInfo != null))
+                        if (fileInfo != null)
                         {
                             photoURL = FileManager.Instance.GetUrl(fileInfo);
                         }

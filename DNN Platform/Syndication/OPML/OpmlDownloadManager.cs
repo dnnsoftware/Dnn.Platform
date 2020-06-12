@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Syndication
 
             if (opmlFeed != null)
             {
-                return (opmlFeed);
+                return opmlFeed;
             }
 
             // May fail under partial trust
@@ -101,17 +101,17 @@ namespace DotNetNuke.Services.Syndication
             }
             catch
             {
-                return (new Opml());
+                return new Opml();
             }
 
-            return (opmlFeed);
+            return opmlFeed;
         }
 
         private Opml TryLoadFromDisk(Uri uri)
         {
             if (this._directoryOnDisk == null)
             {
-                return (null); // no place to cache
+                return null; // no place to cache
             }
 
             // look for all files matching the prefix

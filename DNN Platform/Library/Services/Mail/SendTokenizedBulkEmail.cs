@@ -490,8 +490,8 @@ namespace DotNetNuke.Services.Mail
                         // optimization:
                         if (replaceTokens)
                         {
-                            individualBody = (this._tokenReplace.Cacheability(this._body) == CacheLevel.notCacheable);
-                            individualSubj = (this._tokenReplace.Cacheability(this.Subject) == CacheLevel.notCacheable);
+                            individualBody = this._tokenReplace.Cacheability(this._body) == CacheLevel.notCacheable;
+                            individualSubj = this._tokenReplace.Cacheability(this.Subject) == CacheLevel.notCacheable;
                             if (!individualBody)
                             {
                                 body = this._tokenReplace.ReplaceEnvironmentTokens(body);

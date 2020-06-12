@@ -140,8 +140,8 @@ namespace DotNetNuke.Services.Install
                         }
 
                         var licenseConfig = installConfig.License;
-                        bool IsProOrEnterprise = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
-                                                  File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
+                        bool IsProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
+                                                  File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
                         if (IsProOrEnterprise && licenseConfig != null && !String.IsNullOrEmpty(licenseConfig.AccountEmail) &&
                             !String.IsNullOrEmpty(licenseConfig.InvoiceNumber))
                         {
@@ -288,7 +288,7 @@ namespace DotNetNuke.Services.Install
                         // Execute Special Script
                         Upgrade.Upgrade.ExecuteScript(strProviderPath + "Upgrade." + objProviderConfiguration.DefaultProvider);
 
-                        if ((this.Request.QueryString["ignoreWarning"] != null))
+                        if (this.Request.QueryString["ignoreWarning"] != null)
                         {
                             ignoreWarning = this.Request.QueryString["ignoreWarning"].ToLowerInvariant();
                         }
@@ -535,7 +535,7 @@ namespace DotNetNuke.Services.Install
             int scriptTimeOut = this.Server.ScriptTimeout;
 
             string mode = "";
-            if ((this.Request.QueryString["mode"] != null))
+            if (this.Request.QueryString["mode"] != null)
             {
                 mode = this.Request.QueryString["mode"].ToLowerInvariant();
             }

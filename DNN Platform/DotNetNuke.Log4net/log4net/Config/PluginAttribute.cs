@@ -154,7 +154,7 @@ namespace log4net.Config
             }
 #endif
             // Check that the type is a plugin
-            if (!(typeof(IPlugin).IsAssignableFrom(pluginType)))
+            if (! typeof(IPlugin).IsAssignableFrom(pluginType))
             {
                 throw new LogException("Plugin type [" + pluginType.FullName + "] does not implement the log4net.IPlugin interface");
             }

@@ -92,7 +92,7 @@ namespace DotNetNuke.Common
             {
             }
             vreader.Close();
-            return (this._errs.Count == 0);
+            return this._errs.Count == 0;
         }
 
         /// <summary>

@@ -92,7 +92,7 @@ namespace DotNetNuke.Common.Utilities
             finally
             {
                 // Ensure DataReader is closed
-                if ((!isSuccess))
+                if (!isSuccess)
                 {
                     closeReader = true;
                 }
@@ -150,7 +150,7 @@ namespace DotNetNuke.Common.Utilities
             finally
             {
                 // Ensure DataReader is closed
-                if ((!isSuccess))
+                if (!isSuccess)
                 {
                     closeReader = true;
                 }
@@ -180,7 +180,7 @@ namespace DotNetNuke.Common.Utilities
             finally
             {
                 // Ensure DataReader is closed
-                if ((!isSuccess))
+                if (!isSuccess)
                 {
                     closeReader = true;
                 }
@@ -208,7 +208,7 @@ namespace DotNetNuke.Common.Utilities
             finally
             {
                 // Ensure DataReader is closed
-                if ((!isSuccess))
+                if (!isSuccess)
                 {
                     closeReader = true;
                 }

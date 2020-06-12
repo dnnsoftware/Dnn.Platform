@@ -59,9 +59,9 @@ namespace Dnn.Modules.Console
                 {
                     continue;
                 }
-                if ((tabIdList.Contains(tab.ParentId)))
+                if (tabIdList.Contains(tab.ParentId))
                 {
-                    if ((!tabIdList.Contains(tab.TabID)))
+                    if (!tabIdList.Contains(tab.TabID))
                     {
                         tabIdList.Add(tab.TabID);
                     }
@@ -176,7 +176,7 @@ namespace Dnn.Modules.Console
             {
                 // validate console width value
                 var wdth = string.Empty;
-                if ((this.ConsoleWidth.Text.Trim().Length > 0))
+                if (this.ConsoleWidth.Text.Trim().Length > 0)
                 {
                     try
                     {

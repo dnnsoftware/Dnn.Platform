@@ -148,7 +148,7 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 this.UpdateRoleSelections();
-                return (new ArrayList(this.CurrentRoleSelection.ToArray()));
+                return new ArrayList(this.CurrentRoleSelection.ToArray());
             }
             set
             {

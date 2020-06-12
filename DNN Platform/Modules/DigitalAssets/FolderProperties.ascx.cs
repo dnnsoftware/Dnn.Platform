@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.DigitalAssets
     {
         private static readonly DigitalAssetsSettingsRepository SettingsRepository = new DigitalAssetsSettingsRepository();
 
-        private readonly IDigitalAssetsController controller = (new Factory()).DigitalAssetsController;
+        private readonly IDigitalAssetsController controller = new Factory().DigitalAssetsController;
         private FolderViewModel folderViewModel;
         private bool isRootFolder;
         private Control folderFieldsControl;

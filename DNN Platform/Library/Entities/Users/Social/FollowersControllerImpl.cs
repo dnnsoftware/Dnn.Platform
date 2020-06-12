@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             var userRelationship = RelationshipController.Instance.GetFollowerRelationship(user1, user2);
 
-            return (userRelationship != null && userRelationship.Status == RelationshipStatus.Accepted);
+            return userRelationship != null && userRelationship.Status == RelationshipStatus.Accepted;
         }
     }
 }

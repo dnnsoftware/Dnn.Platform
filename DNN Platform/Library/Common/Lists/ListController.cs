@@ -66,7 +66,7 @@ namespace DotNetNuke.Common.Lists
                     list.ParentKey = Convert.ToString(dr["ParentKey"]);
                     list.Parent = Convert.ToString(dr["Parent"]);
                     list.ParentList = Convert.ToString(dr["ParentList"]);
-                    list.EnableSortOrder = (Convert.ToInt32(dr["MaxSortOrder"]) > 0);
+                    list.EnableSortOrder = Convert.ToInt32(dr["MaxSortOrder"]) > 0;
                     list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
                 }
             }
@@ -198,7 +198,7 @@ namespace DotNetNuke.Common.Lists
             {
                 foreach (KeyValuePair<string, ListInfo> listPair in this.GetListInfoDictionary(list.PortalID))
                 {
-                    if ((listPair.Value.ParentList.StartsWith(list.Key)))
+                    if (listPair.Value.ParentList.StartsWith(list.Key))
                     {
                         lists.Add(listPair.Value.Key.Replace(":", "."), listPair.Value);
                     }

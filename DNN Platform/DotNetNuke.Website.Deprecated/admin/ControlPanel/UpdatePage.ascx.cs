@@ -68,17 +68,17 @@ namespace DotNetNuke.UI.ControlPanel
 
         protected void CmdUpdateClick(object sender, EventArgs e)
         {
-            if ((TabPermissionController.CanManagePage()))
+            if (TabPermissionController.CanManagePage())
             {
                 TabInfo selectedTab = null;
-                if ((!string.IsNullOrEmpty(this.PageLst.SelectedValue)))
+                if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
                 {
                     int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
                     selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
                 }
 
                 TabRelativeLocation tabLocation = TabRelativeLocation.NOTSET;
-                if ((!string.IsNullOrEmpty(this.LocationLst.SelectedValue)))
+                if (!string.IsNullOrEmpty(this.LocationLst.SelectedValue))
                 {
                     tabLocation = (TabRelativeLocation)Enum.Parse(typeof(TabRelativeLocation), this.LocationLst.SelectedValue);
                 }
@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.ControlPanel
                     tempTab.TabPath = tab.TabPath;
                 }
 
-                if ((string.IsNullOrEmpty(errMsg)))
+                if (string.IsNullOrEmpty(errMsg))
                 {
                     this.Response.Redirect(this._navigationManager.NavigateURL(tab.TabID));
                 }
@@ -168,7 +168,7 @@ namespace DotNetNuke.UI.ControlPanel
             get
             {
                 // Weird - but the activetab has different skin src value than getting from the db
-                if (((this._currentTab == null)))
+                if ((this._currentTab == null))
                 {
                     this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
                 }
@@ -196,7 +196,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             this.LocationLst.Enabled = RibbonBarManager.CanMovePage();
             this.PageLst.Enabled = RibbonBarManager.CanMovePage();
-            if ((this.LocationLst.Enabled))
+            if (this.LocationLst.Enabled)
             {
                 this.LoadLocationList();
                 this.LoadPageList();
@@ -244,7 +244,7 @@ namespace DotNetNuke.UI.ControlPanel
             }
 
             // No portal skins added, remove the header
-            if ((this.SkinLst.Items.Count == 2))
+            if (this.SkinLst.Items.Count == 2)
             {
                 this.SkinLst.Items.Remove(1);
             }
@@ -283,10 +283,10 @@ namespace DotNetNuke.UI.ControlPanel
 
             // Set the selected item
             this.SkinLst.SelectedIndex = 0;
-            if ((!string.IsNullOrEmpty(this.CurrentTab.SkinSrc)))
+            if (!string.IsNullOrEmpty(this.CurrentTab.SkinSrc))
             {
                 RadComboBoxItem selectItem = this.SkinLst.FindItemByValue(this.CurrentTab.SkinSrc);
-                if (((selectItem != null)))
+                if ((selectItem != null))
                 {
                     selectItem.Selected = true;
                 }

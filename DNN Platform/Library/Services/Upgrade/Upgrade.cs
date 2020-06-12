@@ -157,11 +157,11 @@ namespace DotNetNuke.Services.Upgrade
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                if ((tabID != Null.NullInteger))
+                if (tabID != Null.NullInteger)
                 {
                     TabInfo tab = TabController.Instance.GetTab(tabID, portal.PortalID, true);
 
-                    if ((tab.TabPermissions.Count == 0))
+                    if (tab.TabPermissions.Count == 0)
                     {
                         AddPagePermission(tab.TabPermissions, "View", Convert.ToInt32(portal.AdministratorRoleId));
                         AddPagePermission(tab.TabPermissions, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
@@ -322,7 +322,7 @@ namespace DotNetNuke.Services.Upgrade
                     IsPortable = isPortable,
                     SupportedFeatures = 0
                 };
-                if ((isPortable))
+                if (isPortable)
                 {
                     desktopModule.SupportedFeatures = 1;
                 }
@@ -387,7 +387,7 @@ namespace DotNetNuke.Services.Upgrade
             int parentId = Null.NullInteger;
             int portalId = Null.NullInteger;
 
-            if ((parentTab != null))
+            if (parentTab != null)
             {
                 parentId = parentTab.TabID;
                 portalId = parentTab.PortalID;
@@ -436,7 +436,7 @@ namespace DotNetNuke.Services.Upgrade
                 };
                 tab.TabID = TabController.Instance.AddTab(tab, !isAdmin);
 
-                if (((permissions != null)))
+                if ((permissions != null))
                 {
                     foreach (TabPermissionInfo tabPermission in permissions)
                     {
@@ -697,7 +697,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(desktopModuleName, Null.NullInteger);
 
-            return ((desktopModule != null));
+            return (desktopModule != null);
         }
 
         private static void EnableModalPopUps()
@@ -811,7 +811,7 @@ namespace DotNetNuke.Services.Upgrade
                 string resourcesFile = Path.GetFileName(scriptFile);
                 if (!String.IsNullOrEmpty(resourcesFile))
                 {
-                    HtmlUtils.WriteScriptSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(exceptions)), resourcesFile.Replace("." + DefaultProvider, ".log.resources"));
+                    HtmlUtils.WriteScriptSuccessError(HttpContext.Current.Response, string.IsNullOrEmpty(exceptions), resourcesFile.Replace("." + DefaultProvider, ".log.resources"));
                 }
             }
 
@@ -861,7 +861,7 @@ namespace DotNetNuke.Services.Upgrade
             var hostTab = TabController.Instance.GetTabByName("Host", Null.NullInteger);
 
             var tab = TabController.Instance.GetTabByName(tabName, Null.NullInteger, hostTab.TabID);
-            if ((tab != null))
+            if (tab != null)
             {
                 tabExists = true;
             }
@@ -886,7 +886,7 @@ namespace DotNetNuke.Services.Upgrade
             string exceptions = "";
 
             bool installMemberRole = true;
-            if ((Config.GetSetting("InstallMemberRole") != null))
+            if (Config.GetSetting("InstallMemberRole") != null)
             {
                 installMemberRole = bool.Parse(Config.GetSetting("InstallMemberRole"));
             }
@@ -1527,10 +1527,10 @@ namespace DotNetNuke.Services.Upgrade
             TabInfo tab;
 
             // add console settings for host page
-            if ((tabId != Null.NullInteger))
+            if (tabId != Null.NullInteger)
             {
                 tab = TabController.Instance.GetTab(tabId, Null.NullInteger, true);
-                if (((tab != null)))
+                if ((tab != null))
                 {
                     AddConsoleModuleSettings(moduleId);
                 }
@@ -1540,10 +1540,10 @@ namespace DotNetNuke.Services.Upgrade
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
                 tabId = TabController.GetTabByTabPath(portal.PortalID, "//Admin", Null.NullString);
-                if ((tabId != Null.NullInteger))
+                if (tabId != Null.NullInteger)
                 {
                     tab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
-                    if (((tab != null)))
+                    if ((tab != null))
                     {
                         moduleId = AddModuleToPage(tab, moduleDefId, "Basic Features", "", true);
                         AddConsoleModuleSettings(moduleId);
@@ -3601,7 +3601,7 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddAdminPage:" + tabName);
             TabInfo adminPage = TabController.Instance.GetTab(portal.AdminTabId, portal.PortalID, false);
 
-            if ((adminPage != null))
+            if (adminPage != null)
             {
                 var tabPermissionCollection = new TabPermissionCollection();
                 AddPagePermission(tabPermissionCollection, "View", Convert.ToInt32(portal.AdministratorRoleId));
@@ -3626,7 +3626,7 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddHostPage:" + tabName);
             TabInfo hostPage = TabController.Instance.GetTabByName("Host", Null.NullInteger);
 
-            if ((hostPage != null))
+            if (hostPage != null)
             {
                 return AddPage(hostPage, tabName, description, tabIconFile, tabIconFileLarge, isVisible, new TabPermissionCollection(), true);
             }
@@ -3694,7 +3694,7 @@ namespace DotNetNuke.Services.Upgrade
             ModuleInfo moduleInfo;
             int moduleId = Null.NullInteger;
 
-            if ((page != null))
+            if (page != null)
             {
                 bool isDuplicate = false;
                 foreach (var kvp in ModuleController.Instance.GetTabModules(page.TabID))
@@ -3752,10 +3752,10 @@ namespace DotNetNuke.Services.Upgrade
             int moduleId = Null.NullInteger;
 
             int tabID = TabController.GetTabByTabPath(portalId, tabPath, Null.NullString);
-            if ((tabID != Null.NullInteger))
+            if (tabID != Null.NullInteger)
             {
                 TabInfo tab = TabController.Instance.GetTab(tabID, portalId, true);
-                if ((tab != null))
+                if (tab != null)
                 {
                     moduleId = AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
                 }
@@ -3769,10 +3769,10 @@ namespace DotNetNuke.Services.Upgrade
             foreach (PortalInfo portal in portals)
             {
                 int tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                if ((tabID != Null.NullInteger))
+                if (tabID != Null.NullInteger)
                 {
                     var tab = TabController.Instance.GetTab(tabID, portal.PortalID, true);
-                    if ((tab != null))
+                    if (tab != null)
                     {
                         AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
                     }
@@ -3797,7 +3797,7 @@ namespace DotNetNuke.Services.Upgrade
                 string childPath = "";
                 string domain = "";
 
-                if ((HttpContext.Current != null))
+                if (HttpContext.Current != null)
                 {
                     domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install", "");
                 }
@@ -4195,7 +4195,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (writeFeedback)
             {
-                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(exceptions)));
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, string.IsNullOrEmpty(exceptions));
             }
 
             return exceptions;
@@ -4338,7 +4338,7 @@ namespace DotNetNuke.Services.Upgrade
 
             // get base version
             XmlNode node = xmlDoc.SelectSingleNode("//dotnetnuke");
-            if ((node != null))
+            if (node != null)
             {
                 version = XmlUtils.GetNodeValue(node.CreateNavigator(), "version");
             }
@@ -4425,7 +4425,7 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "GetSuperUser");
             XmlNode node = xmlTemplate.SelectSingleNode("//dotnetnuke/superuser");
             UserInfo superUser = null;
-            if ((node != null))
+            if (node != null)
             {
                 if (writeFeedback)
                 {
@@ -4564,7 +4564,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InitialiseHostSettings");
             XmlNode node = xmlTemplate.SelectSingleNode("//dotnetnuke/settings");
-            if ((node != null))
+            if (node != null)
             {
                 if (writeFeedback)
                 {
@@ -4583,7 +4583,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
                         bool settingIsSecure = false;
-                        if ((secureAttrib != null))
+                        if (secureAttrib != null)
                         {
                             if (secureAttrib.Value.ToLowerInvariant() == "true")
                             {
@@ -4653,7 +4653,7 @@ namespace DotNetNuke.Services.Upgrade
 
             // Parse the script nodes
             XmlNode node = xmlDoc.SelectSingleNode("//dotnetnuke/scripts");
-            if ((node != null))
+            if (node != null)
             {
                 // Loop through the available scripts
                 message = (from XmlNode scriptNode in node.SelectNodes("script") select scriptNode.InnerText + "." + defaultProvider).Aggregate(message, (current, script) => current + ExecuteScript(providerPath + script, writeFeedback));
@@ -4751,7 +4751,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     foreach (XmlNode node in nodes)
                     {
-                        if ((node != null))
+                        if (node != null)
                         {
                             // add item to identity install from install wizard.
                             if (HttpContext.Current != null)
@@ -4776,7 +4776,7 @@ namespace DotNetNuke.Services.Upgrade
             else
             {
                 // 500 Error - Redirect to ErrorPage
-                if ((HttpContext.Current != null))
+                if (HttpContext.Current != null)
                 {
                     string url = "~/ErrorPage.aspx?status=500&error=" + errorMessage;
                     HttpContext.Current.Response.Clear();
@@ -4799,7 +4799,7 @@ namespace DotNetNuke.Services.Upgrade
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "InstallFiles");
             // Parse the file nodes
             XmlNode node = xmlDoc.SelectSingleNode("//dotnetnuke/files");
-            if ((node != null))
+            if (node != null)
             {
                 if (writeFeedback)
                 {
@@ -5091,7 +5091,7 @@ namespace DotNetNuke.Services.Upgrade
             foreach (PortalInfo portal in portals)
             {
                 var tabID = TabController.GetTabByTabPath(portal.PortalID, tabPath, Null.NullString);
-                if ((tabID != Null.NullInteger))
+                if (tabID != Null.NullInteger)
                 {
                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                 }
@@ -5438,7 +5438,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (writeFeedback)
             {
-                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(exceptions)));
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, string.IsNullOrEmpty(exceptions));
             }
 
             return exceptions;
@@ -5742,7 +5742,7 @@ namespace DotNetNuke.Services.Upgrade
 
             if (writeFeedback)
             {
-                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, (string.IsNullOrEmpty(strExceptions)));
+                HtmlUtils.WriteSuccessError(HttpContext.Current.Response, string.IsNullOrEmpty(strExceptions));
             }
 
             return strExceptions;
@@ -6107,7 +6107,7 @@ namespace DotNetNuke.Services.Upgrade
 
         public static string ActivateLicense()
         {
-            var isLicensable = (File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll")));
+            var isLicensable = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) || File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
             var activationResult = "";
 
             if (isLicensable)

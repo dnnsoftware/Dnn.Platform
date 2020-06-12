@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
             string _IPNumberPart1 = Convert.ToString(((int)(_IPNumber / 16777216)) % 256);
             string _IPNumberPart2 = Convert.ToString(((int)(_IPNumber / 65536)) % 256);
             string _IPNumberPart3 = Convert.ToString(((int)(_IPNumber / 256)) % 256);
-            string _IPNumberPart4 = Convert.ToString(((int)(_IPNumber)) % 256);
+            string _IPNumberPart4 = Convert.ToString(((int)_IPNumber) % 256);
             return _IPNumberPart1 + "." + _IPNumberPart2 + "." + _IPNumberPart3 + "." + _IPNumberPart4;
         }
 

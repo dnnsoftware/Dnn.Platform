@@ -105,7 +105,7 @@ namespace DotNetNuke.Modules.Html
 
                 htmlTextInfo = objHTML.GetTopHtmlText(this.ModuleId, !this.IsEditable, this.WorkflowID);
 
-                if ((htmlTextInfo != null))
+                if (htmlTextInfo != null)
                 {
                     // don't decode yet (this is done in FormatHtmlText)
                     contentString = htmlTextInfo.Content;
@@ -188,7 +188,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
             try
             {
                 // verify security
-                if ((!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text)))
+                if (!PortalSecurity.Instance.InputFilter(e.Text, PortalSecurity.FilterFlag.NoScripting).Equals(e.Text))
                 {
                     throw new SecurityException();
                 }
@@ -300,7 +300,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
                 this.WorkflowID = objHTML.GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
                 HtmlTextInfo objContent = objHTML.GetTopHtmlText(this.ModuleId, false, this.WorkflowID);
-                if ((objContent != null))
+                if (objContent != null)
                 {
                     // if content is in the first state
                     if (objContent.StateID == objWorkflow.GetFirstWorkflowStateID(this.WorkflowID))

@@ -330,7 +330,7 @@ namespace DotNetNuke.Common.Utilities
                 ImageCodecInfo[] encoders = ImageCodecInfo.GetImageEncoders();
                 for (i = 0; i <= (encoders.Length - 1); i++)
                 {
-                    if ((encoders[i].MimeType == myMimeType))
+                    if (encoders[i].MimeType == myMimeType)
                     {
                         return encoders[i];
                     }

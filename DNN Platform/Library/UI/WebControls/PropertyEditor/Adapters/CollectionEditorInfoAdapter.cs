@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.WebControls
                     objProperty = this.DataSource.GetType().GetProperty(ValueDataField);
 
                     // Set the Value property to the new value
-                    if ((!(ReferenceEquals(newValue, oldValue))) || changed)
+                    if ((! ReferenceEquals(newValue, oldValue)) || changed)
                     {
                         if (objProperty.PropertyType.FullName == "System.String")
                         {

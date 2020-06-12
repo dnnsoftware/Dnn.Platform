@@ -273,7 +273,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 public OctreeNode(int level, int colorBits, Octree octree)
                 {
                     // Construct the new node
-                    this._leaf = (level == colorBits);
+                    this._leaf = level == colorBits;
 
                     this._red = this._green = this._blue = 0;
                     this._pixelCount = 0;
@@ -316,7 +316,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         int shift = 7 - level;
                         int index = ((pixel.Red & mask[level]) >> (shift - 2)) |
                             ((pixel.Green & mask[level]) >> (shift - 1)) |
-                            ((pixel.Blue & mask[level]) >> (shift));
+                            ((pixel.Blue & mask[level]) >> shift);
 
                         OctreeNode  child = this._children[index];
 
@@ -377,7 +377,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                     this._leaf = true;
 
                     // Return the number of nodes to decrement the leaf count by
-                    return (children - 1);
+                    return children - 1;
                 }
 
                 /// <summary>
@@ -418,7 +418,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         int shift = 7 - level;
                         int index = ((pixel.Red & mask[level]) >> (shift - 2)) |
                             ((pixel.Green & mask[level]) >> (shift - 1)) |
-                            ((pixel.Blue & mask[level]) >> (shift));
+                            ((pixel.Blue & mask[level]) >> shift);
 
                         if (null != this._children[index])
                             paletteIndex = this._children[index].GetPaletteIndex(pixel, level + 1);

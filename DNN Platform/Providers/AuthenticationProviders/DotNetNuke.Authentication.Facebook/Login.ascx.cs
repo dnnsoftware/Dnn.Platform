@@ -42,8 +42,8 @@ namespace DotNetNuke.Authentication.Facebook
 
             this.OAuthClient = new FacebookClient(this.PortalId, this.Mode);
 
-            this.loginItem.Visible = (this.Mode == AuthMode.Login);
-            this.registerItem.Visible = (this.Mode == AuthMode.Register);
+            this.loginItem.Visible = this.Mode == AuthMode.Login;
+            this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
         protected override void AddCustomProperties(NameValueCollection properties)

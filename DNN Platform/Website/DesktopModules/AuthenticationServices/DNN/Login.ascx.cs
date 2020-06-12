@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                             {
                                 var redirectUrl = this._navigationManager.NavigateURL(redirectTabId, string.Empty, "VerificationSuccess=true");
                                 redirectUrl = redirectUrl.Replace(Globals.AddHTTP(this.PortalSettings.PortalAlias.HTTPAlias), string.Empty);
-                                this.Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                                this.Response.Cookies.Add(new HttpCookie("returnurl", redirectUrl) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                             }
 
                             UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("VerificationSuccess", this.LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 }
                 else
                 {
-                    authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
+                    authenticated = loginStatus != UserLoginStatus.LOGIN_FAILURE;
                 }
 
                 // Raise UserAuthenticated Event

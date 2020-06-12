@@ -722,7 +722,7 @@ namespace DotNetNuke.Entities.Portals
                     break;
                 case "portalid":
                     propertyNotFound = false;
-                    result = (this.PortalId.ToString(outputFormat, formatProvider));
+                    result = this.PortalId.ToString(outputFormat, formatProvider);
                     break;
                 case "portalname":
                     propertyNotFound = false;
@@ -749,17 +749,17 @@ namespace DotNetNuke.Entities.Portals
                 case "expirydate":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.ExpiryDate.ToString(outputFormat, formatProvider));
+                    result = this.ExpiryDate.ToString(outputFormat, formatProvider);
                     break;
                 case "userregistration":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.UserRegistration.ToString(outputFormat, formatProvider));
+                    result = this.UserRegistration.ToString(outputFormat, formatProvider);
                     break;
                 case "banneradvertising":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.BannerAdvertising.ToString(outputFormat, formatProvider));
+                    result = this.BannerAdvertising.ToString(outputFormat, formatProvider);
                     break;
                 case "currency":
                     propertyNotFound = false;
@@ -768,7 +768,7 @@ namespace DotNetNuke.Entities.Portals
                 case "administratorid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.AdministratorId.ToString(outputFormat, formatProvider));
+                    result = this.AdministratorId.ToString(outputFormat, formatProvider);
                     break;
                 case "email":
                     propertyNotFound = false;
@@ -777,27 +777,27 @@ namespace DotNetNuke.Entities.Portals
                 case "hostfee":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.HostFee.ToString(outputFormat, formatProvider));
+                    result = this.HostFee.ToString(outputFormat, formatProvider);
                     break;
                 case "hostspace":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.HostSpace.ToString(outputFormat, formatProvider));
+                    result = this.HostSpace.ToString(outputFormat, formatProvider);
                     break;
                 case "pagequota":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.PageQuota.ToString(outputFormat, formatProvider));
+                    result = this.PageQuota.ToString(outputFormat, formatProvider);
                     break;
                 case "userquota":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.UserQuota.ToString(outputFormat, formatProvider));
+                    result = this.UserQuota.ToString(outputFormat, formatProvider);
                     break;
                 case "administratorroleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.AdministratorRoleId.ToString(outputFormat, formatProvider));
+                    result = this.AdministratorRoleId.ToString(outputFormat, formatProvider);
                     break;
                 case "administratorrolename":
                     isPublic = false;
@@ -807,7 +807,7 @@ namespace DotNetNuke.Entities.Portals
                 case "registeredroleid":
                     isPublic = false;
                     propertyNotFound = false;
-                    result = (this.RegisteredRoleId.ToString(outputFormat, formatProvider));
+                    result = this.RegisteredRoleId.ToString(outputFormat, formatProvider);
                     break;
                 case "registeredrolename":
                     isPublic = false;

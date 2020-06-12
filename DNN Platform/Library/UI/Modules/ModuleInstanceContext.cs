@@ -815,7 +815,7 @@ namespace DotNetNuke.UI.Modules
             // Making URLs call popups
             if (this.PortalSettings != null && this.PortalSettings.EnablePopUps)
             {
-                if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && (url.Contains("ctl")))
+                if (!UIUtilities.IsLegacyUI(this.ModuleId, controlKey, this.PortalId) && url.Contains("ctl"))
                 {
                     url = UrlUtils.PopUpUrl(url, null, this.PortalSettings, false, pageRedirect);
                 }

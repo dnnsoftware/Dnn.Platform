@@ -57,7 +57,7 @@ namespace DotNetNuke.ComponentModel
 
         public static void RegisterInstance(TContract instance)
         {
-            if ((ComponentFactory.GetComponent<TContract>() == null))
+            if (ComponentFactory.GetComponent<TContract>() == null)
             {
                 ComponentFactory.RegisterComponentInstance<TContract>(instance);
             }

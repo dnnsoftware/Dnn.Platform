@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.ControlPanel
 
             try
             {
-                if ((this.Visible))
+                if (this.Visible)
                 {
                     this.cmdAddModule.Enabled = this.Enabled;
                     this.AddExistingModule.Enabled = this.Enabled;
@@ -146,7 +146,7 @@ namespace DotNetNuke.UI.ControlPanel
                     this.PaneModulesLst.Enabled = this.Enabled;
 
                     UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
-                    if ((objUser != null))
+                    if (objUser != null)
                     {
                         if (objUser.IsSuperUser)
                         {
@@ -166,7 +166,7 @@ namespace DotNetNuke.UI.ControlPanel
                     }
                 }
 
-                if ((!this.IsPostBack && this.Visible && this.Enabled))
+                if (!this.IsPostBack && this.Visible && this.Enabled)
                 {
                     this.AddNewModule.Checked = true;
                     this.LoadAllLists();
@@ -271,9 +271,9 @@ namespace DotNetNuke.UI.ControlPanel
                     moduleLstID = -1;
                 }
 
-                if ((moduleLstID > -1))
+                if (moduleLstID > -1)
                 {
-                    if ((this.AddExistingModule.Checked))
+                    if (this.AddExistingModule.Checked)
                     {
                         int pageID;
                         try
@@ -287,7 +287,7 @@ namespace DotNetNuke.UI.ControlPanel
                             pageID = -1;
                         }
 
-                        if ((pageID > -1))
+                        if (pageID > -1)
                         {
                             this.DoAddExistingModule(moduleLstID, pageID, this.PaneLst.SelectedValue, position, "", this.chkCopyModule.Checked);
                         }
@@ -425,13 +425,13 @@ namespace DotNetNuke.UI.ControlPanel
             if (this.Request.IsAuthenticated)
             {
                 UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                if (((user != null)))
+                if ((user != null))
                 {
                     userID = user.UserID;
                 }
             }
 
-            if ((moduleInfo != null))
+            if (moduleInfo != null)
             {
                 // Is this from a site other than our own? (i.e., is the user requesting "module sharing"?)
                 var remote = moduleInfo.PortalID != PortalSettings.Current.PortalId;
@@ -462,7 +462,7 @@ namespace DotNetNuke.UI.ControlPanel
                 newModule.PaneName = paneName;
                 newModule.Alignment = align;
 
-                if ((cloneModule))
+                if (cloneModule)
                 {
                     newModule.ModuleID = Null.NullInteger;
 
@@ -578,7 +578,7 @@ namespace DotNetNuke.UI.ControlPanel
                     if (PortalSettings.Current.DefaultModuleId > Null.NullInteger && PortalSettings.Current.DefaultTabId > Null.NullInteger)
                     {
                         ModuleInfo defaultModule = ModuleController.Instance.GetModule(PortalSettings.Current.DefaultModuleId, PortalSettings.Current.DefaultTabId, true);
-                        if ((defaultModule != null))
+                        if (defaultModule != null)
                         {
                             objModule.CacheTime = defaultModule.CacheTime;
                         }
@@ -640,13 +640,13 @@ namespace DotNetNuke.UI.ControlPanel
             bool validModuleID = int.TryParse(moduleID, out parsedModuleID);
             bool validTabID = int.TryParse(tabID, out parsedTabID);
 
-            if ((validModuleID && validTabID))
+            if (validModuleID && validTabID)
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(parsedModuleID, parsedTabID, false);
-                if (((moduleInfo != null)))
+                if ((moduleInfo != null))
                 {
                     DesktopModuleInfo moduleDesktopInfo = moduleInfo.DesktopModule;
-                    if (((moduleDesktopInfo != null)))
+                    if ((moduleDesktopInfo != null))
                     {
                         isPortable = moduleDesktopInfo.IsPortable;
                     }
@@ -700,7 +700,7 @@ namespace DotNetNuke.UI.ControlPanel
                     {
                         this.ModuleLst.BindTabModulesByTabID(tabId);
                     }
-                    if ((this.ModuleLst.ItemCount > 0))
+                    if (this.ModuleLst.ItemCount > 0)
                     {
                         this.chkCopyModule.Visible = true;
                         this.SetCopyModuleMessage(GetIsPortable(this.ModuleLst.SelectedValue, this.PageLst.SelectedValue));
@@ -724,7 +724,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.TitlePanel.Enabled = !this.AddExistingModule.Checked;
             this.chkCopyModule.Visible = this.AddExistingModule.Checked;
 
-            if ((this.AddExistingModule.Checked))
+            if (this.AddExistingModule.Checked)
             {
                 this.chkCopyModule.Text = Localization.GetString("CopyModuleDefault.Text", this.LocalResourceFile);
             }
@@ -754,7 +754,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PaneLst.Items.Clear();
             this.PaneLst.DataSource = PortalSettings.Current.ActiveTab.Panes;
             this.PaneLst.DataBind();
-            if ((PortalSettings.Current.ActiveTab.Panes.Contains(Globals.glbDefaultPane)))
+            if (PortalSettings.Current.ActiveTab.Panes.Contains(Globals.glbDefaultPane))
             {
                 this.PaneLst.SelectedValue = Globals.glbDefaultPane;
             }
@@ -793,22 +793,22 @@ namespace DotNetNuke.UI.ControlPanel
             this.PaneModulesLst.DataSource = items;
             this.PaneModulesLst.DataBind();
 
-            if ((this.PaneModulesLst.Items.Count <= 1))
+            if (this.PaneModulesLst.Items.Count <= 1)
             {
                 var listItem = this.PositionLst.FindItemByValue("ABOVE");
-                if (((listItem != null)))
+                if ((listItem != null))
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }
                 listItem = this.PositionLst.FindItemByValue("BELOW");
-                if (((listItem != null)))
+                if ((listItem != null))
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }
                 this.PaneModulesLst.Enabled = false;
             }
 
-            if ((this.PositionLst.SelectedValue == "TOP" || this.PositionLst.SelectedValue == "BOTTOM"))
+            if (this.PositionLst.SelectedValue == "TOP" || this.PositionLst.SelectedValue == "BOTTOM")
             {
                 this.PaneModulesLst.Enabled = false;
             }
@@ -855,7 +855,7 @@ namespace DotNetNuke.UI.ControlPanel
         private void LoadVisibilityList()
         {
             this.VisibilityLst.Enabled = !this.AddExistingModule.Checked;
-            if ((this.VisibilityLst.Enabled))
+            if (this.VisibilityLst.Enabled)
             {
                 var items = new Dictionary<string, string> { { "0", this.GetString("PermissionView") }, { "1", this.GetString("PermissionEdit") } };
 
@@ -877,7 +877,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         private void SetCopyModuleMessage(bool isPortable)
         {
-            if ((isPortable))
+            if (isPortable)
             {
                 this.chkCopyModule.Text = Localization.GetString("CopyModuleWcontent", this.LocalResourceFile);
                 this.chkCopyModule.ToolTip = Localization.GetString("CopyModuleWcontent.ToolTip", this.LocalResourceFile);
@@ -899,7 +899,7 @@ namespace DotNetNuke.UI.ControlPanel
                 return false;
             }
             // If we are not in an edit page
-            return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
+            return string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"]) && string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]);
         }
 
     }

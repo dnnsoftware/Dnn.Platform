@@ -81,7 +81,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                         }
                     }
                 }
-                if ((File.Exists(filePath)))
+                if (File.Exists(filePath))
                 {
                     // Set back into Cache
                     DataCache.SetCache(RequestFilterConfig, settings, new DNNCacheDependency(filePath));
@@ -96,7 +96,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             if (!File.Exists(filePath))
             {
                 string defaultConfigFile = Globals.ApplicationMapPath + Globals.glbConfigFolder + Globals.glbDotNetNukeConfig;
-                if ((File.Exists(defaultConfigFile)))
+                if (File.Exists(defaultConfigFile))
                 {
                     File.Copy(defaultConfigFile, filePath, true);
                 }

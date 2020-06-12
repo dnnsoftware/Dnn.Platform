@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             var propertyName = testFields["PropertyName"];
             var settingName = testFields["SettingName"];
             var settingValue = testFields["SettingValue"];
-            var propertyValue = (testFields.ContainsKey("PropertyValue")) ? testFields["PropertyValue"] : settingValue;
+            var propertyValue = testFields.ContainsKey("PropertyValue") ? testFields["PropertyValue"] : settingValue;
             var controller = new PortalSettingsController();
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
             var hostSettings = PortalSettingsControllerTestFactory.GetHostSettings();

@@ -210,7 +210,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if ((!this.Page.ClientScript.IsClientScriptBlockRegistered(this.UniqueID)))
+            if (!this.Page.ClientScript.IsClientScriptBlockRegistered(this.UniqueID))
             {
                 StringBuilder sb = new StringBuilder();
 
@@ -247,7 +247,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Category Links
-                var categories = (from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat);
+                var categories = from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
@@ -279,7 +279,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
                 // Render Tag Links
-                var tags = (from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat);
+                var tags = from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat;
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {

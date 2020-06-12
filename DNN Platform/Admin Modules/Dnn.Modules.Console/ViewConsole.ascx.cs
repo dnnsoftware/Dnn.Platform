@@ -67,7 +67,7 @@ namespace Dnn.Modules.Console
         {
             get
             {
-                if ((this._consoleCtrl == null))
+                if (this._consoleCtrl == null)
                 {
                     this._consoleCtrl = new ConsoleController();
                 }
@@ -99,15 +99,15 @@ namespace Dnn.Modules.Console
         {
             get
             {
-                if ((this._defaultSize == string.Empty && this.AllowSizeChange && this.UserId > Null.NullInteger))
+                if (this._defaultSize == string.Empty && this.AllowSizeChange && this.UserId > Null.NullInteger)
                 {
                     object personalizedValue = this.GetUserSetting("DefaultSize");
-                    if ((personalizedValue != null))
+                    if (personalizedValue != null)
                     {
                         this._defaultSize = Convert.ToString(personalizedValue);
                     }
                 }
-                if ((this._defaultSize == string.Empty))
+                if (this._defaultSize == string.Empty)
                 {
                     this._defaultSize = this.Settings.ContainsKey("DefaultSize") ? Convert.ToString(this.Settings["DefaultSize"]) : "IconFile";
                 }
@@ -119,15 +119,15 @@ namespace Dnn.Modules.Console
         {
             get
             {
-                if ((this._defaultView == string.Empty && this.AllowViewChange && this.UserId > Null.NullInteger))
+                if (this._defaultView == string.Empty && this.AllowViewChange && this.UserId > Null.NullInteger)
                 {
                     object personalizedValue = this.GetUserSetting("DefaultView");
-                    if ((personalizedValue != null))
+                    if (personalizedValue != null)
                     {
                         this._defaultView = Convert.ToString(personalizedValue);
                     }
                 }
-                if ((this._defaultView == string.Empty))
+                if (this._defaultView == string.Empty)
                 {
                     this._defaultView = this.Settings.ContainsKey("DefaultView") ? Convert.ToString(this.Settings["DefaultView"]) : "Hide";
                 }
@@ -209,7 +209,7 @@ namespace Dnn.Modules.Console
                 switch (visibility)
                 {
                     case "Owner":
-                        canShowTab = (this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == this.GroupId && ur.IsOwner) != null);
+                        canShowTab = this.UserInfo.Social.Roles.SingleOrDefault(ur => ur.RoleID == this.GroupId && ur.IsOwner) != null;
                         break;
                     case "Members":
                         var group = RoleController.Instance.GetRole(this.PortalId, (r) => r.RoleID == this.GroupId);
@@ -220,7 +220,7 @@ namespace Dnn.Modules.Console
                         canShowTab = (profileUser != null) && (profileUser.Social.Friend != null) || (this.UserId == this.ProfileUserId);
                         break;
                     case "User":
-                        canShowTab = (this.UserId == this.ProfileUserId);
+                        canShowTab = this.UserId == this.ProfileUserId;
                         break;
                     case "AllUsers":
                         break;
@@ -277,7 +277,7 @@ namespace Dnn.Modules.Console
 
         private void SavePersonalizedSettings()
         {
-            if ((this.UserId > -1))
+            if (this.UserId > -1)
             {
                 int consoleModuleID = -1;
                 try
@@ -293,7 +293,7 @@ namespace Dnn.Modules.Console
 
                     consoleModuleID = -1;
                 }
-                if ((consoleModuleID == this.TabModuleId))
+                if (consoleModuleID == this.TabModuleId)
                 {
                     string consoleSize = string.Empty;
                     if (this.Request.QueryString["CS"] != null)
@@ -305,11 +305,11 @@ namespace Dnn.Modules.Console
                     {
                         consoleView = this.Request.QueryString["CV"];
                     }
-                    if ((consoleSize != string.Empty && ConsoleController.GetSizeValues().Contains(consoleSize)))
+                    if (consoleSize != string.Empty && ConsoleController.GetSizeValues().Contains(consoleSize))
                     {
                         this.SaveUserSetting("DefaultSize", consoleSize);
                     }
-                    if ((consoleView != string.Empty && ConsoleController.GetViewValues().Contains(consoleView)))
+                    if (consoleView != string.Empty && ConsoleController.GetViewValues().Contains(consoleView))
                     {
                         this.SaveUserSetting("DefaultView", consoleView);
                     }
@@ -364,13 +364,13 @@ namespace Dnn.Modules.Console
                 this.IconSize.SelectedValue = this.DefaultSize;
                 this.View.SelectedValue = this.DefaultView;
 
-                if ((!this.IsPostBack))
+                if (!this.IsPostBack)
                 {
                     this.Console.Attributes["class"] = this.Console.Attributes["class"] + " " + this.Mode.ToLower(CultureInfo.InvariantCulture);
 
-                    this.SettingsBreak.Visible = (this.AllowSizeChange && this.AllowViewChange);
+                    this.SettingsBreak.Visible = this.AllowSizeChange && this.AllowViewChange;
 
-                    List<TabInfo> tempTabs = (this.IsHostTab())
+                    List<TabInfo> tempTabs = this.IsHostTab()
                                         ? TabController.GetTabsBySortOrder(Null.NullInteger).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList()
                                         : TabController.GetTabsBySortOrder(this.PortalId).OrderBy(t => t.Level).ThenBy(t => t.LocalizedTabName).ToList();
 
@@ -390,13 +390,13 @@ namespace Dnn.Modules.Console
 
                     foreach (TabInfo tab in tempTabs)
                     {
-                        if ((!this.CanShowTab(tab)))
+                        if (!this.CanShowTab(tab))
                         {
                             continue;
                         }
-                        if ((tabIdList.Contains(tab.ParentId)))
+                        if (tabIdList.Contains(tab.ParentId))
                         {
-                            if ((!tabIdList.Contains(tab.TabID)))
+                            if (!tabIdList.Contains(tab.TabID))
                             {
                                 tabIdList.Add(tab.TabID);
                             }
@@ -419,7 +419,7 @@ namespace Dnn.Modules.Console
                     this.DetailView.DataSource = (minLevel > -1) ? this._tabs.Where(t => t.Level == minLevel) : this._tabs;
                     this.DetailView.DataBind();
                 }
-                if ((this.ConsoleWidth != string.Empty))
+                if (this.ConsoleWidth != string.Empty)
                 {
                     this.Console.Attributes.Add("style", "width:" + this.ConsoleWidth);
                 }
@@ -447,15 +447,15 @@ namespace Dnn.Modules.Console
         protected string GetHtml(TabInfo tab)
         {
             string returnValue = string.Empty;
-            if ((this._groupTabID > -1 && this._groupTabID != tab.ParentId))
+            if (this._groupTabID > -1 && this._groupTabID != tab.ParentId)
             {
                 this._groupTabID = -1;
-                if ((!tab.DisableLink))
+                if (!tab.DisableLink)
                 {
                     returnValue = "<br style=\"clear:both;\" /><br />";
                 }
             }
-            if ((tab.DisableLink))
+            if (tab.DisableLink)
             {
                 const string headerHtml = "<br style=\"clear:both;\" /><br /><h1><span class=\"TitleHead\">{0}</span></h1><br style=\"clear:both\" />";
                 returnValue += string.Format(headerHtml, tab.TabName);
@@ -511,7 +511,7 @@ namespace Dnn.Modules.Console
         protected string GetClientSideSettings()
         {
             string tmid = "-1";
-            if ((this.UserId > -1))
+            if (this.UserId > -1)
             {
                 tmid = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
             }

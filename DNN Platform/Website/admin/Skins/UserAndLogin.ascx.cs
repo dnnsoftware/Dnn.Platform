@@ -42,8 +42,8 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return ((this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
-                    && (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0));
+                return (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
+                    && (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0);
             }
         }
 
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 returnUrl = HttpUtility.UrlEncode(returnUrl);
 
-                return Globals.LoginURL(returnUrl, (this.Request.QueryString["override"] != null));
+                return Globals.LoginURL(returnUrl, this.Request.QueryString["override"] != null);
             }
         }
 

@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
             get
             {
                 string _StringValue = Null.NullString;
-                if ((this.DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && this.DateValue != Null.NullDate))
+                if (this.DateValue.ToUniversalTime().Date != DateTime.Parse("1754/01/01") && this.DateValue != Null.NullDate)
                 {
                     _StringValue = this.DateValue.ToString(this.Format);
                 }

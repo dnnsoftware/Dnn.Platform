@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Search
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)

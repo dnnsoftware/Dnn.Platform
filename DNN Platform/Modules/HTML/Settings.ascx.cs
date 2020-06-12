@@ -53,7 +53,7 @@ namespace DotNetNuke.Modules.Html
 
         private void DisplayWorkflowDetails()
         {
-            if ((this.cboWorkflow.SelectedValue != null))
+            if (this.cboWorkflow.SelectedValue != null)
             {
                 var objWorkflow = new WorkflowStateController();
                 var strDescription = "";
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Html
                     this.cboWorkflow.DataSource = workflows;
                     this.cboWorkflow.DataBind();
                     var workflow = htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId);
-                    if ((this.cboWorkflow.FindItemByValue(workflow.Value.ToString()) != null))
+                    if (this.cboWorkflow.FindItemByValue(workflow.Value.ToString()) != null)
                     {
                         this.cboWorkflow.FindItemByValue(workflow.Value.ToString()).Selected = true;
                     }

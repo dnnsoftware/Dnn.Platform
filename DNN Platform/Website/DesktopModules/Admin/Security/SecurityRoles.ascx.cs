@@ -508,11 +508,11 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             base.OnInit(e);
 
-            if ((this.Request.QueryString["RoleId"] != null))
+            if (this.Request.QueryString["RoleId"] != null)
             {
                 this.RoleId = Int32.Parse(this.Request.QueryString["RoleId"]);
             }
-            if ((this.Request.QueryString["UserId"] != null))
+            if (this.Request.QueryString["UserId"] != null)
             {
                 int userId;
                 // Use Int32.MaxValue as invalid UserId
@@ -564,8 +564,8 @@ namespace DotNetNuke.Modules.Admin.Security
                 if (this.Role == null)
                     return;
 
-                this.placeIsOwner.Visible = ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both));
-                this.placeIsOwnerHeader.Visible = ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both));
+                this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
+                this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
             }
             catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
             {
@@ -690,7 +690,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         // Add User to Role
                         var isOwner = false;
 
-                        if (((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both)))
+                        if ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both))
                             isOwner = this.chkIsOwner.Checked;
 
                         RoleController.AddUserRole(this.User, this.Role, this.PortalSettings, RoleStatus.Approved, datEffectiveDate, datExpiryDate, this.chkNotify.Checked, isOwner);
@@ -761,7 +761,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     cmdDeleteUserRole.Attributes.Add("userId", role.UserID.ToString());
                 }
 
-                item.Cells[5].Visible = ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both));
+                item.Cells[5].Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
 
             }
             catch (Exception exc) // Module failed to load

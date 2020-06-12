@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return (this.UserId == Null.NullInteger);
+                return this.UserId == Null.NullInteger;
             }
         }
 
@@ -458,11 +458,11 @@ namespace DotNetNuke.Entities.Modules
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
                 {
-                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, (!String.IsNullOrEmpty(strMessage)));
+                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !String.IsNullOrEmpty(strMessage));
                 }
                 else
                 {
-                    this.AddLocalizedModuleMessage(strMessage, message, (!String.IsNullOrEmpty(strMessage)));
+                    this.AddLocalizedModuleMessage(strMessage, message, !String.IsNullOrEmpty(strMessage));
                 }
             }
             else

@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            if ((this.BooleanValue))
+            if (this.BooleanValue)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, "1");
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
-            if ((this.BooleanValue))
+            if (this.BooleanValue)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }

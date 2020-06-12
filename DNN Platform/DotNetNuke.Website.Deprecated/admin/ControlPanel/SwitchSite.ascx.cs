@@ -49,12 +49,12 @@ namespace DotNetNuke.UI.ControlPanel
         {
             try
             {
-                if ((!string.IsNullOrEmpty(this.SitesLst.SelectedValue)))
+                if (!string.IsNullOrEmpty(this.SitesLst.SelectedValue))
                 {
                     int selectedPortalID = int.Parse(this.SitesLst.SelectedValue);
                     var portalAliases = PortalAliasController.Instance.GetPortalAliasesByPortalId(selectedPortalID).ToList();
 
-                    if ((portalAliases.Count > 0 && (portalAliases[0] != null)))
+                    if (portalAliases.Count > 0 && (portalAliases[0] != null))
                     {
                         this.Response.Redirect(Globals.AddHTTP(((PortalAliasInfo)portalAliases[0]).HTTPAlias));
                     }
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                if ((PortalSettings.Current.UserId == Null.NullInteger))
+                if (PortalSettings.Current.UserId == Null.NullInteger)
                 {
                     return false;
                 }

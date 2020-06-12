@@ -743,11 +743,11 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// -----------------------------------------------------------------------------
         private void ShowPanel()
         {
-            bool showLogin = (this.PageNo == 0);
-            bool showRegister = (this.PageNo == 1);
-            bool showPassword = (this.PageNo == 2);
-            bool showProfile = (this.PageNo == 3);
-            bool showDataConsent = (this.PageNo == 4);
+            bool showLogin = this.PageNo == 0;
+            bool showRegister = this.PageNo == 1;
+            bool showPassword = this.PageNo == 2;
+            bool showProfile = this.PageNo == 3;
+            bool showDataConsent = this.PageNo == 4;
             this.pnlProfile.Visible = showProfile;
             this.pnlPassword.Visible = showPassword;
             this.pnlLogin.Visible = showLogin;
@@ -915,7 +915,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", "")
                     {
                         Expires = DateTime.Now.AddDays(-1),
-                        Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                        Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                     });
 
                     this.Response.Redirect(redirectUrl, true);
@@ -1363,7 +1363,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         this.ProfileProperties = e.Profile;
                         this.RememberMe = e.RememberMe;
                         this.UpdateProfile(e.User, true);
-                        this.ValidateUser(e.User, (e.AuthenticationType != "DNN"));
+                        this.ValidateUser(e.User, e.AuthenticationType != "DNN");
                     }
                     break;
             }
@@ -1385,7 +1385,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     AuthenticationController.AddUserAuthentication(e.NewUser.UserID, this.AuthenticationType, this.UserToken);
 
                     strMessage = this.CompleteUserCreation(e.CreateStatus, e.NewUser, e.Notify, true);
-                    if ((string.IsNullOrEmpty(strMessage)))
+                    if (string.IsNullOrEmpty(strMessage))
                     {
                         // First update the profile (if any properties have been passed)
                         this.UpdateProfile(e.NewUser, true);

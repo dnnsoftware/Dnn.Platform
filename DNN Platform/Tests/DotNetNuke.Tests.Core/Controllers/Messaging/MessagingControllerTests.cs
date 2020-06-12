@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
         private void SetupCachingProvider()
         {
-            this._mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>((key =>
+            this._mockCacheProvider.Setup(c => c.GetItem(It.IsAny<string>())).Returns<string>(key =>
             {
                 if (key.Contains("Portal-1_"))
                 {
@@ -177,7 +177,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 }
 
                 return null;
-            }));
+            });
         }
 
         private void SetupRoleProvider()

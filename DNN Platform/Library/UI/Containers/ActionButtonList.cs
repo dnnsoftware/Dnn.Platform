@@ -210,7 +210,7 @@ namespace DotNetNuke.UI.Containers
                     this.Controls.Add(new LiteralControl(this.ButtonSeparator));
                 }
             }
-            this.Visible = (this.Controls.Count > 0);
+            this.Visible = this.Controls.Count > 0;
         }
 
         #endregion

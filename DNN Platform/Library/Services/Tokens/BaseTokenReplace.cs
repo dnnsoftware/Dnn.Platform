@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Tokens
         {
             get
             {
-                var cacheKey = (this.UseObjectLessExpression) ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
+                var cacheKey = this.UseObjectLessExpression ? TokenReplaceCacheKeyObjectless : TokenReplaceCacheKeyDefault;
                 var tokenizer = DataCache.GetCache(cacheKey) as Regex;
                 if (tokenizer == null)
                 {

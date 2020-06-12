@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if ((this.Groups.Count > 0))
+            if (this.Groups.Count > 0)
             {
                 this.Groups[0].CssClass = this.Groups[0].CssClass + " " + this.Groups[0].CssClass.Trim() + "First";
                 this.Groups[this.Groups.Count - 1].CssClass = this.Groups[this.Groups.Count - 1].CssClass + " " + this.Groups[this.Groups.Count - 1].CssClass.Trim() + "Last";
@@ -80,7 +80,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             foreach (DnnRibbonBarGroup grp in this.Groups)
             {
-                if ((grp.Visible))
+                if (grp.Visible)
                 {
                     writer.RenderBeginTag("td");
                     grp.RenderControl(writer);

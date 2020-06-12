@@ -42,8 +42,8 @@ namespace DotNetNuke.Authentication.Google
 
             this.OAuthClient = new GoogleClient(this.PortalId, this.Mode);
 
-            this.loginItem.Visible = (this.Mode == AuthMode.Login);
-            this.registerItem.Visible = (this.Mode == AuthMode.Register);
+            this.loginItem.Visible = this.Mode == AuthMode.Login;
+            this.registerItem.Visible = this.Mode == AuthMode.Register;
         }
 
         private void loginButton_Click(object sender, EventArgs e)

@@ -503,7 +503,7 @@ namespace DotNetNuke.Services.Cache
         /// </returns>
         public virtual bool IsWebFarm()
         {
-            return (ServerController.GetEnabledServers().Count > 1);
+            return ServerController.GetEnabledServers().Count > 1;
         }
 
         /// <summary>

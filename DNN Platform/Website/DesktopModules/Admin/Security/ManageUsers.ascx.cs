@@ -277,7 +277,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 if (!this.Page.IsPostBack)
                 {
-                    if ((this.Request.QueryString["pageno"] != null))
+                    if (this.Request.QueryString["pageno"] != null)
                     {
                         this.PageNo = int.Parse(this.Request.QueryString["pageno"]);
                     }
@@ -344,7 +344,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-                    if ((this.User.UserID > Null.NullInteger))
+                    if (this.User.UserID > Null.NullInteger)
                     {
                         this.AddModuleMessage("NotAuthorized", ModuleMessage.ModuleMessageType.YellowWarning, true);
                         this.DisableForm();
@@ -431,7 +431,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else
             {
-                if ((!this.IsAdmin))
+                if (!this.IsAdmin)
                 {
                     this.passwordTab.Visible = false;
                 }
@@ -440,7 +440,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.ctlPassword.User = this.User;
                     this.ctlPassword.DataBind();
                 }
-                if ((!this.IsEdit || this.User.IsSuperUser))
+                if (!this.IsEdit || this.User.IsSuperUser)
                 {
                     this.rolesTab.Visible = false;
                 }
@@ -455,7 +455,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
 
             this.dnnRoleDetails.Visible = this.IsEdit && !this.User.IsSuperUser && !this.AddUser;
-            this.dnnPasswordDetails.Visible = (this.IsAdmin) && !this.AddUser;
+            this.dnnPasswordDetails.Visible = this.IsAdmin && !this.AddUser;
 
             if (this.EditProfileMode)
             {
@@ -564,7 +564,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Bind the User information to the controls
                 this.BindData();
 
-                this.loginLink.NavigateUrl = Globals.LoginURL(this.RedirectURL, (this.Request.QueryString["override"] != null));
+                this.loginLink.NavigateUrl = Globals.LoginURL(this.RedirectURL, this.Request.QueryString["override"] != null);
 
                 if (this.PortalSettings.EnablePopUps)
                 {
@@ -599,7 +599,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (this.ctlUser.IsValid && (this.ctlProfile.IsValid))
+            if (this.ctlUser.IsValid && this.ctlProfile.IsValid)
             {
                 this.ctlUser.CreateUser();
             }

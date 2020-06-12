@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.EventQueue.Config
         internal static EventQueueConfiguration GetConfig()
         {
             var config = (EventQueueConfiguration)DataCache.GetCache("EventQueueConfig");
-            if ((config == null))
+            if (config == null)
             {
                 string filePath = Globals.HostMapPath + "EventQueue\\EventQueue.config";
                 if (File.Exists(filePath))

@@ -865,7 +865,7 @@ namespace DotNetNuke.Entities.Urls
         public void RemovedPageIndexCallBack(string k, object v, CacheItemRemovedReason r)
         {
             cacheItemRemovedReason = r;
-#if (DEBUG)
+#if DEBUG
             if (LogRemovedReason)
             {
                 var log = new LogInfo { LogTypeKey = "HOST_ALERT" };

@@ -123,7 +123,7 @@ namespace DotNetNuke.Web.Razor
         {
             var compiledType = BuildManager.GetCompiledType(this.RazorScriptFile);
             object objectValue = null;
-            if (((compiledType != null)))
+            if ((compiledType != null))
             {
                 objectValue = RuntimeHelpers.GetObjectValue(Activator.CreateInstance(compiledType));
             }
@@ -142,12 +142,12 @@ namespace DotNetNuke.Web.Razor
             if (!string.IsNullOrEmpty(this.RazorScriptFile))
             {
                 var objectValue = RuntimeHelpers.GetObjectValue(this.CreateWebPageInstance());
-                if ((objectValue == null))
+                if (objectValue == null)
                 {
                     throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage found at '{0}' was not created.", new object[] { this.RazorScriptFile }));
                 }
                 this.Webpage = objectValue as DotNetNukeWebPage;
-                if ((this.Webpage == null))
+                if (this.Webpage == null)
                 {
                     throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage at '{0}' must derive from DotNetNukeWebPage.", new object[] { this.RazorScriptFile }));
                 }

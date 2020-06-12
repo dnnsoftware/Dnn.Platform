@@ -138,7 +138,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <param name="type">The type of file being processed</param>
         protected override bool IsCorrectType(InstallFileType type)
         {
-            return (type == InstallFileType.Assembly);
+            return type == InstallFileType.Assembly;
         }
 
         /// -----------------------------------------------------------------------------

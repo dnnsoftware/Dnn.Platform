@@ -227,7 +227,7 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
             int length = Null.NullInteger;
-            if ((this.CustomAttributes != null))
+            if (this.CustomAttributes != null)
             {
                 foreach (Attribute attribute in this.CustomAttributes)
                 {

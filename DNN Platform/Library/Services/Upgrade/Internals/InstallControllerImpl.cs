@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             connectionConfig.Password = value;
                             break;
                         case "integrated security":
-                            connectionConfig.Integrated = (value.ToLowerInvariant() == "true");
+                            connectionConfig.Integrated = value.ToLowerInvariant() == "true";
                             break;
                         case "attachdbfilename":
                             connectionConfig.File = value.Replace("|DataDirectory|", "");
@@ -376,7 +376,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                         if (settingNode.Attributes != null)
                         {
                             XmlAttribute secureAttrib = settingNode.Attributes["Secure"];
-                            if ((secureAttrib != null))
+                            if (secureAttrib != null)
                             {
                                 if (secureAttrib.Value.ToLowerInvariant() == "true")
                                 {

@@ -424,7 +424,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 var measured = new SizeF(0, 0);
                 var workingSize = new SizeF(width, height);
-                while ((emSize > 2))
+                while (emSize > 2)
                 {
                     f = new Font(ff, emSize);
                     measured = g.MeasureString(text, f);
@@ -469,7 +469,7 @@ namespace DotNetNuke.UI.WebControls
             try
             {
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(encryptedContent);
-                if ((!ticket.Expired))
+                if (!ticket.Expired)
                 {
                     decryptedText = ticket.UserData;
                 }
@@ -501,11 +501,11 @@ namespace DotNetNuke.UI.WebControls
                 {
                     int newX = Convert.ToInt32(x + (distortion * Math.Sin(Math.PI * y / 64.0)));
                     int newY = Convert.ToInt32(y + (distortion * Math.Cos(Math.PI * x / 64.0)));
-                    if ((newX < 0 || newX >= width))
+                    if (newX < 0 || newX >= width)
                     {
                         newX = 0;
                     }
-                    if ((newY < 0 || newY >= height))
+                    if (newY < 0 || newY >= height)
                     {
                         newY = 0;
                     }
@@ -656,7 +656,7 @@ namespace DotNetNuke.UI.WebControls
         {
             base.CreateChildControls();
 
-            if ((this.CaptchaWidth.IsEmpty || this.CaptchaWidth.Type != UnitType.Pixel || this.CaptchaHeight.IsEmpty || this.CaptchaHeight.Type != UnitType.Pixel))
+            if (this.CaptchaWidth.IsEmpty || this.CaptchaWidth.Type != UnitType.Pixel || this.CaptchaHeight.IsEmpty || this.CaptchaHeight.Type != UnitType.Pixel)
             {
                 throw new InvalidOperationException("Must specify size of control in pixels.");
             }

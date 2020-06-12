@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.lblExpires.Text = PasswordConfig.PasswordExpiry > 0 ? this.User.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry).ToLongDateString() : Localization.GetString("NoExpiry", this.LocalResourceFile);
             }
 
-           if (((!MembershipProviderConfig.PasswordRetrievalEnabled) && this.IsAdmin && (!this.IsUser)))
+           if ((!MembershipProviderConfig.PasswordRetrievalEnabled) && this.IsAdmin && (!this.IsUser))
             {
                 this.pnlChange.Visible = true;
                 this.cmdUpdate.Visible = true;

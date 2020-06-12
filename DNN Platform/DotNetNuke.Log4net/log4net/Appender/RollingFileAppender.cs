@@ -681,7 +681,7 @@ namespace log4net.Appender
                     {
                         if (System.IO.File.Exists(fileName))
                         {
-                            currentCount = (new FileInfo(fileName)).Length;
+                            currentCount = new FileInfo(fileName).Length;
                         }
                     }
                 }
@@ -855,7 +855,7 @@ namespace log4net.Appender
                     }
                     LogLog.Debug(declaringType, "[" + last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo) + "] vs. [" + this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]");
 
-                    if (!(last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo))))
+                    if (! last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))
                     {
                         this.m_scheduledFilename = this.CombinePath(this.m_baseFileName, last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo));
                         LogLog.Debug(declaringType, "Initial roll over to [" + this.m_scheduledFilename + "]");
@@ -1469,7 +1469,7 @@ namespace log4net.Appender
                     // Map {(maxBackupIndex - 1), ..., 2, 1} to {maxBackupIndex, ..., 3, 2}
                     for (int i = this.m_curSizeRollBackups; i >= 1; i--)
                     {
-                        this.RollFile((this.CombinePath(baseFileName, "." + i)), (this.CombinePath(baseFileName, "." + (i + 1))));
+                        this.RollFile(this.CombinePath(baseFileName, "." + i), this.CombinePath(baseFileName, "." + (i + 1)));
                     }
 
                     this.m_curSizeRollBackups++;

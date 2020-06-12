@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Search
             // We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate.
             // LastContentModifiedOnDate remains MinValue for modules that don't update this property
             var modulesInDateRange = searchModuleCollection.Where(module =>
-                !((SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal)))
+                ! (SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal))
                 .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
 
             if (modulesInDateRange.Any())

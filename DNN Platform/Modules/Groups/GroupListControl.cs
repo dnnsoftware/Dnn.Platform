@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.Groups.Controls
             }
 
             int rowItem = 0;
-            int recordStart = (this.CurrentIndex * this.PageSize);
+            int recordStart = this.CurrentIndex * this.PageSize;
 
             if (this.CurrentIndex == 0)
                 recordStart = 0;

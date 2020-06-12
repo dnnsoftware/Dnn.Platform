@@ -85,7 +85,7 @@ namespace DotNetNuke.HttpModules.Compression
                         settings._excludedPaths.Add(nav.Value.ToLowerInvariant());
                     }
                 }
-                if ((File.Exists(filePath)))
+                if (File.Exists(filePath))
                 {
                     // Set back into Cache
                     DataCache.SetCache("CompressionConfig", settings, new DNNCacheDependency(filePath));

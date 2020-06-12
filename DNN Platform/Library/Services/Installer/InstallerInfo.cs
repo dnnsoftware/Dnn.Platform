@@ -381,7 +381,7 @@ namespace DotNetNuke.Services.Installer
                                 }
                                 else if (file.Extension == this.ManifestFile.Extension)
                                 {
-                                    this.Log.AddFailure((Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name));
+                                    this.Log.AddFailure(Util.EXCEPTION_MultipleDnn + this.ManifestFile.Name + " and " + file.Name);
                                 }
                             }
                         }

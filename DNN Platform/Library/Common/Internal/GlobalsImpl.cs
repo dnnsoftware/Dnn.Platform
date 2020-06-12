@@ -114,11 +114,11 @@ namespace DotNetNuke.Common.Internal
                         //   we'll use reverse match,
                         //   - but that means we are checking position of left end of the match;
                         //   - and to do that, we need to ensure the string we test against is long enough;
-                        if ((url[queryIndex].Length >= ".aspx".Length))
+                        if (url[queryIndex].Length >= ".aspx".Length)
                         {
-                            if (url[queryIndex].LastIndexOf(".aspx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".aspx".Length)) ||
-                                url[queryIndex].LastIndexOf(".axd", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".axd".Length)) ||
-                                url[queryIndex].LastIndexOf(".ashx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - (".ashx".Length)))
+                            if (url[queryIndex].LastIndexOf(".aspx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - ".aspx".Length) ||
+                                url[queryIndex].LastIndexOf(".axd", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - ".axd".Length) ||
+                                url[queryIndex].LastIndexOf(".ashx", StringComparison.OrdinalIgnoreCase) == (url[queryIndex].Length - ".ashx".Length))
                             {
                                 break;
                             }

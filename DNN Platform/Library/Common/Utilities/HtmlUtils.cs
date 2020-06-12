@@ -251,7 +251,7 @@ namespace DotNetNuke.Common.Utilities
                     if (Website.ToString().IndexOf(".", StringComparison.Ordinal) > -1)
                     {
                         formatWebsite = string.Format("<a href=\"{1}{0}\">{0}</a>", Website,
-                            (Website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? "" : "http://"));
+                            Website.ToString().IndexOf("://", StringComparison.Ordinal) > -1 ? "" : "http://");
                     }
                     else
                     {

@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Mvp
         {
             get
             {
-                if ((this._model == null))
+                if (this._model == null)
                 {
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");

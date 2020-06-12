@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Controllers
             try
             {
                 string setting = string.Empty;
-                if ((this.GetSettings().ContainsKey(key)))
+                if (this.GetSettings().ContainsKey(key))
                 {
                     setting = this.GetSettings()[key].Value;
                 }
@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Controllers
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Controllers
 
             double retValue;
 
-            if ((!this.GetSettings().ContainsKey(key) || !double.TryParse(this.GetSettings()[key].Value, out retValue)))
+            if (!this.GetSettings().ContainsKey(key) || !double.TryParse(this.GetSettings()[key].Value, out retValue))
             {
                 retValue = defaultValue;
             }
@@ -156,7 +156,7 @@ namespace DotNetNuke.Entities.Controllers
 
             int retValue;
 
-            if ((!this.GetSettings().ContainsKey(key) || !int.TryParse(this.GetSettings()[key].Value, out retValue)))
+            if (!this.GetSettings().ContainsKey(key) || !int.TryParse(this.GetSettings()[key].Value, out retValue))
             {
                 retValue = defaultValue;
             }

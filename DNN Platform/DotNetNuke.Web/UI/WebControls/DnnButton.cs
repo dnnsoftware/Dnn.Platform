@@ -69,15 +69,15 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if ((!this.Enabled))
+            if (!this.Enabled)
             {
                 this.CssClass = this.DisabledCssClass;
             }
 
-            if ((!string.IsNullOrEmpty(this.ConfirmMessage)))
+            if (!string.IsNullOrEmpty(this.ConfirmMessage))
             {
                 string msg = this.ConfirmMessage;
-                if ((this.Localize))
+                if (this.Localize)
                 {
                     msg = Utilities.GetLocalizedStringFromParent(this.ConfirmMessage, this);
                 }
@@ -116,14 +116,14 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((this.Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(this.ToolTip)))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
                     this.ToolTip = Utilities.GetLocalizedStringFromParent(this.ToolTip, this);
                 }
 
-                if ((!string.IsNullOrEmpty(this.Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     string unlocalizedText = this.Text;
                     this.Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
@@ -132,7 +132,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.Text = unlocalizedText;
                     }
 
-                    if ((string.IsNullOrEmpty(this.ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
                         if (String.IsNullOrEmpty(this.ToolTip))

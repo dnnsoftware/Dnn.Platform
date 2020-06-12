@@ -123,13 +123,13 @@ namespace DotNetNuke.Web.Mvp
 
         protected internal virtual bool CheckAuthPolicy()
         {
-            if ((this.UserId == Null.NullInteger && !this.AllowAnonymousAccess))
+            if (this.UserId == Null.NullInteger && !this.AllowAnonymousAccess)
             {
                 this.OnNoCurrentUser();
                 return false;
             }
 
-            if ((!this.IsUserAuthorized))
+            if (!this.IsUserAuthorized)
             {
                 this.OnUnauthorizedUser();
                 return false;

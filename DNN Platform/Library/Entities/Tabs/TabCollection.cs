@@ -166,7 +166,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         TabInfo descendantTab = this._list[descendantIndex];
 
-                        if ((tabLevel == Null.NullInteger))
+                        if (tabLevel == Null.NullInteger)
                         {
                             tabLevel = parentTab.Level;
                         }

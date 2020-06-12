@@ -576,7 +576,7 @@ namespace log4net.Plugin
         /// </exception>
         private void ValidateIndex(int i, bool allowEqualEnd)
         {
-            int max = (allowEqualEnd) ? (this.m_count) : (this.m_count - 1);
+            int max = allowEqualEnd ? this.m_count : (this.m_count - 1);
             if (i < 0 || i > max)
             {
                 throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("i", (object)i, "Index was out of range. Must be non-negative and less than the size of the collection. [" + (object)i + "] Specified argument was out of the range of valid values.");
@@ -585,7 +585,7 @@ namespace log4net.Plugin
 
         private void EnsureCapacity(int min)
         {
-            int newCapacity = ((this.m_array.Length == 0) ? DEFAULT_CAPACITY : this.m_array.Length * 2);
+            int newCapacity = (this.m_array.Length == 0) ? DEFAULT_CAPACITY : this.m_array.Length * 2;
             if (newCapacity < min)
             {
                 newCapacity = min;
@@ -649,7 +649,7 @@ namespace log4net.Plugin
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return (IEnumerator)(this.GetEnumerator());
+            return (IEnumerator) this.GetEnumerator();
         }
 
         #endregion Implementation (IEnumerable)
@@ -716,7 +716,7 @@ namespace log4net.Plugin
                 }
 
                 ++this.m_index;
-                return (this.m_index < this.m_collection.Count);
+                return this.m_index < this.m_collection.Count;
             }
 
             /// <summary>

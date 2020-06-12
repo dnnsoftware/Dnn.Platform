@@ -185,7 +185,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         public bool HasChildren()
         {
-            return (this.Children.Count > 0);
+            return this.Children.Count > 0;
         }
 
         internal void ApplyContext(string defaultImagePath)
@@ -243,16 +243,16 @@ namespace DotNetNuke.Web.DDRMenu
                             this.Url = reader.Value;
                             break;
                         case "enabled":
-                            this.Enabled = (reader.Value == "1");
+                            this.Enabled = reader.Value == "1";
                             break;
                         case "selected":
-                            this.Selected = (reader.Value == "1");
+                            this.Selected = reader.Value == "1";
                             break;
                         case "breadcrumb":
-                            this.Breadcrumb = (reader.Value == "1");
+                            this.Breadcrumb = reader.Value == "1";
                             break;
                         case "separator":
-                            this.Separator = (reader.Value == "1");
+                            this.Separator = reader.Value == "1";
                             break;
                         case "icon":
                             this.Icon = reader.Value;

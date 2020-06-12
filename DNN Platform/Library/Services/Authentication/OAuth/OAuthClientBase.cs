@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private AuthorisationResult AuthorizeV2()
         {
             string errorReason = HttpContext.Current.Request.Params["error_reason"];
-            bool userDenied = (errorReason != null);
+            bool userDenied = errorReason != null;
             if (userDenied)
             {
                 return AuthorisationResult.Denied;
@@ -534,7 +534,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private void SaveTokenCookie(string suffix)
         {
-            var authTokenCookie = new HttpCookie(this.AuthTokenName + suffix) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
+            var authTokenCookie = new HttpCookie(this.AuthTokenName + suffix) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
             authTokenCookie.Values[OAuthTokenKey] = this.AuthToken;
             authTokenCookie.Values[OAuthTokenSecretKey] = this.TokenSecret;
             authTokenCookie.Values[this.UserGuidKey] = this.UserGuid;
@@ -666,7 +666,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 profileProperties.Add("Website", user.Website);
             }
-            if ((objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale")))) && !string.IsNullOrEmpty(user.Locale))
+            if ((objUserInfo == null || string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale"))) && !string.IsNullOrEmpty(user.Locale))
             {
                 if (LocaleController.IsValidCultureName(user.Locale.Replace('_', '-')))
                 {
@@ -678,7 +678,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
             }
 
-            if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone"))))
+            if (objUserInfo == null || string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone")))
             {
                 if (String.IsNullOrEmpty(user.TimeZoneInfo))
                 {
@@ -784,7 +784,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             var authTokenCookie = new HttpCookie(this.AuthTokenName)
             {
                 Expires = DateTime.Now.AddDays(-30),
-                Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
             };
             HttpContext.Current.Response.SetCookie(authTokenCookie);
         }

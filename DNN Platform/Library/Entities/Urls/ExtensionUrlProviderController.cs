@@ -101,7 +101,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 // always return an instantiated provider collection
-                providers = providersToCall ?? (new List<ExtensionUrlProvider>());
+                providers = providersToCall ?? new List<ExtensionUrlProvider>();
             }
 
             // return the collection of module providers

@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         {
 
             var domain = "";
-            if ((HttpContext.Current != null))
+            if (HttpContext.Current != null)
             {
                 domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install/launchautoinstall", "").Replace("/install", "").Replace("/runinstall", "");
             }

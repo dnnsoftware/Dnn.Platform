@@ -110,7 +110,7 @@ namespace DotNetNuke.Framework
                         if ((!String.IsNullOrEmpty(attributeName)) && (this.HtmlAttributes[attributeName] != null))
                         {
                             string attributeValue = this.HtmlAttributes[attributeName];
-                            if ((attributeValue.IndexOf(",") > 0))
+                            if (attributeValue.IndexOf(",") > 0)
                             {
                                 var attributeValues = attributeValue.Split(',');
                                 for (var attributeCounter = 0;
@@ -727,7 +727,7 @@ namespace DotNetNuke.Framework
             if (!UrlUtils.InPopUp())
             {
                 this.MetaGenerator.Content = this.Generator;
-                this.MetaGenerator.Visible = (!String.IsNullOrEmpty(this.Generator));
+                this.MetaGenerator.Visible = !String.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
                 /*
                  * Never show to be html5 compatible and stay backward compatible
@@ -736,9 +736,9 @@ namespace DotNetNuke.Framework
                  * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
                  */
                 this.MetaKeywords.Content = this.KeyWords;
-                this.MetaKeywords.Visible = (!String.IsNullOrEmpty(this.KeyWords));
+                this.MetaKeywords.Visible = !String.IsNullOrEmpty(this.KeyWords);
                 this.MetaDescription.Content = this.Description;
-                this.MetaDescription.Visible = (!String.IsNullOrEmpty(this.Description));
+                this.MetaDescription.Visible = !String.IsNullOrEmpty(this.Description);
             }
             this.Page.Header.Title = this.Title;
             if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)

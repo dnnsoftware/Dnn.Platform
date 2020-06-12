@@ -193,7 +193,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Check the White Lists
-                if ((this.Package.InstallerInfo.IgnoreWhiteList || Util.IsFileValid(insFile, this.Package.InstallerInfo.AllowableFiles)))
+                if (this.Package.InstallerInfo.IgnoreWhiteList || Util.IsFileValid(insFile, this.Package.InstallerInfo.AllowableFiles))
                 {
                     // Install File
                     if (File.Exists(this.PhysicalBasePath + insFile.FullName))

@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Personalization
         {
             if (personalization != null)
             {
-                (personalization.Profile).Remove(namingContainer + ":" + key);
+                personalization.Profile.Remove(namingContainer + ":" + key);
                 personalization.IsModified = true;
             }
         }

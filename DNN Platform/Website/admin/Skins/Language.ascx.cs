@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             get
             {
-                return (this.UseCurrentCultureForTemplate) ? this.CurrentCulture : "en-US";
+                return this.UseCurrentCultureForTemplate ? this.CurrentCulture : "en-US";
             }
         }
 

@@ -217,7 +217,7 @@ namespace log4net.Config
                     // and the application does not have PathDiscovery permission
                 }
 
-                if (applicationBaseDirectory == null || (new Uri(applicationBaseDirectory)).IsFile)
+                if (applicationBaseDirectory == null || new Uri(applicationBaseDirectory).IsFile)
                 {
                     this.ConfigureFromFile(sourceAssembly, targetRepository);
                 }
@@ -317,7 +317,7 @@ namespace log4net.Config
         /// <param name="configFile">the FileInfo pointing to the config file</param>
         private void ConfigureFromFile(ILoggerRepository targetRepository, FileInfo configFile)
         {
-#if (SSCLI)
+#if SSCLI
 			if (m_configureAndWatch)
 			{
 				LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file not supported on SSCLI");

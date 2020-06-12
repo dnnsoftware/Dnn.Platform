@@ -69,7 +69,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             try
             {
                 // fix for ASP.NET canonicalization issues http://support.microsoft.com/?kbid=887459
-                if ((request.Path.IndexOf("\\", StringComparison.Ordinal) >= 0 || Path.GetFullPath(request.PhysicalPath) != request.PhysicalPath))
+                if (request.Path.IndexOf("\\", StringComparison.Ordinal) >= 0 || Path.GetFullPath(request.PhysicalPath) != request.PhysicalPath)
                 {
                     DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
                 }
@@ -312,7 +312,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     if (portalSettings.SSLEnforced)
                     {
                         // if page is not secure and connection is secure
-                        if ((!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection))
+                        if (!portalSettings.ActiveTab.IsSecure && request.IsSecureConnection)
                         {
                             // check if connection has already been forced to secure orelse ssloffload is disabled
                             if (request.QueryString["ssl"] == null)
@@ -424,7 +424,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // save and remove the querystring as it gets added back on later
             // path parameter specifications will take precedence over querystring parameters
             string strQueryString = "";
-            if ((!String.IsNullOrEmpty(app.Request.Url.Query)))
+            if (!String.IsNullOrEmpty(app.Request.Url.Query))
             {
                 strQueryString = request.QueryString.ToString();
                 requestedPath = requestedPath.Replace(app.Request.Url.Query, "");
@@ -444,7 +444,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 Match objMatch = Regex.Match(requestedPath, pattern, RegexOptions.IgnoreCase);
 
                 // if there is a match
-                if ((objMatch.Success))
+                if (objMatch.Success)
                 {
                     // create a new URL using the SendTo regex value
                     sendTo = RewriterUtils.ResolveUrl(
@@ -454,7 +454,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                     string parameters = objMatch.Groups[2].Value;
                     // process the parameters
-                    if ((parameters.Trim().Length > 0))
+                    if (parameters.Trim().Length > 0)
                     {
                         // split the value into an array based on "/" ( ie. /tabid/##/ )
                         parameters = parameters.Replace("\\", "/");
@@ -575,7 +575,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             tabPath = url.Remove(0, myAlias.Length);
                         }
                         // Default Page has been Requested
-                        if ((tabPath == "/" + Globals.glbDefaultPage.ToLowerInvariant()))
+                        if (tabPath == "/" + Globals.glbDefaultPage.ToLowerInvariant())
                         {
                             return;
                         }
@@ -612,7 +612,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                                                   cultureCode);
 
                         // Check to see if neutral culture tab exists
-                        if ((tabID == Null.NullInteger && cultureCode.Length > 0))
+                        if (tabID == Null.NullInteger && cultureCode.Length > 0)
                         {
                             tabID = TabController.GetTabByTabPath(
                                 portalID,
@@ -620,14 +620,14 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         }
                         // End of patch
 
-                        if ((tabID != Null.NullInteger))
+                        if (tabID != Null.NullInteger)
                         {
                             string sendToUrl = "~/" + Globals.glbDefaultPage + "?TabID=" + tabID;
                             if (!cultureCode.Equals(string.Empty))
                             {
                                 sendToUrl = sendToUrl + "&language=" + cultureCode;
                             }
-                            if ((!String.IsNullOrEmpty(app.Request.Url.Query)))
+                            if (!String.IsNullOrEmpty(app.Request.Url.Query))
                             {
                                 sendToUrl = sendToUrl + "&" + app.Request.Url.Query.TrimStart('?');
                             }
@@ -635,7 +635,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             return;
                         }
                         tabPath = tabPath.ToLowerInvariant();
-                        if ((tabPath.IndexOf('?') != -1))
+                        if (tabPath.IndexOf('?') != -1)
                         {
                             tabPath = tabPath.Substring(0, tabPath.IndexOf('?'));
                         }
@@ -770,9 +770,9 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
                         foreach (KeyValuePair<int, TabInfo> kvp in objTabs)
                         {
-                            if ((kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLowerInvariant() == tabPath))
+                            if (kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLowerInvariant() == tabPath)
                             {
-                                if ((!String.IsNullOrEmpty(app.Request.Url.Query)))
+                                if (!String.IsNullOrEmpty(app.Request.Url.Query))
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,

@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                     img.URL = sImg;
                     if (!imgList.Contains(sImg)) {
                         Bitmap bmp = Utilities.GetImageFromURL(sImg);
-                        if ((bmp != null)) {
+                        if (bmp != null) {
                             if (bmp.Height > 25 & bmp.Height < 500 & bmp.Width > 25 & bmp.Width < 500) {
                                 link.Images.Add(img);
                                 imgList += sImg;
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.Journal.Components {
         public static bool AreFriends(UserInfo profileUser, UserInfo currentUser)
         {
             var friendsRelationShip = RelationshipController.Instance.GetFriendRelationship(profileUser, currentUser);
-            return (friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted);
+            return friendsRelationShip != null && friendsRelationShip.Status == RelationshipStatus.Accepted;
         }
     }
 }

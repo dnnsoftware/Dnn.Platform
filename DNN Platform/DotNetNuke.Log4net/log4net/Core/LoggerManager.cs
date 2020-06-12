@@ -815,7 +815,7 @@ namespace log4net.Core
             sb.Append("log4net assembly [").Append(myAssembly.FullName).Append("]. ");
             sb.Append("Loaded from [").Append(SystemInfo.AssemblyLocationInfo(myAssembly)).Append("]. ");
             sb.Append("(.NET Runtime [").Append(Environment.Version.ToString()).Append("]");
-#if (!SSCLI)
+#if !SSCLI
             sb.Append(" on ").Append(Environment.OSVersion.ToString());
 #endif
 #endif // NETSTANDARD1_3
@@ -823,7 +823,7 @@ namespace log4net.Core
             return sb.ToString();
         }
 
-#if (!NETCF)
+#if !NETCF
         /// <summary>
         /// Called when the <see cref="AppDomain.DomainUnload"/> event fires
         /// </summary>

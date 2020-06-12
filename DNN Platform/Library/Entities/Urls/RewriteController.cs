@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     tabId = portal.SplashTabId;
                                     HttpContext.Current.Response.Cookies.Add(
-                                        new HttpCookie("SplashPageView", "true") { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") });
+                                        new HttpCookie("SplashPageView", "true") { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" });
                                     result.Action = ActionType.Redirect302;
                                     result.Reason = RedirectReason.Requested_SplashPage;
                                 }
@@ -827,7 +827,7 @@ namespace DotNetNuke.Entities.Urls
                 for (int i = lastIndex; i >= 0; i += -1)
                 {
                     // only start checking the url when it is in the range of the min->max number of segments
-                    if ((i > minAliasPathDepth & i <= totalDepth))
+                    if (i > minAliasPathDepth & i <= totalDepth)
                     {
                         // join all the tab path sections together
                         // flag to remember if the incoming path had a .aspx or other pageAndExtension on it
@@ -836,12 +836,12 @@ namespace DotNetNuke.Entities.Urls
                         if ((tabPathStart + tabPathLength) <= arraySize)
                         {
                             string tabPath = "";
-                            if ((tabPathLength > -1))
+                            if (tabPathLength > -1)
                             {
                                 tabPath = string.Join("/", splitUrl, tabPathStart, tabPathLength);
                             }
                             string aliasPath;
-                            if ((curAliasPathDepth <= lastIndex))
+                            if (curAliasPathDepth <= lastIndex)
                             {
                                 aliasPath = string.Join("/", splitUrl, 0, curAliasPathDepth + 1);
                             }
@@ -1077,7 +1077,7 @@ namespace DotNetNuke.Entities.Urls
                                             bool newAction;
                                             // newAction tracks whether or not a new 'action' (ie 301, 404, etc) has been requested.
                                             // call the module friendly url providers. Note that the rewriteParms value will be changed if there is a rewrite.
-                                            string[] urlParms = (new List<string>()).ToArray(); // empty parm array
+                                            string[] urlParms = new List<string>().ToArray(); // empty parm array
                                             if (string.IsNullOrEmpty(langParms) == false)
                                             {
                                                 urlParms = langParms.Split('/');
@@ -1247,7 +1247,7 @@ namespace DotNetNuke.Entities.Urls
                 if (isDefaultAspxPath) // it is the default aspx path
                 {
                     // check to see if it is a /default.aspx?key=value url (not just default.aspx, nor a child alias)
-                    if ((queryStringCol != null && queryStringCol.Count > 0))
+                    if (queryStringCol != null && queryStringCol.Count > 0)
                     {
                         // when there is a query string supplied, we don't need to rewrite
                         if (useFriendlyUrls)
@@ -1325,7 +1325,7 @@ namespace DotNetNuke.Entities.Urls
                             result.Action = ActionType.CheckFor301;
                         }
                         // if a match is found here, there is the potential for a 'friendlier' url
-                        if ((sesUrlParams.Trim().Length > 0))
+                        if (sesUrlParams.Trim().Length > 0)
                         {
                             sesUrlParams = sesUrlParams.Replace("\\", "/");
                             var urlParams = sesUrlParams.Split('/');
@@ -1335,10 +1335,10 @@ namespace DotNetNuke.Entities.Urls
                                     !urlParams[x].Equals(Globals.glbDefaultPage, StringComparison.InvariantCultureIgnoreCase))
                                 {
                                     rewritePath = rewritePath + "&" + urlParams[x].Replace(".aspx", "").Trim() + "=";
-                                    if ((x < (urlParams.Length - 1)))
+                                    if (x < (urlParams.Length - 1))
                                     {
                                         x += 1;
-                                        if ((urlParams[x].Trim() != ""))
+                                        if (urlParams[x].Trim() != "")
                                         {
                                             rewritePath = rewritePath + urlParams[x].Replace(".aspx", "");
                                         }
@@ -1387,7 +1387,7 @@ namespace DotNetNuke.Entities.Urls
                 absoluteUri = absoluteUri.Substring(scheme.Length);
             }
             // Remove QueryString if it exists in the Url value
-            if ((queryString != ""))
+            if (queryString != "")
             {
                 absoluteUri = absoluteUri.Replace(queryString, "");
             }
@@ -1693,7 +1693,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
                 // chop the last char off if it is an empty parameter
-                if ((newUrl[newUrl.Length - 1] == '&'))
+                if (newUrl[newUrl.Length - 1] == '&')
                 {
                     newUrl = newUrl.Substring(0, newUrl.Length - 1);
                 }

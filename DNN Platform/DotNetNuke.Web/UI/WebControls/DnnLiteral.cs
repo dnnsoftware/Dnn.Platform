@@ -52,9 +52,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((this.Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(this.Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
                 }

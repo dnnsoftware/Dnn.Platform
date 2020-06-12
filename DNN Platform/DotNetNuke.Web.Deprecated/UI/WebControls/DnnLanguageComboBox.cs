@@ -252,11 +252,11 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this._englishCombo.AutoPostBack = this.AutoPostBack;
             this._englishCombo.CausesValidation = this.CausesValidation;
-            this._englishCombo.Visible = (this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase));
+            this._englishCombo.Visible = this.DisplayMode.Equals("ENGLISH", StringComparison.InvariantCultureIgnoreCase);
 
             this._nativeCombo.AutoPostBack = this.AutoPostBack;
             this._nativeCombo.CausesValidation = this.CausesValidation;
-            this._nativeCombo.Visible = (this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase));
+            this._nativeCombo.Visible = this.DisplayMode.Equals("NATIVE", StringComparison.InvariantCultureIgnoreCase);
 
             this._modeRadioButtonList.Visible = this.ShowModeButtons;
 

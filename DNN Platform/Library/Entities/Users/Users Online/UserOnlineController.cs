@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Users
             // Check if the Tracking cookie exists
             HttpCookie cookie = context.Request.Cookies[cookieName];
             // Track Anonymous User
-            if ((cookie == null))
+            if (cookie == null)
             {
                 // Create a temporary userId
                 userID = Guid.NewGuid().ToString();
@@ -153,7 +153,7 @@ namespace DotNetNuke.Entities.Users
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
-                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                 };
                 context.Response.Cookies.Add(cookie);
 
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                if ((cookie.Value == null))
+                if (cookie.Value == null)
                 {
                     // Expire the cookie, there is something wrong with it
                     context.Response.Cookies[cookieName].Expires = new DateTime(1999, 10, 12);
@@ -188,7 +188,7 @@ namespace DotNetNuke.Entities.Users
                 userID = cookie.Value;
 
                 // Find the cookie in the user list
-                if ((userList[userID] == null))
+                if (userList[userID] == null)
                 {
                     userList[userID] = new AnonymousUserInfo();
                     ((AnonymousUserInfo)userList[userID]).CreationDate = DateTime.Now;
@@ -204,7 +204,7 @@ namespace DotNetNuke.Entities.Users
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
-                    Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
+                    Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/"
                 };
                 context.Response.Cookies.Add(cookie);
             }
@@ -240,7 +240,7 @@ namespace DotNetNuke.Entities.Users
             user.PortalID = portalSettings.PortalId;
             user.TabID = portalSettings.ActiveTab.TabID;
             user.LastActiveDate = DateTime.Now;
-            if ((userList[objUserInfo.UserID.ToString()] == null))
+            if (userList[objUserInfo.UserID.ToString()] == null)
             {
                 user.CreationDate = user.LastActiveDate;
             }
@@ -267,11 +267,11 @@ namespace DotNetNuke.Entities.Users
             {
                 context.Items["CheckedUsersOnlineCookie"] = "true";
             }
-            if ((context.Request.IsAuthenticated))
+            if (context.Request.IsAuthenticated)
             {
                 this.TrackAuthenticatedUser(context);
             }
-            else if ((context.Request.Browser.Cookies))
+            else if (context.Request.Browser.Cookies)
             {
                 this.TrackAnonymousUser(context);
             }

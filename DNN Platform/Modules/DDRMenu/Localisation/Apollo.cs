@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                 this.haveChecked = true;
             }
 
-            return (this.apiMember != null);
+            return this.apiMember != null;
         }
 
         [Obsolete("Deprecated in 9.4.0, due to limited developer support.  Scheduled removal in v10.0.0.")]

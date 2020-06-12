@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string m_RazorScriptFile = Null.NullString;
                 var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-                if (!(string.IsNullOrEmpty(scriptFileSetting)))
+                if (! string.IsNullOrEmpty(scriptFileSetting))
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string scriptPath = script.Replace(basePath, "");
                 var item = new ListItem(scriptPath, scriptPath);
-                if (!(string.IsNullOrEmpty(scriptFileSetting)) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
+                if (! string.IsNullOrEmpty(scriptFileSetting) && scriptPath.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant())
                 {
                     item.Selected = true;
                 }
@@ -78,9 +78,9 @@ namespace DotNetNuke.Modules.RazorHost
             this.txtSource.Text = objStreamReader.ReadToEnd();
             objStreamReader.Close();
 
-            if (!(string.IsNullOrEmpty(scriptFileSetting)))
+            if (! string.IsNullOrEmpty(scriptFileSetting))
             {
-                this.isCurrentScript.Checked = (this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant());
+                this.isCurrentScript.Checked = this.scriptList.SelectedValue.ToLowerInvariant() == scriptFileSetting.ToLowerInvariant();
             }
         }
 

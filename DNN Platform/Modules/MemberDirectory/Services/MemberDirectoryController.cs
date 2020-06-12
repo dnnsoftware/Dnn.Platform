@@ -63,8 +63,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             }
 
             var canView = (group.SecurityMode == SecurityMode.SecurityRole)
-                               ? (this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
-                               : (this.PortalSettings.UserInfo.IsInRole(group.RoleName));
+                               ? this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName)
+                               : this.PortalSettings.UserInfo.IsInRole(group.RoleName);
 
             // if current user can view the group page and group is public, then should be able to view members.
             if (!canView)
@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                         users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId,
                                                                                        groupId,
                                                                                        -1, isAdmin, pageIndex, pageSize,
-                                                                                       sortField, (sortOrder == "ASC"),
+                                                                                       sortField, sortOrder == "ASC",
                                                                                        propertyNames, propertyValues);
                     }
                     else
@@ -150,7 +150,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 case "Relationship":
                     users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
                                                                            Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
-                                                                           sortField, (sortOrder == "ASC"),
+                                                                           sortField, sortOrder == "ASC",
                                                                            propertyNames, propertyValues);
                     break;
                 case "ProfileProperty":
@@ -159,17 +159,17 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                     users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
                                                                            -1, isAdmin, pageIndex, pageSize,
-                                                                           sortField, (sortOrder == "ASC"),
+                                                                           sortField, sortOrder == "ASC",
                                                                            propertyNames, propertyValues);
                     break;
                 default:
                     users = isBasicSearch ? UserController.Instance.GetUsersBasicSearch(this.PortalSettings.PortalId, pageIndex, pageSize,
-                                                                           sortField, (sortOrder == "ASC"),
+                                                                           sortField, sortOrder == "ASC",
                                                                            "DisplayName", searchTerm)
                                                                            :
                                                                            UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
                                                                                -1, isAdmin, pageIndex, pageSize,
-                                                                               sortField, (sortOrder == "ASC"),
+                                                                               sortField, sortOrder == "ASC",
                                                                                propertyNames, propertyValues);
                     break;
             }

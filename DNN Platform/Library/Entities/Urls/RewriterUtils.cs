@@ -24,7 +24,7 @@ namespace DotNetNuke.Entities.Urls
             // first strip the querystring, if any
             var queryString = string.Empty;
             string sendToUrlLessQString = sendToUrl;
-            if ((sendToUrl.IndexOf("?", StringComparison.Ordinal) > 0))
+            if (sendToUrl.IndexOf("?", StringComparison.Ordinal) > 0)
             {
                 sendToUrlLessQString = sendToUrl.Substring(0, sendToUrl.IndexOf("?", StringComparison.Ordinal));
                 queryString = sendToUrl.Substring(sendToUrl.IndexOf("?", StringComparison.Ordinal) + 1);
@@ -64,13 +64,13 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // String does not contain a ~, so just return Url
-            if ((url.StartsWith("~") == false))
+            if (url.StartsWith("~") == false)
             {
                 return url;
             }
 
             // There is just the ~ in the Url, return the appPath
-            if ((url.Length == 1))
+            if (url.Length == 1)
             {
                 return appPath;
             }
@@ -78,14 +78,14 @@ namespace DotNetNuke.Entities.Urls
             if (seperatorChar == '/' || seperatorChar == '\\')
             {
                 // Url looks like ~/ or ~\
-                if ((appPath.Length > 1))
+                if (appPath.Length > 1)
                 {
                     return appPath + "/" + url.Substring(2);
                 }
                 return "/" + url.Substring(2);
             }
             // Url look like ~something
-            if ((appPath.Length > 1))
+            if (appPath.Length > 1)
             {
                 return appPath + "/" + url.Substring(1);
             }

@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 string m_RazorScriptFile = base.RazorScriptFile;
                 var scriptFileSetting = this.ModuleContext.Settings["ScriptFile"] as string;
-                if (!(string.IsNullOrEmpty(scriptFileSetting)))
+                if (! string.IsNullOrEmpty(scriptFileSetting))
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }

@@ -994,7 +994,7 @@ namespace DotNetNuke.Entities.Urls
                     }
 
                     // check for 404 logging
-                    if ((result == null || result.Action == ActionType.Output404))
+                    if (result == null || result.Action == ActionType.Output404)
                     {
                         // Log 404 errors to Event Log
                         UrlRewriterUtils.Log404(request, settings, result);
@@ -1313,7 +1313,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     if (request != null)
                     {
-                        debugValue = (request.Params.Get("HTTP_" + debugToken.ToUpper()));
+                        debugValue = request.Params.Get("HTTP_" + debugToken.ToUpper());
                     }
                     if (debugValue == null)
                     {
@@ -1599,7 +1599,7 @@ namespace DotNetNuke.Entities.Urls
                     if (!string.IsNullOrEmpty(doNotRedirectSecureRegex))
                     {
                         // match the raw url
-                        exclude = (Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant));
+                        exclude = Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     }
                     if (!exclude)
                     {
@@ -2423,7 +2423,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 try
                 {
-                    if ((ignoreRegex.Length > 0))
+                    if (ignoreRegex.Length > 0)
                     {
                         if (Regex.IsMatch(requestedPath, ignoreRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                         {
@@ -2537,7 +2537,7 @@ namespace DotNetNuke.Entities.Urls
                     result.Action = ActionType.CheckFor301;
                 }
                 string scheme = requestUri.Scheme + Uri.SchemeDelimiter;
-                bool queryStringHas301Parm = (queryStringCol["do301"] != null);
+                bool queryStringHas301Parm = queryStringCol["do301"] != null;
                 // 727 : keep a bool value if there is a do301 request in the querystring
                 // check for a 301 request in the query string, or an explicit 301 or 302 request
                 // 2.0 - check for explicit do301=true instead of just do301 key

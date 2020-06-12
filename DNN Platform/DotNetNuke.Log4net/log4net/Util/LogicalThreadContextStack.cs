@@ -159,7 +159,7 @@ namespace log4net.Util
             string result = "";
             if (stack.Count > 0)
             {
-                result = ((StackFrame)(stack.Pop())).Message;
+                result = ((StackFrame) stack.Pop()).Message;
             }
             LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew);
             ltcs.m_stack = stack;
@@ -215,7 +215,7 @@ namespace log4net.Util
             Stack stack = this.m_stack;
             if (stack.Count > 0)
             {
-                return ((StackFrame)(stack.Peek())).FullMessage;
+                return ((StackFrame) stack.Peek()).FullMessage;
             }
             return null;
         }

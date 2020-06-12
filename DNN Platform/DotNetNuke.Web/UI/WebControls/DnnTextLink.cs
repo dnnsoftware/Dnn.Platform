@@ -135,9 +135,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             this.LocalizeStrings();
 
-            if ((!this.Enabled))
+            if (!this.Enabled)
             {
-                if ((!string.IsNullOrEmpty(this.DisabledCssClass)))
+                if (!string.IsNullOrEmpty(this.DisabledCssClass))
                 {
                     this.CssClass = this.DisabledCssClass;
                 }
@@ -169,23 +169,23 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public virtual void LocalizeStrings()
         {
-            if ((this.Localize))
+            if (this.Localize)
             {
-                if ((!string.IsNullOrEmpty(this.ToolTip)))
+                if (!string.IsNullOrEmpty(this.ToolTip))
                 {
                     this.ToolTip = Localization.GetString(this.ToolTip, this.LocalResourceFile);
                 }
 
-                if ((!string.IsNullOrEmpty(this.Text)))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     this.Text = Localization.GetString(this.Text, this.LocalResourceFile);
 
-                    if ((string.IsNullOrEmpty(this.ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = Localization.GetString(string.Format("{0}.ToolTip", this.Text), this.LocalResourceFile);
                     }
 
-                    if ((string.IsNullOrEmpty(this.ToolTip)))
+                    if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = this.Text;
                     }

@@ -134,8 +134,8 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return true;
             }
-            return (FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
-                this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID);
+            return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
+                this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID;
         }
 
         private void UnmapFolderInternal(IFolderInfo folder, bool isCascadeDeleting)
@@ -678,7 +678,7 @@ namespace DotNetNuke.Services.FileSystem
                 folder = folders.SingleOrDefault(f => f.FolderID == folderId) ?? CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId));
             }
 
-            return folder ?? (CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId)));
+            return folder ?? CBO.Instance.FillObject<FolderInfo>(DataProvider.Instance().GetFolder(folderId));
         }
 
         /// <summary>
@@ -1634,9 +1634,9 @@ namespace DotNetNuke.Services.FileSystem
             while (stack.Count > 0)
             {
                 var mappedPath = stack.Pop();
-                var relativePath = (String.IsNullOrEmpty(mappedPath))
+                var relativePath = String.IsNullOrEmpty(mappedPath)
                                         ? String.Empty
-                                        : (String.IsNullOrEmpty(baseMappedPath))
+                                        : String.IsNullOrEmpty(baseMappedPath)
                                             ? mappedPath
                                             : RegexUtils.GetCachedRegex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
 

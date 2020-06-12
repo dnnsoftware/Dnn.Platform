@@ -729,7 +729,7 @@ namespace log4net.Config
                 XmlDocument doc = new XmlDocument() { XmlResolver = null };
                 try
                 {
-#if (NETCF)
+#if NETCF
 					// Create a text reader for the file stream
 					XmlTextReader xmlReader = new XmlTextReader(configStream);
 #elif NET_2_0 || NETSTANDARD1_3
@@ -795,7 +795,7 @@ namespace log4net.Config
 
         #region ConfigureAndWatch static methods
 
-#if (!NETCF && !SSCLI)
+#if !NETCF && !SSCLI
 #if !NETSTANDARD1_3 // Excluded because GetCallingAssembly() is not available in CoreFX (https://github.com/dotnet/corefx/issues/2221).
         /// <summary>
         /// Configures log4net using the file specified, monitors the file for changes
@@ -917,7 +917,7 @@ namespace log4net.Config
 
         #region ConfigureAndWatchHandler
 
-#if (!NETCF && !SSCLI)
+#if !NETCF && !SSCLI
         /// <summary>
         /// Class used to watch config files.
         /// </summary>

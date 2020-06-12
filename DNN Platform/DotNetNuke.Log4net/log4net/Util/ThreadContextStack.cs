@@ -127,7 +127,7 @@ namespace log4net.Util
             Stack stack = this.m_stack;
             if (stack.Count > 0)
             {
-                return ((StackFrame)(stack.Pop())).Message;
+                return ((StackFrame) stack.Pop()).Message;
             }
             return "";
         }
@@ -176,7 +176,7 @@ namespace log4net.Util
             Stack stack = this.m_stack;
             if (stack.Count > 0)
             {
-                return ((StackFrame)(stack.Peek())).FullMessage;
+                return ((StackFrame) stack.Peek()).FullMessage;
             }
             return null;
         }

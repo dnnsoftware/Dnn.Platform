@@ -416,7 +416,7 @@ namespace DotNetNuke.Data
 
         public virtual void UpdateDatabaseVersion(int Major, int Minor, int Build, string Name)
         {
-            if ((Major >= 5 || (Major == 4 && Minor == 9 && Build > 0)))
+            if (Major >= 5 || (Major == 4 && Minor == 9 && Build > 0))
             {
                 // If the version > 4.9.0 use the new sproc, which is added in 4.9.1 script
                 this.ExecuteNonQuery("UpdateDatabaseVersionAndName", Major, Minor, Build, Name);
@@ -2529,7 +2529,7 @@ namespace DotNetNuke.Data
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public virtual void UpdateUsersOnline(Hashtable userList)
         {
-            if ((userList.Count == 0))
+            if (userList.Count == 0)
             {
                 // No users to process, quit method
                 return;

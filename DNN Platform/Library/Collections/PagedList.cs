@@ -78,10 +78,10 @@ namespace DotNetNuke.Collections
             this.PageIndex = pageIndex;
             this.AddRange(items);
 
-            this.HasNextPage = (this.PageIndex < (this.PageCount - 1));
-            this.HasPreviousPage = (this.PageIndex > 0);
-            this.IsFirstPage = (this.PageIndex <= 0);
-            this.IsLastPage = (this.PageIndex >= (this.PageCount - 1));
+            this.HasNextPage = this.PageIndex < (this.PageCount - 1);
+            this.HasPreviousPage = this.PageIndex > 0;
+            this.IsFirstPage = this.PageIndex <= 0;
+            this.IsLastPage = this.PageIndex >= (this.PageCount - 1);
         }
 
         #endregion

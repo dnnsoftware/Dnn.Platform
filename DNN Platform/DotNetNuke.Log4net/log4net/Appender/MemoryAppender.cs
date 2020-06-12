@@ -116,7 +116,7 @@ namespace log4net.Appender
         [Obsolete("Use Fix property. Scheduled removal in v10.0.0.")]
         virtual public bool OnlyFixPartialEventData
         {
-            get { return (this.Fix == FixFlags.Partial); }
+            get { return this.Fix == FixFlags.Partial; }
             set
             {
                 if (value)

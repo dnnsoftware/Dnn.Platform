@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                 resizeHeight = this.Height;
             }
             else {
-                if (((float)this.Width / (float)img.Width < this.Height / (float)img.Height)) {
+                if ((float)this.Width / (float)img.Width < this.Height / (float)img.Height) {
                     resizeWidth = this.Width;
                     resizeHeight = scaledHeight;
                 }

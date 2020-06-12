@@ -168,7 +168,7 @@ namespace DotNetNuke.Admin.Containers
                             }
                             else
                             {
-                                this.SupportsMove = (actions.Count > 0);
+                                this.SupportsMove = actions.Count > 0;
                                 this.Panes = oSerializer.Serialize(this.PortalSettings.ActiveTab.Panes);
                             }
                         }

@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string Email
         {
-            get { return (this._viewer.IsInRole(this._settings.AdministratorRoleName)) ? this._user.Email : String.Empty; }
+            get { return this._viewer.IsInRole(this._settings.AdministratorRoleName) ? this._user.Email : String.Empty; }
         }
 
         public string FirstName
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         public string UserName
         {
-            get { return (this._viewer.IsInRole(this._settings.AdministratorRoleName)) ? this._user.Username : String.Empty; }
+            get { return this._viewer.IsInRole(this._settings.AdministratorRoleName) ? this._user.Username : String.Empty; }
         }
 
         public string Website

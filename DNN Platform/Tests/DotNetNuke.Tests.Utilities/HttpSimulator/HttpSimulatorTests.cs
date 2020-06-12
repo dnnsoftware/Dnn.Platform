@@ -265,7 +265,7 @@ namespace UnitTests.Subtext
             Console.WriteLine("vpath.VirtualPathString == '{0}'", vpathString);
 
             var mapping = ReflectionHelper.InvokeNonPublicMethod<string>(typeof(HostingEnvironment), "GetVirtualPathToFileMapping", vpath);
-            Console.WriteLine("GetVirtualPathToFileMapping: --->{0}<---", (mapping ?? "{NULL}"));
+            Console.WriteLine("GetVirtualPathToFileMapping: --->{0}<---", mapping ?? "{NULL}");
 
             var o = ReflectionHelper.GetPrivateInstanceFieldValue<object>("_configMapPath", environment);
             Console.WriteLine("_configMapPath: {0}", o ?? "{null}");

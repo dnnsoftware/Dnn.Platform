@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Razor
         {
             base.OnPreRender(e);
 
-            if (!(string.IsNullOrEmpty(this.RazorScriptFile)))
+            if (! string.IsNullOrEmpty(this.RazorScriptFile))
             {
                 var writer = new StringWriter();
                 this.Engine.Render(writer);

@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
         {
             if (!this.haveChecked)
             {
-                this.found = (DesktopModuleController.GetDesktopModuleByModuleName("effority.Ealo.Tabs", PortalSettings.Current.PortalId) != null);
+                this.found = DesktopModuleController.GetDesktopModuleByModuleName("effority.Ealo.Tabs", PortalSettings.Current.PortalId) != null;
                 this.haveChecked = true;
             }
 

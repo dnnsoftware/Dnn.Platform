@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
 
             Control ctrl = this.AdminPanel.FindControl("SiteNewPage");
-            if (((ctrl != null) && ctrl is DnnRibbonBarTool))
+            if ((ctrl != null) && ctrl is DnnRibbonBarTool)
             {
                 var toolCtrl = (DnnRibbonBarTool)ctrl;
                 toolCtrl.Text = Localization.GetString("SiteNewPage", this.LocalResourceFile);
@@ -193,16 +193,16 @@ namespace DotNetNuke.UI.ControlPanels
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
                 Control copyPageButton = this.CurrentPagePanel.FindControl("CopyPage");
-                if ((copyPageButton != null))
+                if (copyPageButton != null)
                 {
                     copyPageButton.Visible = LocaleController.Instance.IsDefaultLanguage(LocaleController.Instance.GetCurrentLocale(this.PortalSettings.PortalId).Code);
                 }
 
 
-                if ((this.Request.IsAuthenticated))
+                if (this.Request.IsAuthenticated)
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                    if (((user != null)))
+                    if ((user != null))
                     {
                         bool isAdmin = user.IsInRole(PortalSettings.Current.AdministratorRoleName);
                         this.AdminPanel.Visible = isAdmin;
@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.ControlPanels
                     this.ControlPanel.Visible = true;
                     this.BodyPanel.Visible = true;
 
-                    if ((DotNetNukeContext.Current.Application.Name == "DNNCORP.CE"))
+                    if (DotNetNukeContext.Current.Application.Name == "DNNCORP.CE")
                     {
                         // Hide Support icon in CE
                         this.AdminPanel.FindControl("SupportTickets").Visible = false;
@@ -230,7 +230,7 @@ namespace DotNetNuke.UI.ControlPanels
                     if (!this.Page.IsPostBack)
                     {
                         UserInfo objUser = UserController.Instance.GetCurrentUserInfo();
-                        if ((objUser != null))
+                        if (objUser != null)
                         {
                             if (objUser.IsSuperUser)
                             {

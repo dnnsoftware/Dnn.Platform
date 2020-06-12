@@ -393,7 +393,7 @@ namespace DotNetNuke.Entities.Modules
             oAppStartMessage.Attributes.Add("BusinessControllerClass", desktopModuleInfo.BusinessControllerClass);
             oAppStartMessage.Attributes.Add("DesktopModuleId", desktopModuleInfo.DesktopModuleID.ToString());
             EventQueueController.SendMessage(oAppStartMessage, "Application_Start");
-            if ((forceAppRestart))
+            if (forceAppRestart)
             {
                 Config.Touch();
             }

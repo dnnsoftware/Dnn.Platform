@@ -387,7 +387,7 @@ namespace DotNetNuke.Security.Membership
         private static UserInfo FillUserAndProfile(int portalId, IDataReader dr)
         {
             UserInfo user = null;
-            bool bContinue = (String.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase));
+            bool bContinue = String.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase);
 
             // Ensure the data reader returned is valid
             if (bContinue)

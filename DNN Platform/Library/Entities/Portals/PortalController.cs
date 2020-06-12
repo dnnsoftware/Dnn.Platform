@@ -1008,7 +1008,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -3157,7 +3157,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -3188,7 +3188,7 @@ namespace DotNetNuke.Entities.Portals
                 }
                 else
                 {
-                    retValue = (setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase));
+                    retValue = setting.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase) || setting.Equals("TRUE", StringComparison.InvariantCultureIgnoreCase);
                 }
             }
             catch (Exception exc)
@@ -3439,7 +3439,7 @@ namespace DotNetNuke.Entities.Portals
             }
             if (HttpContext.Current != null && Globals.Status == Globals.UpgradeStatus.None)
             {
-                if ((HttpContext.Current.Request.QueryString["language"] != null))
+                if (HttpContext.Current.Request.QueryString["language"] != null)
                 {
                     Language = HttpContext.Current.Request.QueryString["language"];
                 }

@@ -514,7 +514,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                     string strMessage = this.CompleteUserCreation(this.CreateStatus, user, true, this.IsRegister);
 
-                    if ((string.IsNullOrEmpty(strMessage)))
+                    if (string.IsNullOrEmpty(strMessage))
                     {
                         this.Response.Redirect(this.GetRedirectUrl(), true);
                     }

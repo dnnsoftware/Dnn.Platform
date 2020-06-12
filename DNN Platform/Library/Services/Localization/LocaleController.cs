@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Localization
                     locale = locales[portal.DefaultLanguage];
                 }
             }
-            return locale ?? (this.GetLocale(Localization.SystemLocale));
+            return locale ?? this.GetLocale(Localization.SystemLocale);
         }
 
         /// <summary>

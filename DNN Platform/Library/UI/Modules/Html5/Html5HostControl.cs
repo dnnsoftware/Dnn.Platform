@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnInit(e);
 
-            if (!(string.IsNullOrEmpty(this._html5File)))
+            if (! string.IsNullOrEmpty(this._html5File))
             {
                 // Check if css file exists
                 var cssFile = Path.ChangeExtension(this._html5File, ".css");
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.Modules.Html5
         {
             base.OnPreRender(e);
 
-            if (!(string.IsNullOrEmpty(this._html5File)))
+            if (! string.IsNullOrEmpty(this._html5File))
             {
                 this.Controls.Add(new LiteralControl(HttpUtility.HtmlDecode(this._fileContent)));
             }

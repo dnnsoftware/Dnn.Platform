@@ -353,7 +353,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.grdServices.DataBind();
 
                 // if no service available then hide options
-                this.ServicesRow.Visible = (this.grdServices.Items.Count > 0);
+                this.ServicesRow.Visible = this.grdServices.Items.Count > 0;
             }
         }
 

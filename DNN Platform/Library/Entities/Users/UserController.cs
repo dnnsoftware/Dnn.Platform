@@ -190,7 +190,7 @@ namespace DotNetNuke.Entities.Users
         private static UserInfo GetCurrentUserInternal()
         {
             UserInfo user;
-            if ((HttpContext.Current == null))
+            if (HttpContext.Current == null)
             {
                 if (!Thread.CurrentPrincipal.Identity.IsAuthenticated)
                 {
@@ -1775,7 +1775,7 @@ namespace DotNetNuke.Entities.Users
             // Remove the User
             var retValue = MembershipProvider.Instance().RemoveUser(user);
 
-            if ((retValue))
+            if (retValue)
             {
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -1932,7 +1932,7 @@ namespace DotNetNuke.Entities.Users
             // Restore the User
             var retValue = MembershipProvider.Instance().RestoreUser(user);
 
-            if ((retValue))
+            if (retValue)
             {
                 // restore user permissions
                 RestoreUserPermissions(user);

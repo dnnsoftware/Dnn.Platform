@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Users
             var objUserOnlineController = new UserOnlineController();
 
             // Is Users Online Enabled?
-            if ((objUserOnlineController.IsEnabled()))
+            if (objUserOnlineController.IsEnabled())
             {
                 // Update the Users Online records from Cache
                 this.Status = "Updating Users Online";

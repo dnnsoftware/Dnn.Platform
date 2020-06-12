@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.Sitemap
                     if ((!localized.IsDeleted && !localized.DisableLink && localized.TabType == TabType.Normal) &&
                         (Null.IsNull(localized.StartDate) || localized.StartDate < DateTime.Now) &&
                         (Null.IsNull(localized.EndDate) || localized.EndDate > DateTime.Now) &&
-                        (this.IsTabPublic(localized.TabPermissions)) &&
+                        this.IsTabPublic(localized.TabPermissions) &&
                         (this.includeHiddenPages || localized.IsVisible) && localized.HasBeenPublished)
                     {
                         string alternateUrl = TestableGlobals.Instance.NavigateURL(localized.TabID, localized.IsSuperTab, ps, "", localized.CultureCode);
@@ -206,7 +206,7 @@ namespace DotNetNuke.Services.Sitemap
             bool hasPublicRole = false;
 
 
-            if ((roles != null))
+            if (roles != null)
             {
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
                 foreach (string role in roles.Split(new[] { ';' }))
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Sitemap
                         if (role.StartsWith("!"))
                         {
                             string denyRole = role.Replace("!", "");
-                            if ((denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName))
+                            if (denyRole == Globals.glbRoleUnauthUserName || denyRole == Globals.glbRoleAllUsersName)
                             {
                                 hasPublicRole = false;
                                 break;
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Sitemap
                         }
                         else
                         {
-                            if ((role == Globals.glbRoleUnauthUserName || role == Globals.glbRoleAllUsersName))
+                            if (role == Globals.glbRoleUnauthUserName || role == Globals.glbRoleAllUsersName)
                             {
                                 hasPublicRole = true;
                                 break;

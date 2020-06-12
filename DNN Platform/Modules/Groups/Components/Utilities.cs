@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.Groups {
             var tmpParams = new string[] { param };
             var intLength = tmpParams.Length;
             var currLength = currParams.Length;
-            Array.Resize(ref tmpParams, (intLength + currLength));
+            Array.Resize(ref tmpParams, intLength + currLength);
             currParams.CopyTo(tmpParams, intLength);
             return tmpParams;
         }

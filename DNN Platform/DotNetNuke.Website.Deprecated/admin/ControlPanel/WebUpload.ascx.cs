@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 if (this._DestinationFolder == null)
                 {
                     this._DestinationFolder = string.Empty;
-                    if ((this.Request.QueryString["dest"] != null))
+                    if (this.Request.QueryString["dest"] != null)
                     {
                         this._DestinationFolder = Globals.QueryStringDecode(this.Request.QueryString["dest"]);
                     }
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             get
             {
                 this._FileType = UploadType.File;
-                if ((this.Request.QueryString["ftype"] != null))
+                if (this.Request.QueryString["ftype"] != null)
                 {
                     // The select statement ensures that the parameter can be converted to UploadType
                     switch (this.Request.QueryString["ftype"].ToLowerInvariant())
@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 string strHost = Localization.GetString("HostRoot", this.LocalResourceFile);
                 string strPortal = Localization.GetString("PortalRoot", this.LocalResourceFile);
 
-                this.maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), (Config.GetMaxUploadSize() / (1024 * 1024)));
+                this.maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), Config.GetMaxUploadSize() / (1024 * 1024));
 
                 if (!this.Page.IsPostBack)
                 {

@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             var controlTitle = Localization.GetString("ControlTitle", this.LocalResourceFile);
             var controlTitlePrefix = (this.FolderMappingID == Null.NullInteger) ? Localization.GetString("New") : Localization.GetString("Edit");
 
-            this.SyncWarningPlaceHolder.Visible = (this.FolderMappingID != Null.NullInteger);
+            this.SyncWarningPlaceHolder.Visible = this.FolderMappingID != Null.NullInteger;
 
             this.ModuleConfiguration.ModuleControl.ControlTitle = string.Format(controlTitle, controlTitlePrefix);
         }

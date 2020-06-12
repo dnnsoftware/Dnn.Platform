@@ -215,7 +215,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {
-            return (type == InstallFileType.Resources);
+            return type == InstallFileType.Resources;
         }
 
         /// -----------------------------------------------------------------------------

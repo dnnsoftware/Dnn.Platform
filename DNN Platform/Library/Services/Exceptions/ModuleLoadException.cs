@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Exceptions
         {
             // Try and get the Portal settings from context
             // If an error occurs getting the context then set the variables to -1
-            if ((this.m_ModuleConfiguration != null))
+            if (this.m_ModuleConfiguration != null)
             {
                 this.m_ModuleId = this.m_ModuleConfiguration.ModuleID;
                 this.m_ModuleDefId = this.m_ModuleConfiguration.ModuleDefID;

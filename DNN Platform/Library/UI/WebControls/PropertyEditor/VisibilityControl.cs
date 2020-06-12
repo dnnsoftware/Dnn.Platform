@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute("aria-label", this.ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Value, optionValue);
-            if ((this.Visibility.VisibilityMode == selectedVisibility))
+            if (this.Visibility.VisibilityMode == selectedVisibility)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }

@@ -24,8 +24,8 @@ namespace DotNetNuke.Entities.Users.Membership
         {
             this.PasswordHistoryId = Convert.ToInt32(dr["PasswordHistoryID"]);
             this.UserId = Null.SetNullInteger(dr["UserID"]);
-            this.Password = (dr["Password"]).ToString();
-            this.PasswordSalt = (dr["PasswordSalt"]).ToString();
+            this.Password = dr["Password"].ToString();
+            this.PasswordSalt = dr["PasswordSalt"].ToString();
 
             // add audit column data
             this.FillInternal(dr);

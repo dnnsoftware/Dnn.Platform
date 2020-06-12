@@ -566,7 +566,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 string TrackingUrl = _Url;
 
                 _Urltype = Globals.GetURLType(_Url).ToString("g").Substring(0, 1);
-                if (_Urltype == "U" && (_Url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase)))
+                if (_Urltype == "U" && _Url.StartsWith("~/" + this.PortalSettings.DefaultIconLocation, StringComparison.InvariantCultureIgnoreCase))
                 {
                     _Urltype = "I";
                 }

@@ -66,12 +66,12 @@ namespace DotNetNuke.Web.DDRMenu
         {
             var settings = Settings.FromXml(content);
 
-            ModuleController.Instance.UpdateModuleSetting(moduleId, "MenuStyle", (settings.MenuStyle ?? ""));
-            ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeXmlPath", (settings.NodeXmlPath ?? ""));
-            ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeSelector", (settings.NodeSelector ?? ""));
-            ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeNodes", (settings.IncludeNodes ?? ""));
-            ModuleController.Instance.UpdateModuleSetting(moduleId, "ExcludeNodes", (settings.ExcludeNodes ?? ""));
-            ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeManipulator", (settings.NodeManipulator ?? ""));
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "MenuStyle", settings.MenuStyle ?? "");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeXmlPath", settings.NodeXmlPath ?? "");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeSelector", settings.NodeSelector ?? "");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeNodes", settings.IncludeNodes ?? "");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "ExcludeNodes", settings.ExcludeNodes ?? "");
+            ModuleController.Instance.UpdateModuleSetting(moduleId, "NodeManipulator", settings.NodeManipulator ?? "");
             ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeContext", settings.IncludeContext.ToString());
             ModuleController.Instance.UpdateModuleSetting(moduleId, "IncludeHidden", settings.IncludeHidden.ToString());
             ModuleController.Instance.UpdateModuleSetting(moduleId, "TemplateArguments", Settings.ToSettingString(settings.TemplateArguments));
@@ -102,7 +102,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
             else
             {
-                needsUpdate = (addProvider.GetAttribute("type") != navType);
+                needsUpdate = addProvider.GetAttribute("type") != navType;
             }
 
             if (needsUpdate)

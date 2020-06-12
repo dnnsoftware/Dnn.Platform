@@ -361,11 +361,11 @@ namespace DotNetNuke.Services.Authentication
                 // save the authenticationmethod as a cookie
                 HttpCookie cookie = null;
                 cookie = Response.Cookies.Get("authentication");
-                if ((cookie == null))
+                if (cookie == null)
                 {
                     if (!String.IsNullOrEmpty(value))
                     {
-                        cookie = new HttpCookie("authentication", value) { Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/") };
+                        cookie = new HttpCookie("authentication", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
                         if (CreatePersistentCookie)
                         {
                             cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
