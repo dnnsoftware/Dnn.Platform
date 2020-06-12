@@ -18,6 +18,7 @@ namespace Dnn.AuthServices.Jwt.Services
         /// <summary>
         /// Clients that used JWT login should use this API call to logout and invalidate the tokens.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IHttpActionResult Logout()
         {
@@ -31,6 +32,7 @@ namespace Dnn.AuthServices.Jwt.Services
         /// </summary>
         /// <remarks>AllowAnonymous attribute must stay in this call even though the
         /// DnnAuthorize attribute is present at a class level.</remarks>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult Login(LoginData loginData)
@@ -48,6 +50,7 @@ namespace Dnn.AuthServices.Jwt.Services
         /// AllowAnonymous attribute must stay in this call even though the
         /// DnnAuthorize attribute is present at a class level.
         /// </remarks>
+        /// <returns></returns>
         [HttpPost]
         [AllowAnonymous]
         public IHttpActionResult ExtendToken(RenewalDto rtoken)

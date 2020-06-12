@@ -2460,6 +2460,7 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <param name = "portalId">Id of the portal</param>
         /// <param name="cultureCode">The culture code.</param>
+        /// <returns></returns>
         public PortalInfo GetPortal(int portalId, string cultureCode)
         {
             if (portalId == -1)

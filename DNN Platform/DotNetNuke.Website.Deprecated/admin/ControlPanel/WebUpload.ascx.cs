@@ -208,6 +208,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string ReturnURL()
         {

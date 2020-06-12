@@ -803,6 +803,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading</param>
         /// <param name="message">The Message Text</param>
         /// <param name="iconImage">The Message Icon</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, string iconImage)
         {
@@ -816,6 +817,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="heading">The Message Heading</param>
         /// <param name="message">The Message Text</param>
         /// <param name="moduleMessageType">The type of message</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -830,6 +832,7 @@ namespace DotNetNuke.UI.Skins
         /// <param name="message">The Message Text</param>
         /// <param name="iconImage">The Message Icon</param>
         /// <param name="moduleMessageType">The type of message</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
         {
@@ -849,6 +852,7 @@ namespace DotNetNuke.UI.Skins
         /// GetParentSkin gets the Parent Skin for a control
         /// </summary>
         /// <param name="module">The control whose Parent Skin is requested</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(PortalModuleBase module)
         {
@@ -860,6 +864,7 @@ namespace DotNetNuke.UI.Skins
         /// GetParentSkin gets the Parent Skin for a control
         /// </summary>
         /// <param name="control">The control whose Parent Skin is requested</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(Control control)
         {
@@ -871,6 +876,7 @@ namespace DotNetNuke.UI.Skins
         /// GetPopUpSkin gets the Skin that is used in modal popup.
         /// </summary>
         /// <param name="page">The Page</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetPopUpSkin(PageBase page)
         {
@@ -909,6 +915,7 @@ namespace DotNetNuke.UI.Skins
         /// GetSkin gets the Skin
         /// </summary>
         /// <param name="page">The Page</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetSkin(PageBase page)
         {
@@ -972,6 +979,7 @@ namespace DotNetNuke.UI.Skins
         /// </summary>
         /// <param name="module">The module to inject</param>
         /// <param name="pane">The pane</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool InjectModule(Pane pane, ModuleInfo module)
         {

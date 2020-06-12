@@ -439,6 +439,7 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// The Install method installs the feature.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool Install()
         {
@@ -534,6 +535,7 @@ namespace DotNetNuke.Services.Installer
         /// </summary>
         /// <param name="deleteFiles">A flag that indicates whether the files should be
         /// deleted</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool UnInstall(bool deleteFiles)
         {

@@ -143,6 +143,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets an XmlSchema for the ModuleControlInfo
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {

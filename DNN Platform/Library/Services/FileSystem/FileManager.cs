@@ -1651,6 +1651,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual int ExtractFiles(IFileInfo file, IFolderInfo destinationFolder, IList<string> invalidFiles)
         {
             var folderManager = FolderManager.Instance;
@@ -1777,12 +1778,14 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual Stream GetAutoDeleteFileStream(string filePath)
         {
             return new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite, FileShare.Read, BufferSize, FileOptions.DeleteOnClose);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual int GetCurrentUserID()
         {
             return UserController.Instance.GetCurrentUserInfo().UserID;
@@ -1817,24 +1820,28 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual string GetHostMapPath()
         {
             return TestableGlobals.Instance.HostMapPath;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual Image GetImageFromStream(Stream stream)
         {
             return Image.FromStream(stream);
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual Globals.PerformanceSettings GetPerformanceSetting()
         {
             return Host.PerformanceSetting;
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual bool IsAllowedExtension(string fileName)
         {
             var extension = Path.GetExtension(fileName);
@@ -1848,6 +1855,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual bool IsValidFilename(string fileName)
         {
             // regex ensures the file is a valid filename and doesn't include illegal characters
@@ -1855,6 +1863,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
+/// <returns></returns>
         internal virtual bool IsFileAutoSyncEnabled()
         {
             return Host.EnableFileAutoSync;

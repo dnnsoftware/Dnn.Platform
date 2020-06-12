@@ -86,6 +86,7 @@ namespace DotNetNuke.Entities.Modules
         /// GetModuleControl gets a single Module Control from the database
         /// </summary>
         /// <param name="moduleControlID">The ID of the Module Control to fetch</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControl(int moduleControlID)
         {
@@ -100,6 +101,7 @@ namespace DotNetNuke.Entities.Modules
         /// GetModuleControl gets a Dictionary of Module Controls by Module Definition
         /// </summary>
         /// <param name="moduleDefID">The ID of the Module Definition</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
         {
@@ -113,6 +115,7 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="controlKey">The key for the control</param>
         /// <param name="moduleDefID">The ID of the Module Definition</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
         {
@@ -129,6 +132,7 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="moduleControl">The Module Control to save</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveModuleControl(ModuleControlInfo moduleControl, bool clearCache)
         {

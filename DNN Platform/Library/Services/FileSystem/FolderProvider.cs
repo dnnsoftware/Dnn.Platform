@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Get the list of all the folder providers.
         /// </summary>
+        /// <returns></returns>
         public static Dictionary<string, FolderProvider> GetProviderList()
         {
             var providerList = ComponentFactory.GetComponents<FolderProvider>();
@@ -44,6 +45,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Gets an instance of a specific FolderProvider of a given name.
         /// </summary>
+        /// <returns></returns>
         public static FolderProvider Instance(string friendlyName)
         {
             var provider = ComponentFactory.GetComponent<FolderProvider>(friendlyName);
@@ -197,6 +199,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public virtual Stream GetFileStream(IFolderInfo folder, IFileInfo file, int version)
         {
             return this.GetFileStream(folder, FileVersionController.GetVersionedFilename(file, version));
@@ -346,11 +349,13 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Checks the existence of the specified file in the underlying system.
         /// </summary>
+        /// <returns></returns>
         public abstract bool FileExists(IFolderInfo folder, string fileName);
 
         /// <summary>
         ///   Checks the existence of the specified folder in the underlying system.
         /// </summary>
+        /// <returns></returns>
         public abstract bool FolderExists(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>
@@ -359,51 +364,61 @@ namespace DotNetNuke.Services.FileSystem
         /// <remarks>
         ///   Because some Providers don't support file attributes, this methods returns a nullable type to allow them to return null.
         /// </remarks>
+        /// <returns></returns>
         public abstract FileAttributes? GetFileAttributes(IFileInfo file);
 
         /// <summary>
         ///   Gets the list of file names contained in the specified folder.
         /// </summary>
+        /// <returns></returns>
         public abstract string[] GetFiles(IFolderInfo folder);
 
         /// <summary>
         /// Gets the file length.
         /// </summary>
+        /// <returns></returns>
         public abstract long GetFileSize(IFileInfo file);
 
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public abstract Stream GetFileStream(IFileInfo file);
 
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public abstract Stream GetFileStream(IFolderInfo folder, string fileName);
 
         /// <summary>
         /// Gets the direct Url to the file.
         /// </summary>
+        /// <returns></returns>
         public abstract string GetFileUrl(IFileInfo file);
 
         /// <summary>
         ///   Gets the URL of the image to display in FileManager tree.
         /// </summary>
+        /// <returns></returns>
         public abstract string GetFolderProviderIconPath();
 
         /// <summary>
         ///   Gets the time when the specified file was last modified.
         /// </summary>
+        /// <returns></returns>
         public abstract DateTime GetLastModificationTime(IFileInfo file);
 
         /// <summary>
         ///   Gets the list of subfolders for the specified folder.
         /// </summary>
+        /// <returns></returns>
         public abstract IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping);
 
         /// <summary>
         ///   Indicates if the specified file is synchronized.
         /// </summary>
+        /// <returns></returns>
         public abstract bool IsInSync(IFileInfo file);
 
         /// <summary>
@@ -424,6 +439,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         ///   Gets a value indicating if the underlying system supports file attributes.
         /// </summary>
+        /// <returns></returns>
         public abstract bool SupportsFileAttributes();
 
         /// <summary>

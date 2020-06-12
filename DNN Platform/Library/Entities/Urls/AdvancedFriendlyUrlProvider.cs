@@ -63,6 +63,7 @@ namespace DotNetNuke.Entities.Urls
         /// <summary>
         /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version
         /// </summary>
+        /// <returns></returns>
         internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
         {
             bool cultureSpecificAlias;

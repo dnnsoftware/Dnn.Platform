@@ -24,6 +24,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="portalId">Portal Id</param>
         /// <param name="tabId">Tab Id</param>
+        /// <returns></returns>
         ChangeControlState GetChangeControlState(int portalId, int tabId);
     }
 }

@@ -80,6 +80,7 @@ namespace DotNetNuke.Services.Search
         /// Add an element of the specified <see cref="SearchItemInfo">SearchItemInfo</see> to the end of the collection.
         /// </summary>
         /// <param name="value">An object of type <see cref="SearchItemInfo">SearchItemInfo</see> to add to the collection.</param>
+        /// <returns></returns>
         public int Add(SearchItemInfo value)
         {
             return this.List.Add(value);

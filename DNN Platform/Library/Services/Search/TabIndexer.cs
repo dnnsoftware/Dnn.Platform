@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Search
         /// Returns the number of SearchDocuments indexed with Tab MetaData for the given portal.
         /// </summary>
         /// <remarks>This replaces "GetSearchIndexItems" as a newer implementation of search.</remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(
             int portalId,

@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Connections
         /// <summary>
         /// Get Connection Settings for a Site
         /// </summary>
+        /// <returns></returns>
         IList<IConnector> GetConnections(int portalId);
 
         /// <summary>

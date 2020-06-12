@@ -760,6 +760,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///     <param name="scriptFile">The script to Execute</param>
         /// <param name="writeFeedback">Need to output feedback message.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         internal static string ExecuteScript(string scriptFile, bool writeFeedback)
         {
@@ -870,6 +871,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         ///     <param name="providerPath">The Path to the Provider Directory</param>
         /// <param name="writeFeedback">Whether need to output feedback message.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         internal static string InstallMemberRoleProvider(string providerPath, bool writeFeedback)
         {
@@ -3605,6 +3607,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name = "tabIconFile">The Icon for this new Tab</param>
         /// <param name="tabIconFileLarge"></param>
         /// <param name = "isVisible">A flag indicating whether the tab is visible</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
@@ -3631,6 +3634,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name = "tabIconFile">The Icon for this new Tab</param>
         /// <param name="tabIconFileLarge"></param>
         /// <param name = "isVisible">A flag indicating whether the tab is visible</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
         {
@@ -3694,6 +3698,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name = "moduleTitle">The Module's title</param>
         /// <param name = "moduleIconFile">The Module's icon</param>
         /// <param name = "inheritPermissions">Inherit the Pages View Permisions</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
@@ -3798,6 +3803,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int AddPortal(XmlNode node, bool status, int indent, UserInfo superUser = null)
         {
@@ -3940,6 +3946,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 9.3.0, will be removed in 11.0.0. Use the overloaded method with the 'superUser' parameter instead. Scheduled removal in v11.0.0.")]
         public static int AddPortal(XmlNode node, bool status, int indent)
@@ -4064,6 +4071,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <summary>
         ///   CheckUpgrade checks whether there are any possible upgrade issues
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string CheckUpgrade()
         {
@@ -4171,6 +4179,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="providerPath">Path to provider</param>
         /// <param name = "version">The Version being Upgraded</param>
         /// <param name="writeFeedback">Display status in UI?</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string DeleteFiles(string providerPath, Version version, bool writeFeedback)
         {
@@ -4353,6 +4362,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <remarks>
         /// </remarks>
         /// <param name = "xmlDoc">The Install Template</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Version GetInstallVersion(XmlDocument xmlDoc)
         {
@@ -4376,6 +4386,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         /// <param name = "providerPath">The path to the Data Provider</param>
         /// <param name = "version">The Version</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetLogFile(string providerPath, Version version)
         {
@@ -4390,6 +4401,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         /// <param name = "providerPath">The path to the Data Provider</param>
         /// <param name = "version">The Version</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetScriptFile(string providerPath, Version version)
         {
@@ -4403,6 +4415,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <remarks>
         /// </remarks>
         /// <param name = "version">The Version</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetStringVersion(Version version)
         {
@@ -4443,6 +4456,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         /// <param name = "xmlTemplate">The install Templae</param>
         /// <param name = "writeFeedback">a flag to determine whether to output feedback</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static UserInfo GetSuperUser(XmlDocument xmlTemplate, bool writeFeedback)
         {
@@ -4501,6 +4515,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         /// <param name = "providerPath">The path to the Data Provider</param>
         /// <param name = "databaseVersion">The current Database Version</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetUpgradeScripts(string providerPath, Version databaseVersion)
         {
@@ -5267,6 +5282,7 @@ namespace DotNetNuke.Services.Upgrade
         ///  should only happen once. Database references are not recommended because future
         ///  versions of the application may result in code incompatibilties.
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string UpgradeApplication(string providerPath, Version version, bool writeFeedback)
         {
@@ -6033,6 +6049,7 @@ namespace DotNetNuke.Services.Upgrade
         /// </remarks>
         /// <param name = "scriptFile">The upgrade script file</param>
         /// <param name="writeFeedback">Write status to Response Stream?</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback)
         {
@@ -6049,6 +6066,7 @@ namespace DotNetNuke.Services.Upgrade
         /// <param name="scriptFile">The upgrade script file</param>
         /// <param name="writeFeedback">Write status to Response Stream?</param>
         /// <param name="scriptExecuted">Identity whether the script file executed.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback, out bool scriptExecuted)
         {

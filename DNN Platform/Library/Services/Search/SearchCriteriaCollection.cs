@@ -119,6 +119,7 @@ namespace DotNetNuke.Services.Search
         /// Add an element of the specified <see cref="SearchCriteria">SearchCriteria</see> to the end of the collection.
         /// </summary>
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to add to the collection.</param>
+        /// <returns></returns>
         public int Add(SearchCriteria value)
         {
             return this.List.Add(value);

@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.Services
         /// <summary>
         /// Gets the various defined monikers for the various tab modules in the system
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IHttpActionResult Monikers(string moduleList)
         {

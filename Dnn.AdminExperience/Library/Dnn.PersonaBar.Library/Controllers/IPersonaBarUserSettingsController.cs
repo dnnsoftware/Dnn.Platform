@@ -16,6 +16,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         /// <summary>
         /// Gets the PersonaBar user settings
         /// </summary>
+        /// <returns></returns>
         UserSettings GetPersonaBarUserSettings();
     }
 }

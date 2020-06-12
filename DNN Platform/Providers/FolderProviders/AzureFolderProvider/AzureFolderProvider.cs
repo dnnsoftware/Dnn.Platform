@@ -216,6 +216,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// <summary>
         /// Gets the direct Url to the file.
         /// </summary>
+        /// <returns></returns>
         public override string GetFileUrl(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -292,6 +293,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// <summary>
         /// Gets the URL of the image to display in FileManager tree.
         /// </summary>
+        /// <returns></returns>
         public override string GetFolderProviderIconPath()
         {
             return Globals.ResolveUrl("~/Providers/FolderProviders/AzureFolderProvider/images/FolderAzure_32x32_Standard.png");

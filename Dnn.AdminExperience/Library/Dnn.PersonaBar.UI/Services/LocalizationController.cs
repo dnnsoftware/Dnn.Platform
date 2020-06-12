@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>
         /// Retrieve a list of CMX related Localization Keys with it's values for the current culture.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetTable(string culture)
         {

@@ -37,6 +37,7 @@ namespace DotNetNuke.Services.FileSystem.FolderMappings
         /// </summary>
         /// <param name="portalId">Portal Id where the folder is</param>
         /// <param name="folderPath">Specific folder path</param>
+        /// <returns></returns>
         FolderMappingInfo GetFolderMapping(int portalId, string folderPath);
     }
 }

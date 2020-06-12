@@ -14,6 +14,7 @@ namespace DotNetNuke.Web.Mvc.Common
         /// This helper will cache accessors and types, and is intended when the anonymous object is accessed multiple
         /// times throughout the lifetime of the web application.
         /// </summary>
+        /// <returns></returns>
         public static RouteValueDictionary ObjectToDictionary(object value)
         {
             RouteValueDictionary dictionary = new RouteValueDictionary();

@@ -46,6 +46,7 @@ namespace DotNetNuke.Security.Permissions
         /// AddDesktopModulePermission adds a DesktopModule Permission to the Database
         /// </summary>
         /// <param name="objDesktopModulePermission">The DesktopModule Permission to add</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int AddDesktopModulePermission(DesktopModulePermissionInfo objDesktopModulePermission)
         {
@@ -126,6 +127,7 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
         /// </summary>
         /// <param name="DesktopModulePermissionID">The ID of the DesktopModule Permission</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionInfo GetDesktopModulePermission(int DesktopModulePermissionID)
         {
@@ -137,6 +139,7 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
         /// </summary>
         /// <param name="portalDesktopModuleID">The ID of the DesktopModule</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleID)
         {
@@ -149,6 +152,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="objDesktopModulePermissions">The Permissions for the DesktopModule</param>
         /// <param name="permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool HasDesktopModulePermission(DesktopModulePermissionCollection objDesktopModulePermissions, string permissionKey)
         {

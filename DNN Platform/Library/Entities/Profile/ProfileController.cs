@@ -613,6 +613,7 @@ namespace DotNetNuke.Entities.Profile
         /// </summary>
         /// <param name="portalId">The Id of the portal.</param>
         /// <param name="objProfile">The profile.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool ValidateProfile(int portalId, UserProfile objProfile)
         {

@@ -87,6 +87,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         /// <param name="tabId">The Tab Id to be queried</param>
         /// <param name="createdByUserId">User Id which rolls back the version</param>
         /// <param name="versionNumber">Version Number of the version to be rolled back</param>
+        /// <returns></returns>
         TabVersion RollBackVesion(int tabId, int createdByUserId, int versionNumber);
 
         /// <summary>

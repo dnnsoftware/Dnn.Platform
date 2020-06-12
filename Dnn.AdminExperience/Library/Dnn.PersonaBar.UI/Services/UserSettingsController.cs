@@ -25,6 +25,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>
         /// Update Person Bar's User Settings
         /// </summary>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage UpdateUserSettings(IDictionary<string, object> settings)

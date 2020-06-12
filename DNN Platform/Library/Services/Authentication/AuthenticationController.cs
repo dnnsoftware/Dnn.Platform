@@ -46,6 +46,7 @@ namespace DotNetNuke.Services.Authentication
         /// AddAuthentication adds a new Authentication System to the Data Store.
         /// </summary>
         /// <param name="authSystem">The new Authentication System to add</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int AddAuthentication(AuthenticationInfo authSystem)
         {
@@ -67,6 +68,7 @@ namespace DotNetNuke.Services.Authentication
         /// <param name="userID">The new Authentication System to add</param>
         /// <param name="authenticationType">The authentication type</param>
         /// <param name="authenticationToken">The authentication token</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int AddUserAuthentication(int userID, string authenticationType, string authenticationToken)
         {

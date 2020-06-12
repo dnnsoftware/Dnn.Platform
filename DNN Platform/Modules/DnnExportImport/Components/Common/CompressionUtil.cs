@@ -156,6 +156,7 @@ namespace Dnn.ExportImport.Components.Common
         /// e.g. if file url is c:\\dnn\files\archived\foldername\1\file.jpg and we want to add all files in foldername folder
         /// then the folder offset would be starting index of foldername</param>
         /// <param name="folder">Additional root folder to be added into archive.</param>
+        /// <returns></returns>
         public static bool AddFileToArchive(string file, string archivePath, int folderOffset, string folder = null)
         {
             using (var archive = OpenCreate(archivePath))

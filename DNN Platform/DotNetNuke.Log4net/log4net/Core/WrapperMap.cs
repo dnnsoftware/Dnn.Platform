@@ -42,6 +42,7 @@ namespace log4net.Core
     /// constructor.
     /// </para>
     /// </remarks>
+    /// <returns></returns>
     public delegate ILoggerWrapper WrapperCreationHandler(ILogger logger);
 
     /// <summary>

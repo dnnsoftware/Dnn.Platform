@@ -474,6 +474,7 @@ namespace DotNetNuke.Security.Roles
         /// <summary>
         /// Gets an XmlSchema for the RoleInfo
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {

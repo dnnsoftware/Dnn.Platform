@@ -15,6 +15,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// Checks if the file has valid content.
         /// </summary>
         /// <param name="fileContent">The File Content.</param>
+        /// <returns></returns>
         bool Validate(Stream fileContent);
     }
 }

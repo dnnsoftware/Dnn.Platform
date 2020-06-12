@@ -39,6 +39,7 @@ namespace DotNetNuke.Services.Sitemap
         ///   - are normal pages (not links,...)
         ///   - are visible (based on date and permissions)
         /// </remarks>
+        /// <returns></returns>
         public override List<SitemapUrl> GetUrls(int portalId, PortalSettings ps, string version)
         {
             SitemapUrl pageUrl = null;

@@ -88,6 +88,7 @@ namespace log4net.Config
         /// layout style.
         /// </para>
         /// </remarks>
+        /// <returns></returns>
         public static ICollection Configure()
         {
             return BasicConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
@@ -102,6 +103,7 @@ namespace log4net.Config
         /// Initializes the log4net system using the specified appenders.
         /// </para>
         /// </remarks>
+        /// <returns></returns>
         public static ICollection Configure(params IAppender[] appenders)
         {
             ArrayList configurationMessages = new ArrayList();
@@ -127,6 +129,7 @@ namespace log4net.Config
         /// Initializes the log4net system using the specified appender.
         /// </para>
         /// </remarks>
+        /// <returns></returns>
         public static ICollection Configure(IAppender appender)
         {
             return Configure(new IAppender[] { appender });
@@ -146,6 +149,7 @@ namespace log4net.Config
         /// layout style.
         /// </para>
         /// </remarks>
+        /// <returns></returns>
         public static ICollection Configure(ILoggerRepository repository)
         {
             ArrayList configurationMessages = new ArrayList();
@@ -180,6 +184,7 @@ namespace log4net.Config
         /// Initializes the <see cref="ILoggerRepository"/> using the specified appender.
         /// </para>
         /// </remarks>
+        /// <returns></returns>
         public static ICollection Configure(ILoggerRepository repository, IAppender appender)
         {
             return Configure(repository, new IAppender[] { appender });
@@ -195,6 +200,7 @@ namespace log4net.Config
         /// Initializes the <see cref="ILoggerRepository"/> using the specified appender.
         /// </para>
         /// </remarks>
+        /// <returns></returns>
         public static ICollection Configure(ILoggerRepository repository, params IAppender[] appenders)
         {
             ArrayList configurationMessages = new ArrayList();

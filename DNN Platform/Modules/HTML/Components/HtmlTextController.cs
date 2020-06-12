@@ -297,6 +297,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "settings">Module Settings</param>
         /// <param name="portalSettings">The Portal Settings.</param>
         /// <param name="page">The Page Instance.</param>
+        /// <returns></returns>
         public static string FormatHtmlText(int moduleId, string content, HtmlModuleSettings settings, PortalSettings portalSettings, Page page)
         {
             // token replace
@@ -329,6 +330,7 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "ModuleID">The ID of the Module</param>
+        /// <returns></returns>
         public List<HtmlTextInfo> GetAllHtmlText(int ModuleID)
         {
             return CBO.FillCollection<HtmlTextInfo>(DataProvider.Instance().GetAllHtmlText(ModuleID));
@@ -342,6 +344,7 @@ namespace DotNetNuke.Modules.Html
         /// </remarks>
         /// <param name = "ModuleID">The ID of the Module</param>
         /// <param name = "ItemID">The ID of the Item</param>
+        /// <returns></returns>
         public HtmlTextInfo GetHtmlText(int ModuleID, int ItemID)
         {
             return CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetHtmlText(ModuleID, ItemID));
@@ -356,6 +359,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "moduleId">The ID of the Module</param>
         /// <param name = "isPublished">Whether the content has been published or not</param>
         /// <param name="workflowId">The Workflow ID</param>
+        /// <returns></returns>
         public HtmlTextInfo GetTopHtmlText(int moduleId, bool isPublished, int workflowId)
         {
             var htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, isPublished));
@@ -393,6 +397,7 @@ namespace DotNetNuke.Modules.Html
         /// <param name = "ModuleId">The ID of the Module</param>
         /// <param name="TabId">The Tab ID</param>
         /// <param name = "PortalId">The ID of the Portal</param>
+        /// <returns></returns>
         public KeyValuePair<string, int> GetWorkflow(int ModuleId, int TabId, int PortalId)
         {
             int workFlowId = Null.NullInteger;
@@ -669,6 +674,7 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "PortalID">The ID of the Portal</param>
+        /// <returns></returns>
         public int GetMaximumVersionHistory(int PortalID)
         {
             int intMaximumVersionHistory = -1;
@@ -721,6 +727,7 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "moduleId">The Id of the module to be exported</param>
+        /// <returns></returns>
         public string ExportModule(int moduleId)
         {
             string xml = string.Empty;

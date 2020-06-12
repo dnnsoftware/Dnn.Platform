@@ -51,6 +51,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets the Online time window
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public int GetOnlineTimeWindow()
@@ -62,6 +63,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets the cached Users Online Information
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public Hashtable GetUserList()
@@ -87,6 +89,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets whether the Users Online functionality is enabled
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public bool IsEnabled()
@@ -98,6 +101,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Determines whether a User is online
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public bool IsUserOnline(UserInfo user)

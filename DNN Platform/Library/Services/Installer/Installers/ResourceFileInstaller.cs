@@ -104,6 +104,7 @@ namespace DotNetNuke.Services.Installer.Installers
         ///   The InstallFile method installs a single assembly.
         /// </summary>
         /// <param name = "insFile">The InstallFile to install</param>
+        /// <returns></returns>
         protected override bool InstallFile(InstallFile insFile)
         {
             bool retValue = true;
@@ -197,6 +198,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {
@@ -209,6 +211,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="nav">The XPathNavigator representing the node</param>
         /// <param name="checkFileExists">Flag that determines whether a check should be made</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
         {

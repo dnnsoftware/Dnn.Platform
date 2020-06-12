@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The GetInstaller method instantiates the relevant Component Installer
         /// </summary>
         /// <param name="installerType">The type of Installer</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(string installerType)
         {
@@ -112,6 +113,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// </summary>
         /// <param name="manifestNav">The manifest (XPathNavigator) for the component</param>
         /// <param name="package">The associated PackageInfo instance</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)
         {

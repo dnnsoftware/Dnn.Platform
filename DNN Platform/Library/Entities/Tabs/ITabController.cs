@@ -29,6 +29,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">The tab to be added</param>
         /// <remarks>The tab is added to the end of the current Level.</remarks>
+        /// <returns></returns>
         int AddTab(TabInfo tab);
 
         /// <summary>
@@ -38,6 +39,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="includeAllTabsModules">Flag that indicates whether to add the "AllTabs"
         /// Modules</param>
         /// <remarks>The tab is added to the end of the current Level.</remarks>
+        /// <returns></returns>
         int AddTab(TabInfo tab, bool includeAllTabsModules);
 
         /// <summary>
@@ -45,6 +47,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">The tab to be added</param>
         /// <param name="afterTabId">Id of the tab after which this tab is added</param>
+        /// <returns></returns>
         int AddTabAfter(TabInfo tab, int afterTabId);
 
         /// <summary>
@@ -52,6 +55,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="objTab">The tab to be added</param>
         /// <param name="beforeTabId">Id of the tab before which this tab is added</param>
+        /// <returns></returns>
         int AddTabBefore(TabInfo objTab, int beforeTabId);
 
         /// <summary>
@@ -136,6 +140,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
         /// <param name="clearCache"></param>
+        /// <returns></returns>
         bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache);
 
         /// <summary>

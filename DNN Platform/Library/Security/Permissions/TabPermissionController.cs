@@ -255,6 +255,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="tabId">The ID of the tab</param>
         /// <param name="portalId">The ID of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
@@ -268,6 +269,7 @@ namespace DotNetNuke.Security.Permissions
         /// <remarks>If you pass in a comma delimited list of permissions (eg "ADD,DELETE", this will return
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(string permissionKey)
         {
@@ -282,6 +284,7 @@ namespace DotNetNuke.Security.Permissions
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="tabPermissions">The Permissions for the Tab</param>
         /// <param name="permissionKey">The Permission(s) to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
         {

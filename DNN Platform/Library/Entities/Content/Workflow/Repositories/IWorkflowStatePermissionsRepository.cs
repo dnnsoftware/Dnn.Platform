@@ -25,6 +25,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         /// </summary>
         /// <param name="permission">Workflow State Permission entity</param>
         /// <param name="lastModifiedByUserId">User Id who modifies the permissions set</param>
+        /// <returns></returns>
         int AddWorkflowStatePermission(WorkflowStatePermission permission, int lastModifiedByUserId);
 
         /// <summary>

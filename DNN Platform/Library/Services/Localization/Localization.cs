@@ -1814,6 +1814,7 @@ namespace DotNetNuke.Services.Localization
         /// -DesktopTabs
         /// -BreadCrumbs
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string LocalizeRole(string role)
         {

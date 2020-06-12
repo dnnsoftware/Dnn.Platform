@@ -387,6 +387,7 @@ namespace DotNetNuke.UI.ControlPanels
         /// </summary>
         /// <param name="FriendlyName">The friendly name of the Module</param>
         /// <param name="PortalID">The ID of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected string BuildURL(int PortalID, string FriendlyName)
         {

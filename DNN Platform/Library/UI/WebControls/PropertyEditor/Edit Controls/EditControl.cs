@@ -160,6 +160,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <param name="postDataKey">A key to the PostBack Data to load</param>
         /// <param name="postCollection">A name value collection of postback data</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {

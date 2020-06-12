@@ -817,6 +817,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="moduleID">The ID of the module</param>
         /// <param name="tabID">The ID of the tab</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual ModulePermissionCollection GetModulePermissions(int moduleID, int tabID)
         {
@@ -927,6 +928,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="modulePermissions">The Permissions for the Module</param>
         /// <param name="permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool HasModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
         {
@@ -1125,6 +1127,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="tabId">The ID of the tab</param>
         /// <param name="portalId">The ID of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
@@ -1149,6 +1152,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="tabPermissions">The Permissions for the Tab</param>
         /// <param name="permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
         {
@@ -1218,6 +1222,7 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
         /// </summary>
         /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionId)
         {
@@ -1229,6 +1234,7 @@ namespace DotNetNuke.Security.Permissions
         /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
         /// </summary>
         /// <param name="portalDesktopModuleId">The ID of the DesktopModule</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
         {
@@ -1253,6 +1259,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="desktopModulePermissions">The Permissions for the DesktopModule</param>
         /// <param name="permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)
         {

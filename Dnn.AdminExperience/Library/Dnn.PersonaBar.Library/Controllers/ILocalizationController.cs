@@ -21,6 +21,7 @@ namespace Dnn.PersonaBar.Library.Controllers
         /// <param name="resourceFile">The relative file path of the main resource file, e.g. ~/DesktopModules/SocialLibrary/App_LocalResources/CmxResources.resx</param>
         /// <param name="culture">The culture for which this dictionay is requested</param>
         /// <remarks>This API does not fallback to any other DNN resource files.</remarks>
+        /// <returns></returns>
         Dictionary<string, string> GetLocalizedDictionary(string resourceFile, string culture);
     }
 }

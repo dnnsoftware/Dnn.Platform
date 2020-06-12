@@ -82,6 +82,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId">A Id of the Portal</param>
         /// <param name="tabId">A Id of the Tab</param>
         /// <param name="moduleId">A Id of the Module</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId)
         {
@@ -96,6 +97,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">A Id of the Portal</param>
         /// <param name="criteria">The criteria string</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchResults(int portalId, string criteria)
         {

@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tabID">Tha tab Id</param>
         /// <param name="portalID">The portal ID where the tab is</param>
+        /// <returns></returns>
         bool IsTabPublished(int tabID, int portalID);
 
         /// <summary>
@@ -28,6 +29,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tabID">The tab ID</param>
         /// <param name="portalID">The portal ID where the tab is</param>
+        /// <returns></returns>
         bool CanPublishingBePerformed(int tabID, int portalID);
     }
 }

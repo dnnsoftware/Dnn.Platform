@@ -27,16 +27,19 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the physical path for the specified relative path.
         /// </summary>
+        /// <returns></returns>
         string GetPhysicalPath(int portalID, string relativePath);
 
         /// <summary>
         /// Gets the relative path for the specified physical path.
         /// </summary>
+        /// <returns></returns>
         string GetRelativePath(int portalID, string physicalPath);
 
         /// <summary>
         /// Gets the physical root folder path for the specified portal
         /// </summary>
+        /// <returns></returns>
         string GetRootFolderMapPath(int portalID);
 
         /// <summary>

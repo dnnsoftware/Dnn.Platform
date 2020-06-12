@@ -60,6 +60,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <remarks>
         /// Simulates a request to http://localhost/
         /// </remarks>
+        /// <returns></returns>
         public HttpSimulator SimulateRequest()
         {
             return this.SimulateRequest(new Uri("http://localhost/"));
@@ -69,6 +70,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// Sets up the HttpContext objects to simulate a GET request.
         /// </summary>
         /// <param name="url"></param>
+        /// <returns></returns>
         public HttpSimulator SimulateRequest(Uri url)
         {
             return this.SimulateRequest(url, HttpVerb.GET);
@@ -79,6 +81,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         /// <param name="url"></param>
         /// <param name="httpVerb"></param>
+        /// <returns></returns>
         public HttpSimulator SimulateRequest(Uri url, HttpVerb httpVerb)
         {
             return this.SimulateRequest(url, httpVerb, null, null);
@@ -89,6 +92,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         /// <param name="url"></param>
         /// <param name="formVariables"></param>
+        /// <returns></returns>
         public HttpSimulator SimulateRequest(Uri url, NameValueCollection formVariables)
         {
             return this.SimulateRequest(url, HttpVerb.POST, formVariables, null);
@@ -100,6 +104,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="url"></param>
         /// <param name="formVariables"></param>
         /// <param name="headers"></param>
+        /// <returns></returns>
         public HttpSimulator SimulateRequest(Uri url, NameValueCollection formVariables, NameValueCollection headers)
         {
             return this.SimulateRequest(url, HttpVerb.POST, formVariables, headers);
@@ -111,6 +116,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="url"></param>
         /// <param name="httpVerb"></param>
         /// <param name="headers"></param>
+        /// <returns></returns>
         public HttpSimulator SimulateRequest(Uri url, HttpVerb httpVerb, NameValueCollection headers)
         {
             return this.SimulateRequest(url, httpVerb, null, headers);
@@ -123,6 +129,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <param name="httpVerb"></param>
         /// <param name="formVariables"></param>
         /// <param name="headers"></param>
+        /// <returns></returns>
         protected virtual HttpSimulator SimulateRequest(Uri url, HttpVerb httpVerb, NameValueCollection formVariables, NameValueCollection headers)
         {
             HttpContext.Current = null;

@@ -57,31 +57,37 @@ namespace DotNetNuke.Entities.Content
 
         /// <summary>Return ContentItems that have the specified term attached.</summary>
         /// <exception cref="System.ArgumentException">Term name is empty.</exception>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTerm(string term);
 
         /// <summary>Return ContentItems that have the specified term attached.</summary>
         /// <exception cref="System.ArgumentException">Term name is empty.</exception>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTerm(Term term);
 
         /// <summary>
         /// Get a list of content items by ContentType ID.
         /// </summary>
         /// <param name="contentTypeId">The Content Type ID of the content items we want to query</param>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId);
 
         /// <summary>
         /// Get a list of content items by ContentType.
         /// </summary>
         /// <param name="contentType">The Content Type of the content items we want to query</param>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType);
 
         /// <summary>
         /// Return a list of ContentItems that have all of the specified terms attached.
         /// </summary>
         /// <param name="terms">A list of terms that should be attached to the ContentItems returned</param>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms);
 
         /// <summary>Return a list of ContentItems that have all of the specified terms attached.</summary>
+/// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTerms(string[] terms);
 
         /// <summary>
@@ -94,17 +100,20 @@ namespace DotNetNuke.Entities.Content
         /// Retrieve all content items associated with the specified module ID, <paramref name="moduleId"/>.
         /// </summary>
         /// <param name="moduleId">The module ID to use in the content item lookup</param>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId);
 
         /// <summary>
         /// Retrieve all content items on the specified page (tab).
         /// </summary>
         /// <param name="tabId">The page ID to use in the lookup of content items</param>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTabId(int tabId);
 
         /// <summary>
         /// Get a list of content items tagged with terms from the specified Vocabulary ID.
         /// </summary>
+        /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByVocabularyId(int vocabularyId);
 
         /// <summary>

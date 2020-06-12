@@ -87,6 +87,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// GetModuleDefinitionByID gets a Module Definition by its ID
         /// </summary>
         /// <param name="moduleDefID">The ID of the Module Definition</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByID(int moduleDefID)
         {
@@ -102,6 +103,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// Name (and DesktopModuleID)
         /// </summary>
         /// <param name="friendlyName">The friendly name</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
         {
@@ -120,6 +122,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// </summary>
         /// <param name="friendlyName">The friendly name</param>
         /// <param name="desktopModuleID">The ID of the Dekstop Module</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName, int desktopModuleID)
         {
@@ -136,6 +139,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <summary>
         /// GetModuleDefinitions gets a Dictionary of Module Definitions.
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<int, ModuleDefinitionInfo> GetModuleDefinitions()
         {
@@ -152,6 +156,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// with a particular DesktopModuleID, keyed by the FriendlyName.
         /// </summary>
         /// <param name="desktopModuleID">The ID of the Desktop Module</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)
         {
@@ -184,6 +189,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <param name="moduleDefinition">The Module Definition to save</param>
         /// <param name="saveChildren">A flag that determines whether the child objects are also saved</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveModuleDefinition(ModuleDefinitionInfo moduleDefinition, bool saveChildren, bool clearCache)
         {

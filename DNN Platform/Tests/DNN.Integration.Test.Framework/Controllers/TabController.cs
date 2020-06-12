@@ -48,6 +48,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// <summary>
         /// Returns all the tab related columns from vw_tabinfo
         /// </summary>
+        /// <returns></returns>
         public static dynamic GetTabInfo(int tabId)
         {
             var sql = string.Format(@"SELECT TOP 1 * FROM {{objectQualifier}}vw_Tabs WHERE TabId = '{0}' ORDER BY TabId ASC", tabId);
@@ -142,6 +143,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         /// <summary>
         /// Returns all the tab urls
         /// </summary>
+        /// <returns></returns>
         public static IList<dynamic> GetTabUrls(int tabId)
         {
             var sql = string.Format(@"SELECT * FROM {{objectQualifier}}TabUrls WHERE TabId = '{0}' ORDER BY SeqNum DESC", tabId);

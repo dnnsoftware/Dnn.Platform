@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// The GetWriter method instantiates the relevant PackageWriter Installer
         /// </summary>
         /// <param name="package">The associated PackageInfo instance</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static PackageWriterBase GetWriter(PackageInfo package)
         {

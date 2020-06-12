@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.WebControls
         /// TypeDataField
         /// </summary>
         /// <param name="editorInfo">An EditorInfo object</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static EditControl CreateEditControl(EditorInfo editorInfo)
         {

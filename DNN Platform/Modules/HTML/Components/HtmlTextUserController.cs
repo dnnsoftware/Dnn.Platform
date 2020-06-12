@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "UserID">The Id of the User</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextUser(int UserID)
         {

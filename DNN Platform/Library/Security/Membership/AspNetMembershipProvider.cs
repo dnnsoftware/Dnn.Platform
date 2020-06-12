@@ -1634,6 +1634,7 @@ namespace DotNetNuke.Security.Membership
         /// method does not support RequiresQuestionAndAnswer
         /// </summary>
         /// <param name="user"></param>
+        /// <returns></returns>
         public override bool ResetAndChangePassword(UserInfo user, string newPassword)
         {
             return this.ResetAndChangePassword(user, newPassword, string.Empty);

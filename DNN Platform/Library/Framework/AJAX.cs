@@ -111,6 +111,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public static bool IsEnabled()
         {
             if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
@@ -129,6 +130,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public static bool IsInstalled()
         {
             return true;
@@ -187,6 +189,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public static Control WrapUpdatePanelControl(Control objControl, bool blnIncludeProgress)
         {
             var updatePanel = new UpdatePanel();

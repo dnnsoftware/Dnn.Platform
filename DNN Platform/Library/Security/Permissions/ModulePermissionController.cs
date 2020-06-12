@@ -134,6 +134,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name="moduleId">The ID of the module</param>
         /// <param name="tabId">The ID of the tab</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModulePermissionCollection GetModulePermissions(int moduleId, int tabId)
         {
@@ -148,6 +149,7 @@ namespace DotNetNuke.Security.Permissions
         /// true if the user has any one of the permissions.</remarks>
         /// <param name="modulePermissions">The Permissions for the Module</param>
         /// <param name="permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool HasModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
         {

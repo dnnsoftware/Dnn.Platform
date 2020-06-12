@@ -652,6 +652,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         /// Returns a list of http alias values where that alias is associated with a tab as a custom alias
         /// </summary>
         /// <remarks>Aliases returned are all in lower case only</remarks>
+        /// <returns></returns>
         public static List<string> GetCustomAliasesForTabs()
         {
             var aliases = new List<string>();

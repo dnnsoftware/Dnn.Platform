@@ -464,6 +464,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets an XmlSchema for the DesktopModule
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {

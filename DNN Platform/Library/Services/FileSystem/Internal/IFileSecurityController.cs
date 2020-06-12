@@ -16,6 +16,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
         /// </summary>
         /// <param name="fileName">The File Name.</param>
         /// <param name="fileContent">The File Content.</param>
+        /// <returns></returns>
         bool Validate(string fileName, Stream fileContent);
     }
 }

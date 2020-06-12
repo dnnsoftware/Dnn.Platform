@@ -285,6 +285,7 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         protected SearchItemInfoCollection GetContent(IndexingProviderBase indexer)
@@ -311,6 +312,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="portalId">The Id of the Portal</param>
         /// <param name="indexer">The Index Provider that will index the content of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
         protected SearchItemInfoCollection GetContent(int portalId, IndexingProvider indexer)

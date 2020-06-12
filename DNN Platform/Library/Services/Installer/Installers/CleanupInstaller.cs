@@ -91,6 +91,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The CleanupFile method cleansup a single file.
         /// </summary>
         /// <param name="insFile">The InstallFile to clean up</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected bool CleanupFile(InstallFile insFile)
         {

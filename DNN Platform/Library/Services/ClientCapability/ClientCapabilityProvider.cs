@@ -27,11 +27,13 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         ///   Returns ClientCapability based on userAgent
         /// </summary>
+        /// <returns></returns>
         public abstract IClientCapability GetClientCapability(string userAgent);
 
         /// <summary>
         ///   Returns ClientCapability based on ClientCapabilityId
         /// </summary>
+        /// <returns></returns>
         public abstract IClientCapability GetClientCapabilityById(string clientId);
 
         /// <summary>
@@ -54,6 +56,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         ///   Returns ClientCapability based on HttpRequest
         /// </summary>
+        /// <returns></returns>
         public virtual IClientCapability GetClientCapability(HttpRequest httpRequest)
         {
             IClientCapability clientCapability = this.GetClientCapability(httpRequest.UserAgent);

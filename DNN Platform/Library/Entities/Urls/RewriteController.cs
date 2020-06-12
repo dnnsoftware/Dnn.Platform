@@ -641,6 +641,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="tabId"></param>
         /// <param name="message"></param>
         /// <remarks>852 : Add skin src to rewrite path for specific aliases</remarks>
+        /// <returns></returns>
         internal static bool AddSkinToRewritePath(int tabId, int portalId, ref string rewritePath, string skin, out string message)
         {
             bool changed = false;

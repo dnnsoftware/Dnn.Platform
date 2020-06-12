@@ -72,6 +72,7 @@ namespace DotNetNuke.Services.Search
         /// </remarks>
         /// <param name="PortalID">A Id of the Portal</param>
         /// <param name="Word">The word</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
         public static SearchResultsInfoCollection GetSearchResults(int PortalID, string Word)
@@ -94,6 +95,7 @@ namespace DotNetNuke.Services.Search
         /// <remarks>
         /// </remarks>
         /// <param name="ModuleId">The Id of the Module</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, string> GetSearchSettings(int ModuleId)
         {

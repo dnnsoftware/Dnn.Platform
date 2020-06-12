@@ -564,6 +564,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public string TestDatabaseConnection(ConnectionConfig config)
         {
             DbConnectionStringBuilder builder = DataProvider.Instance().GetConnectionStringBuilder();

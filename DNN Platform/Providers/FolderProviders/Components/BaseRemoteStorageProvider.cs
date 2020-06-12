@@ -208,6 +208,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Checks the existence of the specified file.
         /// </summary>
+        /// <returns></returns>
         public override bool FileExists(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -221,6 +222,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Checks the existence of the specified folder.
         /// </summary>
+        /// <returns></returns>
         public override bool FolderExists(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
@@ -240,6 +242,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <remarks>
         /// Amazon doesn't support file attributes.
         /// </remarks>
+        /// <returns></returns>
         public override FileAttributes? GetFileAttributes(IFileInfo file)
         {
             return null;
@@ -248,6 +251,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets the list of file names contained in the specified folder.
         /// </summary>
+        /// <returns></returns>
         public override string[] GetFiles(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -272,6 +276,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets the file length.
         /// </summary>
+        /// <returns></returns>
         public override long GetFileSize(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -291,6 +296,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         ///   Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public override Stream GetFileStream(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -305,6 +311,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets a file Stream of the specified file.
         /// </summary>
+        /// <returns></returns>
         public override Stream GetFileStream(IFolderInfo folder, string fileName)
         {
             Requires.NotNull("folder", folder);
@@ -318,6 +325,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets the time when the specified file was last modified.
         /// </summary>
+        /// <returns></returns>
         public override DateTime GetLastModificationTime(IFileInfo file)
         {
             Requires.NotNull("file", file);
@@ -337,6 +345,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <summary>
         /// Gets the list of subfolders for the specified folder.
         /// </summary>
+        /// <returns></returns>
         public override IEnumerable<string> GetSubFolders(string folderPath, FolderMappingInfo folderMapping)
         {
             Requires.NotNull("folderPath", folderPath);
@@ -374,6 +383,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <remarks>
         /// For now, it returns false always until we find a better way to check if the file is synchronized.
         /// </remarks>
+        /// <returns></returns>
         public override bool IsInSync(IFileInfo file)
         {
             return Convert.ToInt32((file.LastModificationTime - this.GetLastModificationTime(file)).TotalSeconds) == 0;
@@ -437,6 +447,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         /// <remarks>
         /// Amazon doesn't support file attributes.
         /// </remarks>
+        /// <returns></returns>
         public override bool SupportsFileAttributes()
         {
             return false;

@@ -88,6 +88,7 @@ namespace DotNetNuke.Entities.Urls
         /// Defaults to true.  Must be set to false by the provider if any call to the 'ChangeFriendlyUrl' method results in the output
         /// parameter 'useDnnPagePath' is false.  If 'false' is possible, then 'false' must be returned in this method.
         /// </remarks>
+        /// <returns></returns>
         public abstract bool AlwaysUsesDnnPagePath(int portalId);
 
         /// <summary>

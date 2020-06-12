@@ -105,6 +105,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// Get a list of content items of the specified content type, <paramref name="contentTypeId"/>.
         /// </summary>
         /// <param name="contentTypeId">The type of content items you are searching for</param>
+        /// <returns></returns>
         public IDataReader GetContentItemsByContentType(int contentTypeId)
         {
             return this._provider.ExecuteReader("GetContentItemsByContentType", contentTypeId);
@@ -114,6 +115,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// Get a list of content items based on TabID (PageID).
         /// </summary>
         /// <param name="tabId">The TabID (or "Page ID") that the content items are associated with</param>
+        /// <returns></returns>
         public IDataReader GetContentItemsByTabId(int tabId)
         {
             return this._provider.ExecuteReader("GetContentItemsByTabId", tabId);
@@ -122,6 +124,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>
         /// Retrieve all content items associated with a articular Module ID, <paramref name="moduleId"/>.
         /// </summary>
+        /// <returns></returns>
         public IDataReader GetContentItemsByModuleId(int moduleId)
         {
             return this._provider.ExecuteReader("GetContentItemsByModuleId", moduleId);
@@ -130,6 +133,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>
         /// Retrieve a list of content items containg terms from the specified Vocabulary ID.
         /// </summary>
+        /// <returns></returns>
         public IDataReader GetContentItemsByVocabularyId(int vocabularyId)
         {
             return this._provider.ExecuteReader("GetContentItemsByVocabularyId", vocabularyId);
@@ -367,6 +371,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>
         /// Retrieve term usage data for the specified Term ID, <paramref name="termId"/>.
         /// </summary>
+        /// <returns></returns>
         public IDataReader GetTermUsage(int termId)
         {
             return this._provider.ExecuteReader("GetTermUsage", termId);

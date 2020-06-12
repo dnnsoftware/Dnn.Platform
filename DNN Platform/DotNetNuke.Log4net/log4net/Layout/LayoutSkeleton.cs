@@ -136,6 +136,7 @@ namespace log4net.Layout
         /// <remarks>
         /// Creates a new StringWriter instance to store the formatted logging event.
         /// </remarks>
+        /// <returns></returns>
         public string Format(LoggingEvent loggingEvent)
         {
             StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);

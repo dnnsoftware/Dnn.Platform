@@ -121,6 +121,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>Get a list of content items by ContentType.</summary>
+/// <returns></returns>
         public IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType)
         {
             return this.GetContentItemsByContentType(contentType.ContentTypeId);

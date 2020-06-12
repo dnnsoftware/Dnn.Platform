@@ -206,6 +206,7 @@ namespace DotNetNuke.Services.Installer.Log
         /// <summary>
         /// GetLogsTable formats log entries in an HtmlTable
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public HtmlTable GetLogsTable()
         {

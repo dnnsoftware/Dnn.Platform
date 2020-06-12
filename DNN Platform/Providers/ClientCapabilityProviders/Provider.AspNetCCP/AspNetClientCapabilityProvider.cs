@@ -131,6 +131,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <summary>
         /// Returns ClientCapability based on the user agent provided.
         /// </summary>
+        /// <returns></returns>
         public override IClientCapability GetClientCapability(string userAgent)
         {
             if (string.IsNullOrEmpty(userAgent))
@@ -144,6 +145,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <summary>
         /// Returns ClientCapability based on device Id provided.
         /// </summary>
+        /// <returns></returns>
         public override IClientCapability GetClientCapabilityById(string deviceId)
         {
             Requires.NotNullOrEmpty("deviceId", deviceId);

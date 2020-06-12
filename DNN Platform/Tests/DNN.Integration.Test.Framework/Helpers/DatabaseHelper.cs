@@ -142,6 +142,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// Executes a specific STORED PROCEDURE.
         /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed
         /// </summary>
+        /// <returns></returns>
         public static IList<IDictionary<string, object>> ExecuteStoredProcedure(string procedureName, params object[] sqlParameters)
         {
             var results = new List<IDictionary<string, object>>();
@@ -167,6 +168,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// Executes a specific STORED PROCEDURE.
         /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed
         /// </summary>
+        /// <returns></returns>
         public static IEnumerable<TItem> ExecuteStoredProcedure<TItem>(string procedureName, params object[] sqlParameters)
         {
             procedureName = ReplaceQueryQualifier(AppConfigHelper.ObjectQualifier + procedureName);
@@ -177,6 +179,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// Retrieves the total count of records of a table or view in the database.
         /// </summary>
         /// <remarks>DO NOT perfix the table/view name with a qualifier.</remarks>
+        /// <returns></returns>
         public static int GetRecordsCount(string tableOrViewName, string whereCondition = null)
         {
             var queryString = ReplaceQueryQualifier(string.Format("SELECT COUNT(*) FROM [{0}{1}]", QualifierPrefix, tableOrViewName));
@@ -194,6 +197,7 @@ namespace DNN.Integration.Test.Framework.Helpers
         /// </summary>
         /// <remarks>DO NOT perfix the table/view name with a qualifier.</remarks>
         /// <remarks>If no record exists in the table, -1 is returned.</remarks>
+        /// <returns></returns>
         public static int GetLastRecordId(string tableOrViewName, string columnName, string whereCondition = null)
         {
             var query = string.Format(

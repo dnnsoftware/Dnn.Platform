@@ -315,6 +315,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Determines whether there was a request to re-index the site since a specific date/time
         /// </summary>
+        /// <returns></returns>
         public bool IsReindexRequested(int portalId, DateTime startDate)
         {
             var reindexDateTime = this.GetSearchReindexRequestTime(portalId);
@@ -346,6 +347,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// The returned value in local server time (not UTC).
         /// Beware that the value stored in teh database is converted to UTC time.
         /// </summary>
+        /// <returns></returns>
         public DateTime GetLastSuccessfulIndexingDateTime(int scheduleId)
         {
             var settings = SchedulingProvider.Instance().GetScheduleItemSettings(scheduleId);

@@ -62,6 +62,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>
         /// <param name="portalId">Portal Id</param>
+        /// <returns></returns>
         bool DisablePrivateMessage(int portalId);
 
         /// <summary>Converts the legacy messages.</summary>

@@ -178,6 +178,7 @@ namespace DotNetNuke.Entities.Modules
         /// to the Dataprovider.</remarks>
         /// <param name="desktopModuleID">The ID of the Desktop Module to get</param>
         /// <param name="portalID">The ID of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
         {
@@ -207,6 +208,7 @@ namespace DotNetNuke.Entities.Modules
         /// GetDesktopModuleByPackageID gets a Desktop Module by its Package ID
         /// </summary>
         /// <param name="packageID">The ID of the Package</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
         {
@@ -232,6 +234,7 @@ namespace DotNetNuke.Entities.Modules
         /// to the Dataprovider.</remarks>
         /// <param name="moduleName">The name of the Desktop Module to get</param>
         /// <param name="portalID">The ID of the portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
         {
@@ -253,6 +256,7 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get
         /// all the DesktopModules including Modules not allowed for the current portal</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
         {
@@ -278,6 +282,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="desktopModule">The Desktop Module to save</param>
         /// <param name="saveChildren">A flag that determines whether the child objects are also saved</param>
         /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache)
         {

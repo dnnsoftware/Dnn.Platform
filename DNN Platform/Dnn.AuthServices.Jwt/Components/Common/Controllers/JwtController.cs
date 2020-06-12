@@ -50,6 +50,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         /// <summary>
         /// Validates the received JWT against the databas eand returns username when successful.
         /// </summary>
+        /// <returns></returns>
         public string ValidateToken(HttpRequestMessage request)
         {
             if (!JwtAuthMessageHandler.IsEnabled)
@@ -95,6 +96,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         /// <summary>
         /// Validates user login credentials and returns result when successful
         /// </summary>
+        /// <returns></returns>
         public LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData)
         {
             if (!JwtAuthMessageHandler.IsEnabled)

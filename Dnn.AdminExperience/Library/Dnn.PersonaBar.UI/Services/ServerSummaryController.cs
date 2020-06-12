@@ -42,6 +42,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>
         /// Return server info.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetServerInfo()
         {

@@ -58,6 +58,7 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <param name="objectKey">Subscription Object Key</param>
         /// <param name="portalId">Portal Id</param>
         /// <param name="newDescription">New Subscription Description</param>
+        /// <returns></returns>
         int UpdateSubscriptionDescription(string objectKey, int portalId, string newDescription);
 
         /// <summary>

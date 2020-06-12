@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
         /// The GetDependency method instantiates (and returns) the relevant Dependency
         /// </summary>
         /// <param name="dependencyNav">The manifest (XPathNavigator) for the dependency</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static IDependency GetDependency(XPathNavigator dependencyNav)
         {

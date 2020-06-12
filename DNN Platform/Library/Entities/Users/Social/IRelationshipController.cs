@@ -20,6 +20,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// Get list of All RelationshipTypes defined in system
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         IList<RelationshipType> GetAllRelationshipTypes();
 
@@ -28,6 +29,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Get RelationshipType By RelationshipTypeId
         /// </summary>
         /// <param name="relationshipTypeId">RelationshipTypeId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         RelationshipType GetRelationshipType(int relationshipTypeId);
 
@@ -56,6 +58,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Get Relationship By RelationshipId
         /// </summary>
         /// <param name="relationshipId">RelationshipId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         Relationship GetRelationship(int relationshipId);
 
@@ -64,6 +67,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Get Relationships By UserId
         /// </summary>
         /// <param name="userId">UserId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         IList<Relationship> GetRelationshipsByUserId(int userId);
 
@@ -72,6 +76,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Get Relationships By PortalId
         /// </summary>
         /// <param name="portalId">PortalId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         IList<Relationship> GetRelationshipsByPortalId(int portalId);
 
@@ -100,6 +105,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Get UserRelationship By UserRelationshipId
         /// </summary>
         /// <param name="userRelationshipId">UserRelationshipId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationship GetUserRelationship(int userRelationshipId);
 
@@ -110,6 +116,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// <param name="user">User</param>
         /// <param name="relatedUser">Related User</param>
         /// <param name="relationship">Relationship Object</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationship GetUserRelationship(UserInfo user, UserInfo relatedUser, Relationship relationship);
 
@@ -145,6 +152,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// Get UserRelationshipPreference By RelationshipTypeId
         /// </summary>
         /// <param name="preferenceId">PreferenceId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationshipPreference GetUserRelationshipPreference(int preferenceId);
 
@@ -154,6 +162,7 @@ namespace DotNetNuke.Entities.Users.Social
         /// </summary>
         /// <param name="userId">UserId</param>
         /// <param name="relationshipId">RelationshipId</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationshipPreference GetUserRelationshipPreference(int userId, int relationshipId);
 

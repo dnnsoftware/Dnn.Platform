@@ -628,6 +628,7 @@ namespace DotNetNuke.Security.Roles
         /// <param name="role">The role to remove the use from</param>
         /// <param name="portalSettings">The PortalSettings of the Portal</param>
         /// <param name="notifyUser">A flag that indicates whether the user should be notified</param>
+        /// <returns></returns>
         public static bool DeleteUserRole(UserInfo objUser, RoleInfo role, PortalSettings portalSettings, bool notifyUser)
         {
             bool canDelete = DeleteUserRoleInternal(portalSettings.PortalId, objUser.UserID, role.RoleID);

@@ -412,6 +412,7 @@ namespace DotNetNuke.Common
         /// <summary>
         /// Tests whether this request should be processed in an HttpModule
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool ProcessHttpModule(HttpRequest request, bool allowUnknownExtensions, bool checkOmitFromRewriteProcessing)
         {

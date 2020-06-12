@@ -248,6 +248,7 @@ namespace DotNetNuke.Entities.Modules
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         public static object GetSetting(int portalId, string settingKey)
         {
             Hashtable settings = UserController.GetUserSettings(portalId);

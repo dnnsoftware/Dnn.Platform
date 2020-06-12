@@ -61,6 +61,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the physical path for the specified relative path.
         /// </summary>
+        /// <returns></returns>
         public virtual string GetPhysicalPath(int portalID, string relativePath)
         {
             Requires.PropertyNotNull("relativePath", relativePath);
@@ -81,6 +82,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the relative path for the specified physical path.
         /// </summary>
+        /// <returns></returns>
         public virtual string GetRelativePath(int portalID, string physicalPath)
         {
             Requires.PropertyNotNull("physicalPath", physicalPath);
@@ -116,6 +118,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the physical root folder path for the specified portal
         /// </summary>
+        /// <returns></returns>
         public virtual string GetRootFolderMapPath(int portalID)
         {
             return (portalID == Null.NullInteger) ? GetHostMapPath() : GetPortalMapPath(portalID);

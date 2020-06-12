@@ -200,6 +200,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetCategory gets the Category of an object
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override string GetCategory(object obj)
         {
@@ -223,6 +224,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// GetGroups gets an array of Groups/Categories from the DataSource
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override string[] GetGroups(IEnumerable arrObjects)
         {
@@ -261,6 +263,7 @@ namespace DotNetNuke.UI.WebControls
         /// GetRowVisibility determines the Visibility of a row in the table
         /// </summary>
         /// <param name="obj">The property</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool GetRowVisibility(object obj)
         {

@@ -114,6 +114,7 @@ namespace DotNetNuke.Security.Permissions
         ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection
         /// </summary>
         /// <param name = "StateID">The ID of the State</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int StateID)
         {
@@ -143,6 +144,7 @@ namespace DotNetNuke.Security.Permissions
         /// </summary>
         /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState</param>
         /// <param name = "permissionKey">The Permission to check</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool HasWorkflowStatePermission(WorkflowStatePermissionCollection objWorkflowStatePermissions, string permissionKey)
         {

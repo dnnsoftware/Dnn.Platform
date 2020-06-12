@@ -309,6 +309,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <param name="postDataKey">A key to the PostBack Data to load</param>
         /// <param name="postCollection">A name value collection of postback data</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -525,6 +526,7 @@ namespace DotNetNuke.UI.WebControls
         /// GenerateImage generates the Captch Image
         /// </summary>
         /// <param name="encryptedText">The Encrypted Text to display</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         internal static Bitmap GenerateImage(string encryptedText)
         {
@@ -660,6 +662,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets the next Captcha
         /// </summary>
+        /// <returns></returns>
         protected virtual string GetNextCaptcha()
         {
             var sb = new StringBuilder();
@@ -820,6 +823,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Save the controls Voewstate
         /// </summary>
+        /// <returns></returns>
         protected override object SaveViewState()
         {
             var baseState = base.SaveViewState();
@@ -839,6 +843,7 @@ namespace DotNetNuke.UI.WebControls
         /// Validates the posted back data
         /// </summary>
         /// <param name="userData">The user entered data</param>
+        /// <returns></returns>
         public bool Validate(string userData)
         {
             var cacheKey = string.Format(DataCache.CaptchaCacheKey, userData);

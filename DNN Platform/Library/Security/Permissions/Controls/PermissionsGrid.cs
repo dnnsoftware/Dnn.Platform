@@ -671,6 +671,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objectPermissionId">The Id of the object permission</param>
         /// <param name="roleId">The role id</param>
         /// <param name="roleName">The role name</param>
+        /// <returns></returns>
         protected string BuildKey(bool allowAccess, int permissionId, int objectPermissionId, int roleId, string roleName)
         {
             return this.BuildKey(allowAccess, permissionId, objectPermissionId, roleId, roleName, Null.NullInteger, Null.NullString);
@@ -686,6 +687,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="roleName">The role name</param>
         /// <param name="userID">The user id</param>
         /// <param name="displayName">The user display name</param>
+        /// <returns></returns>
         protected string BuildKey(bool allowAccess, int permissionId, int objectPermissionId, int roleId, string roleName, int userID, string displayName)
         {
             string key;
@@ -850,6 +852,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
+        /// <returns></returns>
         protected virtual bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
             return true;
@@ -861,6 +864,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="user">The user</param>
         /// <param name="column">The column of the Grid</param>
+        /// <returns></returns>
         protected virtual bool GetEnabled(PermissionInfo objPerm, UserInfo user, int column)
         {
             return true;
@@ -872,6 +876,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
+        /// <returns></returns>
         protected virtual bool GetPermission(PermissionInfo objPerm, RoleInfo role, int column)
         {
             return Convert.ToBoolean(this.GetPermission(objPerm, role, column, PermissionTypeDeny));
@@ -884,6 +889,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
         /// <param name="defaultState">Default State.</param>
+        /// <returns></returns>
         protected virtual string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
             string stateKey = defaultState;
@@ -916,6 +922,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="user">The user</param>
         /// <param name="column">The column of the Grid</param>
+        /// <returns></returns>
         protected virtual bool GetPermission(PermissionInfo objPerm, UserInfo user, int column)
         {
             return Convert.ToBoolean(this.GetPermission(objPerm, user, column, PermissionTypeDeny));
@@ -928,6 +935,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="user">The user</param>
         /// <param name="column">The column of the Grid</param>
         /// <param name="defaultState">Default State.</param>
+        /// <returns></returns>
         protected virtual string GetPermission(PermissionInfo objPerm, UserInfo user, int column, string defaultState)
         {
             var stateKey = defaultState;
@@ -957,6 +965,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the permissions from the Database
         /// </summary>
+        /// <returns></returns>
         protected virtual ArrayList GetPermissions()
         {
             return null;
@@ -965,6 +974,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the users from the Database
         /// </summary>
+        /// <returns></returns>
         protected virtual ArrayList GetUsers()
         {
             var arrUsers = new ArrayList();

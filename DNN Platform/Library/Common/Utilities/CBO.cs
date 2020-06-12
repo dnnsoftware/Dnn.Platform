@@ -457,6 +457,7 @@ namespace DotNetNuke.Common.Utilities
         /// CloneObject clones an object
         /// </summary>
         /// <param name="objObject">The Object to Clone</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static object CloneObject(object objObject)
         {
@@ -536,6 +537,7 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TObject">The type of object to create.</typeparam>
         /// <param name="initialise">A flag that indicates whether to initialise the
         /// object.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TObject CreateObject<TObject>(bool initialise)
         {
@@ -590,6 +592,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="dr">The Data Reader</param>
         /// <param name="objType">The type of the Object</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, Type objType)
         {
@@ -603,6 +606,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="dr">The Data Reader</param>
         /// <param name="objType">The type of the Object</param>
         /// <param name="closeReader">Flag that indicates whether the Data Reader should be closed.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ArrayList FillCollection(IDataReader dr, Type objType, bool closeReader)
         {
@@ -616,6 +620,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="dr">The Data Reader</param>
         /// <param name="objType">The type of the Object</param>
         /// <param name="objToFill">An IList to fill</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static IList FillCollection(IDataReader dr, Type objType, ref IList objToFill)
         {
@@ -628,6 +633,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <typeparam name="TItem">The type of object</typeparam>
         /// <param name="dr">The Data Reader</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static List<TItem> FillCollection<TItem>(IDataReader dr)
         {
@@ -641,6 +647,7 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TItem">The type of object</typeparam>
         /// <param name="objToFill">The List to fill</param>
         /// <param name="dr">The Data Reader</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static IList<TItem> FillCollection<TItem>(IDataReader dr, ref IList<TItem> objToFill)
         {
@@ -655,6 +662,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="objToFill">The List to fill</param>
         /// <param name="dr">The Data Reader</param>
         /// <param name="closeReader">A flag that indicates whether the DataReader should be closed</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static IList<TItem> FillCollection<TItem>(IDataReader dr, IList<TItem> objToFill, bool closeReader)
         {
@@ -738,6 +746,7 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TValue">The value for the Dictionary Item</typeparam>
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="dr">The Data Reader</param>
+        /// <returns></returns>
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr)
         {
             return
@@ -752,6 +761,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="dr">The Data Reader</param>
         /// <param name="closeReader">A flag indicating whether to close the reader.</param>
+        /// <returns></returns>
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, bool closeReader)
         {
             return (Dictionary<TKey, TValue>)FillDictionaryFromReader(keyField, dr, new Dictionary<TKey, TValue>(), closeReader);
@@ -766,6 +776,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="objDictionary">The Dictionary to fill</param>
         /// <param name="dr">The Data Reader</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<TKey, TValue> FillDictionary<TKey, TValue>(string keyField, IDataReader dr, IDictionary<TKey, TValue> objDictionary)
         {
@@ -778,6 +789,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <typeparam name="TObject">The type of the object</typeparam>
         /// <param name="dr">The Data Reader</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr)
         {
@@ -791,6 +803,7 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TObject">The type of the object</typeparam>
         /// <param name="dr">The Data Reader</param>
         /// <param name="closeReader">A flag that indicates the reader should be closed</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
         {
@@ -810,6 +823,7 @@ namespace DotNetNuke.Common.Utilities
         /// <typeparam name="TValue">The value for the SortedList Item</typeparam>
         /// <param name="keyField">The key field used for the Key</param>
         /// <param name="dr">The Data Reader</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SortedList<TKey, TValue> FillSortedList<TKey, TValue>(string keyField, IDataReader dr)
         {
@@ -881,6 +895,7 @@ namespace DotNetNuke.Common.Utilities
         /// cache AND to fetch the item if the cache has expired</param>
         /// <param name="cacheItemExpired">A CacheItemExpiredCallback delegate that is used to repopulate
         /// the cache if the item has expired</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TObject GetCachedObject<TObject>(CacheItemArgs cacheItemArgs, CacheItemExpiredCallback cacheItemExpired)
         {
@@ -897,6 +912,7 @@ namespace DotNetNuke.Common.Utilities
         /// GetProperties gets a Dictionary of the Properties for an object
         /// </summary>
         /// <typeparam name="TObject">The type of the object</typeparam>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, PropertyInfo> GetProperties<TObject>()
         {
@@ -908,6 +924,7 @@ namespace DotNetNuke.Common.Utilities
         /// GetProperties gets a Dictionary of the Properties for an object
         /// </summary>
         /// <param name="objType">The type of the object</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, PropertyInfo> GetProperties(Type objType)
         {
@@ -940,6 +957,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="objObject">The object to Initialise</param>
         /// <param name="objType">The type of the object</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static object InitializeObject(object objObject, Type objType)
         {

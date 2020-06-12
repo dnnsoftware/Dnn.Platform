@@ -440,6 +440,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         /// <param name="UserID">The ID of the user to check delete button visibility for</param>
         /// <param name="RoleID">The ID of the role to check delete button visibility for</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool DeleteButtonVisible(int UserID, int RoleID)
         {
@@ -461,6 +462,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         /// <param name="DateTime">The Date object to format</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string FormatDate(DateTime DateTime)
         {
@@ -478,6 +480,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <summary>
         /// FormatExpiryDate formats the expiry/effective date and filters out nulls
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string FormatUser(int UserID, string DisplayName)
         {

@@ -30,6 +30,7 @@ namespace Dnn.PersonaBar.UI.Services
         /// <summary>
         /// Retrieve a list of extensions for menu.
         /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public HttpResponseMessage GetExtensions(string menu)
         {

@@ -349,6 +349,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Saves the ViewState
         /// </summary>
+        /// <returns></returns>
         protected override object SaveViewState()
         {
             var allStates = new object[2];

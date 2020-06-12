@@ -142,6 +142,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// Retrieve usage data for the specified term ID.
         /// </summary>
         /// <param name="termId">Term ID in question</param>
+        /// <returns></returns>
         public TermUsage GetTermUsage(int termId)
         {
             Requires.NotNegative("termId", termId);

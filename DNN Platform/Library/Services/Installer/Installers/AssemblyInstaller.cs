@@ -122,6 +122,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
+        /// <returns></returns>
         protected override bool IsCorrectType(InstallFileType type)
         {
             return type == InstallFileType.Assembly;
@@ -132,6 +133,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The InstallFile method installs a single assembly.
         /// </summary>
         /// <param name="file">The InstallFile to install</param>
+        /// <returns></returns>
         protected override bool InstallFile(InstallFile file)
         {
             bool bSuccess = true;

@@ -31,6 +31,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
         /// </summary>
         /// <param name="contentItemId">Content item Id</param>
         /// <param name="workflowId">Workflow Id</param>
+        /// <returns></returns>
         IEnumerable<WorkflowLog> GetWorkflowLogs(int contentItemId, int workflowId);
     }
 }

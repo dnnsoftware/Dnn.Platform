@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Returns an array of Modules well configured to be used into a Skin
         /// </summary>
         /// <param name="tab">TabInfo object</param>
+        /// <returns></returns>
         ArrayList GetTabModules(TabInfo tab);
 
         /// <summary>
@@ -22,6 +23,7 @@ namespace DotNetNuke.Entities.Tabs
         /// setting name in its collection of settings.
         /// </summary>
         /// <param name="settingName">Name of the setting to look for</param>
+        /// <returns></returns>
         Dictionary<int, string> GetTabModuleSettingsByName(string settingName);
 
         /// <summary>
@@ -30,6 +32,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="settingName">Name of the setting to look for</param>
         /// <param name="expectedValue">Value of the setting to look for</param>
+        /// <returns></returns>
         IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue);
     }
 }

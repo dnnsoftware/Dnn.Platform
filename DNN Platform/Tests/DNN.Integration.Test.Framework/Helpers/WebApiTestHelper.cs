@@ -82,6 +82,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         /// <summary>
         /// Register a user by using the Registration form
         /// </summary>
+        /// <returns></returns>
         public static HttpWebResponse Register(string userName, string password, string displayName, string email,
             string url = null, bool encriptFieldsNames = true)
         {
@@ -138,6 +139,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
         /// <summary>Generate a MD5 hash of a string
         /// </summary>
+        /// <returns></returns>
         public static string GenerateMd5(this string str)
         {
             return str.GenerateHash("MD5");

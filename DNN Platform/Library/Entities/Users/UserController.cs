@@ -683,6 +683,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// Gets the number count for all duplicate e-mail adresses in the database
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int GetDuplicateEmailCount()
         {
@@ -1245,6 +1246,7 @@ namespace DotNetNuke.Entities.Users
         /// and is using a password encryption method that supports decryption.</remarks>
         /// <param name="user">The user whose Password information we are retrieving.</param>
         /// <param name="passwordAnswer">The answer to the "user's" password Question.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetPassword(ref UserInfo user, string passwordAnswer)
         {
@@ -1459,6 +1461,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Hashtable GetDefaultUserSettings()
         {
@@ -1925,6 +1928,7 @@ namespace DotNetNuke.Entities.Users
         /// <remarks>Resets the user's password</remarks>
         /// <param name="user">The user whose Password information we are resetting.</param>
         /// <param name="passwordAnswer">The answer to the "user's" password Question.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string ResetPassword(UserInfo user, string passwordAnswer)
         {
@@ -2018,6 +2022,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="user">The user whose account is being Unlocked.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool UnLockUser(UserInfo user)
         {

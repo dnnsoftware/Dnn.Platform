@@ -536,6 +536,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the property to retrieve.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition GetProperty(string propName)
         {
@@ -548,6 +549,7 @@ namespace DotNetNuke.Entities.Users
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the propoerty to retrieve.</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string GetPropertyValue(string propName)
         {

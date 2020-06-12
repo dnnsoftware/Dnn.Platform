@@ -56,6 +56,7 @@ namespace DotNetNuke.Modules.Journal.Components
         /// ExportModule implements the IPortable ExportModule Interface
         /// </summary>
         /// <param name="moduleID">The Id of the module to be exported</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string ExportModule(int moduleID)
         {
@@ -107,6 +108,7 @@ namespace DotNetNuke.Modules.Journal.Components
         /// UpgradeModule implements the IUpgradeable Interface
         /// </summary>
         /// <param name="version">The current version of the module</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string UpgradeModule(string version)
         {

@@ -192,6 +192,7 @@ namespace DotNetNuke.UI.Containers
         /// DisplayControl determines whether the associated Action control should be
         /// displayed
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool DisplayControl(DNNNodeCollection objNodes)
         {
@@ -225,6 +226,7 @@ namespace DotNetNuke.UI.Containers
         /// GetAction gets the action associated with the commandName
         /// </summary>
         /// <param name="commandName">The command name</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(string commandName)
         {
@@ -236,6 +238,7 @@ namespace DotNetNuke.UI.Containers
         /// GetAction gets the action associated with the id
         /// </summary>
         /// <param name="id">The Id</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(int id)
         {
@@ -271,6 +274,7 @@ namespace DotNetNuke.UI.Containers
         /// IsVisible determines whether the action control is Visible
         /// </summary>
         /// <param name="action">The Action</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool IsVisible(ModuleAction action)
         {
@@ -299,6 +303,7 @@ namespace DotNetNuke.UI.Containers
         /// ProcessAction processes the action
         /// </summary>
         /// <param name="id">The Id of the Action</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(string id)
         {
@@ -317,6 +322,7 @@ namespace DotNetNuke.UI.Containers
         /// ProcessAction processes the action
         /// </summary>
         /// <param name="action">The Action</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(ModuleAction action)
         {

@@ -106,6 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// </remarks>
         /// <param name = "postDataKey">A key to the PostBack Data to load</param>
         /// <param name = "postCollection">A name value collection of postback data</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {

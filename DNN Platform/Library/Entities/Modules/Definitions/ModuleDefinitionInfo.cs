@@ -155,6 +155,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// <summary>
         /// Gets an XmlSchema for the ModuleDefinitionInfo
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public XmlSchema GetSchema()
         {

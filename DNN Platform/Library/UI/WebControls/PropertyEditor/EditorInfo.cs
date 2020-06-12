@@ -67,6 +67,7 @@ namespace DotNetNuke.UI.WebControls
         /// properties
         /// </summary>
         /// <param name="editorType">The Id of the Editor</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetEditor(int editorType)
         {

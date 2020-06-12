@@ -198,6 +198,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// Gets a flag that determines what type of file this installer supports
         /// </summary>
         /// <param name="type">The type of file being processed</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
         {

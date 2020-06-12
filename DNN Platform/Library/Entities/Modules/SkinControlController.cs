@@ -43,6 +43,7 @@ namespace DotNetNuke.Entities.Modules
         /// GetSkinControl gets a single Skin Control from the database
         /// </summary>
         /// <param name="skinControlID">The ID of the SkinControl</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControl(int skinControlID)
         {
@@ -54,6 +55,7 @@ namespace DotNetNuke.Entities.Modules
         /// GetSkinControlByPackageID gets a single Skin Control from the database
         /// </summary>
         /// <param name="packageID">The ID of the Package</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControlByPackageID(int packageID)
         {
@@ -65,6 +67,7 @@ namespace DotNetNuke.Entities.Modules
         /// GetSkinControlByKey gets a single Skin Control from the database
         /// </summary>
         /// <param name="key">The key of the Control</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControlByKey(string key)
         {
@@ -75,6 +78,7 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// GetSkinControls gets all the Skin Controls from the database
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, SkinControlInfo> GetSkinControls()
         {
@@ -86,6 +90,7 @@ namespace DotNetNuke.Entities.Modules
         /// SaveSkinControl updates a Skin Control in the database
         /// </summary>
         /// <param name="skinControl">The Skin Control to save</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveSkinControl(SkinControlInfo skinControl)
         {

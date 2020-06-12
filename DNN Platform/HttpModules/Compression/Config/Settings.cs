@@ -55,6 +55,7 @@ namespace DotNetNuke.HttpModules.Compression
         /// <summary>
         /// Get the current settings from the xml config file
         /// </summary>
+        /// <returns></returns>
         public static Settings GetSettings()
         {
             var settings = (Settings)DataCache.GetCache("CompressionConfig");

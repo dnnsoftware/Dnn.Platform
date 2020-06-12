@@ -115,6 +115,7 @@ namespace DotNetNuke.Common.Utilities
         /// either, the portalid param is not allowed when the tab is a supertab
         /// (because NavigateUrl adds the portalId param to the qs)
         /// </summary>
+        /// <returns></returns>
         public static string[] GetQSParamsForNavigateURL()
         {
             string returnValue = string.Empty;

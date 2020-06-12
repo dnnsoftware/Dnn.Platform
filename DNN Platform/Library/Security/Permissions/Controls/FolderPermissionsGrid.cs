@@ -227,6 +227,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <param name="objPerm">The permission being loaded</param>
         /// <param name="role">The role</param>
         /// <param name="column">The column of the Grid</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
         {
@@ -288,6 +289,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Gets the permissions from the Database
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override ArrayList GetPermissions()
         {
@@ -352,6 +354,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// Saves the ViewState
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override object SaveViewState()
         {
@@ -398,6 +401,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// <summary>
         /// returns whether or not the derived grid supports Deny permissions
         /// </summary>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {

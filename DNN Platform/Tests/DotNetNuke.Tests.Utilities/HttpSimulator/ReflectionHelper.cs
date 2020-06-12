@@ -17,6 +17,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         /// <param name="fieldName">Name of the member.</param>
         /// <param name="type">Type of the member.</param>
+        /// <returns></returns>
         public static T GetStaticFieldValue<T>(string fieldName, Type type)
         {
             var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
@@ -33,6 +34,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         /// <param name="fieldName">Name of the member.</param>
         /// <param name="typeName"></param>
+        /// <returns></returns>
         public static T GetStaticFieldValue<T>(string fieldName, string typeName)
         {
             var type = Type.GetType(typeName, true);
@@ -85,6 +87,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// </summary>
         /// <param name="fieldName">Name of the member.</param>
         /// <param name="source">The object that contains the member.</param>
+        /// <returns></returns>
         public static T GetPrivateInstanceFieldValue<T>(string fieldName, object source)
         {
             var field = source.GetType().GetField(fieldName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);

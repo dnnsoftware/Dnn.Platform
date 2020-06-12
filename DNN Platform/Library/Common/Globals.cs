@@ -1128,6 +1128,7 @@ namespace DotNetNuke.Common
         /// for this instance of DotNetNuke, and Id is the current PortalId for normal
         /// users or glbSuperUserAppName for SuperUsers.
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetApplicationName()
         {
@@ -1159,6 +1160,7 @@ namespace DotNetNuke.Common
         /// <remarks>
         /// This overload is used to build the Application Name from the Portal Id
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetApplicationName(int PortalID)
         {
@@ -1540,6 +1542,7 @@ namespace DotNetNuke.Common
         /// <param name="portalId">Portal Id.</param>
         /// <remarks>
         /// </remarks>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetSubFolderPath(string strFileNamePath, int portalId)
         {

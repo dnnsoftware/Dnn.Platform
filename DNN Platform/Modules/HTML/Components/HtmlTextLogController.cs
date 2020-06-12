@@ -30,6 +30,7 @@ namespace DotNetNuke.Modules.Html
         /// <remarks>
         /// </remarks>
         /// <param name = "ItemID">The Id of the Item</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextLog(int ItemID)
         {

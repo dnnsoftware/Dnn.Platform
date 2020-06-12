@@ -2504,6 +2504,7 @@ namespace DotNetNuke.Entities.Modules
         /// <param name="xmlModule">The Xml Document to use for the Module</param>
         /// <param name="module">The ModuleInfo object to serialize</param>
         /// <param name="includeContent">A flak that determines whether the content of the module is serialised.</param>
+        /// <returns></returns>
         public static XmlNode SerializeModule(XmlDocument xmlModule, ModuleInfo module, bool includeContent)
         {
             var serializer = new XmlSerializer(typeof(ModuleInfo));

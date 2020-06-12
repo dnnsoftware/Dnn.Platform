@@ -137,6 +137,7 @@ namespace DotNetNuke.UI.Containers
         /// <summary>
         /// DisplayControl determines whether the control should be displayed
         /// </summary>
+        /// <returns></returns>
         protected bool DisplayControl(DNNNodeCollection objNodes)
         {
             return this.ActionManager.DisplayControl(objNodes);

@@ -15,6 +15,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Creates and caches a Regex object for later use and retrieves it in a later call if it is cacehd
         /// </summary>
+        /// <returns></returns>
         public static Regex GetCachedRegex(string pattern, RegexOptions options = RegexOptions.None, int timeoutSeconds = 2)
         {
             Requires.NotNull("pattern", pattern);

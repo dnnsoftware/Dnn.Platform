@@ -219,6 +219,7 @@ namespace log4net.Util
         /// <summary>
         /// See <see cref="IDictionary.GetEnumerator"/>
         /// </summary>
+        /// <returns></returns>
         IDictionaryEnumerator IDictionary.GetEnumerator()
         {
             return this.InnerHashtable.GetEnumerator();
@@ -351,6 +352,7 @@ namespace log4net.Util
         /// <summary>
         /// See <see cref="IEnumerable.GetEnumerator"/>
         /// </summary>
+        /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()
         {
             return ((IEnumerable)this.InnerHashtable).GetEnumerator();

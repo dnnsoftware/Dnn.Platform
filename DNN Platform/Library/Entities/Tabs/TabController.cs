@@ -936,6 +936,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">The tab to be added</param>
         /// <remarks>The tab is added to the end of the current Level.</remarks>
+        /// <returns></returns>
         public int AddTab(TabInfo tab)
         {
             return this.AddTab(tab, true);
@@ -948,6 +949,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="includeAllTabsModules">Flag that indicates whether to add the "AllTabs"
         /// Modules</param>
         /// <remarks>The tab is added to the end of the current Level.</remarks>
+        /// <returns></returns>
         public int AddTab(TabInfo tab, bool includeAllTabsModules)
         {
             // Add tab to store
@@ -964,6 +966,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="tab">The tab to be added</param>
         /// <param name="afterTabId">Id of the tab after which this tab is added</param>
+        /// <returns></returns>
         public int AddTabAfter(TabInfo tab, int afterTabId)
         {
             // Add tab to store
@@ -980,6 +983,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="objTab">The tab to be added</param>
         /// <param name="beforeTabId">Id of the tab before which this tab is added</param>
+        /// <returns></returns>
         public int AddTabBefore(TabInfo objTab, int beforeTabId)
         {
             // Add tab to store
@@ -1222,6 +1226,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
         /// <param name="clearCache"></param>
+        /// <returns></returns>
         public bool DeleteTranslatedTabs(int portalId, string cultureCode, bool clearCache)
         {
             if (PortalController.Instance.GetCurrentPortalSettings() != null)
@@ -2781,6 +2786,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabXml">The Xml Document to use for the Tab</param>
         /// <param name="objTab">The TabInfo object to serialize</param>
         /// <param name="includeContent">A flag used to determine if the Module content is included</param>
+        /// <returns></returns>
         public static XmlNode SerializeTab(XmlDocument tabXml, TabInfo objTab, bool includeContent)
         {
             return SerializeTab(tabXml, null, objTab, null, includeContent);
@@ -2794,6 +2800,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tab">The TabInfo object to serialize</param>
         /// <param name="portal">The Portal object to which the tab belongs</param>
         /// <param name="includeContent">A flag used to determine if the Module content is included</param>
+        /// <returns></returns>
         public static XmlNode SerializeTab(XmlDocument tabXml, Hashtable tabs, TabInfo tab, PortalInfo portal,
                                            bool includeContent)
         {

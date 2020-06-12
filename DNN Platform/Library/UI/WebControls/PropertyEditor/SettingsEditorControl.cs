@@ -106,6 +106,7 @@ namespace DotNetNuke.UI.WebControls
         /// GetRowVisibility determines the Visibility of a row in the table
         /// </summary>
         /// <param name="obj">The property</param>
+        /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool GetRowVisibility(object obj)
         {

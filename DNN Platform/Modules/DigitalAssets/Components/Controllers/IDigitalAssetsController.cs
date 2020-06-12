@@ -134,6 +134,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         /// </summary>
         /// <param name="items">Items list</param>
         /// <param name="portalID">Portal ID</param>
+        /// <returns></returns>
         int GetMappedSubFoldersCount(IEnumerable<ItemBaseViewModel> items, int portalID);
 
         /// <summary>

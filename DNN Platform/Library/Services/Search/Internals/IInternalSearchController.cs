@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// <summary>
         /// Get a List of Search Content Source that participate in Search
         /// </summary>
+        /// <returns></returns>
         IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId);
 
         /// <summary>
@@ -34,6 +35,7 @@ namespace DotNetNuke.Services.Search.Internals
         /// e.g. Tab, Module, Html/Module all map to Pages.
         /// For SearchTypeId=module, ModuleDefitionId is also used. Module's display name is used unless an entry is found in
         /// ~/DesktopModules/Admin/SearchResults/App_LocalResources/SearchableModules.resx for the Module_[MODULENAME].txt is found.</remarks>
+        /// <returns></returns>
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
 
         /// <summary>
