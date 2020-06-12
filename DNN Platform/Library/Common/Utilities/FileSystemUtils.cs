@@ -24,14 +24,13 @@ using DotNetNuke.Security.Permissions;
 using DotNetNuke.Services.Exceptions;
 using DotNetNuke.Services.FileSystem;
 using DotNetNuke.Services.Localization;
-
 using ICSharpCode.SharpZipLib.Checksums;
 using ICSharpCode.SharpZipLib.Zip;
 
-using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 using Directory = SchwabenCode.QuickIO.QuickIODirectory;
-using File = SchwabenCode.QuickIO.QuickIOFile;
 using DirectoryInfo = SchwabenCode.QuickIO.QuickIODirectoryInfo;
+using File = SchwabenCode.QuickIO.QuickIOFile;
+using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 
 namespace DotNetNuke.Common.Utilities
 {
