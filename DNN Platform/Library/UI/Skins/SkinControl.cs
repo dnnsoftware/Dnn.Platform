@@ -167,15 +167,9 @@ namespace DotNetNuke.UI.Skins
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-
-            #region Bind Handles
-
             this.optHost.CheckedChanged += this.optHost_CheckedChanged;
             this.optSite.CheckedChanged += this.optSite_CheckedChanged;
             this.cmdPreview.Click += this.cmdPreview_Click;
-
-            #endregion
-
             try
             {
                 if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))

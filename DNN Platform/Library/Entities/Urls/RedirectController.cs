@@ -106,8 +106,6 @@ namespace DotNetNuke.Entities.Urls
             {
                 try
                 {
-                    #region trycatch block
-
                     string rewrittenUrl = result.RewritePath ?? result.RawUrl;
 
                     List<ParameterRedirectAction> parmRedirects = null;
@@ -349,8 +347,6 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                     }
-
-                    #endregion
                 }
                 catch (Exception ex)
                 {

@@ -114,9 +114,6 @@ namespace Dnn.ExportImport.Components.Services
             var existWorkflows = workflowManager.GetWorkflows(portalId).ToList();
             var defaultTabWorkflowId = importWorkflows.FirstOrDefault(w => w.IsDefault)?.WorkflowID ?? 1;
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? importWorkflows.Count : this.CheckPoint.TotalItems;
-
-            #region importing workflows
-
             foreach (var importWorkflow in importWorkflows)
             {
                 var workflow = existWorkflows.FirstOrDefault(w => w.WorkflowName == importWorkflow.WorkflowName);
@@ -154,9 +151,6 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 importWorkflow.LocalId = workflow.WorkflowID;
-
-                #region importing workflow states
-
                 var importStates = this.Repository.GetRelatedItems<ExportWorkflowState>(importWorkflow.Id).ToList();
                 foreach (var importState in importStates)
                 {
@@ -188,9 +182,6 @@ namespace Dnn.ExportImport.Components.Services
                         this.Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
                     }
                     importState.LocalId = workflowState.StateID;
-
-                    #region importin permissions
-
                     if (!workflowState.IsSystem)
                     {
                         var importPermissions = this.Repository.GetRelatedItems<ExportWorkflowStatePermission>(importState.Id).ToList();
@@ -267,19 +258,13 @@ namespace Dnn.ExportImport.Components.Services
                             }
                         }
                     }
-
-                    #endregion
                 }
-
-                #endregion
 
                 this.Repository.UpdateItems(importStates);
                 this.Result.AddSummary("Imported Workflow", importWorkflows.Count.ToString());
                 this.CheckPoint.ProcessedItems++;
                 this.CheckPointStageCallback(this); // no need to return; very small amount of data processed
             }
-
-            #endregion
 
             this.Repository.UpdateItems(importWorkflows);
 

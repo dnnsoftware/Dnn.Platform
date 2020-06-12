@@ -159,7 +159,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             InitializeApplication();
 
-            #region Console Debug INfo
 
             // Console.WriteLine("host: " + Host);
             // Console.WriteLine("virtualDir: " + _applicationPath);
@@ -183,7 +182,6 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             // Console.WriteLine("HostingEnvironment.ApplicationPhysicalPath: " + HostingEnvironment.ApplicationPhysicalPath);
             // Console.WriteLine("HostingEnvironment.ApplicationVirtualPath: " + HostingEnvironment.ApplicationVirtualPath);
 
-            #endregion
 
             return this;
         }
