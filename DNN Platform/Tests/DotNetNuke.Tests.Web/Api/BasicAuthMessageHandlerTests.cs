@@ -22,7 +22,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new BasicAuthMessageHandler(true, false);
-            handler.OnOutboundResponse(response, new CancellationToken());
+            handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
             Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new BasicAuthMessageHandler(true, false);
-            handler.OnOutboundResponse(response, new CancellationToken());
+            handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
             CollectionAssert.IsEmpty(response.Headers.WwwAuthenticate);
@@ -54,7 +54,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new BasicAuthMessageHandler(true, false);
-            handler.OnOutboundResponse(response, new CancellationToken());
+            handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
             Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);
@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new BasicAuthMessageHandler(true, false);
-            handler.OnOutboundResponse(response, new CancellationToken());
+            handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
             Assert.AreEqual("Basic", response.Headers.WwwAuthenticate.First().Scheme);

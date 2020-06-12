@@ -41,7 +41,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public List<ModuleInfo> AddNewModule(PortalSettings portalSettings, string title, int desktopModuleId, int tabId, string paneName, int position, int permissionType, string align, out KeyValuePair<HttpStatusCode, string> message)
         {
-            message = new KeyValuePair<HttpStatusCode, string>();
+            message = default(KeyValuePair<HttpStatusCode, string>);
             var page = TabController.Instance.GetTab(tabId, portalSettings.PortalId);
             if (page == null)
             {
@@ -177,7 +177,7 @@ namespace Dnn.PersonaBar.Library.Controllers
 
         public ModuleInfo GetModule(PortalSettings portalSettings, int moduleId, int? pageId, out KeyValuePair<HttpStatusCode, string> message)
         {
-            message = new KeyValuePair<HttpStatusCode, string>();
+            message = default(KeyValuePair<HttpStatusCode, string>);
             if (pageId.HasValue)
             {
                 var module = ModuleController.Instance.GetModule(moduleId, pageId.Value, true);

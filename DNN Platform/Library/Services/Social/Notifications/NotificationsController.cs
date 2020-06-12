@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Social.Notifications
             }
 
             notification.To = sbTo.ToString().Trim(',');
-            if (notification.ExpirationDate != new DateTime())
+            if (notification.ExpirationDate != default(DateTime))
             {
                 notification.ExpirationDate = this.GetExpirationDate(notification.NotificationTypeID);
             }

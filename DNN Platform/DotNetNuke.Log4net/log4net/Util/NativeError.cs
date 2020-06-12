@@ -167,8 +167,8 @@ namespace log4net.Util
             int FORMAT_MESSAGE_FROM_SYSTEM = 0x00001000;        // The function should search the system message-table resource(s) for the requested message
 
             string msgBuf = string.Empty;             // buffer that will receive the message
-            IntPtr sourcePtr = new IntPtr();    // Location of the message definition, will be ignored
-            IntPtr argumentsPtr = new IntPtr(); // Pointer to array of values to insert, not supported as it requires unsafe code
+            IntPtr sourcePtr = IntPtr.Zero;    // Location of the message definition, will be ignored
+            IntPtr argumentsPtr = IntPtr.Zero; // Pointer to array of values to insert, not supported as it requires unsafe code
 
             if (messageId != 0)
             {

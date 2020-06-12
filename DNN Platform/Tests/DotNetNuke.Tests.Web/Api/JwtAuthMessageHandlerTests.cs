@@ -205,7 +205,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);
-            var response2 = handler.OnOutboundResponse(response, new CancellationToken());
+            var response2 = handler.OnOutboundResponse(response, CancellationToken.None);
 
             // Assert
             Assert.AreEqual(response, response2);
@@ -219,7 +219,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
             Assert.IsNull(response);
@@ -234,7 +234,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
             Assert.IsNull(response);
@@ -249,7 +249,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
             Assert.IsNull(response);
@@ -265,7 +265,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
             Assert.IsNull(response);
@@ -281,7 +281,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
             Assert.IsNull(response);
@@ -297,7 +297,7 @@ namespace DotNetNuke.Tests.Web.Api
             // Act
             this.SetupMockServices();
             var handler = new JwtAuthMessageHandler(true, false);
-            var response = handler.OnInboundRequest(request, new CancellationToken());
+            var response = handler.OnInboundRequest(request, CancellationToken.None);
 
             // Assert
             Assert.IsNull(response);
