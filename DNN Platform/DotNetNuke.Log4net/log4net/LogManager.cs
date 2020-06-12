@@ -335,6 +335,7 @@ namespace log4net
         }
 
 #endif
+
         /// <summary>
         /// Shuts down the repository for the repository specified.
         /// </summary>

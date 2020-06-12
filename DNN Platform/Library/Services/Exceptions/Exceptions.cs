@@ -52,6 +52,7 @@ namespace DotNetNuke.Services.Exceptions
     public sealed class Exceptions
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Exceptions));
+
         /// <summary>
         /// Gets the exception info.
         /// </summary>

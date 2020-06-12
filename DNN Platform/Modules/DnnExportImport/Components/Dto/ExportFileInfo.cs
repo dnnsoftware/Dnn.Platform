@@ -18,6 +18,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// Path for exported files.
         /// </summary>
         public string ExportPath { get; set; }
+
         /// <summary>
         /// Formatted size of export file
         /// </summary>

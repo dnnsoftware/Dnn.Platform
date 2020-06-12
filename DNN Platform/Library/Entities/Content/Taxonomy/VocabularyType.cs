@@ -13,6 +13,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// Simple Vocabulary
         /// </summary>
         Simple = 1,
+
         /// <summary>
         /// The Vocabulary can have parent or child nodes.
         /// </summary>

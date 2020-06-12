@@ -16,31 +16,38 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// unique identifier id for a javscript library package
         /// </summary>
         public int JavaScriptLibraryID { get; set; }
+
         /// <summary>
         /// package id associated with the javscript library package
         /// </summary>
         public int PackageID { get; set; }
+
         /// <summary>
         /// name of the javscript library package (used when requesting library)
         /// </summary>
         public string LibraryName { get; set; }
+
         /// <summary>
         /// version of the the javscript library package from the database
         /// </summary>
         public Version Version { get; set; }
+
         /// <summary>
         /// main object (where relevant) of the javscript library package
         /// used to generate the local file fallback code in the case where the CDN file is not available
         /// </summary>
         public string ObjectName { get; set; }
+
         /// <summary>
         /// filename of the script in the filesystem
         /// </summary>
         public string FileName { get; set; }
+
         /// <summary>
         /// position in the page the script reference is injected
         /// </summary>
         public ScriptLocation PreferredScriptLocation { get; set; }
+
         /// <summary>
         /// location of the content delivery network (CDN) where the script is loaded from when CDN has been enabled in host
         /// </summary>

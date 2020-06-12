@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.Localization
         string GetString(string key, string resourceFileRoot, string language);
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings);
         string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys);
+
         /// <summary>
         /// Saves a string to a resource file.
         /// </summary>

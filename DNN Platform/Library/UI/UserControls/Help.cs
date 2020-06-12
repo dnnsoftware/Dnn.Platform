@@ -28,6 +28,7 @@ namespace DotNetNuke.UI.UserControls
         protected Literal helpFrame;
         protected Label lblHelp;
         protected Label lblInfo;
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Page_Load runs when the control is loaded.

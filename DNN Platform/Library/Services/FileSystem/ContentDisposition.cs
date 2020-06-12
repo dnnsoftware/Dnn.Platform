@@ -13,6 +13,7 @@ namespace DotNetNuke.Services.FileSystem
         /// The browser will display a dialog to allow the user to save or view the document.
         /// </summary>
         Attachment,
+
         /// <summary>
         /// The document will be displayed automatically.
         /// </summary>

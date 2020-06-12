@@ -100,6 +100,7 @@ namespace DotNetNuke.UI.WebControls
         public string ParentKey { get; set; }
 
         private List<ListEntryInfo> _listEntries;
+
         /// <summary>
         /// Gets the ListEntryInfo objects associated witht the control
         /// </summary>

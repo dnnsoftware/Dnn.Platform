@@ -13,10 +13,12 @@ namespace DotNetNuke.Services.Mobile
         /// Primary ID.
         /// </summary>
         int Id { get; }
+
         /// <summary>
         /// Portal Id.
         /// </summary>
         int PortalId { get; set; }
+
         /// <summary>
         /// Redirection name.
         /// </summary>

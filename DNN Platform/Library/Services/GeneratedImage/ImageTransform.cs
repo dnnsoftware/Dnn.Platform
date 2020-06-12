@@ -42,6 +42,7 @@ namespace DotNetNuke.Services.GeneratedImage
         public abstract Image ProcessImage(Image image);
 
         // REVIEW: should this property be abstract?
+
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>

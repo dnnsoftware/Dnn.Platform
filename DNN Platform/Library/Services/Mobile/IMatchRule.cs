@@ -12,6 +12,7 @@ namespace DotNetNuke.Services.Mobile
         /// Primary Id.
         /// </summary>
         int Id { get; }
+
         /// <summary>
         /// capbility name.
         /// </summary>

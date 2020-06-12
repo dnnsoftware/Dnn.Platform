@@ -14,6 +14,7 @@ namespace DotNetNuke.Services.Journal
     public interface IJournalController
     {
         // Journal Items
+
         /// <summary>
         /// Get journal type by name.
         /// </summary>

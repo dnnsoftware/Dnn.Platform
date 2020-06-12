@@ -16,10 +16,12 @@ namespace DotNetNuke.Services.Tokens
         /// Caching of the text is not suitable and might expose security risks
         /// </summary>
         notCacheable = 0,
+
         /// <summary>
         /// Caching of the text might result in inaccurate display (e.g. time), but does not expose a security risk
         /// </summary>
         secureforCaching = 5,
+
         /// <summary>
         /// Caching of the text can be done without limitations or any risk
         /// </summary>

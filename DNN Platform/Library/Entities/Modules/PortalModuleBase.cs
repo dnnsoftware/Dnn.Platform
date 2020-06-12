@@ -417,6 +417,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         // CONVERSION: Remove obsoleted methods (FYI some core modules use these, such as Links)
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   The CacheDirectory property is used to return the location of the "Cache"

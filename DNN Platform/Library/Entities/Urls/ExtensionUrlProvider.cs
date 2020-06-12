@@ -110,6 +110,7 @@ namespace DotNetNuke.Entities.Urls
             ref string endingPageName,
             out bool useDnnPagePath,
             ref List<string> messages);
+
         /// <summary>
         ///
         /// </summary>

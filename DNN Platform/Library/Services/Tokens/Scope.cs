@@ -18,18 +18,22 @@ namespace DotNetNuke.Services.Tokens
         /// Only access to Date and Time
         /// </summary>
         NoSettings = 0,
+
         /// <summary>
         /// Tokens for Host, Portal, Tab (, Module), user name
         /// </summary>
         Configuration = 1,
+
         /// <summary>
         /// Configuration, Current User data and user data allowed for registered members
         /// </summary>
         DefaultSettings = 2,
+
         /// <summary>
         /// System notifications to users and adminstrators
         /// </summary>
         SystemMessages = 3,
+
         /// <summary>
         /// internal debugging, error messages, logs
         /// </summary>

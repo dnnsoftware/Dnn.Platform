@@ -629,6 +629,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         // Delete Journal Items
+
         /// <summary>
         /// HARD deletes journal items.
         /// </summary>

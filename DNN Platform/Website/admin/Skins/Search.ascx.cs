@@ -339,6 +339,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public int AutoSearchDelayInMilliSecond { get; set; }
 
         private bool _enableWildSearch = true;
+
         /// <summary>
         /// Disable the wild search
         /// </summary>

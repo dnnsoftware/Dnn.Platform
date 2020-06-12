@@ -279,18 +279,22 @@ namespace DotNetNuke.Web.Client
             /// The application need update to a higher version.
             /// </summary>
             Upgrade,
+
             /// <summary>
             /// The application need to install itself.
             /// </summary>
             Install,
+
             /// <summary>
             /// The application is normal running.
             /// </summary>
             None,
+
             /// <summary>
             /// The application occur error when running.
             /// </summary>
             Error,
+
             /// <summary>
             /// The application status is unknown,
             /// </summary>

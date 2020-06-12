@@ -12,6 +12,7 @@ namespace Dnn.ExportImport.Components.Dto
     public class ExportDto
     {
         public int Id { get; set; }
+
         /// <summary>
         /// Specifies the version of the exportes schema.
         /// </summary>

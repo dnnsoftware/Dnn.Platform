@@ -122,6 +122,7 @@ namespace log4net.Appender
             /// text is bright
             /// </summary>
             Bright = 1,
+
             /// <summary>
             /// text is dim
             /// </summary>

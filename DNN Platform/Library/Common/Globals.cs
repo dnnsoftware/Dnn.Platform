@@ -103,14 +103,17 @@ namespace DotNetNuke.Common
             /// No Caching
             /// </summary>
             NoCaching = 0,
+
             /// <summary>
             /// Caching for a short time
             /// </summary>
             LightCaching = 1,
+
             /// <summary>
             /// Caching for moderate
             /// </summary>
             ModerateCaching = 3,
+
             /// <summary>
             /// Caching for a long time
             /// </summary>
@@ -137,14 +140,17 @@ namespace DotNetNuke.Common
             /// Disabled Registration
             /// </summary>
             NoRegistration = 0,
+
             /// <summary>
             /// Account need be approved by portal's administrator.
             /// </summary>
             PrivateRegistration = 1,
+
             /// <summary>
             /// Account will be available after post registration data successful.
             /// </summary>
             PublicRegistration = 2,
+
             /// <summary>
             /// Account will be available by verify code.
             /// </summary>
@@ -160,18 +166,22 @@ namespace DotNetNuke.Common
             /// The application need update to a higher version.
             /// </summary>
             Upgrade,
+
             /// <summary>
             /// The application need to install itself.
             /// </summary>
             Install,
+
             /// <summary>
             /// The application is normal running.
             /// </summary>
             None,
+
             /// <summary>
             /// The application occur error when running.
             /// </summary>
             Error,
+
             /// <summary>
             /// The application status is unknown,
             /// </summary>

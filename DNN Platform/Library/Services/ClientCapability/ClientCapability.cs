@@ -17,6 +17,7 @@ namespace DotNetNuke.Services.ClientCapability
     public class ClientCapability : IClientCapability
     {
         private IDictionary<string, string> _capabilities;
+
         /// <summary>
         ///   Default Constructor.
         /// </summary>

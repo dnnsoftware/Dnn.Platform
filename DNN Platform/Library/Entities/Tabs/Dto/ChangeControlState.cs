@@ -48,6 +48,7 @@ namespace DotNetNuke.Entities.Tabs.Dto
         /// True if versioning is enabled, false otherwise.
         /// </value>
         public bool IsVersioningEnabledForTab { get; set; }
+
         /// <summary>
         /// Gets if workflow is enabled for the tab.
         /// </summary>

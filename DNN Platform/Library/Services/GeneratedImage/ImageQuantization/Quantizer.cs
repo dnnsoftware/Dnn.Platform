@@ -252,16 +252,19 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             /// </summary>
             [FieldOffset(0)]
             public byte Blue;
+
             /// <summary>
             /// Holds the green component of the colour
             /// </summary>
             [FieldOffset(1)]
             public byte Green;
+
             /// <summary>
             /// Holds the red component of the colour
             /// </summary>
             [FieldOffset(2)]
             public byte Red;
+
             /// <summary>
             /// Holds the alpha component of the colour
             /// </summary>

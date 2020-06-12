@@ -26,14 +26,17 @@ namespace Dnn.ExportImport.Components.Dto
         /// Does this import/export includes the properties definitions or not.
         /// </summary>
         public bool IncludeProfileProperties { get; set; }
+
         /// <summary>
         /// Does this import/export includes the permission or not.
         /// </summary>
         public bool IncludePermissions { get; set; }
+
         /// <summary>
         /// Does this import/export includes the modules or not.
         /// </summary>
         public bool IncludeExtensions { get; set; }
+
         /// <summary>
         /// Does this import/export includes the deleted items or not.
         /// </summary>
@@ -73,6 +76,7 @@ namespace Dnn.ExportImport.Components.Dto
         /// Summary of each item export.
         /// </summary>
         public IEnumerable<SummaryItem> SummaryItems { get; set; }
+
         /// <summary>
         /// Exported file information.
         /// </summary>
