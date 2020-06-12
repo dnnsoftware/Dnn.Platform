@@ -101,7 +101,7 @@ namespace log4net.Core
 			}
 
 			// Check that the type is a repository
-			if (!(typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)) )
+			if (!(typeof(ILoggerRepository).IsAssignableFrom(defaultRepositoryType)))
 			{
 				throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("defaultRepositoryType", defaultRepositoryType, "Parameter: defaultRepositoryType, Value: [" + defaultRepositoryType + "] out of range. Argument must implement the ILoggerRepository interface");
 			}
@@ -525,7 +525,7 @@ namespace log4net.Core
 				else if (this.m_name2repositoryMap.Contains(repositoryAlias)) 
 				{
 					// Check if this is a duplicate of the current mapping
-					if (repositoryTarget != ((ILoggerRepository)this.m_name2repositoryMap[repositoryAlias]) ) 
+					if (repositoryTarget != ((ILoggerRepository)this.m_name2repositoryMap[repositoryAlias])) 
 					{
 						// Cannot define alias for already mapped repository
 						throw new InvalidOperationException("Repository [" + repositoryAlias + "] already exists and cannot be aliased to repository [" + repositoryTarget.Name + "].");

@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             provider.Setup(x => x.TryFindModuleInfo(request, out expectedModule)).Returns(true);
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
-            this._searchServiceController = new SearchServiceController(HtmlModDefId){Request = request };
+            this._searchServiceController = new SearchServiceController(HtmlModDefId) {Request = request };
 
             this.CreateNewLuceneControllerInstance();
         }

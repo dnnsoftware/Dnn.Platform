@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            var literal = new Label {ID = this.ID + "_Label", Text = Convert.ToString(this.Value)};
+            var literal = new Label {ID = this.ID + "_Label", Text = Convert.ToString(this.Value) };
             container.Controls.Add(literal);
             return literal;
         }

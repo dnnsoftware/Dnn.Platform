@@ -54,7 +54,7 @@ namespace log4net.Layout.Pattern
 		/// </remarks>
 		override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
 		{
-			writer.Write(loggingEvent.Level.DisplayName );
+			writer.Write(loggingEvent.Level.DisplayName);
 		}
 	}
 }

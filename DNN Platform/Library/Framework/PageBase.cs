@@ -180,8 +180,7 @@ namespace DotNetNuke.Framework
                 url += string.Concat(
                     (url.IndexOf("?", StringComparison.Ordinal) == -1 ? "?" : "&"),
                     "error=",
-                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message))
-                );
+                    (exc == null || UserController.Instance.GetCurrentUserInfo() == null || !UserController.Instance.GetCurrentUserInfo().IsSuperUser ? "An unexpected error has occurred" : this.Server.UrlEncode(exc.Message)));
                 if (!Globals.IsAdminControl() && hideContent)
                 {
                     url += "&content=0";

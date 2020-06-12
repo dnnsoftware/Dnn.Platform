@@ -40,14 +40,9 @@ namespace DotNetNuke.Services.Search.Internals
                                 new LowerCaseFilter(
                                     new LengthFilter(
                                         new StandardFilter(
-                                            new StandardTokenizer(Constants.LuceneVersion, reader)
-                                        ),
-                                        wordLengthMinMax.Item1, wordLengthMinMax.Item2)
-                                ),
-                            stops)
-                        )
-                    )
-                )
+                                            new StandardTokenizer(Constants.LuceneVersion, reader)),
+                                        wordLengthMinMax.Item1, wordLengthMinMax.Item2)),
+                            stops))))
             ;
         }
 

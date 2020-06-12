@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.SearchResults
                         {
                             foreach (var portal in portalList)
                             {
-                                var item = new ListItem(portal[0], portal[1]) {Selected = list.Contains(portal[1])};
+                                var item = new ListItem(portal[0], portal[1]) {Selected = list.Contains(portal[1]) };
                                 this.comboBoxPortals.Items.Add(item);
                             }
                         }
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.SearchResults
                         var filterList = this.LoadSeachContentSourcesList();
                         foreach (var filter in filterList)
                         {
-                            var item = new ListItem(filter, filter) {Selected = list.Contains(filter)};
+                            var item = new ListItem(filter, filter) {Selected = list.Contains(filter) };
                             this.comboBoxFilters.Items.Add(item);
                         }
                     }
@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.SearchResults
                         PortalController.GetPortalSetting("SearchResult_ScopeForRoles", this.PortalId, string.Empty)
                         .Split(new []{','}, StringSplitOptions.RemoveEmptyEntries);
                     var roles = RoleController.Instance.GetRoles(this.PortalId, r => !r.IsSystemRole || r.RoleName == "Registered Users");
-                    roles.Insert(0, new RoleInfo(){RoleName = "Superusers" });
+                    roles.Insert(0, new RoleInfo() {RoleName = "Superusers" });
 
                     foreach (var role in roles)
                     {
@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.SearchResults
             if (mygroup != null && mygroup.Any())
             {
                 result.AddRange(mygroup.Select(
-                    pi => new[] {pi.PortalName, pi.PortalID.ToString(CultureInfo.InvariantCulture)}));
+                    pi => new[] {pi.PortalName, pi.PortalID.ToString(CultureInfo.InvariantCulture) }));
             }
 
             return result;

@@ -215,11 +215,11 @@ namespace DotNetNuke.Modules.Journal.Components
 				return string.Empty;
 			}
 			XmlNodeList xLikes = ji.JournalXML.DocumentElement.SelectNodes("//likes/u");
-			if (xLikes == null){
+			if (xLikes == null) {
 				return string.Empty;
 			}
 			 foreach (XmlNode xLike in xLikes) {
-				if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID){
+				if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID) {
 					ji.CurrentUserLikes = true;
                     isLiked = true;
 					break;

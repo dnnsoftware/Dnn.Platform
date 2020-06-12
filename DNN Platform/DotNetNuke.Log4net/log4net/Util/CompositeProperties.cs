@@ -140,7 +140,7 @@ namespace log4net.Util
 			{
 				this.m_flattened = new PropertiesDictionary();
 
-				for (int i = this.m_nestedProperties.Count; --i >= 0; )
+				for (int i = this.m_nestedProperties.Count; --i >= 0;)
 				{
 					ReadOnlyPropertiesDictionary cur = (ReadOnlyPropertiesDictionary)this.m_nestedProperties[i];
 

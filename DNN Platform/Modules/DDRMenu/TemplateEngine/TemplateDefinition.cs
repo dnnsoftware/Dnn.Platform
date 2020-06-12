@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 			var baseDef = cache[manifestPath] as TemplateDefinition;
 			if (baseDef == null)
 			{
-				baseDef = new TemplateDefinition {Folder = Path.GetDirectoryName(manifestUrl)};
+				baseDef = new TemplateDefinition {Folder = Path.GetDirectoryName(manifestUrl) };
 
 				var xml = new XmlDocument { XmlResolver = null };
 				xml.Load(manifestPath);

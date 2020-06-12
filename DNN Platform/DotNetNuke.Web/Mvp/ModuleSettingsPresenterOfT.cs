@@ -54,14 +54,12 @@ namespace DotNetNuke.Web.Mvp
             this.View.Model.ModuleSettings = new Dictionary<string, string>(
                                             this.ModuleContext.Configuration.ModuleSettings
                                             .Cast<DictionaryEntry>()
-                                            .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)
-                                        );
+                                            .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value));
 
             this.View.Model.TabModuleSettings = new Dictionary<string, string>(
                                             this.ModuleContext.Configuration.TabModuleSettings
                                             .Cast<DictionaryEntry>()
-                                            .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value)
-                                        );
+                                            .ToDictionary(kvp => (string)kvp.Key, kvp => (string)kvp.Value));
         }
 
         protected virtual void SaveSettings()

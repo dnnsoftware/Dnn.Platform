@@ -481,13 +481,10 @@ namespace DotNetNuke.Modules.Journal
 					var relationship = RelationshipController.Instance.GetRelationship(ur.RelationshipId);
 					if (ur.Status == RelationshipStatus.Accepted && targetUser != null
 						&& ((relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Followers && ur.RelatedUserId == this.UserInfo.UserID)
-								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends
-							)
+								|| relationship.RelationshipTypeId == (int)DefaultRelationshipTypes.Friends)
 						&& (targetUser.DisplayName.ToLowerInvariant().Contains(keyword.ToLowerInvariant())
-                                || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace("-", " ").ToLowerInvariant())
-							)
-                        && findedUsers.All(s => s.userId != targetUser.UserID)
-						)
+                                || targetUser.DisplayName.ToLowerInvariant().Contains(keyword.Replace("-", " ").ToLowerInvariant()))
+                        && findedUsers.All(s => s.userId != targetUser.UserID))
 					{
 						findedUsers.Add(new SuggestDTO
 							                {

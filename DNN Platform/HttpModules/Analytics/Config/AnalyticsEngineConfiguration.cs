@@ -50,7 +50,7 @@ namespace DotNetNuke.HttpModules.Config
 
         public static AnalyticsEngineConfiguration GetConfig()
         {
-            var config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection()};
+            var config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection() };
             FileStream fileReader = null;
             string filePath = null;
             try
@@ -63,7 +63,7 @@ namespace DotNetNuke.HttpModules.Config
                     // Create a FileStream for the Config file
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     var doc = new XPathDocument(fileReader);
-                    config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection()};
+                    config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection() };
                     foreach (XPathNavigator nav in
                         doc.CreateNavigator().Select("AnalyticsEngineConfig/Engines/AnalyticsEngine"))
                     {
@@ -86,7 +86,7 @@ namespace DotNetNuke.HttpModules.Config
             catch (Exception ex)
             {
                 // log it
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.AddProperty("Analytics.AnalyticsEngineConfiguration", "GetConfig Failed");
                 if (!string.IsNullOrEmpty(filePath))
                     log.AddProperty("FilePath", filePath);

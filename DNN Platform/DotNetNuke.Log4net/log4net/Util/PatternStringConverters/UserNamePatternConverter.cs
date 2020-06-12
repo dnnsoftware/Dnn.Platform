@@ -62,7 +62,7 @@ namespace log4net.Util.PatternStringConverters
 				windowsIdentity = System.Security.Principal.WindowsIdentity.GetCurrent();
 				if (windowsIdentity != null && windowsIdentity.Name != null)
 				{
-					writer.Write(windowsIdentity.Name );
+					writer.Write(windowsIdentity.Name);
 				}
 			}
 			catch (System.Security.SecurityException)
@@ -71,7 +71,7 @@ namespace log4net.Util.PatternStringConverters
 				// some undefined set of SecurityPermission flags.
 				LogLog.Debug(declaringType, "Security exception while trying to get current windows identity. Error Ignored.");
 
-				writer.Write(SystemInfo.NotAvailableText );
+				writer.Write(SystemInfo.NotAvailableText);
 			}
 #endif
 		}

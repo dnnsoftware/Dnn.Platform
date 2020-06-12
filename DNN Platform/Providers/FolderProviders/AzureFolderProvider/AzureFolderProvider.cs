@@ -146,7 +146,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                                 resultSegment = container.ListBlobsSegmented("", true, BlobListingDetails.All, synchBatchSize, continuationToken, null, null);
                                                 foreach (var blobItem in resultSegment.Results)
                                                 {
-                                                    list.Add(new AzureRemoteStorageItem {Blob = new AzureBlob(blobItem as CloudBlob)});
+                                                    list.Add(new AzureRemoteStorageItem {Blob = new AzureBlob(blobItem as CloudBlob) });
                                                 }
 
                                                 // Get the continuation token.
@@ -256,7 +256,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 
 		        if (policy == null)
 		        {
-			        policy = new SharedAccessBlobPolicy { Permissions = SharedAccessBlobPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100)};
+			        policy = new SharedAccessBlobPolicy { Permissions = SharedAccessBlobPermissions.Read, SharedAccessExpiryTime = DateTime.UtcNow.AddYears(100) };
 
 			        permissions.SharedAccessPolicies.Add(groupPolicyIdentifier, policy);
 		        }

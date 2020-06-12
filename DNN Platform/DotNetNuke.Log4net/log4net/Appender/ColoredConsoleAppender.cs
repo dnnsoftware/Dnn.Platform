@@ -647,7 +647,7 @@ namespace log4net.Appender
 			public override void ActivateOptions()
 			{
 				base.ActivateOptions();
-				this.m_combinedColor = (ushort)((int)this.m_foreColor + (((int)this.m_backColor) << 4) );
+				this.m_combinedColor = (ushort)((int)this.m_foreColor + (((int)this.m_backColor) << 4));
 			}
 
 			/// <summary>

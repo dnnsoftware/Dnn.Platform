@@ -28,8 +28,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
                     // If not found then fetch it from form fields. (Would be used with standard MVC call).
                     var token = headers.AllKeys.Contains("RequestVerificationToken") ? headers.GetValues("RequestVerificationToken").FirstOrDefault()
                         : (
-                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault() : null
-                        );
+                        form.AllKeys.Contains("__RequestVerificationToken") ? form.GetValues("__RequestVerificationToken").FirstOrDefault() : null);
 
                     var cookieValue = this.GetAntiForgeryCookieValue(httpContext);
                     if (token != null)

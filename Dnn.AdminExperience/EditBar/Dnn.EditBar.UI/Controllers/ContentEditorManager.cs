@@ -448,8 +448,7 @@ namespace Dnn.EditBar.UI.Controllers
                 Localization.GetSafeJSString("Site.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("Page.Text", this.LocalResourcesFile),
                 Localization.GetSafeJSString("AddExistingModule.Text", this.LocalResourcesFile),
-                Localization.GetSafeJSString("MakeCopy.Text", this.LocalResourcesFile)
-                );
+                Localization.GetSafeJSString("MakeCopy.Text", this.LocalResourcesFile));
 
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

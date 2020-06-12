@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Validators
     {
         protected override ValidationResult ValidateAttribute(object target, PropertyInfo targetProperty, ValidationAttribute attribute)
         {
-            return !attribute.IsValid(targetProperty.GetValue(target, new object[] {})) ? new ValidationResult(new[] {this.CreateError(targetProperty.Name, attribute)}) : ValidationResult.Successful;
+            return !attribute.IsValid(targetProperty.GetValue(target, new object[] {})) ? new ValidationResult(new[] {this.CreateError(targetProperty.Name, attribute) }) : ValidationResult.Successful;
         }
 
 

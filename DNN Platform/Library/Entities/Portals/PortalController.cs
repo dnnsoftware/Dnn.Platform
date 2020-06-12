@@ -2443,8 +2443,7 @@ namespace DotNetNuke.Entities.Portals
         {
             string cacheKey = String.Format(DataCache.PortalCacheKey, Null.NullInteger, cultureCode);
             return CBO.GetCachedObject<List<PortalInfo>>(new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority, cultureCode),
-                                                                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode))
-                                                        );
+                                                                c => CBO.FillCollection<PortalInfo>(DataProvider.Instance().GetPortals(cultureCode)));
         }
 
         /// <summary>

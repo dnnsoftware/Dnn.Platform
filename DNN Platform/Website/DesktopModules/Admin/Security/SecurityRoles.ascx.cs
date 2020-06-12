@@ -359,7 +359,7 @@ namespace DotNetNuke.Modules.Admin.Security
             this._totalRecords = userList.Count;
             this._totalPages = this._totalRecords % this.PageSize == 0 ? this._totalRecords / this.PageSize : this._totalRecords / this.PageSize + 1;
 
-            return userList.Skip((this.CurrentPage - 1 ) * this.PageSize).Take(this.PageSize).ToList();
+            return userList.Skip((this.CurrentPage - 1) * this.PageSize).Take(this.PageSize).ToList();
         }
 
         /// -----------------------------------------------------------------------------

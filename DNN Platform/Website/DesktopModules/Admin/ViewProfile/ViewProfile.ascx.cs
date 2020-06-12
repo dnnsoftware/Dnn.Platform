@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 string loginUrl = Common.Globals.LoginURL(this.Request.RawUrl, false);
                 this.Response.Redirect(loginUrl);
             }
-            if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action) ) // only process this for authenticated requests
+            if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // only process this for authenticated requests
             {
                 // current user, i.e. the one that the request was for
                 var currentUser = UserController.Instance.GetCurrentUserInfo();

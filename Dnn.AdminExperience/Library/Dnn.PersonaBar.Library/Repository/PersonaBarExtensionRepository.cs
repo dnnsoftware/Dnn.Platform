@@ -43,8 +43,7 @@ namespace Dnn.PersonaBar.Library.Repository
                 extension.Path,
                 extension.Order,
                 extension.Enabled,
-                UserController.Instance.GetCurrentUserInfo().UserID
-                );
+                UserController.Instance.GetCurrentUserInfo().UserID);
 
             this.ClearCache();
         }

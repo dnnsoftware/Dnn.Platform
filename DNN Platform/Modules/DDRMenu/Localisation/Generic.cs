@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 						try
 						{
                             this.locApi = Reflection.CreateObject(moduleKeyPair.Value.BusinessControllerClass, moduleKeyPair.Value.BusinessControllerClass);
-							this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] {typeof(TabInfo), typeof(int)});
+							this.locTab = this.locApi.GetType().GetMethod("LocaliseTab", new[] {typeof(TabInfo), typeof(int) });
 							if (this.locTab != null)
 							{
 								if (this.locTab.IsStatic)
@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 								break;
 							}
 
-							this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] {typeof(DNNNodeCollection)});
+							this.locNodes = this.locApi.GetType().GetMethod("LocaliseNodes", new[] {typeof(DNNNodeCollection) });
 							if (this.locNodes != null)
 							{
 								if (this.locNodes.IsStatic)

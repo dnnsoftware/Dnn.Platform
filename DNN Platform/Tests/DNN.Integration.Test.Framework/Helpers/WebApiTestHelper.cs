@@ -49,8 +49,8 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
             return new Dictionary<string, string>
             {
-                {"TabId", tabId.ToString()},
-                {"ModuleId", moduleId.ToString()}
+                {"TabId", tabId.ToString() },
+                {"ModuleId", moduleId.ToString() }
             };
         }
 
@@ -299,8 +299,8 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
             return new Dictionary<string, string>
             {
-                {"TabID", tabId.ToString("D")},
-                {"ModuleID", moduleId.ToString("D")},
+                {"TabID", tabId.ToString("D") },
+                {"ModuleID", moduleId.ToString("D") },
             };
         }
 
@@ -317,8 +317,8 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
 
             return new Dictionary<string, string>
             {
-                {"TabID", tabId.ToString("D")},
-                {"ModuleID", moduleId.ToString("D")},
+                {"TabID", tabId.ToString("D") },
+                {"ModuleID", moduleId.ToString("D") },
             };
         }
     }

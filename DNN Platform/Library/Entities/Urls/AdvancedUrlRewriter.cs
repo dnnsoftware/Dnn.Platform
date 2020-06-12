@@ -2321,8 +2321,7 @@ namespace DotNetNuke.Entities.Urls
                 && String.Compare(requestedDomain, refererDomain, StringComparison.OrdinalIgnoreCase) == 0
                 && (refererPath.EndsWith("install.aspx", true, CultureInfo.InvariantCulture)
                     || refererPath.EndsWith("installwizard.aspx", true, CultureInfo.InvariantCulture)
-                    || refererPath.EndsWith("upgradewizard.aspx", true, CultureInfo.InvariantCulture)
-                   ))
+                    || refererPath.EndsWith("upgradewizard.aspx", true, CultureInfo.InvariantCulture)))
             {
                 return true;
             }

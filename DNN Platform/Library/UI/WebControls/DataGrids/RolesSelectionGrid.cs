@@ -400,7 +400,7 @@ namespace DotNetNuke.UI.WebControls
 			ArrayList arrGroups = RoleController.GetRoleGroups(_portalSettings.PortalId);
 			if (arrGroups.Count > 0)
 			{
-			    this.lblGroups = new Label {Text = Localization.GetString("RoleGroupFilter")};
+			    this.lblGroups = new Label {Text = Localization.GetString("RoleGroupFilter") };
 			    this.pnlRoleSlections.Controls.Add(this.lblGroups);
 
 				this.pnlRoleSlections.Controls.Add(new LiteralControl("&nbsp;&nbsp;"));

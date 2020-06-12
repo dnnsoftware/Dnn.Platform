@@ -255,9 +255,8 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 if (portalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.Redirect 
                     && portalAliasInfo != null && !portalAliasInfo.IsPrimary
-                    && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias) // don't redirect if no primary alias is defined
-                ) 
-                {
+                    && !string.IsNullOrWhiteSpace(portalSettings.DefaultPortalAlias)) // don't redirect if no primary alias is defined
+                 {
                     // Permanently Redirect
                     response.StatusCode = 301;
 

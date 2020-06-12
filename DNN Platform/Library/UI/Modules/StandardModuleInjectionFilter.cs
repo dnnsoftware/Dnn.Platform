@@ -25,8 +25,7 @@ namespace DotNetNuke.UI.Modules
                     && module.IsDeleted == false 
                     && ((module.StartDate < DateTime.Now && module.EndDate > DateTime.Now) 
                             || Globals.IsLayoutMode() 
-                            || Globals.IsEditMode()
-                    );
+                            || Globals.IsEditMode());
         }
 
         #endregion

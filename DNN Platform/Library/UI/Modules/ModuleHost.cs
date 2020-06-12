@@ -381,7 +381,7 @@ namespace DotNetNuke.UI.Modules
             try
             {
                 var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
-                var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString()}};
+                var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString() }};
 
                 string cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
                 byte[] cachedBytes = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod()).GetModule(this._moduleConfiguration.TabModuleID, cacheKey);
@@ -565,7 +565,7 @@ namespace DotNetNuke.UI.Modules
                         var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
                         var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
 
-                        var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString()}};
+                        var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString() }};
 
                         var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
                         cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);

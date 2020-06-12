@@ -22,12 +22,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <remarks>
 		/// Palette quantization only requires a single quantization step
 		/// </remarks>
-		public PaletteQuantizer(ArrayList palette ) : base(true )
+		public PaletteQuantizer(ArrayList palette) : base(true)
 		{
 			this._colorMap = new Hashtable();
 
 			this._colors = new Color[palette.Count];
-			palette.CopyTo(this._colors );
+			palette.CopyTo(this._colors);
 		}
 
 		/// <summary>
@@ -35,24 +35,24 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </summary>
 		/// <param name="pixel">The pixel to quantize</param>
 		/// <returns>The quantized value</returns>
-		protected  override byte QuantizePixel(Color32 pixel )
+		protected  override byte QuantizePixel(Color32 pixel)
 		{
 			byte	colorIndex = 0;
 			int		colorHash = pixel.ARGB;	
 
 			// Check if the color is in the lookup table
-			if (this._colorMap.ContainsKey(colorHash ) )
+			if (this._colorMap.ContainsKey(colorHash))
 				colorIndex = (byte)this._colorMap[colorHash];
 			else
 			{
 				// Not found - loop through the palette and find the nearest match.
 				// Firstly check the alpha value - if 0, lookup the transparent color
-				if (0 == pixel.Alpha )
+				if (0 == pixel.Alpha)
 				{
 					// Transparent. Lookup the first color with an alpha value of 0
 					for (int index = 0; index < this._colors.Length; index++)
 					{
-						if (0 == this._colors[index].A )
+						if (0 == this._colors[index].A)
 						{
 							colorIndex = (byte)index;
 							break;
@@ -76,24 +76,24 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 						int	greenDistance = paletteColor.G - green;
 						int	blueDistance = paletteColor.B - blue;
 
-						int		distance = (redDistance * redDistance ) + 
-										   (greenDistance * greenDistance ) + 
-										   (blueDistance * blueDistance );
+						int		distance = (redDistance * redDistance) + 
+										   (greenDistance * greenDistance) + 
+										   (blueDistance * blueDistance);
 
-						if (distance < leastDistance )
+						if (distance < leastDistance)
 						{
 							colorIndex = (byte)index;
 							leastDistance = distance;
 
 							// And if it's an exact match, exit the loop
-							if (0 == distance )
+							if (0 == distance)
 								break;
 						}
 					}
 				}
 
 				// Now I have the color, pop it into the hashtable for next time
-				this._colorMap.Add(colorHash, colorIndex );
+				this._colorMap.Add(colorHash, colorIndex);
 			}
 
 			return colorIndex;
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </summary>
 		/// <param name="palette">Any old palette, this is overrwritten</param>
 		/// <returns>The new color palette</returns>
-		protected override ColorPalette GetPalette(ColorPalette palette )
+		protected override ColorPalette GetPalette(ColorPalette palette)
 		{
 			for (int index = 0; index < this._colors.Length; index++)
 				palette.Entries[index] = this._colors[index];

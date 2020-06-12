@@ -18,8 +18,7 @@ namespace DotNetNuke.Web.Mvc.Extensions
                 .SelectMany(TypeExtensions.SafeGetTypes)
                 .Where(x => typeof(IDnnController).IsAssignableFrom(x)
                     && x.IsClass
-                    && !x.IsAbstract
-                );
+                    && !x.IsAbstract);
             foreach (var controller in controllerTypes)
             {
                 services.TryAddTransient(controller);

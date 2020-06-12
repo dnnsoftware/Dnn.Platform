@@ -151,8 +151,7 @@ namespace DotNetNuke.Entities.Users
                                                                           (userRelationship.RelationshipId == relationship.RelationshipId
                                                                               && userRelationship.Status == RelationshipStatus.Accepted
                                                                               && ((userRelationship.RelatedUserId == accessingUser.UserID && userRelationship.UserId == targetUser.UserID)
-                                                                                    || (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))
-                                                                      ))
+                                                                                    || (userRelationship.RelatedUserId == targetUser.UserID && userRelationship.UserId == accessingUser.UserID)))))
                                 {
                                     isVisible = true;
                                     break;

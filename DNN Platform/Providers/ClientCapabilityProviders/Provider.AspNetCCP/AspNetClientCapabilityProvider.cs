@@ -43,7 +43,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     {
                         if (_allCapabilities == null)
                         {
-                            var capabilities = new List<IClientCapability> {new AspNetClientCapability(HttpContext.Current.Request)};
+                            var capabilities = new List<IClientCapability> {new AspNetClientCapability(HttpContext.Current.Request) };
                             _allCapabilities = capabilities.AsQueryable();
                         }
                     }

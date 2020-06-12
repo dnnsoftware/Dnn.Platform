@@ -626,7 +626,7 @@ namespace DotNetNuke.Framework
                 {
                     if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
                     {
-                        if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture ) != 0)
+                        if (string.Compare(this.PortalSettings.PrimaryAlias.HTTPAlias, this.PortalSettings.PortalAlias.HTTPAlias, StringComparison.InvariantCulture) != 0)
                         {
                             primaryHttpAlias = this.PortalSettings.PrimaryAlias.HTTPAlias;
                         }
@@ -634,10 +634,10 @@ namespace DotNetNuke.Framework
                 }
                 else // other modes just depend on the default alias
                 {
-                    if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture ) != 0)
+                    if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                 }
-                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl))// a primary http alias was identified
+                if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
                 {
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
                     this.CanonicalLinkUrl = originalurl.Replace(this.PortalSettings.PortalAlias.HTTPAlias, primaryHttpAlias);

@@ -205,7 +205,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void ReturnsResponseAsReceived()
         {
             // Arrange
-            var response = new HttpResponseMessage(HttpStatusCode.OK) {RequestMessage = new HttpRequestMessage()};
+            var response = new HttpResponseMessage(HttpStatusCode.OK) {RequestMessage = new HttpRequestMessage() };
 
             // Act
             var handler = new JwtAuthMessageHandler(true, false);

@@ -120,7 +120,7 @@ namespace DotNetNuke.Web.DDRMenu
 				user.Roles = user.Roles; // Touch roles to populate
 			}
 
-			this.TemplateDef.AddClientOptions(new List<ClientOption> {new ClientString("MenuStyle", this.menuSettings.MenuStyle)}, false);
+			this.TemplateDef.AddClientOptions(new List<ClientOption> {new ClientString("MenuStyle", this.menuSettings.MenuStyle) }, false);
 
 			this.TemplateDef.Render(new MenuXml {root = this.RootNode, user = user}, htmlWriter);
 		}

@@ -33,8 +33,7 @@ namespace DotNetNuke.Web.InternalServices
             var results = RegistrationProfileController.Instance.Search(PortalController.GetEffectivePortalId(this.PortalSettings.PortalId), q);
             return this.Request.CreateResponse(HttpStatusCode.OK,
                         results.OrderBy(sr => sr)
-                        .Select(field => new { id = field, name = field })
-                    );
+                        .Select(field => new { id = field, name = field }));
         }
 
         [HttpPost]

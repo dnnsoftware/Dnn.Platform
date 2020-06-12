@@ -137,8 +137,7 @@ namespace DotNetNuke.Services.Search.Controllers
                             isVisible = targetUser.Social.UserRelationships.Any(userRelationship =>
                                                                           (userRelationship.RelationshipId == relationship.RelationshipId
                                                                               && accessingUser.UserID == userRelationship.RelatedUserId
-                                                                              && userRelationship.Status == RelationshipStatus.Accepted)
-                                                                      );
+                                                                              && userRelationship.Status == RelationshipStatus.Accepted));
                             break;
                     }
 

@@ -58,8 +58,7 @@ namespace Dnn.ExportImport.Components.Common
                             entry =>
                                 ((exceptionList != null && !exceptionList.Contains(entry.FullName)) ||
                                  exceptionList == null) &&
-                                !entry.FullName.EndsWith("\\") && !entry.FullName.EndsWith("/") && entry.Length > 0)
-                    )
+                                !entry.FullName.EndsWith("\\") && !entry.FullName.EndsWith("/") && entry.Length > 0))
                 {
                     var path = Path.GetDirectoryName(Path.Combine(extractFolder, entry.FullName));
                     if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))

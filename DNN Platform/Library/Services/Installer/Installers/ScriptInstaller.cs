@@ -263,7 +263,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
 			// Process the file if it is an UnInstall Script
             var extension = Path.GetExtension(scriptFile.Name.ToLowerInvariant());
-            if (extension != null && (this.UnInstallScripts.ContainsValue(scriptFile) ))
+            if (extension != null && (this.UnInstallScripts.ContainsValue(scriptFile)))
             {
                 string fileExtension = extension.Substring(1);
                 if (scriptFile.Name.StartsWith("uninstall.", StringComparison.InvariantCultureIgnoreCase) && this.IsValidScript(fileExtension))

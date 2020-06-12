@@ -510,7 +510,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             };
         }
 
-        private void RestoreModuleInfo(int tabId, TabVersionDetail detailsToRestore )
+        private void RestoreModuleInfo(int tabId, TabVersionDetail detailsToRestore)
         {
             var restoredModule = this._moduleController.GetModule(detailsToRestore.ModuleId, tabId, true);
             if (restoredModule != null)

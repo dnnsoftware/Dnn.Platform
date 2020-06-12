@@ -186,8 +186,7 @@ namespace DotNetNuke.Web.InternalServices
                                 delegate
                                     {
                                         returnFileDto = SaveFile(stream, portalSettings, userInfo, folder, filter, fileName, overwrite, isHostMenu, extract, out alreadyExists, out errorMessage);
-                                    }, null
-                                );
+                                    }, null);
 
                         }
 
@@ -632,8 +631,7 @@ namespace DotNetNuke.Web.InternalServices
                             {
                                 result = UploadFile(stream, portalId, userInfo, folder, filter, fileName, overwrite, isHostPortal, extract, validationCode);
                             },
-                            null
-                        );
+                            null);
                     }
 
                     var mediaTypeFormatter = new JsonMediaTypeFormatter();

@@ -34,8 +34,7 @@ namespace Dnn.PersonaBar.Users.Tests
             this._userValidator = new UserValidator(
                         this._portalControllerMock.Object,
                         this._userControllerWrapperMock.Object,
-                        this._contentVerifierMock.Object
-                    );
+                        this._contentVerifierMock.Object);
         }
 
         [Test]
@@ -125,8 +124,7 @@ namespace Dnn.PersonaBar.Users.Tests
                     u => u.GetUser(It.IsAny<int>(),
                     It.IsAny<PortalSettings>(),
                     It.IsAny<UserInfo>(),
-                    out response)
-                )
+                    out response))
                 .Returns(userInfo);
         }
 

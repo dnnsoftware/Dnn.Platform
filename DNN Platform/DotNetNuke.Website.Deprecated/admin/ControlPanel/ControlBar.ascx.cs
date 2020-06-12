@@ -237,7 +237,7 @@ namespace DotNetNuke.UI.ControlPanels
             ArrayList panes = PortalSettings.Current.ActiveTab.Panes;
             var resultPanes = new List<string[]>();
 
-            if (panes.Count < 4 )
+            if (panes.Count < 4)
             {
                 foreach (var p in panes)
                 {

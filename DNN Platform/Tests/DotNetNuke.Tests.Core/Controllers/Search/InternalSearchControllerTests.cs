@@ -265,9 +265,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var groups = new List<SynonymsGroup>
             {
-                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke)},
-                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook)},
-                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop)}
+                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 1, SynonymsTags = string.Join(",", TermDNN, TermDotNetNuke) },
+                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 2, SynonymsTags = string.Join(",", TermLaptop, TermNotebook) },
+                new SynonymsGroup {PortalId = 0, SynonymsGroupId = 3, SynonymsTags = string.Join(",", TermJump, TermLeap, TermHop) }
             };
 
             return groups;
@@ -391,7 +391,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}));
+                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString() }));
         }
 
 
@@ -399,7 +399,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Null_OrEmpty_Title()
         {
             // Arrange            
-            var documents = new List<SearchDocument> {new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}};
+            var documents = new List<SearchDocument> {new SearchDocument {UniqueKey = Guid.NewGuid().ToString() }};
 
             // Act, Assert
             this._internalSearchController.AddSearchDocuments(documents);
@@ -409,7 +409,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Empty_Search_Document()
         {
             // Arrange            
-            var documents = new List<SearchDocument> {new SearchDocument()};
+            var documents = new List<SearchDocument> {new SearchDocument() };
 
             // Act, Assert
             this._internalSearchController.AddSearchDocuments(documents);
@@ -422,7 +422,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
             // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
-                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}));
+                () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString() }));
         }
 
         [Test]

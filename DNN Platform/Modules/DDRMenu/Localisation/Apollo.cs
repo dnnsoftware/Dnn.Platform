@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
 					{
 						var api = Activator.CreateInstance("Apollo.LocalizationApi", "Apollo.DNN_Localization.LocalizeTab").Unwrap();
 						var apiType = api.GetType();
-						this.apiMember = apiType.GetMethod("getLocalizedTab", new[] {typeof(TabInfo)});
+						this.apiMember = apiType.GetMethod("getLocalizedTab", new[] {typeof(TabInfo) });
 					}
 				}
 // ReSharper disable EmptyGeneralCatchClause

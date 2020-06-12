@@ -226,8 +226,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                                         roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger &&
                                         p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
                         .Where(t => !disabledNotSelectable || !t.DisableLink)
-                        .Select(t => t.TabID)
-                    );
+                        .Select(t => t.TabID));
             }
             else
             {

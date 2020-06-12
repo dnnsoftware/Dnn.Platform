@@ -94,8 +94,7 @@ namespace DotNetNuke.Framework.Reflections
                 || assemblyName.StartsWith("newtonsoft") || assemblyName.StartsWith("petapoco")
                 || assemblyName.StartsWith("sharpziplib") || assemblyName.StartsWith("system")
                 || assemblyName.StartsWith("telerik") || assemblyName.StartsWith("webformsmvp")
-                || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart")
-                );
+                || assemblyName.StartsWith("webmatrix") || assemblyName.StartsWith("solpart"));
 
             if (canScan)
             {

@@ -11,7 +11,7 @@ namespace DotNetNuke.Tests.Data.Fakes
 {
     internal class FakeDataProvider : DataProvider
     {
-        public FakeDataProvider(Dictionary<string, string> settings )
+        public FakeDataProvider(Dictionary<string, string> settings)
         {
             this.Settings = settings;
         }

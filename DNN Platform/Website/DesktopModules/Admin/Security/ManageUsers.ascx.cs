@@ -330,7 +330,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (this.Request.IsAuthenticated)
                 {
-                    if (!PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) )
+                    if (!PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName))
                     {
                         if (this.HasManageUsersModulePermission() == false)
                         {

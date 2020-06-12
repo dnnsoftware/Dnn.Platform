@@ -36,8 +36,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                                                                     DataCache.TabVersionsCacheTimeOut,
                                                                     DataCache.TabVersionsCachePriority),
                                                             c => CBO.FillCollection<TabVersion>(Provider.GetTabVersions(tabId)),
-                                                            false
-                                                            );
+                                                            false);
 
             return tabVersions;
         }

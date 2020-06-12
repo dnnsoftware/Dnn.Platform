@@ -64,8 +64,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                                  ur.RelatedUserId == currentUser.UserID
                                                                  ||
                                                                  (ur.UserId == currentUser.UserID &&
-                                                                  ur.RelatedUserId == this._userInfo.UserID)
-                                                                )));
+                                                                  ur.RelatedUserId == this._userInfo.UserID))));
             }
         }
 
@@ -81,8 +80,7 @@ namespace DotNetNuke.Entities.Users.Social
                 return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == this._userInfo.UserID &&
-                                                                 ur.RelatedUserId == currentUser.UserID
-                                                                )));
+                                                                 ur.RelatedUserId == currentUser.UserID)));
             }
         }
 
@@ -98,8 +96,7 @@ namespace DotNetNuke.Entities.Users.Social
                 return this.UserRelationships.SingleOrDefault(ur => (ur.RelationshipId == _followerRelationship.RelationshipId
                                                                 &&
                                                                 (ur.UserId == currentUser.UserID &&
-                                                                 ur.RelatedUserId == this._userInfo.UserID
-                                                                )));
+                                                                 ur.RelatedUserId == this._userInfo.UserID)));
             }
         }
 
@@ -143,8 +140,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 return this._roles ?? (this._roles = (this._userInfo.PortalID == -1 && this._userInfo.UserID == -1)
                                             ? new List<UserRoleInfo>(0)
-                                            : RoleController.Instance.GetUserRoles(this._userInfo, true)
-                                ); 
+                                            : RoleController.Instance.GetUserRoles(this._userInfo, true)); 
             }
         }
 

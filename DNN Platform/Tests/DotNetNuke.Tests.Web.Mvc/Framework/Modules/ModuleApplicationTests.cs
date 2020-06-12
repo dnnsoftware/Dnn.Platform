@@ -175,8 +175,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             // Assert
             controller.Verify(c => c.Execute(It.Is<RequestContext>(rc =>
                     rc.HttpContext == moduleRequestContext.HttpContext &&
-                    rc.RouteData.GetRequiredString("controller") == ControllerName))
-                );
+                    rc.RouteData.GetRequiredString("controller") == ControllerName)));
         }
 
         [Test]

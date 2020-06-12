@@ -76,8 +76,7 @@ namespace Dnn.PersonaBar.Library.Repository
                 item.Order,
                 item.AllowHost,
                 item.Enabled,
-                user.UserID
-            );
+                user.UserID);
 
             this.ClearCache();
         }

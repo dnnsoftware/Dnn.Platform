@@ -540,7 +540,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             // return original.Replace(search,"");
             var regexMatch = @"(" + search + ")(?<keep>.+)";
             const string regexReplace = @"${keep}";
-            var result = Regex.Replace(original, regexMatch, regexReplace, RegexOptions.IgnoreCase );
+            var result = Regex.Replace(original, regexMatch, regexReplace, RegexOptions.IgnoreCase);
             return result;
 		}
 

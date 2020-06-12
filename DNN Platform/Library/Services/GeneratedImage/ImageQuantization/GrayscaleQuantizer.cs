@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <remarks>
 		/// Palette quantization only requires a single quantization step
 		/// </remarks>
-		public GrayscaleQuantizer() : base(new ArrayList() )
+		public GrayscaleQuantizer() : base(new ArrayList())
 		{
 			this._colors = new Color[256];
 
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				this._colors[i] = Color.FromArgb((int)Alpha, 
 					(int)intensity, 
 					(int)intensity, 
-					(int)intensity );
+					(int)intensity);
 			}
 		}
 
@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </summary>
 		/// <param name="pixel">The pixel to quantize</param>
 		/// <returns>The quantized value</returns>
-		protected override byte QuantizePixel(Color32 pixel )
+		protected override byte QuantizePixel(Color32 pixel)
 		{
 		    double luminance = (pixel.Red * 0.299) + (pixel.Green * 0.587) + (pixel.Blue  * 0.114);
 

@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Urls.Config
 
         public static RewriterConfiguration GetConfig()
         {
-            var config = new RewriterConfiguration {Rules = new RewriterRuleCollection()};
+            var config = new RewriterConfiguration {Rules = new RewriterRuleCollection() };
             FileStream fileReader = null;
             string filePath = "";
             try
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Urls.Config
 			                // Create a FileStream for the Config file
 			                fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 			                var doc = new XPathDocument(fileReader);
-			                config = new RewriterConfiguration {Rules = new RewriterRuleCollection()};
+			                config = new RewriterConfiguration {Rules = new RewriterRuleCollection() };
 			                foreach (XPathNavigator nav in doc.CreateNavigator().Select("RewriterConfig/Rules/RewriterRule"))
 			                {
 				                var rule = new RewriterRule
@@ -80,7 +80,7 @@ namespace DotNetNuke.Entities.Urls.Config
             catch (Exception ex)
             {
 				// log it
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
+                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.AddProperty("UrlRewriter.RewriterConfiguration", "GetConfig Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);

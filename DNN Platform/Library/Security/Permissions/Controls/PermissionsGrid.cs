@@ -822,7 +822,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var divRoleGroups = new Panel {CssClass = "leftGroup"};
             var divSelectRole = new Panel { CssClass = "rightGroup" };
 
-            this.lblGroups = new Label {Text = Localization.GetString("RoleGroupFilter")};
+            this.lblGroups = new Label {Text = Localization.GetString("RoleGroupFilter") };
             this.cboRoleGroups = new DropDownList { AutoPostBack = true, ID = "cboRoleGroups", ViewStateMode = ViewStateMode.Disabled };
             this.lblGroups.AssociatedControlID = this.cboRoleGroups.ID;
             divRoleGroups.Controls.Add(this.lblGroups);

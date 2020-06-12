@@ -420,8 +420,7 @@ namespace DotNetNuke.Web.InternalServices
                                             && tab.ParentId == parentId 
                                             && (includeDisabled || !tab.DisableLink) 
                                             && (includeAllTypes || tab.TabType == TabType.Normal)
-                                            && !tab.IsSystem
-                                       )
+                                            && !tab.IsSystem)
                                  .OrderBy(tab => tab.TabOrder)
                                  .ToList();
 
@@ -919,8 +918,7 @@ namespace DotNetNuke.Web.InternalServices
                             t.TabPermissions.Cast<TabPermissionInfo>()
                                 .Any(p => roleList.Contains(p.RoleID) && p.UserID == Null.NullInteger && p.PermissionKey == "VIEW" && p.AllowAccess)).ToList()
                         .Where(t => !disabledNotSelectable || !t.DisableLink)
-                        .Select(t => t.TabID)
-                );
+                        .Select(t => t.TabID));
             }
             else
             {
@@ -1175,8 +1173,7 @@ namespace DotNetNuke.Web.InternalServices
             return FolderManager.Instance.GetFolders(parentFolder).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
                     (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                    (this.HasPermission(folder, permission))
-                ) && searchFunc(folder));
+                    (this.HasPermission(folder, permission))) && searchFunc(folder));
         }
 
         private IEnumerable<IFolderInfo> GetPortalFolders(int portalId, string searchText, string permission)
@@ -1198,8 +1195,7 @@ namespace DotNetNuke.Web.InternalServices
             return FolderManager.Instance.GetFolders(portalId).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
                     (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                    (this.HasPermission(folder, permission))
-                ) && searchFunc(folder));
+                    (this.HasPermission(folder, permission))) && searchFunc(folder));
         }
 
         private bool HasChildren(IFolderInfo parentFolder, string permission)
@@ -1208,9 +1204,7 @@ namespace DotNetNuke.Web.InternalServices
             return FolderManager.Instance.GetFolders(parentFolder).Any(folder =>
                 (string.IsNullOrEmpty(permission) ?
                     (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
-                    (this.HasPermission(folder, permission))
-                )
-            );
+                    (this.HasPermission(folder, permission))));
         }
 
         #endregion

@@ -307,7 +307,7 @@ namespace log4net.Util
 					// to an arbitrary type T there will be a static method defined on type T called Parse
 					// that will take an argument of type string. i.e. T.Parse(string)->T we call this
 					// method to convert the string to the type required by the property.
-					System.Reflection.MethodInfo meth = target.GetMethod("Parse", new Type[] {typeof(string)});
+					System.Reflection.MethodInfo meth = target.GetMethod("Parse", new Type[] {typeof(string) });
 					if (meth != null)
 					{
 						// Call the Parse method

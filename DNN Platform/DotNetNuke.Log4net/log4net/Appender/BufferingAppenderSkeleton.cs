@@ -476,7 +476,7 @@ namespace log4net.Appender
 					}
 
 					// Not buffering events, send immediately
-					this.SendBuffer(new LoggingEvent[] { loggingEvent } );
+					this.SendBuffer(new LoggingEvent[] { loggingEvent });
 				}
 			}
 			else
@@ -514,7 +514,7 @@ namespace log4net.Appender
 						else if (discardedLoggingEvent != null)
 						{
 							// Just send the discarded event
-							this.SendBuffer(new LoggingEvent[] { discardedLoggingEvent } );
+							this.SendBuffer(new LoggingEvent[] { discardedLoggingEvent });
 						}
 					}
 				}
@@ -555,7 +555,7 @@ namespace log4net.Appender
 			}
 			else if (bufferEvents.Length == 0)
 			{
-				this.SendBuffer(new LoggingEvent[] { firstLoggingEvent } );
+				this.SendBuffer(new LoggingEvent[] { firstLoggingEvent });
 			}
 			else
 			{

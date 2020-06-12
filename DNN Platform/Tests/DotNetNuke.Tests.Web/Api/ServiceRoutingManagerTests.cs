@@ -119,7 +119,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
             var assembly = new Mock<IAssembly>();
-            assembly.Setup(x => x.GetTypes()).Returns(new[] {typeof(FakeServiceRouteMapper)});
+            assembly.Setup(x => x.GetTypes()).Returns(new[] {typeof(FakeServiceRouteMapper) });
             var al = new Mock<IAssemblyLocator>();
             al.Setup(x => x.Assemblies).Returns(new[] {assembly.Object});
             var tl = new TypeLocator {AssemblyLocator = al.Object};

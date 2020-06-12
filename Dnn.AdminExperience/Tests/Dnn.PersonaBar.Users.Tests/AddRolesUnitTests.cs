@@ -51,8 +51,7 @@ namespace Dnn.PersonaBar.Users.Tests
                             PortalID = this.testPortalId,
                             IsPublic = true
                         }
-                    }
-                );
+                    });
 
             var total = 1;
             this._usersControllerMock
@@ -67,8 +66,7 @@ namespace Dnn.PersonaBar.Users.Tests
                             RoleID = 1,
                             RoleName = "Tester"
                         }
-                    }
-                );
+                    });
 
             this._rolesControllerMock
                 .Setup(r => r.GetRolesByNames(this.portalSettings, It.IsAny<int>(), It.IsAny<IList<string>>()))
@@ -121,8 +119,7 @@ namespace Dnn.PersonaBar.Users.Tests
                             PortalID = this.testPortalId,
                             IsPublic = true
                         }
-                    }
-                );
+                    });
 
             var total = 1;
             this._usersControllerMock
@@ -137,8 +134,7 @@ namespace Dnn.PersonaBar.Users.Tests
                             RoleID = 1,
                             RoleName = "Tester"
                         }
-                    }
-                );
+                    });
 
             this._rolesControllerMock
                 .Setup(r => r.GetRolesByNames(this.portalSettings, -1, It.IsAny<IList<string>>()))

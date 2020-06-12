@@ -62,7 +62,7 @@ namespace log4net.Util.PatternStringConverters
 					System.Threading.Thread.CurrentPrincipal.Identity != null &&
 					System.Threading.Thread.CurrentPrincipal.Identity.Name != null)
 				{
-					writer.Write(System.Threading.Thread.CurrentPrincipal.Identity.Name );
+					writer.Write(System.Threading.Thread.CurrentPrincipal.Identity.Name);
 				}
 			}
 			catch (System.Security.SecurityException)
@@ -71,7 +71,7 @@ namespace log4net.Util.PatternStringConverters
 				// some undefined set of SecurityPermission flags.
 				LogLog.Debug(declaringType, "Security exception while trying to get current thread principal. Error Ignored.");
 
-				writer.Write(SystemInfo.NotAvailableText );
+				writer.Write(SystemInfo.NotAvailableText);
 			}
 #endif
 		}

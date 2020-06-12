@@ -61,7 +61,7 @@ namespace log4net.Util.PatternStringConverters
 #else
 			try
 			{
-				writer.Write(System.Diagnostics.Process.GetCurrentProcess().Id );
+				writer.Write(System.Diagnostics.Process.GetCurrentProcess().Id);
 			}
 			catch (System.Security.SecurityException)
 			{
@@ -69,7 +69,7 @@ namespace log4net.Util.PatternStringConverters
 				// some undefined set of SecurityPermission flags.
 				LogLog.Debug(declaringType, "Security exception while trying to get current process id. Error Ignored.");
 
-				writer.Write(SystemInfo.NotAvailableText );
+				writer.Write(SystemInfo.NotAvailableText);
 			}
 #endif
 		}

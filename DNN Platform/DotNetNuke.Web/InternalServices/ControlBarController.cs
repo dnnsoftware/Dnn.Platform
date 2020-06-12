@@ -196,8 +196,7 @@ namespace DotNetNuke.Web.InternalServices
                     Dictionary<int, string> resultDict = pageModules.ToDictionary(module => module.ModuleID, module => module.ModuleTitle);
                     result.AddRange(from kvp in resultDict
                                     let imageUrl = this.GetTabModuleImage(tabID, kvp.Key)
-                                    select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl }
-                                    );
+                                    select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
                 return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }

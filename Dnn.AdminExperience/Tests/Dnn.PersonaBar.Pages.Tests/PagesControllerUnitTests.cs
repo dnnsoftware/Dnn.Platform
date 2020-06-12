@@ -118,8 +118,7 @@ namespace Dnn.PersonaBar.Pages.Tests
                 this._urlRewriterUtilsWrapperMock.Object,
                 this._friendlyUrlWrapperMock.Object,
                 this._contentVerifierMock.Object,
-                this._portalControllerMock.Object
-                );
+                this._portalControllerMock.Object);
         }
     }
 }

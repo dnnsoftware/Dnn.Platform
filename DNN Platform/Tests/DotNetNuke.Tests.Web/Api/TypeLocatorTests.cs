@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Web.Api
         public void LocateAllMatchingTypes()
         {
             var assembly = new Mock<IAssembly>();
-            assembly.Setup(x => x.GetTypes()).Returns(new[] {typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests)});
+            assembly.Setup(x => x.GetTypes()).Returns(new[] {typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests) });
             var assemblyLocator = new Mock<IAssemblyLocator>();
             assemblyLocator.Setup(x => x.Assemblies).Returns(new[] {assembly.Object});
 
@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             var types = typeLocator.GetAllMatchingTypes(x => true).ToList();
 
-            CollectionAssert.AreEquivalent(new[]{typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests)}, types);
+            CollectionAssert.AreEquivalent(new[]{typeof(TypeLocatorTests), typeof(ServiceRoutingManagerTests) }, types);
             assembly.Verify(x => x.GetTypes(), Times.Once());
             assemblyLocator.Verify(x => x.Assemblies, Times.Once());
         }

@@ -815,10 +815,10 @@ namespace DotNetNuke.UI.ControlPanel
         {
             var items = new Dictionary<string, string>
 							{
-								{"TOP", this.GetString("Top")},
-								{"ABOVE", this.GetString("Above")},
-								{"BELOW", this.GetString("Below")},
-								{"BOTTOM", this.GetString("Bottom")}
+								{"TOP", this.GetString("Top") },
+								{"ABOVE", this.GetString("Above") },
+								{"BELOW", this.GetString("Below") },
+								{"BOTTOM", this.GetString("Bottom") }
 							};
 
             this.PositionLst.Items.Clear();
@@ -854,7 +854,7 @@ namespace DotNetNuke.UI.ControlPanel
 			this.VisibilityLst.Enabled = !this.AddExistingModule.Checked;
 			if ((this.VisibilityLst.Enabled))
 			{
-				var items = new Dictionary<string, string> {{"0", this.GetString("PermissionView")}, {"1", this.GetString("PermissionEdit")}};
+				var items = new Dictionary<string, string> {{"0", this.GetString("PermissionView") }, {"1", this.GetString("PermissionEdit") }};
 
 				this.VisibilityLst.Items.Clear();
 				this.VisibilityLst.DataValueField = "key";

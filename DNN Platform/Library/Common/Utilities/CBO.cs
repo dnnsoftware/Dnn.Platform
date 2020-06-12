@@ -1026,8 +1026,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void SerializeObject(object objObject, Stream stream)
         {
-            using (XmlWriter writer = XmlWriter.Create(stream, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment))
-                )
+            using (XmlWriter writer = XmlWriter.Create(stream, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
             {
                 SerializeObject(objObject, writer);
                 writer.Flush();
@@ -1044,8 +1043,7 @@ namespace DotNetNuke.Common.Utilities
         public static void SerializeObject(object objObject, TextWriter textWriter)
         {
             using (
-                XmlWriter writer = XmlWriter.Create(textWriter, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment))
-                )
+                XmlWriter writer = XmlWriter.Create(textWriter, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
             {
                 SerializeObject(objObject, writer);
                 writer.Flush();

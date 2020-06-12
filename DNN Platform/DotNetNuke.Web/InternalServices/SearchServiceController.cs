@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         // this constructor is for unit tests
-        internal SearchServiceController(int htmlModuleDefitionId)// , TabController newtabController, ModuleController newmoduleController)
+        internal SearchServiceController(int htmlModuleDefitionId) // , TabController newtabController, ModuleController newmoduleController)
         {
             this.HtmlModuleDefitionId = htmlModuleDefitionId;
             // _tabController = newtabController;

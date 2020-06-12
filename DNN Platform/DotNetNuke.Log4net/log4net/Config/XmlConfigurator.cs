@@ -540,7 +540,7 @@ namespace log4net.Config
 					FileStream fs = null;
 					
 					// Try hard to open the file
-					for (int retry = 5; --retry >= 0; )
+					for (int retry = 5; --retry >= 0;)
 					{
 						try
 						{

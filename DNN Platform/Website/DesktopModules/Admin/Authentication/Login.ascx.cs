@@ -203,8 +203,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     if (
                         this.NeedRedirectAfterLogin
                         && (isDefaultPage || this.IsRedirectingFromLoginUrl())
-                        && Convert.ToInt32(setting) != Null.NullInteger
-                        )
+                        && Convert.ToInt32(setting) != Null.NullInteger)
                     {
                         redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                     }

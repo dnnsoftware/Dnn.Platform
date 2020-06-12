@@ -254,8 +254,8 @@ namespace DotNetNuke.Entities.Users
                             r.Status == RoleStatus.Approved &&
                             (r.EffectiveDate < DateTime.Now || Null.IsNull(r.EffectiveDate)) &&
                             (r.ExpiryDate > DateTime.Now || Null.IsNull(r.ExpiryDate))
-                        select r.RoleName
-                        ).ToArray();
+                        select r.RoleName)
+                        .ToArray();
             }
             set { }
         }

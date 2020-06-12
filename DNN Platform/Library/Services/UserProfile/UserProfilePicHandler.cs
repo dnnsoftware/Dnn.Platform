@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.UserProfile
 	                {
 						context.Response.End();
 	                }
-					catch (ThreadAbortException)// if ThreadAbortException will shown, should catch it and do nothing.
+					catch (ThreadAbortException) // if ThreadAbortException will shown, should catch it and do nothing.
 	                {
 		                
 	                }

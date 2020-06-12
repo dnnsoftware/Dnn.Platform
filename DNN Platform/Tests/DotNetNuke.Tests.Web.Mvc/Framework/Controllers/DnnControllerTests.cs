@@ -185,7 +185,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Controllers
         private FakeDnnController SetupController(HttpContextBase context)
         {
             var controller = new FakeDnnController();
-            controller.ControllerContext = new ControllerContext(context, new RouteData(), controller );
+            controller.ControllerContext = new ControllerContext(context, new RouteData(), controller);
             return controller;
         }
     }

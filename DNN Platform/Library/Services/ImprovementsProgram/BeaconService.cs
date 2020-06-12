@@ -97,11 +97,11 @@ namespace DotNetNuke.Services.ImprovementsProgram
             var qparams = new Dictionary<string, string>
             {
                 // Remember to URL ENCODE values that can be ambigious
-                {"h", HttpUtility.UrlEncode(this.GetHash(Host.GUID))},
-                {"p", HttpUtility.UrlEncode(this.GetHash(portalSettings.GUID.ToString()))},
-                {"a", HttpUtility.UrlEncode(this.GetHash(portalSettings.PortalAlias.HTTPAlias))},
-                {"u", HttpUtility.UrlEncode(this.GetHash(uid))},
-                {"r", roles.ToString("D")},
+                {"h", HttpUtility.UrlEncode(this.GetHash(Host.GUID)) },
+                {"p", HttpUtility.UrlEncode(this.GetHash(portalSettings.GUID.ToString())) },
+                {"a", HttpUtility.UrlEncode(this.GetHash(portalSettings.PortalAlias.HTTPAlias)) },
+                {"u", HttpUtility.UrlEncode(this.GetHash(uid)) },
+                {"r", roles.ToString("D") },
             };
 
             if (!string.IsNullOrEmpty(filePath))
