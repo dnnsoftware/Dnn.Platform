@@ -74,7 +74,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._localeControllerMock = new Mock<ILocaleController>();
             this._localeControllerMock.Setup(l => l.GetLocales(Constants.CONTENT_ValidPortalId)).Returns(new Dictionary<string, Locale>
             {
-                {"en-us", new Locale() }
+                { "en-us", new Locale() }
             });
 
             FileWrapper.RegisterInstance(this._fileWrapper.Object);

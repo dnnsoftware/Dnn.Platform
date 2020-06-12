@@ -16,9 +16,9 @@ namespace DotNetNuke.Tests.UI.Validation
     [TestFixture]
     public class ValidatorTests
     {
-        private static readonly ValidationResult FailedResult = new ValidationResult(new[] {new ValidationError() });
+        private static readonly ValidationResult FailedResult = new ValidationResult(new[] { new ValidationError() });
 
-        private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] {new ValidationError() });
+        private static readonly ValidationResult AnotherFailedResult = new ValidationResult(new[] { new ValidationError() });
 
         #region Tests
 
@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.UI.Validation
             // Assert
             Assert.IsFalse(result.IsValid);
             Assert.AreEqual(2, result.Errors.Count());
-            EnumerableAssert.ElementsMatch(new[] {FailedResult, AnotherFailedResult}, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
+            EnumerableAssert.ElementsMatch(new[] { FailedResult, AnotherFailedResult}, result.Errors, (e, a) => ReferenceEquals(e.Errors.First(), a));
         }
 
         #endregion

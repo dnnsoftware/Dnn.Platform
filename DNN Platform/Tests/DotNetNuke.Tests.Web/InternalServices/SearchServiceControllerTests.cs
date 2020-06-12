@@ -139,7 +139,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             provider.Setup(x => x.TryFindModuleInfo(request, out expectedModule)).Returns(true);
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
-            this._searchServiceController = new SearchServiceController(HtmlModDefId) {Request = request };
+            this._searchServiceController = new SearchServiceController(HtmlModDefId) { Request = request };
 
             this.CreateNewLuceneControllerInstance();
         }
@@ -172,7 +172,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
 
             this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
-            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile {} });
+            new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile { } });
             UserController.SetTestableInstance(this._mockUserController.Object);
         }
         private void SetupHostController()
@@ -670,7 +670,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PortalId = PortalId0,
                 RoleId = RoleId731,
                 Keywords = { { "description", "mycontent" } },
-                NumericKeys = { {"points", 5} }
+                NumericKeys = { { "points", 5} }
             };
 
             this._internalSearchController.AddSearchDocument(originalDocument);
@@ -688,7 +688,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 PortalId = PortalId0,
                 RoleId = RoleId731,
                 Keywords = { { "description", "mycontent_modified" }, { "description2", "mycontent_modified" } },
-                NumericKeys = { { "points", 8 }, {"point2", 7 } }
+                NumericKeys = { { "points", 8 }, { "point2", 7 } }
             };
 
             this._internalSearchController.AddSearchDocument(modifiedDocument);

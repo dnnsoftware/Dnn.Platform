@@ -220,7 +220,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Add(doc);
             this._luceneController.Commit();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery {Query = new TermQuery(new Term(fieldName, "fox")) }));
+            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
@@ -244,7 +244,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this._luceneController.Add(doc);
             this._luceneController.Commit();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery {Query = new TermQuery(new Term(fieldName, "fox")) }));
+            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(fieldName, "fox")) }));
 
             // Assert
             Assert.AreEqual(1, hits.Results.Count());
@@ -282,7 +282,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             this.AddStandardDocs();
 
-            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery {Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }));
+            var hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = new TermQuery(new Term(Constants.ContentTag, "fox")) }));
 
             // Assert
             Assert.AreEqual(4, hits.TotalHits);
@@ -335,7 +335,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             this.AddStandardDocs();
 
             var hits = this._luceneController.Search(this.CreateSearchContext(
-                new LuceneQuery{
+                new LuceneQuery {
                         Query = new TermQuery(new Term(Constants.ContentTag, "fox")),
                         PageIndex = 5,
                         PageSize = 10
@@ -434,7 +434,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             Assert.AreEqual(1, hits.Results.Count());
 
             query = NumericRangeQuery.NewLongRange(fieldName, long.Parse(DateTime.Now.AddDays(-368).ToString(Constants.DateTimeFormat)), long.Parse(DateTime.Now.ToString(Constants.DateTimeFormat)), true, true);
-            hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery {Query = query}));
+            hits = this._luceneController.Search(this.CreateSearchContext(new LuceneQuery { Query = query}));
             Assert.AreEqual(2, hits.Results.Count());
         }
 
@@ -814,7 +814,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private LuceneSearchContext CreateSearchContext(LuceneQuery luceneQuery)
         {
-            return new LuceneSearchContext {LuceneQuery = luceneQuery, SearchQuery = this._mockSearchQuery.Object };
+            return new LuceneSearchContext { LuceneQuery = luceneQuery, SearchQuery = this._mockSearchQuery.Object };
         }
     }
 }

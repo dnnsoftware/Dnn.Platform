@@ -72,7 +72,7 @@ namespace DotNetNuke.HttpModules.Analytics
             }
             catch (Exception ex)
             {
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.AddProperty("Analytics.AnalyticsModule", "OnPreRequestHandlerExecute");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);
@@ -132,7 +132,7 @@ namespace DotNetNuke.HttpModules.Analytics
                     var element = (HtmlContainerControl)page.FindControl(engine.ElementId);
                     if (element == null) continue;
 
-                    var scriptControl = new LiteralControl {Text = script};
+                    var scriptControl = new LiteralControl { Text = script};
                     if (engine.InjectTop)
                     {
                         element.Controls.AddAt(0, scriptControl);
@@ -145,7 +145,7 @@ namespace DotNetNuke.HttpModules.Analytics
             }
             catch (Exception ex)
             {
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.AddProperty("Analytics.AnalyticsModule", "OnPagePreRender");
                 log.AddProperty("ExceptionMessage", ex.Message);
                 LogController.Instance.AddLog(log);

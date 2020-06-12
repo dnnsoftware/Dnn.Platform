@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         protected override WebControl CreateControlInternal(Control container)
         {
             // _checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
-            this._checkBox = new CheckBox{ ID = this.ID + "_CheckBox", AutoPostBack = false };
+            this._checkBox = new CheckBox { ID = this.ID + "_CheckBox", AutoPostBack = false };
 
             this._checkBox.CheckedChanged += this.CheckedChanged;
             container.Controls.Add(this._checkBox);

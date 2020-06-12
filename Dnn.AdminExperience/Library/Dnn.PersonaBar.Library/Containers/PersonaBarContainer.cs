@@ -65,7 +65,7 @@ namespace Dnn.PersonaBar.Library.Containers
 
         #region IPersonaBarContainer Implements
 
-        public virtual IList<string> RootItems => new List<string> {"Content", "Manage", "Settings", "Edit"};
+        public virtual IList<string> RootItems => new List<string> { "Content", "Manage", "Settings", "Edit"};
 
         public virtual bool Visible => true;
 

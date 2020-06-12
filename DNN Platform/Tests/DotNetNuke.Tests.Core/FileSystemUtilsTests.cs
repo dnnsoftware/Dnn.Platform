@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.Core
         public void DeleteFiles_Should_Not_Able_To_Delete_Root_Folder(string path)
         {
             // Action
-            FileSystemUtils.DeleteFiles(new string[] {path});
+            FileSystemUtils.DeleteFiles(new string[] { path});
 
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.AllDirectories);
             Assert.Greater(files.Length, 0);

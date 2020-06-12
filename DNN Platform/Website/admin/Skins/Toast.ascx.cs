@@ -164,9 +164,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     var config = new Dictionary<string, string>()
                     {
-                        {"ServiceModuleName", this.ServiceModuleName },
-                        {"ServiceAction", this.ServiceAction },
-                        {"AddtionalScripts", this.addtionalScripts.Text },
+                        { "ServiceModuleName", this.ServiceModuleName },
+                        { "ServiceAction", this.ServiceAction },
+                        { "AddtionalScripts", this.addtionalScripts.Text },
                     };
                     DataCache.SetCache(ToastCacheKey, config);
                 }

@@ -890,7 +890,7 @@ namespace DotNetNuke.Entities.Urls
 
 		                    // 771 : change to admin alert instead of exception
 		                    // log a host alert
-		                    var log = new LogInfo {LogTypeKey = "HOST_ALERT"};
+		                    var log = new LogInfo { LogTypeKey = "HOST_ALERT"};
 		                    log.AddProperty("Advanced Friendly URL Provider Duplicate URL Warning", "Page Naming Conflict");
 		                    log.AddProperty("Duplicate Page Details", msg);
 		                    log.AddProperty("Warning Information", msg2);

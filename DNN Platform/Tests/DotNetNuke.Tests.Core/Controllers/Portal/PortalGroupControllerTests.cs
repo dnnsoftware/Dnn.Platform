@@ -122,7 +122,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             var mockPortalController = new Mock<IPortalController>();
             var controller = new PortalGroupController(mockDataService.Object, mockPortalController.Object);
 
-            var portal = new PortalInfo {PortalID = Constants.PORTAL_ValidPortalId};
+            var portal = new PortalInfo { PortalID = Constants.PORTAL_ValidPortalId};
 
             PortalGroupInfo portalGroup = new PortalGroupInfo { PortalGroupId = -1 };
 

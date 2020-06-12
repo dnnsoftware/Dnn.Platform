@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.DataBindInternal(this.ContainerDataField, ref this._containerValue);
 
-            this.Value = new Pair {First = this._skinValue, Second = this._containerValue};
+            this.Value = new Pair { First = this._skinValue, Second = this._containerValue};
         }
 
         protected override void LoadControlState(object state)

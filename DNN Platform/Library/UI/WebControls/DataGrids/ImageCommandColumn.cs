@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.WebControls
 
             if (HttpContext.Current == null)
             {
-                this.HeaderStyle.Font.Names = new[] {"Tahoma, Verdana, Arial"};
+                this.HeaderStyle.Font.Names = new[] { "Tahoma, Verdana, Arial"};
                 this.HeaderStyle.Font.Size = new FontUnit("10pt");
                 this.HeaderStyle.Font.Bold = true;
             }

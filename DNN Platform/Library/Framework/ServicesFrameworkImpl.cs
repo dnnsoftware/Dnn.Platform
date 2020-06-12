@@ -41,7 +41,7 @@ namespace DotNetNuke.Framework
 
         public bool IsAjaxScriptSupportRequired
         {
-            get{ return CheckKey(ScriptKey); }
+            get { return CheckKey(ScriptKey); }
         }
 
         public void RequestAjaxScriptSupport()

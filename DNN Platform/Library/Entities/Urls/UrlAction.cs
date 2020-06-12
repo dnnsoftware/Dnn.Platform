@@ -151,7 +151,7 @@ namespace DotNetNuke.Entities.Urls
         }
         // the primary alias, if different to the current alias
         public PortalAliasInfo PrimaryAlias { get; set; }
-        public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping {get; set; }
+        public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping { get; set; }
         public bool CustomParmRewrite { get; set; }
 
         // 737 : mobile browser identificatino

@@ -30,7 +30,7 @@ namespace DotNetNuke.Common.Utilities
         public static string InvokePopupCal(TextBox Field)
         {
             // Define character array to trim from language strings
-            char[] TrimChars = {',', ' '};
+            char[] TrimChars = { ',', ' '};
             // Get culture array of month names and convert to string for
             // passing to the popup calendar
             var monthBuilder = new StringBuilder();

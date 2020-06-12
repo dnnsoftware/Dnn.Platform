@@ -38,11 +38,11 @@ namespace DotNetNuke.Tests.Data
             ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
             ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
             {
-                {"name", "SqlDataProvider"},
-                {"type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
-                {"connectionStringName", "SiteSqlServer"},
-                {"objectQualifier", ""},
-                {"databaseOwner", "dbo."}
+                { "name", "SqlDataProvider"},
+                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
+                { "connectionStringName", "SiteSqlServer"},
+                { "objectQualifier", ""},
+                { "databaseOwner", "dbo."}
             });
 
             var dogMapper = new FluentMapper<Dog>("")
@@ -57,7 +57,7 @@ namespace DotNetNuke.Tests.Data
                     .Property(d => d.Age, "Age")
                     .Property(d => d.Name, "Name");
 
-            this._mappers = new Dictionary<Type, IMapper> {{typeof(Dog), dogMapper}};
+            this._mappers = new Dictionary<Type, IMapper> { { typeof(Dog), dogMapper}};
             this._mappers = new Dictionary<Type, IMapper> { { typeof(Cat), catMapper } };
         }
 

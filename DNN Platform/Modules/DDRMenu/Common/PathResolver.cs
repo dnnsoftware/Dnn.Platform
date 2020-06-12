@@ -34,20 +34,20 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
 
 			var mappings = new Dictionary<string, RelativeTo>
 			               {
-			               	{"[DDRMENU]", RelativeTo.Module},
-			               	{"[MODULE]", RelativeTo.Module},
-			               	{"[MANIFEST]", RelativeTo.Manifest},
-			               	{"[PORTAL]", RelativeTo.Portal},
-			               	{"[SKIN]", RelativeTo.Skin},
-			               	{"[CONTAINER]", RelativeTo.Container},
-			               	{"[DNN]", RelativeTo.Dnn}
+			               	{ "[DDRMENU]", RelativeTo.Module},
+			               	{ "[MODULE]", RelativeTo.Module},
+			               	{ "[MANIFEST]", RelativeTo.Manifest},
+			               	{ "[PORTAL]", RelativeTo.Portal},
+			               	{ "[SKIN]", RelativeTo.Skin},
+			               	{ "[CONTAINER]", RelativeTo.Container},
+			               	{ "[DNN]", RelativeTo.Dnn}
 			               };
 			foreach (var key in mappings.Keys)
 			{
 				if (path.StartsWith(key, StringComparison.InvariantCultureIgnoreCase))
 				{
 					path = path.Substring(key.Length);
-					roots = new[] {mappings[key] };
+					roots = new[] { mappings[key] };
 					break;
 				}
 			}

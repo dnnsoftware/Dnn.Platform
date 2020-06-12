@@ -725,7 +725,7 @@ namespace Dnn.EditBar.UI.Controllers
                 var property = typeof(Page).GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
                 if (property != null)
                 {
-                    var value = property.GetValue(original, new object[] {});
+                    var value = property.GetValue(original, new object[] { });
 
                     property.SetValue(this, value, new object[] { });
                 }

@@ -18,7 +18,7 @@ namespace DotNetNuke.Tests.Web.Api
     [TestFixture]
     public class DnnApiControllerTests
     {
-        internal class DnnApiControllerHelper : DnnApiController {}
+        internal class DnnApiControllerHelper : DnnApiController { }
 
         [TearDown]
         public void TearDown()
@@ -38,7 +38,7 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            var controller = new DnnApiControllerHelper {Request = request};
+            var controller = new DnnApiControllerHelper { Request = request};
 
             // Act
             var result = controller.ActiveModule;

@@ -366,7 +366,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             this.SetAuthHeaderToken(token.AccessToken);
             this.SetMonikerHeader("myjournal");
-            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
+            var postItem = new { ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
             var result = this._httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;
@@ -393,7 +393,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             var token = this.GetAuthorizationTokenFor(this._hostName, this._hostPass);
             this.SetAuthHeaderToken(token.AccessToken);
             this.SetMonikerHeader("myjournal");
-            var postItem = new {ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
+            var postItem = new { ProfileId = 1, GroupId = -1, RowIndex = 0, MaxRows = 1};
             var result = this._httpClient.PostAsJsonAsync(
                 "/API/Journal/Services/GetListForProfile", postItem).Result;
             var content = result.Content.ReadAsStringAsync().Result;

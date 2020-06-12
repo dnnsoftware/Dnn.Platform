@@ -119,7 +119,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             this._Values.Clear();
             if ((op != RequestFilterOperatorType.Regex))
             {
-                string[] vals = values.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+                string[] vals = values.Split(new[] { ' '}, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string value in vals)
                 {
                     this._Values.Add(value.ToUpperInvariant());

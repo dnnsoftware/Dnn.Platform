@@ -721,7 +721,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
             // Act
-            var user = new UserInfo {UserID = Constants.USER_ValidId};
+            var user = new UserInfo { UserID = Constants.USER_ValidId};
             var userRelationships = relationshipController.GetUserRelationships(user);
 
             // Assert
@@ -966,7 +966,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
             // Arrange
             var relationshipController = this.CreateRelationshipController();
             var initiatingUser = new UserInfo { UserID = Constants.USER_TenId, PortalID = Constants.PORTAL_Zero };
-            var targetUser = new UserInfo {UserID = Constants.USER_ElevenId, PortalID = Constants.PORTAL_Zero};
+            var targetUser = new UserInfo { UserID = Constants.USER_ElevenId, PortalID = Constants.PORTAL_Zero};
             var relationship = new Relationship();
 
             // Act, Assert

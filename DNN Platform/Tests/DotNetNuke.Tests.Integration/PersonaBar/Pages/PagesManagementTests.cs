@@ -98,14 +98,14 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             connector.PostJson(
                 enabled
                     ? $"API/PersonaBar/Languages/EnableLocalizedContent?portalId={this.PortalId}&translatePages=false"
-                    : $"API/PersonaBar/Languages/DisableLocalizedContent?portalId={this.PortalId}", new {});
+                    : $"API/PersonaBar/Languages/DisableLocalizedContent?portalId={this.PortalId}", new { });
         }
 
         private void UpdateSslSettings(bool sslEnabled)
         {
             var connector = WebApiTestHelper.LoginHost();
 
-            var postData = new {SSLEnabled = sslEnabled, SSLEnforced = false, SSLURL = "", STDURL = "", SSLOffloadHeader = ""};
+            var postData = new { SSLEnabled = sslEnabled, SSLEnforced = false, SSLURL = "", STDURL = "", SSLOffloadHeader = ""};
             connector.PostJson("API/PersonaBar/Security/UpdateSslSettings", postData);
         }
 

@@ -299,7 +299,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Arrange
             var controller = new PortalSettingsController();
             var settings = new PortalSettings { PortalId = ValidPortalId, SplashTabId = SplashTabId, CultureCode = Null.NullString};
-            var splashTabId = new TabInfo {TabID = SplashTabId, PortalID = ValidPortalId};
+            var splashTabId = new TabInfo { TabID = SplashTabId, PortalID = ValidPortalId};
 
             var mockLocaleController = new Mock<ILocaleController>();
             mockLocaleController.Setup(c => c.GetLocales(ValidPortalId)).Returns(new Dictionary<string, Locale>());

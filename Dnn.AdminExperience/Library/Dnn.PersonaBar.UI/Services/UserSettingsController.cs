@@ -40,7 +40,7 @@ namespace Dnn.PersonaBar.UI.Services
                 });
 
                 controller.UpdatePersonaBarUserSettings(userSettings, this.UserInfo.UserID, portalId);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { });
             }
             catch (Exception ex)
             {

@@ -11,7 +11,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Dto
     {
         public StateTransactionMessage()
         {
-            this.Params = new string[] {};
+            this.Params = new string[] { };
         }
 
         /// <summary>

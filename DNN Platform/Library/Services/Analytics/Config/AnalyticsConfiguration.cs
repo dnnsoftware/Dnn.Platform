@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Analytics.Config
             catch (Exception ex)
             {
 				// log it
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString() };
                 log.AddProperty("Analytics.AnalyticsConfiguration", "GetConfig Failed");
                 log.AddProperty("FilePath", filePath);
                 log.AddProperty("ExceptionMessage", ex.Message);

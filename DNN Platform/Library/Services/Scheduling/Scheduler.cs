@@ -599,7 +599,7 @@ namespace DotNetNuke.Services.Scheduling
 					return;
 				}
                 SetScheduleStatus(ScheduleStatus.SHUTTING_DOWN);
-                var log = new LogInfo {LogTypeKey = "SCHEDULER_SHUTTING_DOWN"};
+                var log = new LogInfo { LogTypeKey = "SCHEDULER_SHUTTING_DOWN"};
                 log.AddProperty("Initiator", sourceOfHalt);
                 LogController.Instance.AddLog(log);
 
@@ -776,7 +776,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    var log = new LogInfo {LogTypeKey = "SCHEDULE_FIRED_FROM_EVENT"};
+                    var log = new LogInfo { LogTypeKey = "SCHEDULE_FIRED_FROM_EVENT"};
                     log.AddProperty("EVENT", eventName.ToString());
                     LogController.Instance.AddLog(log);
 
@@ -1116,7 +1116,7 @@ namespace DotNetNuke.Services.Scheduling
 
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
-                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
                         log.AddProperty("TYPE", schedulerClient.GetType().FullName);
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("NEXT START", Convert.ToString(scheduleHistoryItem.NextStart));
@@ -1206,7 +1206,7 @@ namespace DotNetNuke.Services.Scheduling
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         // Write out the log entry for this event
-                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_FAILURE"};
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_FAILURE"};
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         if (exception != null)
@@ -1239,7 +1239,7 @@ namespace DotNetNuke.Services.Scheduling
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         // Write out the log entry for this event
-                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_PROGRESSING"};
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_PROGRESSING"};
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", schedulerClient.GetType().FullName);
                         log.AddProperty("SOURCE", schedulerClient.ScheduleHistoryItem.ScheduleSource.ToString());
@@ -1288,7 +1288,7 @@ namespace DotNetNuke.Services.Scheduling
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
                         // Write out the log entry for this event
-                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_STARTED"};
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_STARTED"};
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
@@ -1451,7 +1451,7 @@ namespace DotNetNuke.Services.Scheduling
                         }
 
                         // Write out the log entry for this event
-                        var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
+                        var log = new LogInfo { LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
                         log.AddProperty("REASON", "Scheduler task has been stopped manually");
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());

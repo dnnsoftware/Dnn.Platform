@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Api
         /// <summary>
         /// Initialize a formatter that can handle text/plain and text/html
         /// </summary>
-        public StringPassThroughMediaTypeFormatter() : this(new [] {"text/plain", "text/html"}) {}
+        public StringPassThroughMediaTypeFormatter() : this(new [] { "text/plain", "text/html"}) { }
 
         /// <summary>
         /// Initialize a formatter that can handle the specified media types

@@ -456,7 +456,7 @@ namespace DotNetNuke.UI.Skins
                 {
 					// validate file extension
                     strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
-                    var extraExtensions = new List<string> {".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS"};
+                    var extraExtensions = new List<string> { ".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS"};
                     if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                     {
                         // process embedded zip files
@@ -552,9 +552,9 @@ namespace DotNetNuke.UI.Skins
 			// log installation event
             try
             {
-                var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
+                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
                 log.LogProperties.Add(new LogDetailInfo("Install Skin:", skinName));
-                Array arrMessage = strMessage.Split(new[] {"<br />"}, StringSplitOptions.None);
+                Array arrMessage = strMessage.Split(new[] { "<br />"}, StringSplitOptions.None);
                 foreach (string strRow in arrMessage)
                 {
                     log.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));

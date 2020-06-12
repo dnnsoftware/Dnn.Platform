@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         #region constructor
 
         public GroupedBasicView()
-        {}
+        { }
 
         public GroupedBasicView(BasicView basic)
         {

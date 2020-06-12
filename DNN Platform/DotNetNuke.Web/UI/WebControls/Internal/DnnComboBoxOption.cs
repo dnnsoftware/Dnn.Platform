@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
         [DataMember(Name = "options")]
         public IEnumerable<OptionItem> Options
         {
-            get { return this.Items?.Select(i => new OptionItem {Text = i.Text, Value = i.Value, Selected = i.Selected}); }
+            get { return this.Items?.Select(i => new OptionItem { Text = i.Text, Value = i.Value, Selected = i.Selected}); }
         }
 
         [DataMember(Name = "localization")]

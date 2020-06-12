@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Integration.Modules.DigitalAssets
             this.RenameFolder(connector, folderId, newFolderName);
 
             var getUrlApi = "API/DigitalAssets/ContentService/GetUrl";
-            var fileUrl = connector.PostJson(getUrlApi, new {fileId = fileId}, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
+            var fileUrl = connector.PostJson(getUrlApi, new { fileId = fileId}, this.GetRequestHeaders()).Content.ReadAsStringAsync().Result;
 
             Assert.IsTrue(fileUrl.Contains(newFolderName));
         }

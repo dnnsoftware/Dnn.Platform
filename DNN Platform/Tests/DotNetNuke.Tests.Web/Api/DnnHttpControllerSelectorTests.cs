@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Web.Api
             var request = new HttpRequestMessage();
             IHttpRouteData routeData = GetRouteData();
             routeData.Values["controller"] = controllerTypeName;
-            routeData.Route.SetNameSpaces(new[] {expectedNamespace});
+            routeData.Route.SetNameSpaces(new[] { expectedNamespace});
             request.Properties[HttpPropertyKeys.HttpRouteDataKey] = routeData;
 
             var selector = new DnnHttpControllerSelector(configuration);

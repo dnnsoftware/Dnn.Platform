@@ -350,7 +350,7 @@ namespace DotNetNuke.Modules.SearchResults
 
             foreach (string o in this.SearchContentSources)
             {
-                var item = new ListItem(o, o) {Selected = this.CheckedScopeItem(o) };
+                var item = new ListItem(o, o) { Selected = this.CheckedScopeItem(o) };
                 this.SearchScopeList.Items.Add(item);
             }
 

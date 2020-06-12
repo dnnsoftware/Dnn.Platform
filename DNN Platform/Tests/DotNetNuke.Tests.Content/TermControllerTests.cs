@@ -321,7 +321,7 @@ namespace DotNetNuke.Tests.Content
             var mockDataService = new Mock<IDataService>();
             var termController = new TermController(mockDataService.Object);
 
-            var term = new Term(Constants.VOCABULARY_ValidVocabularyId) {TermId = Constants.TERM_DeleteTermId};
+            var term = new Term(Constants.VOCABULARY_ValidVocabularyId) { TermId = Constants.TERM_DeleteTermId};
 
             // Act
             termController.DeleteTerm(term);

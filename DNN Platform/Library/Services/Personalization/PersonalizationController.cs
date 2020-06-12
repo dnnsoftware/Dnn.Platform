@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Personalization
         // override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public PersonalizationInfo LoadProfile(int userId, int portalId)
         {
-            var personalization = new PersonalizationInfo {UserId = userId, PortalId = portalId, IsModified = false};
+            var personalization = new PersonalizationInfo { UserId = userId, PortalId = portalId, IsModified = false};
             string profileData = Null.NullString;
             if (userId > Null.NullInteger)
             {

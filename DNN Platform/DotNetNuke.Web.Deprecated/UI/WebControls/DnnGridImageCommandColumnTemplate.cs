@@ -159,10 +159,10 @@ namespace DotNetNuke.Web.UI.WebControls
                 case GridItemType.EditItem:
                     if (this.EditMode == ImageCommandColumnEditMode.URL)
                     {
-                        var hypLink = new HyperLink {ToolTip = this.Text};
+                        var hypLink = new HyperLink { ToolTip = this.Text};
                         if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
-                            var img = new Image {ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL};
+                            var img = new Image { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL};
                             hypLink.Controls.Add(img);
                             img.ToolTip = this.Text;
                         }
@@ -178,7 +178,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var colIcon = new ImageButton
-                                {ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text};
+                                { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text};
                             if (!String.IsNullOrEmpty(this.OnClickJs))
                             {
                                 ClientAPI.AddButtonConfirm(colIcon, this.OnClickJs);
@@ -189,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
-                            var colLink = new LinkButton {ToolTip = this.Text};
+                            var colLink = new LinkButton { ToolTip = this.Text};
                             if (!String.IsNullOrEmpty(this.OnClickJs))
                             {
                                 ClientAPI.AddButtonConfirm(colLink, this.OnClickJs);

@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Cache
 		/// <param name="filename"></param>
         public DNNCacheDependency(string filename)
         {
-            this._fileNames = new[] {filename};
+            this._fileNames = new[] { filename};
         }
 
 		/// <summary>
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Cache
             this._utcStart = start.ToUniversalTime();
             if (filename != null)
             {
-                this._fileNames = new[] {filename};
+                this._fileNames = new[] { filename};
             }
         }
 

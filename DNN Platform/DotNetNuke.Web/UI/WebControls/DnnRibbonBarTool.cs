@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if ((this._dnnLinkButton == null))
                 {
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
-                    this._dnnLinkButton = new DnnTextButton {ID = this.ID + "_CPCommandBtn"};
+                    this._dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn"};
                 }
                 return this._dnnLinkButton;
             }
@@ -142,23 +142,23 @@ namespace DotNetNuke.Web.UI.WebControls
                     this._allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
 										// Framework
-                                        {"PageSettings", new RibbonBarToolInfo("PageSettings", false, false, "", "", "", true) },
-                                        {"CopyPage", new RibbonBarToolInfo("CopyPage", false, false, "", "", "", true) },
-                                        {"DeletePage", new RibbonBarToolInfo("DeletePage", false, true, "", "", "", true) },
-                                        {"ImportPage", new RibbonBarToolInfo("ImportPage", false, false, "", "", "", true) },
-                                        {"ExportPage", new RibbonBarToolInfo("ExportPage", false, false, "", "", "", true) },
-                                        {"NewPage", new RibbonBarToolInfo("NewPage", false, false, "", "", "", true) },
-                                        {"CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, "", "", "", false) },
-                                        {"CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, "", "", "", false) },
-                                        {"Help", new RibbonBarToolInfo("Help", false, false, "_Blank", "", "", false) },
+                                        { "PageSettings", new RibbonBarToolInfo("PageSettings", false, false, "", "", "", true) },
+                                        { "CopyPage", new RibbonBarToolInfo("CopyPage", false, false, "", "", "", true) },
+                                        { "DeletePage", new RibbonBarToolInfo("DeletePage", false, true, "", "", "", true) },
+                                        { "ImportPage", new RibbonBarToolInfo("ImportPage", false, false, "", "", "", true) },
+                                        { "ExportPage", new RibbonBarToolInfo("ExportPage", false, false, "", "", "", true) },
+                                        { "NewPage", new RibbonBarToolInfo("NewPage", false, false, "", "", "", true) },
+                                        { "CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, "", "", "", false) },
+                                        { "CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, "", "", "", false) },
+                                        { "Help", new RibbonBarToolInfo("Help", false, false, "_Blank", "", "", false) },
 										// Modules On Tabs
-                                        {"Console", new RibbonBarToolInfo("Console", false, false, "", "Console", "", false) },
-                                        {"HostConsole", new RibbonBarToolInfo("HostConsole", true, false, "", "Console", "", false) },
-                                        {"UploadFile", new RibbonBarToolInfo("UploadFile", false, false, "", "", "WebUpload", true) },
-                                        {"NewRole", new RibbonBarToolInfo("NewRole", false, false, "", "Security Roles", "Edit", true) },
-                                        {"NewUser", new RibbonBarToolInfo("NewUser", false, false, "", "User Accounts", "Edit", true) },
-                                        {"ClearCache", new RibbonBarToolInfo("ClearCache", true, true, "", "", "", false) },
-                                        {"RecycleApp", new RibbonBarToolInfo("RecycleApp", true, true, "", "", "", false) }
+                                        { "Console", new RibbonBarToolInfo("Console", false, false, "", "Console", "", false) },
+                                        { "HostConsole", new RibbonBarToolInfo("HostConsole", true, false, "", "Console", "", false) },
+                                        { "UploadFile", new RibbonBarToolInfo("UploadFile", false, false, "", "", "WebUpload", true) },
+                                        { "NewRole", new RibbonBarToolInfo("NewRole", false, false, "", "Security Roles", "Edit", true) },
+                                        { "NewUser", new RibbonBarToolInfo("NewUser", false, false, "", "User Accounts", "Edit", true) },
+                                        { "ClearCache", new RibbonBarToolInfo("ClearCache", true, true, "", "", "", false) },
+                                        { "RecycleApp", new RibbonBarToolInfo("RecycleApp", true, true, "", "", "", false) }
                                     };
                 }
 

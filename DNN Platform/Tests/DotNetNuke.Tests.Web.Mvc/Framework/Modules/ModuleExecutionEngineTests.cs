@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         {
             // Arrange
             var engine = new ModuleExecutionEngine();
-            var requestContext = new ModuleRequestContext() {ModuleApplication = null};
+            var requestContext = new ModuleRequestContext() { ModuleApplication = null};
 
             // Act
             ModuleRequestResult result = engine.ExecuteModule(requestContext);

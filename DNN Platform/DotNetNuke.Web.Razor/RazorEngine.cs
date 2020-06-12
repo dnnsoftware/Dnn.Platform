@@ -144,12 +144,12 @@ namespace DotNetNuke.Web.Razor
                 var objectValue = RuntimeHelpers.GetObjectValue(this.CreateWebPageInstance());
                 if ((objectValue == null))
                 {
-                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage found at '{0}' was not created.", new object[] {this.RazorScriptFile}));
+                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage found at '{0}' was not created.", new object[] { this.RazorScriptFile}));
                 }
                 this.Webpage = objectValue as DotNetNukeWebPage;
                 if ((this.Webpage == null))
                 {
-                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage at '{0}' must derive from DotNetNukeWebPage.", new object[] {this.RazorScriptFile}));
+                    throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage at '{0}' must derive from DotNetNukeWebPage.", new object[] { this.RazorScriptFile}));
                 }
                 this.Webpage.Context = this.HttpContext;
                 this.Webpage.VirtualPath = VirtualPathUtility.GetDirectory(this.RazorScriptFile);

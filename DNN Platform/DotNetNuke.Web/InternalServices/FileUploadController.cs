@@ -403,7 +403,7 @@ namespace DotNetNuke.Web.InternalServices
                     extensionList = filter.Split(',').Select(i => i.Trim()).ToList();
                 }
 
-                var validateParams = new List<object>{ extensionList, portalId, userInfo.UserID};
+                var validateParams = new List<object> { extensionList, portalId, userInfo.UserID};
                 if (!ValidationUtils.ValidationCodeMatched(validateParams, validationCode))
                 {
                     throw new InvalidOperationException("Bad Request");

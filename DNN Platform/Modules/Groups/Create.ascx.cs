@@ -119,7 +119,7 @@ namespace DotNetNuke.Modules.Groups
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
             roleInfo = RoleController.Instance.GetRoleById(this.PortalId, roleInfo.RoleID);
 
-	        var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, "", new String[] {"groupid=" + roleInfo.RoleID.ToString() });
+	        var groupUrl = this._navigationManager.NavigateURL(this.GroupViewTabId, "", new String[] { "groupid=" + roleInfo.RoleID.ToString() });
 			if (groupUrl.StartsWith("http://") || groupUrl.StartsWith("https://"))
 			{
 				const int startIndex = 8; // length of https://

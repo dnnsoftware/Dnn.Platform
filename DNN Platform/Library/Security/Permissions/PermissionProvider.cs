@@ -95,7 +95,7 @@ namespace DotNetNuke.Security.Permissions
                 var startAt = DateTime.UtcNow;
                 var cacheKey = string.Format(DataCache.FolderPermissionCacheKey, portalId);
                 DataCache.SetCache(cacheKey, portalId); // no expiration set for this
-                dependency = new DNNCacheDependency(null, new[] {cacheKey}, startAt);
+                dependency = new DNNCacheDependency(null, new[] { cacheKey}, startAt);
                 using (_cacheDependencyDict.GetWriteLock())
                 {
                     _cacheDependencyDict[portalId] = dependency;
@@ -225,7 +225,7 @@ namespace DotNetNuke.Security.Permissions
                     else
                     {
                         // Create new ModulePermission Collection for ModuleId
-                        var collection = new ModulePermissionCollection {modulePermissionInfo};
+                        var collection = new ModulePermissionCollection { modulePermissionInfo};
 
                         // Add Permission to Collection
 

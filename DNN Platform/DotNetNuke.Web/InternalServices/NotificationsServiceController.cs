@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (recipient != null)
                 {
                     NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
-                    return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                    return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
                 }
 
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, "Unable to dismiss notification");
@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.InternalServices
 
 		private object ToExpandoObject(Notification notification)
 		{
-			return new {Subject = notification.Subject, Body = notification.Body};
+			return new { Subject = notification.Subject, Body = notification.Body};
 		}
 
     }

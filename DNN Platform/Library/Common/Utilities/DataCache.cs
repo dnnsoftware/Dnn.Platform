@@ -383,7 +383,7 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // log the cache clear event
-            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString() };
+            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString() };
             log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
             LogController.Instance.AddLog(log);
         }
@@ -550,7 +550,7 @@ namespace DotNetNuke.Common.Utilities
                             if (GetCache(cacheItemArgs.CacheKey) == null)
                             {
                                 // log the event if the item was not saved in the cache ( likely because we are out of memory )
-                                var log = new LogInfo{ LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
+                                var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.CACHE_OVERFLOW.ToString() };
                                 log.LogProperties.Add(new LogDetailInfo(cacheItemArgs.CacheKey, "Overflow - Item Not Cached"));
                                 LogController.Instance.AddLog(log);
                             }

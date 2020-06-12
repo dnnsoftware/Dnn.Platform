@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.WebControls
 		public void RaisePostDataChangedEvent()
 		{
 			// Raise the VisibilityChanged Event
-		    var args = new PropertyEditorEventArgs(this.Name) {Value = this.Value};
+		    var args = new PropertyEditorEventArgs(this.Name) { Value = this.Value};
 		    this.OnVisibilityChanged(args);
 		}
 

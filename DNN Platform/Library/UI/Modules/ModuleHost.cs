@@ -149,10 +149,10 @@ namespace DotNetNuke.UI.Modules
                                      };
                 this.Controls.Add(titleLabel);
 
-                var websliceContainer = new Panel {CssClass = "entry-content"};
+                var websliceContainer = new Panel { CssClass = "entry-content"};
                 websliceContainer.Controls.Add(content);
 
-                var expiry = new HtmlGenericControl {TagName = "abbr"};
+                var expiry = new HtmlGenericControl { TagName = "abbr"};
                 expiry.Attributes["class"] = "endtime";
                 if (!Null.IsNull(this._moduleConfiguration.WebSliceExpiryDate))
                 {
@@ -165,7 +165,7 @@ namespace DotNetNuke.UI.Modules
                     websliceContainer.Controls.Add(expiry);
                 }
 
-                var ttl = new HtmlGenericControl {TagName = "abbr"};
+                var ttl = new HtmlGenericControl { TagName = "abbr"};
                 ttl.Attributes["class"] = "ttl";
                 if (this._moduleConfiguration.WebSliceTTL > 0)
                 {
@@ -219,7 +219,7 @@ namespace DotNetNuke.UI.Modules
         private static void InjectMessageControl(Control container)
         {
             // inject a message placeholder for common module messaging - UI.Skins.Skin.AddModuleMessage
-            var messagePlaceholder = new PlaceHolder {ID = "MessagePlaceHolder", Visible = false};
+            var messagePlaceholder = new PlaceHolder { ID = "MessagePlaceHolder", Visible = false};
             container.Controls.Add(messagePlaceholder);
         }
 
@@ -381,7 +381,7 @@ namespace DotNetNuke.UI.Modules
             try
             {
                 var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
-                var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString() }};
+                var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() }};
 
                 string cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
                 byte[] cachedBytes = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod()).GetModule(this._moduleConfiguration.TabModuleID, cacheKey);
@@ -565,7 +565,7 @@ namespace DotNetNuke.UI.Modules
                         var moduleContent = Encoding.UTF8.GetBytes(cachedOutput);
                         var cache = ModuleCachingProvider.Instance(this._moduleConfiguration.GetEffectiveCacheMethod());
 
-                        var varyBy = new SortedDictionary<string, string> {{"locale", Thread.CurrentThread.CurrentUICulture.ToString() }};
+                        var varyBy = new SortedDictionary<string, string> { { "locale", Thread.CurrentThread.CurrentUICulture.ToString() }};
 
                         var cacheKey = cache.GenerateCacheKey(this._moduleConfiguration.TabModuleID, varyBy);
                         cache.SetModule(this._moduleConfiguration.TabModuleID, cacheKey, new TimeSpan(0, 0, this._moduleConfiguration.CacheTime), moduleContent);

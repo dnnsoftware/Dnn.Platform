@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             var nameCol = this._hostSettingsTable.Columns.Add("SettingName");
             this._hostSettingsTable.Columns.Add("SettingValue");
             this._hostSettingsTable.Columns.Add("SettingIsSecure");
-            this._hostSettingsTable.PrimaryKey = new[] {nameCol};
+            this._hostSettingsTable.PrimaryKey = new[] { nameCol};
 
             this._hostSettingsTable.Rows.Add("String_1_S", "String_1_S", true);
             this._hostSettingsTable.Rows.Add("String_2_S", "String_1_S", true);
@@ -195,7 +195,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
             // Arrange
             var settings = new Dictionary<string, string>
                                                       {
-                                                          {"String_1_S", "MyValue"},
+                                                          { "String_1_S", "MyValue"},
                                                       };
 
             // Act

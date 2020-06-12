@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Urls
     public class PathSizes
     {
         public int MaxAliasDepth { get; set; }
-        public int MaxTabPathDepth{ get; set; }
+        public int MaxTabPathDepth { get; set; }
         public int MinAliasDepth { get; set; }
         public int MinTabPathDepth { get; set; }
 

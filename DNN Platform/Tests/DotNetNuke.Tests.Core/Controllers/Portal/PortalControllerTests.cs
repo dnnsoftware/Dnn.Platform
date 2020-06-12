@@ -27,20 +27,20 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         const string DefaultDeDescription = "A new german description";
         private static readonly Dictionary<string, string> DefaultExpectationsDe = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", DefaultDeName },
-                                                                                        {"TemplateFilePath", DefaultPath},
-                                                                                        {"LanguageFilePath", DefaultDePath},
-                                                                                        {"CultureCode", "de-DE"},
-                                                                                        {"Description", DefaultDeDescription}
+                                                                                        { "Name", DefaultDeName },
+                                                                                        { "TemplateFilePath", DefaultPath},
+                                                                                        { "LanguageFilePath", DefaultDePath},
+                                                                                        { "CultureCode", "de-DE"},
+                                                                                        { "Description", DefaultDeDescription}
                                                                                     };
 
         private static readonly string DefaultUsPath = MakePath(DefaultName, "en-US");
         private static readonly Dictionary<string, string> DefaultExpectationsUs = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", DefaultName },
-                                                                                        {"TemplateFilePath", DefaultPath},
-                                                                                        {"LanguageFilePath", DefaultUsPath},
-                                                                                        {"CultureCode", "en-US"},
+                                                                                        { "Name", DefaultName },
+                                                                                        { "TemplateFilePath", DefaultPath},
+                                                                                        { "LanguageFilePath", DefaultUsPath},
+                                                                                        { "CultureCode", "en-US"},
                                                                                     };
 
         private const string StaticName = "Static";
@@ -49,10 +49,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         const string StaticDescription = "An description from a template file";
         private static readonly Dictionary<string, string> StaticExpectations = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", StaticName},
-                                                                                        {"TemplateFilePath", StaticPath},
-                                                                                        {"Description", StaticDescription},
-                                                                                        {"CultureCode", CultureCode}
+                                                                                        { "Name", StaticName},
+                                                                                        { "TemplateFilePath", StaticPath},
+                                                                                        { "Description", StaticDescription},
+                                                                                        { "CultureCode", CultureCode}
                                                                                     };
 
         private const string AlternateName = "Alternate";
@@ -61,10 +61,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private const string AlternateDeName = "Alternate in German";
         private static readonly Dictionary<string, string> AlternateExpectationsDe = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", AlternateDeName },
-                                                                                        {"TemplateFilePath", AlternatePath},
-                                                                                        {"LanguageFilePath", AlternateDePath},
-                                                                                        {"CultureCode", "de-DE"},
+                                                                                        { "Name", AlternateDeName },
+                                                                                        { "TemplateFilePath", AlternatePath},
+                                                                                        { "LanguageFilePath", AlternateDePath},
+                                                                                        { "CultureCode", "de-DE"},
                                                                                     };
 
         private const string ResourceName = "Resource";
@@ -72,10 +72,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         private static readonly string ResourceFilePath = ResourcePath + ".resources";
         private static readonly Dictionary<string, string> ResourceExpectations = new Dictionary<string, string>
                                                                                     {
-                                                                                        {"Name", ResourceName},
-                                                                                        {"TemplateFilePath", ResourcePath},
-                                                                                        {"ResourceFilePath", ResourceFilePath},
-                                                                                        {"CultureCode", CultureCode}
+                                                                                        { "Name", ResourceName},
+                                                                                        { "TemplateFilePath", ResourcePath},
+                                                                                        { "ResourceFilePath", ResourceFilePath},
+                                                                                        { "CultureCode", CultureCode}
                                                                                     };
 
         [SetUp]

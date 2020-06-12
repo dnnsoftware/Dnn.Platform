@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.InternalServices
             
             if (success)
             {
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
             }
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "unable to process notification");

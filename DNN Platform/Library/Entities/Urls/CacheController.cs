@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static CacheDependency GetPortalsCacheDependency()
         {
-            var keys = new List<string> {"DNN_PortalDictionary"};
+            var keys = new List<string> { "DNN_PortalDictionary"};
             var portalsDepedency = new CacheDependency(null, keys.ToArray());
             return portalsDepedency;
         }
@@ -722,7 +722,7 @@ namespace DotNetNuke.Entities.Urls
 
             if (settings.LogCacheMessages)
             {
-                var log = new LogInfo {LogTypeKey = "HOST_ALERT"};
+                var log = new LogInfo { LogTypeKey = "HOST_ALERT"};
 
                 log.AddProperty("Url Rewriting Caching Message", "Page Index built and Stored in Cache");
                 log.AddProperty("Reason", reason);

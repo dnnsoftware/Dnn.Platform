@@ -155,7 +155,7 @@ namespace UnitTests.Subtext
         {
             using (var simulator = new HttpSimulator())
             {
-                var form = new NameValueCollection {{"Test1", "Value1"}, {"Test2", "Value2"}};
+                var form = new NameValueCollection { { "Test1", "Value1"}, { "Test2", "Value2"}};
                 simulator.SimulateRequest(new Uri("http://localhost/Test.aspx"), form);
 
                 Assert.AreEqual("Value1", HttpContext.Current.Request.Form["Test1"]);

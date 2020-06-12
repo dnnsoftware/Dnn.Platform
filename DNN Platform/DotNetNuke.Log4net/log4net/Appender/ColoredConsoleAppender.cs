@@ -414,7 +414,7 @@ namespace log4net.Appender
 			}
 		}
 
-		private static readonly char[] s_windowsNewline = {'\r', '\n'};
+		private static readonly char[] s_windowsNewline = { '\r', '\n'};
 
 		/// <summary>
 		/// This appender requires a <see cref="Layout"/> to be set.

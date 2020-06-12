@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <summary>
         ///  Token you can pass to the Graph API or the Legacy REST API.
         /// </summary>
-        public string OauthToken{ get; set; }
+        public string OauthToken { get; set; }
 
         /// <summary>
         ///  DateTime when the oauth_token expires

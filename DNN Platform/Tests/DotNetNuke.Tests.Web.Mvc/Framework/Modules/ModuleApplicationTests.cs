@@ -244,7 +244,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
             routeData.Values.Add("controller", controllerName);
             routeData.Values.Add("action", actionName);
 
-            var moduleContext = new ModuleInstanceContext {Configuration = new ModuleInfo {ModuleID = 42}};
+            var moduleContext = new ModuleInstanceContext { Configuration = new ModuleInfo { ModuleID = 42}};
             return new ModuleRequestContext
                         {
                             HttpContext = MockHelper.CreateMockHttpContext("http://localhost/Portal/Page/ModuleRoute"),

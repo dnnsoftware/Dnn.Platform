@@ -231,7 +231,7 @@ namespace log4net.Appender
 		public bool LocationInfo
 		{
 			get { return false; }
-			set {; }
+			set { ; }
 		}
 
 		/// <summary>

@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Modules
                 return false;
             }
 
-            var translatorSettingKey = $"DefaultTranslatorRoles-{ culture }";
+            var translatorSettingKey = $"DefaultTranslatorRoles-{culture }";
 
             var translatorSettingValue = 
                 PortalController.GetPortalSetting(translatorSettingKey, portalId, null) ?? 
@@ -1342,7 +1342,7 @@ namespace DotNetNuke.Entities.Modules
         public void DeleteModuleSetting(int moduleId, string settingName)
         {
             dataProvider.DeleteModuleSetting(moduleId, settingName);
-            var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString() };
+            var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.MODULE_SETTING_DELETED.ToString() };
             log.LogProperties.Add(new LogDetailInfo("ModuleId", moduleId.ToString(CultureInfo.InvariantCulture)));
             log.LogProperties.Add(new LogDetailInfo("SettingName", settingName));
             LogController.Instance.AddLog(log);

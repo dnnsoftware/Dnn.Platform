@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
 
             var retrieved = container.GetComponentList(typeof(IList));
 
-            CollectionAssert.AreEqual(new List<string> {"payload"}, retrieved);
+            CollectionAssert.AreEqual(new List<string> { "payload"}, retrieved);
         }
 
         [Test]

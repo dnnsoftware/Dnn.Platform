@@ -163,10 +163,10 @@ namespace DotNetNuke.Modules.Journal.Components {
                                     AuthorUserId = userId,
                                     Keywords = new Dictionary<string, string>
                                     {
-                                        {"TabId", tabId},
-                                        {"TabModuleId", tabModuleId},
-                                        {"ProfileId", profileId},
-                                        {"GroupId", groupId}
+                                        { "TabId", tabId},
+                                        { "TabModuleId", tabModuleId},
+                                        { "ProfileId", profileId},
+                                        { "GroupId", groupId}
                                     }
                                 };
 

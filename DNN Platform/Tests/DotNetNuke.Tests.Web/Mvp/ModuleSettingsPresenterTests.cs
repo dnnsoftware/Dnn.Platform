@@ -161,7 +161,7 @@ namespace DotNetNuke.Tests.Web.Mvp
 
         private ModuleInstanceContext CreateModuleContext()
         {
-            var context = new ModuleInstanceContext {Configuration = new ModuleInfo() };
+            var context = new ModuleInstanceContext { Configuration = new ModuleInfo() };
             for (int i = 1; i <= _moduleSettingCount; i++)
             {
                 context.Configuration.ModuleSettings.Add(String.Format(_moduleSettingName, i), String.Format(_moduleSettingValue, i));

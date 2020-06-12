@@ -37,7 +37,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         public static int CreateRegisteredUser(string firstName = IntegrationConstants.RuFirstName,
             string lastName = IntegrationConstants.RuLastName, int portalId = 0)
         {
-            return CreateUser(new CreateUserParams {FirstName = firstName, LastName = lastName, PortalId = portalId});
+            return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId});
         }
 
         /// <summary>
@@ -133,9 +133,9 @@ namespace DNN.Integration.Test.Framework.Controllers
         public class CreateUserParams
         {
             public string FirstName { get; set; }
-            public string LastName{ get; set; }
-            public int PortalId{ get; set; }
-            public bool SuperUser{ get; set; }
+            public string LastName { get; set; }
+            public int PortalId { get; set; }
+            public bool SuperUser { get; set; }
             public string Role { get; set; }
             public bool AutoCreateFriends { get; set; }
             public bool AutoCreateFollowersAndFollowings { get; set; }

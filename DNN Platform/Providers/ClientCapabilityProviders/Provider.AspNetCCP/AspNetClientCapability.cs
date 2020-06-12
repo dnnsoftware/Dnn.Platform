@@ -311,7 +311,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         private const string UnixAgent2 = "i586";
         private const string UnixAgent3 = "i386";
         private const string X11Agent = "x11";
-        private static readonly char[] Separators = {';', ')'};
+        private static readonly char[] Separators = { ';', ')'};
 
         private static bool CheckAgentAndVersion(string queryAgent, string userAgent, ref string version)
         {

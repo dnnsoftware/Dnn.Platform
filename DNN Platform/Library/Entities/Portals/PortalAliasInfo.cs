@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Portals
     [Serializable]
     public class PortalAliasInfo : BaseEntityInfo, IHydratable, IXmlSerializable
     {
-        public PortalAliasInfo() {}
+        public PortalAliasInfo() { }
 
         public PortalAliasInfo(PortalAliasInfo alias)
         {

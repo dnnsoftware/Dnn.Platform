@@ -142,7 +142,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkArchived(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
             }
             catch (Exception exc)
             {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkUnArchived(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
             }
             catch (Exception exc)
             {
@@ -174,7 +174,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkRead(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
             }
             catch (Exception exc)
             {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             try
             {
                 InternalMessagingController.Instance.MarkUnRead(postData.ConversationId, this.UserInfo.UserID);
-                return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
+                return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success"});
             }
             catch (Exception exc)
             {

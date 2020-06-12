@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 var portalSettings = PortalSettings.Current;
-                var parameters = new List<object>() {this.Extensions};
+                var parameters = new List<object>() { this.Extensions};
                 if (portalSettings != null)
                 {
                     parameters.Add(portalSettings.PortalId);

@@ -40,11 +40,11 @@ namespace DotNetNuke.Tests.Integration.Tests
             ComponentFactory.RegisterComponentInstance<DataProvider>(new SqlDataProvider());
             ComponentFactory.RegisterComponentSettings<SqlDataProvider>(new Dictionary<string, string>()
             {
-                {"name", "SqlDataProvider"},
-                {"type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
-                {"connectionStringName", "SiteSqlServer"},
-                {"objectQualifier", ConfigurationManager.AppSettings["objectQualifier"] },
-                {"databaseOwner", "dbo."}
+                { "name", "SqlDataProvider"},
+                { "type", "DotNetNuke.Data.SqlDataProvider, DotNetNuke"},
+                { "connectionStringName", "SiteSqlServer"},
+                { "objectQualifier", ConfigurationManager.AppSettings["objectQualifier"] },
+                { "databaseOwner", "dbo."}
             });
             ComponentFactory.InstallComponents(new ProviderInstaller("caching", typeof(CachingProvider), typeof(FBCachingProvider)));
             ComponentFactory.InstallComponents(new ProviderInstaller("members", typeof(MembershipProvider), typeof(AspNetMembershipProvider)));
@@ -102,7 +102,7 @@ namespace DotNetNuke.Tests.Integration.Tests
             if (!portalLanguages.ContainsKey(secondLanguage))
             {
                 var connector = WebApiTestHelper.LoginHost();
-                connector.PostJson($"API/PersonaBar/Extensions/ParseLanguagePackage?cultureCode={secondLanguage}", new {});
+                connector.PostJson($"API/PersonaBar/Extensions/ParseLanguagePackage?cultureCode={secondLanguage}", new { });
                 connector.PostJson($"API/PersonaBar/Extensions/InstallAvailablePackage", new
                 {
                     PackageType = "CoreLanguagePack",

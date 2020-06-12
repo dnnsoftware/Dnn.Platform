@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.Installer.Log
                 if (entry.Type == LogType.EndJob)
                 {
                     var spaceTR = new HtmlTableRow();
-                    spaceTR.Cells.Add(new HtmlTableCell {ColSpan = 2, InnerHtml = "&nbsp;"});
+                    spaceTR.Cells.Add(new HtmlTableCell { ColSpan = 2, InnerHtml = "&nbsp;"});
                     arrayTable.Rows.Add(spaceTR);
                 }
             }

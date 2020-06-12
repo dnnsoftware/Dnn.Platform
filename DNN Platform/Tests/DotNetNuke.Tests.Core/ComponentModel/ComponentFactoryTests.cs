@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Core.ComponentModel
         {
             IContainer container = CreateMockContainer();
 
-            ComponentFactory.InstallComponents(new IComponentInstaller[0] {});
+            ComponentFactory.InstallComponents(new IComponentInstaller[0] { });
         }
 
         [Test]

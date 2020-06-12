@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.ClientCapability
     /// </summary>
     public class FacebookRequestController
     {
-        public string AccessToken{ get; set; }
+        public string AccessToken { get; set; }
         public DateTime Expires { get; set; }
         public long UserID { get; set; }
         public long ProfileId { get; set; }

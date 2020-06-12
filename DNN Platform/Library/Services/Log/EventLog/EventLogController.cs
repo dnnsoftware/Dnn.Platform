@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public void AddLog(string propertyName, string propertyValue, PortalSettings portalSettings, int userID, string logType)
         {
             var properties = new LogProperties();
-            var logDetailInfo = new LogDetailInfo {PropertyName = propertyName, PropertyValue = propertyValue};
+            var logDetailInfo = new LogDetailInfo { PropertyName = propertyName, PropertyValue = propertyValue};
             properties.Add(logDetailInfo);
             this.AddLog(properties, portalSettings, userID, logType, false);
         }

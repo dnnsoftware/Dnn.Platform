@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 }
             }
 
-            CollectionAssert.AreEqual(new List<string> {value}, sharedList.BackingList);
+            CollectionAssert.AreEqual(new List<string> { value}, sharedList.BackingList);
         }
 
         [Test, ExpectedException(typeof(WriteLockRequiredException)), TestCaseSource("GetWriteMethods")]
@@ -183,7 +183,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
         protected IEnumerable<Action<SharedList<string>>> GetWriteMethods()
         {
-            var list = new List<Action<SharedList<string>>> {l => l.Add("more"), l => l.Clear(), l => l.Remove("value"), l => l.Insert(0, "more"), l => l[0] = "more", l => l.RemoveAt(0) };
+            var list = new List<Action<SharedList<string>>> { l => l.Add("more"), l => l.Clear(), l => l.Remove("value"), l => l.Insert(0, "more"), l => l[0] = "more", l => l.RemoveAt(0) };
 
             return list;
         }

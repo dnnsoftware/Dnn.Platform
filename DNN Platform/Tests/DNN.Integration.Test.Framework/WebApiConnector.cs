@@ -184,10 +184,10 @@ namespace DNN.Integration.Test.Framework
             const string fieldsPrefix = "dnn$ctr$Login$Login_DNN";
             var postData = new Dictionary<string, object>
                 {
-                    {fieldsPrefix + "$txtUsername", this.UserName},
-                    {fieldsPrefix + "$txtPassword", password},
-                    {"__EVENTTARGET", fieldsPrefix + "$cmdLogin"}, // most important field; button action
-                    {"__EVENTARGUMENT", ""}
+                    { fieldsPrefix + "$txtUsername", this.UserName},
+                    { fieldsPrefix + "$txtPassword", password},
+                    { "__EVENTTARGET", fieldsPrefix + "$cmdLogin"}, // most important field; button action
+                    { "__EVENTARGUMENT", ""}
                 };
 
             var excludedInputPrefixes = new List<string>();

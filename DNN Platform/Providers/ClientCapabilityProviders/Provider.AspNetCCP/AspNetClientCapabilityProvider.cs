@@ -43,7 +43,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                     {
                         if (_allCapabilities == null)
                         {
-                            var capabilities = new List<IClientCapability> {new AspNetClientCapability(HttpContext.Current.Request) };
+                            var capabilities = new List<IClientCapability> { new AspNetClientCapability(HttpContext.Current.Request) };
                             _allCapabilities = capabilities.AsQueryable();
                         }
                     }
@@ -95,16 +95,16 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             {
                 return _highPiorityCapabilityValues ?? (_highPiorityCapabilityValues = new Dictionary<string, int>
                 {
-                    {"IsMobile", 100},
-                    {"IsTablet", 95},
-                    {"PlatformName", 90},
-                    {"BrowserName", 85},
-                    {"BrowserVersion", 80},
-                    {"HasTouchScreen", 75},
-                    {"PlatformVersion", 70},
-                    {"ScreenPixelsWidth", 65},
-                    {"ScreenPixelsHeight", 60},
-                    {"HardwareVendor", 55}
+                    { "IsMobile", 100},
+                    { "IsTablet", 95},
+                    { "PlatformName", 90},
+                    { "BrowserName", 85},
+                    { "BrowserVersion", 80},
+                    { "HasTouchScreen", 75},
+                    { "PlatformVersion", 70},
+                    { "ScreenPixelsWidth", 65},
+                    { "ScreenPixelsHeight", 60},
+                    { "HardwareVendor", 55}
                 });
             }
         }
@@ -122,14 +122,14 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 return _dummyProperies ??
                        (_dummyProperies = new Dictionary<string, string>
                        {
-                           {"Id", "UNKNOWN"},
-                           {"IsMobile", "false"},
-                           {"ScreenPixelsWidth", "600"},
-                           {"ScreenPixelsHeight", "800"},
-                           {"IsTablet", "false"},
-                           {"HasTouchScreen", "false"},
-                           {"BrowserName", "???"},
-                           {"SupportsFlash", "false"},
+                           { "Id", "UNKNOWN"},
+                           { "IsMobile", "false"},
+                           { "ScreenPixelsWidth", "600"},
+                           { "ScreenPixelsHeight", "800"},
+                           { "IsTablet", "false"},
+                           { "HasTouchScreen", "false"},
+                           { "BrowserName", "???"},
+                           { "SupportsFlash", "false"},
                        });
             }
         }

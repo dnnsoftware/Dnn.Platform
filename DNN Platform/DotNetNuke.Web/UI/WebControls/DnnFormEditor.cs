@@ -156,7 +156,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 foreach (DnnFormSection section in sections)
                 {
-                    var panel = new DnnFormPanel {CssClass = "dnnFormSectionHead"};
+                    var panel = new DnnFormPanel { CssClass = "dnnFormSectionHead"};
                     parentControl.Controls.Add(panel);
 
                     var resourceKey = section.ResourceKey;
@@ -176,7 +176,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (this.Tabs.Count > 0)
             {
-                var tabStrip = new DnnFormTabStrip {CssClass = "dnnAdminTabNav dnnClear"};
+                var tabStrip = new DnnFormTabStrip { CssClass = "dnnAdminTabNav dnnClear"};
                 this.Controls.Add(tabStrip);
                 tabStrip.Items.Clear();
 
@@ -188,12 +188,12 @@ namespace DotNetNuke.Web.UI.WebControls
                         resourceKey = formTab.ID;
                     }
 
-                    var tab = new Panel {CssClass = formTab.ID + " dnnClear", ID = "tab_" + formTab.ID};
+                    var tab = new Panel { CssClass = formTab.ID + " dnnClear", ID = "tab_" + formTab.ID};
                     this.Controls.Add(tab);
 
                     if (formTab.IncludeExpandAll)
                     {
-                        var expandAll = new Panel {CssClass = "dnnFormExpandContent"};
+                        var expandAll = new Panel { CssClass = "dnnFormExpandContent"};
                         string expandAllText = Localization.GetString("ExpandAll", Localization.SharedResourceFile);
                         expandAll.Controls.Add(new LiteralControl("<a href=\"\">" + expandAllText + "</a>"));
                         tab.Controls.Add(expandAll);

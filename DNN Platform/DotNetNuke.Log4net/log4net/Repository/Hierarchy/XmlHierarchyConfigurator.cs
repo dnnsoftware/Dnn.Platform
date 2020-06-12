@@ -751,7 +751,7 @@ namespace log4net.Repository.Hierarchy
 #if NETSTANDARD1_3 // TODO BindingFlags is available for netstandard1.5
 								methInfo.Invoke(target, new[] { convertedValue });
 #else
-								methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] {convertedValue}, CultureInfo.InvariantCulture);
+								methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] { convertedValue}, CultureInfo.InvariantCulture);
 #endif
 							}
 							catch (TargetInvocationException targetInvocationEx)
@@ -826,7 +826,7 @@ namespace log4net.Repository.Hierarchy
 #if NETSTANDARD1_3 // TODO BindingFlags is available for netstandard1.5
 								methInfo.Invoke(target, new[] { createdObject });
 #else
-								methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] {createdObject}, CultureInfo.InvariantCulture);
+								methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] { createdObject}, CultureInfo.InvariantCulture);
 #endif
 							}
 							catch (TargetInvocationException targetInvocationEx)

@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 this.ID = "ControlBar";
 
-                this.FileUploader = new DnnFileUpload {ID = "fileUploader", SupportHost = false};
+                this.FileUploader = new DnnFileUpload { ID = "fileUploader", SupportHost = false};
                 this.Page.Form.Controls.Add(this.FileUploader);
 
                 this.LoadCustomMenuItems();

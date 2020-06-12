@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.DDRMenu
 
 		public override void Initialize()
 		{
-			this.menuControl = new DDRMenuControl {ID = this.ControlID, EnableViewState = false};
+			this.menuControl = new DDRMenuControl { ID = this.ControlID, EnableViewState = false};
 			this.menuControl.NodeClick += this.RaiseEvent_NodeClick;
 		}
 

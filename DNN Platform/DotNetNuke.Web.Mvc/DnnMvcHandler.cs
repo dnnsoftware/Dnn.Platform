@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.Mvc
         private ModuleRequestContext GetModuleRequestContext(HttpContextBase httpContext)
         {
             var moduleInfo = httpContext.Request.FindModuleInfo();
-            var moduleContext = new ModuleInstanceContext() {Configuration = moduleInfo };
+            var moduleContext = new ModuleInstanceContext() { Configuration = moduleInfo };
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(moduleInfo.DesktopModuleID, moduleInfo.PortalID);
             var moduleRequestContext = new ModuleRequestContext
             {

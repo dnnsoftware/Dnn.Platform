@@ -401,10 +401,10 @@ namespace DotNetNuke.Services.Install
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
             {
             // {new AddFcnModeStep(), 1},
-                {iisVerification, 1 },
-                {upgradeDatabase, 49}, 
-                {upgradeExtensions, 49}, 
-                {new InstallVersionStep(), 1}
+                { iisVerification, 1 },
+                { upgradeDatabase, 49}, 
+                { upgradeExtensions, 49}, 
+                { new InstallVersionStep(), 1}
             };
 
         static UpgradeWizard()

@@ -19,7 +19,7 @@ namespace DotNetNuke.Common.Utilities
         private static JavaScriptSerializer SerializerFactory()
         {
             // Allow large JSON strings to be serialized and deserialized.
-            return new JavaScriptSerializer {MaxJsonLength = Int32.MaxValue};
+            return new JavaScriptSerializer { MaxJsonLength = Int32.MaxValue};
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace DotNetNuke.Common.Utilities
             // *** Have to use Reflection with a 'dynamic' non constant type instance 
             var ser = SerializerFactory();
 
-            object result = ser.GetType().GetMethod("Deserialize").MakeGenericMethod(type).Invoke(ser, new object[1] {json});
+            object result = ser.GetType().GetMethod("Deserialize").MakeGenericMethod(type).Invoke(ser, new object[1] { json});
             return result;
         }
 

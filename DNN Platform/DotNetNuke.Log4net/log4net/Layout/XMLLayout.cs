@@ -141,8 +141,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public bool Base64EncodeMessage
 		{
-			get {return this.m_base64Message; }
-			set {this.m_base64Message = value; }
+			get { return this.m_base64Message; }
+			set { this.m_base64Message = value; }
 		}
 
 		/// <summary>
@@ -160,8 +160,8 @@ namespace log4net.Layout
 		/// </remarks>
 		public bool Base64EncodeProperties
 		{
-			get {return this.m_base64Properties; }
-			set {this.m_base64Properties = value; }
+			get { return this.m_base64Properties; }
+			set { this.m_base64Properties = value; }
 		}
 
 

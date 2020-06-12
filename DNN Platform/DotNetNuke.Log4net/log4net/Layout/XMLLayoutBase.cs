@@ -130,8 +130,8 @@ namespace log4net.Layout
 		/// </summary>
 		public string InvalidCharReplacement
 		{
-			get {return this.m_invalidCharReplacement; }
-			set {this.m_invalidCharReplacement = value; }
+			get { return this.m_invalidCharReplacement; }
+			set { this.m_invalidCharReplacement = value; }
 		}
 		#endregion
 

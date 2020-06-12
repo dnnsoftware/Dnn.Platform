@@ -237,7 +237,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (this._localTokenReplace == null)
                 {
-                    this._localTokenReplace = new LanguageTokenReplace {resourceFile = this.LocalResourceFile};
+                    this._localTokenReplace = new LanguageTokenReplace { resourceFile = this.LocalResourceFile};
                 }
                 return this._localTokenReplace;
             }

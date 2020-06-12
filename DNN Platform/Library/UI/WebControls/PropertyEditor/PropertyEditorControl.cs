@@ -565,11 +565,11 @@ namespace DotNetNuke.UI.WebControls
         protected virtual void AddHeader(Table tbl, string header)
         {
             var panel = new Panel();
-            var icon = new Image {ID = "ico" + header, EnableViewState = false};
+            var icon = new Image { ID = "ico" + header, EnableViewState = false};
 
-            var spacer = new Literal {Text = " ", EnableViewState = false};
+            var spacer = new Literal { Text = " ", EnableViewState = false};
 
-            var label = new Label {ID = "lbl" + header};
+            var label = new Label { ID = "lbl" + header};
             label.Attributes["resourcekey"] = this.ID + "_" + header + ".Header";
             label.Text = header;
             label.EnableViewState = false;

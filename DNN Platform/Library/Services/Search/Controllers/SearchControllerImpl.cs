@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Search.Controllers
         public SearchResults SiteSearch(SearchQuery searchQuery)
         {
             var results = this.GetResults(searchQuery);
-            return new SearchResults{TotalHits = results.Item1, Results = results.Item2};
+            return new SearchResults { TotalHits = results.Item1, Results = results.Item2};
         }
 
         public SearchResults ModuleSearch(SearchQuery searchQuery)
@@ -454,7 +454,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private static SearchResult GetPartialSearchResult(Document doc, SearchQuery searchQuery)
         {
-            var result = new SearchResult {SearchContext = searchQuery.SearchContext};
+            var result = new SearchResult { SearchContext = searchQuery.SearchContext};
             var localeField = doc.GetField(Constants.LocaleTag);
 
             if (localeField != null)

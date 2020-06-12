@@ -333,7 +333,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             var action = CreateNewNotificationTypeAction();
             action.NameResourceKey = name;
-            this._notificationsController.SetNotificationTypeActions(new [] {action}, Constants.Messaging_NotificationTypeId);
+            this._notificationsController.SetNotificationTypeActions(new [] { action}, Constants.Messaging_NotificationTypeId);
         }
 
         [Test]
@@ -365,7 +365,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this._mockNotificationsController.Setup(nc => nc.GetNotificationTypeAction(It.IsAny<int>()));
 
             this._mockNotificationsController.Object.SetNotificationTypeActions(
-                new [] {CreateNewNotificationTypeAction(), CreateNewNotificationTypeAction() },
+                new [] { CreateNewNotificationTypeAction(), CreateNewNotificationTypeAction() },
                 Constants.Messaging_NotificationTypeId);
 
             this._mockDataService.Verify(x => x.AddNotificationTypeAction(Constants.Messaging_NotificationTypeId,
@@ -398,7 +398,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Returns(expectedNotificationTypeAction);
             
             var action = CreateNewNotificationTypeAction();
-            this._mockNotificationsController.Object.SetNotificationTypeActions(new [] {action}, expectedNotificationTypeAction.NotificationTypeId);
+            this._mockNotificationsController.Object.SetNotificationTypeActions(new [] { action}, expectedNotificationTypeAction.NotificationTypeId);
 
             Assert.IsTrue(new NotificationTypeActionComparer().Equals(expectedNotificationTypeAction, action));
         }
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Constants.PORTALGROUP_ValidPortalGroupId);
             this._portalController.Setup(pc => pc.GetPortal(Constants.PORTAL_Zero)).Returns(mockPortalInfo);
 
-            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() {CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
+            List<PortalGroupInfo> portalGroups = new List<PortalGroupInfo>() { CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero) }; // CreatePortalGroupInfo(Constants.PORTALGROUP_ValidPortalGroupId, Constants.PORTAL_Zero);                
             this._portalGroupController.Setup(pgc => pgc.GetPortalGroups()).Returns(portalGroups);
 
             this._notificationsController.GetNotifications(Constants.UserID_User12, Constants.PORTAL_Zero, 0, 10);

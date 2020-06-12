@@ -406,7 +406,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// <param name = "button">The button to add to the Row</param>
 		private void AddButton(ref LinkButton button)
 		{
-		    button = new LinkButton {EnableViewState = false, CausesValidation = false};
+		    button = new LinkButton { EnableViewState = false, CausesValidation = false};
 		    button.ControlStyle.CssClass = this.CommandCssClass;
 			button.Visible = false;
 
@@ -418,7 +418,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void AddButtonArea()
 		{
-		    this._pnlButtons = new Panel {Visible = false};
+		    this._pnlButtons = new Panel { Visible = false};
 
 		    this.AddButton(ref this._cmdUpload);
 			this._cmdUpload.Click += this.UploadFile;
@@ -438,21 +438,21 @@ namespace DotNetNuke.Web.UI.WebControls
 		private void AddFileAndUploadArea()
 		{
 			// Create Url Div
-		    this._pnlFile = new Panel {CssClass = "dnnFormItem"};
+		    this._pnlFile = new Panel { CssClass = "dnnFormItem"};
 
 		    // Create File Label
-		    this._lblFile = new Label {EnableViewState = false};
+		    this._lblFile = new Label { EnableViewState = false};
 		    this._pnlFile.Controls.Add(this._lblFile);
 
 			// Create Files Combo
-		    this._cboFiles = new DropDownList {ID = "File", DataTextField = "Text", DataValueField = "Value", AutoPostBack = true};
+		    this._cboFiles = new DropDownList { ID = "File", DataTextField = "Text", DataValueField = "Value", AutoPostBack = true};
 		    this._cboFiles.SelectedIndexChanged += this.FileChanged;
 			this._pnlFile.Controls.Add(this._cboFiles);
 
 			this._pnlLeftDiv.Controls.Add(this._pnlFile);
 
 			// Create Upload Div
-		    this._pnlUpload = new Panel {CssClass = "dnnFormItem"};
+		    this._pnlUpload = new Panel { CssClass = "dnnFormItem"};
 
 		    // Create Upload Box
 			this._txtFile = new HtmlInputFile();
@@ -468,14 +468,14 @@ namespace DotNetNuke.Web.UI.WebControls
 		private void AddFolderArea()
 		{
 			// Create Url Div
-		    this._pnlFolder = new Panel {CssClass = "dnnFormItem"};
+		    this._pnlFolder = new Panel { CssClass = "dnnFormItem"};
 
 		    // Create Folder Label
-		    this._lblFolder = new Label {EnableViewState = false};
+		    this._lblFolder = new Label { EnableViewState = false};
 		    this._pnlFolder.Controls.Add(this._lblFolder);
 
 			// Create Folders Combo
-		    this._cboFolders = new DropDownList {ID = "Folder", AutoPostBack = true};
+		    this._cboFolders = new DropDownList { ID = "Folder", AutoPostBack = true};
 		    this._cboFolders.SelectedIndexChanged += this.FolderChanged;
 			this._pnlFolder.Controls.Add(this._cboFolders);
 
@@ -500,10 +500,10 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void AddMessageRow()
 		{
-		    this._pnlMessage = new Panel {CssClass = "dnnFormMessage dnnFormWarning"};
+		    this._pnlMessage = new Panel { CssClass = "dnnFormMessage dnnFormWarning"};
 
 		    // Create Label
-		    this._lblMessage = new Label {EnableViewState = false, Text = ""};
+		    this._lblMessage = new Label { EnableViewState = false, Text = ""};
 		    this._pnlMessage.Controls.Add(this._lblMessage);
 
 			this._pnlLeftDiv.Controls.Add(this._pnlMessage);
@@ -664,9 +664,9 @@ namespace DotNetNuke.Web.UI.WebControls
 			// First clear the controls collection
 			this.Controls.Clear();
 
-	        this._pnlContainer = new Panel {CssClass = "dnnFilePicker"};
+	        this._pnlContainer = new Panel { CssClass = "dnnFilePicker"};
 
-	        this._pnlLeftDiv = new Panel {CssClass = "dnnLeft"};
+	        this._pnlLeftDiv = new Panel { CssClass = "dnnLeft"};
 
 	        this.AddFolderArea();
 			this.AddFileAndUploadArea();
@@ -675,7 +675,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
 			this._pnlContainer.Controls.Add(this._pnlLeftDiv);
 
-	        this._pnlRightDiv = new Panel {CssClass = "dnnLeft"};
+	        this._pnlRightDiv = new Panel { CssClass = "dnnLeft"};
 
 	        this.GeneratePreviewImage();
 		

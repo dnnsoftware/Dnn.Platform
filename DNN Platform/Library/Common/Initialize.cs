@@ -430,7 +430,7 @@ namespace DotNetNuke.Common
                     {
                         Logger.Trace("Running Schedule " + (SchedulingProvider.SchedulerMode));
                         var scheduler = SchedulingProvider.Instance();
-                        var requestScheduleThread = new Thread(scheduler.ExecuteTasks) {IsBackground = true};
+                        var requestScheduleThread = new Thread(scheduler.ExecuteTasks) { IsBackground = true};
                         requestScheduleThread.Start();
                         SchedulingProvider.ScheduleLastPolled = DateTime.Now;
                     }
