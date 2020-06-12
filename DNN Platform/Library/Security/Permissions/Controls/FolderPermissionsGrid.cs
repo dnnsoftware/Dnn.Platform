@@ -122,7 +122,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var objFolderPermission = new FolderPermissionInfo();
 
             // Call base class to load base properties
-            base.ParsePermissionKeys(objFolderPermission, settings);
+            this.ParsePermissionKeys(objFolderPermission, settings);
             if (String.IsNullOrEmpty(settings[2]))
             {
                 objFolderPermission.FolderPermissionID = -1;

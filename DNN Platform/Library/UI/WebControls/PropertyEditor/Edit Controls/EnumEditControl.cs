@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.WebControls
             var args = new PropertyEditorEventArgs(this.Name)
                            { Value = Enum.ToObject(this.EnumType, intValue), OldValue = Enum.ToObject(this.EnumType, intOldValue) };
 
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------

@@ -899,7 +899,7 @@ namespace DotNetNuke.UI.WebControls
         public override void DataBind()
         {
             // Invoke OnDataBinding so DataBinding Event is raised
-            base.OnDataBinding(EventArgs.Empty);
+            this.OnDataBinding(EventArgs.Empty);
 
             // Clear Existing Controls
             this.Controls.Clear();

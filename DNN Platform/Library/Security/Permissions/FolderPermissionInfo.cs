@@ -126,7 +126,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
             this.FolderPermissionID = Null.SetNullInteger(dr["FolderPermissionID"]);
             this.FolderID = Null.SetNullInteger(dr["FolderID"]);
             this.PortalID = Null.SetNullInteger(dr["PortalID"]);

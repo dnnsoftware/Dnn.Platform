@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Modules
         {
             get
             {
-                return base.IsHostMenu;
+                return this.IsHostMenu;
             }
         }
 

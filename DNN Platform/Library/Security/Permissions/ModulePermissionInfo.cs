@@ -118,7 +118,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
             this.ModulePermissionID = Null.SetNullInteger(dr["ModulePermissionID"]);
             this.ModuleID = Null.SetNullInteger(dr["ModuleID"]);
         }

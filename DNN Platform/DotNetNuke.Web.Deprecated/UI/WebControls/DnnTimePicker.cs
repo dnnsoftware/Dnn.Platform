@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = true;
+            this.EnableEmbeddedBaseStylesheet = true;
             Utilities.ApplySkin(this, string.Empty, "DatePicker");
         }
     }

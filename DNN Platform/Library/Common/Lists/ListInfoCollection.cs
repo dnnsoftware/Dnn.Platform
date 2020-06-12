@@ -36,7 +36,7 @@ namespace DotNetNuke.Common.Lists
             // <tam:note key to be lowercase for appropiated seeking>
             try
             {
-                index = base.List.Add(value);
+                index = this.List.Add(value);
                 this.mKeyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)
@@ -50,7 +50,7 @@ namespace DotNetNuke.Common.Lists
             try
             {
                 object obj;
-                obj = base.List[index];
+                obj = this.List[index];
                 return obj;
             }
             catch (Exception exc)
@@ -77,7 +77,7 @@ namespace DotNetNuke.Common.Lists
                 return null;
             }
             index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
-            obj = base.List[index];
+            obj = this.List[index];
             return obj;
         }
 
@@ -115,7 +115,7 @@ namespace DotNetNuke.Common.Lists
             else
             {
                 index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
-                obj = base.List[index];
+                obj = this.List[index];
             }
             return obj;
         }

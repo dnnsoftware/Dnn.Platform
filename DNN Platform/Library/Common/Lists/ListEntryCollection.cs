@@ -25,7 +25,7 @@ namespace DotNetNuke.Common.Lists
         {
             try
             {
-                return (ListEntryInfo)base.List[index];
+                return (ListEntryInfo)this.List[index];
             }
             catch (Exception exc)
             {
@@ -51,7 +51,7 @@ namespace DotNetNuke.Common.Lists
                 return null;
             }
             index = Convert.ToInt32(this._keyIndexLookup[key.ToLowerInvariant()]);
-            return (ListEntryInfo)base.List[index];
+            return (ListEntryInfo)this.List[index];
         }
 
         public ListEntryInfo GetChildren(string parentName)
@@ -70,7 +70,7 @@ namespace DotNetNuke.Common.Lists
             int index;
             try // Do validation first
             {
-                index = base.List.Add(value);
+                index = this.List.Add(value);
                 this._keyIndexLookup.Add(key.ToLowerInvariant(), index);
             }
             catch (Exception exc)

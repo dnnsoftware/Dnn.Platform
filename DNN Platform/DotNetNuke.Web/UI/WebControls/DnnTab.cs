@@ -51,9 +51,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            base.RenderBeginTag(writer);
-            base.RenderChildren(writer);
-            base.RenderEndTag(writer);
+            this.RenderBeginTag(writer);
+            this.RenderChildren(writer);
+            this.RenderEndTag(writer);
         }
     }
 }

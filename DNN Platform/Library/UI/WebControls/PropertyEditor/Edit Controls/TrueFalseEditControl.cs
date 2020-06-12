@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
             args.Value = this.BooleanValue;
             args.OldValue = this.OldBooleanValue;
             args.StringValue = this.StringValue;
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------

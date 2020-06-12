@@ -464,7 +464,7 @@ namespace DotNetNuke.Entities.Modules
             this.AdminPage = Null.SetNullString(dr["AdminPage"]);
             this.HostPage = Null.SetNullString(dr["HostPage"]);
             // Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         #endregion

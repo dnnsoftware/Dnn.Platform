@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
+            this.EnableEmbeddedBaseStylesheet = false;
             this.OnClientLoad = "$.dnnComboBoxLoaded";
             this.OnClientFocus = "$.dnnComboBoxHack";
             this.OnClientDropDownOpened = "$.dnnComboBoxScroll";

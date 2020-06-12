@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Skins
             this.SkinName = Null.SetNullString(dr["SkinName"]);
             this.SkinType = Null.SetNullString(dr["SkinType"]);
             // Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
             if (dr.NextResult())
             {

@@ -32,7 +32,7 @@ namespace DotNetNuke.Web.UI.WebControls
         protected override void OnInit(EventArgs e)
         {
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
+            this.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             if (string.IsNullOrEmpty(this.ClientSettings.ClientEvents.OnGridCreated))

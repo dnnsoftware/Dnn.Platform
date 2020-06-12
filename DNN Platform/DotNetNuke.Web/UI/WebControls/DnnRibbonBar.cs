@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.Groups[this.Groups.Count - 1].CssClass = this.Groups[this.Groups.Count - 1].CssClass + " " + this.Groups[this.Groups.Count - 1].CssClass.Trim() + "Last";
             }
 
-            base.RenderBeginTag(writer);
+            this.RenderBeginTag(writer);
 
             writer.AddAttribute("class", "barContent");
             writer.RenderBeginTag("div");
@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.RenderBeginTag("div");
             writer.RenderEndTag();
 
-            base.RenderEndTag(writer);
+            this.RenderEndTag(writer);
         }
     }
 }

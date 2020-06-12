@@ -171,14 +171,14 @@ namespace DotNetNuke.UI.Skins.Controls
                     args.OldValue = this.OldDictionaryValue;
                     args.Key = int.Parse(eventArgument.Substring(7));
                     args.Changed = true;
-                    base.OnItemDeleted(args);
+                    this.OnItemDeleted(args);
                     break;
                 case "Add":
                     args = new PropertyEditorEventArgs(this.Name);
                     args.Value = this.AddedItem;
                     args.StringValue = this.AddedItem;
                     args.Changed = true;
-                    base.OnItemAdded(args);
+                    this.OnItemAdded(args);
                     break;
             }
         }
@@ -202,7 +202,7 @@ namespace DotNetNuke.UI.Skins.Controls
             args.OldValue = this.OldDictionaryValue;
             args.StringValue = "";
             args.Changed = true;
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------

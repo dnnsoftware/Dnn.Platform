@@ -18,11 +18,11 @@ namespace DotNetNuke.HttpModules.Config
         {
             get
             {
-                return (AnalyticsEngine)base.List[index];
+                return (AnalyticsEngine)this.List[index];
             }
             set
             {
-                base.List[index] = value;
+                this.List[index] = value;
             }
         }
 

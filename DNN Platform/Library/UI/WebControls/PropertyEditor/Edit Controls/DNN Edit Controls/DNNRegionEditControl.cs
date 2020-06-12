@@ -171,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
             args.Value = this.StringValue;
             args.OldValue = this.OldStringValue;
             args.StringValue = this.StringValue;
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         protected override void CreateChildControls()

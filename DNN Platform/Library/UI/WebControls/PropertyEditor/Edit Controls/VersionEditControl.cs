@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
             args.OldValue = this.OldValue;
             args.StringValue = this.StringValue;
 
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------

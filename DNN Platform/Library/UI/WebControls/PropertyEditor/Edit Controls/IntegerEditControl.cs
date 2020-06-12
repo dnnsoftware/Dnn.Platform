@@ -134,7 +134,7 @@ namespace DotNetNuke.UI.WebControls
             args.Value = this.IntegerValue;
             args.OldValue = this.OldIntegerValue;
             args.StringValue = this.StringValue;
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         /// -----------------------------------------------------------------------------

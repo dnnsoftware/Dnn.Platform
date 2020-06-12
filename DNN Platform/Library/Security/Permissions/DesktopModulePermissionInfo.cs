@@ -115,7 +115,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
             this.DesktopModulePermissionID = Null.SetNullInteger(dr["DesktopModulePermissionID"]);
             this.PortalDesktopModuleID = Null.SetNullInteger(dr["PortalDesktopModuleID"]);
         }

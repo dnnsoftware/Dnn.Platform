@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
       {
          get
          {
-            if (base.DesignMode)
+            if (this.DesignMode)
             {
                return false;
             }
@@ -48,19 +48,19 @@ namespace DotNetNuke.Web.UI.WebControls
       {
          if ((this.Localize) && (!(String.IsNullOrEmpty(this.ResourceKey))))
          {
-            if (!(String.IsNullOrEmpty(base.ManualCloseButtonText)))
+            if (!(String.IsNullOrEmpty(this.ManualCloseButtonText)))
             {
-               base.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
+               this.ManualCloseButtonText = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ManualCloseButtonText", this.ResourceKey), this);
             }
 
-            if (!(String.IsNullOrEmpty(base.Text)))
+            if (!(String.IsNullOrEmpty(this.Text)))
             {
-               base.Text = Utilities.GetLocalizedStringFromParent(String.Format("{0}.Text", this.ResourceKey), this);
+               this.Text = Utilities.GetLocalizedStringFromParent(String.Format("{0}.Text", this.ResourceKey), this);
             }
 
-            if (!(String.IsNullOrEmpty(base.ToolTip)))
+            if (!(String.IsNullOrEmpty(this.ToolTip)))
             {
-               base.ToolTip = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ToolTip", this.ResourceKey), this);
+               this.ToolTip = Utilities.GetLocalizedStringFromParent(String.Format("{0}.ToolTip", this.ResourceKey), this);
             }
          }
       }

@@ -111,7 +111,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var objDesktopModulePermission = new DesktopModulePermissionInfo();
 
             // Call base class to load base properties
-            base.ParsePermissionKeys(objDesktopModulePermission, Settings);
+            this.ParsePermissionKeys(objDesktopModulePermission, Settings);
             if (String.IsNullOrEmpty(Settings[2]))
             {
                 objDesktopModulePermission.DesktopModulePermissionID = -1;

@@ -148,9 +148,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if ((this.CheckVisibility()))
             {
-                base.RenderBeginTag(writer);
-                base.RenderChildren(writer);
-                base.RenderEndTag(writer);
+                this.RenderBeginTag(writer);
+                this.RenderChildren(writer);
+                this.RenderEndTag(writer);
             }
         }
     }

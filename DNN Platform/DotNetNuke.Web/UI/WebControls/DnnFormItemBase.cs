@@ -294,7 +294,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             if (useDataSource)
             {
-                base.OnDataBinding(EventArgs.Empty);
+                this.OnDataBinding(EventArgs.Empty);
                 this.Controls.Clear();
                 this.ClearChildViewState();
                 this.TrackViewState();

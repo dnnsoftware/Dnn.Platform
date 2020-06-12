@@ -16,11 +16,11 @@ namespace DotNetNuke.Services.EventQueue
         {
             get
             {
-                return (EventMessage)base.List[index];
+                return (EventMessage)this.List[index];
             }
             set
             {
-                base.List[index] = value;
+                this.List[index] = value;
             }
         }
 

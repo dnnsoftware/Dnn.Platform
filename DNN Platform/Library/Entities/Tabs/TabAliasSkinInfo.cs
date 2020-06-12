@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
             this.TabAliasSkinId = Null.SetNullInteger(dr["TabAliasSkinId"]);
             this.HttpAlias = Null.SetNullString(dr["HttpAlias"]);

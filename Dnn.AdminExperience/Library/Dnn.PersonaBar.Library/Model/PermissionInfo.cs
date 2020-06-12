@@ -54,7 +54,7 @@ namespace Dnn.PersonaBar.Library.Model
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
 
             this.PermissionId = Null.SetNullInteger(dr["PermissionId"]);

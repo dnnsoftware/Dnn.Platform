@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.WebControls
             var strValue = this.RemoveBaseTags(Convert.ToString(this.Value));
             var strOldValue = this.RemoveBaseTags(Convert.ToString(this.OldValue));
             var args = new PropertyEditorEventArgs(this.Name) { Value = this.Page.Server.HtmlEncode(strValue), OldValue = this.Page.Server.HtmlEncode(strOldValue), StringValue = this.Page.Server.HtmlEncode(this.RemoveBaseTags(this.StringValue)) };
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         private string RemoveBaseTags(String strInput)

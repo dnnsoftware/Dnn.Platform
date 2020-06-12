@@ -168,7 +168,7 @@ namespace DotNetNuke.Security.Permissions
         public void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
             this.WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);
             this.StateID = Null.SetNullInteger(dr["StateID"]);

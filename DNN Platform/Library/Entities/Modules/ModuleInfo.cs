@@ -526,7 +526,7 @@ namespace DotNetNuke.Entities.Modules
         public override void Fill(IDataReader dr)
         {
             // Call the base classes fill method to populate base class properties
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
             this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
             this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);

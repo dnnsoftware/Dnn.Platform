@@ -278,7 +278,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public override void DataBind()
         {
-            base.OnDataBinding(EventArgs.Empty);
+            this.OnDataBinding(EventArgs.Empty);
             this.Controls.Clear();
             this.ClearChildViewState();
             this.TrackViewState();

@@ -153,7 +153,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var objModulePermission = new ModulePermissionInfo();
 
             // Call base class to load base properties
-            base.ParsePermissionKeys(objModulePermission, Settings);
+            this.ParsePermissionKeys(objModulePermission, Settings);
             if (String.IsNullOrEmpty(Settings[2]))
             {
                 objModulePermission.ModulePermissionID = -1;

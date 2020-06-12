@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Portals
 
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
 
             this.PortalAliasID = Null.SetNullInteger(dr["PortalAliasID"]);
             this.PortalID = Null.SetNullInteger(dr["PortalID"]);

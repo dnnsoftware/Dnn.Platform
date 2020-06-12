@@ -18,11 +18,11 @@ namespace DotNetNuke.Services.Analytics.Config
         {
             get
             {
-                return (AnalyticsSetting)base.List[index];
+                return (AnalyticsSetting)this.List[index];
             }
             set
             {
-                base.List[index] = value;
+                this.List[index] = value;
             }
         }
 

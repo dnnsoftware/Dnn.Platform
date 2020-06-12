@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Localization
             }
 
             // Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         public int KeyID

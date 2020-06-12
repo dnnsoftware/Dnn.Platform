@@ -144,9 +144,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.NavigateUrl = "javascript:void(0);";
             }
 
-            base.RenderBeginTag(writer);
-            base.RenderChildren(writer);
-            base.RenderEndTag(writer);
+            this.RenderBeginTag(writer);
+            this.RenderChildren(writer);
+            this.RenderEndTag(writer);
         }
 
         #endregion

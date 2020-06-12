@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnLoad(EventArgs e)
         {
-            base.EnsureChildControls();
+            this.EnsureChildControls();
         }
 
         protected override void CreateChildControls()

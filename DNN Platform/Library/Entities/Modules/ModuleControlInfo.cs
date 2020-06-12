@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Modules
             this.ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
             this.SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
             // Call the base classes fill method to populate base class proeprties
-            base.FillInternal(dr);
+            this.FillInternal(dr);
         }
 
         /// -----------------------------------------------------------------------------

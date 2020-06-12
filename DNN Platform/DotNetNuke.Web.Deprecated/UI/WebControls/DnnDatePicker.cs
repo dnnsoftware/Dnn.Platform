@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
 
             base.OnInit(e);
-            base.EnableEmbeddedBaseStylesheet = false;
+            this.EnableEmbeddedBaseStylesheet = false;
             Utilities.ApplySkin(this);
             this.Calendar.ClientEvents.OnLoad = "$.dnnRadPickerHack";
             var specialDay = new RadCalendarDay();

@@ -316,7 +316,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
         {
-            base.OnValueChanged(this.GetEventArgs());
+            this.OnValueChanged(this.GetEventArgs());
         }
 
         /// -----------------------------------------------------------------------------

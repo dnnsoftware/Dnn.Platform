@@ -32,7 +32,7 @@ namespace DotNetNuke.Common.Controls
                 html = html.Remove(StartPoint, EndPoint - StartPoint);
                 html = html.Insert(StartPoint, "action=\"" + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\"");
             }
-            if (base.ID != null)
+            if (this.ID != null)
             {
             // Locate and replace id attribute
                 StartPoint = html.IndexOf("id=\"");
@@ -40,7 +40,7 @@ namespace DotNetNuke.Common.Controls
                 {
                     int EndPoint = html.IndexOf("\"", StartPoint + 4) + 1;
                     html = html.Remove(StartPoint, EndPoint - StartPoint);
-                    html = html.Insert(StartPoint, "id=\"" + base.ClientID + "\"");
+                    html = html.Insert(StartPoint, "id=\"" + this.ClientID + "\"");
                 }
             }
             writer.Write(html);

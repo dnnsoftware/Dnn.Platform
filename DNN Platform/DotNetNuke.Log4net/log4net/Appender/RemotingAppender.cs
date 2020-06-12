@@ -229,7 +229,7 @@ namespace log4net.Appender
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public override bool Flush(int millisecondsTimeout)
         {
-            base.Flush();
+            this.Flush();
             return this.m_workQueueEmptyEvent.WaitOne(millisecondsTimeout, false);
         }
 

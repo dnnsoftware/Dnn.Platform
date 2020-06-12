@@ -210,7 +210,7 @@ namespace DotNetNuke.UI.WebControls
             args.Value = this.DateValue;
             args.OldValue = this.OldDateValue;
             args.StringValue = this.DateValue.ToString(CultureInfo.InvariantCulture);
-            base.OnValueChanged(args);
+            this.OnValueChanged(args);
         }
 
         protected override void OnPreRender(EventArgs e)

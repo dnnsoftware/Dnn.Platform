@@ -1156,10 +1156,10 @@ namespace log4net.Appender
                 // Must convert the FileAppender's m_filePath to an absolute path before we
                 // call ExistingInit(). This will be done by the base.ActivateOptions() but
                 // we need to duplicate that functionality here first.
-                base.File = ConvertToFullPath(base.File.Trim());
+                this.File = ConvertToFullPath(this.File.Trim());
 
                 // Store fully qualified base file name
-                this.m_baseFileName = base.File;
+                this.m_baseFileName = this.File;
             }
 
 #if !NETCF

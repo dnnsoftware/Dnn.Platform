@@ -121,7 +121,7 @@ namespace Dnn.PersonaBar.Library.Model
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            base.FillInternal(dr);
+            this.FillInternal(dr);
             this.MenuPermissionId = Null.SetNullInteger(dr["MenuPermissionId"]);
             this.MenuId = Null.SetNullInteger(dr["MenuId"]);
             this.PortalId = Null.SetNullInteger(dr["PortalId"]);

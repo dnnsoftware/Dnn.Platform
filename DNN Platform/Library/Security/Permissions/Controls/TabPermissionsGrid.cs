@@ -123,7 +123,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             var objTabPermission = new TabPermissionInfo();
 
             // Call base class to load base properties
-            base.ParsePermissionKeys(objTabPermission, Settings);
+            this.ParsePermissionKeys(objTabPermission, Settings);
             if (String.IsNullOrEmpty(Settings[2]))
             {
                 objTabPermission.TabPermissionID = -1;

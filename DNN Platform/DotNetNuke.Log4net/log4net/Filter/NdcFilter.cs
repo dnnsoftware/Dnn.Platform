@@ -58,7 +58,7 @@ namespace log4net.Filter
         /// </remarks>
         public NdcFilter()
         {
-            base.Key = "NDC";
+            this.Key = "NDC";
         }
     }
 }
