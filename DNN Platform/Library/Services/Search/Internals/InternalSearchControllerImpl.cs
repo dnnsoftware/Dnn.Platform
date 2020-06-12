@@ -87,7 +87,10 @@ namespace DotNetNuke.Services.Search.Internals
 
                         foreach (ModuleInfo module in modules)
                         {
-                            if (!modDefIds.Contains(module.ModuleDefID)) modDefIds.Add(module.ModuleDefID);
+                            if (!modDefIds.Contains(module.ModuleDefID))
+                            {
+                                modDefIds.Add(module.ModuleDefID);
+                            }
                         }
 
                         var list = modDefIds.Select(ModuleDefinitionController.GetModuleDefinitionByID).ToList();
@@ -157,7 +160,9 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     var key = string.Format("{0}-{1}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId);
                     if (!data.ContainsKey(key))
+                    {
                         data.Add(key, searchContentSource.LocalizedName);
+                    }
                 }
             }
 
@@ -190,18 +195,26 @@ namespace DotNetNuke.Services.Search.Internals
             if (searchDocument.SearchTypeId == this._moduleSearchTypeId)
             {
                 if (searchDocument.ModuleDefId <= 0)
+                {
                     throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero", "ModuleDefId must be greater than zero when SearchTypeId is for a module"));
+                }
 
                 if (searchDocument.ModuleId <= 0)
+                {
                     throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustBeGreaterThanZero", "ModuleId must be greater than zero when SearchTypeId is for a module"));
+                }
             }
             else
             {
                 if (searchDocument.ModuleDefId > 0)
+                {
                     throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleDefIdWhenSearchTypeForModule", "ModuleDefId is needed only when SearchTypeId is for a module"));
+                }
 
                 if (searchDocument.ModuleId > 0)
+                {
                     throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdWhenSearchTypeForModule", "ModuleId is needed only when SearchTypeId is for a module"));
+                }
             }
 
             var doc = new Document();
@@ -287,34 +300,54 @@ namespace DotNetNuke.Services.Search.Internals
             var query = new BooleanQuery();
 
             if (searchDocument.SearchTypeId > -1)
+            {
                 query.Add(NumericValueQuery(Constants.SearchTypeTag, searchDocument.SearchTypeId), Occur.MUST);
+            }
 
             if (searchDocument.PortalId > -1)
+            {
                 query.Add(NumericValueQuery(Constants.PortalIdTag, searchDocument.PortalId), Occur.MUST);
+            }
 
             if (searchDocument.RoleId > -1)
+            {
                 query.Add(NumericValueQuery(Constants.RoleIdTag, searchDocument.RoleId), Occur.MUST);
+            }
 
             if (searchDocument.ModuleDefId > 0)
+            {
                 query.Add(NumericValueQuery(Constants.ModuleDefIdTag, searchDocument.ModuleDefId), Occur.MUST);
+            }
 
             if (searchDocument.ModuleId > 0)
+            {
                 query.Add(NumericValueQuery(Constants.ModuleIdTag, searchDocument.ModuleId), Occur.MUST);
+            }
 
             if (searchDocument.TabId > 0)
+            {
                 query.Add(NumericValueQuery(Constants.TabIdTag, searchDocument.TabId), Occur.MUST);
+            }
 
             if (searchDocument.AuthorUserId > 0)
+            {
                 query.Add(NumericValueQuery(Constants.AuthorIdTag, searchDocument.AuthorUserId), Occur.MUST);
+            }
 
             if (!string.IsNullOrEmpty(searchDocument.UniqueKey))
+            {
                 query.Add(new TermQuery(new Term(Constants.UniqueKeyTag, searchDocument.UniqueKey)), Occur.MUST);
+            }
 
             if (!string.IsNullOrEmpty(searchDocument.QueryString))
+            {
                 query.Add(new TermQuery(new Term(Constants.QueryStringTag, searchDocument.QueryString)), Occur.MUST);
+            }
 
             if (!string.IsNullOrEmpty(searchDocument.CultureCode))
+            {
                 query.Add(NumericValueQuery(Constants.LocaleTag, Localization.Localization.GetCultureLanguageID(searchDocument.CultureCode)), Occur.MUST);
+            }
 
             LuceneController.Instance.Delete(query);
 
@@ -382,14 +415,22 @@ namespace DotNetNuke.Services.Search.Internals
             if (!string.IsNullOrEmpty(searchDocument.Title))
             {
                 var field = new Field(Constants.TitleTag, StripTagsRetainAttributes(searchDocument.Title, HtmlAttributesToRetain, false, true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (this._titleBoost > 0 && this._titleBoost != Constants.StandardLuceneBoost) field.Boost = this._titleBoost / 10f;
+                if (this._titleBoost > 0 && this._titleBoost != Constants.StandardLuceneBoost)
+                {
+                    field.Boost = this._titleBoost / 10f;
+                }
+
                 doc.Add(field);
             }
 
             if (!string.IsNullOrEmpty(searchDocument.Description))
             {
                 var field = new Field(Constants.DescriptionTag, StripTagsRetainAttributes(searchDocument.Description, HtmlAttributesToRetain, false, true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                if (this._descriptionBoost > 0 && this._descriptionBoost != Constants.StandardLuceneBoost) field.Boost = this._descriptionBoost / 10f;
+                if (this._descriptionBoost > 0 && this._descriptionBoost != Constants.StandardLuceneBoost)
+                {
+                    field.Boost = this._descriptionBoost / 10f;
+                }
+
                 doc.Add(field);
             }
 
@@ -477,7 +518,11 @@ namespace DotNetNuke.Services.Search.Internals
                 if (user != null && !string.IsNullOrEmpty(user.DisplayName))
                 {
                     var field = new Field(Constants.AuthorNameTag, user.DisplayName, Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
-                    if (this._authorBoost > 0 && this._authorBoost != Constants.StandardLuceneBoost) field.Boost = this._authorBoost / 10f;
+                    if (this._authorBoost > 0 && this._authorBoost != Constants.StandardLuceneBoost)
+                    {
+                        field.Boost = this._authorBoost / 10f;
+                    }
+
                     doc.Add(field);
                 }
             }
@@ -493,7 +538,10 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var field = new Field(Constants.ContentTag, SearchHelper.Instance.StripTagsNoAttributes(sb.ToString(), true), Field.Store.YES, Field.Index.ANALYZED, Field.TermVector.WITH_POSITIONS_OFFSETS);
                 doc.Add(field);
-                if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost) field.Boost = this._contentBoost / 10f;
+                if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost)
+                {
+                    field.Boost = this._contentBoost / 10f;
+                }
             }
 
         }
@@ -504,7 +552,9 @@ namespace DotNetNuke.Services.Search.Internals
         private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {
             if (fieldValue > 0)
+            {
                 doc.Add(new NumericField(fieldTag, Field.Store.YES, true).SetIntValue(fieldValue));
+            }
         }
 
         private const string HtmlTagsWithAttrs = "<[a-z_:][\\w:.-]*(\\s+(?<attr>\\w+\\s*?=\\s*?[\"'].*?[\"']))+\\s*/?>";
@@ -561,7 +611,10 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             // If not decoded, decode and strip again. Becareful with recursive
-            if (!decoded) strippedString = StripTagsRetainAttributes(HttpUtility.HtmlDecode(strippedString), attributesList, true, retainSpace);
+            if (!decoded)
+            {
+                strippedString = StripTagsRetainAttributes(HttpUtility.HtmlDecode(strippedString), attributesList, true, retainSpace);
+            }
 
             return strippedString;
         }

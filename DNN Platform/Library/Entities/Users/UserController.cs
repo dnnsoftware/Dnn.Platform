@@ -2062,7 +2062,10 @@ namespace DotNetNuke.Entities.Users
                 DataCache.ClearUserCache(portalId, user.Username);
             }
 
-            if (!user.Membership.Approving) return;
+            if (!user.Membership.Approving)
+            {
+                return;
+            }
 
             user.Membership.ConfirmApproved();
             EventManager.Instance.OnUserApproved(new UserEventArgs { User = user });

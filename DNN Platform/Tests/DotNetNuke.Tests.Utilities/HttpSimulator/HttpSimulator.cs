@@ -141,13 +141,19 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             var query = ExtractQueryStringPart(url);
 
             if (formVariables != null)
+            {
                 this._formVars.Add(formVariables);
+            }
 
             if (this._formVars.Count > 0)
+            {
                 httpVerb = HttpVerb.POST; // Need to enforce this.
+            }
 
             if (headers != null)
+            {
                 this._headers.Add(headers);
+            }
 
             this.WorkerRequest = new SimulatedHttpRequest(this.ApplicationPath, this.PhysicalApplicationPath, this.PhysicalPath, this.Page, query, this.ResponseWriter, this.Host, this.Port, httpVerb.ToString());
 
@@ -155,7 +161,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this.WorkerRequest.Headers.Add(this._headers);
 
             if (this._referer != null)
+            {
                 this.WorkerRequest.SetReferer(this._referer);
+            }
 
             this.InitializeSession();
 
@@ -475,7 +483,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public HttpSimulator SetReferer(Uri referer)
         {
             if (this.WorkerRequest != null)
+            {
                 this.WorkerRequest.SetReferer(referer);
+            }
+
             this._referer = referer;
             return this;
         }
@@ -489,7 +500,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public HttpSimulator SetFormVariable(string name, string value)
         {
             if (this.WorkerRequest != null)
+            {
                 throw new InvalidOperationException("Cannot set form variables after calling Simulate().");
+            }
 
             this._formVars.Add(name, value);
 
@@ -505,7 +518,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public HttpSimulator SetHeader(string name, string value)
         {
             if (this.WorkerRequest != null)
+            {
                 throw new InvalidOperationException("Cannot set headers after calling Simulate().");
+            }
 
             this._headers.Add(name, value);
 
@@ -515,7 +530,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private void ParseRequestUrl(Uri url)
         {
             if (url == null)
+            {
                 return;
+            }
+
             this.Host = url.Host;
             this.Port = url.Port;
             this.LocalPath = url.LocalPath;
@@ -526,13 +544,18 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private static string RightAfter(string original, string search)
         {
             if (search.Length > original.Length || search.Length == 0)
+            {
                 return original;
+            }
+
             original = original.Trim();
             search = search.Trim();
             var searchIndex = original.IndexOf(search, 0, StringComparison.InvariantCultureIgnoreCase);
 
             if (searchIndex < 0)
+            {
                 return original;
+            }
             // mod to add one onto the search length - otherwise strange results??
             // return original.Substring(original.IndexOf(search) + search.Length + 1);
             // return original.Substring(original.IndexOf(search) + search.Length);
@@ -659,7 +682,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         protected static string NormalizeSlashes(string s)
         {
             if (string.IsNullOrEmpty(s) || s == "/")
+            {
                 return "/";
+            }
 
             s = s.Replace(@"\", "/");
 

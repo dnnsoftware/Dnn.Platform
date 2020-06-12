@@ -68,9 +68,21 @@ namespace Dnn.ExportImport.Components.Common
             const long mb = kb * kb;
             const long gb = mb * kb;
 
-            if (bytes < kb) return bytes + " B";
-            if (bytes < mb) return (1.0 * bytes / kb).ToString("F" + decimals) + " KB";
-            if (bytes < gb) return (1.0 * bytes / mb).ToString("F" + decimals) + " MB";
+            if (bytes < kb)
+            {
+                return bytes + " B";
+            }
+
+            if (bytes < mb)
+            {
+                return (1.0 * bytes / kb).ToString("F" + decimals) + " KB";
+            }
+
+            if (bytes < gb)
+            {
+                return (1.0 * bytes / mb).ToString("F" + decimals) + " MB";
+            }
+
             return (1.0 * bytes / gb).ToString("F" + decimals) + " GB";
         }
 
@@ -82,24 +94,35 @@ namespace Dnn.ExportImport.Components.Common
         public static int GetUserIdByName(ExportImportJob importJob, int? exportedUserId, string exportUsername)
         {
             if (!exportedUserId.HasValue || exportedUserId <= 0)
+            {
                 return -1;
+            }
 
             if (exportedUserId == 1)
+            {
                 return 1; // default HOST user
+            }
 
             if (string.IsNullOrEmpty(exportUsername))
+            {
                 return -1;
+            }
 
             var user = UserController.GetUserByName(importJob.PortalId, exportUsername);
             if (user == null)
+            {
                 return -1;
+            }
 
             return user.UserID < 0 ? importJob.CreatedByUserId : user.UserID;
         }
 
         public static int? GetRoleIdByName(int portalId, int exportRoleId, string exportRolename)
         {
-            if (string.IsNullOrEmpty(exportRolename)) return null;
+            if (string.IsNullOrEmpty(exportRolename))
+            {
+                return null;
+            }
 
             var roleId = DataProvider.Instance().GetRoleIdByName(exportRoleId >= 0 ? portalId : -1, exportRolename);
             return roleId == _noRole ? null : (int?)roleId;
@@ -107,7 +130,10 @@ namespace Dnn.ExportImport.Components.Common
 
         public static int? GeModuleDefIdByFriendltName(string friendlyName)
         {
-            if (string.IsNullOrEmpty(friendlyName)) return null;
+            if (string.IsNullOrEmpty(friendlyName))
+            {
+                return null;
+            }
 
             var moduleDefInfo = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(friendlyName);
             return moduleDefInfo?.ModuleDefID;
@@ -118,7 +144,9 @@ namespace Dnn.ExportImport.Components.Common
             if (string.IsNullOrEmpty(permissionCode) ||
                 string.IsNullOrEmpty(permissionKey) ||
                 string.IsNullOrEmpty(permissionName))
+            {
                 return null;
+            }
 
             var permission = EntitiesController.Instance.GetPermissionInfo(permissionCode, permissionKey, permissionName);
             return permission?.PermissionID;
@@ -128,7 +156,9 @@ namespace Dnn.ExportImport.Components.Common
             string exportProfilePropertyname)
         {
             if (!exportedProfilePropertyId.HasValue || exportedProfilePropertyId <= 0)
+            {
                 return -1;
+            }
 
             var property = ProfileController.GetPropertyDefinitionByName(portalId, exportProfilePropertyname);
             return property?.PropertyDefinitionId;
@@ -184,7 +214,10 @@ namespace Dnn.ExportImport.Components.Common
         public static DateTime? ToLocalDateTime(DateTime? dateTime, UserInfo userInfo)
         {
             if (dateTime != null && dateTime.Value.Kind != DateTimeKind.Local)
+            {
                 return userInfo.LocalTime(dateTime.Value);
+            }
+
             return dateTime;
         }
 
@@ -195,8 +228,16 @@ namespace Dnn.ExportImport.Components.Common
         /// <returns></returns>
         public static DateTime? ConvertToDbLocalTime(DateTime? dateTime)
         {
-            if (dateTime == null) return null;
-            if (dateTime.Value.Kind != DateTimeKind.Utc) return dateTime;
+            if (dateTime == null)
+            {
+                return null;
+            }
+
+            if (dateTime.Value.Kind != DateTimeKind.Utc)
+            {
+                return dateTime;
+            }
+
             var differenceInUtcTimes =
                 TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
             var d = dateTime.Value.ToLocalTime().AddMilliseconds(differenceInUtcTimes);
@@ -210,8 +251,16 @@ namespace Dnn.ExportImport.Components.Common
         /// <returns></returns>
         public static DateTime? ConvertToDbUtcTime(DateTime? dateTime)
         {
-            if (dateTime == null) return null;
-            if (dateTime.Value.Kind == DateTimeKind.Utc) return dateTime;
+            if (dateTime == null)
+            {
+                return null;
+            }
+
+            if (dateTime.Value.Kind == DateTimeKind.Utc)
+            {
+                return dateTime;
+            }
+
             var differenceInUtcTimes =
                 TimeZone.CurrentTimeZone.GetUtcOffset(DateUtils.GetDatabaseUtcTime()).TotalMilliseconds;
             var d = dateTime.Value.ToUniversalTime().AddMilliseconds(differenceInUtcTimes);

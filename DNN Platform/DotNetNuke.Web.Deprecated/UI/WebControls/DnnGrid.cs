@@ -39,7 +39,9 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             var items = this.MasterTableView.Items;
             if (this.ScreenRowNumber == 0)
+            {
                 this.ScreenRowNumber = 15;
+            }
 
             if (items.Count > this.ScreenRowNumber)
             {
@@ -48,7 +50,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ClientSettings.Scrolling.UseStaticHeaders = true;
 
                 if (this.RowHeight == 0)
+                {
                     this.RowHeight = 25;
+                }
 
                 this.ClientSettings.Scrolling.ScrollHeight = this.RowHeight * this.ScreenRowNumber;
             }

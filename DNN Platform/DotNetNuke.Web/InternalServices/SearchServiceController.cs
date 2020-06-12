@@ -158,13 +158,22 @@ namespace DotNetNuke.Web.InternalServices
                 list = Convert.ToString(settings["ScopeForPortals"]).Split('|').Select(s => Convert.ToInt32(s)).ToList();
             }
 
-            if (portalId == -1) portalId = this.PortalSettings.ActiveTab.PortalID;
-            if (portalId > -1 && !list.Contains(portalId)) list.Add(portalId);
+            if (portalId == -1)
+            {
+                portalId = this.PortalSettings.ActiveTab.PortalID;
+            }
+
+            if (portalId > -1 && !list.Contains(portalId))
+            {
+                list.Add(portalId);
+            }
 
             // Add Host
             var userInfo = this.UserInfo;
             if (userInfo.IsSuperUser)
+            {
                 list.Add(-1);
+            }
 
             return list;
         }
@@ -181,11 +190,17 @@ namespace DotNetNuke.Web.InternalServices
             // check content source in configured list or not
             foreach (var contentSource in searchContentSources)
             {
-                if (contentSource.IsPrivate) continue;
+                if (contentSource.IsPrivate)
+                {
+                    continue;
+                }
+
                 if (configuredList.Count > 0)
                 {
                     if (configuredList.Any(l => l.Contains(contentSource.LocalizedName))) // in configured list
+                    {
                         list.Add(contentSource.SearchTypeId);
+                    }
                 }
                 else
                 {
@@ -208,16 +223,24 @@ namespace DotNetNuke.Web.InternalServices
             // check content source in configured list or not
             foreach (var contentSource in searchContentSources)
             {
-                if (contentSource.IsPrivate) continue;
+                if (contentSource.IsPrivate)
+                {
+                    continue;
+                }
+
                 if (configuredList.Count > 0)
                 {
                     if (configuredList.Any(l => l.Contains(contentSource.LocalizedName)) && contentSource.ModuleDefinitionId > 0) // in configured list
+                    {
                         list.Add(contentSource.ModuleDefinitionId);
+                    }
                 }
                 else
                 {
                     if (contentSource.ModuleDefinitionId > 0)
+                    {
                         list.Add(contentSource.ModuleDefinitionId);
+                    }
                 }
             }
 
@@ -297,7 +320,9 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         var tab = TabController.Instance.GetTab(first.TabId, first.PortalId, false);
                         if (tab != null)
+                        {
                             group.Title = showFriendlyTitle && !string.IsNullOrEmpty(tab.Title) ? tab.Title : tab.TabName;
+                        }
                     }
                     else if (first.ModuleId > 0)
                     {
@@ -315,7 +340,10 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         group.Title = tabTitle;
                         if (first.Title != "Enter Title" && first.Title != "Text/HTML")
+                        {
                             group.Title += " > " + first.Title;
+                        }
+
                         first.Title = group.Title;
                     }
                 }
@@ -435,7 +463,10 @@ namespace DotNetNuke.Web.InternalServices
                 if (!string.IsNullOrEmpty(tabTitle))
                 {
                     if (result.Title != "Enter Title" && result.Title != "Text/HTML")
+                    {
                         return tabTitle + " > " + result.Title;
+                    }
+
                     return tabTitle;
                 }
             }

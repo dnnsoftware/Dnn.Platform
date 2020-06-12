@@ -2252,7 +2252,10 @@ namespace DotNetNuke.UI.Skins
                     break;
             }
 
-            if (this.ShowHiddenTabs) intNavNodeOptions += (int)Navigation.NavNodeOptions.IncludeHiddenNodes;
+            if (this.ShowHiddenTabs)
+            {
+                intNavNodeOptions += (int)Navigation.NavNodeOptions.IncludeHiddenNodes;
+            }
 
             switch (this.ToolTip.ToLowerInvariant())
             {

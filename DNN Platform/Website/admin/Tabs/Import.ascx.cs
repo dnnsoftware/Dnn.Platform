@@ -137,7 +137,10 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     this.cboFolders.UndefinedItem = new ListItem("<" + Localization.GetString("None_Specified") + ">", string.Empty);
                     var folders = FolderManager.Instance.GetFolders(this.UserInfo, "BROWSE, ADD");
                     var templateFolder = folders.SingleOrDefault(f => f.FolderPath == "Templates/");
-                    if (templateFolder != null) this.cboFolders.SelectedFolder = templateFolder;
+                    if (templateFolder != null)
+                    {
+                        this.cboFolders.SelectedFolder = templateFolder;
+                    }
 
                     this.BindFiles();
                     this.BindTabControls();
@@ -169,9 +172,16 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("SpecifyMode", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                     return;
                 }
-                if (this.cboFolders.SelectedItem == null) return;
+                if (this.cboFolders.SelectedItem == null)
+                {
+                    return;
+                }
+
                 var selectedFolder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-                if (selectedFolder == null) return;
+                if (selectedFolder == null)
+                {
+                    return;
+                }
 
                 var selectedFile = Services.FileSystem.FileManager.Instance.GetFile(Convert.ToInt32(this.cboTemplate.SelectedValue));
                 var xmlDoc = new XmlDocument { XmlResolver = null };

@@ -137,7 +137,9 @@ namespace DotNetNuke.Common
 
             // If unknown version return as is.
             if (version != "4.0")
+            {
                 return new Version(version);
+            }
 
             // Otherwise utilize release DWORD from registry to determine version
             // Reference List: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies

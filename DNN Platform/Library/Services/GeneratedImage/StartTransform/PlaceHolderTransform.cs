@@ -65,9 +65,14 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         {
             // Check dimensions
             if (this.Width == 0 && this.Height > 0)
+            {
                 this.Width = this.Height;
+            }
+
             if (this.Width > 0 && this.Height == 0)
+            {
                 this.Height = this.Width;
+            }
 
             var bitmap = new Bitmap(this.Width, this.Height);
             Brush backColorBrush = new SolidBrush(this.BackColor);
@@ -92,15 +97,25 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 // Determine fontsize
                 var fontSize = 13;
                 if (this.Width < 101)
+                {
                     fontSize = 8;
+                }
                 else if (this.Width < 151)
+                {
                     fontSize = 10;
+                }
                 else if (this.Width < 201)
+                {
                     fontSize = 12;
+                }
                 else if (this.Width < 301)
+                {
                     fontSize = 14;
+                }
                 else
+                {
                     fontSize = 24;
+                }
 
                 // Draw text on image
                 // Use rectangle for text and align text to center of rectangle

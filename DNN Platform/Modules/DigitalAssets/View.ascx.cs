@@ -665,7 +665,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected void GridOnItemCreated(object sender, GridItemEventArgs e)
         {
-            if (!(e.Item is GridPagerItem)) return;
+            if (!(e.Item is GridPagerItem))
+            {
+                return;
+            }
 
             var items = new[]
             {

@@ -186,15 +186,29 @@ namespace DotNetNuke.Services.GeneratedImage
                         var placeHolderTrans = new PlaceholderTransform();
                         int width, height;
                         if (TryParseDimension(parameters["w"], out width))
+                        {
                             placeHolderTrans.Width = width;
+                        }
+
                         if (TryParseDimension(parameters["h"], out height))
+                        {
                             placeHolderTrans.Height = height;
+                        }
+
                         if (!string.IsNullOrEmpty(parameters["Color"]))
+                        {
                             placeHolderTrans.Color = color;
+                        }
+
                         if (!string.IsNullOrEmpty(parameters["Text"]))
+                        {
                             placeHolderTrans.Text = text;
+                        }
+
                         if (!string.IsNullOrEmpty(parameters["BackColor"]))
+                        {
                             placeHolderTrans.BackColor = backColor;
+                        }
 
                         this.ImageTransforms.Add(placeHolderTrans);
                         break;
@@ -536,7 +550,10 @@ namespace DotNetNuke.Services.GeneratedImage
         private void SetupCulture()
         {
             var settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null) return;
+            if (settings == null)
+            {
+                return;
+            }
 
             var pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
             if (pageLocale != null)

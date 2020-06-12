@@ -47,7 +47,9 @@ namespace DotNetNuke.Web.Client.Providers
         {
             // Assign the provider a default name if it doesn't have one
             if (string.IsNullOrEmpty(name))
+            {
                 name = DefaultName;
+            }
 
             base.Initialize(name, config);
         }
@@ -55,7 +57,9 @@ namespace DotNetNuke.Web.Client.Providers
         protected override string RenderJsDependencies(IEnumerable<IClientDependencyFile> jsDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!jsDependencies.Any())
+            {
                 return string.Empty;
+            }
 
             var sb = new StringBuilder();
 
@@ -86,7 +90,9 @@ namespace DotNetNuke.Web.Client.Providers
         protected override string RenderCssDependencies(IEnumerable<IClientDependencyFile> cssDependencies, HttpContextBase http, IDictionary<string, string> htmlAttributes)
         {
             if (!cssDependencies.Any())
+            {
                 return string.Empty;
+            }
 
             var sb = new StringBuilder();
 
@@ -134,7 +140,9 @@ namespace DotNetNuke.Web.Client.Providers
             var page = (Page)http.CurrentHandler;
 
             if (page.Header == null)
+            {
                 throw new NullReferenceException("DnnBodyProvider requires a runat='server' tag in the page's header tag");
+            }
 
             var jsScriptBlock = new LiteralControl(js.Replace("&", "&amp;"));
             var cssStyleBlock = new LiteralControl(css.Replace("&", "&amp;"));

@@ -51,7 +51,9 @@ namespace DNN.Integration.Test.Framework
         {
             // Don't write anything to console when we run in TeamCity
             if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+            {
                 Console.WriteLine(text);
+            }
         }
     }
 }

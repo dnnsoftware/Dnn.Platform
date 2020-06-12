@@ -38,7 +38,10 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 if (string.IsNullOrEmpty(base.HeaderText))
+                {
                     base.HeaderText = Localization.GetString(string.Format("{0}.Header", this._HeaderText), DotNetNuke.Web.UI.Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent));
+                }
+
                 return base.HeaderText;
             }
             set

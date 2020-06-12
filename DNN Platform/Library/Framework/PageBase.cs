@@ -196,7 +196,9 @@ namespace DotNetNuke.Framework
                 tabId = this.PortalSettings.ActiveTab.TabID;
             }
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
+            }
         }
 
         protected virtual void RegisterAjaxScript()
@@ -376,7 +378,10 @@ namespace DotNetNuke.Framework
 
         private void LocalizeControl(Control control, string value)
         {
-            if (string.IsNullOrEmpty(value)) return;
+            if (string.IsNullOrEmpty(value))
+            {
+                return;
+            }
 
             var validator = control as BaseValidator;
             if (validator != null)
@@ -400,7 +405,10 @@ namespace DotNetNuke.Framework
                 foreach (Match match in imgMatches)
                 {
                     if (match.Groups[match.Groups.Count - 2].Value.IndexOf("~", StringComparison.Ordinal) == -1)
+                    {
                         continue;
+                    }
+
                     var resolvedUrl = this.Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
                     value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
                 }
@@ -471,7 +479,10 @@ namespace DotNetNuke.Framework
         /// <param name="resourceFileRoot">Root Resource File.</param>
         internal void ProcessControl(Control control, ArrayList affectedControls, bool includeChildren, string resourceFileRoot)
         {
-            if (!control.Visible) return;
+            if (!control.Visible)
+            {
+                return;
+            }
 
             // Perform the substitution if a key was found
             var key = GetControlAttribute(control, affectedControls, Localization.KeyName);
@@ -571,7 +582,11 @@ namespace DotNetNuke.Framework
             }
 
             // Process child controls
-            if (!includeChildren || !control.HasControls()) return;
+            if (!includeChildren || !control.HasControls())
+            {
+                return;
+            }
+
             var objModuleControl = control as IModuleControl;
             if (objModuleControl == null)
             {

@@ -33,7 +33,9 @@ namespace DotNetNuke.Common.Extensions
         internal static IServiceScope GetScope(System.Collections.IDictionary contextItems)
         {
             if (!contextItems.Contains(typeof(IServiceScope)))
+            {
                 return null;
+            }
 
             return contextItems[typeof(IServiceScope)] is IServiceScope scope ? scope : null;
         }

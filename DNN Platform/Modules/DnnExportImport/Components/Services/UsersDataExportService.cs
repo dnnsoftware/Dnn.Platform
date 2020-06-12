@@ -41,7 +41,10 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
 
             var pageIndex = 0;
             const int pageSize = Constants.DefaultPageSize;
@@ -58,7 +61,9 @@ namespace Dnn.ExportImport.Components.Services
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
             // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
+            {
                 return;
+            }
 
             pageIndex = this.CheckPoint.Stage;
 
@@ -66,13 +71,20 @@ namespace Dnn.ExportImport.Components.Services
 
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var includeProfile = importDto.ExportDto.IncludeProperfileProperties;
             try
             {
                 this.Repository.RebuildIndex<ExportUserRole>(x => x.ReferenceId);
                 if (includeProfile)
+                {
                     this.Repository.RebuildIndex<ExportUserProfile>(x => x.ReferenceId);
+                }
+
                 var portalId = importJob.PortalId;
                 using (var tableUserProfile = new DataTable("UserProfile"))
                 using (var tableUserRoles = new DataTable("UserRoles"))
@@ -83,7 +95,11 @@ namespace Dnn.ExportImport.Components.Services
                     var dataProvider = DotNetNuke.Data.DataProvider.Instance();
                     while (totalProcessed < totalUsersToBeProcessed)
                     {
-                        if (this.CheckCancelled(importJob)) return;
+                        if (this.CheckCancelled(importJob))
+                        {
+                            return;
+                        }
+
                         var users = this.Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
                         var tempUserRolesCount = 0;
                         var tempUserProfileCount = 0;
@@ -91,7 +107,10 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             foreach (var user in users)
                             {
-                                if (this.CheckCancelled(importJob)) return;
+                                if (this.CheckCancelled(importJob))
+                                {
+                                    return;
+                                }
                                 // Find the correct userId from the system which was added/updated by UserExportService.
                                 var userId = UserController.GetUserByName(user.Username)?.UserID;
                                 if (userId != null)
@@ -100,8 +119,16 @@ namespace Dnn.ExportImport.Components.Services
                                     foreach (var userRole in userRoles)
                                     {
                                         var roleId = Util.GetRoleIdByName(importJob.PortalId, userRole.RoleId, userRole.RoleName);
-                                        if (roleId == null) continue;
-                                        if (!(roleId > Convert.ToInt32(Globals.glbRoleNothing))) continue;
+                                        if (roleId == null)
+                                        {
+                                            continue;
+                                        }
+
+                                        if (!(roleId > Convert.ToInt32(Globals.glbRoleNothing)))
+                                        {
+                                            continue;
+                                        }
+
                                         var userRoleRow = tableUserRoles.NewRow();
                                         userRoleRow["PortalId"] = portalId;
                                         userRoleRow["UserId"] = userId;
@@ -126,7 +153,11 @@ namespace Dnn.ExportImport.Components.Services
                                             var profileDefinitionId = Util.GetProfilePropertyId(
                                                 importJob.PortalId,
                                                 userProfile.PropertyDefinitionId, userProfile.PropertyName);
-                                            if (profileDefinitionId == null || profileDefinitionId == -1) continue;
+                                            if (profileDefinitionId == null || profileDefinitionId == -1)
+                                            {
+                                                continue;
+                                            }
+
                                             var value = userProfile.PropertyValue;
                                             if (userProfile.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase) && (value = this.GetUserPhotoId(portalId, value, user)) == null)
                                             {
@@ -177,7 +208,10 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                         this.CheckPoint.Stage++;
                         this.CheckPoint.StageData = null;
-                        if (this.CheckPointStageCallback(this)) return;
+                        if (this.CheckPointStageCallback(this))
+                        {
+                            return;
+                        }
                     }
                 }
                 this.CheckPoint.Completed = true;
@@ -198,16 +232,28 @@ namespace Dnn.ExportImport.Components.Services
         {
             int profilePictureId;
             if (string.IsNullOrEmpty(importFileId) ||
-                !int.TryParse(importFileId, out profilePictureId)) return null;
+                !int.TryParse(importFileId, out profilePictureId))
+            {
+                return null;
+            }
+
             var files =
                 FolderManager.Instance.GetFiles(
                     FolderManager.Instance.GetUserFolder(
                         UserController.GetUserByName(portalId, user.Username)))
                     .ToList();
-            if (!files.Any()) return null;
+            if (!files.Any())
+            {
+                return null;
+            }
+
             var importUserFolder =
                 this.Repository.GetItem<ExportFolder>(x => x.UserId == user.UserId);
-            if (importUserFolder == null) return null;
+            if (importUserFolder == null)
+            {
+                return null;
+            }
+
             {
                 var profilePicture =
                     this.Repository.GetRelatedItems<ExportFile>(importUserFolder.Id)

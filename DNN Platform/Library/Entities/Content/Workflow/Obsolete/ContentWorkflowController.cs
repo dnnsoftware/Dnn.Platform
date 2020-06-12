@@ -106,7 +106,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             var item = this.contentController.GetContentItem(itemID);
             var workflow = this.GetWorkflow(item);
             if (workflow == null)
+            {
                 return;
+            }
 
             if (!this.IsWorkflowCompleted(workflow, item))
             {
@@ -138,8 +140,9 @@ namespace DotNetNuke.Entities.Content.Workflow
             var item = this.contentController.GetContentItem(itemID);
             var workflow = this.GetWorkflow(item);
             if (workflow == null)
+            {
                 return;
-
+            }
 
             var currentState = this.GetWorkflowStateByID(item.StateID);
             if ((this.GetFirstWorkflowStateID(workflow) != currentState.StateID) && (this.GetLastWorkflowStateID(workflow) != currentState.StateID))
@@ -161,7 +164,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var item = this.contentController.GetContentItem(itemID); // Ensure DB values
             var workflow = this.GetWorkflow(item);
-            if (workflow == null) return true; // If item has not workflow, then it is considered as completed
+            if (workflow == null)
+            {
+                return true; // If item has not workflow, then it is considered as completed
+            }
+
             return this.IsWorkflowCompleted(workflow, item);
         }
 
@@ -170,7 +177,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         {
             var item = this.contentController.GetContentItem(itemID); // Ensure DB values
             var workflow = this.GetWorkflow(item);
-            if (workflow == null) return false; // If item has not workflow, then it is not on Draft
+            if (workflow == null)
+            {
+                return false; // If item has not workflow, then it is not on Draft
+            }
+
             return item.StateID == this.GetFirstWorkflowStateID(workflow);
         }
 
@@ -288,7 +299,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         public ContentWorkflow GetWorkflow(ContentItem item)
         {
             var state = this.GetWorkflowStateByID(item.StateID);
-            if (state == null) return null;
+            if (state == null)
+            {
+                return null;
+            }
+
             return this.GetWorkflowByID(state.WorkflowID);
         }
 

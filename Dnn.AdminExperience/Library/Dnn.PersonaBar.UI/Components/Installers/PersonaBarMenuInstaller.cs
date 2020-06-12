@@ -140,7 +140,9 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                     menu = PersonaBarRepository.Instance.GetMenuItem(identifier);
                 }
                 if (menu != null)
+                {
                     MenuPermissionController.SavePersonaBarPermission(menu.MenuId, definition.Key, definition.Name);
+                }
             }
         }
 

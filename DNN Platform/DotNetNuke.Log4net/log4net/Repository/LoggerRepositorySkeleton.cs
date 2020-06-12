@@ -572,12 +572,23 @@ namespace log4net.Repository
 
         private static int GetWaitTime(DateTime startTimeUtc, int millisecondsTimeout)
         {
-            if (millisecondsTimeout == Timeout.Infinite) return Timeout.Infinite;
-            if (millisecondsTimeout == 0) return 0;
+            if (millisecondsTimeout == Timeout.Infinite)
+            {
+                return Timeout.Infinite;
+            }
+
+            if (millisecondsTimeout == 0)
+            {
+                return 0;
+            }
 
             int elapsedMilliseconds = (int)(DateTime.UtcNow - startTimeUtc).TotalMilliseconds;
             int timeout = millisecondsTimeout - elapsedMilliseconds;
-            if (timeout < 0) timeout = 0;
+            if (timeout < 0)
+            {
+                timeout = 0;
+            }
+
             return timeout;
         }
 
@@ -589,7 +600,10 @@ namespace log4net.Repository
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public bool Flush(int millisecondsTimeout)
         {
-            if (millisecondsTimeout < -1) throw new ArgumentOutOfRangeException("millisecondsTimeout", "Timeout must be -1 (Timeout.Infinite) or non-negative");
+            if (millisecondsTimeout < -1)
+            {
+                throw new ArgumentOutOfRangeException("millisecondsTimeout", "Timeout must be -1 (Timeout.Infinite) or non-negative");
+            }
 
             // Assume success until one of the appenders fails
             bool result = true;
@@ -601,11 +615,18 @@ namespace log4net.Repository
             foreach (log4net.Appender.IAppender appender in this.GetAppenders())
             {
                 log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
-                if (flushable == null) continue;
+                if (flushable == null)
+                {
+                    continue;
+                }
+
                 if (appender is Appender.BufferingAppenderSkeleton)
                 {
                     int timeout = GetWaitTime(startTimeUtc, millisecondsTimeout);
-                    if (!flushable.Flush(timeout)) result = false;
+                    if (!flushable.Flush(timeout))
+                    {
+                        result = false;
+                    }
                 }
             }
 
@@ -613,11 +634,18 @@ namespace log4net.Repository
             foreach (log4net.Appender.IAppender appender in this.GetAppenders())
             {
                 log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
-                if (flushable == null) continue;
+                if (flushable == null)
+                {
+                    continue;
+                }
+
                 if (!(appender is Appender.BufferingAppenderSkeleton))
                 {
                     int timeout = GetWaitTime(startTimeUtc, millisecondsTimeout);
-                    if (!flushable.Flush(timeout)) result = false;
+                    if (!flushable.Flush(timeout))
+                    {
+                        result = false;
+                    }
                 }
             }
 

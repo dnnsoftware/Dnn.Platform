@@ -134,7 +134,10 @@ namespace DotNetNuke.Services.Scheduling
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
                     if (Logger.IsDebugEnabled)
+                    {
                         Logger.Debug(ex);
+                    }
+
                     return false;
                 }
             }
@@ -502,7 +505,10 @@ namespace DotNetNuke.Services.Scheduling
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
                     if (Logger.IsDebugEnabled)
+                    {
                         Logger.Debug(ex);
+                    }
+
                     return 0;
                 }
             }
@@ -644,7 +650,10 @@ namespace DotNetNuke.Services.Scheduling
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
                     if (Logger.IsDebugEnabled)
+                    {
                         Logger.Debug(ex);
+                    }
+
                     return false;
                 }
             }
@@ -654,7 +663,10 @@ namespace DotNetNuke.Services.Scheduling
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetScheduleByEvent(eventName.ToString(), executingServer);
                 if (Logger.IsDebugEnabled)
+                {
                     Logger.Debug("loadqueue executingServer:" + executingServer);
+                }
+
                 var thisServer = GetServer(executingServer);
                 if (thisServer == null)
                 {
@@ -690,7 +702,10 @@ namespace DotNetNuke.Services.Scheduling
                 var executingServer = ServerController.GetExecutingServerName();
                 List<ScheduleItem> schedule = SchedulingController.GetSchedule(executingServer);
                 if (Logger.IsDebugEnabled)
+                {
                     Logger.Debug("LoadQueueFromTimer executingServer:" + executingServer);
+                }
+
                 var thisServer = GetServer(executingServer);
                 if (thisServer == null)
                 {
@@ -876,7 +891,9 @@ namespace DotNetNuke.Services.Scheduling
                             if (Common.Globals.ElapsedSinceAppStart.TotalSeconds < SchedulingProvider.DelayAtAppStart)
                             {
                                 if (!KeepThreadAlive)
+                                {
                                     return;
+                                }
 
                                 Thread.Sleep(1000);
                                 continue;

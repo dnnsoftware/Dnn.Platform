@@ -13,7 +13,10 @@ namespace DotNetNuke.Web.Api.Internal
         protected override Tuple<bool, string> IsAuthorized(HttpActionContext actionContext)
         {
             var result = base.IsAuthorized(actionContext);
-            if (result.Item1) return SuccessResult;
+            if (result.Item1)
+            {
+                return SuccessResult;
+            }
 
             try
             {

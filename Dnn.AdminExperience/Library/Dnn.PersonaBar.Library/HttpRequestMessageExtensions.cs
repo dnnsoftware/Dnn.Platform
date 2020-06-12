@@ -42,11 +42,15 @@ namespace Dnn.PersonaBar.Library
             // IEnumerable<KeyValuePair<string,string>> - right!
             var queryStrings = request.GetQueryNameValuePairs();
             if (queryStrings == null)
+            {
                 return null;
+            }
 
             var match = queryStrings.FirstOrDefault(kv => string.Compare(kv.Key, key, true) == 0);
             if (string.IsNullOrEmpty(match.Value))
+            {
                 return null;
+            }
 
             return match.Value;
         }
@@ -80,7 +84,9 @@ namespace Dnn.PersonaBar.Library
         {
             IEnumerable<string> keys = null;
             if (!request.Headers.TryGetValues(key, out keys))
+            {
                 return null;
+            }
 
             return keys.First();
         }
@@ -95,7 +101,9 @@ namespace Dnn.PersonaBar.Library
         {
             CookieHeaderValue cookie = request.Headers.GetCookies(cookieName).FirstOrDefault();
             if (cookie != null)
+            {
                 return cookie[cookieName].Value;
+            }
 
             return null;
         }

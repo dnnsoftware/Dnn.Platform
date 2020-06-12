@@ -57,7 +57,10 @@ namespace DotNetNuke.Data.PetaPoco
             if (primaryKey)
             {
                 if (!string.IsNullOrEmpty(mapper.TableInfo.PrimaryKey))
+                {
                     mapper.TableInfo.PrimaryKey += ",";
+                }
+
                 mapper.TableInfo.PrimaryKey += column;
             }
             return mapper;

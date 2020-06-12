@@ -416,7 +416,11 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public override void PurgeLogBuffer()
         {
-            if (!LockQueueLog.TryEnterWriteLock(WriterLockTimeout)) return;
+            if (!LockQueueLog.TryEnterWriteLock(WriterLockTimeout))
+            {
+                return;
+            }
+
             try
             {
                 for (int i = LogQueue.Count - 1; i >= 0; i += -1)

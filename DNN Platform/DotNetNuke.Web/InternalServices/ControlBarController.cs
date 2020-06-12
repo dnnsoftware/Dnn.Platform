@@ -259,7 +259,9 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         sortID = int.Parse(dto.Sort);
                         if (sortID >= 0)
+                        {
                             positionID = this.GetPaneModuleOrder(dto.Pane, sortID);
+                        }
                     }
                     catch (Exception exc)
                     {
@@ -437,7 +439,9 @@ namespace DotNetNuke.Web.InternalServices
         public HttpResponseMessage ToggleUserMode(UserModeDTO userMode)
         {
             if (userMode == null)
+            {
                 userMode = new UserModeDTO { UserMode = "VIEW" };
+            }
 
             this.ToggleUserMode(userMode.UserMode);
             var response = this.Request.CreateResponse(HttpStatusCode.OK, new { Success = true });
@@ -468,7 +472,10 @@ namespace DotNetNuke.Web.InternalServices
         [DnnPageEditor]
         public HttpResponseMessage SaveBookmark(BookmarkDTO bookmark)
         {
-            if (string.IsNullOrEmpty(bookmark.Bookmark)) bookmark.Bookmark = string.Empty;
+            if (string.IsNullOrEmpty(bookmark.Bookmark))
+            {
+                bookmark.Bookmark = string.Empty;
+            }
 
             this.Controller.SaveBookMark(this.PortalSettings.PortalId, this.UserInfo.UserID, bookmark.Title, bookmark.Bookmark);
 

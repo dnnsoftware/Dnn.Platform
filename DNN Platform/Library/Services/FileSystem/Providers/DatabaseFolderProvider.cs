@@ -82,7 +82,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             var sourceFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, folderPath);
             var destinationFolder = FolderManager.Instance.GetFolder(folderMapping.PortalID, newFolderPath);
@@ -242,7 +245,10 @@ namespace DotNetNuke.Services.FileSystem
 
             var file = FileManager.Instance.GetFile(folder, fileName, true);
 
-            if (file == null) return;
+            if (file == null)
+            {
+                return;
+            }
 
             this.UpdateFileInternal(file.FileId, content);
         }

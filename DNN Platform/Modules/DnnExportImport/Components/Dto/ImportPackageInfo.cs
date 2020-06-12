@@ -60,7 +60,11 @@ namespace Dnn.ExportImport.Components.Dto
 
         public void ConvertToLocal(UserInfo userInfo)
         {
-            if (userInfo == null) return;
+            if (userInfo == null)
+            {
+                return;
+            }
+
             this.ExporTime = Util.ToLocalDateTime(this.ExporTime, userInfo);
             this.Summary?.ConvertToLocal(userInfo);
         }

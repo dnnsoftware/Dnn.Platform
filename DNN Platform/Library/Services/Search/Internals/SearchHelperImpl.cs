@@ -84,20 +84,33 @@ namespace DotNetNuke.Services.Search.Internals
         public int AddSynonymsGroup(string synonymsTags, int portalId, string cultureCode, out string duplicateWord)
         {
             duplicateWord = null;
-            if (string.IsNullOrEmpty(synonymsTags)) return 0;
-            if (portalId < 0) return 0;
+            if (string.IsNullOrEmpty(synonymsTags))
+            {
+                return 0;
+            }
+
+            if (portalId < 0)
+            {
+                return 0;
+            }
 
             var userId = PortalSettings.Current.UserId;
             var list = this.GetSynonymsGroups(portalId, cultureCode);
             var tags = synonymsTags.ToLowerInvariant().Split(',');
 
-            if (!tags.Any()) return 0;
+            if (!tags.Any())
+            {
+                return 0;
+            }
 
             foreach (var group in list)
             {
                 var groupTags = group.SynonymsTags.ToLowerInvariant().Split(',');
                 duplicateWord = tags.FirstOrDefault(groupTags.Contains);
-                if (!string.IsNullOrEmpty(duplicateWord)) return 0;
+                if (!string.IsNullOrEmpty(duplicateWord))
+                {
+                    return 0;
+                }
             }
 
             var newId = DataProvider.Instance().AddSynonymsGroup(synonymsTags, userId, portalId, cultureCode);
@@ -113,14 +126,24 @@ namespace DotNetNuke.Services.Search.Internals
         public int UpdateSynonymsGroup(int synonymsGroupId, string synonymsTags, int portalId, string cultureCode, out string duplicateWord)
         {
             duplicateWord = null;
-            if (synonymsGroupId <= 0) return 0;
-            if (string.IsNullOrEmpty(synonymsTags)) return 0;
+            if (synonymsGroupId <= 0)
+            {
+                return 0;
+            }
+
+            if (string.IsNullOrEmpty(synonymsTags))
+            {
+                return 0;
+            }
 
             var userId = PortalSettings.Current.UserId;
             var list = this.GetSynonymsGroups(portalId, cultureCode);
             var tags = synonymsTags.ToLowerInvariant().Split(',');
 
-            if (!tags.Any()) return 0;
+            if (!tags.Any())
+            {
+                return 0;
+            }
 
             foreach (var group in list)
             {
@@ -128,7 +151,10 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     var groupTags = group.SynonymsTags.ToLowerInvariant().Split(',');
                     duplicateWord = tags.FirstOrDefault(groupTags.Contains);
-                    if (!string.IsNullOrEmpty(duplicateWord)) return 0;
+                    if (!string.IsNullOrEmpty(duplicateWord))
+                    {
+                        return 0;
+                    }
                 }
             }
 
@@ -143,7 +169,10 @@ namespace DotNetNuke.Services.Search.Internals
 
         public void DeleteSynonymsGroup(int synonymsGroupId, int portalId, string cultureCode)
         {
-            if (synonymsGroupId <= 0) return;
+            if (synonymsGroupId <= 0)
+            {
+                return;
+            }
 
             DataProvider.Instance().DeleteSynonymsGroup(synonymsGroupId);
             var cacheKey = string.Format(CacheKeyFormat, SynonymGroupsCacheKey, portalId, cultureCode);
@@ -163,12 +192,26 @@ namespace DotNetNuke.Services.Search.Internals
 
         public int AddSearchStopWords(string stopWords, int portalId, string cultureCode)
         {
-            if (string.IsNullOrEmpty(stopWords)) return 0;
-            if (portalId < 0) return 0;
-            if (string.IsNullOrEmpty(cultureCode)) return 0;
+            if (string.IsNullOrEmpty(stopWords))
+            {
+                return 0;
+            }
+
+            if (portalId < 0)
+            {
+                return 0;
+            }
+
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                return 0;
+            }
 
             var tags = stopWords.ToLowerInvariant().Split(',');
-            if (!tags.Any()) return 0;
+            if (!tags.Any())
+            {
+                return 0;
+            }
 
             var userId = PortalSettings.Current.UserId;
             var newId = DataProvider.Instance().AddSearchStopWords(stopWords, userId, portalId, cultureCode);
@@ -179,13 +222,31 @@ namespace DotNetNuke.Services.Search.Internals
 
         public int UpdateSearchStopWords(int stopWordsId, string stopWords, int portalId, string cultureCode)
         {
-            if (string.IsNullOrEmpty(stopWords)) return 0;
-            if (portalId < 0) return 0;
-            if (stopWordsId <= 0) return 0;
-            if (string.IsNullOrEmpty(cultureCode)) return 0;
+            if (string.IsNullOrEmpty(stopWords))
+            {
+                return 0;
+            }
+
+            if (portalId < 0)
+            {
+                return 0;
+            }
+
+            if (stopWordsId <= 0)
+            {
+                return 0;
+            }
+
+            if (string.IsNullOrEmpty(cultureCode))
+            {
+                return 0;
+            }
 
             var tags = stopWords.ToLowerInvariant().Split(',');
-            if (!tags.Any()) return 0;
+            if (!tags.Any())
+            {
+                return 0;
+            }
 
             var userId = PortalSettings.Current.UserId;
             DataProvider.Instance().UpdateSearchStopWords(stopWordsId, stopWords, userId);
@@ -196,7 +257,10 @@ namespace DotNetNuke.Services.Search.Internals
 
         public void DeleteSearchStopWords(int stopWordsId, int portalId, string cultureCode)
         {
-            if (stopWordsId <= 0) return;
+            if (stopWordsId <= 0)
+            {
+                return;
+            }
 
             DataProvider.Instance().DeleteSearchStopWords(stopWordsId);
             var cacheKey = string.Format(CacheKeyFormat, SearchStopWordsCacheKey, portalId, cultureCode);
@@ -300,7 +364,10 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 // retrieves the date as UTC but returns to caller as local
                 lastTime = FixSqlDateTime(lastTime).ToLocalTime().ToLocalTime();
-                if (lastTime > DateTime.Now) lastTime = DateTime.Now;
+                if (lastTime > DateTime.Now)
+                {
+                    lastTime = DateTime.Now;
+                }
             }
             else
             {
@@ -363,11 +430,25 @@ namespace DotNetNuke.Services.Search.Internals
             var minWordLength = hostController.GetInteger(Constants.SearchMinLengthKey, Constants.DefaultMinLen);
             var maxWordLength = hostController.GetInteger(Constants.SearchMaxLengthKey, Constants.DefaultMaxLen);
 
-            if (minWordLength < Constants.MinimumMinLen) minWordLength = Constants.MinimumMinLen;
-            if (maxWordLength < Constants.MinimumMaxLen) maxWordLength = Constants.MinimumMaxLen;
+            if (minWordLength < Constants.MinimumMinLen)
+            {
+                minWordLength = Constants.MinimumMinLen;
+            }
 
-            if (minWordLength > Constants.MaximumMinLen) minWordLength = Constants.MaximumMinLen;
-            if (maxWordLength > Constants.MaximumMaxLen) maxWordLength = Constants.MaximumMaxLen;
+            if (maxWordLength < Constants.MinimumMaxLen)
+            {
+                maxWordLength = Constants.MinimumMaxLen;
+            }
+
+            if (minWordLength > Constants.MaximumMinLen)
+            {
+                minWordLength = Constants.MaximumMinLen;
+            }
+
+            if (maxWordLength > Constants.MaximumMaxLen)
+            {
+                maxWordLength = Constants.MaximumMaxLen;
+            }
 
             if (minWordLength > maxWordLength)
             {
@@ -456,16 +537,23 @@ namespace DotNetNuke.Services.Search.Internals
         private static DateTime FixSqlDateTime(DateTime datim)
         {
             if (datim <= SqlDateTime.MinValue.Value)
+            {
                 datim = SqlDateTime.MinValue.Value.AddDays(1);
+            }
             else if (datim >= SqlDateTime.MaxValue.Value)
+            {
                 datim = SqlDateTime.MaxValue.Value.AddDays(-1);
+            }
+
             return datim;
         }
 
         private string FixLastWord(string lastWord, bool allowLeadingWildcard)
         {
             if (string.IsNullOrEmpty(lastWord))
+            {
                 return string.Empty;
+            }
 
             if (lastWord.IndexOfAny(new[] { '~', '*' }) < 0)
             {
@@ -501,8 +589,15 @@ namespace DotNetNuke.Services.Search.Internals
                         : string.Format("({0} OR {1}{0}*)", lastWord, allowLeadingWildcard ? "*" : string.Empty);
                 }
 
-                if (beginIsGroup) lastWord = c1 + lastWord;
-                if (endIsGroup) lastWord += c2;
+                if (beginIsGroup)
+                {
+                    lastWord = c1 + lastWord;
+                }
+
+                if (endIsGroup)
+                {
+                    lastWord += c2;
+                }
             }
             return lastWord;
         }
@@ -566,7 +661,10 @@ namespace DotNetNuke.Services.Search.Internals
             var portalId = int.Parse(parts[1]);
             var cultureCode = parts[2];
             var groups = this.GetSynonymsGroups(portalId, cultureCode);
-            if (groups == null) return allTerms;
+            if (groups == null)
+            {
+                return allTerms;
+            }
 
             foreach (var synonymsGroup in groups)
             {
@@ -576,7 +674,9 @@ namespace DotNetNuke.Services.Search.Internals
                 foreach (var tag in groupTags)
                 {
                     if (!terms.ContainsKey(tag))
+                    {
                         terms.Add(tag, new List<string>());
+                    }
                 }
 
                 // add synonyms
@@ -585,7 +685,9 @@ namespace DotNetNuke.Services.Search.Internals
                     foreach (var syn in terms)
                     {
                         if (term.Key != syn.Key)
+                        {
                             term.Value.Add(syn.Key);
+                        }
                     }
                 }
 
@@ -614,10 +716,16 @@ namespace DotNetNuke.Services.Search.Internals
             const string setting = "SearchAdminInitialization";
 
             // check portal settings first
-            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false") return;
+            if (PortalController.GetPortalSetting(setting, portalId, "false") != "false")
+            {
+                return;
+            }
 
             // Portal may not be present, especially during installation
-            if (PortalController.Instance.GetPortal(portalId) == null) return;
+            if (PortalController.Instance.GetPortal(portalId) == null)
+            {
+                return;
+            }
 
             foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
             {
@@ -628,7 +736,10 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     // Add Default StopWord
                     var defaultStopWords = Localization.Localization.GetString("DefaultStopwordGroup", resourceFile);
-                    if (!string.IsNullOrEmpty(defaultStopWords)) DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
+                    if (!string.IsNullOrEmpty(defaultStopWords))
+                    {
+                        DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
+                    }
                 }
 
                 var currentSynonymGroups = CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, locale.Code));
@@ -636,7 +747,10 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     // Add Default Synonym
                     var defaultSynonymsGroup = Localization.Localization.GetString("DefaultSynonymGroup", resourceFile);
-                    if (!string.IsNullOrEmpty(defaultSynonymsGroup)) DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
+                    if (!string.IsNullOrEmpty(defaultSynonymsGroup))
+                    {
+                        DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
+                    }
                 }
             }
             // Update Portal Settings

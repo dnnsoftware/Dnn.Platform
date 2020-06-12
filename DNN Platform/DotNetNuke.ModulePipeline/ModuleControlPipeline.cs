@@ -91,7 +91,9 @@ namespace DotNetNuke.ModulePipeline
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlKey, string controlSrc)
         {
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
@@ -116,14 +118,20 @@ namespace DotNetNuke.ModulePipeline
             }
 
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             return control;
         }
 
         public Control LoadModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(moduleConfiguration.ModuleControl.ControlSrc);
 
@@ -147,14 +155,19 @@ namespace DotNetNuke.ModulePipeline
             }
 
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadModuleControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             return control;
         }
 
         public Control LoadSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl Start (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
 
             Control control = null;
             IModuleControlFactory controlFactory = this.GetModuleControlFactory(controlSrc);
@@ -183,7 +196,10 @@ namespace DotNetNuke.ModulePipeline
             }
 
             if (TraceLogger.IsDebugEnabled)
+            {
                 TraceLogger.Debug($"ModuleControlFactory.LoadSettingsControl End (TabId:{moduleConfiguration.TabID},ModuleId:{moduleConfiguration.ModuleID}): ModuleControlSource:{moduleConfiguration.ModuleControl.ControlSrc}");
+            }
+
             return control;
         }
 

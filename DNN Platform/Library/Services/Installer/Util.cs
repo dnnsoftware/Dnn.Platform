@@ -553,7 +553,9 @@ namespace DotNetNuke.Services.Installer
         {
             var file = new FileInfo(destFileName);
             if (file.Directory != null && !file.Directory.Exists)
+            {
                 file.Directory.Create();
+            }
 
             // HACK: Temporary fix, upping retry limit due to locking for existing filesystem access.  This "fixes" azure, but isn't the most elegant
             TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 3500);

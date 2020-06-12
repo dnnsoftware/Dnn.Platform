@@ -669,7 +669,11 @@ namespace DotNetNuke.Common.Utilities
 
         private static void RemoveUniqueLockObject(string key)
         {
-            if (!dictionaryLock.TryEnterWriteLock(_5seconds)) return;
+            if (!dictionaryLock.TryEnterWriteLock(_5seconds))
+            {
+                return;
+            }
+
             try
             {
                 // check dictionary

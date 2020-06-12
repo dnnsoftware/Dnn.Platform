@@ -54,7 +54,11 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 // Get the exception object.
                 Logger.Trace("Dumping all Application Errors");
-                foreach (Exception exc in HttpContext.Current.AllErrors) Logger.Fatal(exc);
+                foreach (Exception exc in HttpContext.Current.AllErrors)
+                {
+                    Logger.Fatal(exc);
+                }
+
                 Logger.Trace("End Dumping all Application Errors");
             }
         }
@@ -160,14 +164,20 @@ namespace DotNetNuke.Web.Common.Internal
             {
                 Logger.Trace("Disposing Lucene");
                 var lucene = LuceneController.Instance as IDisposable;
-                if (lucene != null) lucene.Dispose();
+                if (lucene != null)
+                {
+                    lucene.Dispose();
+                }
             }
             Logger.Trace("Dumping all Application Errors");
             if (HttpContext.Current != null)
             {
                 if (HttpContext.Current.AllErrors != null)
                 {
-                    foreach (Exception exc in HttpContext.Current.AllErrors) Logger.Fatal(exc);
+                    foreach (Exception exc in HttpContext.Current.AllErrors)
+                    {
+                        Logger.Fatal(exc);
+                    }
                 }
             }
             Logger.Trace("End Dumping all Application Errors");

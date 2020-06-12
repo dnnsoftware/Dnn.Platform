@@ -53,7 +53,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
             if (field == null)
+            {
                 throw new ArgumentException(string.Format("Could not find the private instance field '{0}'", fieldName));
+            }
 
             field.SetValue(null, value);
         }
@@ -69,7 +71,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             var type = Type.GetType(typeName, true);
             var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
             if (field == null)
+            {
                 throw new ArgumentException(string.Format("Could not find the private instance field '{0}'", fieldName));
+            }
 
             field.SetValue(null, value);
         }
@@ -99,7 +103,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             var field = source.GetType().GetField(memberName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
             if (field == null)
+            {
                 throw new ArgumentException(string.Format("Could not find the private instance field '{0}'", memberName));
+            }
 
             field.SetValue(source, value);
         }
@@ -134,7 +140,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             var method = type.GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Static, null, paramTypes, null);
 
             if (method == null)
+            {
                 throw new ArgumentException(string.Format("Could not find a method with the name '{0}'", methodName), "methodName");
+            }
 
             return (TReturn)method.Invoke(null, parameters);
         }
@@ -145,7 +153,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             var method = source.GetType().GetMethod(methodName, BindingFlags.NonPublic | BindingFlags.Instance, null, paramTypes, null);
 
             if (method == null)
+            {
                 throw new ArgumentException(string.Format("Could not find a method with the name '{0}'", methodName), "methodName");
+            }
 
             return (TReturn)method.Invoke(source, parameters);
         }
@@ -154,7 +164,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             var propertyInfo = source.GetType().GetProperty(propertyName);
             if (propertyInfo == null)
+            {
                 throw new ArgumentException(string.Format("Could not find a propertyName with the name '{0}'", propertyName), "propertyName");
+            }
 
             return (TReturn)propertyInfo.GetValue(source, null);
         }
@@ -163,7 +175,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             var propertyInfo = source.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance, null, typeof(TReturn), new Type[0], null);
             if (propertyInfo == null)
+            {
                 throw new ArgumentException(string.Format("Could not find a propertyName with the name '{0}'", propertyName), "propertyName");
+            }
 
             return (TReturn)propertyInfo.GetValue(source, null);
         }
@@ -172,7 +186,9 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         {
             var propertyInfo = source.GetType().GetProperty(propertyName, BindingFlags.NonPublic | BindingFlags.Instance);
             if (propertyInfo == null)
+            {
                 throw new ArgumentException(string.Format("Could not find a propertyName with the name '{0}'", propertyName), "propertyName");
+            }
 
             return propertyInfo.GetValue(source, null);
         }

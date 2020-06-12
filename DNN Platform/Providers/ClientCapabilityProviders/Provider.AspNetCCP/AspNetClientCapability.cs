@@ -116,7 +116,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 
                 // set IsMobile to false when IsTablet is true.
                 if (this.IsTablet)
+                {
                     this.IsMobile = false;
+                }
             }
         }
 
@@ -146,7 +148,10 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             bool value;
             if (properties.ContainsKey(property) &&
                 bool.TryParse(properties[property], out value))
+            {
                 return value;
+            }
+
             return false;
         }
 
@@ -162,7 +167,10 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             int value;
             if (properties.ContainsKey(property) &&
                 int.TryParse(properties[property], out value))
+            {
                 return value;
+            }
+
             return 0;
         }
 

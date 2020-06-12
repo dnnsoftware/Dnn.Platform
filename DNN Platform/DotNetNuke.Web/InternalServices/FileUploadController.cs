@@ -553,7 +553,10 @@ namespace DotNetNuke.Web.InternalServices
             }
             if (portalId > -1)
             {
-                if (!this.IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                if (!this.IsPortalIdValid(portalId))
+                {
+                    throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                }
             }
             else
             {
@@ -689,7 +692,10 @@ namespace DotNetNuke.Web.InternalServices
                 var portalId = dto.PortalId;
                 if (portalId > -1)
                 {
-                    if (!this.IsPortalIdValid(portalId)) throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                    if (!this.IsPortalIdValid(portalId))
+                    {
+                        throw new HttpResponseException(HttpStatusCode.Unauthorized);
+                    }
                 }
                 else
                 {
@@ -793,11 +799,21 @@ namespace DotNetNuke.Web.InternalServices
 
         private bool IsPortalIdValid(int portalId)
         {
-            if (this.UserInfo.IsSuperUser) return true;
-            if (this.PortalSettings.PortalId == portalId) return true;
+            if (this.UserInfo.IsSuperUser)
+            {
+                return true;
+            }
+
+            if (this.PortalSettings.PortalId == portalId)
+            {
+                return true;
+            }
 
             var isAdminUser = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-            if (!isAdminUser) return false;
+            if (!isAdminUser)
+            {
+                return false;
+            }
 
             var mygroup = GetMyPortalGroup();
             return mygroup != null && mygroup.Any(p => p.PortalID == portalId);

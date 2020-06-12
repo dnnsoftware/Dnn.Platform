@@ -44,7 +44,10 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var cacheKey = string.Format(localization.ResxDataCacheKey, culture, resourceFile);
             var localizedDict = DataCache.GetCache(cacheKey) as Dictionary<string, string>;
-            if (localizedDict != null) return localizedDict;
+            if (localizedDict != null)
+            {
+                return localizedDict;
+            }
 
             var dictionary = new Dictionary<string, string>();
 
@@ -66,7 +69,11 @@ namespace Dnn.PersonaBar.Library.Controllers
 
             var cacheKey = string.Format(localization.ResxModifiedDateCacheKey, culture);
             var cachedData = DataCache.GetCache(cacheKey);
-            if (cachedData is DateTime) return (DateTime)DataCache.GetCache(cacheKey);
+            if (cachedData is DateTime)
+            {
+                return (DateTime)DataCache.GetCache(cacheKey);
+            }
+
             var lastModifiedDate = this.GetLastModifiedTimeInternal(resourceFile, culture);
 
 

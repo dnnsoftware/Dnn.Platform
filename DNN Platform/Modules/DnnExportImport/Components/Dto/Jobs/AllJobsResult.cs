@@ -33,8 +33,16 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
             this.LastExportTime = Util.ToLocalDateTime(this.LastExportTime, userInfo);
             this.LastImportTime = Util.ToLocalDateTime(this.LastImportTime, userInfo);
 
-            if (userInfo == null) return;
-            if (this.Jobs == null) return;
+            if (userInfo == null)
+            {
+                return;
+            }
+
+            if (this.Jobs == null)
+            {
+                return;
+            }
+
             var tempJobs = new List<JobItem>();
 
             foreach (var job in this.Jobs)

@@ -39,14 +39,16 @@ namespace DotNetNuke.Modules.Groups.Components
             journalItem.ObjectKey = string.Format("groupcreate:{0}:{1}", roleInfo.RoleID.ToString(CultureInfo.InvariantCulture), createdBy.UserID.ToString(CultureInfo.InvariantCulture));
 
             if (journalController.GetJournalItemByKey(roleInfo.PortalID, journalItem.ObjectKey) != null)
+            {
                 journalController.DeleteJournalItemByKey(roleInfo.PortalID, journalItem.ObjectKey);
-
+            }
 
             journalItem.SecuritySet = string.Empty;
 
             if (roleInfo.IsPublic)
+            {
                 journalItem.SecuritySet += "E,";
-
+            }
 
             journalController.SaveJournalItem(journalItem, null);
         }

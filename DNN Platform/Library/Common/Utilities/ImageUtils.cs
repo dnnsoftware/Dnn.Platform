@@ -179,8 +179,16 @@ namespace DotNetNuke.Common.Utilities
                     imgWidth = original.Width;
                 }
 
-                if (imgWidth < 1) imgWidth = 1;
-                if (imgHeight < 1) imgHeight = 1;
+                if (imgWidth < 1)
+                {
+                    imgWidth = 1;
+                }
+
+                if (imgHeight < 1)
+                {
+                    imgHeight = 1;
+                }
+
                 imgSize = new Size(imgWidth, imgHeight);
 
                 using (var newImg = new Bitmap(imgWidth, imgHeight, format))

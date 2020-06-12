@@ -71,7 +71,9 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 if (string.IsNullOrEmpty(base.ImageUrl))
+                {
                     base.ImageUrl = Entities.Icons.IconController.IconURL(this.IconKey, this.IconSize, this.IconStyle);
+                }
 
                 return base.ImageUrl;
             }

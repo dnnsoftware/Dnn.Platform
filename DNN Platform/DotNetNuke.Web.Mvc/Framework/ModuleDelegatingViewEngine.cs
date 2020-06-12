@@ -58,7 +58,9 @@ namespace DotNetNuke.Web.Mvc.Framework
         {
             var controller = controllerContext.Controller as IDnnController;
             if (controller == null || controller.ViewEngineCollectionEx == null)
+            {
                 return new ViewEngineResult(new string[0]);
+            }
 
             var result = engineRequest(controller.ViewEngineCollectionEx);
 

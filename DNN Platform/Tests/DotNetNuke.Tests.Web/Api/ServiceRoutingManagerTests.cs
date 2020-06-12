@@ -51,7 +51,9 @@ namespace DotNetNuke.Tests.Web.Api
             PortalController.ClearInstance();
 
             if (Globals.DependencyProvider is IDisposable disposable)
+            {
                 disposable.Dispose();
+            }
 
             Globals.DependencyProvider = null;
         }

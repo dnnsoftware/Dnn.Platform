@@ -75,8 +75,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
 
             var checkedPages = exportDto.Pages.Where(p => p.CheckedState == TriCheckedState.Checked || p.CheckedState == TriCheckedState.CheckedWithAllChildren);
             if (checkedPages.Any())
@@ -97,8 +104,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
 
             this._exportImportJob = importJob;
             this._importDto = importDto;
@@ -136,7 +150,11 @@ namespace Dnn.ExportImport.Components.Services
 
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportedTabs.Count : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < this._totals.LastProcessedId);
 
             var index = 0;
@@ -144,14 +162,24 @@ namespace Dnn.ExportImport.Components.Services
             this._importContentList.Clear();
             foreach (var otherTab in exportedTabs)
             {
-                if (this.CheckCancelled(this._exportImportJob)) break;
-                if (this._totals.LastProcessedId > index) continue; // this is the exported DB row ID; not the TabID
+                if (this.CheckCancelled(this._exportImportJob))
+                {
+                    break;
+                }
+
+                if (this._totals.LastProcessedId > index)
+                {
+                    continue; // this is the exported DB row ID; not the TabID
+                }
 
                 this.ProcessImportPage(otherTab, exportedTabs, localTabs, referenceTabs);
 
                 this.CheckPoint.ProcessedItems++;
                 this.CheckPoint.Progress += progressStep;
-                if (this.CheckPointStageCallback(this)) break;
+                if (this.CheckPointStageCallback(this))
+                {
+                    break;
+                }
 
                 this._totals.LastProcessedId = index++;
                 this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
@@ -185,7 +213,11 @@ namespace Dnn.ExportImport.Components.Services
                         this.Result.AddLogEntry("Ignored Tab", $"{otherTab.TabName} ({otherTab.TabPath})");
                         break;
                     case CollisionResolution.Overwrite:
-                        if (!this.IsTabPublished(localTab)) return;
+                        if (!this.IsTabPublished(localTab))
+                        {
+                            return;
+                        }
+
                         SetTabData(localTab, otherTab);
                         localTab.StateID = this.GetLocalStateId(otherTab.StateID);
                         var parentId = this.IgnoreParentMatch ? otherTab.ParentId.GetValueOrDefault(Null.NullInteger) : TryFindLocalParentTabId(otherTab, exportedTabs, localTabs);
@@ -470,7 +502,11 @@ namespace Dnn.ExportImport.Components.Services
 
         private int ImportTabPermissions(TabInfo localTab, ExportTab otherTab, bool isNew)
         {
-            if (!this._exportDto.IncludePermissions) return 0;
+            if (!this._exportDto.IncludePermissions)
+            {
+                return 0;
+            }
+
             var noRole = Convert.ToInt32(Globals.glbRoleNothing);
             var count = 0;
             var tabPermissions = this.Repository.GetRelatedItems<ExportTabPermission>(otherTab.Id).ToList();
@@ -666,7 +702,10 @@ namespace Dnn.ExportImport.Components.Services
                 }
 
                 var otherModule = exportedModules.FirstOrDefault(m => m.ModuleID == other.ModuleID);
-                if (otherModule == null) continue; // must not happen
+                if (otherModule == null)
+                {
+                    continue; // must not happen
+                }
 
                 var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(other.FriendlyName);
                 if (moduleDefinition == null)
@@ -830,9 +869,13 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     local.IsDeleted = other.IsDeleted;
                                     if (other.IsDeleted)
+                                    {
                                         this._moduleController.DeleteTabModule(local.TabID, local.ModuleID, true);
+                                    }
                                     else
+                                    {
                                         this._moduleController.RestoreModule(local);
+                                    }
                                 }
                             }
                             else
@@ -1134,13 +1177,19 @@ namespace Dnn.ExportImport.Components.Services
                     if (other.UserID != null && other.UserID > 0 && !string.IsNullOrEmpty(other.Username))
                     {
                         if (userId == null)
+                        {
                             continue;
+                        }
+
                         local.UserID = userId.Value;
                     }
                     if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                     {
                         if (roleId == null)
+                        {
                             continue;
+                        }
+
                         local.RoleID = roleId.Value;
                     }
 
@@ -1350,7 +1399,9 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         var localTab = localTabs.FirstOrDefault(t => t.TabID == otherParent.LocalId);
                         if (localTab != null)
+                        {
                             return localTab.TabID;
+                        }
                     }
                 }
                 else if (exportedTab.TabPath.HasValue())
@@ -1363,7 +1414,9 @@ namespace Dnn.ExportImport.Components.Services
                             path.Equals(t.TabPath, StringComparison.InvariantCultureIgnoreCase)
                             && IsSameCulture(t.CultureCode, exportedTab.CultureCode));
                         if (localTab != null)
+                        {
                             return localTab.TabID;
+                        }
                     }
                 }
             }
@@ -1507,7 +1560,11 @@ namespace Dnn.ExportImport.Components.Services
 
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? allTabs.Length : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var progressStep = 100.0 / allTabs.Length;
 
             this.CheckPoint.TotalItems = this.IncludeSystem || isAllIncluded
@@ -1517,10 +1574,16 @@ namespace Dnn.ExportImport.Components.Services
             // Note: We assume no new tabs were added while running; otherwise, some tabs might get skipped.
             for (var index = 0; index < allTabs.Length; index++)
             {
-                if (this.CheckCancelled(this._exportImportJob)) break;
+                if (this.CheckCancelled(this._exportImportJob))
+                {
+                    break;
+                }
 
                 var otherPg = allTabs.ElementAt(index);
-                if (this._totals.LastProcessedId > index) continue;
+                if (this._totals.LastProcessedId > index)
+                {
+                    continue;
+                }
 
                 if (this.IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
@@ -1555,7 +1618,10 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress += progressStep;
                 this.CheckPoint.ProcessedItems++;
                 this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
-                if (this.CheckPointStageCallback(this)) break;
+                if (this.CheckPointStageCallback(this))
+                {
+                    break;
+                }
             }
 
             this.ReportExportTotals();
@@ -1566,17 +1632,26 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabSettings = EntitiesController.Instance.GetTabSettings(exportPage.TabId, toDate, fromDate);
             if (tabSettings.Count > 0)
+            {
                 this.Repository.CreateItems(tabSettings, exportPage.Id);
+            }
+
             return tabSettings.Count;
         }
 
         private int ExportTabPermissions(ExportTab exportPage, DateTime toDate, DateTime? fromDate)
         {
-            if (!this._exportDto.IncludePermissions) return 0;
+            if (!this._exportDto.IncludePermissions)
+            {
+                return 0;
+            }
 
             var tabPermissions = EntitiesController.Instance.GetTabPermissions(exportPage.TabId, toDate, fromDate);
             if (tabPermissions.Count > 0)
+            {
                 this.Repository.CreateItems(tabPermissions, exportPage.Id);
+            }
+
             return tabPermissions.Count;
         }
 
@@ -1584,7 +1659,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabUrls = EntitiesController.Instance.GetTabUrls(exportPage.TabId, toDate, fromDate);
             if (tabUrls.Count > 0)
+            {
                 this.Repository.CreateItems(tabUrls, exportPage.Id);
+            }
+
             return tabUrls.Count;
         }
 
@@ -1592,7 +1670,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModules = EntitiesController.Instance.GetTabModules(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModules.Count > 0)
+            {
                 this.Repository.CreateItems(tabModules, exportPage.Id);
+            }
+
             return tabModules.Count;
         }
 
@@ -1600,7 +1681,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var tabModuleSettings = EntitiesController.Instance.GetTabModuleSettings(exportPage.TabId, includeDeleted, toDate, fromDate);
             if (tabModuleSettings.Count > 0)
+            {
                 this.Repository.CreateItems(tabModuleSettings, exportPage.Id);
+            }
+
             return tabModuleSettings.Count;
         }
 
@@ -1677,7 +1761,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var moduleSettings = EntitiesController.Instance.GetModuleSettings(exportModule.ModuleID, toDate, fromDate);
             if (moduleSettings.Count > 0)
+            {
                 this.Repository.CreateItems(moduleSettings, exportModule.Id);
+            }
+
             return moduleSettings.Count;
         }
 
@@ -1685,7 +1772,10 @@ namespace Dnn.ExportImport.Components.Services
         {
             var modulePermission = EntitiesController.Instance.GetModulePermissions(exportModule.ModuleID, toDate, fromDate);
             if (modulePermission.Count > 0)
+            {
                 this.Repository.CreateItems(modulePermission, exportModule.Id);
+            }
+
             return modulePermission.Count;
         }
 
@@ -1881,22 +1971,46 @@ namespace Dnn.ExportImport.Components.Services
         {
             var exportWorkflowState = this.Repository.GetItem<ExportWorkflowState>(item => item.StateID == exportedStateId);
             var stateId = exportWorkflowState?.LocalId ?? Null.NullInteger;
-            if (stateId <= 0) return stateId;
+            if (stateId <= 0)
+            {
+                return stateId;
+            }
+
             var state = WorkflowStateManager.Instance.GetWorkflowState(stateId);
-            if (state == null) return -1;
+            if (state == null)
+            {
+                return -1;
+            }
+
             var workflow = WorkflowManager.Instance.GetWorkflow(state.WorkflowID);
-            if (workflow == null) return -1;
+            if (workflow == null)
+            {
+                return -1;
+            }
+
             return workflow.FirstState.StateID;
         }
 
         private bool IsTabPublished(TabInfo tab)
         {
             var stateId = tab.StateID;
-            if (stateId <= 0) return true;
+            if (stateId <= 0)
+            {
+                return true;
+            }
+
             var state = WorkflowStateManager.Instance.GetWorkflowState(stateId);
-            if (state == null) return true;
+            if (state == null)
+            {
+                return true;
+            }
+
             var workflow = WorkflowManager.Instance.GetWorkflow(state.WorkflowID);
-            if (workflow == null) return true;
+            if (workflow == null)
+            {
+                return true;
+            }
+
             return workflow.LastState.StateID == stateId;
         }
 

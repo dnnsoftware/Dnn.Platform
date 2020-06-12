@@ -58,7 +58,10 @@ namespace DotNetNuke.Modules.Groups
 
         protected void btnSearch_Click(object sender, EventArgs e)
         {
-            if (!this.Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
             this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, string.Empty, "filter=" + this.txtFilter.Text.Trim()));
         }

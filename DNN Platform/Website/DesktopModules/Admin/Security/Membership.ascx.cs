@@ -277,7 +277,10 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (this.Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true)
+            {
+                return;
+            }
 
             // Get the Membership Information from the property editors
             this.User.Membership = (UserMembership)this.membershipForm.DataSource;
@@ -309,7 +312,10 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (this.Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true)
+            {
+                return;
+            }
 
             bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
             var message = string.Empty;
@@ -344,7 +350,10 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (this.Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true)
+            {
+                return;
+            }
 
             // Get the Membership Information from the property editors
             this.User.Membership = (UserMembership)this.membershipForm.DataSource;
@@ -367,9 +376,15 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (this.Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true)
+            {
+                return;
+            }
             ////ensure only superusers can change user superuser state
-            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true) return;
+            if (UserController.Instance.GetCurrentUserInfo().IsSuperUser != true)
+            {
+                return;
+            }
 
             var currentSuperUserState = this.User.IsSuperUser;
             this.User.IsSuperUser = !currentSuperUserState;
@@ -398,7 +413,10 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (this.Request.IsAuthenticated != true) return;
+            if (this.Request.IsAuthenticated != true)
+            {
+                return;
+            }
 
             // update the user record in the database
             bool isUnLocked = UserController.UnLockUser(this.User);

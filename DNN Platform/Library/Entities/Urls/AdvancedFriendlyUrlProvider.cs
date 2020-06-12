@@ -1279,10 +1279,16 @@ namespace DotNetNuke.Entities.Urls
         private static void RemoveExcludedPartsOfPath(FriendlyUrlSettings settings, ref string newPath, ref string qs)
         {
             // Do nothing, if path is empty
-            if (string.IsNullOrWhiteSpace(newPath)) return;
+            if (string.IsNullOrWhiteSpace(newPath))
+            {
+                return;
+            }
 
             // Do nothing, if DoNotIncludeInPathRegex is not defined
-            if (string.IsNullOrWhiteSpace(settings.DoNotIncludeInPathRegex)) return;
+            if (string.IsNullOrWhiteSpace(settings.DoNotIncludeInPathRegex))
+            {
+                return;
+            }
 
             // Split path by "/" to extract keys and values
             var pathParts = newPath.Trim('/').Split('/');
@@ -1307,7 +1313,11 @@ namespace DotNetNuke.Entities.Urls
                 var value = pathParts[i + 1];
                 if (notInPath.IsMatch(string.Format("/{0}/{1}", key, value)))
                 {
-                    if (queryStringBuilder.Length > 0) queryStringBuilder.Append("&");
+                    if (queryStringBuilder.Length > 0)
+                    {
+                        queryStringBuilder.Append("&");
+                    }
+
                     queryStringBuilder.Append(string.Format("{0}={1}", key, value));
                 }
                 else
@@ -1317,7 +1327,10 @@ namespace DotNetNuke.Entities.Urls
             }
 
             // No param was added to query string, return (newPath remain unchanged)
-            if (queryStringBuilder.Length == 0) return;
+            if (queryStringBuilder.Length == 0)
+            {
+                return;
+            }
 
             // Build new path and query string
             newPath = pathBuilder.ToString();

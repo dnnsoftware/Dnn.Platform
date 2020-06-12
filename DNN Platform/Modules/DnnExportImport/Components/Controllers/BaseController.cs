@@ -66,7 +66,9 @@ namespace Dnn.ExportImport.Components.Controllers
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             if (job == null || (job.PortalId != portalId && portalId != -1))
+            {
                 return false;
+            }
 
             controller.SetJobCancelled(job);
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
@@ -78,7 +80,9 @@ namespace Dnn.ExportImport.Components.Controllers
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             if (job == null || (job.PortalId != portalId && portalId != -1))
+            {
                 return false;
+            }
 
             CachingProvider.Instance().Remove(Util.GetExpImpJobCacheKey(job));
             // if the job is running; then it will create few exceptions in the log file
@@ -92,9 +96,19 @@ namespace Dnn.ExportImport.Components.Controllers
         /// </summary>
         public AllJobsResult GetAllJobs(int portalId, int currentPortalId, int? pageSize, int? pageIndex, int? jobType, string keywords)
         {
-            if (pageIndex < 0) pageIndex = 0;
-            if (pageSize < 1) pageSize = 1;
-            else if (pageSize > 100) pageSize = 100;
+            if (pageIndex < 0)
+            {
+                pageIndex = 0;
+            }
+
+            if (pageSize < 1)
+            {
+                pageSize = 1;
+            }
+            else if (pageSize > 100)
+            {
+                pageSize = 100;
+            }
 
             var count = EntitiesController.Instance.GetAllJobsCount(portalId, jobType, keywords);
             var jobs = count <= 0
@@ -118,7 +132,9 @@ namespace Dnn.ExportImport.Components.Controllers
             var controller = EntitiesController.Instance;
             var job = controller.GetJobById(jobId);
             if (portalId != -1 && job?.PortalId != portalId)
+            {
                 return null;
+            }
 
             var jobItem = ToJobItem(job);
             jobItem.Summary = BuildJobSummary(jobId);
@@ -161,7 +177,11 @@ namespace Dnn.ExportImport.Components.Controllers
             };
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(jobId);
-            if (!checkpoints.Any()) return importExportSummary;
+            if (!checkpoints.Any())
+            {
+                return importExportSummary;
+            }
+
             var implementors = Util.GetPortableImplementors();
 
             summaryItems.AddRange(checkpoints.Select(checkpoint => new SummaryItem
@@ -244,7 +264,11 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private static void DeleteJobData(ExportImportJob job)
         {
-            if (job.JobType != JobType.Export) return;
+            if (job.JobType != JobType.Export)
+            {
+                return;
+            }
+
             var jobFolder = Path.Combine(ExportFolder, job.Directory);
             try
             {

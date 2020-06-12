@@ -157,9 +157,15 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             set
             {
                 if (HtmlUtils.IsUrlEncoded(value))
+                {
                     value = System.Net.WebUtility.UrlDecode(value);
+                }
+
                 if (HtmlUtils.ContainsEntity(value))
+                {
                     value = System.Net.WebUtility.HtmlDecode(value);
+                }
+
                 this._name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }

@@ -32,15 +32,26 @@ namespace DotNetNuke.Services.ClientCapability
 
         public static FacebookRequest GetFacebookDetailsFromRequest(HttpRequest Request)
         {
-            if (Request == null) return null;
-            if (Request.RequestType != "POST") return null;
+            if (Request == null)
+            {
+                return null;
+            }
+
+            if (Request.RequestType != "POST")
+            {
+                return null;
+            }
+
             string rawSignedRequest = Request[SignedRequestParameter];
             return GetFacebookDetailsFromRequest(rawSignedRequest);
         }
 
         public static FacebookRequest GetFacebookDetailsFromRequest(string rawSignedRequest)
         {
-            if (string.IsNullOrEmpty(rawSignedRequest)) return null;
+            if (string.IsNullOrEmpty(rawSignedRequest))
+            {
+                return null;
+            }
 
             try
             {
@@ -102,7 +113,9 @@ namespace DotNetNuke.Services.ClientCapability
                     var hmac = SignWithHmac(encoding.GetBytes(payload), encoding.GetBytes(secretKey));
                     var hmacBase64 = Base64UrlDecode(Convert.ToBase64String(hmac));
                     if (hmacBase64 == expectedSignature)
+                    {
                         return true;
+                    }
                 }
             }
 
@@ -116,7 +129,11 @@ namespace DotNetNuke.Services.ClientCapability
         /// <returns>The base 64 string.</returns>
         private static string Base64UrlDecode(string encodedValue)
         {
-            if (string.IsNullOrEmpty(encodedValue)) return null;
+            if (string.IsNullOrEmpty(encodedValue))
+            {
+                return null;
+            }
+
             encodedValue = encodedValue.Replace('+', '-').Replace('/', '_').Replace("=", string.Empty).Trim();
             return encodedValue;
         }

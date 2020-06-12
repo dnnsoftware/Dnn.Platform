@@ -29,9 +29,15 @@ namespace DotNetNuke.Common.Utilities
         public static string Combine(string baseUrl, string relativeUrl)
         {
             if (baseUrl.Length == 0)
+            {
                 return relativeUrl;
+            }
+
             if (relativeUrl.Length == 0)
+            {
                 return baseUrl;
+            }
+
             return string.Format("{0}/{1}", baseUrl.TrimEnd(new[] { '/', '\\' }), relativeUrl.TrimStart(new[] { '/', '\\' }));
         }
 
@@ -256,7 +262,10 @@ namespace DotNetNuke.Common.Utilities
             }
 
             // Removes the javascript txt for onClick scripts
-            if (onClickEvent && popUpUrl.StartsWith("javascript:")) popUpUrl = popUpUrl.Replace("javascript:", string.Empty);
+            if (onClickEvent && popUpUrl.StartsWith("javascript:"))
+            {
+                popUpUrl = popUpUrl.Replace("javascript:", string.Empty);
+            }
 
             return popUpUrl;
         }
@@ -267,7 +276,10 @@ namespace DotNetNuke.Common.Utilities
             closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");
 
             // Removes the javascript txt for onClick scripts)
-            if (onClickEvent && closePopUpStr.StartsWith("javascript:")) closePopUpStr = closePopUpStr.Replace("javascript:", string.Empty);
+            if (onClickEvent && closePopUpStr.StartsWith("javascript:"))
+            {
+                closePopUpStr = closePopUpStr.Replace("javascript:", string.Empty);
+            }
 
             return closePopUpStr;
         }

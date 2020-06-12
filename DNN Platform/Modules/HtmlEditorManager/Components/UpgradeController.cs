@@ -149,7 +149,10 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
             var files = Directory.GetFiles(folder, mask);
             foreach (var fname in files)
             {
-                if (fname.Contains(".Original.xml")) continue;
+                if (fname.Contains(".Original.xml"))
+                {
+                    continue;
+                }
 
                 try
                 {

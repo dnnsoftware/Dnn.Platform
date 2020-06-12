@@ -137,9 +137,14 @@ namespace Dnn.PersonaBar.Library.Controllers
                 try
                 {
                     if (moveBahaviour)
+                    {
                         ModuleController.Instance.MoveModule(sourceModule.ModuleID, sourceModule.TabID, targetPage.TabID, pane);
+                    }
                     else
+                    {
                         ModuleController.Instance.CopyModule(sourceModule, targetPage, pane, includeSettings);
+                    }
+
                     ModuleController.Instance.ClearCache(targetPageId);
                 }
                 catch (Exception ex)
@@ -221,9 +226,14 @@ namespace Dnn.PersonaBar.Library.Controllers
             var modules = ModuleController.Instance.GetModules(portalSettings.PortalId)
                     .Cast<ModuleInfo>().Where(ModulePermissionController.CanViewModule);
             if (!string.IsNullOrEmpty(moduleName))
+            {
                 modules = modules.Where(module => module.DesktopModule.ModuleName.IndexOf(moduleName, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
+
             if (!string.IsNullOrEmpty(moduleTitle))
+            {
                 modules = modules.Where(module => module.ModuleTitle.IndexOf(moduleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
+            }
 
             // Return only deleted modules with matching criteria.
             if (pageId.HasValue && pageId.Value > 0)

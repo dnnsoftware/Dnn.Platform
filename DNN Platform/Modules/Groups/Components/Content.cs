@@ -68,7 +68,11 @@ namespace DotNetNuke.Entities.Groups
         {
             ContentItem objContent = null; // Util.GetContentController().;
 
-            if (objContent == null) return;
+            if (objContent == null)
+            {
+                return;
+            }
+
             objContent.Content = objItem.RoleName;
             objContent.TabID = tabId;
             objContent.ContentKey = "GroupId=" + objItem.RoleID; // we reset this just in case the page changed.
@@ -86,9 +90,16 @@ namespace DotNetNuke.Entities.Groups
         /// <param name="contentItemID"></param>
         internal void DeleteContentItem(int contentItemID)
         {
-            if (contentItemID <= Null.NullInteger) return;
+            if (contentItemID <= Null.NullInteger)
+            {
+                return;
+            }
+
             var objContent = Util.GetContentController().GetContentItem(contentItemID);
-            if (objContent == null) return;
+            if (objContent == null)
+            {
+                return;
+            }
 
             // remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
             // var cntTerms = new Terms();

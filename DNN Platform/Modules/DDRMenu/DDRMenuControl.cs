@@ -45,7 +45,9 @@ namespace DotNetNuke.Web.DDRMenu
         protected override void Render(HtmlTextWriter htmlWriter)
         {
             using (new DNNContext(this))
+            {
                 this.menu.Render(htmlWriter);
+            }
         }
 
         public void RaisePostBackEvent(string eventArgument)

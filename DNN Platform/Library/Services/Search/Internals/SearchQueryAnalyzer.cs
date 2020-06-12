@@ -41,7 +41,9 @@ namespace DotNetNuke.Services.Search.Internals
                                 wordLengthMinMax.Item1, wordLengthMinMax.Item2)));
 
             if (!this._useStemmingFilter)
+            {
                 return filter;
+            }
 
             return new PorterStemFilter(filter);
         }

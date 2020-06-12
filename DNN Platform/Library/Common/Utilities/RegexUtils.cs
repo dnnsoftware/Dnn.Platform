@@ -30,8 +30,14 @@ namespace DotNetNuke.Common.Utilities
             key = string.Join(":", "REGEX_ITEM", options.ToString("X"), key.GetHashCode().ToString("X"));
 
             // limit timeout between 1 and 10 seconds
-            if (timeoutSeconds < 1) timeoutSeconds = 1;
-            else if (timeoutSeconds > 10) timeoutSeconds = 10;
+            if (timeoutSeconds < 1)
+            {
+                timeoutSeconds = 1;
+            }
+            else if (timeoutSeconds > 10)
+            {
+                timeoutSeconds = 10;
+            }
 
             var cache = CachingProvider.Instance();
             var regex = cache.GetItem(key) as Regex;

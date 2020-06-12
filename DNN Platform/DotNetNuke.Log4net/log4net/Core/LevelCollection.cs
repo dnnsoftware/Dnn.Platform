@@ -79,7 +79,10 @@ namespace log4net.Core
         /// </returns>
         public static LevelCollection ReadOnly(LevelCollection list)
         {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null)
+            {
+                throw new ArgumentNullException("list");
+            }
 
             return new ReadOnlyLevelCollection(list);
         }

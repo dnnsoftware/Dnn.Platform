@@ -50,7 +50,9 @@ namespace DotNetNuke.Services.Search.Internals
 
             // read next token
             if (!this.input.IncrementToken())
+            {
                 return false;
+            }
 
             // push synonyms onto stack
             if (this.AddAliasesToStack())
@@ -74,7 +76,9 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null)
+                    {
                         cultureCode = portalInfo.DefaultLanguage;
+                    }
                 }
             }
             else
@@ -82,7 +86,10 @@ namespace DotNetNuke.Services.Search.Internals
                 cultureCode = Thread.CurrentThread.CurrentCulture.Name;
             }
             var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this._termAtt.Term).ToArray();
-            if (!synonyms.Any()) return false;
+            if (!synonyms.Any())
+            {
+                return false;
+            }
 
             var cultureInfo = new CultureInfo(cultureCode);
             foreach (var synonym in synonyms)

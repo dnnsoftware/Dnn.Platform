@@ -408,19 +408,35 @@ namespace DotNetNuke.Services.Installer.Packages
                                             // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                                             // To ensure that FolderName is DesktopModules...
                                             var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
-                                            if (!string.IsNullOrEmpty(folderNameValue)) package.FolderName = folderNameValue.Replace('\\', '/');
+                                            if (!string.IsNullOrEmpty(folderNameValue))
+                                            {
+                                                package.FolderName = folderNameValue.Replace('\\', '/');
+                                            }
+
                                             break;
                                         case "Auth_System":
                                             foldernameNav = nav.SelectSingleNode("components/component/files");
-                                            if (foldernameNav != null) package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                                            if (foldernameNav != null)
+                                            {
+                                                package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                                            }
+
                                             break;
                                         case "Container":
                                             foldernameNav = nav.SelectSingleNode("components/component/containerFiles");
-                                            if (foldernameNav != null) package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                                            if (foldernameNav != null)
+                                            {
+                                                package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                                            }
+
                                             break;
                                         case "Skin":
                                             foldernameNav = nav.SelectSingleNode("components/component/skinFiles");
-                                            if (foldernameNav != null) package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                                            if (foldernameNav != null)
+                                            {
+                                                package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                                            }
+
                                             break;
                                         default:
                                             break;

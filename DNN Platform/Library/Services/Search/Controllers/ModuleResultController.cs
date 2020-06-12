@@ -87,7 +87,9 @@ namespace DotNetNuke.Services.Search.Controllers
         public override string GetDocUrl(SearchResult searchResult)
         {
             if (!string.IsNullOrEmpty(searchResult.Url))
+            {
                 return searchResult.Url;
+            }
 
             var url = Localization.Localization.GetString("SEARCH_NoLink");
             // Get All related tabIds from moduleId

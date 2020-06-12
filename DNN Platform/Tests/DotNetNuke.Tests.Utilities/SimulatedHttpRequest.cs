@@ -28,7 +28,10 @@ namespace DotNetNuke.Tests.Instance.Utilities
             : base(appVirtualDir, appPhysicalDir, page, query, output)
         {
             if (string.IsNullOrEmpty(host))
+            {
                 throw new ArgumentNullException("host", "Host cannot be null nor empty.");
+            }
+
             this._host = host;
         }
 
@@ -52,7 +55,9 @@ namespace DotNetNuke.Tests.Instance.Utilities
             var appPath = this.GetAppPath();
 
             if (appPath != null)
+            {
                 path = Path.Combine(appPath, virtualPath);
+            }
 
             return path;
         }

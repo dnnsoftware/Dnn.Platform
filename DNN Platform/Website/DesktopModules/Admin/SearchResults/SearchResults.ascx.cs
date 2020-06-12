@@ -161,7 +161,10 @@ namespace DotNetNuke.Modules.SearchResults
                     if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["ScopeForPortals"])))
                     {
                         List<string> list = Convert.ToString(this.Settings["ScopeForPortals"]).Split('|').ToList();
-                        foreach (string l in list) this._searchPortalIds.Add(Convert.ToInt32(l));
+                        foreach (string l in list)
+                        {
+                            this._searchPortalIds.Add(Convert.ToInt32(l));
+                        }
                     }
                     else
                     {
@@ -187,7 +190,11 @@ namespace DotNetNuke.Modules.SearchResults
                             InternalSearchController.Instance.GetSearchContentSourceList(portalId);
                         foreach (SearchContentSource src in crawlerList)
                         {
-                            if (src.IsPrivate) continue;
+                            if (src.IsPrivate)
+                            {
+                                continue;
+                            }
+
                             if (list.All(r => r.LocalizedName != src.LocalizedName))
                             {
                                 list.Add(src);

@@ -128,7 +128,9 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         public override Image ProcessImage(Image image)
         {
             if (image == null)
+            {
                 return null;
+            }
 
             if (this.MaxWidth > 0)
             {

@@ -22,7 +22,10 @@ namespace DotNetNuke.Web.Api.Internal
             var currentPortal = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isAdminUser = currentPortal.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortal.AdministratorRoleName);
-            if (isAdminUser) return true;
+            if (isAdminUser)
+            {
+                return true;
+            }
 
             return TabPermissionController.HasTabPermission(permissionKey);
         }

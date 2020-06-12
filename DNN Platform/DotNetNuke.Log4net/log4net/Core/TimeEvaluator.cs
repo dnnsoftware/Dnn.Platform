@@ -130,7 +130,10 @@ namespace log4net.Core
             }
 
             // disable the evaluator if threshold is zero
-            if (this.m_interval == 0) return false;
+            if (this.m_interval == 0)
+            {
+                return false;
+            }
 
             lock (this) // avoid triggering multiple times
             {

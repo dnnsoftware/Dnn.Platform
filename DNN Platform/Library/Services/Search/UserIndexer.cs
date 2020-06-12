@@ -162,7 +162,10 @@ namespace DotNetNuke.Services.Search
                 while (reader.Read())
                 {
                     var userSearch = GetUserSearch(reader);
-                    if (userSearch == null) continue;
+                    if (userSearch == null)
+                    {
+                        continue;
+                    }
 
                     AddBasicInformation(searchDocuments, indexedUsers, userSearch, portalId);
 

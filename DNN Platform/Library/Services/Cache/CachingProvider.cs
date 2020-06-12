@@ -222,9 +222,13 @@ namespace DotNetNuke.Services.Cache
                 {
                     cacheKey = string.Format(DataCache.SingleTabModuleCacheKey, moduleInfo.TabModuleID);
                     if (clearRuntime)
+                    {
                         this.RemoveInternal(cacheKey);
+                    }
                     else
+                    {
                         this.Remove(cacheKey);
+                    }
                 }
             }
 

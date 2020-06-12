@@ -45,7 +45,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             Logger.TraceFormat("FilePermissionCheck - {0}", this.Details);
 
             if (!verifiers.All(v => v.VerifyAll()))
+            {
                 this.Errors.Add(string.Format(Localization.Localization.GetString("StepFailed", this.LocalInstallResourceFile), this.Details));
+            }
+
             this.Percentage = 100;
 
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;

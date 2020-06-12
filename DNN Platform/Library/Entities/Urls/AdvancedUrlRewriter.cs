@@ -287,7 +287,10 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // it was an incorrect alias
                         PortalAliasInfo primaryAlias = PortalAliasController.Instance.GetPortalAlias(primaryHttpAlias);
-                        if (primaryAlias != null) result.PrimaryAlias = primaryAlias;
+                        if (primaryAlias != null)
+                        {
+                            result.PrimaryAlias = primaryAlias;
+                        }
                         // try and redirect the alias if the settings allow it
                         redirectAlias = RedirectPortalAlias(primaryHttpAlias, ref result, settings);
                     }
@@ -515,7 +518,10 @@ namespace DotNetNuke.Entities.Urls
                                 // load the PortalSettings into current context
                                 var portalSettings = new PortalSettings(result.TabId, result.PortalAlias);
                                 // set the primary alias if one was specified
-                                if (result.PrimaryAlias != null) portalSettings.PrimaryAlias = result.PrimaryAlias;
+                                if (result.PrimaryAlias != null)
+                                {
+                                    portalSettings.PrimaryAlias = result.PrimaryAlias;
+                                }
 
                                 if (result.CultureCode != null && fullUrl.Contains(result.CultureCode) &&
                                     portalSettings.DefaultLanguage == result.CultureCode)
@@ -2173,7 +2179,10 @@ namespace DotNetNuke.Entities.Urls
                     string primaryAlias;
                     // checking again in case the rewriting operation changed the values for the valid portal alias
                     bool incorrectAlias = this.IsPortalAliasIncorrect(context, request, requestUri, result, queryStringCol, settings, parentTraceId, out primaryAlias);
-                    if (incorrectAlias) RedirectPortalAlias(primaryAlias, ref result, settings);
+                    if (incorrectAlias)
+                    {
+                        RedirectPortalAlias(primaryAlias, ref result, settings);
+                    }
                 }
             }
 

@@ -71,10 +71,18 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         {
             // Double-check lock to wait for initialization
             // TODO: Is there a better (preferably using events and waits) way to do this?
-            if (this._initialized) return;
+            if (this._initialized)
+            {
+                return;
+            }
+
             lock (this._lock)
             {
-                if (this._initialized) return;
+                if (this._initialized)
+                {
+                    return;
+                }
+
                 this.Init();
                 this._initialized = true;
             }

@@ -18,7 +18,9 @@ namespace DotNetNuke.Services.Connections
         public override object Deserialize(IDictionary<string, object> dictionary, Type type, JavaScriptSerializer serializer)
         {
             if (dictionary == null)
+            {
                 throw new ArgumentNullException("dictionary");
+            }
 
             return type == typeof(object) ? new DynamicJsonObject(dictionary) : null;
         }
@@ -40,7 +42,10 @@ namespace DotNetNuke.Services.Connections
             public DynamicJsonObject(IDictionary<string, object> dictionary)
             {
                 if (dictionary == null)
+                {
                     throw new ArgumentNullException("dictionary");
+                }
+
                 this._dictionary = dictionary;
             }
 
@@ -143,7 +148,9 @@ namespace DotNetNuke.Services.Connections
             {
                 var dictionary = result as IDictionary<string, object>;
                 if (dictionary != null)
+                {
                     return new DynamicJsonObject(dictionary);
+                }
 
                 var arrayList = result as ArrayList;
                 if (arrayList != null && arrayList.Count > 0)

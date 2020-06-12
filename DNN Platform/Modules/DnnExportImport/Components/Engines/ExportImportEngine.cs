@@ -348,7 +348,10 @@ namespace Dnn.ExportImport.Components.Engines
                                                      StartDate = DateUtils.GetDatabaseUtcTime(),
                                                  };
                             if (service.CheckPoint.StartDate == Null.NullDate)
+                            {
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
+                            }
+
                             this.CheckpointCallback(service);
 
                             try
@@ -402,7 +405,11 @@ namespace Dnn.ExportImport.Components.Engines
             // there must be one parent implementor at least for this to work
             var nextLevelServices = new List<BasePortableService>();
             var firstIteration = true;
-            if (checkpoints.Any()) return;
+            if (checkpoints.Any())
+            {
+                return;
+            }
+
             do
             {
                 foreach (var service in parentServices.OrderBy(x => x.Priority))
@@ -423,7 +430,10 @@ namespace Dnn.ExportImport.Components.Engines
 
                         service.CheckPoint = checkpoints.FirstOrDefault(cp => cp.Category == service.Category && cp.AssemblyName == serviceAssembly);
 
-                        if (service.CheckPoint != null) continue;
+                        if (service.CheckPoint != null)
+                        {
+                            continue;
+                        }
 
                         service.CheckPoint = new ExportImportChekpoint
                         {
@@ -507,19 +517,29 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             if (exportDto.IncludeContent)
+            {
                 includedItems.Add(Constants.Category_Content);
+            }
 
             if (exportDto.IncludeFiles)
+            {
                 includedItems.Add(Constants.Category_Assets);
+            }
 
             if (exportDto.IncludeUsers)
+            {
                 includedItems.Add(Constants.Category_Users);
+            }
 
             if (exportDto.IncludeRoles)
+            {
                 includedItems.Add(Constants.Category_Roles);
+            }
 
             if (exportDto.IncludeVocabularies)
+            {
                 includedItems.Add(Constants.Category_Vocabularies);
+            }
 
             if (exportDto.IncludeTemplates)
             {
@@ -527,11 +547,15 @@ namespace Dnn.ExportImport.Components.Engines
             }
 
             if (exportDto.IncludeProperfileProperties)
+            {
                 includedItems.Add(Constants.Category_ProfileProps);
+            }
 
             // This might be added always.
             if (exportDto.IncludeExtensions)
+            {
                 includedItems.Add(Constants.Category_Packages);
+            }
 
             var additionalItems = new List<string>();
             foreach (var includedItem in includedItems)
@@ -548,7 +572,9 @@ namespace Dnn.ExportImport.Components.Engines
 
             // must be included always when there is at least one other object to process
             if (includedItems.Any())
+            {
                 includedItems.Add(Constants.Category_Portal);
+            }
 
             return includedItems;
         }
@@ -596,7 +622,10 @@ namespace Dnn.ExportImport.Components.Engines
             var extractFolder = Path.Combine(ExportFolder, importJob.Directory);
             var dbName = Path.Combine(extractFolder, Constants.ExportDbName);
             if (File.Exists(dbName))
+            {
                 return;
+            }
+
             var zipDbName = Path.Combine(extractFolder, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, extractFolder, false);
         }
@@ -613,7 +642,11 @@ namespace Dnn.ExportImport.Components.Engines
             var isDirty = exportDto.IsDirty;
             exportDto.IsDirty = true;
             repository.UpdateSingleItem(exportDto);
-            if (!isDirty) return;
+            if (!isDirty)
+            {
+                return;
+            }
+
             var typeLocator = new TypeLocator();
             var types = typeLocator.GetAllMatchingTypes(
                 t => t != null && t.IsClass && !t.IsAbstract && t.IsVisible &&
@@ -677,7 +710,10 @@ namespace Dnn.ExportImport.Components.Engines
 
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)
         {
-            if (completeLog == null || completeLog.Count == 0) return;
+            if (completeLog == null || completeLog.Count == 0)
+            {
+                return;
+            }
 
             using (var table = new DataTable("ExportImportJobLogs"))
             {

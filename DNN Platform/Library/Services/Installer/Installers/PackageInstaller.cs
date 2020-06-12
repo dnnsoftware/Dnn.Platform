@@ -375,24 +375,44 @@ namespace DotNetNuke.Services.Installer.Installers
                     // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                     // To ensure that FolderName is DesktopModules...
                     var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
-                    if (!string.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                    if (!string.IsNullOrEmpty(folderNameValue))
+                    {
+                        this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                    }
+
                     break;
                 case "Auth_System":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/files");
-                    if (foldernameNav != null) this.Package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                    if (foldernameNav != null)
+                    {
+                        this.Package.FolderName = Util.ReadElement(foldernameNav, "basePath").Replace('\\', '/');
+                    }
+
                     break;
                 case "Container":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/containerFiles");
-                    if (foldernameNav != null) this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                    if (foldernameNav != null)
+                    {
+                        this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                    }
+
                     break;
                 case "Skin":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
-                    if (foldernameNav != null) this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                    if (foldernameNav != null)
+                    {
+                        this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
+                    }
+
                     break;
                 default:
                     // copied from "Module" without the extra OR condition
                     folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/resourceFiles", "basePath", "DesktopModules");
-                    if (!string.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                    if (!string.IsNullOrEmpty(folderNameValue))
+                    {
+                        this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                    }
+
                     break;
             }
 

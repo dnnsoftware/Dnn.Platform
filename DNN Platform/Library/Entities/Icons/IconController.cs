@@ -85,13 +85,19 @@ namespace DotNetNuke.Entities.Icons
         public static string IconURL(string key, string size, string style)
         {
             if (string.IsNullOrEmpty(key))
+            {
                 return string.Empty;
+            }
 
             if (string.IsNullOrEmpty(size))
+            {
                 size = DefaultIconSize;
+            }
 
             if (string.IsNullOrEmpty(style))
+            {
                 style = DefaultIconStyle;
+            }
 
             string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
 
@@ -117,7 +123,9 @@ namespace DotNetNuke.Entities.Icons
             using (_iconsStatusOnDisk.GetReadLock())
             {
                 if (_iconsStatusOnDisk.ContainsKey(path))
+                {
                     return;
+                }
             }
 
             using (_iconsStatusOnDisk.GetWriteLock())
@@ -127,7 +135,9 @@ namespace DotNetNuke.Entities.Icons
                     _iconsStatusOnDisk.Add(path, true);
                     string iconPhysicalPath = Path.Combine(Globals.ApplicationMapPath, path.Replace('/', '\\'));
                     if (!File.Exists(iconPhysicalPath))
+                    {
                         Logger.WarnFormat(string.Format("Icon Not Present on Disk {0}", iconPhysicalPath));
+                    }
                 }
             }
         }
@@ -141,7 +151,9 @@ namespace DotNetNuke.Entities.Icons
             {
                 string testFile = Path.Combine(iconDir.FullName, "About_16x16_Standard.png");
                 if (File.Exists(testFile))
+                {
                     result += iconDir.Name + ",";
+                }
             }
             return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }

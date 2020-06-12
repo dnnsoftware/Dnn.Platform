@@ -23,7 +23,11 @@ namespace UnitTests.Subtext
                 var physicalPath = context.Request.MapPath("/MyHandler.ashx");
                 var username = context.Request.Form["username"];
                 var id = context.Request.QueryString["id"];
-                if (context.Request.UrlReferrer == null) return;
+                if (context.Request.UrlReferrer == null)
+                {
+                    return;
+                }
+
                 var referer = context.Request.UrlReferrer.ToString();
 
                 // Imagine, if you will, a bunch of complex interesting
@@ -130,11 +134,15 @@ namespace UnitTests.Subtext
             var simulator = new HttpSimulator();
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param1=value1&param2=value2&param3=value3"));
             for (var i = 1; i <= 3; i++)
+            {
                 Assert.AreEqual("value" + i, HttpContext.Current.Request.QueryString["param" + i], "Could not find query string field 'param{0}'", i);
+            }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?param1=new-value1&param2=new-value2&param3=new-value3&param4=new-value4"));
             for (var i = 1; i <= 4; i++)
+            {
                 Assert.AreEqual("new-value" + i, HttpContext.Current.Request.QueryString["param" + i], "Could not find query string field 'param{0}'", i);
+            }
 
             simulator.SimulateRequest(new Uri("http://localhost/Test.aspx?"));
             Assert.AreEqual(string.Empty, HttpContext.Current.Request.QueryString.ToString());

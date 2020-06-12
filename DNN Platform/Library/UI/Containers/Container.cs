@@ -303,7 +303,9 @@ namespace DotNetNuke.UI.Containers
         private void ProcessModule()
         {
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"Container.ProcessModule Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            }
 
             if (this.ContentPane != null)
             {
@@ -326,7 +328,9 @@ namespace DotNetNuke.UI.Containers
                 // Try to load the module control
                 this._moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
                 if (this._tracelLogger.IsDebugEnabled)
+                {
                     this._tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this._moduleHost.ID})");
+                }
 
                 this.ContentPane.Controls.Add(this.ModuleHost);
 
@@ -343,7 +347,9 @@ namespace DotNetNuke.UI.Containers
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
+            }
         }
 
         /// -----------------------------------------------------------------------------

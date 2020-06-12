@@ -63,7 +63,11 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (this._scoreDocs == null) this.PrepareScoreDocs();
+                if (this._scoreDocs == null)
+                {
+                    this.PrepareScoreDocs();
+                }
+
                 return this._totalHits;
             }
         }
@@ -72,7 +76,11 @@ namespace DotNetNuke.Services.Search.Internals
         {
             get
             {
-                if (this._scoreDocs == null) this.PrepareScoreDocs();
+                if (this._scoreDocs == null)
+                {
+                    this.PrepareScoreDocs();
+                }
+
                 return this._scoreDocs;
             }
         }
@@ -86,10 +94,16 @@ namespace DotNetNuke.Services.Search.Internals
         private long GetLongFromField(Document doc, SortField sortField)
         {
             var field = doc.GetField(sortField.Field);
-            if (field == null) return 0;
+            if (field == null)
+            {
+                return 0;
+            }
 
             long data;
-            if (long.TryParse(field.StringValue, out data) && data >= 0) return data;
+            if (long.TryParse(field.StringValue, out data) && data >= 0)
+            {
+                return data;
+            }
 
             return 0;
         }
@@ -149,7 +163,9 @@ namespace DotNetNuke.Services.Search.Internals
             }
 
             if (useRelevance)
+            {
                 tempDocs = this._hitDocs.OrderByDescending(d => d.Score).ThenBy(d => d.Doc);
+            }
 
             var scoreDocSize = Math.Min(tempDocs.Count(), pageSize);
             this._scoreDocs = new List<ScoreDoc>(scoreDocSize);

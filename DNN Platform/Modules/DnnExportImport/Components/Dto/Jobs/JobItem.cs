@@ -33,11 +33,17 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
 
         public void ConvertToLocal(UserInfo userInfo)
         {
-            if (userInfo == null) return;
+            if (userInfo == null)
+            {
+                return;
+            }
+
             this.Summary?.ConvertToLocal(userInfo);
             this.CreatedOn = Util.ToLocalDateTime(this.CreatedOn, userInfo);
             if (this.CompletedOn != null)
+            {
                 this.CompletedOn = Util.ToLocalDateTime(this.CompletedOn.Value, userInfo);
+            }
         }
     }
 }

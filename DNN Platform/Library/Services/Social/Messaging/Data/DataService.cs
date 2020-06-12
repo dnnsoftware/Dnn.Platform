@@ -380,7 +380,10 @@ namespace DotNetNuke.Services.Social.Messaging.Data
                     var fileId = Convert.ToInt32(dr["FileID"]);
                     var file = FileManager.Instance.GetFile(fileId);
 
-                    if (file == null) continue;
+                    if (file == null)
+                    {
+                        continue;
+                    }
 
                     var attachment = new MessageFileView
                                          {

@@ -28,7 +28,9 @@ namespace DNN.Integration.Test.Framework.Helpers
         {
             var currentValue = GetHostSettingValue(settingName);
             if (!string.IsNullOrEmpty(currentValue))
+            {
                 return false;
+            }
 
             var query = string.Format(
                 @"INSERT INTO {{objectQualifier}}HostSettings (SettingName, SettingValue, SettingIsSecure, CreatedOnDate) " +

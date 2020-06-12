@@ -171,7 +171,10 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
 
             var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-            if (folder == null) return;
+            if (folder == null)
+            {
+                return;
+            }
 
             var files = Globals.GetFileList(this.PortalId, "export", false, folder.FolderPath);
             files.AddRange(Globals.GetFileList(this.PortalId, "xml", false, folder.FolderPath));
@@ -197,9 +200,16 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         protected void OnFilesIndexChanged(object sender, EventArgs e)
         {
-            if (this.cboFolders.SelectedItem == null) return;
+            if (this.cboFolders.SelectedItem == null)
+            {
+                return;
+            }
+
             var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
-            if (folder == null) return;
+            if (folder == null)
+            {
+                return;
+            }
 
             if (string.IsNullOrEmpty(this.cboFiles.SelectedValue) || this.cboFiles.SelectedValue == "-")
             {

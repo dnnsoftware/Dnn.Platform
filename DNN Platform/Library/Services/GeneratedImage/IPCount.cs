@@ -150,7 +150,9 @@ namespace DotNetNuke.Services.GeneratedImage
                     if (int.TryParse(strCount, out count))
                     {
                         if (count > MaxCount)
+                        {
                             return false;
+                        }
 
                         count++;
                     }

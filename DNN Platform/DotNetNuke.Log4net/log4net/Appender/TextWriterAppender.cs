@@ -482,10 +482,13 @@ namespace log4net.Appender
         public override bool Flush(int millisecondsTimeout)
             {
                 // Nothing to do if ImmediateFlush is true
-                if (this.m_immediateFlush) return true;
+                if (this.m_immediateFlush)
+            {
+                return true;
+            }
 
-                // lock(this) will block any Appends while the buffer is flushed.
-                lock (this)
+            // lock(this) will block any Appends while the buffer is flushed.
+            lock (this)
                 {
                     this.m_qtw.Flush();
                 }

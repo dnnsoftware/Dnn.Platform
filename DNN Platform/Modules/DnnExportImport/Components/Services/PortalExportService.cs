@@ -34,8 +34,16 @@ namespace Dnn.ExportImport.Components.Services
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
-            if (this.CheckPoint.Stage > 1) return;
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 1)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
+
             List<ExportPortalLanguage> portalLanguages = null;
             if (this.CheckPoint.Stage == 0)
             {
@@ -69,12 +77,19 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress = 50;
                 this.CheckPoint.ProcessedItems = portalSettings.Count;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
             }
 
             if (this.CheckPoint.Stage == 1)
             {
-                if (this.CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob))
+                {
+                    return;
+                }
+
                 if (portalLanguages == null)
                     portalLanguages = CBO.FillCollection<ExportPortalLanguage>(DataProvider.Instance()
                         .GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
@@ -93,8 +108,16 @@ namespace Dnn.ExportImport.Components.Services
         {
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
-            if (this.CheckPoint.Stage > 1) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
+            if (this.CheckPoint.Stage > 1)
+            {
+                return;
+            }
+
             if (this.CheckPoint.Stage == 0)
             {
                 var portalSettings = this.Repository.GetAllItems<ExportPortalSetting>().ToList();
@@ -104,7 +127,10 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress += 50;
                 this.CheckPoint.Stage++;
                 this.CheckPoint.ProcessedItems = portalSettings.Count;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
             }
             if (this.CheckPoint.Stage == 1)
             {
@@ -139,7 +165,10 @@ namespace Dnn.ExportImport.Components.Services
                 CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var exportPortalSetting in portalSettings)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
 
                 var existingPortalSetting =
                     localPortalSettings.FirstOrDefault(
@@ -196,7 +225,10 @@ namespace Dnn.ExportImport.Components.Services
             var localLanguages = CBO.FillCollection<Locale>(DotNetNuke.Data.DataProvider.Instance().GetLanguages());
             foreach (var exportPortalLanguage in portalLanguages)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
 
                 var createdBy = Util.GetUserIdByName(importJob, exportPortalLanguage.CreatedByUserId, exportPortalLanguage.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, exportPortalLanguage.LastModifiedByUserId, exportPortalLanguage.LastModifiedByUserName);

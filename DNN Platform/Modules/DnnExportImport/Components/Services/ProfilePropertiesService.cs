@@ -25,9 +25,20 @@ namespace Dnn.ExportImport.Components.Services
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
-            if (this.CheckCancelled(exportJob)) return;
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
+
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
 
             var profileProperties =
                 CBO.FillCollection<ExportProfileProperty>(
@@ -39,7 +50,11 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? profileProperties.Count : this.CheckPoint.TotalItems;
             this.CheckPointStageCallback(this);
 
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
+
             this.Repository.CreateItems(profileProperties);
             this.Result.AddSummary("Exported Profile Properties", profileProperties.Count.ToString());
             this.CheckPoint.Progress = 100;
@@ -51,7 +66,11 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
             var profileProperties = this.Repository.GetAllItems<ExportProfileProperty>().ToList();
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? profileProperties.Count : this.CheckPoint.TotalItems;
@@ -59,7 +78,10 @@ namespace Dnn.ExportImport.Components.Services
 
             foreach (var profileProperty in profileProperties)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
 
                 var existingProfileProperty = CBO.FillObject<ExportProfileProperty>(DotNetNuke.Data.DataProvider.Instance()
                     .GetPropertyDefinitionByName(importJob.PortalId, profileProperty.PropertyName));

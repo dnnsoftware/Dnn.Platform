@@ -187,7 +187,9 @@ namespace DotNetNuke.Services.GeneratedImage
                     {
                         allowedDomains += allowedDomain + ",";
                         if (context.Request.UrlReferrer.Host.ToLowerInvariant().Contains(allowedDomain.ToLowerInvariant()))
+                        {
                             allowed = true;
+                        }
                     }
                 }
 
@@ -244,7 +246,9 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 int userId;
                 if (int.TryParse(context.Request.QueryString["userId"], out userId))
+                {
                     cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
+                }
             }
             // Handle client cache
             var cachePolicy = context.Response.Cache;
@@ -393,11 +397,18 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
             Dictionary<int, DateTime> userIds;
-            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
+            if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId))
+            {
+                return false;
+            }
+
             this.ImageStore.ForcePurgeFromServerCache(cacheId);
             DateTime expiry;
             // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
-            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration)) return true;
+            if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration))
+            {
+                return true;
+            }
             // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);

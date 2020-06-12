@@ -60,7 +60,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 // comboBox.Select(selectedValue);
                 var selectedItem = comboBox.FindItemByValue(selectedValue);
                 if (selectedItem != null)
+                {
                     selectedItem.Selected = true;
+                }
             }
         }
 

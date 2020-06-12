@@ -19,7 +19,9 @@ namespace DotNetNuke.Data
             using (var command = new SqlCommand(query, connection))
             {
                 if (commandTimeout > 0)
+                {
                     command.CommandTimeout = commandTimeout;
+                }
 
                 connection.Open();
                 try

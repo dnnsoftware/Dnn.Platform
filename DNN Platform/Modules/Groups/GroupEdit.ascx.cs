@@ -60,9 +60,13 @@ namespace DotNetNuke.Modules.Groups
                     this.reqGroupName.Enabled = !roleInfo.IsSystemRole;
 
                     if (!roleInfo.IsSystemRole)
+                    {
                         this.txtGroupName.Text = roleInfo.RoleName;
+                    }
                     else
+                    {
                         this.litGroupName.Text = roleInfo.RoleName;
+                    }
 
                     this.txtDescription.Text = roleInfo.Description;
                     this.rdAccessTypePrivate.Checked = !roleInfo.IsPublic;
@@ -122,9 +126,13 @@ namespace DotNetNuke.Modules.Groups
                     roleInfo.IsPublic = this.rdAccessTypePublic.Checked;
 
                     if (roleInfo.Settings.ContainsKey("ReviewMembers"))
+                    {
                         roleInfo.Settings["ReviewMembers"] = this.chkMemberApproved.Checked.ToString();
+                    }
                     else
+                    {
                         roleInfo.Settings.Add("ReviewMembers", this.chkMemberApproved.Checked.ToString());
+                    }
 
                     RoleController.Instance.UpdateRoleSettings(roleInfo, true);
                     RoleController.Instance.UpdateRole(roleInfo);

@@ -33,8 +33,15 @@ namespace Dnn.ExportImport.Components.Entities
             get { return this._progress; }
             set
             {
-                if (value < 0) value = 0;
-                else if (value > 100) value = 100;
+                if (value < 0)
+                {
+                    value = 0;
+                }
+                else if (value > 100)
+                {
+                    value = 100;
+                }
+
                 this._progress = value;
             }
         }

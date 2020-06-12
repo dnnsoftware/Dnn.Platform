@@ -931,8 +931,15 @@ namespace log4net.Repository.Hierarchy
         /// </remarks>
         internal void AddLevel(LevelEntry levelEntry)
         {
-            if (levelEntry == null) throw new ArgumentNullException("levelEntry");
-            if (levelEntry.Name == null) throw new ArgumentNullException("levelEntry.Name");
+            if (levelEntry == null)
+            {
+                throw new ArgumentNullException("levelEntry");
+            }
+
+            if (levelEntry.Name == null)
+            {
+                throw new ArgumentNullException("levelEntry.Name");
+            }
 
             // Lookup replacement value
             if (levelEntry.Value == -1)
@@ -1036,8 +1043,15 @@ namespace log4net.Repository.Hierarchy
         /// </remarks>
         internal void AddProperty(PropertyEntry propertyEntry)
         {
-            if (propertyEntry == null) throw new ArgumentNullException("propertyEntry");
-            if (propertyEntry.Key == null) throw new ArgumentNullException("propertyEntry.Key");
+            if (propertyEntry == null)
+            {
+                throw new ArgumentNullException("propertyEntry");
+            }
+
+            if (propertyEntry.Key == null)
+            {
+                throw new ArgumentNullException("propertyEntry.Key");
+            }
 
             this.Properties[propertyEntry.Key] = propertyEntry.Value;
         }

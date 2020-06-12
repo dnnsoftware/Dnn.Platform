@@ -69,16 +69,25 @@ namespace DotNetNuke.UI.Skins.Controls
                 var metaTag = new HtmlMeta();
 
                 if (!string.IsNullOrEmpty(this.HttpEquiv))
+                {
                     metaTag.HttpEquiv = this.HttpEquiv;
+                }
+
                 if (!string.IsNullOrEmpty(this.Name))
+                {
                     metaTag.Name = this.Name;
+                }
 
                 metaTag.Content = this.Content;
 
                 if (this.InsertFirst)
+                {
                     this.Page.Header.Controls.AddAt(0, metaTag);
+                }
                 else
+                {
                     this.Page.Header.Controls.Add(metaTag);
+                }
             }
         }
 

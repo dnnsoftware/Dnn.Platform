@@ -61,7 +61,9 @@ namespace log4net.Layout.Pattern
         public void ActivateOptions()
         {
             if (this.Option == null)
+            {
                 return;
+            }
 
             string optStr = this.Option.Trim();
             if (optStr.Length != 0)

@@ -215,9 +215,20 @@ namespace log4net.Util
         {
             if (this.m_impersonationMode == ImpersonationMode.User)
             {
-                if (this.m_userName == null) throw new ArgumentNullException("m_userName");
-                if (this.m_domainName == null) throw new ArgumentNullException("m_domainName");
-                if (this.m_password == null) throw new ArgumentNullException("m_password");
+                if (this.m_userName == null)
+                {
+                    throw new ArgumentNullException("m_userName");
+                }
+
+                if (this.m_domainName == null)
+                {
+                    throw new ArgumentNullException("m_domainName");
+                }
+
+                if (this.m_password == null)
+                {
+                    throw new ArgumentNullException("m_password");
+                }
 
                 this.m_identity = LogonUser(this.m_userName, this.m_domainName, this.m_password);
             }

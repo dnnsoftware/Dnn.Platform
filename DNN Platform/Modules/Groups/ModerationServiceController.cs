@@ -52,7 +52,10 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
-                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                if (recipient == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                }
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
                 this.ParseKey(notification.Context);
@@ -92,7 +95,10 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
-                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                if (recipient == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                }
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
                 this.ParseKey(notification.Context);
@@ -138,8 +144,9 @@ namespace DotNetNuke.Modules.Groups
                         var requireApproval = false;
 
                         if (this._roleInfo.Settings.ContainsKey("ReviewMembers"))
+                        {
                             requireApproval = Convert.ToBoolean(this._roleInfo.Settings["ReviewMembers"]);
-
+                        }
 
                         if ((this._roleInfo.IsPublic || this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName)) && !requireApproval)
                         {
@@ -220,7 +227,10 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
-                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                if (recipient == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                }
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
                 this.ParseKey(notification.Context);
@@ -265,7 +275,10 @@ namespace DotNetNuke.Modules.Groups
             try
             {
                 var recipient = InternalMessagingController.Instance.GetMessageRecipient(postData.NotificationId, this.UserInfo.UserID);
-                if (recipient == null) return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                if (recipient == null)
+                {
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate recipient");
+                }
 
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
                 this.ParseKey(notification.Context);

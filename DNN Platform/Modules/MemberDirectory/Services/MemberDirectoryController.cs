@@ -190,7 +190,10 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         {
             try
             {
-                if (userId < 0) userId = this.PortalSettings.UserId;
+                if (userId < 0)
+                {
+                    userId = this.PortalSettings.UserId;
+                }
 
                 var searchField1 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField1", "DisplayName");
                 var searchField2 = GetSetting(this.ActiveModule.TabModuleSettings, "SearchField2", "Email");

@@ -36,12 +36,18 @@ namespace Dnn.PersonaBar.Library.Common
                 var component = GetInstanceLocal<TContract>(name);
 
                 if (component != null)
+                {
                     return false;
+                }
 
                 if (string.IsNullOrEmpty(name))
+                {
                     ComponentFactory.RegisterComponent<TContract, TConcrete>();
+                }
                 else
+                {
                     ComponentFactory.RegisterComponent<TContract, TConcrete>(name);
+                }
 
                 return true;
             }
@@ -71,12 +77,18 @@ namespace Dnn.PersonaBar.Library.Common
 
                 var component = GetInstanceLocal<TContract>(name);
                 if (component != null)
+                {
                     return false;
+                }
 
                 if (string.IsNullOrEmpty(name))
+                {
                     ComponentFactory.RegisterComponentInstance<TContract>(instance);
+                }
                 else
+                {
                     ComponentFactory.RegisterComponentInstance<TContract>(name, instance);
+                }
 
                 return true;
             }

@@ -135,9 +135,14 @@ namespace DotNetNuke.Common.Utils
             for (int x = 31; x >= 0; x += -1)
             {
                 if ((maskL & oneBit) == oneBit)
+                {
                     cidr += 1;
+                }
                 else
+                {
                     break;
+                }
+
                 oneBit = oneBit >> 1;
             }
 
@@ -222,7 +227,13 @@ namespace DotNetNuke.Common.Utils
                 }
 
                 // handle case where we are matching on a single IP
-                if (string.IsNullOrEmpty(subnetmask)) if (currentIP == startIP) return true;
+                if (string.IsNullOrEmpty(subnetmask))
+                {
+                    if (currentIP == startIP)
+                    {
+                        return true;
+                    }
+                }
 
                 // handle case where we have to build a CIDR, convert to an IP range and compare
                 string cidr = FormatAsCidr(startIP, subnetmask);

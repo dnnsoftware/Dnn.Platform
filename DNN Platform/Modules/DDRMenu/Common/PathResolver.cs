@@ -109,7 +109,9 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                         if (Directory.Exists(mappedDir))
                         {
                             if (string.IsNullOrEmpty(fileName))
+                            {
                                 return resolvedPath.Replace('\\', '/');
+                            }
 
                             var matches = Directory.GetFileSystemEntries(mappedDir, fileName);
                             if (matches.Length > 0)

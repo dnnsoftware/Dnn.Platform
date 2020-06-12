@@ -701,7 +701,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         private ItemViewModel GetItemViewModel(object item)
         {
             var folder = item as IFolderInfo;
-            if (folder != null) return this.GetItemViewModel(folder);
+            if (folder != null)
+            {
+                return this.GetItemViewModel(folder);
+            }
 
             var file = item as IFileInfo;
             return this.GetItemViewModel(file);

@@ -169,7 +169,10 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             this.CopyFileInternal(folderMapping, folderPath + fileName, newFolderPath + fileName);
         }

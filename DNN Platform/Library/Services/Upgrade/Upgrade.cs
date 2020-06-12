@@ -2624,7 +2624,9 @@ namespace DotNetNuke.Services.Upgrade
             var modDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Search Admin");
 
             if (modDef != null)
+            {
                 AddAdminPages("Search Admin", "Manage search settings associated with DotNetNuke's search capability.", "~/Icons/Sigma/Search_16x16_Standard.png", "~/Icons/Sigma/Search_32x32_Standard.png", true, modDef.ModuleDefID, "Search Admin", string.Empty);
+            }
 
             CopyGettingStartedStyles();
         }
@@ -3345,7 +3347,10 @@ namespace DotNetNuke.Services.Upgrade
         {
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "ReplaceMessagingModule");
             var moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Message Center");
-            if (moduleDefinition == null) return;
+            if (moduleDefinition == null)
+            {
+                return;
+            }
 
             var portals = PortalController.Instance.GetPortals();
             foreach (PortalInfo portal in portals)
@@ -3941,7 +3946,9 @@ namespace DotNetNuke.Services.Upgrade
         internal static PortalController.PortalTemplateInfo FindBestTemplate(string templateFileName, string currentCulture)
         {
             if (string.IsNullOrEmpty(currentCulture))
+            {
                 currentCulture = Localization.Localization.SystemLocale;
+            }
 
             var templates = PortalController.Instance.GetAvailablePortalTemplates();
 

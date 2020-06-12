@@ -119,9 +119,13 @@ namespace DotNetNuke.Data
             // Fix for Sql Dates having a minimum value of January 1, 1753
             // or maximum value of December 31, 9999
             if (dateToFix <= SqlDateTime.MinValue.Value)
+            {
                 dateToFix = SqlDateTime.MinValue.Value.AddDays(1);
+            }
             else if (dateToFix >= SqlDateTime.MaxValue.Value)
+            {
                 dateToFix = SqlDateTime.MaxValue.Value.AddDays(-1);
+            }
 
             return dateToFix;
         }
@@ -3367,7 +3371,9 @@ namespace DotNetNuke.Data
 
                     // old SPROC wasn't returning anything; trying a workaround
                     if (!int.TryParse(s ?? "-1", out logEventID))
+                    {
                         logEventID = Null.NullInteger;
+                    }
                 }
 
                 if (!string.IsNullOrEmpty(exception.AssemblyVersion) && exception.AssemblyVersion != "-1")

@@ -49,7 +49,10 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     var destFileName = fileNames[i] + this.ProtectedExtension;
                     if (FileWrapper.Instance.Exists(destFileName))
+                    {
                         FileWrapper.Instance.Delete(destFileName);
+                    }
+
                     FileWrapper.Instance.Move(fileNames[i], destFileName);
                 }
                 else

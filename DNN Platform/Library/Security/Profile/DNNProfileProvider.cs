@@ -187,7 +187,9 @@ namespace DotNetNuke.Security.Profile
                 {
                     var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(newTimeZone.PropertyValue);
                     if (timeZoneInfo != null)
+                    {
                         oldTimeZone.PropertyValue = timeZoneInfo.BaseUtcOffset.TotalMinutes.ToString(CultureInfo.InvariantCulture);
+                    }
                 }
                 // however if old is changed, we need to update new as well
                 else if (oldTimeZone.IsDirty)

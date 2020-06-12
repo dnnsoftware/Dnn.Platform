@@ -23,7 +23,9 @@ namespace DotNetNuke.Collections
             var data = items.ToArray();
 
             if (!data.Any())
+            {
                 return null;
+            }
 
             var dt = new DataTable();
 

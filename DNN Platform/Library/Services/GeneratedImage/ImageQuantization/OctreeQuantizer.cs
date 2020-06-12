@@ -27,10 +27,14 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             : base(false)
         {
             if (maxColors > 255)
+            {
                 throw new ArgumentOutOfRangeException(nameof(maxColors), maxColors, "The number of colors should be less than 256");
+            }
 
             if ((maxColorBits < 1) | (maxColorBits > 8))
+            {
                 throw new ArgumentOutOfRangeException(nameof(maxColorBits), maxColorBits, "This should be between 1 and 8");
+            }
 
             // Construct the octree
             this._octree = new Octree(maxColorBits);
@@ -64,7 +68,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
             // Get the palette index if this non-transparent
             if (pixel.Alpha > 0)
+            {
                 paletteIndex = (byte)this._octree.GetPaletteIndex(pixel);
+            }
 
             return paletteIndex;
         }
@@ -81,7 +87,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
             // Then convert the palette based on those colors
             for (int index = 0; index < palette.Count; index++)
+            {
                 original.Entries[index] = (Color)palette[index];
+            }
 
             // Add the transparent color
             original.Entries[this._maxColors] = Color.FromArgb(0, 0, 0, 0);
@@ -204,7 +212,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             public ArrayList Palletize(int colorCount)
             {
                 while (this.Leaves > colorCount)
+                {
                     this.Reduce();
+                }
 
                 // Now palettize the nodes
                 ArrayList   palette = new ArrayList(this.Leaves);
@@ -402,7 +412,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         for (int index = 0; index < 8; index++)
                         {
                             if (this._children[index] != null)
+                            {
                                 this._children[index].ConstructPalette(palette, ref paletteIndex);
+                            }
                         }
                     }
                 }
@@ -422,9 +434,13 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                             ((pixel.Blue & mask[level]) >> shift);
 
                         if (this._children[index] != null)
+                        {
                             paletteIndex = this._children[index].GetPaletteIndex(pixel, level + 1);
+                        }
                         else
+                        {
                             throw new Exception("Didn't expect this!");
+                        }
                     }
 
                     return paletteIndex;

@@ -28,7 +28,10 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
         protected override void InvokeActionResult(ControllerContext controllerContext, ActionResult actionResult)
         {
             // Do not invoke the action.  Instead, store it for later retrieval
-            if (this.ResultOfLastInvoke == null) this.ResultOfLastInvoke = actionResult;
+            if (this.ResultOfLastInvoke == null)
+            {
+                this.ResultOfLastInvoke = actionResult;
+            }
         }
     }
 }

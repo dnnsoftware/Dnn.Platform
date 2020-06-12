@@ -79,7 +79,11 @@ namespace DotNetNuke.Modules.Admin.Tabs
 
             try
             {
-                if (this.Page.IsPostBack) return;
+                if (this.Page.IsPostBack)
+                {
+                    return;
+                }
+
                 this.cmdCancel.NavigateUrl = this._navigationManager.NavigateURL();
                 var folderPath = "Templates/";
                 var templateFolder = FolderManager.Instance.GetFolder(this.UserInfo.PortalID, folderPath);

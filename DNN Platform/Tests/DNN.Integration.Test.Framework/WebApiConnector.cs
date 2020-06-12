@@ -177,7 +177,10 @@ namespace DNN.Integration.Test.Framework
 
         public bool Login(string password)
         {
-            if (this.IsLoggedIn) return true;
+            if (this.IsLoggedIn)
+            {
+                return true;
+            }
 
             // This method uses multi-part parameters in the post body
             // the response is similar to this:
@@ -230,7 +233,9 @@ namespace DNN.Integration.Test.Framework
                             var data = sr.ReadToEnd();
                             var token = GetVerificationToken(data);
                             if (!string.IsNullOrEmpty(token))
+                            {
                                 this._inputFieldVerificationToken = token;
+                            }
                         }
                 }
             }
@@ -435,7 +440,9 @@ namespace DNN.Integration.Test.Framework
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if (!ignoreLoggedIn)
+            {
                 this.EnsureLoggedIn();
+            }
 
             using (var client = this.CreateHttpClient("/", true))
             {
@@ -472,7 +479,9 @@ namespace DNN.Integration.Test.Framework
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
             if (!ignoreLoggedIn)
+            {
                 this.EnsureLoggedIn();
+            }
 
             using (var client = this.CreateHttpClient("/", true))
             {
@@ -593,7 +602,9 @@ namespace DNN.Integration.Test.Framework
             List<string> excludedInputPrefixes, bool checkUserLoggedIn = true, bool followRedirect = false)
         {
             if (checkUserLoggedIn)
+            {
                 this.EnsureLoggedIn();
+            }
 
             var clientHandler = new HttpClientHandler
             {
@@ -659,7 +670,10 @@ namespace DNN.Integration.Test.Framework
                                 {
                                     var value = inputValue == null ? string.Empty : inputValue.Value;
                                     if (formFields.ContainsKey(inputName.Value))
+                                    {
                                         value = formFields[inputName.Value].ToString();
+                                    }
+
                                     postParameters.Add(inputName.Value, value);
                                 }
                             }
@@ -669,7 +683,10 @@ namespace DNN.Integration.Test.Framework
                         case "radio":
                             if (formFields.ContainsKey(inputName.Value) &&
                                 !postParameters.ContainsKey(inputName.Value))
+                            {
                                 postParameters.Add(inputName.Value, formFields[inputName.Value]);
+                            }
+
                             break;
                             // other types as "submit", etc. are ignored/discarded
                     }
@@ -679,7 +696,9 @@ namespace DNN.Integration.Test.Framework
             foreach (var field in formFields)
             {
                 if (!postParameters.ContainsKey(field.Key))
+                {
                     postParameters.Add(field.Key, field.Value);
+                }
             }
 
             if (excludedInputPrefixes != null)
@@ -780,7 +799,9 @@ namespace DNN.Integration.Test.Framework
                 // Thanks to feedback from commenters, add a CRLF to allow multiple parameters to be added.
                 // Skip it on the first parameter, add it to subsequent parameters.
                 if (needsClrf)
+                {
                     formDataStream.Write(Encoding.GetBytes("\r\n"), 0, Encoding.GetByteCount("\r\n"));
+                }
 
                 needsClrf = true;
 
@@ -835,17 +856,25 @@ namespace DNN.Integration.Test.Framework
         private static string CombineUrlPath(Uri domain, string path)
         {
             if (path.StartsWith("http"))
+            {
                 return path;
+            }
 
             var url = domain.AbsoluteUri;
             if (!url.EndsWith("/"))
+            {
                 url += "/";
+            }
 
             if (string.IsNullOrEmpty(path))
+            {
                 path = string.Empty;
+            }
 
             if (path.StartsWith("/"))
+            {
                 return url + path.Substring(1);
+            }
 
             return new Uri(url + path).AbsoluteUri;
         }

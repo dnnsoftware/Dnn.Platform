@@ -77,7 +77,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
                 // Create SuperUser if not present
                 if (UserController.GetUserByName(superUser.PortalID, superUser.Username) == null)
+                {
                     UserController.CreateUser(ref superUser);
+                }
             }
 
             this.Details = Localization.Localization.GetString("CreatingSuperUser", this.LocalInstallResourceFile) + installConfig.SuperUser.UserName;

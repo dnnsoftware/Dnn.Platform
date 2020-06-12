@@ -126,7 +126,10 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         protected void MappingsGrid_OnItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem) return;
+            if (e.Item.ItemType != GridItemType.Item && e.Item.ItemType != GridItemType.AlternatingItem)
+            {
+                return;
+            }
 
             var folderMapping = e.Item.DataItem as FolderMappingInfo;
             if (folderMapping == null || !folderMapping.IsEditable)
@@ -135,10 +138,16 @@ namespace DotNetNuke.Modules.DigitalAssets
             }
 
             var cmdEditMapping = e.Item.FindControl("EditMappingButton") as CommandButton;
-            if (cmdEditMapping != null) cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
+            if (cmdEditMapping != null)
+            {
+                cmdEditMapping.ToolTip = Localization.GetString("cmdEdit");
+            }
 
             var cmdDeleteMapping = e.Item.FindControl("DeleteMappingButton") as CommandButton;
-            if (cmdDeleteMapping == null) return;
+            if (cmdDeleteMapping == null)
+            {
+                return;
+            }
 
             cmdDeleteMapping.ToolTip = Localization.GetString("cmdDelete");
 

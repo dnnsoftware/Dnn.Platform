@@ -67,7 +67,9 @@ namespace DotNetNuke.Web.Api.Internal
                 Route route = this.MapHttpRouteWithNamespace(fullRouteName, routeUrl, defaults, constraints, namespaces);
                 routes.Add(route);
                 if (Logger.IsTraceEnabled)
+                {
                     Logger.Trace("Mapping route: " + fullRouteName + " @ " + routeUrl);
+                }
 
                 // compatible with old service path: DesktopModules/{namespace}/API/{controller}/{action}.
                 var oldRouteName = $"{fullRouteName}-old";
@@ -75,7 +77,9 @@ namespace DotNetNuke.Web.Api.Internal
                 var oldRoute = this.MapHttpRouteWithNamespace(oldRouteName, oldRouteUrl, defaults, constraints, namespaces);
                 routes.Add(oldRoute);
                 if (Logger.IsTraceEnabled)
+                {
                     Logger.Trace("Mapping route: " + oldRouteName + " @ " + oldRouteUrl);
+                }
             }
 
             return routes;
@@ -144,7 +148,9 @@ namespace DotNetNuke.Web.Api.Internal
             // authentication message handlers from web.config file
             var authSvcCfg = AuthServicesConfiguration.GetConfig();
             if (authSvcCfg?.MessageHandlers == null || authSvcCfg.MessageHandlers.Count <= 0)
+            {
                 return;
+            }
 
             var registeredSchemes = new List<string>();
             foreach (var handlerEntry in authSvcCfg.MessageHandlers.Cast<MessageHandlerEntry>())

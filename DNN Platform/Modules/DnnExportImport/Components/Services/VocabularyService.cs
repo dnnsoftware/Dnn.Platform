@@ -26,8 +26,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
 
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
@@ -57,11 +64,18 @@ namespace Dnn.ExportImport.Components.Services
                 }
                 this.CheckPoint.Progress = 25;
 
-                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                if (taxonomyVocabularies == null)
+                {
+                    taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                }
+
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     if (vocabularyTypes == null)
+                    {
                         vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
+                    }
+
                     this.Repository.CreateItems(vocabularyTypes);
                     // Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
                     // CheckPoint.ProcessedItems += vocabularyTypes.Count;
@@ -72,9 +86,16 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress = 75;
                 this.CheckPoint.ProcessedItems += taxonomyTerms.Count;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
 
-                if (taxonomyVocabularies == null) taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                if (taxonomyVocabularies == null)
+                {
+                    taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
+                }
+
                 this.Repository.CreateItems(taxonomyVocabularies);
                 this.Result.AddSummary("Exported Terms", taxonomyVocabularies.Count.ToString());
                 this.CheckPoint.Progress = 100;
@@ -97,8 +118,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckPoint.Stage > 0) return;
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckPoint.Stage > 0)
+            {
+                return;
+            }
+
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
 
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
@@ -198,7 +226,9 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
             if (changed)
+            {
                 DataCache.ClearCache(DataCache.VocabularyCacheKey);
+            }
         }
 
         private void ProcessTaxonomyTerms(ExportImportJob importJob, ImportDto importDto,

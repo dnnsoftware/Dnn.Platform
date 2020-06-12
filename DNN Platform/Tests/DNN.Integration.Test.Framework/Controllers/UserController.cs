@@ -82,7 +82,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             var username = parms.FirstName + "." + parms.LastName;
             var uid = GetUserId(username);
             if (uid > 0)
+            {
                 return uid;
+            }
 
             // create role if not present
             RoleController.CreateRoleIfNotPresent(parms.Role);

@@ -25,7 +25,11 @@ namespace DotNetNuke.Modules.RazorHost
 
         private static void EnsureEditScriptControlIsRegistered(int moduleDefId)
         {
-            if (ModuleControlController.GetModuleControlByControlKey("EditRazorScript", moduleDefId) != null) return;
+            if (ModuleControlController.GetModuleControlByControlKey("EditRazorScript", moduleDefId) != null)
+            {
+                return;
+            }
+
             var m = new ModuleControlInfo
                         {
                             ControlKey = "EditRazorScript",

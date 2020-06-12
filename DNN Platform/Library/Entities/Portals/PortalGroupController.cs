@@ -57,7 +57,10 @@ namespace DotNetNuke.Entities.Portals
 
         private void OnAddPortalToGroupStart(UserCopiedCallback callback, PortalInfo portal)
         {
-            if (callback == null) return;
+            if (callback == null)
+            {
+                return;
+            }
 
             var args = new UserCopiedEventArgs
             {
@@ -72,7 +75,10 @@ namespace DotNetNuke.Entities.Portals
 
         private void OnUserAddedToSiteGroup(UserCopiedCallback callback, PortalInfo portal, UserInfo currentUser, int totalUsers, int currentUserNumber)
         {
-            if (callback == null) return;
+            if (callback == null)
+            {
+                return;
+            }
 
             var args = new UserCopiedEventArgs
             {
@@ -86,7 +92,10 @@ namespace DotNetNuke.Entities.Portals
 
         private void OnAddPortalToGroupFinishing(UserCopiedCallback callback, PortalInfo portal, int totalUsers)
         {
-            if (callback == null) return;
+            if (callback == null)
+            {
+                return;
+            }
 
             var args = new UserCopiedEventArgs
             {
@@ -101,7 +110,10 @@ namespace DotNetNuke.Entities.Portals
 
         private void OnAddPortalToGroupFinished(UserCopiedCallback callback, PortalInfo portal, PortalGroupInfo portalGroup, int totalUsers)
         {
-            if (callback == null) return;
+            if (callback == null)
+            {
+                return;
+            }
 
             var args = new UserCopiedEventArgs
             {
@@ -413,7 +425,11 @@ namespace DotNetNuke.Entities.Portals
 
         public bool IsModuleShared(int moduleId, PortalInfo portal)
         {
-            if (portal == null) return false;
+            if (portal == null)
+            {
+                return false;
+            }
+
             return this.GetSharedModulesWithPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted) || this.GetSharedModulesByPortal(portal).Any(x => x.ModuleID == moduleId && !x.IsDeleted);
         }
     }

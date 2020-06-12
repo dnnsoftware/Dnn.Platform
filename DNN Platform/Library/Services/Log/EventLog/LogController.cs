@@ -85,7 +85,11 @@ namespace DotNetNuke.Services.Log.EventLog
         private static void WriteLog(string filePath, string message)
         {
             FileStream fs = null;
-            if (!LockLog.TryEnterWriteLock(WriterLockTimeout)) return;
+            if (!LockLog.TryEnterWriteLock(WriterLockTimeout))
+            {
+                return;
+            }
+
             try
             {
                 var intAttempts = 0;

@@ -40,8 +40,16 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             var temp = (Bitmap)image;
             var bmap = (Bitmap)temp.Clone();
-            if (this.Contrast < -100) this.Contrast = -100;
-            if (this.Contrast > 100) this.Contrast = 100;
+            if (this.Contrast < -100)
+            {
+                this.Contrast = -100;
+            }
+
+            if (this.Contrast > 100)
+            {
+                this.Contrast = 100;
+            }
+
             this.Contrast = (100.0 + this.Contrast) / 100.0;
             this.Contrast *= this.Contrast;
             Color c;
@@ -55,24 +63,45 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                     pR *= this.Contrast;
                     pR += 0.5;
                     pR *= 255;
-                    if (pR < 0) pR = 0;
-                    if (pR > 255) pR = 255;
+                    if (pR < 0)
+                    {
+                        pR = 0;
+                    }
+
+                    if (pR > 255)
+                    {
+                        pR = 255;
+                    }
 
                     double pG = c.G / 255.0;
                     pG -= 0.5;
                     pG *= this.Contrast;
                     pG += 0.5;
                     pG *= 255;
-                    if (pG < 0) pG = 0;
-                    if (pG > 255) pG = 255;
+                    if (pG < 0)
+                    {
+                        pG = 0;
+                    }
+
+                    if (pG > 255)
+                    {
+                        pG = 255;
+                    }
 
                     double pB = c.B / 255.0;
                     pB -= 0.5;
                     pB *= this.Contrast;
                     pB += 0.5;
                     pB *= 255;
-                    if (pB < 0) pB = 0;
-                    if (pB > 255) pB = 255;
+                    if (pB < 0)
+                    {
+                        pB = 0;
+                    }
+
+                    if (pB > 255)
+                    {
+                        pB = 255;
+                    }
 
                     bmap.SetPixel(i, j, Color.FromArgb((byte)pR, (byte)pG, (byte)pB));
                 }

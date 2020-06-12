@@ -647,7 +647,10 @@ namespace DotNetNuke.Entities.Content.Workflow
         public bool IsWorkflowCompleted(ContentItem contentItem)
         {
             var workflow = this._workflowManager.GetWorkflow(contentItem);
-            if (workflow == null) return true; // If item has not workflow, then it is considered as completed
+            if (workflow == null)
+            {
+                return true; // If item has not workflow, then it is considered as completed
+            }
 
             return contentItem.StateID == Null.NullInteger || workflow.LastState.StateID == contentItem.StateID;
         }
@@ -661,7 +664,11 @@ namespace DotNetNuke.Entities.Content.Workflow
         public bool IsWorkflowOnDraft(ContentItem contentItem)
         {
             var workflow = this._workflowManager.GetWorkflow(contentItem);
-            if (workflow == null) return false; // If item has not workflow, then it is not on Draft
+            if (workflow == null)
+            {
+                return false; // If item has not workflow, then it is not on Draft
+            }
+
             return contentItem.StateID == workflow.FirstState.StateID;
         }
 

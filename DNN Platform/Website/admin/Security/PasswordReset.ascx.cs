@@ -133,7 +133,9 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             base.OnPreRender(e);
             if (!string.IsNullOrEmpty(this.lblHelp.Text) || !string.IsNullOrEmpty(this.lblInfo.Text))
+            {
                 this.resetMessages.Visible = true;
+            }
 
             var options = new DnnPaswordStrengthOptions();
             var optionsAsJsonString = Json.Serialize(options);

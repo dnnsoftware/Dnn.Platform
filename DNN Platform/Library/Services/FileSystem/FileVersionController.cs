@@ -90,7 +90,11 @@ namespace DotNetNuke.Services.FileSystem
             // Rename the original file to the versioned name
             // Rename the new versioned name to the original file name
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return;
+            if (folderMapping == null)
+            {
+                return;
+            }
+
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
             folderProvider.RenameFile(file, GetVersionedFilename(file, file.PublishedVersion));
@@ -109,7 +113,10 @@ namespace DotNetNuke.Services.FileSystem
             int newVersion;
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return Null.NullInteger;
+            if (folderMapping == null)
+            {
+                return Null.NullInteger;
+            }
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
@@ -154,7 +161,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
 
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return;
+            if (folderMapping == null)
+            {
+                return;
+            }
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
 
@@ -208,7 +218,11 @@ namespace DotNetNuke.Services.FileSystem
         public Stream GetVersionContent(IFileInfo file, int version)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return null;
+            if (folderMapping == null)
+            {
+                return null;
+            }
+
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
             return this.GetVersionContent(folderProvider, folder, file, version);
@@ -217,7 +231,10 @@ namespace DotNetNuke.Services.FileSystem
         public void RollbackFileVersion(IFileInfo file, int version, int userId)
         {
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(file.PortalId, file.FolderMappingID);
-            if (folderMapping == null) return;
+            if (folderMapping == null)
+            {
+                return;
+            }
 
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var folder = FolderManager.Instance.GetFolder(file.FolderId);

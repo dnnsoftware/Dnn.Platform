@@ -79,7 +79,10 @@ namespace log4net.Appender
         /// </returns>
         public static AppenderCollection ReadOnly(AppenderCollection list)
         {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null)
+            {
+                throw new ArgumentNullException("list");
+            }
 
             return new ReadOnlyAppenderCollection(list);
         }

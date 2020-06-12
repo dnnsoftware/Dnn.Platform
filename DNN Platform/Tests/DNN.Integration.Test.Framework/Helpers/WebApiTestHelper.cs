@@ -146,7 +146,11 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         private static string GenerateHash(this string str, string hashType)
         {
             var hasher = HashAlgorithm.Create(hashType);
-            if (hasher == null) throw new InvalidOperationException("No hashing type found by name " + hashType);
+            if (hasher == null)
+            {
+                throw new InvalidOperationException("No hashing type found by name " + hashType);
+            }
+
             using (hasher)
             {
                 // convert our string into byte array

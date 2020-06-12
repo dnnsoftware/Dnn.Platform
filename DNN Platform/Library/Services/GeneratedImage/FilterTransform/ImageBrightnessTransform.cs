@@ -40,8 +40,16 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         {
             var temp = (Bitmap)image;
             var bmap = (Bitmap)temp.Clone();
-            if (this.Brightness < -255) this.Brightness = -255;
-            if (this.Brightness > 255) this.Brightness = 255;
+            if (this.Brightness < -255)
+            {
+                this.Brightness = -255;
+            }
+
+            if (this.Brightness > 255)
+            {
+                this.Brightness = 255;
+            }
+
             Color c;
             for (int i = 0; i < bmap.Width; i++)
             {
@@ -52,14 +60,35 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                     int cG = c.G + this.Brightness;
                     int cB = c.B + this.Brightness;
 
-                    if (cR < 0) cR = 1;
-                    if (cR > 255) cR = 255;
+                    if (cR < 0)
+                    {
+                        cR = 1;
+                    }
 
-                    if (cG < 0) cG = 1;
-                    if (cG > 255) cG = 255;
+                    if (cR > 255)
+                    {
+                        cR = 255;
+                    }
 
-                    if (cB < 0) cB = 1;
-                    if (cB > 255) cB = 255;
+                    if (cG < 0)
+                    {
+                        cG = 1;
+                    }
+
+                    if (cG > 255)
+                    {
+                        cG = 255;
+                    }
+
+                    if (cB < 0)
+                    {
+                        cB = 1;
+                    }
+
+                    if (cB > 255)
+                    {
+                        cB = 255;
+                    }
 
                     bmap.SetPixel(i, j, Color.FromArgb((byte)cR, (byte)cG, (byte)cB));
                 }

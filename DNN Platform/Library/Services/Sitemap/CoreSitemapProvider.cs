@@ -127,7 +127,9 @@ namespace DotNetNuke.Services.Sitemap
                 TabInfo currentTab = objTab;
 
                 if (!objTab.IsDefaultLanguage)
+                {
                     currentTab = objTab.DefaultLanguageTab;
+                }
 
                 foreach (TabInfo localized in currentTab.LocalizedTabs.Values)
                 {

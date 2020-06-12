@@ -121,7 +121,9 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         var moduleInfo = module as ModuleInfo;
                         if (moduleInfo != null)
+                        {
                             TabVersionController.Instance.DeleteTabVersionDetailByModule(moduleInfo.ModuleID);
+                        }
                     }
                 }
 

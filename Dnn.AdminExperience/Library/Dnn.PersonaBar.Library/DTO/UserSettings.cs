@@ -43,7 +43,9 @@ namespace Dnn.PersonaBar.Library.DTO
             reader.Read();
 
             if (wasEmpty)
+            {
                 return;
+            }
 
             switch (reader.Name)
             {

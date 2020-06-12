@@ -65,7 +65,9 @@ namespace DotNetNuke.Web.Mvc.Routing
             Route route = null;
 
             if (url == null)
+            {
                 throw new ArgumentNullException(nameof(url));
+            }
 
             foreach (var count in prefixCounts)
             {

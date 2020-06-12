@@ -61,7 +61,10 @@ namespace DotNetNuke.Services.FileSystem.Internal
 
         private void DeleteContentItem(int contentItemId)
         {
-            if (contentItemId == Null.NullInteger) return;
+            if (contentItemId == Null.NullInteger)
+            {
+                return;
+            }
 
             Util.GetContentController().DeleteContentItem(contentItemId);
         }

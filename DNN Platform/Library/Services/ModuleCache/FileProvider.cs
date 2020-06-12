@@ -86,7 +86,9 @@ namespace DotNetNuke.Services.ModuleCache
             using (var writerLock = CacheFolderPath.GetWriteLock())
             {
                 if (!CacheFolderPath.ContainsKey(portalId))
+                {
                     CacheFolderPath.Add(portalId, cacheFolder);
+                }
             }
 
             return cacheFolder;

@@ -221,7 +221,9 @@ namespace DotNetNuke.Tests.Core.Common
         {
             string[] parameters = new string[count];
             for (int index = 0; index < count; index++)
+            {
                 parameters[index] = $"My-Parameter{index}";
+            }
 
             var controlKey = "My-Control-Key";
             var expected = string.Format(DefaultURLPattern, TabID) +
@@ -309,14 +311,18 @@ namespace DotNetNuke.Tests.Core.Common
         {
             string[] parameters = new string[count];
             for (int index = 0; index < count; index++)
+            {
                 parameters[index] = $"My-Parameter{index}";
+            }
 
             var customTabId = 51;
             var expected = string.Format(DefaultURLPattern, customTabId) +
                 string.Format(ControlKeyPattern, controlKey);
 
             if (parameters.Length > 0)
+            {
                 expected += parameters.Select(s => $"&{s}").Aggregate((x, y) => $"{x}{y}");
+            }
 
             var actual = this._navigationManager.NavigateURL(customTabId, controlKey, parameters);
 

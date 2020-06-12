@@ -158,13 +158,22 @@ namespace DotNetNuke.Services.FileSystem
             {
                 using (var image = this.GetImageFromStream(content))
                 {
-                    if (!image.PropertyIdList.Any(x => x == 274)) return;
+                    if (!image.PropertyIdList.Any(x => x == 274))
+                    {
+                        return;
+                    }
 
                     var orientation = image.GetPropertyItem(274); // Find rotation/flip meta property
-                    if (orientation == null) return;
+                    if (orientation == null)
+                    {
+                        return;
+                    }
 
                     var flip = OrientationToFlipType(orientation.Value[0].ToString());
-                    if (flip == RotateFlipType.RotateNoneFlipNone) return; // No rotation or flip required
+                    if (flip == RotateFlipType.RotateNoneFlipNone)
+                    {
+                        return; // No rotation or flip required
+                    }
 
                     image.RotateFlip(flip);
                     var newOrientation = new byte[2];
@@ -183,25 +192,53 @@ namespace DotNetNuke.Services.FileSystem
         private static ImageFormat GetImageFormat(Image img)
         {
             if (img.RawFormat.Equals(ImageFormat.Jpeg))
+            {
                 return ImageFormat.Jpeg;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Bmp))
+            {
                 return ImageFormat.Bmp;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Png))
+            {
                 return ImageFormat.Png;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Emf))
+            {
                 return ImageFormat.Emf;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Exif))
+            {
                 return ImageFormat.Exif;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Gif))
+            {
                 return ImageFormat.Gif;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Icon))
+            {
                 return ImageFormat.Icon;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.MemoryBmp))
+            {
                 return ImageFormat.Jpeg;
+            }
+
             if (img.RawFormat.Equals(ImageFormat.Tiff))
+            {
                 return ImageFormat.Tiff;
+            }
             else
+            {
                 return ImageFormat.Wmf;
+            }
         }
         private static Stream ToStream(Image image, ImageFormat formaw)
         {
@@ -1038,7 +1075,10 @@ namespace DotNetNuke.Services.FileSystem
 
             Requires.NotNull("stream", stream);
 
-            if (stream.CanSeek) return stream;
+            if (stream.CanSeek)
+            {
+                return stream;
+            }
 
             var folderPath = this.GetHostMapPath();
             string filePath;
@@ -1198,7 +1238,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNullOrEmpty("newFileName", newFileName);
 
-            if (file.FileName == newFileName) return file;
+            if (file.FileName == newFileName)
+            {
+                return file;
+            }
 
             if (!this.IsAllowedExtension(newFileName))
             {
@@ -1453,7 +1496,10 @@ namespace DotNetNuke.Services.FileSystem
 
         internal virtual int CopyContentItem(int contentItemId)
         {
-            if (contentItemId == Null.NullInteger) return Null.NullInteger;
+            if (contentItemId == Null.NullInteger)
+            {
+                return Null.NullInteger;
+            }
 
             var newContentItem = this.CreateFileContentItem();
 
@@ -1495,7 +1541,10 @@ namespace DotNetNuke.Services.FileSystem
         internal virtual void MoveVersions(IFileInfo file, IFolderInfo destinationFolder, FolderProvider sourceFolderProvider, FolderProvider destinationFolderProvider)
         {
             var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
-            if (!versions.Any()) return;
+            if (!versions.Any())
+            {
+                return;
+            }
 
             var folder = FolderManager.Instance.GetFolder(file.FolderId);
 
@@ -1505,7 +1554,10 @@ namespace DotNetNuke.Services.FileSystem
                 using (var fileContent = sourceFolderProvider.GetFileStream(folder, version.FileName))
                 {
                     // This scenario is when the file is in the Database Folder Provider
-                    if (fileContent == null) continue;
+                    if (fileContent == null)
+                    {
+                        continue;
+                    }
 
                     this.AddFileToFolderProvider(fileContent, version.FileName, destinationFolder, destinationFolderProvider);
                 }
@@ -1834,7 +1886,11 @@ namespace DotNetNuke.Services.FileSystem
             }
 
             // Do not send negative Content-Length (file.Size could be negative due to integer overflow for files > 2GB)
-            if (file.Size >= 0) objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
+            if (file.Size >= 0)
+            {
+                objResponse.AppendHeader("Content-Length", file.Size.ToString(CultureInfo.InvariantCulture));
+            }
+
             objResponse.ContentType = this.GetContentType(file.Extension.Replace(".", string.Empty));
 
             try

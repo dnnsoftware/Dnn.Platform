@@ -109,10 +109,13 @@ namespace log4net.Appender
         public override bool Flush(int millisecondsTimeout)
             {
                 // Nothing to do if ImmediateFlush is true
-                if (this.m_immediateFlush) return true;
+                if (this.m_immediateFlush)
+            {
+                return true;
+            }
 
-                // System.Diagnostics.Debug is thread-safe, so no need for lock(this).
-                System.Diagnostics.Debug.Flush();
+            // System.Diagnostics.Debug is thread-safe, so no need for lock(this).
+            System.Diagnostics.Debug.Flush();
 
                 return true;
             }

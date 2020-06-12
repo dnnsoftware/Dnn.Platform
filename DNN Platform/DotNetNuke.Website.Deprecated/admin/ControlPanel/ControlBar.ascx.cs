@@ -471,12 +471,20 @@ namespace DotNetNuke.UI.ControlPanels
             List<TabInfo> tabList;
             if (isHostTool)
             {
-                if (this._hostTabs == null) this.GetHostTabs();
+                if (this._hostTabs == null)
+                {
+                    this.GetHostTabs();
+                }
+
                 tabList = this._hostTabs;
             }
             else
             {
-                if (this._adminTabs == null) this.GetAdminTabs();
+                if (this._adminTabs == null)
+                {
+                    this.GetAdminTabs();
+                }
+
                 tabList = this._adminTabs;
             }
 
@@ -494,12 +502,20 @@ namespace DotNetNuke.UI.ControlPanels
             List<TabInfo> tabList;
             if (isHostTool)
             {
-                if (this._hostTabs == null) this.GetHostTabs();
+                if (this._hostTabs == null)
+                {
+                    this.GetHostTabs();
+                }
+
                 tabList = this._hostTabs;
             }
             else
             {
-                if (this._adminTabs == null) this.GetAdminTabs();
+                if (this._adminTabs == null)
+                {
+                    this.GetAdminTabs();
+                }
+
                 tabList = this._adminTabs;
             }
 
@@ -509,7 +525,11 @@ namespace DotNetNuke.UI.ControlPanels
 
         protected string GetMenuItem(TabInfo tab, bool isRemoveBookmark = false, bool isHideBookmark = false)
         {
-            if (tab == null) return string.Empty;
+            if (tab == null)
+            {
+                return string.Empty;
+            }
+
             if (tab.IsVisible && !tab.IsDeleted && !tab.DisableLink)
             {
                 string name = !string.IsNullOrEmpty(tab.LocalizedTabName) ? tab.LocalizedTabName : tab.Title;
@@ -891,7 +911,9 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var cookie = this.Request.Cookies["LastPageId"];
             if (cookie != null)
+            {
                 return cookie.Value;
+            }
 
             return "NEW";
         }

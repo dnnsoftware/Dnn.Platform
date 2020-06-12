@@ -308,7 +308,11 @@ namespace DotNetNuke.Security.Permissions
 
         private bool HasFolderPermission(FolderInfo folder, string permissionKey)
         {
-            if (folder == null) return false;
+            if (folder == null)
+            {
+                return false;
+            }
+
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
                    && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
@@ -501,7 +505,11 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanBrowseFolder(FolderInfo folder)
         {
-            if (folder == null) return false;
+            if (folder == null)
+            {
+                return false;
+            }
+
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(BrowseFolderPermissionKey))
                 || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(ViewFolderPermissionKey)))
                 && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(BrowseFolderPermissionKey));
@@ -514,7 +522,11 @@ namespace DotNetNuke.Security.Permissions
         /// <returns>A flag indicating whether the user has permission</returns>
         public virtual bool CanAdminFolder(FolderInfo folder)
         {
-            if (folder == null) return false;
+            if (folder == null)
+            {
+                return false;
+            }
+
             return PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
         }
 

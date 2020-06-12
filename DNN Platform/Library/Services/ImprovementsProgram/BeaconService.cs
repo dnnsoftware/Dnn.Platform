@@ -76,11 +76,30 @@ namespace DotNetNuke.Services.ImprovementsProgram
             var roles = 0;
             if (user.UserID >= 0)
             {
-                if (user.IsSuperUser) roles |= (int)RolesEnum.Host;
-                if (user.IsInRole("Administrators")) roles |= (int)RolesEnum.Admin;
-                if (user.IsInRole("Content Managers")) roles |= (int)RolesEnum.ContentManager;
-                if (user.IsInRole("Content Editors")) roles |= (int)RolesEnum.ContentEditor;
-                if (user.IsInRole("Community Manager")) roles |= (int)RolesEnum.CommunityManager;
+                if (user.IsSuperUser)
+                {
+                    roles |= (int)RolesEnum.Host;
+                }
+
+                if (user.IsInRole("Administrators"))
+                {
+                    roles |= (int)RolesEnum.Admin;
+                }
+
+                if (user.IsInRole("Content Managers"))
+                {
+                    roles |= (int)RolesEnum.ContentManager;
+                }
+
+                if (user.IsInRole("Content Editors"))
+                {
+                    roles |= (int)RolesEnum.ContentEditor;
+                }
+
+                if (user.IsInRole("Community Manager"))
+                {
+                    roles |= (int)RolesEnum.CommunityManager;
+                }
             }
 
             // h: Host GUID - hashed
@@ -105,15 +124,22 @@ namespace DotNetNuke.Services.ImprovementsProgram
             };
 
             if (!string.IsNullOrEmpty(filePath))
+            {
                 qparams["f"] = HttpUtility.UrlEncode(filePath);
+            }
 
             // add package and version to context of request
             string packageName = DotNetNukeContext.Current.Application.Name;
             string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, string.Empty);
             if (!string.IsNullOrEmpty(packageName))
+            {
                 qparams["n"] = HttpUtility.UrlEncode(this.GetHash(packageName));
+            }
+
             if (!string.IsNullOrEmpty(installVersion))
+            {
                 qparams["v"] = HttpUtility.UrlEncode(this.GetHash(installVersion));
+            }
 
             return "?" + string.Join("&", qparams.Select(kpv => kpv.Key + "=" + kpv.Value));
         }
@@ -137,11 +163,30 @@ namespace DotNetNuke.Services.ImprovementsProgram
             var roles = RolesEnum.None;
             if (user.UserID >= 0)
             {
-                if (user.IsSuperUser) roles |= RolesEnum.Host;
-                if (user.IsInRole("Administrators")) roles |= RolesEnum.Admin;
-                if (user.IsInRole("Content Managers")) roles |= RolesEnum.ContentManager;
-                if (user.IsInRole("Content Editors")) roles |= RolesEnum.ContentEditor;
-                if (user.IsInRole("Community Manager")) roles |= RolesEnum.CommunityManager;
+                if (user.IsSuperUser)
+                {
+                    roles |= RolesEnum.Host;
+                }
+
+                if (user.IsInRole("Administrators"))
+                {
+                    roles |= RolesEnum.Admin;
+                }
+
+                if (user.IsInRole("Content Managers"))
+                {
+                    roles |= RolesEnum.ContentManager;
+                }
+
+                if (user.IsInRole("Content Editors"))
+                {
+                    roles |= RolesEnum.ContentEditor;
+                }
+
+                if (user.IsInRole("Community Manager"))
+                {
+                    roles |= RolesEnum.CommunityManager;
+                }
             }
             return roles;
         }

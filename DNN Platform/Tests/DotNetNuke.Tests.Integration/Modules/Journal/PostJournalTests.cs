@@ -35,7 +35,9 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                {
                     DatabaseHelper.ExecuteNonQuery("TRUNCATE TABLE {objectQualifier}JsonWebTokens");
+                }
             }
             catch (Exception)
             {

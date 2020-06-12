@@ -21,13 +21,20 @@ namespace DotNetNuke.Framework
         public static string GetServiceFrameworkRoot()
         {
             var portalSettings = PortalSettings.Current;
-            if (portalSettings == null) return string.Empty;
+            if (portalSettings == null)
+            {
+                return string.Empty;
+            }
+
             var path = portalSettings.PortalAlias.HTTPAlias;
             var index = path.IndexOf('/');
             if (index > 0)
             {
                 path = path.Substring(index);
-                if (!path.EndsWith("/")) path += "/";
+                if (!path.EndsWith("/"))
+                {
+                    path += "/";
+                }
             }
             else
                 path = "/";

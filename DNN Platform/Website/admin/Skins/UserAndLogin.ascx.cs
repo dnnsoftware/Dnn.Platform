@@ -208,7 +208,9 @@ namespace DotNetNuke.UI.Skins.Controls
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
+            {
                 return messageTabId;
+            }
 
             // Find the Message Tab
             messageTabId = this.FindMessageTab();

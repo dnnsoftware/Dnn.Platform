@@ -212,7 +212,11 @@ namespace DotNetNuke.Web.Mvc
             base.OnPreRender(e);
             try
             {
-                if (this._result == null) return;
+                if (this._result == null)
+                {
+                    return;
+                }
+
                 var mvcString = this.RenderModule(this._result);
                 if (!string.IsNullOrEmpty(Convert.ToString(mvcString)))
                 {

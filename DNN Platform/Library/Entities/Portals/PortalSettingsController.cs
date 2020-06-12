@@ -38,7 +38,10 @@ namespace DotNetNuke.Entities.Portals
         {
             var activeTab = portalSettings.ActiveTab;
 
-            if (activeTab == null || activeTab.TabID == Null.NullInteger) return;
+            if (activeTab == null || activeTab.TabID == Null.NullInteger)
+            {
+                return;
+            }
 
             this.UpdateSkinSettings(activeTab, portalSettings);
 
@@ -287,7 +290,9 @@ namespace DotNetNuke.Entities.Portals
             {
                 var timeZone = TimeZoneInfo.FindSystemTimeZoneById(setting);
                 if (timeZone != null)
+                {
                     portalSettings.TimeZone = timeZone;
+                }
             }
 
             setting = settings.GetValueOrDefault("DataConsentActive", "False");

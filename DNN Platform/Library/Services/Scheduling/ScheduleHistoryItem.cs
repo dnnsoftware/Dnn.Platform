@@ -211,7 +211,9 @@ namespace DotNetNuke.Services.Scheduling
             {
                 this._Succeeded = value;
                 if (_tracelLogger.IsDebugEnabled)
+                {
                     _tracelLogger.Debug($"ScheduleHistoryItem.Succeeded Info (ScheduledTask {(value == false ? "Start" : "End")}): {this.FriendlyName}");
+                }
             }
         }
 
@@ -219,7 +221,9 @@ namespace DotNetNuke.Services.Scheduling
         {
             this._LogNotes.Append(notes);
             if (_tracelLogger.IsTraceEnabled)
+            {
                 _tracelLogger.Trace(notes.Replace(@"<br/>", Environment.NewLine));
+            }
         }
 
         public override void Fill(IDataReader dr)

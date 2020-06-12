@@ -207,7 +207,10 @@ namespace log4net.Appender
         public override bool Flush(int millisecondsTimeout)
         {
             // Nothing to do if ImmediateFlush is true
-            if (this.m_immediateFlush) return true;
+            if (this.m_immediateFlush)
+            {
+                return true;
+            }
 
             // System.Diagnostics.Trace and System.Diagnostics.Debug are thread-safe, so no need for lock(this).
 #if NETCF

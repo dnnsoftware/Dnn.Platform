@@ -171,16 +171,24 @@ namespace DotNetNuke.Services.Install
             // Set Script timeout to MAX value
             HttpContext.Current.Server.ScriptTimeout = int.MaxValue;
 
-            if (_culture != null) Thread.CurrentThread.CurrentUICulture = new CultureInfo(_culture);
+            if (_culture != null)
+            {
+                Thread.CurrentThread.CurrentUICulture = new CultureInfo(_culture);
+            }
 
             // bail out early if upgrade is in progress
             if (_upgradeRunning)
+            {
                 return;
+            }
 
             var percentForEachStep = 100 / _steps.Count;
             var useGenericPercent = false;
             var totalPercent = _steps.Sum(step => step.Value);
-            if (totalPercent != 100) useGenericPercent = true;
+            if (totalPercent != 100)
+            {
+                useGenericPercent = true;
+            }
 
             _upgradeRunning = true;
             _upgradeProgress = 0;
@@ -223,9 +231,13 @@ namespace DotNetNuke.Services.Install
                         break;
                 }
                 if (useGenericPercent)
+                {
                     _upgradeProgress += percentForEachStep;
+                }
                 else
+                {
                     _upgradeProgress += step.Value;
+                }
             }
 
             _currentStep = null;
@@ -253,7 +265,11 @@ namespace DotNetNuke.Services.Install
 
             try
             {
-                if (!File.Exists(StatusFile)) File.CreateText(StatusFile);
+                if (!File.Exists(StatusFile))
+                {
+                    File.CreateText(StatusFile);
+                }
+
                 using (var sw = new StreamWriter(StatusFile, true))
                 {
                     sw.WriteLine(obj.ToJson());
@@ -367,7 +383,11 @@ namespace DotNetNuke.Services.Install
             {
                 // Reset the accept terms flag
                 HostController.Instance.Update("AcceptDnnTerms", "N");
-                if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
+                if (!File.Exists(StatusFile))
+                {
+                    File.CreateText(StatusFile).Close();
+                }
+
                 Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
             }
         }
@@ -452,7 +472,10 @@ namespace DotNetNuke.Services.Install
         [System.Web.Services.WebMethod]
         public static object GetInstallationLog(int startRow)
         {
-            if (IsAuthenticated == false) return string.Empty;
+            if (IsAuthenticated == false)
+            {
+                return string.Empty;
+            }
 
             var data = string.Empty;
             string logFile = "InstallerLog" + DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString() + DateTime.Now.Day.ToString() + ".resources";

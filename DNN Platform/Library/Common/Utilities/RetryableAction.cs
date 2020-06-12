@@ -99,7 +99,10 @@ namespace DotNetNuke.Common.Utilities.Internal
                 {
                     this.Action();
                     if (Logger.IsTraceEnabled)
+                    {
                         Logger.TraceFormat("Action succeeded - {0}", this.Description);
+                    }
+
                     return;
                 }
                 catch (Exception)
@@ -111,7 +114,10 @@ namespace DotNetNuke.Common.Utilities.Internal
                     }
 
                     if (Logger.IsTraceEnabled)
+                    {
                         Logger.TraceFormat("Retrying action {0} - {1}", retrysRemaining, this.Description);
+                    }
+
                     SleepAction.Invoke(currentDelay);
 
                     const double epsilon = 0.0001;

@@ -80,7 +80,10 @@ namespace log4net.Plugin
         /// </returns>
         public static PluginCollection ReadOnly(PluginCollection list)
         {
-            if (list == null) throw new ArgumentNullException("list");
+            if (list == null)
+            {
+                throw new ArgumentNullException("list");
+            }
 
             return new ReadOnlyPluginCollection(list);
         }

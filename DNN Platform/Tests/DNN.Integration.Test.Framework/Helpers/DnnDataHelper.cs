@@ -16,7 +16,10 @@ namespace DNN.Integration.Test.Framework.Helpers
                 {
                     var alias = AppConfigHelper.SiteUrl.Replace("http://", string.Empty).Replace("https://", string.Empty);
                     if (alias.EndsWith("/"))
+                    {
                         alias = alias.Substring(0, alias.Length - 1);
+                    }
+
                     var query = string.Format(
                         "SELECT TOP(1) PortalID FROM {{objectQualifier}}PortalAlias WHERE HTTPAlias='{0}'", alias);
                     var id = DatabaseHelper.ExecuteScalar<int>(query);

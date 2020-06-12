@@ -55,7 +55,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.PropertyNotNull("newFolderPath", newFolderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            if (folderPath == newFolderPath) return;
+            if (folderPath == newFolderPath)
+            {
+                return;
+            }
 
             var filePath = this.GetActualPath(folderMapping, folderPath, fileName);
             var newFilePath = this.GetActualPath(folderMapping, newFolderPath, fileName);

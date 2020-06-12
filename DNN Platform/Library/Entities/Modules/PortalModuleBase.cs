@@ -318,18 +318,28 @@ namespace DotNetNuke.Entities.Modules
         protected override void OnInit(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnInit Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
             base.OnInit(e);
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
         }
         protected override void OnLoad(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnLoad Start (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
+
             base.OnLoad(e);
             if (this._tracelLogger.IsDebugEnabled)
+            {
                 this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
+            }
         }
 
         [Browsable(false)]

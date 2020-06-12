@@ -141,7 +141,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     return false;
                 }
-                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 1) return true;
+                if (PortalController.GetPortalsByUser(this.User.UserID).Count == 1)
+                {
+                    return true;
+                }
             }
 
             return false;

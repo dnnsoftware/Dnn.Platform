@@ -265,7 +265,10 @@ namespace DotNetNuke.UI.Skins.Controls
                 var queryParams = HttpUtility.ParseQueryString(new Uri(string.Concat(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority), HttpContext.Current.Request.RawUrl)).Query);
                 queryParams.Remove("returnurl");
                 var queryString = queryParams.ToString();
-                if (queryString.Length > 0) rawQueryString = string.Concat("?", queryString);
+                if (queryString.Length > 0)
+                {
+                    rawQueryString = string.Concat("?", queryString);
+                }
             }
 
             var controlKey = HttpContext.Current.Request.QueryString["ctl"];

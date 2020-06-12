@@ -390,7 +390,10 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                if (string.IsNullOrEmpty(this.TabPath)) return this.TabName;
+                if (string.IsNullOrEmpty(this.TabPath))
+                {
+                    return this.TabName;
+                }
 
                 var key = Thread.CurrentThread.CurrentUICulture.ToString();
                 string localizedTabName;
@@ -759,7 +762,9 @@ namespace DotNetNuke.Entities.Tabs
         private string CheckIfDoctypeConfigExists()
         {
             if (string.IsNullOrEmpty(this.SkinSrc))
+            {
                 return string.Empty;
+            }
 
             // loading an XML document from disk for each page request is expensive
             // let's implement some local caching

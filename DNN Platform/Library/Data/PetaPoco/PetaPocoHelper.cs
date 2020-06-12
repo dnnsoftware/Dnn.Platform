@@ -62,10 +62,14 @@ namespace DotNetNuke.Data.PetaPoco
                 using (var cmd = new SqlCommand(procedureName, con))
                 {
                     if (!tableParameterName.StartsWith("@"))
+                    {
                         tableParameterName = "@" + tableParameterName;
+                    }
 
                     if (timeoutSec > 0)
+                    {
                         cmd.CommandTimeout = timeoutSec;
+                    }
 
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(tableParameterName, dataTable);
@@ -96,10 +100,14 @@ namespace DotNetNuke.Data.PetaPoco
                 using (var cmd = new SqlCommand(procedureName, con))
                 {
                     if (!tableParameterName.StartsWith("@"))
+                    {
                         tableParameterName = "@" + tableParameterName;
+                    }
 
                     if (timeoutSec > 0)
+                    {
                         cmd.CommandTimeout = timeoutSec;
+                    }
 
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.Parameters.AddWithValue(tableParameterName, dataTable);

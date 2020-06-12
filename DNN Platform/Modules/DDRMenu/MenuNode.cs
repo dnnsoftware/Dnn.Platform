@@ -21,7 +21,10 @@ namespace DotNetNuke.Web.DDRMenu
         {
             var result = new List<MenuNode>();
             foreach (DNNNode node in dnnNodes)
+            {
                 result.Add(new MenuNode(node, parent));
+            }
+
             return result;
         }
 
@@ -111,19 +114,25 @@ namespace DotNetNuke.Web.DDRMenu
             DNNAbstract.DNNNodeToMenuNode(dnnNode, this);
 
             if ((dnnNode.DNNNodes != null) && (dnnNode.DNNNodes.Count > 0))
+            {
                 this.Children = ConvertDNNNodeCollection(dnnNode.DNNNodes, this);
+            }
         }
 
         public MenuNode FindById(int tabId)
         {
             if (tabId == this.TabId)
+            {
                 return this;
+            }
 
             foreach (var child in this.Children)
             {
                 var result = child.FindById(tabId);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -132,13 +141,17 @@ namespace DotNetNuke.Web.DDRMenu
         public MenuNode FindByName(string tabName)
         {
             if (tabName.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return this;
+            }
 
             foreach (var child in this.Children)
             {
                 var result = child.FindByName(tabName);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -169,15 +182,22 @@ namespace DotNetNuke.Web.DDRMenu
         public MenuNode FindByNameOrId(string tabNameOrId)
         {
             if (tabNameOrId.Equals(this.Text, StringComparison.InvariantCultureIgnoreCase))
+            {
                 return this;
+            }
+
             if (tabNameOrId == this.TabId.ToString())
+            {
                 return this;
+            }
 
             foreach (var child in this.Children)
             {
                 var result = child.FindByNameOrId(tabNameOrId);
                 if (result != null)
+                {
                     return result;
+                }
             }
 
             return null;
@@ -217,9 +237,13 @@ namespace DotNetNuke.Web.DDRMenu
             if (!string.IsNullOrEmpty(result))
             {
                 if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
+                {
                     result = Globals.ResolveUrl(result);
+                }
                 else if (!(result.Contains("://") || result.StartsWith("/")))
+                {
                     result = defaultImagePath + result;
+                }
             }
             return result;
         }
@@ -286,7 +310,9 @@ namespace DotNetNuke.Web.DDRMenu
             }
 
             if (empty)
+            {
                 return;
+            }
 
             while (reader.Read())
             {
@@ -349,13 +375,17 @@ namespace DotNetNuke.Web.DDRMenu
             this.Children.ForEach(c => c.WriteXml(writer));
 
             if (this.Parent != null)
+            {
                 writer.WriteEndElement();
+            }
         }
 
         private static void AddXmlAttribute(XmlWriter writer, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
+            {
                 writer.WriteAttributeString(name, value);
+            }
         }
 
         private static void AddXmlAttribute(XmlWriter writer, string name, int value)
@@ -371,7 +401,9 @@ namespace DotNetNuke.Web.DDRMenu
         private static void AddXmlElement(XmlWriter writer, string name, string value)
         {
             if (!string.IsNullOrEmpty(value))
+            {
                 writer.WriteElementString(name, value);
+            }
         }
     }
 }

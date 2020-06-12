@@ -64,7 +64,9 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     var portalInfo = PortalController.Instance.GetPortal(portalId);
                     if (portalInfo != null)
+                    {
                         cultureCode = portalInfo.DefaultLanguage;
+                    }
                 }
             }
 

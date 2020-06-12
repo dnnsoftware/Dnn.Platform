@@ -14,7 +14,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
         public bool IsValid(string emailToTest)
         {
             if (string.IsNullOrEmpty(emailToTest))
+            {
                 return false;
+            }
 
             // Use IdnMapping class to convert unicode domain names (https://msdn.microsoft.com/en-us/library/system.globalization.idnmapping(v=vs.110).aspx)
             try
@@ -27,7 +29,9 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             }
 
             if (this._invalid)
+            {
                 return false;
+            }
 
             // Return True if valid email format
             try

@@ -19,7 +19,9 @@ namespace DotNetNuke.ComponentModel
             get
             {
                 if (_useTestable && _testableInstance != null)
+                {
                     return _testableInstance;
+                }
 
                 var component = ComponentFactory.GetComponent<TContract>();
 

@@ -1123,7 +1123,10 @@ namespace log4net.Layout
         /// </remarks>
         public void AddConverter(ConverterInfo converterInfo)
         {
-            if (converterInfo == null) throw new ArgumentNullException("converterInfo");
+            if (converterInfo == null)
+            {
+                throw new ArgumentNullException("converterInfo");
+            }
 
             if (!typeof(PatternConverter).IsAssignableFrom(converterInfo.Type))
             {
@@ -1150,8 +1153,15 @@ namespace log4net.Layout
         /// </remarks>
         public void AddConverter(string name, Type type)
         {
-            if (name == null) throw new ArgumentNullException("name");
-            if (type == null) throw new ArgumentNullException("type");
+            if (name == null)
+            {
+                throw new ArgumentNullException("name");
+            }
+
+            if (type == null)
+            {
+                throw new ArgumentNullException("type");
+            }
 
             ConverterInfo converterInfo = new ConverterInfo();
             converterInfo.Name = name;

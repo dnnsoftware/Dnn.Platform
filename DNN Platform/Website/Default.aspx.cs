@@ -240,7 +240,9 @@ namespace DotNetNuke.Framework
 
             // Only insert the header control if a comment is needed
             if (!string.IsNullOrWhiteSpace(this.Comment))
+            {
                 this.Page.Header.Controls.AddAt(0, new LiteralControl(this.Comment));
+            }
 
             if (this.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
             {
@@ -624,7 +626,9 @@ namespace DotNetNuke.Framework
                 else // other modes just depend on the default alias
                 {
                     if (string.Compare(this.PortalSettings.PortalAlias.HTTPAlias, this.PortalSettings.DefaultPortalAlias, StringComparison.InvariantCulture) != 0)
+                    {
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
+                    }
                 }
                 if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
                 {

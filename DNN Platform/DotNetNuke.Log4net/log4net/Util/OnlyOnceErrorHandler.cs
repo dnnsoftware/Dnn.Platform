@@ -186,7 +186,11 @@ namespace log4net.Util
         {
             get
             {
-                if (this.m_enabledDateUtc == DateTime.MinValue) return DateTime.MinValue;
+                if (this.m_enabledDateUtc == DateTime.MinValue)
+                {
+                    return DateTime.MinValue;
+                }
+
                 return this.m_enabledDateUtc.ToLocalTime();
             }
         }

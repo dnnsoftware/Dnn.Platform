@@ -787,7 +787,9 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 if (HttpContext.Current.Items["ParsedLocalizedModuleGuid"] == null)
+                {
                     HttpContext.Current.Items["ParsedLocalizedModuleGuid"] = new Hashtable();
+                }
 
                 return (Hashtable)HttpContext.Current.Items["ParsedLocalizedModuleGuid"];
             }
@@ -2183,7 +2185,11 @@ namespace DotNetNuke.Entities.Modules
                             var existingOrder = Convert.ToInt32(dr2["ModuleOrder"]);
                             var newOrder = (moduleCounter * 2) - 1;
 
-                            if (existingOrder == newOrder) continue;
+                            if (existingOrder == newOrder)
+                            {
+                                continue;
+                            }
+
                             dataProvider.UpdateModuleOrder(tabId, moduleId, newOrder, paneName);
 
                             if (!isDeleted)
@@ -2431,7 +2437,9 @@ namespace DotNetNuke.Entities.Modules
                     // save localization info
                     string oldGuid = XmlUtils.GetNodeValue(nodeModule, "uniqueId");
                     if (!ParsedLocalizedModuleGuid.ContainsKey(oldGuid))
+                    {
                         ParsedLocalizedModuleGuid.Add(oldGuid, module.UniqueId.ToString());
+                    }
 
                     if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")) && !isInstance)
                     {
@@ -2489,7 +2497,9 @@ namespace DotNetNuke.Entities.Modules
                 // moduleNode.RemoveChild(moduleNode.SelectSingleNode("cultureCode"));
 
                 if (Null.IsNull(module.DefaultLanguageGuid))
+                {
                     moduleNode.RemoveChild(moduleNode.SelectSingleNode("defaultLanguageGuid"));
+                }
 
                 var xmlNodeList = moduleNode.SelectNodes("modulepermissions/permission");
                 if (xmlNodeList != null)

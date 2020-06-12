@@ -228,7 +228,10 @@ namespace DotNetNuke.Services.UserProfile
         private void SetupCulture()
         {
             PortalSettings settings = PortalController.Instance.GetCurrentPortalSettings();
-            if (settings == null) return;
+            if (settings == null)
+            {
+                return;
+            }
 
             CultureInfo pageLocale = TestableLocalization.Instance.GetPageLocale(settings);
             if (pageLocale != null)

@@ -113,7 +113,10 @@ namespace DotNetNuke.UI.Modules
 
         private void InjectVersionToTheModuleIfSupported()
         {
-            if (!(this._control is IVersionableControl)) return;
+            if (!(this._control is IVersionableControl))
+            {
+                return;
+            }
 
             var versionableControl = this._control as IVersionableControl;
             if (this._moduleConfiguration.ModuleVersion != Null.NullInteger)

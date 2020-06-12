@@ -19,14 +19,20 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         {
             // Validate the request for required inputs, return if no action possible
             if (string.IsNullOrWhiteSpace(context.Request.QueryString["command"]))
+            {
                 return; // No command we cannot process
+            }
 
             if (string.IsNullOrWhiteSpace(context.Request.QueryString["detail"]))
+            {
                 return; // No action we cannot return
+            }
 
             // Only continue if our provider is current
             if (!(CachingProvider.Instance() is Caching.SimpleWebFarmCachingProvider.SimpleWebFarmCachingProvider))
+            {
                 return;
+            }
 
             // Get the values, noting that if in debug we are not encrypted
             var command = Host.DebugMode

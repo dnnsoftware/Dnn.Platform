@@ -178,9 +178,13 @@ namespace log4net.Appender
             System.IO.TextWriter writer;
 
             if (this.m_writeToErrorStream)
+            {
                 writer = Console.Error;
+            }
             else
+            {
                 writer = Console.Out;
+            }
 
             // Reset color
             Console.ResetColor();
@@ -191,10 +195,14 @@ namespace log4net.Appender
             {
                 // if the backColor has been explicitly set
                 if (levelColors.HasBackColor)
+                {
                     Console.BackgroundColor = levelColors.BackColor;
+                }
                 // if the foreColor has been explicitly set
                 if (levelColors.HasForeColor)
+                {
                     Console.ForegroundColor = levelColors.ForeColor;
+                }
             }
 
             // Render the event to a string

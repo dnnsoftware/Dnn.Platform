@@ -79,13 +79,24 @@ namespace Dnn.ExportImport.Components.Dto
 
         public void ConvertToLocal(UserInfo userInfo)
         {
-            if (userInfo == null) return;
+            if (userInfo == null)
+            {
+                return;
+            }
+
             this.ToDate = Util.ToLocalDateTime(this.ToDate, userInfo);
             if (this.FromDate != null)
+            {
                 this.FromDate = Util.ToLocalDateTime(this.FromDate.Value, userInfo);
+            }
+
             this.ExportFileInfo?.ConvertToLocal(userInfo);
 
-            if (this.SummaryItems == null) return;
+            if (this.SummaryItems == null)
+            {
+                return;
+            }
+
             var tempSummaryItems = new SummaryList();
             foreach (var summaryItem in this.SummaryItems)
             {

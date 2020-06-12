@@ -665,7 +665,10 @@ namespace log4net.Appender
         private static int GetMaxEventLogMessageSize()
         {
             if (Environment.OSVersion.Platform == PlatformID.Win32NT && Environment.OSVersion.Version.Major >= 6)
+            {
                 return MAX_EVENTLOG_MESSAGE_SIZE_VISTA_OR_NEWER;
+            }
+
             return MAX_EVENTLOG_MESSAGE_SIZE_DEFAULT;
         }
     }

@@ -105,7 +105,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var synonyms = new List<string>();
             if (term == "fox")
+            {
                 synonyms.Add("wolf");
+            }
 
             return synonyms;
         }
@@ -115,7 +117,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             try
             {
                 if (Directory.Exists(SearchIndexFolder))
+                {
                     Directory.Delete(SearchIndexFolder, true);
+                }
             }
             catch (Exception ex)
             {
@@ -647,7 +651,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             // Arrange
             const string fieldName = "content";
             var lockFile = Path.Combine(SearchIndexFolder, WriteLockFile);
-            if (!Directory.Exists(SearchIndexFolder)) Directory.CreateDirectory(SearchIndexFolder);
+            if (!Directory.Exists(SearchIndexFolder))
+            {
+                Directory.CreateDirectory(SearchIndexFolder);
+            }
+
             if (!File.Exists(lockFile))
             {
                 File.Create(lockFile).Close();

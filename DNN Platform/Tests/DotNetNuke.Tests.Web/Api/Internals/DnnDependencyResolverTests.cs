@@ -36,7 +36,9 @@ namespace DotNetNuke.Tests.Web.Api.Internals
             this._dependencyResolver = null;
 
             if (this._serviceProvider is IDisposable disposable)
+            {
                 disposable.Dispose();
+            }
 
             this._serviceProvider = null;
         }

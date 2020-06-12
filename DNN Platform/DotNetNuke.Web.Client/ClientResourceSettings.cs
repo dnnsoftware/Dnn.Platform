@@ -66,12 +66,16 @@ namespace DotNetNuke.Web.Client
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
             if (portalVersion.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
                 return portalVersion.Value;
+            }
 
             // otherwise return the host setting
             var hostVersion = GetIntegerSetting(HostSettingsDictionaryKey, VersionKey);
             if (hostVersion.HasValue)
+            {
                 return hostVersion.Value;
+            }
 
             // otherwise tell the calling method that nothing is set
             return null;
@@ -105,12 +109,16 @@ namespace DotNetNuke.Web.Client
             // if portal version is set
             // and the portal "override default settings" flag is set and set to true
             if (portalEnabled.HasValue && overrideDefaultSettings.HasValue && overrideDefaultSettings.Value)
+            {
                 return portalEnabled.Value;
+            }
 
             // otherwise return the host setting
             var hostEnabled = GetBooleanSetting(HostSettingsDictionaryKey, settingKey);
             if (hostEnabled.HasValue)
+            {
                 return hostEnabled.Value;
+            }
 
             // otherwise tell the calling method that nothing is set
             return null;
@@ -148,7 +156,9 @@ namespace DotNetNuke.Web.Client
             if (settings == null)
             {
                 if (dictionaryKey == HostSettingsDictionaryKey)
+                {
                     return GetHostSettingThroughReflection(settingKey);
+                }
 
                 return GetPortalSettingThroughReflection(settingKey);
             }

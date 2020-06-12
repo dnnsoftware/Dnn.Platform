@@ -106,7 +106,10 @@ namespace Dnn.PersonaBar.Library.Data
         private object GetRoleNull(int roleId)
         {
             if (roleId.ToString() == "-4")
+            {
                 return DBNull.Value;
+            }
+
             return (object)roleId;
         }
     }

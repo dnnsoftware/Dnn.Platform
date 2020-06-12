@@ -38,7 +38,9 @@ namespace DotNetNuke.Web.DDRMenu
         {
             var ser = new XmlSerializer(typeof(Settings));
             using (var reader = new StringReader(xml))
+            {
                 return (Settings)ser.Deserialize(reader);
+            }
         }
 
         public string ToXml()
@@ -46,7 +48,10 @@ namespace DotNetNuke.Web.DDRMenu
             var sb = new StringBuilder();
             var ser = new XmlSerializer(typeof(Settings));
             using (var writer = new StringWriter(sb))
+            {
                 ser.Serialize(writer, this);
+            }
+
             return sb.ToString();
         }
 

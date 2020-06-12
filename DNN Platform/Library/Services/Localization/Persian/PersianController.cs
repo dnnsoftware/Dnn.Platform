@@ -21,11 +21,15 @@ namespace DotNetNuke.Services.Localization.Persian
 
             FieldInfo fieldInfo = persianCultureInfo.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
             if (fieldInfo != null)
+            {
                 fieldInfo.SetValue(persianCultureInfo, cal);
+            }
 
             FieldInfo info = persianCultureInfo.DateTimeFormat.GetType().GetField("calendar", BindingFlags.NonPublic | BindingFlags.Instance);
             if (info != null)
+            {
                 info.SetValue(persianCultureInfo.DateTimeFormat, cal);
+            }
 
             return persianCultureInfo;
         }

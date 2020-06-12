@@ -347,10 +347,14 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     var tabId = -1;
                     if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
+                    {
                         tabId = int.Parse(this.PageLst.SelectedValue);
+                    }
 
                     if (tabId < 0)
+                    {
                         tabId = PortalSettings.Current.ActiveTab.TabID;
+                    }
 
                     if (!string.IsNullOrEmpty(this.ModuleLst.SelectedValue))
                     {
@@ -365,9 +369,15 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     var portalId = -1;
 
-                    if (this.SiteListPanel.Visible) portalId = int.Parse(this.SiteList.SelectedValue);
+                    if (this.SiteListPanel.Visible)
+                    {
+                        portalId = int.Parse(this.SiteList.SelectedValue);
+                    }
 
-                    if (portalId < 0) portalId = PortalSettings.Current.PortalId;
+                    if (portalId < 0)
+                    {
+                        portalId = PortalSettings.Current.PortalId;
+                    }
 
                     if (!string.IsNullOrEmpty(this.ModuleLst.SelectedValue))
                     {

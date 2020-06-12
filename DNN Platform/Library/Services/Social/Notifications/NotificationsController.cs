@@ -97,7 +97,10 @@ namespace DotNetNuke.Services.Social.Notifications
 
         public virtual int CountNotifications(int userId, int portalId)
         {
-            if (userId <= 0) return 0;
+            if (userId <= 0)
+            {
+                return 0;
+            }
 
             var cacheKey = string.Format(DataCache.UserNotificationsCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
@@ -154,7 +157,10 @@ namespace DotNetNuke.Services.Social.Notifications
 
             if (users != null)
             {
-                foreach (var user in users.Where(user => !string.IsNullOrEmpty(user.DisplayName))) sbTo.Append(user.DisplayName + ",");
+                foreach (var user in users.Where(user => !string.IsNullOrEmpty(user.DisplayName)))
+                {
+                    sbTo.Append(user.DisplayName + ",");
+                }
             }
 
             if (sbTo.Length == 0)

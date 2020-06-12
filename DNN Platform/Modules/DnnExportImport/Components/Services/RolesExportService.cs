@@ -27,12 +27,19 @@ namespace Dnn.ExportImport.Components.Services
         {
             var fromDate = (exportDto.FromDateUtc ?? Constants.MinDbTime).ToLocalTime();
             var toDate = exportDto.ToDateUtc.ToLocalTime();
-            if (this.CheckPoint.Stage > 2) return;
+            if (this.CheckPoint.Stage > 2)
+            {
+                return;
+            }
+
             List<ExportRole> roles = null;
             List<ExportRoleSetting> roleSettings = null;
             if (this.CheckPoint.Stage == 0)
             {
-                if (this.CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob))
+                {
+                    return;
+                }
 
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, toDate, fromDate));
@@ -54,12 +61,19 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.ProcessedItems = roleGroups.Count;
                 this.CheckPoint.Progress = 30;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
             }
 
             if (this.CheckPoint.Stage == 1)
             {
-                if (this.CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob))
+                {
+                    return;
+                }
+
                 if (roles == null)
                     roles = CBO.FillCollection<ExportRole>(
                     DataProvider.Instance().GetAllRoles(exportJob.PortalId, toDate, fromDate));
@@ -68,12 +82,19 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress = 80;
                 this.CheckPoint.ProcessedItems += roles.Count;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
             }
 
             if (this.CheckPoint.Stage == 2)
             {
-                if (this.CheckCancelled(exportJob)) return;
+                if (this.CheckCancelled(exportJob))
+                {
+                    return;
+                }
+
                 if (roleSettings == null)
                     roleSettings = CBO.FillCollection<ExportRoleSetting>(
                        DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
@@ -89,9 +110,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckPoint.Stage > 2) return;
+            if (this.CheckPoint.Stage > 2)
+            {
+                return;
+            }
 
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
             this.CheckPointStageCallback(this);
@@ -105,10 +132,17 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress = 40;
                 this.CheckPoint.ProcessedItems = otherRoleGroups.Count;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
             }
 
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
+
             var otherRoles = this.Repository.GetAllItems<ExportRole>().ToList();
             if (this.CheckPoint.Stage == 1)
             {
@@ -118,12 +152,19 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.Progress = 50;
                 this.CheckPoint.ProcessedItems += otherRoles.Count;
                 this.CheckPoint.Stage++;
-                if (this.CheckPointStageCallback(this)) return;
+                if (this.CheckPointStageCallback(this))
+                {
+                    return;
+                }
             }
 
             if (this.CheckPoint.Stage == 2)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
+
                 var otherRoleSettings = this.Repository.GetAllItems<ExportRoleSetting>().ToList();
                 this.ProcessRoleSettings(importJob, importDto, otherRoles, otherRoleSettings);
                 this.Repository.UpdateItems(otherRoleSettings);
@@ -150,7 +191,11 @@ namespace Dnn.ExportImport.Components.Services
             var localRoleGroups = CBO.FillCollection<ExportRoleGroup>(DataProvider.Instance().GetAllRoleGroups(portalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null));
             foreach (var other in otherRoleGroups)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
+
                 var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var local = localRoleGroups.FirstOrDefault(t => t.RoleGroupName == other.RoleGroupName);
@@ -192,7 +237,9 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
             if (changedGroups.Count > 0)
+            {
                 RefreshRecordsUserIds(changedGroups);
+            }
         }
 
         private void ProcessRoles(ExportImportJob importJob, ImportDto importDto,
@@ -202,7 +249,11 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             foreach (var other in otherRoles)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
+
                 var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var localRoleInfo = RoleController.Instance.GetRoleByName(portalId, other.RoleName);
@@ -241,7 +292,9 @@ namespace Dnn.ExportImport.Components.Services
 
                             // do not assign existing users to the roles automatically
                             if (other.AutoAssignment)
+                            {
                                 DataProvider.Instance().SetRoleAutoAssign(localRoleInfo.RoleID);
+                            }
 
                             RoleController.Instance.ClearRoleCache(localRoleInfo.RoleID);
                             this.Result.AddLogEntry("Updated role", other.RoleName);
@@ -287,7 +340,9 @@ namespace Dnn.ExportImport.Components.Services
 
             // set created/updated for any added/modified item
             if (roleItems.Count > 0)
+            {
                 RefreshRecordsUserIds(roleItems);
+            }
         }
 
         private void ProcessRoleSettings(ExportImportJob importJob, ImportDto importDto,
@@ -297,13 +352,24 @@ namespace Dnn.ExportImport.Components.Services
             var portalId = importJob.PortalId;
             foreach (var other in otherRoleSettings)
             {
-                if (this.CheckCancelled(importJob)) return;
+                if (this.CheckCancelled(importJob))
+                {
+                    return;
+                }
+
                 var createdBy = Util.GetUserIdByName(importJob, other.CreatedByUserID, other.CreatedByUserName);
                 var modifiedBy = Util.GetUserIdByName(importJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
                 var otherRole = otherRoles.FirstOrDefault(r => r.RoleID == other.RoleID);
-                if (otherRole == null || !otherRole.LocalId.HasValue) continue;
+                if (otherRole == null || !otherRole.LocalId.HasValue)
+                {
+                    continue;
+                }
+
                 var localRoleInfo = RoleController.Instance.GetRoleById(portalId, otherRole.LocalId.Value);
-                if (localRoleInfo == null) continue;
+                if (localRoleInfo == null)
+                {
+                    continue;
+                }
 
                 switch (importDto.CollisionResolution)
                 {
@@ -333,7 +399,9 @@ namespace Dnn.ExportImport.Components.Services
             }
 
             if (changedSettings.Count > 0)
+            {
                 RefreshRecordsUserIds(changedSettings);
+            }
 
             RoleController.Instance.ClearRoleCache(importJob.PortalId);
         }

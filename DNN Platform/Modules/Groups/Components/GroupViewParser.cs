@@ -79,9 +79,13 @@ namespace DotNetNuke.Modules.Groups.Components
             this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", false);
 
             if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName) || !HttpContext.Current.Request.IsAuthenticated || membershipPending)
+            {
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotMember", false);
+            }
             else
+            {
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotMember", true);
+            }
 
             if (this.CurrentUser.IsInRole(this.RoleInfo.RoleName))
             {

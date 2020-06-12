@@ -439,7 +439,9 @@ namespace DotNetNuke.Common.Utilities
         public static string StripWhiteSpace(string HTML, bool RetainSpace)
         {
             if (string.IsNullOrWhiteSpace(HTML))
+            {
                 return Null.NullString;
+            }
 
             return StripWhiteSpaceRegex.Replace(HTML, RetainSpace ? " " : string.Empty);
         }
@@ -457,7 +459,9 @@ namespace DotNetNuke.Common.Utilities
         public static string StripNonWord(string HTML, bool RetainSpace)
         {
             if (string.IsNullOrWhiteSpace(HTML))
+            {
                 return HTML;
+            }
 
             string RepString = RetainSpace ? " " : string.Empty;
             return StripNonWordRegex.Replace(HTML, RepString);

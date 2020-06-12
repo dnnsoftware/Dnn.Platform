@@ -124,7 +124,9 @@ namespace DotNetNuke.Services.Journal
             };
 
             if (groupId > 0)
+            {
                 document.RoleId = groupId;
+            }
 
             DataProvider.Instance().AddSearchDeletedItems(document);
         }
@@ -212,7 +214,9 @@ namespace DotNetNuke.Services.Journal
             {
                 journalItem.SecuritySet = "F" + journalItem.UserId + ",";
                 if (journalItem.ProfileId > 0)
+                {
                     journalItem.SecuritySet += "P" + journalItem.ProfileId + ",";
+                }
             }
             else if (journalItem.SecuritySet == "U,")
             {
@@ -221,7 +225,9 @@ namespace DotNetNuke.Services.Journal
             else if (journalItem.SecuritySet == "R,")
             {
                 if (journalItem.SocialGroupId > 0)
+                {
                     journalItem.SecuritySet += "R" + journalItem.SocialGroupId + ",";
+                }
             }
 
             if (journalItem.ProfileId > 0 && journalItem.UserId != journalItem.ProfileId)

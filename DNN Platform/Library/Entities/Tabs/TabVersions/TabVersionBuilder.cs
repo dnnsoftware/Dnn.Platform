@@ -463,7 +463,10 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var maxVersionsAllowed = this.GetMaxNumberOfVersions(portalId);
             var tabVersionsOrdered = this._tabVersionController.GetTabVersions(tabId).OrderByDescending(tv => tv.Version);
 
-            if (tabVersionsOrdered.Count() < maxVersionsAllowed) return;
+            if (tabVersionsOrdered.Count() < maxVersionsAllowed)
+            {
+                return;
+            }
 
             // The last existing version is going to be deleted, therefore we need to add the snapshot to the previous one
             var snapShotTabVersion = tabVersionsOrdered.ElementAtOrDefault(maxVersionsAllowed - 2);
@@ -686,10 +689,16 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         private int RollBackDetail(int tabId, TabVersionDetail unPublishedDetail)
         {
             var moduleInfo = this._moduleController.GetModule(unPublishedDetail.ModuleId, tabId, true);
-            if (moduleInfo == null) return Null.NullInteger;
+            if (moduleInfo == null)
+            {
+                return Null.NullInteger;
+            }
 
             var versionableController = this.GetVersionableController(moduleInfo);
-            if (versionableController == null) return Null.NullInteger;
+            if (versionableController == null)
+            {
+                return Null.NullInteger;
+            }
 
             if (this._moduleController.IsSharedModule(moduleInfo))
             {

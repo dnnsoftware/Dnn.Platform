@@ -136,12 +136,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void Render(HtmlTextWriter writer)
         {
-            if (this.ItemTemplate == string.Empty) return;
+            if (this.ItemTemplate == string.Empty)
+            {
+                return;
+            }
 
             writer.Write(this.HeaderTemplate);
 
             // Filters
-            if (this.Filters == null) this.Filters = new Dictionary<string, string>();
+            if (this.Filters == null)
+            {
+                this.Filters = new Dictionary<string, string>();
+            }
+
             var additionalFilters = new Dictionary<string, string>();
             additionalFilters.Add("Records", this.PageSize.ToString());
             additionalFilters.Add("PageIndex", this.PageIndex.ToString());

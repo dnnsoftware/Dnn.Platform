@@ -135,7 +135,10 @@ namespace Dnn.AzureConnector.Components
             if (emptyFields)
             {
                 if (this.SupportsMultiple)
+                {
                     throw new Exception(Localization.GetString("ErrorRequiredFields", Constants.LocalResourceFile));
+                }
+
                 DeleteAzureFolderMapping(portalId);
                 return true;
             }
@@ -336,7 +339,9 @@ namespace Dnn.AzureConnector.Components
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType);
 
             if (folderMappingId != null)
+            {
                 return folderMappings.FirstOrDefault(x => x.FolderMappingID == folderMappingId);
+            }
 
             if (!folderMappings.Any() && autoCreate)
             {
@@ -357,7 +362,9 @@ namespace Dnn.AzureConnector.Components
             }
 
             if ((checkId && string.IsNullOrEmpty(this.Id)) || !this.SupportsMultiple)
+            {
                 return folderMappings.FirstOrDefault();
+            }
 
             var folderMapping = folderMappings.FirstOrDefault(x => x.FolderMappingID.ToString() == this.Id);
 

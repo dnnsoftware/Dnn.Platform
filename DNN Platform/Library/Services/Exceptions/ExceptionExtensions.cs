@@ -36,8 +36,15 @@ namespace DotNetNuke.Services.Exceptions
 
         private static void AddException(StringBuilder sb, Exception ex)
         {
-            if (!string.IsNullOrEmpty(ex.Message)) sb.AppendLine(ex.Message);
-            if (!string.IsNullOrEmpty(ex.StackTrace)) sb.AppendLine(ex.StackTrace);
+            if (!string.IsNullOrEmpty(ex.Message))
+            {
+                sb.AppendLine(ex.Message);
+            }
+
+            if (!string.IsNullOrEmpty(ex.StackTrace))
+            {
+                sb.AppendLine(ex.StackTrace);
+            }
         }
     }
 }

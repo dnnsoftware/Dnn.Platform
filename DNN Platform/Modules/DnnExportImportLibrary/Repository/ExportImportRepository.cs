@@ -39,7 +39,9 @@ namespace Dnn.ExportImport.Repository
             var temp = Interlocked.Exchange(ref this._liteDb, null);
             temp?.Dispose();
             if (isDisposing)
+            {
                 GC.SuppressFinalize(this);
+            }
         }
 
         public T AddSingleItem<T>(T item)
@@ -69,7 +71,11 @@ namespace Dnn.ExportImport.Repository
         public T CreateItem<T>(T item, int? referenceId)
             where T : BasicExportImportDto
         {
-            if (item == null) return null;
+            if (item == null)
+            {
+                return null;
+            }
+
             var collection = this.DbCollection<T>();
             if (referenceId != null)
             {
@@ -82,9 +88,16 @@ namespace Dnn.ExportImport.Repository
         public void CreateItems<T>(IEnumerable<T> items, int? referenceId = null)
             where T : BasicExportImportDto
         {
-            if (items == null) return;
+            if (items == null)
+            {
+                return;
+            }
+
             var allItems = items as List<T> ?? items.ToList();
-            if (allItems.Count == 0) return;
+            if (allItems.Count == 0)
+            {
+                return;
+            }
 
             var collection = this.DbCollection<T>();
             if (referenceId != null)
@@ -147,7 +160,9 @@ namespace Dnn.ExportImport.Repository
                 : collection.Find(Query.All(), skip ?? 0, max ?? int.MaxValue);
 
             if (orderKeySelector != null)
+            {
                 result = asc ? result.OrderBy(orderKeySelector) : result.OrderByDescending(orderKeySelector);
+            }
 
             return result.AsEnumerable();
         }
@@ -183,9 +198,17 @@ namespace Dnn.ExportImport.Repository
         public void UpdateItem<T>(T item)
             where T : BasicExportImportDto
         {
-            if (item == null) return;
+            if (item == null)
+            {
+                return;
+            }
+
             var collection = this.DbCollection<T>();
-            if (collection.FindById(item.Id) == null) throw new KeyNotFoundException();
+            if (collection.FindById(item.Id) == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
             collection.Update(item);
         }
 
@@ -193,7 +216,10 @@ namespace Dnn.ExportImport.Repository
             where T : BasicExportImportDto
         {
             var allItems = items as T[] ?? items.ToArray();
-            if (allItems.Length == 0) return;
+            if (allItems.Length == 0)
+            {
+                return;
+            }
 
             var collection = this.DbCollection<T>();
             collection.Update(allItems);
@@ -204,7 +230,11 @@ namespace Dnn.ExportImport.Repository
         {
             var collection = this.DbCollection<T>();
             var item = collection.FindById(id);
-            if (item == null) throw new KeyNotFoundException();
+            if (item == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
             return collection.Delete(id);
         }
 
@@ -213,12 +243,18 @@ namespace Dnn.ExportImport.Repository
         {
             var collection = this.DbCollection<T>();
             if (deleteExpression != null)
+            {
                 collection.Delete(deleteExpression);
+            }
         }
 
         public void CleanUpLocal(string collectionName)
         {
-            if (!this._liteDb.CollectionExists(collectionName)) return;
+            if (!this._liteDb.CollectionExists(collectionName))
+            {
+                return;
+            }
+
             var collection = this._liteDb.GetCollection<BsonDocument>(collectionName);
             var documentsToUpdate = collection.Find(Query.All()).ToList();
             documentsToUpdate.ForEach(x =>

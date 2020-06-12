@@ -28,7 +28,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         {
             // Do not send notifications to other servers if currently upgrading
             if (Globals.Status != Globals.UpgradeStatus.None)
+            {
                 return;
+            }
 
             // Get all servers currently in the database that could be used for synchronization, excluding this one
             // But focus on only servers that could be used for this application and notifications
@@ -42,7 +44,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
             // If we have no additional servers do nothing
             if (additionalServers.Count == 0)
+            {
                 return;
+            }
 
             // Otherwise notify each server
             foreach (var server in additionalServers)
@@ -81,7 +85,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                 {
                     // If status code is ok do nothing
                     if (response.StatusCode == HttpStatusCode.OK)
+                    {
                         return;
+                    }
 
                     // Otherwise log the failure
                     Exceptions.LogException(new ApplicationException(
@@ -101,7 +107,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         private static void HandleNotificationTimeout(object state, bool timedOut)
         {
             if (!timedOut)
+            {
                 return;
+            }
 
             // Abort if possible
             var request = (HttpWebRequest)state;
@@ -142,7 +150,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
             // Per API implementation standards only notify others if expiration has not been desabled
             if (CacheExpirationDisable)
+            {
                 return;
+            }
 
             // Notify other servers
             this.NotifyOtherServers("Clear~" + type, data);
@@ -155,7 +165,9 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
             // Per API implementation standards only notify others if expiration has not been disabled
             if (CacheExpirationDisable)
+            {
                 return;
+            }
 
             // Notify Other Servers
             this.NotifyOtherServers("Remove", key);

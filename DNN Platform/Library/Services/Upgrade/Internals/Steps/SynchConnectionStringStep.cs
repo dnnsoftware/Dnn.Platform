@@ -54,7 +54,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var builder = DataProvider.Instance().GetConnectionStringBuilder();
 
             if (!string.IsNullOrEmpty(connectionConfig.Server))
+            {
                 builder["Data Source"] = connectionConfig.Server;
+            }
 
             if (!string.IsNullOrEmpty(connectionConfig.Database))
                 builder["Initial Catalog"] = connectionConfig.Database;
@@ -65,13 +67,19 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
 
             if (connectionConfig.Integrated)
+            {
                 builder["integrated security"] = "true";
+            }
 
             if (!string.IsNullOrEmpty(connectionConfig.User))
+            {
                 builder["uid"] = connectionConfig.User;
+            }
 
             if (!string.IsNullOrEmpty(connectionConfig.Password))
+            {
                 builder["pwd"] = connectionConfig.Password;
+            }
 
             string dbowner;
             if (connectionConfig.RunAsDbowner)

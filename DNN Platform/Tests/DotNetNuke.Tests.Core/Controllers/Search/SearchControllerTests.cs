@@ -329,7 +329,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         {
             var synonyms = new List<string>();
             if (term == "fox")
+            {
                 synonyms.Add("wolf");
+            }
 
             return synonyms;
         }
@@ -337,7 +339,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private UserInfo GetUserByIdCallback(int portalId, int userId)
         {
             if (portalId == PortalId12 && userId == StandardAuthorId)
+            {
                 return new UserInfo { UserID = userId, DisplayName = StandardAuthorDisplayName };
+            }
 
             return null;
         }
@@ -379,7 +383,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             try
             {
                 if (Directory.Exists(SearchIndexFolder))
+                {
                     Directory.Delete(SearchIndexFolder, true);
+                }
             }
             catch (Exception ex)
             {

@@ -307,7 +307,9 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
                 var viewContext = new ViewContext { Controller = mockController.Object };
 
                 if (!string.IsNullOrEmpty(url))
+                {
                     viewContext.RequestContext = new RequestContext(MockHelper.CreateMockHttpContext(url), routeData);
+                }
 
                 return new DnnUrlHelper(viewContext);
             }

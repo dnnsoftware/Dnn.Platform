@@ -305,7 +305,9 @@ namespace DotNetNuke.Services.Mobile
 
             // append special query string
             if (!string.IsNullOrEmpty(fullSiteUrl))
+            {
                 fullSiteUrl += string.Format("{0}{1}=1", fullSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
+            }
 
             // update cache content
             this.SetUrlInCache(cacheKey, fullSiteUrl);
@@ -381,7 +383,9 @@ namespace DotNetNuke.Services.Mobile
 
             // append special query string
             if (!string.IsNullOrEmpty(mobileSiteUrl))
+            {
                 mobileSiteUrl += string.Format("{0}{1}=0", mobileSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
+            }
 
             // update cache content
             this.SetUrlInCache(cacheKey, mobileSiteUrl);
@@ -462,7 +466,9 @@ namespace DotNetNuke.Services.Mobile
                     }
                 }
                 if (!found)
+                {
                     this.Delete(portalId, r.Id);
+                }
             }
         }
 

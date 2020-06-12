@@ -819,7 +819,10 @@ namespace DotNetNuke.Services.FileSystem
 
             var newFolderPath = PathUtils.Instance.FormatFolderPath(destinationFolder.FolderPath + folder.FolderName + "/");
 
-            if (folder.FolderPath == destinationFolder.FolderPath) return folder;
+            if (folder.FolderPath == destinationFolder.FolderPath)
+            {
+                return folder;
+            }
 
             if (this.FolderExists(folder.PortalID, newFolderPath))
             {
@@ -888,7 +891,10 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("folder", folder);
             Requires.NotNullOrEmpty("newFolderName", newFolderName);
 
-            if (folder.FolderName.Equals(newFolderName)) return;
+            if (folder.FolderName.Equals(newFolderName))
+            {
+                return;
+            }
 
             var currentFolderName = folder.FolderName;
 
@@ -1087,7 +1093,10 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            if (string.IsNullOrEmpty(folder.FolderPath)) return;
+            if (string.IsNullOrEmpty(folder.FolderPath))
+            {
+                return;
+            }
 
             var parentFolderPath = folder.FolderPath.Substring(0, folder.FolderPath.Substring(0, folder.FolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
 
@@ -1686,7 +1695,10 @@ namespace DotNetNuke.Services.FileSystem
 
             foreach (var mergedItem in mergedTree.Values)
             {
-                if (mergedItem.FolderMappingID == Null.NullInteger) continue;
+                if (mergedItem.FolderMappingID == Null.NullInteger)
+                {
+                    continue;
+                }
 
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, mergedItem.FolderMappingID);
 
@@ -1822,7 +1834,11 @@ namespace DotNetNuke.Services.FileSystem
                 foreach (var file in Directory.GetFiles(folders.Source, "*.*"))
                 {
                     var targetFile = Path.Combine(folders.Target, Path.GetFileName(file));
-                    if (File.Exists(targetFile)) File.Delete(targetFile);
+                    if (File.Exists(targetFile))
+                    {
+                        File.Delete(targetFile);
+                    }
+
                     File.Move(file, targetFile);
                 }
 
@@ -1963,7 +1979,10 @@ namespace DotNetNuke.Services.FileSystem
             {
                 if (item.ExistsInDatabase)
                 {
-                    if (item.FolderPath == string.Empty) return; // Do not process root folder
+                    if (item.FolderPath == string.Empty)
+                    {
+                        return; // Do not process root folder
+                    }
 
                     if (!item.ExistsInFolderMapping)
                     {
@@ -2020,7 +2039,10 @@ namespace DotNetNuke.Services.FileSystem
             var source = folder.PhysicalPath;
 
             var di = new DirectoryInfo(source);
-            if (!di.Exists) return;
+            if (!di.Exists)
+            {
+                return;
+            }
 
             var target = PathUtils.Instance.GetPhysicalPath(folder.PortalID, newFolderPath);
             this.MoveDirectory(source, target);

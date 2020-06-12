@@ -117,9 +117,13 @@ namespace DotNetNuke.Modules.Groups.Controls
             }
 
             if (this.DisplayCurrentUserGroups)
+            {
                 whereCls.Add(grp => this.currentUser.IsInRole(grp.RoleName));
+            }
             else
+            {
                 whereCls.Add(grp => grp.IsPublic || this.currentUser.IsInRole(grp.RoleName) || this.currentUser.IsInRole(this.PortalSettings.AdministratorRoleName));
+            }
 
             if (!string.IsNullOrEmpty(this.SearchFilter))
             {
@@ -129,9 +133,13 @@ namespace DotNetNuke.Modules.Groups.Controls
             var roles = RoleController.Instance.GetRoles(this.PortalSettings.PortalId, grp => TestPredicateGroup(whereCls, grp));
 
             if (this.SortDirection.ToLowerInvariant() == "asc")
+            {
                 roles = roles.OrderBy(info => GetOrderByProperty(info, this.SortField)).ToList();
+            }
             else
+            {
                 roles = roles.OrderByDescending(info => GetOrderByProperty(info, this.SortField)).ToList();
+            }
 
             decimal pages = (decimal)roles.Count / (decimal)this.PageSize;
 
@@ -150,8 +158,9 @@ namespace DotNetNuke.Modules.Groups.Controls
             this.ItemTemplate = this.ItemTemplate.Replace("[GroupViewTabId]", this.GroupViewTabId.ToString());
 
             if (roles.Count == 0)
+            {
                 output.Write(string.Format("<div class=\"dnnFormMessage dnnFormInfo\"><span>{0}</span></div>", Localization.GetString("NoGroupsFound", Constants.SharedResourcesPath)));
-
+            }
 
             if (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["page"]))
             {
@@ -163,20 +172,25 @@ namespace DotNetNuke.Modules.Groups.Controls
             int recordStart = this.CurrentIndex * this.PageSize;
 
             if (this.CurrentIndex == 0)
+            {
                 recordStart = 0;
-
+            }
 
             for (int x = recordStart; x < (recordStart + this.PageSize); x++)
             {
                 if (x > roles.Count - 1)
+                {
                     break;
+                }
 
                 var role = roles[x];
 
                 string rowTemplate = this.ItemTemplate;
 
                 if (rowItem == 0)
+                {
                     output.Write(this.RowHeaderTemplate);
+                }
 
                 var groupParser = new GroupViewParser(this.PortalSettings, role, this.currentUser, rowTemplate, this.GroupViewTabId);
                 output.Write(groupParser.ParseView());
@@ -191,8 +205,9 @@ namespace DotNetNuke.Modules.Groups.Controls
             }
 
             if (rowItem > 0)
+            {
                 output.Write(this.RowFooterTemplate);
-
+            }
 
             output.Write(this.FooterTemplate);
 
@@ -200,7 +215,9 @@ namespace DotNetNuke.Modules.Groups.Controls
 
 
             if (TotalPages == 0)
+            {
                 TotalPages = 1;
+            }
 
             string sUrlFormat = "<a href=\"{0}\" class=\"{1}\">{2}</a>";
             string[] currParams = new string[] { };
@@ -231,8 +248,9 @@ namespace DotNetNuke.Modules.Groups.Controls
                     string cssClass = "pagerItem";
 
                     if (x - 1 == this.CurrentIndex)
+                    {
                         cssClass = "pagerItemSelected";
-
+                    }
 
                     sb.AppendFormat(sUrlFormat, sUrl, cssClass, x.ToString());
                 }

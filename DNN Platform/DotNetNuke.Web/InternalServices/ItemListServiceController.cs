@@ -380,7 +380,10 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                if (!this.IsPortalIdValid(portalId)) return new List<ItemDto>();
+                if (!this.IsPortalIdValid(portalId))
+                {
+                    return new List<ItemDto>();
+                }
             }
 
             Func<TabInfo, bool> searchFunc;
@@ -967,7 +970,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             if (portalId > -1)
             {
-                if (!this.IsPortalIdValid(portalId)) return new List<ItemDto>();
+                if (!this.IsPortalIdValid(portalId))
+                {
+                    return new List<ItemDto>();
+                }
             }
             else
             {
@@ -983,7 +989,10 @@ namespace DotNetNuke.Web.InternalServices
             var hasPermission = string.IsNullOrEmpty(permission) ?
                 (this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ")) :
                 this.HasPermission(parentFolder, permission.ToUpper());
-            if (!hasPermission) return new List<ItemDto>();
+            if (!hasPermission)
+            {
+                return new List<ItemDto>();
+            }
 
             if (parentId < 1) return new List<ItemDto>
             {
@@ -1061,7 +1070,10 @@ namespace DotNetNuke.Web.InternalServices
             var hasPermission = string.IsNullOrEmpty(permission) ?
                 (this.HasPermission(folder, "BROWSE") || this.HasPermission(folder, "READ")) :
                 this.HasPermission(folder, permission.ToUpper());
-            if (!hasPermission) return new NTree<ItemDto>();
+            if (!hasPermission)
+            {
+                return new NTree<ItemDto>();
+            }
 
             var selfTree = new NTree<ItemDto>
             {
@@ -1206,7 +1218,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             if (portalId > -1)
             {
-                if (!this.IsPortalIdValid(portalId)) return new List<ItemDto>();
+                if (!this.IsPortalIdValid(portalId))
+                {
+                    return new List<ItemDto>();
+                }
             }
             else
             {
@@ -1222,7 +1237,10 @@ namespace DotNetNuke.Web.InternalServices
             var hasPermission = string.IsNullOrEmpty(permission) ?
                 (this.HasPermission(parentFolder, "BROWSE") || this.HasPermission(parentFolder, "READ")) :
                 this.HasPermission(parentFolder, permission.ToUpper());
-            if (!hasPermission) return new List<ItemDto>();
+            if (!hasPermission)
+            {
+                return new List<ItemDto>();
+            }
 
             if (parentId < 1)
             {
@@ -1287,7 +1305,10 @@ namespace DotNetNuke.Web.InternalServices
 
                 // GetUsersAdvancedSearch doesn't accept a comma or a single quote in the query so we have to remove them for now. See issue 20224.
                 q = q.Replace(",", string.Empty).Replace("'", string.Empty);
-                if (q.Length == 0) return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                if (q.Length == 0)
+                {
+                    return this.Request.CreateResponse<SearchResult>(HttpStatusCode.OK, null);
+                }
 
                 var results = UserController.Instance.GetUsersBasicSearch(portalId, 0, numResults, "DisplayName", true, "DisplayName", q)
                     .Select(user => new SearchResult
@@ -1361,11 +1382,21 @@ namespace DotNetNuke.Web.InternalServices
 
         private bool IsPortalIdValid(int portalId)
         {
-            if (this.UserInfo.IsSuperUser) return true;
-            if (this.PortalSettings.PortalId == portalId) return true;
+            if (this.UserInfo.IsSuperUser)
+            {
+                return true;
+            }
+
+            if (this.PortalSettings.PortalId == portalId)
+            {
+                return true;
+            }
 
             var isAdminUser = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
-            if (!isAdminUser) return false;
+            if (!isAdminUser)
+            {
+                return false;
+            }
 
             var mygroup = GetMyPortalGroup();
             return mygroup != null && mygroup.Any(p => p.PortalID == portalId);
@@ -1387,7 +1418,9 @@ namespace DotNetNuke.Web.InternalServices
         {
             var portalId = -1;
             if (!TabController.CurrentPage.IsSuperTab)
+            {
                 portalId = this.PortalSettings.PortalId;
+            }
 
             return portalId;
         }

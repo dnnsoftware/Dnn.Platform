@@ -109,7 +109,10 @@ namespace DotNetNuke.Modules.DigitalAssets
         {
             this.Page.Validate("vgEditFolderMapping");
 
-            if (!this.Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
             try
             {
@@ -182,7 +185,9 @@ namespace DotNetNuke.Modules.DigitalAssets
                 }
 
                 if (!this.Response.IsRequestBeingRedirected)
+                {
                     this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "FolderMappings", "mid=" + this.ModuleId, "popUp=true"));
+                }
             }
             catch (Exception exc)
             {
@@ -230,13 +235,22 @@ namespace DotNetNuke.Modules.DigitalAssets
                 folderProviderType = this.FolderProvidersComboBox.SelectedValue;
             }
 
-            if (string.IsNullOrEmpty(folderProviderType)) return;
+            if (string.IsNullOrEmpty(folderProviderType))
+            {
+                return;
+            }
 
             var settingsControlVirtualPath = FolderProvider.Instance(folderProviderType).GetSettingsControlVirtualPath();
-            if (string.IsNullOrEmpty(settingsControlVirtualPath)) return;
+            if (string.IsNullOrEmpty(settingsControlVirtualPath))
+            {
+                return;
+            }
 
             var settingsControl = this.LoadControl(settingsControlVirtualPath);
-            if (settingsControl == null || !(settingsControl is FolderMappingSettingsControlBase)) return;
+            if (settingsControl == null || !(settingsControl is FolderMappingSettingsControlBase))
+            {
+                return;
+            }
 
             // This is important to allow settings control to be localizable
             var baseType = settingsControl.GetType().BaseType;

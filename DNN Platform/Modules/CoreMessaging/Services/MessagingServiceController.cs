@@ -383,7 +383,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
         private string LocalizeActionString(string key, int desktopModuleId)
         {
-            if (string.IsNullOrEmpty(key)) return string.Empty;
+            if (string.IsNullOrEmpty(key))
+            {
+                return string.Empty;
+            }
 
             string actionString;
 

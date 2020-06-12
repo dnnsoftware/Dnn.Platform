@@ -109,7 +109,10 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             set
             {
                 if (HtmlUtils.ContainsEntity(value))
+                {
                     value = System.Net.WebUtility.HtmlDecode(value);
+                }
+
                 this._Name = Security.InputFilter(value, PortalSecurity.FilterFlag.NoMarkup);
             }
         }

@@ -252,7 +252,10 @@ namespace Dnn.PersonaBar.Library.Controllers
                     do
                     {
                         parentTab = this.GetTabByCulture(parentTab.ParentTabId, portalInfo.PortalID, locale);
-                        if (parentTab != null) tempTabs.Add(Convert.ToInt32(parentTab.TabId));
+                        if (parentTab != null)
+                        {
+                            tempTabs.Add(Convert.ToInt32(parentTab.TabId));
+                        }
                     }
                     while (parentTab != null && parentTab.ParentTabId > Null.NullInteger);
                 }
@@ -272,7 +275,11 @@ namespace Dnn.PersonaBar.Library.Controllers
             int portalId, string cultureCode, bool isMultiLanguage)
         {
             var enumerable = tabIds as int[] ?? tabIds.ToArray();
-            if (tabs == null || tabIds == null || !enumerable.Any()) return tabs;
+            if (tabs == null || tabIds == null || !enumerable.Any())
+            {
+                return tabs;
+            }
+
             var tabDtos = tabs as List<TabDto> ?? tabs.ToList();
             var tabId = enumerable.First();
             if (selectedTabId != tabId)

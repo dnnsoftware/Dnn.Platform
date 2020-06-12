@@ -158,7 +158,9 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
             var displayMode = this.DisplayMode;
             if (displayMode != "editor" && displayMode != "settings")
+            {
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
+            }
         }
     }
 }

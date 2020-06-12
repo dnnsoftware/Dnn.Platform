@@ -55,7 +55,11 @@ namespace Dnn.AuthServices.Jwt.Auth
                 var username = this._jwtController.ValidateToken(request);
                 if (!string.IsNullOrEmpty(username))
                 {
-                    if (Logger.IsTraceEnabled) Logger.Trace($"Authenticated user '{username}'");
+                    if (Logger.IsTraceEnabled)
+                    {
+                        Logger.Trace($"Authenticated user '{username}'");
+                    }
+
                     SetCurrentPrincipal(new GenericPrincipal(new GenericIdentity(username, this.AuthScheme), null), request);
                 }
             }

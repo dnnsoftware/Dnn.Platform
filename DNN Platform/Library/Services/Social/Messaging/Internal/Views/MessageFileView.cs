@@ -34,7 +34,11 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
             set
             {
                 long bytes;
-                if (!long.TryParse(value, out bytes)) return;
+                if (!long.TryParse(value, out bytes))
+                {
+                    return;
+                }
+
                 const int scale = 1024;
                 var orders = new[] { "GB", "MB", "KB", "B" };
                 var max = (long)Math.Pow(scale, orders.Length - 1);

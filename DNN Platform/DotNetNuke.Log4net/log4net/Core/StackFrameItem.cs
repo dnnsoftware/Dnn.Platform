@@ -61,7 +61,10 @@ namespace log4net.Core
                 if (method != null)
                 {
                     if (method.DeclaringType != null)
+                    {
                         this.m_className = method.DeclaringType.FullName;
+                    }
+
                     this.m_method = new MethodItem(method);
                 }
             }

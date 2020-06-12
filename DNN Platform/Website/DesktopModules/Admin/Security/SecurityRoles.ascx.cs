@@ -543,7 +543,9 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
 
                 if (this.Role == null)
+                {
                     return;
+                }
 
                 this.placeIsOwner.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
                 this.placeIsOwnerHeader.Visible = (this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both);
@@ -672,7 +674,9 @@ namespace DotNetNuke.Modules.Admin.Security
                         var isOwner = false;
 
                         if ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both))
+                        {
                             isOwner = this.chkIsOwner.Checked;
+                        }
 
                         RoleController.AddUserRole(this.User, this.Role, this.PortalSettings, RoleStatus.Approved, datEffectiveDate, datExpiryDate, this.chkNotify.Checked, isOwner);
                         this.chkIsOwner.Checked = false; // reset the checkbox

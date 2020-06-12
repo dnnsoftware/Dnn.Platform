@@ -47,7 +47,10 @@ namespace DotNetNuke.Data.PetaPoco
         {
             var fluentMap = default(FluentColumnMap);
             if (this.Mappings.TryGetValue(pocoProperty.Name, out fluentMap))
+            {
                 return fluentMap.ColumnInfo;
+            }
+
             return null;
         }
 
@@ -56,7 +59,10 @@ namespace DotNetNuke.Data.PetaPoco
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
             if (this.Mappings.TryGetValue(targetProperty.Name, out fluentMap))
+            {
                 return fluentMap.FromDbConverter;
+            }
+
             return null;
         }
 
@@ -65,7 +71,10 @@ namespace DotNetNuke.Data.PetaPoco
             // ReSharper disable once RedundantAssignment
             var fluentMap = default(FluentColumnMap);
             if (this.Mappings.TryGetValue(sourceProperty.Name, out fluentMap))
+            {
                 return fluentMap.ToDbConverter;
+            }
+
             return null;
         }
 

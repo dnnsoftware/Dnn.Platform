@@ -112,13 +112,22 @@ namespace DotNetNuke.Modules.Html
             get
             {
                 if (this.phEdit.Visible)
+                {
                     return "EditView";
+                }
                 else if (this.phPreview.Visible)
+                {
                     return "PreviewView";
+                }
+
                 if (this.phHistory.Visible)
+                {
                     return "HistoryView";
+                }
                 else
+                {
                     return string.Empty;
+                }
             }
         }
 
@@ -498,10 +507,13 @@ namespace DotNetNuke.Modules.Html
                               select pa.HTTPAlias;
                 string content;
                 if (this.phEdit.Visible)
+                {
                     content = this.txtContent.Text;
+                }
                 else
+                {
                     content = this.hfEditor.Value;
-
+                }
 
                 if (this.Request.QueryString["nuru"] == null)
                 {
@@ -565,7 +577,9 @@ namespace DotNetNuke.Modules.Html
                 this.DisplayEdit(this.hfEditor.Value);
 
                 if (this.phMasterContent.Visible)
+                {
                     this.DisplayMasterLanguageContent();
+                }
             }
             catch (Exception exc)
             {
@@ -577,7 +591,10 @@ namespace DotNetNuke.Modules.Html
             try
             {
                 if (this.phEdit.Visible)
+                {
                     this.hfEditor.Value = this.txtContent.Text;
+                }
+
                 this.DisplayPreview(this.phEdit.Visible ? this.txtContent.Text : this.hfEditor.Value);
             }
             catch (Exception exc)
@@ -590,7 +607,10 @@ namespace DotNetNuke.Modules.Html
             try
             {
                 if (this.phEdit.Visible)
+                {
                     this.hfEditor.Value = this.txtContent.Text;
+                }
+
                 this.DisplayVersions();
             }
             catch (Exception exc)
@@ -610,7 +630,9 @@ namespace DotNetNuke.Modules.Html
                     Localization.GetString("cmdShowMasterContent", this.LocalResourceFile);
 
                 if (this.phMasterContent.Visible)
+                {
                     this.DisplayMasterLanguageContent();
+                }
             }
             catch (Exception exc)
             {

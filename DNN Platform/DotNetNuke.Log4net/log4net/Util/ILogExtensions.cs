@@ -89,7 +89,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.Debug(callback());
             }
@@ -119,7 +121,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.Debug(callback(), exception);
             }
@@ -162,7 +166,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.Debug(message);
             }
@@ -192,7 +198,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.Debug(message, exception);
             }
@@ -229,7 +237,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.DebugFormat(format, arg0);
             }
@@ -264,7 +274,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.DebugFormat(format, args);
             }
@@ -300,7 +312,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.DebugFormat(provider, format, args);
             }
@@ -336,7 +350,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.DebugFormat(format, arg0, arg1);
             }
@@ -373,7 +389,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsDebugEnabled)
+                {
                     return;
+                }
 
                 logger.DebugFormat(format, arg0, arg1, arg2);
             }
@@ -417,7 +435,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.Info(callback());
             }
@@ -447,7 +467,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.Info(callback(), exception);
             }
@@ -490,7 +512,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.Info(message);
             }
@@ -520,7 +544,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.Info(message, exception);
             }
@@ -557,7 +583,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.InfoFormat(format, arg0);
             }
@@ -592,7 +620,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.InfoFormat(format, args);
             }
@@ -628,7 +658,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.InfoFormat(provider, format, args);
             }
@@ -664,7 +696,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.InfoFormat(format, arg0, arg1);
             }
@@ -701,7 +735,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsInfoEnabled)
+                {
                     return;
+                }
 
                 logger.InfoFormat(format, arg0, arg1, arg2);
             }
@@ -745,7 +781,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.Warn(callback());
             }
@@ -775,7 +813,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.Warn(callback(), exception);
             }
@@ -818,7 +858,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.Warn(message);
             }
@@ -848,7 +890,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.Warn(message, exception);
             }
@@ -885,7 +929,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.WarnFormat(format, arg0);
             }
@@ -920,7 +966,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.WarnFormat(format, args);
             }
@@ -956,7 +1004,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.WarnFormat(provider, format, args);
             }
@@ -992,7 +1042,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.WarnFormat(format, arg0, arg1);
             }
@@ -1029,7 +1081,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsWarnEnabled)
+                {
                     return;
+                }
 
                 logger.WarnFormat(format, arg0, arg1, arg2);
             }
@@ -1073,7 +1127,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.Error(callback());
             }
@@ -1103,7 +1159,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.Error(callback(), exception);
             }
@@ -1146,7 +1204,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.Error(message);
             }
@@ -1176,7 +1236,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.Error(message, exception);
             }
@@ -1213,7 +1275,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.ErrorFormat(format, arg0);
             }
@@ -1248,7 +1312,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.ErrorFormat(format, args);
             }
@@ -1284,7 +1350,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.ErrorFormat(provider, format, args);
             }
@@ -1320,7 +1388,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.ErrorFormat(format, arg0, arg1);
             }
@@ -1357,7 +1427,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsErrorEnabled)
+                {
                     return;
+                }
 
                 logger.ErrorFormat(format, arg0, arg1, arg2);
             }
@@ -1401,7 +1473,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.Fatal(callback());
             }
@@ -1431,7 +1505,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.Fatal(callback(), exception);
             }
@@ -1474,7 +1550,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.Fatal(message);
             }
@@ -1504,7 +1582,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.Fatal(message, exception);
             }
@@ -1541,7 +1621,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.FatalFormat(format, arg0);
             }
@@ -1576,7 +1658,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.FatalFormat(format, args);
             }
@@ -1612,7 +1696,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.FatalFormat(provider, format, args);
             }
@@ -1648,7 +1734,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.FatalFormat(format, arg0, arg1);
             }
@@ -1685,7 +1773,9 @@ namespace log4net.Util
             try
             {
                 if (!logger.IsFatalEnabled)
+                {
                     return;
+                }
 
                 logger.FatalFormat(format, arg0, arg1, arg2);
             }

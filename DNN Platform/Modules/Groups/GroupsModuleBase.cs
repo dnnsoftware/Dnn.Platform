@@ -76,7 +76,9 @@ namespace DotNetNuke.Modules.Groups
                 {
                     int id;
                     if (int.TryParse(this.Settings[Constants.DefaultRoleGroupSetting].ToString(), out id))
+                    {
                         roleGroupId = id;
+                    }
                 }
 
                 return roleGroupId; // -2 is for "< All Roles >"

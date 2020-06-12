@@ -88,7 +88,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
                             // And if it's an exact match, exit the loop
                             if (distance == 0)
+                            {
                                 break;
+                            }
                         }
                     }
                 }
@@ -108,7 +110,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         protected override ColorPalette GetPalette(ColorPalette palette)
         {
             for (int index = 0; index < this._colors.Length; index++)
+            {
                 palette.Entries[index] = this._colors[index];
+            }
 
             return palette;
         }

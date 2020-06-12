@@ -23,10 +23,14 @@ namespace DotNetNuke.Web.Client.Providers
             Func<Stream, string> streamToString = stream =>
             {
                 if (!stream.CanRead)
+                {
                     throw new InvalidOperationException("Cannot read input stream");
+                }
 
                 if (stream.CanSeek)
+                {
                     stream.Position = 0;
+                }
 
                 var reader = new StreamReader(stream);
                 return reader.ReadToEnd();
@@ -52,9 +56,11 @@ namespace DotNetNuke.Web.Client.Providers
                 case ClientDependencyType.Javascript:
                 {
                     if (!this.MinifyJs)
-                        return fileContents;
+                        {
+                            return fileContents;
+                        }
 
-                    using (var ms = new MemoryStream())
+                        using (var ms = new MemoryStream())
                     using (var writer = new StreamWriter(ms))
                     {
                         writer.Write(fileContents);

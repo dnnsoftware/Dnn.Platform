@@ -229,7 +229,9 @@ namespace DotNetNuke.Tests.Web.InternalServices
             try
             {
                 if (Directory.Exists(SearchIndexFolder))
+                {
                     Directory.Delete(SearchIndexFolder, true);
+                }
             }
             catch (Exception ex)
             {

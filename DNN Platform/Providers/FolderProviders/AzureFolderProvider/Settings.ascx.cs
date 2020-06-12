@@ -150,7 +150,10 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             else
             {
                 container = this.tbContainerName.Text.Trim().ToLowerInvariant();
-                if (!this.CreateContainer(container)) throw new Exception();
+                if (!this.CreateContainer(container))
+                {
+                    throw new Exception();
+                }
             }
 
             return container;
@@ -326,7 +329,10 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
         /// </summary>
         protected void ddlContainers_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (this.ddlContainers.SelectedIndex != 1) return;
+            if (this.ddlContainers.SelectedIndex != 1)
+            {
+                return;
+            }
 
             if (this.tbAccountName.Text.Trim().Length > 0 && this.tbAccountKey.Text.Trim().Length > 0)
             {

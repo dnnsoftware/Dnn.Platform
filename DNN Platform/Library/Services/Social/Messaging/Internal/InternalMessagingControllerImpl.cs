@@ -254,7 +254,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                         messageThreadView.Attachments = this._dataService.GetMessageAttachmentsByMessage(messageThreadView.Conversation.MessageID);
                     }
 
-                    if (messageThreadsView.Conversations == null) messageThreadsView.Conversations = new List<MessageThreadView>();
+                    if (messageThreadsView.Conversations == null)
+                    {
+                        messageThreadsView.Conversations = new List<MessageThreadView>();
+                    }
 
                     messageThreadsView.Conversations.Add(messageThreadView);
                 }
@@ -316,7 +319,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int CountConversations(int userId, int portalId)
         {
-            if (userId <= 0) return 0;
+            if (userId <= 0)
+            {
+                return 0;
+            }
 
             var cacheKey = string.Format(DataCache.UserNotificationsConversationCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();
@@ -334,7 +340,10 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public virtual int CountUnreadMessages(int userId, int portalId)
         {
-            if (userId <= 0) return 0;
+            if (userId <= 0)
+            {
+                return 0;
+            }
 
             var cacheKey = string.Format(DataCache.UserNewThreadsCountCacheKey, portalId, userId);
             var cache = CachingProvider.Instance();

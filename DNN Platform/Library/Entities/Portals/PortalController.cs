@@ -754,7 +754,10 @@ namespace DotNetNuke.Entities.Portals
             var portalId = (int)cacheItemArgs.ParamList[0];
             var dicSettings = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
 
-            if (portalId <= -1) return dicSettings;
+            if (portalId <= -1)
+            {
+                return dicSettings;
+            }
 
             var cultureCode = Convert.ToString(cacheItemArgs.ParamList[1]);
             if (string.IsNullOrEmpty(cultureCode))
@@ -766,7 +769,10 @@ namespace DotNetNuke.Entities.Portals
             {
                 while (dr.Read())
                 {
-                    if (dr.IsDBNull(1)) continue;
+                    if (dr.IsDBNull(1))
+                    {
+                        continue;
+                    }
 
                     var key = dr.GetString(0);
                     if (dicSettings.ContainsKey(key))
@@ -807,7 +813,10 @@ namespace DotNetNuke.Entities.Portals
                 // First check if the file exists
                 var file = fileManager.GetFile(folder, fileName);
 
-                if (file != null) continue;
+                if (file != null)
+                {
+                    continue;
+                }
 
                 file = new FileInfo
                 {
@@ -2397,7 +2406,10 @@ namespace DotNetNuke.Entities.Portals
                     // Get Fallback language
                     string fallbackLanguage = string.Empty;
 
-                    if (string.IsNullOrEmpty(cultureCode)) cultureCode = GetPortalDefaultLanguage(portalId);
+                    if (string.IsNullOrEmpty(cultureCode))
+                    {
+                        cultureCode = GetPortalDefaultLanguage(portalId);
+                    }
 
                     Locale userLocale = LocaleController.Instance.GetLocale(cultureCode);
                     if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))

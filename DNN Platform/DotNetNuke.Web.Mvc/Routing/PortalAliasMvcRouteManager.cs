@@ -65,7 +65,11 @@ namespace DotNetNuke.Web.Mvc.Routing
 
             var segments = portalAliasInfo.HTTPAlias.Split('/');
 
-            if (segments.Length <= 1) return allRouteValues;
+            if (segments.Length <= 1)
+            {
+                return allRouteValues;
+            }
+
             for (var i = 1; i < segments.Length; i++)
             {
                 var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
@@ -91,7 +95,10 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public IEnumerable<int> GetRoutePrefixCounts()
         {
-            if (this._prefixCounts != null) return this._prefixCounts;
+            if (this._prefixCounts != null)
+            {
+                return this._prefixCounts;
+            }
             // prefixCounts are required for each route that is mapped but they only change
             // when a new portal is added so cache them until that time
             var portals = PortalController.Instance.GetPortals();

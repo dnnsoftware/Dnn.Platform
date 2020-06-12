@@ -67,7 +67,11 @@ namespace DotNetNuke.Services.Search.Internals
             var hostController = HostController.Instance;
 
             var folder = hostController.GetString(Constants.SearchIndexFolderKey, DefaultSearchFolder);
-            if (string.IsNullOrEmpty(folder)) folder = DefaultSearchFolder;
+            if (string.IsNullOrEmpty(folder))
+            {
+                folder = DefaultSearchFolder;
+            }
+
             this.IndexFolder = Path.Combine(Globals.ApplicationMapPath, folder);
             this._readerTimeSpan = hostController.GetDouble(Constants.SearchReaderRefreshTimeKey, DefaultRereadTimeSpan);
             this._searchRetryTimes = hostController.GetInteger(Constants.SearchRetryTimesKey, DefaultSearchRetryTimes);
@@ -76,7 +80,9 @@ namespace DotNetNuke.Services.Search.Internals
         private void CheckDisposed()
         {
             if (Thread.VolatileRead(ref this._isDisposed) == DISPOSED)
+            {
                 throw new ObjectDisposedException(Localization.Localization.GetExceptionMessage("LuceneControlerIsDisposed", "LuceneController is disposed and cannot be used anymore"));
+            }
         }
 
         private IndexWriter Writer
@@ -273,7 +279,9 @@ namespace DotNetNuke.Services.Search.Internals
 
                     // Page doesn't exist
                     if (luceneResults.TotalHits < minResults)
+                    {
                         break;
+                    }
 
                     luceneResults.Results = searchSecurityTrimmer.ScoreDocs.Select(match =>
                         new LuceneResult
@@ -344,7 +352,10 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var beginPos = match.IndexOf('[');
                 var endPos = match.LastIndexOf(']');
-                if (beginPos > 0 && endPos > 0 && endPos > beginPos) displayScore = match.Substring(beginPos + 1, endPos - beginPos - 1);
+                if (beginPos > 0 && endPos > 0 && endPos > beginPos)
+                {
+                    displayScore = match.Substring(beginPos + 1, endPos - beginPos - 1);
+                }
             }
 
             return displayScore;

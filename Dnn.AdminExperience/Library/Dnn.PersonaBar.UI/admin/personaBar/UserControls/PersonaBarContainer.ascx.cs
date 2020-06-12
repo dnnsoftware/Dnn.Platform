@@ -68,7 +68,9 @@ namespace Dnn.PersonaBar.UI.UserControls
 
             // copied this logic from DotNetNuke.UI.Skins.Skin.InjectControlPanel
             if (this.Request.QueryString["dnnprintmode"] == "true" || this.Request.QueryString["popUp"] == "true")
+            {
                 return false;
+            }
 
             var menuStructure = PersonaBarController.Instance.GetMenu(this.PortalSettings, UserController.Instance.GetCurrentUserInfo());
             if (menuStructure.MenuItems == null || !menuStructure.MenuItems.Any())

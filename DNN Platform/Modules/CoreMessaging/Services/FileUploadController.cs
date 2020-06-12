@@ -57,7 +57,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             for (var i = 0; i < context.Request.Files.Count; i++)
             {
                 var file = context.Request.Files[i];
-                if (file == null) continue;
+                if (file == null)
+                {
+                    continue;
+                }
 
                 var fileName = Path.GetFileName(file.FileName);
 

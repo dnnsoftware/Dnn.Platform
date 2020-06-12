@@ -29,7 +29,10 @@ namespace DotNetNuke.ExtensionPoints
 
                     // Force MEF to load the plugin and figure out if there are any exports
                     // good assemblies will not throw the RTLE exception and can be added to the catalog
-                    if (asmCat.Parts.ToList().Count > 0) this._catalog.Catalogs.Add(asmCat);
+                    if (asmCat.Parts.ToList().Count > 0)
+                    {
+                        this._catalog.Catalogs.Add(asmCat);
+                    }
                 }
                 catch (ReflectionTypeLoadException)
                 {

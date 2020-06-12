@@ -132,7 +132,9 @@ namespace DotNetNuke.Entities.Users.Membership
                     byte[] bhashedPassword = ha.ComputeHash(inputBuffer);
                     string hashedPassword = Convert.ToBase64String(bhashedPassword);
                     if (hashedPassword == oldEncodedPassword)
+                    {
                         foundMatch = true;
+                    }
                 }
             }
 

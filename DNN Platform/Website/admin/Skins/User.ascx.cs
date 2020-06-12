@@ -79,9 +79,13 @@ namespace DotNetNuke.UI.Skins.Controls
             try
             {
                 if (this.LegacyMode)
+                {
                     this.registerGroup.Visible = false;
+                }
                 else
+                {
                     this.registerLink.Visible = false;
+                }
 
                 if (!string.IsNullOrEmpty(this.CssClass))
                 {
@@ -115,8 +119,14 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                         if (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0)
                         {
-                            if (this.LegacyMode) this.registerLink.Visible = true;
-                            else this.enhancedRegisterLink.Visible = true;
+                            if (this.LegacyMode)
+                            {
+                                this.registerLink.Visible = true;
+                            }
+                            else
+                            {
+                                this.enhancedRegisterLink.Visible = true;
+                            }
                         }
                         else
                         {
@@ -213,7 +223,9 @@ namespace DotNetNuke.UI.Skins.Controls
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
             var messageTabId = DataCache.GetCache<int>(cacheKey);
             if (messageTabId > 0)
+            {
                 return messageTabId;
+            }
 
             // Find the Message Tab
             messageTabId = this.FindMessageTab();

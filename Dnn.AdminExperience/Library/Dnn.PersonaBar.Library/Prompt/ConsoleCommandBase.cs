@@ -138,7 +138,10 @@ namespace Dnn.PersonaBar.Library.Prompt
             // loop through arguments, skipping the first one (the command)
             for (var i = 1; i <= this.Args.Length - 1; i++)
             {
-                if (!this.Args[i].StartsWith("--")) continue;
+                if (!this.Args[i].StartsWith("--"))
+                {
+                    continue;
+                }
                 // found a flag
                 var flagName = NormalizeFlagName(this.Args[i]);
                 var flagValue = string.Empty;
@@ -168,10 +171,17 @@ namespace Dnn.PersonaBar.Library.Prompt
         private object Flag<T>(string flagName, T defValue)
         {
             flagName = NormalizeFlagName(flagName);
-            if (!this.Flags.ContainsKey(flagName)) return defValue;
+            if (!this.Flags.ContainsKey(flagName))
+            {
+                return defValue;
+            }
+
             var retVal = this.Flags[flagName];
             if (retVal == null || (string)retVal == string.Empty)
+            {
                 return defValue;
+            }
+
             var tc = TypeDescriptor.GetConverter(typeof(T));
             return tc.ConvertFrom(retVal);
         }
@@ -204,9 +214,15 @@ namespace Dnn.PersonaBar.Library.Prompt
         private static string NormalizeFlagName(string flagName)
         {
             if (flagName == null)
+            {
                 return string.Empty;
+            }
+
             if (flagName.StartsWith("--"))
+            {
                 flagName = flagName.Substring(2);
+            }
+
             return flagName.ToLower().Trim();
         }
 

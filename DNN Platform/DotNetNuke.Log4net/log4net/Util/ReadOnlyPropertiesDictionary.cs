@@ -289,7 +289,11 @@ namespace log4net.Util
         {
             get
             {
-                if (!(key is string)) throw new ArgumentException("key must be a string");
+                if (!(key is string))
+                {
+                    throw new ArgumentException("key must be a string");
+                }
+
                 return this.InnerHashtable[key];
             }
             set

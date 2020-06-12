@@ -56,7 +56,9 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
             try
             {
                 if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("TEAMCITY_VERSION")))
+                {
                     DatabaseHelper.ExecuteNonQuery("TRUNCATE TABLE {objectQualifier}JsonWebTokens");
+                }
             }
             catch (Exception)
             {
@@ -455,7 +457,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         {
             // fix Base64 string padding
             var mod = b64Str.Length % 4;
-            if (mod != 0) b64Str += new string('=', 4 - mod);
+            if (mod != 0)
+            {
+                b64Str += new string('=', 4 - mod);
+            }
+
             return TextEncoder.GetString(Convert.FromBase64String(b64Str));
         }
 

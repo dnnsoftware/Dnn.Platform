@@ -463,8 +463,16 @@ namespace DotNetNuke.UI.Skins.Controls
             this.cmdSearch.Click += this.CmdSearchClick;
             this.cmdSearchNew.Click += this.CmdSearchNewClick;
 
-            if (this.MinCharRequired == 0) this.MinCharRequired = 2;
-            if (this.AutoSearchDelayInMilliSecond == 0) this.AutoSearchDelayInMilliSecond = 400;
+            if (this.MinCharRequired == 0)
+            {
+                this.MinCharRequired = 2;
+            }
+
+            if (this.AutoSearchDelayInMilliSecond == 0)
+            {
+                this.AutoSearchDelayInMilliSecond = 400;
+            }
+
             this.PortalId = this.PortalSettings.ActiveTab.IsSuperTab ? this.PortalSettings.PortalId : -1;
 
             if (!string.IsNullOrEmpty(this.Submit))

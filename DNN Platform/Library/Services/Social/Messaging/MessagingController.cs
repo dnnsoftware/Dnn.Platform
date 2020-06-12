@@ -125,7 +125,10 @@ namespace DotNetNuke.Services.Social.Messaging
 
             if (users != null)
             {
-                foreach (var user in users.Where(user => !string.IsNullOrEmpty(user.DisplayName))) sbTo.Append(user.DisplayName + ",");
+                foreach (var user in users.Where(user => !string.IsNullOrEmpty(user.DisplayName)))
+                {
+                    sbTo.Append(user.DisplayName + ",");
+                }
             }
 
             if (sbTo.Length == 0)
@@ -154,8 +157,16 @@ namespace DotNetNuke.Services.Social.Messaging
 
             // Cannot exceed RecipientLimit
             var recipientCount = 0;
-            if (users != null) recipientCount += users.Count;
-            if (roles != null) recipientCount += roles.Count;
+            if (users != null)
+            {
+                recipientCount += users.Count;
+            }
+
+            if (roles != null)
+            {
+                recipientCount += roles.Count;
+            }
+
             if (recipientCount > InternalMessagingController.Instance.RecipientLimit(sender.PortalID))
             {
                 throw new RecipientLimitExceededException(Localization.Localization.GetString("MsgRecipientLimitExceeded", Localization.Localization.ExceptionsResourceFile));

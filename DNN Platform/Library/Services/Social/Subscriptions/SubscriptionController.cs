@@ -96,7 +96,10 @@ namespace DotNetNuke.Services.Social.Subscriptions
                 subscription.ModuleId,
                 subscription.TabId));
 
-            if (subscriptionToDelete == null) return;
+            if (subscriptionToDelete == null)
+            {
+                return;
+            }
 
             this.dataService.DeleteSubscription(subscriptionToDelete.SubscriptionId);
         }

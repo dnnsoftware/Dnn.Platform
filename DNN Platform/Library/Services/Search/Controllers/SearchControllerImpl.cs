@@ -56,12 +56,15 @@ namespace DotNetNuke.Services.Search.Controllers
             Requires.PropertyNotEqualTo("searchQuery", "SearchTypeIds", searchQuery.SearchTypeIds.Count(), 0);
 
             if ((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId)))
+            {
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
+            }
 
             if (searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
                 || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
+            {
                 Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
-
+            }
 
             var query = new BooleanQuery();
             if (!string.IsNullOrEmpty(searchQuery.KeyWords))
@@ -98,7 +101,10 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 portalIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.SHOULD);
             }
-            if (searchQuery.PortalIds.Any()) query.Add(portalIdQuery, Occur.MUST);
+            if (searchQuery.PortalIds.Any())
+            {
+                query.Add(portalIdQuery, Occur.MUST);
+            }
 
             this.ApplySearchTypeIdFilter(query, searchQuery);
 
@@ -108,7 +114,9 @@ namespace DotNetNuke.Services.Search.Controllers
             }
 
             if (searchQuery.RoleId > 0)
+            {
                 query.Add(NumericRangeQuery.NewIntRange(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);
+            }
 
             foreach (var tag in searchQuery.Tags)
             {
@@ -213,7 +221,9 @@ namespace DotNetNuke.Services.Search.Controllers
                         modDefQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                     }
                     if (searchQuery.ModuleDefIds.Any())
+                    {
                         query.Add(modDefQuery, Occur.MUST); // Note the MUST
+                    }
                 }
 
                 query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, this._moduleSearchTypeId, this._moduleSearchTypeId, true, true), Occur.MUST);
@@ -230,7 +240,9 @@ namespace DotNetNuke.Services.Search.Controllers
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
             if (!searchQuery.ModuleDefIds.Any())
+                        {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
+                        }
                     }
                     else
                     {
@@ -273,7 +285,11 @@ namespace DotNetNuke.Services.Search.Controllers
         {
             foreach (var field in doc.GetFields())
             {
-                if (field.StringValue == null) continue;
+                if (field.StringValue == null)
+                {
+                    continue;
+                }
+
                 int intField;
                 switch (field.Name)
                 {
@@ -303,28 +319,56 @@ namespace DotNetNuke.Services.Search.Controllers
                         result.Url = field.StringValue;
                         break;
                     case Constants.SearchTypeTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.SearchTypeId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.SearchTypeId = intField;
+                        }
+
                         break;
                     case Constants.ModuleIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.ModuleId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.ModuleId = intField;
+                        }
+
                         break;
                     case Constants.ModuleDefIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.ModuleDefId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.ModuleDefId = intField;
+                        }
+
                         break;
                     case Constants.PortalIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.PortalId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.PortalId = intField;
+                        }
+
                         break;
                     case Constants.AuthorIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.AuthorUserId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.AuthorUserId = intField;
+                        }
+
                         break;
                     case Constants.RoleIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.RoleId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.RoleId = intField;
+                        }
+
                         break;
                     case Constants.AuthorNameTag:
                         result.AuthorName = field.StringValue;
                         break;
                     case Constants.TabIdTag:
-                        if (int.TryParse(field.StringValue, out intField)) result.TabId = intField;
+                        if (int.TryParse(field.StringValue, out intField))
+                        {
+                            result.TabId = intField;
+                        }
+
                         break;
                     case Constants.ModifiedTimeTag:
                         DateTime modifiedTimeUtc;
@@ -338,14 +382,18 @@ namespace DotNetNuke.Services.Search.Controllers
                             if (int.TryParse(field.StringValue, out intField))
                             {
                                 if (!result.NumericKeys.ContainsKey(key))
+                                {
                                     result.NumericKeys.Add(key, intField);
+                                }
                             }
                         }
                         else if (field.Name.StartsWith(Constants.KeywordsPrefixTag))
                         {
                             var key = field.Name.Substring(Constants.KeywordsPrefixTag.Length);
                             if (!result.Keywords.ContainsKey(key))
+                            {
                                 result.Keywords.Add(key, field.StringValue);
+                            }
                         }
                         break;
                 }
@@ -356,15 +404,41 @@ namespace DotNetNuke.Services.Search.Controllers
         {
             var sb = new StringBuilder();
 
-            if (!string.IsNullOrEmpty(luceneResult.TitleSnippet)) sb.Append(luceneResult.TitleSnippet + "...");
-            if (!string.IsNullOrEmpty(luceneResult.DescriptionSnippet)) sb.Append(luceneResult.DescriptionSnippet + "...");
-            if (!string.IsNullOrEmpty(luceneResult.TagSnippet)) sb.Append(luceneResult.TagSnippet + "...");
-            if (!string.IsNullOrEmpty(luceneResult.BodySnippet)) sb.Append(luceneResult.BodySnippet + "...");
-            if (!string.IsNullOrEmpty(luceneResult.AuthorSnippet)) sb.Append(luceneResult.AuthorSnippet + "...");
-            if (!string.IsNullOrEmpty(luceneResult.ContentSnippet)) sb.Append(luceneResult.ContentSnippet + "...");
+            if (!string.IsNullOrEmpty(luceneResult.TitleSnippet))
+            {
+                sb.Append(luceneResult.TitleSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.DescriptionSnippet))
+            {
+                sb.Append(luceneResult.DescriptionSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.TagSnippet))
+            {
+                sb.Append(luceneResult.TagSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.BodySnippet))
+            {
+                sb.Append(luceneResult.BodySnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.AuthorSnippet))
+            {
+                sb.Append(luceneResult.AuthorSnippet + "...");
+            }
+
+            if (!string.IsNullOrEmpty(luceneResult.ContentSnippet))
+            {
+                sb.Append(luceneResult.ContentSnippet + "...");
+            }
 
             var snippet = sb.ToString();
-            if (string.IsNullOrEmpty(snippet)) snippet = searchResult.Title;
+            if (string.IsNullOrEmpty(snippet))
+            {
+                snippet = searchResult.Title;
+            }
 
             return snippet;
         }

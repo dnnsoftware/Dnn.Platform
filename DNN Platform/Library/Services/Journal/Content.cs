@@ -66,7 +66,10 @@ namespace DotNetNuke.Services.Journal
         {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
 
-            if (objContent == null) return;
+            if (objContent == null)
+            {
+                return;
+            }
             // Only update content the contentitem if it was created by the journal
             if ((objContent.ContentTypeId == GetContentTypeID("DNNCorp_JournalProfile") && objJournalItem.ProfileId > 0)
                     || (objContent.ContentTypeId == GetContentTypeID("DNNCorp_JournalGroup") && objJournalItem.SocialGroupId > 0))
@@ -91,9 +94,16 @@ namespace DotNetNuke.Services.Journal
         /// <param name="contentItemID"></param>
         internal void DeleteContentItem(int contentItemID)
         {
-            if (contentItemID <= Null.NullInteger) return;
+            if (contentItemID <= Null.NullInteger)
+            {
+                return;
+            }
+
             var objContent = Util.GetContentController().GetContentItem(contentItemID);
-            if (objContent == null) return;
+            if (objContent == null)
+            {
+                return;
+            }
 
             // remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
             // var cntTerms = new Terms();

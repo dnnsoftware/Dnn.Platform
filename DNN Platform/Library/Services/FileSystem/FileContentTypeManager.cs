@@ -54,7 +54,10 @@ namespace DotNetNuke.Services.FileSystem
         public virtual string GetContentType(string extension)
         {
 
-            if (string.IsNullOrEmpty(extension)) return "application/octet-stream";
+            if (string.IsNullOrEmpty(extension))
+            {
+                return "application/octet-stream";
+            }
 
             var key = extension.TrimStart('.').ToLowerInvariant();
             return this.ContentTypes.ContainsKey(key) ? this.ContentTypes[key] : "application/octet-stream";

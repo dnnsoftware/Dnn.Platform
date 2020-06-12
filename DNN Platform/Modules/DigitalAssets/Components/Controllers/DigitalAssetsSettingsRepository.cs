@@ -123,7 +123,9 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
         {
             // handle upgrades where FilterCondition didn't exist
             if (this.SettingExists(moduleId, "RootFolderId") && !this.SettingExists(moduleId, "FilterCondition"))
+            {
                 this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
+            }
         }
     }
 

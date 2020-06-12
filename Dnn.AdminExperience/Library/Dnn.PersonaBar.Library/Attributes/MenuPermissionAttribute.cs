@@ -76,7 +76,9 @@ namespace Dnn.PersonaBar.Library.Attributes
             if (!string.IsNullOrEmpty(this.MenuName))
             {
                 if (isAdmin)
+                {
                     return true;
+                }
 
                 var hasPermission = false;
                 this.MenuName.Split(',').ForEach(menuName =>

@@ -154,7 +154,10 @@ namespace DotNetNuke.Services.Assets
             var property = typeof(T).GetProperty(propertyName);
 
             // If property is undefined returns the original source
-            if (property == null) return (IOrderedQueryable<T>)source;
+            if (property == null)
+            {
+                return (IOrderedQueryable<T>)source;
+            }
 
             Expression expr = Expression.Property(arg, property);
 
@@ -319,7 +322,10 @@ namespace DotNetNuke.Services.Assets
         public bool DeleteFolder(int folderId, bool onlyUnlink, ICollection<IFolderInfo> nonDeletedSubfolders)
         {
             var folder = FolderManager.Instance.GetFolder(folderId);
-            if (folder == null) return false;
+            if (folder == null)
+            {
+                return false;
+            }
 
             if (!HasPermission(folder, "DELETE"))
             {
@@ -358,7 +364,10 @@ namespace DotNetNuke.Services.Assets
         public bool DeleteFile(int fileId)
         {
             var fileInfo = FileManager.Instance.GetFile(fileId, true);
-            if (fileInfo == null) return false;
+            if (fileInfo == null)
+            {
+                return false;
+            }
 
             var folder = FolderManager.Instance.GetFolder(fileInfo.FolderId);
 

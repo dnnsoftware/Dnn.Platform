@@ -76,14 +76,21 @@ namespace Dnn.ExportImport.Components.Controllers
             bool isValid;
             errorMessage = string.Empty;
             var importFolder = Path.Combine(ExportFolder, packageId);
-            if (!IsValidImportFolder(importFolder)) return false;
+            if (!IsValidImportFolder(importFolder))
+            {
+                return false;
+            }
+
             var dbPath = UnPackDatabase(importFolder);
             try
             {
                 using (var ctx = new ExportImportRepository(dbPath))
                 {
                     if (summary != null)
+                    {
                         BuildJobSummary(packageId, ctx, summary);
+                    }
+
                     isValid = true;
                 }
             }
@@ -98,7 +105,11 @@ namespace Dnn.ExportImport.Components.Controllers
         private static string GetPackageDbPath(string packageId)
         {
             var importFolder = Path.Combine(ExportFolder, packageId);
-            if (!IsValidImportFolder(importFolder)) return null;
+            if (!IsValidImportFolder(importFolder))
+            {
+                return null;
+            }
+
             var dbPath = UnPackDatabase(importFolder);
             return dbPath;
         }
@@ -107,7 +118,10 @@ namespace Dnn.ExportImport.Components.Controllers
         {
             var dbName = Path.Combine(folderPath, Constants.ExportDbName);
             if (File.Exists(dbName))
+            {
                 return dbName;
+            }
+
             var zipDbName = Path.Combine(folderPath, Constants.ExportZipDbName);
             CompressionUtil.UnZipFileFromArchive(Constants.ExportDbName, zipDbName, folderPath, false);
             return dbName;

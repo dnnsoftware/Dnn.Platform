@@ -23,7 +23,10 @@ namespace Dnn.ExportImport.Components.Common
         public static void ZipFolder(string folderPath, string archivePath)
         {
             if (File.Exists(archivePath))
+            {
                 File.Delete(archivePath);
+            }
+
             ZipFile.CreateFromDirectory(folderPath, archivePath, CompressionLevel.Fastest, false);
         }
 
@@ -49,7 +52,11 @@ namespace Dnn.ExportImport.Components.Common
         public static void UnZipArchiveExcept(string archivePath, string extractFolder, bool overwrite = true,
             IEnumerable<string> exceptionList = null, bool deleteFromSoure = false)
         {
-            if (!File.Exists(archivePath)) return;
+            if (!File.Exists(archivePath))
+            {
+                return;
+            }
+
             using (var archive = OpenCreate(archivePath))
             {
                 foreach (
@@ -62,11 +69,19 @@ namespace Dnn.ExportImport.Components.Common
                 {
                     var path = Path.GetDirectoryName(Path.Combine(extractFolder, entry.FullName));
                     if (!string.IsNullOrEmpty(path) && !Directory.Exists(path))
+                    {
                         Directory.CreateDirectory(path);
+                    }
+
                     if (!File.Exists(Path.Combine(extractFolder, entry.FullName)) || overwrite)
+                    {
                         entry.ExtractToFile(Path.Combine(extractFolder, entry.FullName), overwrite);
+                    }
+
                     if (deleteFromSoure)
+                    {
                         entry.Delete();
+                    }
                 }
             }
         }
@@ -82,18 +97,29 @@ namespace Dnn.ExportImport.Components.Common
         public static void UnZipFileFromArchive(string fileName, string archivePath, string extractFolder,
             bool overwrite = true, bool deleteFromSoure = false)
         {
-            if (!File.Exists(archivePath)) return;
+            if (!File.Exists(archivePath))
+            {
+                return;
+            }
+
             using (var archive = OpenCreate(archivePath))
             {
                 var fileUnzipFullName = Path.Combine(extractFolder, fileName);
                 if (File.Exists(fileUnzipFullName) && !overwrite)
+                {
                     return;
+                }
 
                 var fileEntry = archive.GetEntry(fileName);
                 if (!File.Exists(Path.Combine(extractFolder, fileEntry.FullName)) || overwrite)
+                {
                     fileEntry?.ExtractToFile(Path.Combine(extractFolder, fileName), overwrite);
+                }
+
                 if (deleteFromSoure)
+                {
                     fileEntry?.Delete();
+                }
             }
         }
 
@@ -110,7 +136,11 @@ namespace Dnn.ExportImport.Components.Common
             string folder = null)
         {
             var enumerable = files as IList<string> ?? files.ToList();
-            if (!enumerable.Any()) return;
+            if (!enumerable.Any())
+            {
+                return;
+            }
+
             foreach (var file in enumerable.Where(File.Exists))
             {
                 AddFileToArchive(archive, file, folderOffset, folder);

@@ -107,7 +107,9 @@ namespace DotNetNuke.Data
                 errorMessage = string.Empty;
 
                 if (string.IsNullOrEmpty(connectionString))
+                {
                     throw new ArgumentNullException(nameof(connectionString));
+                }
 
                 return _dbConnectionProvider.ExecuteSql(connectionString, CommandType.Text, timeoutSec, sql);
             }

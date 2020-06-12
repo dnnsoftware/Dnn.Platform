@@ -46,7 +46,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             var result = DatabaseHelper.ExecuteQuery(script);
 
             if (result.Count > 0 && result[0].ContainsKey("ModulePermissionId"))
+            {
                 return int.Parse(result[0]["ModulePermissionId"].ToString());
+            }
 
             return -1;
         }

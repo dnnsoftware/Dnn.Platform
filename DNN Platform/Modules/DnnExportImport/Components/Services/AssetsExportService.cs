@@ -46,10 +46,15 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
             // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 1)
+            {
                 return;
+            }
 
             // Create Zip File to hold files
             var skip = this.GetCurrentSkip();
@@ -79,12 +84,20 @@ namespace Dnn.ExportImport.Components.Services
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalFolders : this.CheckPoint.TotalItems;
                     this.CheckPoint.ProcessedItems = skip;
                     this.CheckPoint.Progress = this.CheckPoint.TotalItems > 0 ? skip * 100.0 / this.CheckPoint.TotalItems : 0;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
+
                     using (var zipArchive = CompressionUtil.OpenCreate(assetsFile))
                     {
                         foreach (var folder in folders)
                         {
-                            if (this.CheckCancelled(exportJob)) break;
+                            if (this.CheckCancelled(exportJob))
+                            {
+                                break;
+                            }
+
                             var isUserFolder = false;
 
                             var files =
@@ -135,7 +148,11 @@ namespace Dnn.ExportImport.Components.Services
                             this.CheckPoint.StageData = null;
                             currentIndex++;
                             // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
+                            if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                            {
+                                return;
+                            }
+
                             this.Repository.RebuildIndex<ExportFolder>(x => x.Id, true);
                             this.Repository.RebuildIndex<ExportFolder>(x => x.UserId);
                             this.Repository.RebuildIndex<ExportFile>(x => x.ReferenceId);
@@ -159,13 +176,18 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
             // Stage 1: Portals files unzipped.
             // Stage 2: All folders and files imported.
             // Stage 3: Synchronization completed.
             // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 2 || this.CheckPoint.Completed)
+            {
                 return;
+            }
 
             var totalFolderImported = 0;
             var totalFolderPermissionsImported = 0;
@@ -193,7 +215,10 @@ namespace Dnn.ExportImport.Components.Services
                     this.CheckPoint.Stage++;
                     this.CheckPoint.StageData = null;
                     this.CheckPoint.Progress = 10;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
                 }
             }
 
@@ -207,11 +232,17 @@ namespace Dnn.ExportImport.Components.Services
                     var totalFolders = sourceFolders.Any() ? sourceFolders.Count : 0;
                     // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalFolders : this.CheckPoint.TotalItems;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
 
                     foreach (var sourceFolder in sourceFolders)
                     {
-                        if (this.CheckCancelled(importJob)) break;
+                        if (this.CheckCancelled(importJob))
+                        {
+                            break;
+                        }
                         // PROCESS FOLDERS
                         // Create new or update existing folder
                         if (this.ProcessFolder(importJob, importDto, sourceFolder))
@@ -273,7 +304,10 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.ProcessedItems++;
                         this.CheckPoint.Progress = 10 + (this.CheckPoint.ProcessedItems * 90.0 / totalFolders);
                         // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
-                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
+                        if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this))
+                        {
+                            return;
+                        }
                     }
                     currentIndex = 0;
                     this.CheckPoint.Completed = true;
@@ -292,7 +326,9 @@ namespace Dnn.ExportImport.Components.Services
                     this.Result.AddSummary("Imported Files", totalFilesImported.ToString());
 
                     if (Directory.Exists(userFolderPath) && currentIndex == 0)
+                    {
                         Directory.Delete(userFolderPath, true);
+                    }
                 }
             }
         }
@@ -305,7 +341,10 @@ namespace Dnn.ExportImport.Components.Services
         private bool ProcessFolder(ExportImportJob importJob, ImportDto importDto, ExportFolder folder)
         {
             var portalId = importJob.PortalId;
-            if (folder == null) return false;
+            if (folder == null)
+            {
+                return false;
+            }
 
             var existingFolder = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.FolderPath ?? string.Empty));
             var isUpdate = false;
@@ -325,7 +364,11 @@ namespace Dnn.ExportImport.Components.Services
             }
             folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? string.Empty : folder.FolderPath;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
-            if (folderMapping == null) return false;
+            if (folderMapping == null)
+            {
+                return false;
+            }
+
             var workFlowId = this.GetLocalWorkFlowId(folder.WorkflowId);
             if (isUpdate)
             {
@@ -392,7 +435,11 @@ namespace Dnn.ExportImport.Components.Services
         {
             var portalId = importJob.PortalId;
             var noRole = Convert.ToInt32(Globals.glbRoleNothing);
-            if (folderPermission == null) return;
+            if (folderPermission == null)
+            {
+                return;
+            }
+
             var roleId = Util.GetRoleIdByName(portalId, folderPermission.RoleId ?? noRole, folderPermission.RoleName);
             var userId = UserController.GetUserByName(portalId, folderPermission.Username)?.UserID;
 
@@ -443,13 +490,17 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         folderPermission.UserId = userId;
                         if (folderPermission.UserId == null)
+                        {
                             return;
+                        }
                     }
                     if (folderPermission.RoleId != null && folderPermission.RoleId > noRole && !string.IsNullOrEmpty(folderPermission.RoleName))
                     {
                         folderPermission.RoleId = roleId;
                         if (folderPermission.RoleId == null)
+                        {
                             return;
+                        }
                     }
                     var createdBy = Util.GetUserIdByName(importJob, folderPermission.CreatedByUserId,
                         folderPermission.CreatedByUserName);
@@ -465,7 +516,11 @@ namespace Dnn.ExportImport.Components.Services
 
         private void ProcessFiles(ExportImportJob importJob, ImportDto importDto, ExportFile file, IEnumerable<ExportFile> localFiles)
         {
-            if (file == null) return;
+            if (file == null)
+            {
+                return;
+            }
+
             var existingFile = localFiles.FirstOrDefault(x => x.FileName == file.FileName);
             var isUpdate = false;
             if (existingFile != null)
@@ -515,7 +570,9 @@ namespace Dnn.ExportImport.Components.Services
 
 
                 if (file.Content != null)
+                {
                     DotNetNuke.Data.DataProvider.Instance().UpdateFileContent(file.FileId, file.Content);
+                }
             }
         }
 
@@ -526,9 +583,15 @@ namespace Dnn.ExportImport.Components.Services
                 $"{string.Format(UsersAssetsTempFolder, portal.HomeDirectoryMapPath.TrimEnd('\\'))}{folder.FolderPath}";
             var newUsersFolderPath = $"{portal.HomeDirectoryMapPath}{folder.FolderPath}";
             if (!Directory.Exists(tempUsersFolderPath))
+            {
                 return;
+            }
+
             if (!Directory.Exists(newUsersFolderPath))
+            {
                 Directory.CreateDirectory(newUsersFolderPath);
+            }
+
             var files = Directory.GetFiles(tempUsersFolderPath, "*.*", SearchOption.AllDirectories);
             var dirInfo = new DirectoryInfo(newUsersFolderPath);
             foreach (
@@ -536,7 +599,10 @@ namespace Dnn.ExportImport.Components.Services
                     files.Select(file => new System.IO.FileInfo(file)))
             {
                 if (File.Exists(dirInfo + "\\" + mFile.Name))
+                {
                     File.Delete(dirInfo + "\\" + mFile.Name);
+                }
+
                 mFile.MoveTo(dirInfo + "\\" + mFile.Name);
             }
         }
@@ -546,7 +612,10 @@ namespace Dnn.ExportImport.Components.Services
             userId = null;
             var match = UserFolderEx.Match(folderPath);
             if (match.Success)
+            {
                 userId = int.Parse(match.Groups[1].Value);
+            }
+
             return match.Success;
         }
 

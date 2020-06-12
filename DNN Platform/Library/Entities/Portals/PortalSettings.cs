@@ -112,7 +112,10 @@ namespace DotNetNuke.Entities.Portals
         {
             PortalSettingsController.Instance().LoadPortalSettings(this);
 
-            if (portal == null) return;
+            if (portal == null)
+            {
+                return;
+            }
 
             PortalSettingsController.Instance().LoadPortal(portal, this);
 

@@ -62,7 +62,9 @@ namespace DotNetNuke.Web.Api
                     }
 
                     if (string.IsNullOrEmpty(token))
+                    {
                         return new Tuple<bool, string>(false, "RequestVerificationToken not present");
+                    }
 
                     var cookieValue = GetAntiForgeryCookieValue(actionContext);
                     AntiForgery.Instance.Validate(cookieValue, token);

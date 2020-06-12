@@ -270,7 +270,9 @@ namespace DotNetNuke.Services.Sitemap
             finally
             {
                 if (sitemapOutput != null)
+                {
                     sitemapOutput.Dispose();
+                }
             }
         }
 

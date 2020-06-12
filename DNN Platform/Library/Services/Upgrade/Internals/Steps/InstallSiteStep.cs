@@ -72,7 +72,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             // Get the Portal Alias
             var portalAlias = domain;
-            if (portal.PortAliases.Count > 0) portalAlias = portal.PortAliases[0];
+            if (portal.PortAliases.Count > 0)
+            {
+                portalAlias = portal.PortAliases[0];
+            }
 
             // Verify that portal alias is not present
             if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
@@ -118,13 +121,19 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             UserInfo userInfo;
 
             if (!string.IsNullOrEmpty(portal.AdminUserName))
+            {
                 userInfo = Upgrade.CreateUserInfo(portal.AdminFirstName, portal.AdminLastName, portal.AdminUserName, portal.AdminPassword, email);
+            }
             else
+            {
                 userInfo = Upgrade.CreateUserInfo(installConfig.SuperUser.FirstName, installConfig.SuperUser.LastName, installConfig.SuperUser.UserName, installConfig.SuperUser.Password, installConfig.SuperUser.Email);
+            }
 
             var childPath = string.Empty;
             if (portal.IsChild)
+            {
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
+            }
 
             // Create Folder Mappings config
             if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))

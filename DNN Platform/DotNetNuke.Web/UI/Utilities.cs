@@ -73,9 +73,13 @@ namespace DotNetNuke.Web.UI
 
                 string skinVirtualFolder = string.Empty;
                 if (PortalSettings.Current != null)
+                {
                     skinVirtualFolder = PortalSettings.Current.ActiveTab.SkinPath.Replace('\\', '/').Replace("//", "/");
+                }
                 else
+                {
                     skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/skins/_default/Aphelia"); // developer skin Aphelia
+                }
 
                 string skinName = string.Empty;
                 string webControlSkinName = string.Empty;
@@ -83,10 +87,14 @@ namespace DotNetNuke.Web.UI
                 {
                     var v = skinProperty.GetValue(telerikControl, null);
                     if (v != null)
+                    {
                         webControlSkinName = v.ToString();
-
+                    }
                 }
-                if (string.IsNullOrEmpty(webControlSkinName)) webControlSkinName = "default";
+                if (string.IsNullOrEmpty(webControlSkinName))
+                {
+                    webControlSkinName = "default";
+                }
 
                 if (skinVirtualFolder.EndsWith("/"))
                 {

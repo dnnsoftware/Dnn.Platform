@@ -34,10 +34,13 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             string toolTipText = this.LocalizeString(this.ToolTipKey);
             if (string.IsNullOrEmpty(this.CssClass))
+            {
                 this.CssClass = "dnnLabel";
-
+            }
             else if (!this.CssClass.Contains("dnnLabel"))
+            {
                 this.CssClass += " dnnLabel";
+            }
 
 
             // var outerPanel = new Panel();

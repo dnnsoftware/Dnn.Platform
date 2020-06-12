@@ -86,7 +86,10 @@ namespace DotNetNuke.Modules.DigitalAssets
         public override void UpdateSettings()
         {
             this.Page.Validate();
-            if (!this.Page.IsValid) return;
+            if (!this.Page.IsValid)
+            {
+                return;
+            }
 
             try
             {

@@ -49,7 +49,9 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     var moduleTabs = TabController.Instance.GetTabsByPackageID(-1, package.PackageID, false);
 
                     if (moduleTabs.Count > 0)
+                    {
                         return string.Empty;
+                    }
 
                     this.RemoveWurflProvider();
                     break;

@@ -193,7 +193,9 @@ namespace DotNetNuke.Web.DDRMenu
                     {
                         // flatten nodes first. tagged pages should be flattened and not heirarchical
                         if (flattenedNodes != new MenuNode())
+                        {
                             flattenedNodes.Children = this.RootNode.FlattenChildren(this.RootNode);
+                        }
 
                         filteredNodes.AddRange(
                             flattenedNodes.Children.FindAll(
@@ -213,7 +215,10 @@ namespace DotNetNuke.Web.DDRMenu
 
             // if filtered for foksonomy tags, use flat tree to get all related pages in nodeselection
             if (flattenedNodes.HasChildren())
+            {
                 this.RootNode = flattenedNodes;
+            }
+
             if (exclude)
             {
                 this.RootNode.RemoveAll(filteredNodes);

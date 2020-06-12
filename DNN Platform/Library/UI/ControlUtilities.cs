@@ -62,14 +62,19 @@ namespace DotNetNuke.UI
         public static T FindFirstDescendent<T>(Control control, Predicate<Control> predicate)
             where T : Control
         {
-          if (predicate(control)) return control as T;
+          if (predicate(control))
+            {
+                return control as T;
+            }
 
-          foreach (Control childControl in control.Controls)
+            foreach (Control childControl in control.Controls)
           {
             T descendent = FindFirstDescendent<T>(childControl, predicate);
             if (descendent != null)
-              return descendent;
-          }
+                {
+                    return descendent;
+                }
+            }
 
           return null;
         }

@@ -117,7 +117,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             for (var i = 0; i < states.Length; i++)
             {
-                if (states[i].StateID != stateId) continue;
+                if (states[i].StateID != stateId)
+                {
+                    continue;
+                }
 
                 // First and Second workflow state cannot be moved down
                 if (i <= 1)
@@ -163,7 +166,10 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             for (var i = 0; i < states.Length; i++)
             {
-                if (states[i].StateID != stateId) continue;
+                if (states[i].StateID != stateId)
+                {
+                    continue;
+                }
 
                 // Last and Next to Last workflow state cannot be moved up
                 if (i >= states.Length - 2)

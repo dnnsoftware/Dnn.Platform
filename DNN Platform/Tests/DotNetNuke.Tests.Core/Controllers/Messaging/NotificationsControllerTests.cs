@@ -1211,8 +1211,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             public bool Equals(NotificationType x, NotificationType y)
             {
-                if (x == null) return y == null;
-                if (y == null) return false;
+                if (x == null)
+                {
+                    return y == null;
+                }
+
+                if (y == null)
+                {
+                    return false;
+                }
 
                 return
                     x.NotificationTypeId == y.NotificationTypeId &&
@@ -1233,8 +1240,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             public bool Equals(NotificationTypeAction x, NotificationTypeAction y)
             {
-                if (x == null) return y == null;
-                if (y == null) return false;
+                if (x == null)
+                {
+                    return y == null;
+                }
+
+                if (y == null)
+                {
+                    return false;
+                }
 
                 return
                     x.NotificationTypeActionId == y.NotificationTypeActionId &&
@@ -1255,8 +1269,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             public bool Equals(Notification x, Notification y)
             {
-                if (x == null) return y == null;
-                if (y == null) return false;
+                if (x == null)
+                {
+                    return y == null;
+                }
+
+                if (y == null)
+                {
+                    return false;
+                }
 
                 return
                     x.NotificationID == y.NotificationID &&

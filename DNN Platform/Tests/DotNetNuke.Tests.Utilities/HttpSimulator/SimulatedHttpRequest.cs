@@ -40,13 +40,19 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             this.Form = new NameValueCollection();
             this.Headers = new NameValueCollection();
             if (host == null)
+            {
                 throw new ArgumentNullException("host", "Host cannot be null.");
+            }
 
             if (host.Length == 0)
+            {
                 throw new ArgumentException("Host cannot be empty.", "host");
+            }
 
             if (applicationPath == null)
+            {
                 throw new ArgumentNullException("applicationPath", "Can't create a request with a null application path. Try empty string.");
+            }
 
             this._host = host;
             this._verb = verb;
@@ -130,10 +136,14 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public override string GetKnownRequestHeader(int index)
         {
             if (index == 0x24)
+            {
                 return this._referer == null ? string.Empty : this._referer.ToString();
+            }
 
             if (index == 12 && this._verb == "POST")
+            {
                 return "application/x-www-form-urlencoded";
+            }
 
             return base.GetKnownRequestHeader(index);
         }

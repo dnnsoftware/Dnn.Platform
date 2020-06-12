@@ -832,27 +832,39 @@ namespace DotNetNuke.Services.Localization
 
             // 1. querystring
             if (portalSettings != null)
+            {
                 pageCulture = GetCultureFromQs(portalSettings);
+            }
 
             // 2. cookie
             if (portalSettings != null && pageCulture == null)
+            {
                 pageCulture = GetCultureFromCookie(portalSettings);
+            }
 
             // 3. user preference
             if (portalSettings != null && pageCulture == null)
+            {
                 pageCulture = GetCultureFromProfile(portalSettings);
+            }
 
             // 4. browser
             if (portalSettings != null && pageCulture == null)
+            {
                 pageCulture = GetCultureFromBrowser(portalSettings);
+            }
 
             // 5. portal default
             if (portalSettings != null && pageCulture == null)
+            {
                 pageCulture = GetCultureFromPortal(portalSettings);
+            }
 
             // 6. system default
             if (pageCulture == null)
+            {
                 pageCulture = new CultureInfo(SystemLocale);
+            }
 
             // finally set the cookie
             SetLanguage(pageCulture.Name);
@@ -867,7 +879,9 @@ namespace DotNetNuke.Services.Localization
         private static CultureInfo GetCultureFromQs(PortalSettings portalSettings)
         {
             if (HttpContext.Current == null || HttpContext.Current.Request["language"] == null)
+            {
                 return null;
+            }
 
             string language = HttpContext.Current.Request["language"];
             CultureInfo culture = GetCultureFromString(portalSettings.PortalId, language);
@@ -883,7 +897,9 @@ namespace DotNetNuke.Services.Localization
         {
             CultureInfo culture;
             if (HttpContext.Current == null || HttpContext.Current.Request.Cookies["language"] == null)
+            {
                 return null;
+            }
 
             string language = HttpContext.Current.Request.Cookies["language"].Value;
             culture = GetCultureFromString(portalSettings.PortalId, language);
@@ -900,7 +916,9 @@ namespace DotNetNuke.Services.Localization
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
             if (HttpContext.Current == null || !HttpContext.Current.Request.IsAuthenticated || objUserInfo.UserID == -1)
+            {
                 return null;
+            }
 
             string language = objUserInfo.Profile.PreferredLocale;
             CultureInfo culture = GetCultureFromString(portalSettings.PortalId, language);
@@ -916,9 +934,13 @@ namespace DotNetNuke.Services.Localization
         private static CultureInfo GetCultureFromBrowser(PortalSettings portalSettings)
         {
             if (!portalSettings.EnableBrowserLanguage)
+            {
                 return null;
+            }
             else
+            {
                 return GetBrowserCulture(portalSettings.PortalId);
+            }
         }
 
         /// <summary>
@@ -939,7 +961,9 @@ namespace DotNetNuke.Services.Localization
                 // Get the first enabled locale on the portal
                 Dictionary<string, Locale> enabledLocales = new Dictionary<string, Locale>();
                 if (portalSettings.PortalId > Null.NullInteger)
+                {
                     enabledLocales = LocaleController.Instance.GetLocales(portalSettings.PortalId);
+                }
 
                 if (enabledLocales.Count > 0)
                 {
@@ -961,7 +985,9 @@ namespace DotNetNuke.Services.Localization
         public static CultureInfo GetBrowserCulture(int portalId)
         {
             if (HttpContext.Current == null || HttpContext.Current.Request == null || HttpContext.Current.Request.UserLanguages == null)
+            {
                 return null;
+            }
 
             CultureInfo culture = null;
             foreach (string userLang in HttpContext.Current.Request.UserLanguages)
@@ -970,7 +996,9 @@ namespace DotNetNuke.Services.Localization
                 string language = userLang.Split(';')[0];
                 culture = GetCultureFromString(portalId, language);
                 if (culture != null)
+                {
                     break;
+                }
             }
             return culture;
         }
@@ -996,7 +1024,9 @@ namespace DotNetNuke.Services.Localization
 
                     Dictionary<string, Locale> enabledLocales = new Dictionary<string, Locale>();
                     if (portalId > Null.NullInteger)
+                    {
                         enabledLocales = LocaleController.Instance.GetLocales(portalId);
+                    }
 
                     foreach (string localeCode in enabledLocales.Keys)
                     {
@@ -1907,7 +1937,9 @@ namespace DotNetNuke.Services.Localization
                 EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
             }
             if (clearCache)
+            {
                 DataCache.ClearHostCache(true);
+            }
         }
 
         public static void SetLanguage(string value)
@@ -1966,7 +1998,9 @@ namespace DotNetNuke.Services.Localization
             }
 
             if (cultureInfo.Name == "fa-IR")
+            {
                 cultureInfo = Persian.PersianController.GetPersianCultureInfo();
+            }
 
             Thread.CurrentThread.CurrentCulture = cultureInfo;
 
@@ -2000,7 +2034,9 @@ namespace DotNetNuke.Services.Localization
                 {
                     CultureInfo ci = GetCultureFromString(portalSettings.PortalId, oCulture.ToString());
                     if (ci != null)
+                    {
                         uiCulture = ci;
+                    }
                 }
             }
             catch

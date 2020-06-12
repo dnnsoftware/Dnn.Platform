@@ -52,7 +52,10 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             {
                 result = new XslCompiledTransform();
                 using (var reader = XmlReader.Create(filename, new XmlReaderSettings { DtdProcessing = DtdProcessing.Ignore }))
+                {
                     result.Load(reader);
+                }
+
                 cache.Insert(filename, result, new CacheDependency(filename));
             }
 

@@ -38,7 +38,9 @@ namespace DotNetNuke.Web.Mvc
             var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             if (scope != null)
+            {
                 return scope.ServiceProvider.GetService(serviceType);
+            }
 
             throw new InvalidOperationException("IServiceScope not provided");
         }
@@ -57,7 +59,9 @@ namespace DotNetNuke.Web.Mvc
             var accessor = this._serviceProvider.GetRequiredService<IScopeAccessor>();
             var scope = accessor.GetScope();
             if (scope != null)
+            {
                 return scope.ServiceProvider.GetServices(serviceType);
+            }
 
             throw new InvalidOperationException("IServiceScope not provided");
         }

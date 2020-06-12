@@ -31,7 +31,11 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
-            if (this.CheckCancelled(exportJob)) return;
+            if (this.CheckCancelled(exportJob))
+            {
+                return;
+            }
+
             var fromDateUtc = exportDto.FromDateUtc;
             var toDateUtc = exportDto.ToDateUtc;
 
@@ -56,7 +60,9 @@ namespace Dnn.ExportImport.Components.Services
 
             // Skip the export if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
+            {
                 return;
+            }
 
             // Check if there is any pending stage or partially processed data.
             if (this.CheckPoint.Stage > 0)
@@ -66,13 +72,21 @@ namespace Dnn.ExportImport.Components.Services
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             this.CheckPoint.ProcessedItems = this.CheckPoint.Stage * pageSize;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             var includeProfile = exportDto.IncludeProperfileProperties;
             try
             {
                 while (pageIndex < totalPages)
                 {
-                    if (this.CheckCancelled(exportJob)) return;
+                    if (this.CheckCancelled(exportJob))
+                    {
+                        return;
+                    }
+
                     var exportUsersList = new List<ExportUser>();
                     var exportAspnetUserList = new List<ExportAspnetUser>();
                     var exportAspnetMembershipList = new List<ExportAspnetMembership>();
@@ -169,7 +183,10 @@ namespace Dnn.ExportImport.Components.Services
                     }
                     this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                     this.CheckPoint.Stage++;
-                    if (this.CheckPointStageCallback(this)) return;
+                    if (this.CheckPointStageCallback(this))
+                    {
+                        return;
+                    }
                     // Rebuild the indexes in the exported database.
                     this.Repository.RebuildIndex<ExportUser>(x => x.Id, true);
                     this.Repository.RebuildIndex<ExportUserPortal>(x => x.ReferenceId);
@@ -178,7 +195,10 @@ namespace Dnn.ExportImport.Components.Services
                     this.Repository.RebuildIndex<ExportUserAuthentication>(x => x.ReferenceId);
                     this.Repository.RebuildIndex<ExportUserRole>(x => x.ReferenceId);
                     if (includeProfile)
+                    {
                         this.Repository.RebuildIndex<ExportUserProfile>(x => x.ReferenceId);
+                    }
+
                     pageIndex++;
                 }
                 this.CheckPoint.Completed = true;
@@ -202,7 +222,10 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            if (this.CheckCancelled(importJob)) return;
+            if (this.CheckCancelled(importJob))
+            {
+                return;
+            }
 
             const int pageSize = Constants.DefaultPageSize;
             var totalUsersImported = 0;
@@ -220,14 +243,20 @@ namespace Dnn.ExportImport.Components.Services
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
             // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
+            {
                 return;
+            }
 
             var pageIndex = this.CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - (pageIndex * pageSize);
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
-            if (this.CheckPointStageCallback(this)) return;
+            if (this.CheckPointStageCallback(this))
+            {
+                return;
+            }
+
             try
             {
                 this.Repository.RebuildIndex<ExportUser>(x => x.Id, true);
@@ -244,7 +273,11 @@ namespace Dnn.ExportImport.Components.Services
                         UsersDatasetColumns.Select(column => new DataColumn(column.Item1, column.Item2)).ToArray());
                     while (totalUsersImported < totalUsersToBeProcessed)
                     {
-                        if (this.CheckCancelled(importJob)) return;
+                        if (this.CheckCancelled(importJob))
+                        {
+                            return;
+                        }
+
                         var users =
                             this.Repository.GetAllItems<ExportUser>(null, true, pageIndex * pageSize, pageSize).ToList();
                         var tempAspUserCount = 0;
@@ -255,7 +288,11 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             foreach (var user in users)
                             {
-                                if (this.CheckCancelled(importJob)) return;
+                                if (this.CheckCancelled(importJob))
+                                {
+                                    return;
+                                }
+
                                 var row = table.NewRow();
 
                                 var userPortal = this.Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
@@ -372,7 +409,10 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                         this.CheckPoint.Stage++;
                         this.CheckPoint.StageData = null;
-                        if (this.CheckPointStageCallback(this)) return;
+                        if (this.CheckPointStageCallback(this))
+                        {
+                            return;
+                        }
                     }
                 }
                 this.CheckPoint.Completed = true;

@@ -3786,7 +3786,9 @@ namespace DotNetNuke.Common
             }
 
             if (childPortalAlias.StartsWith(ApplicationPath))
+            {
                 return childPortalAlias + query + cdv;
+            }
 
             return ApplicationPath + childPortalAlias + query + cdv;
 

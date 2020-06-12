@@ -31,7 +31,9 @@ namespace DNN.Integration.Test.Framework.Controllers
         {
             DatabaseHelper.ExecuteStoredProcedure("UpdateHostSetting", "SchedulerdelayAtAppStart", "0", false, 1);
             if (clearCache)
+            {
                 WebApiTestHelper.ClearHostCache();
+            }
         }
 
         public static void DisableScheduler(string schedulerName, bool clearCache = false)
@@ -40,7 +42,9 @@ namespace DNN.Integration.Test.Framework.Controllers
                 "UPDATE {{objectQualifier}}Schedule SET Enabled=0 WHERE FriendlyName = '{0}';", schedulerName);
             DatabaseHelper.ExecuteNonQuery(query);
             if (clearCache)
+            {
                 WebApiTestHelper.ClearHostCache();
+            }
         }
 
         public static void EnableScheduler(string schedulerName, bool clearCache = false)
@@ -49,7 +53,9 @@ namespace DNN.Integration.Test.Framework.Controllers
                 "UPDATE {{objectQualifier}}Schedule SET Enabled=1 WHERE FriendlyName = '{0}';", schedulerName);
             DatabaseHelper.ExecuteNonQuery(query);
             if (clearCache)
+            {
                 WebApiTestHelper.ClearHostCache();
+            }
         }
 
         public static SchedulingMode GetSchedulingMode()
@@ -69,7 +75,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             {
                 DatabaseHelper.ExecuteStoredProcedure("UpdateHostSetting", "SchedulerMode", mode.ToString("D"), false, 1);
                 if (clearCache)
+                {
                     WebApiTestHelper.ClearHostCache(); // must clear the site Cache afterwards
+                }
             }
         }
 
@@ -113,7 +121,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             {
                 var schedulInfo = GetSchedulerByName(schedulerName);
                 if (schedulInfo == null || schedulInfo.Count == 0)
+                {
                     return false;
+                }
 
                 // HOST modules have only single instance, so don't worry about receiving multiple rows
                 var results = ModuleController.GetModulesByFriendlyName(DnnDataHelper.PortalId, "Scheduler");
@@ -143,7 +153,9 @@ namespace DNN.Integration.Test.Framework.Controllers
                 disabled = true;
 
                 if (maxWaitSeconds <= 0)
+                {
                     return true;
+                }
 
                 // wait for task to finish
                 var latestRunInfo = WaitForTaskToFinish(lastRunInfo, maxWaitSeconds);
@@ -152,7 +164,9 @@ namespace DNN.Integration.Test.Framework.Controllers
             finally
             {
                 if (!disabled)
+                {
                     SetSchedulingMode(SchedulingMode.Disabled);
+                }
             }
         }
 

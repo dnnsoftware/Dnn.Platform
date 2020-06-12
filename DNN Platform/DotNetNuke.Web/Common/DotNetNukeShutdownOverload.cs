@@ -77,7 +77,9 @@ namespace DotNetNuke.Web.Common.Internal
                         {
                             _handleShutdowns = handleShutdowns;
                             if (_handleShutdowns)
+                            {
                                 _shutDownDelayTimer = new Timer(InitiateShutdown);
+                            }
 
                             _binFolder = Path.Combine(Globals.ApplicationMapPath, "bin").ToLowerInvariant();
                             _binOrRootWatcher = new FileSystemWatcher
@@ -109,7 +111,11 @@ namespace DotNetNuke.Web.Common.Internal
 
         private static void InitiateShutdown(object state)
         {
-            if (!_handleShutdowns) return;
+            if (!_handleShutdowns)
+            {
+                return;
+            }
+
             try
             {
                 HttpRuntime.UnloadAppDomain();
@@ -135,7 +141,9 @@ namespace DotNetNuke.Web.Common.Internal
         private static void WatcherOnChanged(object sender, FileSystemEventArgs e)
         {
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
+            }
 
             if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -146,34 +154,48 @@ namespace DotNetNuke.Web.Common.Internal
         private static void WatcherOnCreated(object sender, FileSystemEventArgs e)
         {
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
+            }
 
             if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            {
                 ShceduleShutdown();
+            }
         }
 
         private static void WatcherOnRenamed(object sender, RenamedEventArgs e)
         {
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. New Path: {e.FullPath}. Old Path: {e.OldFullPath}");
+            }
 
             if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            {
                 ShceduleShutdown();
+            }
         }
 
         private static void WatcherOnDeleted(object sender, FileSystemEventArgs e)
         {
             if (Logger.IsInfoEnabled && !e.FullPath.EndsWith(".log.resources"))
+            {
                 Logger.Info($"Watcher Activity: {e.ChangeType}. Path: {e.FullPath}");
+            }
 
             if (_handleShutdowns && !_shutdownInprogress && (e.FullPath ?? string.Empty).StartsWith(_binFolder, StringComparison.InvariantCultureIgnoreCase))
+            {
                 ShceduleShutdown();
+            }
         }
 
         private static void WatcherOnError(object sender, ErrorEventArgs e)
         {
             if (Logger.IsInfoEnabled)
+            {
                 Logger.Info("Watcher Activity: N/A. Error: " + e.GetException());
+            }
         }
     }
 }
