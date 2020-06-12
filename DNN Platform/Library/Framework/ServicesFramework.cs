@@ -38,7 +38,9 @@ namespace DotNetNuke.Framework
                 }
             }
             else
+            {
                 path = "/";
+            }
 
             return path;
         }

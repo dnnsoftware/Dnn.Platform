@@ -1949,7 +1949,9 @@ namespace DotNetNuke.Entities.Urls
             {
                 // if an alias is a custom tab alias for a specific tab, then don't redirect
                 if (CheckIfAliasIsCustomTabAlias(ref result, wrongAlias, settings))
+                {
                     doRedirect = false;
+                }
                 else
                 {
                     doRedirect = true;

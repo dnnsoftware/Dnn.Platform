@@ -31,7 +31,9 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     objControlPanel.IsDockable = this.IsDockable;
                     if (!Host.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))
+                    {
                         this.Controls.Add(objControlPanel);
+                    }
                     else
                     {
                         if (objForm != null)

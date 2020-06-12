@@ -171,7 +171,9 @@ namespace DNN.Integration.Test.Framework
                         this._inputFieldVerificationToken = cachedPage.VerificationToken;
                     }
                     else
+                    {
                         this._inputFieldVerificationToken = null;
+                    }
                 }
             }
         }

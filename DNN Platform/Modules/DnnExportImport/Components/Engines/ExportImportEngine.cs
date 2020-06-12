@@ -172,7 +172,9 @@ namespace Dnn.ExportImport.Components.Engines
                                 this.CheckpointCallback(service);
                             }
                             else if (service.CheckPoint.StartDate == Null.NullDate)
+                            {
                                 service.CheckPoint.StartDate = DateUtils.GetDatabaseUtcTime();
+                            }
 
                             try
                             {

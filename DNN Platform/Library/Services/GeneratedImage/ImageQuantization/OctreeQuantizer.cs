@@ -141,9 +141,11 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                         this._root.AddColor(pixel, this._maxColorBits, 0, this);
                     }
                     else
+                    {
 
                         // Just update the previous node
                         this._previousNode.Increment(pixel);
+                    }
                 }
                 else
                 {

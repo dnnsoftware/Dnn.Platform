@@ -1032,7 +1032,9 @@ namespace DotNetNuke.Services.Localization
             if (!string.IsNullOrEmpty(language))
             {
                 if (LocaleController.Instance.IsEnabled(ref language, portalId))
+                {
                     culture = new CultureInfo(language);
+                }
                 else
                 {
                     string preferredLanguage = language.Split('-')[0];

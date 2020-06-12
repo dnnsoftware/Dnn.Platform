@@ -99,7 +99,9 @@ namespace DotNetNuke.Modules.Groups.Components
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", false);
             }
             else
+            {
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsMember", false);
+            }
 
             this.Template = Utilities.ParseTokenWrapper(this.Template, "AllowJoin", this.RoleInfo.IsPublic);
 

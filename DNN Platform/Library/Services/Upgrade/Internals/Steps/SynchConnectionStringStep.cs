@@ -58,7 +58,9 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
 
             if (!string.IsNullOrEmpty(connectionConfig.Database))
+            {
                 builder["Initial Catalog"] = connectionConfig.Database;
+            }
             else if (!string.IsNullOrEmpty(connectionConfig.File))
             {
                 builder["attachdbfilename"] = "|DataDirectory|" + connectionConfig.File;

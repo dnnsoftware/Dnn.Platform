@@ -43,7 +43,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
             // Check if the color is in the lookup table
             if (this._colorMap.ContainsKey(colorHash))
+            {
                 colorIndex = (byte)this._colorMap[colorHash];
+            }
             else
             {
                 // Not found - loop through the palette and find the nearest match.

@@ -40,7 +40,9 @@ namespace DotNetNuke.Modules.Groups
             }
 
             if (role == null)
+            {
                 this.litOutput.Text = string.Empty;
+            }
             else
             {
                 var resxPath = Constants.SharedResourcesPath;
