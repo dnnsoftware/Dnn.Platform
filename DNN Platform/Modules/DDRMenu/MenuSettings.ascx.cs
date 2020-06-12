@@ -7,7 +7,7 @@ using DotNetNuke.Entities.Modules;
 
 namespace DotNetNuke.Web.DDRMenu
 {
-    partial class MenuSettings : ModuleSettingsBase
+    public partial class MenuSettings : ModuleSettingsBase
     {
         public override void LoadSettings()
         {

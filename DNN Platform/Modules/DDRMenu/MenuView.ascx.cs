@@ -11,7 +11,7 @@ using DotNetNuke.UI;
 
 namespace DotNetNuke.Web.DDRMenu
 {
-    partial class MenuView : ModuleBase
+    public partial class MenuView : ModuleBase
     {
         private MenuBase menu;
 
