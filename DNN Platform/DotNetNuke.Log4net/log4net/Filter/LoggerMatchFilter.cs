@@ -133,6 +133,7 @@ namespace log4net.Filter
                 {
                     return FilterDecision.Accept;
                 }
+
                 return FilterDecision.Deny;
             }
             else

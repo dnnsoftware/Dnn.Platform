@@ -52,6 +52,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 aliasCulture = primaryAliases.GetCultureByPortalIdAndAlias(tab.PortalID, httpAlias);
             }
+
             foreach (var redirect in tab.TabUrls)
             {
                 rewritePath = origRewritePath;
@@ -79,12 +80,14 @@ namespace DotNetNuke.Entities.Urls
                         {
                             customHttpAliasesUsed = new List<string>();
                         }
+
                         if (!customHttpAliasesUsed.Contains(redirectAlias))
                         {
                             customHttpAliasesUsed.Add(redirectAlias);
                         }
                     }
                 }
+
                 // set the redirect status using the httpStatus
                 switch (redirect.HttpStatus)
                 {
@@ -116,6 +119,7 @@ namespace DotNetNuke.Entities.Urls
                         duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabOK;
                         break;
                 }
+
                 // check the culture of the redirect to see if it either doesn't match the alias or needs to specify
                 // the language when requested
                 if (!string.IsNullOrEmpty(redirect.CultureCode) && redirect.CultureCode != "Default")
@@ -138,9 +142,11 @@ namespace DotNetNuke.Entities.Urls
                             RedirectReason.Custom_Redirect);
                         duplicateHandlingPreference = UrlEnums.TabKeyPreference.TabRedirected;
                     }
+
                     // add on the culture code for the redirect, so that the rewrite silently sets the culture for the page
                     RewriteController.AddLanguageCodeToRewritePath(ref redirectedRewritePath, redirect.CultureCode);
                 }
+
                 // now add the custom redirect to the tab dictionary
                 if (string.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)
                 {
@@ -247,11 +253,13 @@ namespace DotNetNuke.Entities.Urls
                             isDeleted);
                     }
                 }
+
                 if (tabPathDepth > maxTabPathDepth)
                 {
                     maxTabPathDepth = tabPathDepth;
                 }
             }
+
             // return the highest tabpath depth found
             tabPathDepth = maxTabPathDepth;
             // return any changes to the rewritePath
@@ -372,6 +380,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 cultureRewritePath += "&language=" + cultureCode;
             }
+
             // hard coded page paths - using 'tabDeleted' in case there is a clash with an existing page (ie, someone has created a page that takes place of the standard page, created page has preference)
 
             // need check custom login/register page set in portal and redirect to the specific page.
@@ -385,6 +394,7 @@ namespace DotNetNuke.Entities.Urls
                 loginPreference = UrlEnums.TabKeyPreference.TabOK;
                 loginRewritePath = CreateRewritePath(loginTabId, cultureCode);
             }
+
             AddToTabDict(
                 tabIndex,
                 dupCheck,
@@ -406,6 +416,7 @@ namespace DotNetNuke.Entities.Urls
                 registerPreference = UrlEnums.TabKeyPreference.TabOK;
                 registerRewritePath = CreateRewritePath(registerTabId, cultureCode);
             }
+
             AddToTabDict(
                 tabIndex,
                 dupCheck,
@@ -479,6 +490,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 cultureCode = aliasCulture;
             }
+
             bool permanentRedirect = tab.PermanentRedirect;
             // determine the rewrite parameter
             // for deleted or pages not enabled yet, direct to the home page if the setting is enabled
@@ -534,6 +546,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     homePageSkins.Add(key, skinSrc);
                                 }
+
                                 if (homePageSkins.ContainsKey(key2) == false)
                                 {
                                     homePageSkins.Add(key2, skinSrc);
@@ -572,6 +585,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         replaceSpaceWith = settings.ReplaceSpaceWith;
                     }
+
                     substituteRewritePath = RedirectTokens.AddRedirectReasonToRewritePath(
                         substituteRewritePath,
                         ActionType.Redirect301,
@@ -579,6 +593,7 @@ namespace DotNetNuke.Entities.Urls
                                                                 ? RedirectReason.Spaces_Replaced
                                                                 : RedirectReason.Custom_Redirect);
                 }
+
                 // the preference variable determines what to do if a duplicate tab is found already in the dictionary
                 var preference = UrlEnums.TabKeyPreference.TabRedirected;
                 if (isDeleted)
@@ -587,6 +602,7 @@ namespace DotNetNuke.Entities.Urls
                     // are redirected but not deleted should take preference
                     preference = UrlEnums.TabKeyPreference.TabDeleted;
                 }
+
                 // Note ; if anything else is wrong with this url, (ie, wrong alias) then that will be corrected in a redirect
                 AddToTabDict(
                     tabIndex,
@@ -697,6 +713,7 @@ namespace DotNetNuke.Entities.Urls
                             isDeleted);
                     }
                 }
+
                 tabPath = asciiTabPath; // switch tabpath to new, ascii-converted version for rest of processing
             }
 
@@ -774,6 +791,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             dupCheckPreference = UrlEnums.TabKeyPreference.TabRedirected;
                         }
+
                         AddToTabDict(
                             tabIndex,
                             dupCheck,
@@ -788,6 +806,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return tabPathDepth;
         }
 
@@ -811,6 +830,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 tabPathDepth = thisTabPathDepth;
             }
+
             if (tabPathSimple.Length > 0 && tabPathSimple[0] == '/')
             {
                 tabPathSimple = tabPathSimple.Substring(1);
@@ -851,12 +871,14 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 replaceTab = true;
                             }
+
                             if (foundTab.TabIdOriginal == "-1")
                             {
                                 replaceTab = true;
                             }
                         }
                     }
+
                     if (replaceTab && !isDeleted) // don't replace if the incoming tab is deleted
                     {
                         // remove the previous one
@@ -904,6 +926,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 tab1Name = tab1.TabName + " [" + tab1.TabPath + "]";
                             }
+
                             if (tab2 != null)
                             {
                                 tab2Name = tab2.TabName + " [" + tab2.TabPath + "]";
@@ -992,6 +1015,7 @@ namespace DotNetNuke.Entities.Urls
                         aliasesToAdd.Add(wwwVersion);
                     }
                 }
+
                 int count = 0;
                 foreach (string aliasToAdd in aliasesToAdd)
                 {
@@ -1016,8 +1040,10 @@ namespace DotNetNuke.Entities.Urls
                             // larger than this position, insert at this value
                             break;
                         }
+
                         insertPoint++; // next one along (if at end, means add)
                     }
+
                     if (pathLengths.Count > 0 && insertPoint <= pathLengths.Count - 1)
                     {
                         // put the new regex pattern into the correct position
@@ -1032,6 +1058,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
            return aliasList;
         }
 
@@ -1142,6 +1169,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 aliasCulture = chosenAliasesCultures[httpAlias.ToLowerInvariant()];
                             }
+
                             bool ignoreTabWrongCulture = false;
                             // the tab is the wrong culture, so don't add it to the dictionary
                             if (aliasCulture != string.Empty)
@@ -1155,6 +1183,7 @@ namespace DotNetNuke.Entities.Urls
                                     ignoreTabWrongCulture = true;
                                 }
                             }
+
                             if (!ignoreTabWrongCulture)
                             {
                                 if (!isExcluded)
@@ -1246,8 +1275,10 @@ namespace DotNetNuke.Entities.Urls
                                     true,
                                     tab.IsDeleted);
                             }
+
                             pathSizes.SetTabPathDepth(tabPathDepth);
                         }
+
                         if (customHttpAlias != string.Empty && customAliasUsed == false &&
                             usingHttpAliases.Contains(customHttpAlias))
                         {
@@ -1256,6 +1287,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+
                 // now build the standard Urls for all of the aliases that are used
                 foreach (string httpAlias in usingHttpAliases)
                 {
@@ -1267,8 +1299,10 @@ namespace DotNetNuke.Entities.Urls
                     {
                         cultureCode = chosenAliasesCultures[httpAlias];
                     }
+
                     AddStandardPagesToDict(tabIndex, dupCheck, httpAlias, buildPortalId, cultureCode);
                 }
+
                 // and for any custom urls being used
                 foreach (string httpAlias in customHttpAliasesUsed)
                 {
@@ -1279,6 +1313,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         cultureCode = chosenAliasesCultures[httpAlias];
                     }
+
                     AddStandardPagesToDict(tabIndex, dupCheck, httpAlias, buildPortalId, cultureCode);
                     // if any site root, add those as well. So if any module providers or rules work
                     // on the custom http aliases, they will work as well.
@@ -1312,10 +1347,12 @@ namespace DotNetNuke.Entities.Urls
                             tabIndex.Add(rebuildData.LastPageKey, rebuildData.LastPageValue);
                         }
                     }
+
                     // now clear out the rebuildData object, because we've checked and used it
                     DataCache.RemoveCache("rebuildData");
                 }
             }
+
             return tabIndex;
         }
 
@@ -1326,6 +1363,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 tabPathDict = CacheController.GetTabPathsFromCache(portalId);
             }
+
             return tabPathDict;
         }
 
@@ -1346,6 +1384,7 @@ namespace DotNetNuke.Entities.Urls
                 chosenAliases = primaryAliases.GetAliasesForPortalId(portalId);
                 aliasCultures = primaryAliases.GetAliasesAndCulturesForPortalId(portalId);
             }
+
             if (chosenAliases != null && chosenAliases.Count > 0)
             {
                 // add the chosen alias in based on the usePortalAlias setting
@@ -1379,6 +1418,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 customHttpAlias = tab.CustomAliases[currentCulture].ToLowerInvariant();
             }
+
             customAliasUsed = httpAliases.Contains(customHttpAlias);
             // if there is a custom alias for this tab, and it's not one of the ones in the alias list, put it in
             // so that this tab will be put into the dictionary with not only the standard alias(es) but also
@@ -1391,6 +1431,7 @@ namespace DotNetNuke.Entities.Urls
                     customHttpAliasesUsed.Add(customHttpAlias);
                 }
             }
+
             return customHttpAlias;
         }
 
@@ -1426,6 +1467,7 @@ namespace DotNetNuke.Entities.Urls
                     result = portalDepths.ContainsKey(portalId);
                 }
             }
+
             return result;
         }
 
@@ -1493,14 +1535,17 @@ namespace DotNetNuke.Entities.Urls
                         {
                             reason += "No Page index in cache;";
                         }
+
                         if (forceRebuild)
                         {
                             reason += "Force Rebuild;";
                         }
+
                         if (bypassCache)
                         {
                             reason += "Bypass Cache;";
                         }
+
                         // PathSizes depthInfo;
                         // the cached dictionary was null or forceRebuild = true or bypassCache = true, so go get a new dictionary
                         dict = BuildTabDictionary(
@@ -1577,6 +1622,7 @@ namespace DotNetNuke.Entities.Urls
                 aliases = FriendlyUrlController.GetCustomAliasesForTabs();
                 CacheController.StoreCustomAliasesInCache(aliases, settings);
             }
+
             return aliases;
         }
 
@@ -1635,6 +1681,7 @@ namespace DotNetNuke.Entities.Urls
                             retValue = portalAliasInfo;
                             break;
                         }
+
                         httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
                         if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && portalAliasInfo.PortalID == portalId)
                         {
@@ -1644,6 +1691,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return retValue;
         }
 
@@ -1660,6 +1708,7 @@ namespace DotNetNuke.Entities.Urls
                 aliasList = BuildPortalAliasesDictionary();
                 CacheController.StorePortalAliasesInCache(aliasList, settings);
             }
+
             return aliasList;
         }
 

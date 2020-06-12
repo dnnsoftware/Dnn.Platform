@@ -442,6 +442,7 @@ namespace DotNetNuke.Services.FileSystem
                 this._width = this._height = 0;
                 return;
             }
+
             var fileContent = fileManager.GetFileContent(this);
 
             if (fileContent == null)
@@ -477,8 +478,10 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     image.Dispose();
                 }
+
                 fileContent.Position = 0;
             }
+
             fileContent.Close();
         }
 

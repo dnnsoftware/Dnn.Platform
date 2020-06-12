@@ -88,6 +88,7 @@ namespace DotNetNuke.Web.UI
                         webControlSkinName = v.ToString();
                     }
                 }
+
                 if (string.IsNullOrEmpty(webControlSkinName))
                 {
                     webControlSkinName = "default";
@@ -97,6 +98,7 @@ namespace DotNetNuke.Web.UI
                 {
                     skinVirtualFolder = skinVirtualFolder.Substring(0, skinVirtualFolder.Length - 1);
                 }
+
                 int lastIndex = skinVirtualFolder.LastIndexOf("/");
                 if (lastIndex > -1 && skinVirtualFolder.Length > lastIndex)
                 {
@@ -269,6 +271,7 @@ namespace DotNetNuke.Web.UI
             {
                 _Value = Convert.ToString(value);
             }
+
             return _Value;
         }
 

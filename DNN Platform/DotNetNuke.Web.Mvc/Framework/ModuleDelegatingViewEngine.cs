@@ -79,6 +79,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             {
                 return controllerContext.HttpContext.GetModuleRequestResult();
             }
+
             return null;
         }
     }

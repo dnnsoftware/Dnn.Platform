@@ -78,12 +78,14 @@ namespace DotNetNuke.HttpModules.RequestFilter
                         }
                     }
                 }
+
                 if (File.Exists(filePath))
                 {
                     // Set back into Cache
                     DataCache.SetCache(RequestFilterConfig, settings, new DNNCacheDependency(filePath));
                 }
             }
+
             return settings;
         }
 
@@ -98,6 +100,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                     File.Copy(defaultConfigFile, filePath, true);
                 }
             }
+
             var doc = new XmlDocument { XmlResolver = null };
             doc.Load(filePath);
             XmlNode ruleRoot = doc.SelectSingleNode("/configuration/blockrequests");
@@ -122,6 +125,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 xmlRule.Attributes.Append(location);
                 ruleRoot.AppendChild(xmlRule);
             }
+
             var settings = new XmlWriterSettings();
             settings.Indent = true;
             using (XmlWriter writer = XmlWriter.Create(filePath, settings))

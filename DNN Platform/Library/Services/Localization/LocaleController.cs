@@ -77,6 +77,7 @@ namespace DotNetNuke.Services.Localization
             {
                 locale = this.GetLocale(HttpContext.Current.Request.QueryString["language"]);
             }
+
             return locale ?? ((PortalId == Null.NullInteger)
                                 ? this.GetLocale(Localization.SystemLocale)
                                 : this.GetDefaultLocale(PortalId));
@@ -99,6 +100,7 @@ namespace DotNetNuke.Services.Localization
                     locale = locales[portal.DefaultLanguage];
                 }
             }
+
             return locale ?? this.GetLocale(Localization.SystemLocale);
         }
 
@@ -175,6 +177,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     locales = CBO.FillDictionary("CultureCode", DataProvider.Instance().GetLanguages(), new Dictionary<string, Locale>(StringComparer.OrdinalIgnoreCase));
                 }
+
                 return locales;
             }
 
@@ -229,6 +232,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     enabled = true;
                 }
+
                 return enabled;
             }
             catch (Exception ex)

@@ -73,6 +73,7 @@ namespace DotNetNuke.Instrumentation
                                 AddGlobalContext();
                                 XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
                             }
+
                             _configured = true;
                         }
                     }
@@ -119,6 +120,7 @@ namespace DotNetNuke.Instrumentation
                     //    GlobalContext.Properties["processid"] = Process.GetCurrentProcess().Id.ToString("D");
                     // }
                 }
+
 // ReSharper disable EmptyGeneralCatchClause
                 catch
 // ReSharper restore EmptyGeneralCatchClause
@@ -131,22 +133,27 @@ namespace DotNetNuke.Instrumentation
             {
                 get { return this.Logger.IsEnabledFor(_levelDebug); }
             }
+
             public bool IsInfoEnabled
             {
                 get { return this.Logger.IsEnabledFor(_levelInfo); }
             }
+
             public bool IsTraceEnabled
             {
                 get { return this.Logger.IsEnabledFor(_levelTrace); }
             }
+
             public bool IsWarnEnabled
             {
                 get { return this.Logger.IsEnabledFor(_levelWarn); }
             }
+
             public bool IsErrorEnabled
             {
                 get { return this.Logger.IsEnabledFor(_levelError); }
             }
+
             public bool IsFatalEnabled
             {
                 get { return this.Logger.IsEnabledFor(_levelFatal); }

@@ -76,6 +76,7 @@ namespace DotNetNuke.Services.Cache
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
+
             return CacheKey.Substring(CachePrefix.Length);
         }
 
@@ -91,6 +92,7 @@ namespace DotNetNuke.Services.Cache
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
+
             return CachePrefix + CacheKey;
         }
 
@@ -259,15 +261,18 @@ namespace DotNetNuke.Services.Cache
                     this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
                     this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
+
                 this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
             }
+
             if (cascade)
             {
                 foreach (KeyValuePair<int, TabInfo> tabPair in TabController.Instance.GetTabsByPortal(portalId))
                 {
                     this.ClearModuleCacheInternal(tabPair.Value.TabID, clearRuntime);
                 }
+
                 foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(portalId))
                 {
                     this.RemoveCacheKey("GetModuleSettings" + moduleInfo.ModuleID, clearRuntime);

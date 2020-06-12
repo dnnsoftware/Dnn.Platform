@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                     oPublishedEvent.Subscribers = xmlItem.SelectSingleNode("Subscribers").InnerText;
                     this.PublishedEvents.Add(oPublishedEvent.EventName, oPublishedEvent);
                 }
+
                 foreach (XmlElement xmlItem in xmlDoc.SelectNodes("/EventQueueConfig/EventQueueSubscribers/Subscriber"))
                 {
                     var oSubscriberInfo = new SubscriberInfo();
@@ -89,6 +90,7 @@ namespace DotNetNuke.Services.EventQueue.Config
 
                     writer.WriteEndElement();
                 }
+
                 writer.WriteEndElement();
 
                 writer.WriteStartElement("EventQueueSubscribers");
@@ -103,6 +105,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                     writer.WriteElementString("PrivateKey", this.EventQueueSubscribers[key].PrivateKey);
                     writer.WriteEndElement();
                 }
+
                 writer.WriteEndElement();
 
                 // Close EventQueueConfig
@@ -139,6 +142,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                     SaveConfig(config, filePath);
                 }
             }
+
             return config;
         }
 

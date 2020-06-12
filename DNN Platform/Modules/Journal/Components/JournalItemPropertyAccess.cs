@@ -16,12 +16,14 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 this.PropertySource["journaldata"] = journalItem.ItemData;
             }
+
             if (journalItem.JournalAuthor != null)
             {
                 this.PropertySource["journalauthor"] = journalItem.JournalAuthor;
                 this.PropertySource["journalprofile"] = new ProfilePicPropertyAccess(journalItem.JournalAuthor.Id);
             }
         }
+
         public string ReplaceJournalItemTokens(string source)
         {
             return this.ReplaceTokens(source);

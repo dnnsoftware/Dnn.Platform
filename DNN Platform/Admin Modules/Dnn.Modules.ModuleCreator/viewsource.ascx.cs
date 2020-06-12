@@ -40,6 +40,7 @@ namespace Dnn.Module.ModuleCreator
                 {
                     moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
                 }
+
                 return moduleControlId;
             }
         }
@@ -79,6 +80,7 @@ namespace Dnn.Module.ModuleCreator
                             {
                                 this.cboFile.Items.Add(new ListItem(filePath.Substring(modulePath.Length), resxPath));
                             }
+
                             break;
                         case ".vb":
                         case ".cs":
@@ -167,6 +169,7 @@ namespace Dnn.Module.ModuleCreator
                     mimeType = "text/html";
                     break;
             }
+
             DotNetNuke.UI.Utilities.ClientAPI.RegisterClientVariable(this.Page, "mimeType", mimeType, true);
         }
 
@@ -203,11 +206,13 @@ namespace Dnn.Module.ModuleCreator
                 {
                     language = "VB";
                 }
+
                 if (objFile.Text.EndsWith(".cs"))
                 {
                     language = "C#";
                 }
             }
+
             if (language == string.Empty)
             {
                 this.optLanguage.SelectedIndex = 0;
@@ -227,6 +232,7 @@ namespace Dnn.Module.ModuleCreator
             {
                 this.cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
             }
+
             this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
         }
 
@@ -241,6 +247,7 @@ namespace Dnn.Module.ModuleCreator
                     readMe = tr.ReadToEnd();
                     tr.Close();
                 }
+
                 this.lblDescription.Text = readMe.Replace("\n", "<br/>");
             }
             else
@@ -267,6 +274,7 @@ namespace Dnn.Module.ModuleCreator
                     }
                 }
             }
+
             this.txtControl.Text = controlName;
             this.txtControl.Enabled = controlNameRequired;
             if (this.txtControl.Enabled)
@@ -316,6 +324,7 @@ namespace Dnn.Module.ModuleCreator
                 {
                     owner = "DNN";
                 }
+
                 sourceCode = sourceCode.Replace("_OWNER_", owner);
                 sourceCode = sourceCode.Replace("_MODULE_", objDesktopModule.FriendlyName.Replace(" ", string.Empty));
                 sourceCode = sourceCode.Replace("_CONTROL_", this.GetControl());
@@ -347,12 +356,14 @@ namespace Dnn.Module.ModuleCreator
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
+
                         break;
                     case ".cs":
                         if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
+
                         break;
                     case ".js":
                         modulePath = modulePath + "\\js\\";
@@ -455,6 +466,7 @@ namespace Dnn.Module.ModuleCreator
                 {
                     this.cboTemplate.Items.FindByText("Module - User Control").Selected = true;
                 }
+
                 this.LoadReadMe();
             }
         }

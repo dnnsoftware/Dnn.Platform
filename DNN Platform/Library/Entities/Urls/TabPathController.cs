@@ -35,6 +35,7 @@ namespace DotNetNuke.Entities.Urls
                 modified = true;
                 // spaces replaced - the modified parameter is for all other replacements but space replacements
             }
+
             result.Append(tabName);
             result.Insert(0, "//");
             result.Insert(0, path); // effectively adds result to the end of the path
@@ -64,6 +65,7 @@ namespace DotNetNuke.Entities.Urls
                     baseTabPath = ReplaceDiacritics(baseTabPath, out diacriticsChanged);
                 }
             }
+
             return baseTabPath;
         }
 
@@ -91,6 +93,7 @@ namespace DotNetNuke.Entities.Urls
                     homeTabId = tab.TabID;
                 }
             }
+
             return homeTabId;
         }
 
@@ -111,6 +114,7 @@ namespace DotNetNuke.Entities.Urls
                     skin = (string)homePageSkins[key2];
                 }
             }
+
             return skin;
         }
 
@@ -217,6 +221,7 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                 }
                             }
+
                             if (customTabPath != null)
                             {
                                 // 770 : pull out custom http alias if in string
@@ -231,6 +236,7 @@ namespace DotNetNuke.Entities.Urls
                                     newTabPath = customTabPath;
                                 }
                             }
+
                             if (newTabPath == string.Empty && hasPath)
                             {
                                 // can't pass back a custom path which is blank if there are path segments to the requested final Url
@@ -277,9 +283,11 @@ namespace DotNetNuke.Entities.Urls
                         // if the tab has a specified culture code, then drop the language parameters from the friendly Url
                     }
                 }
+
                 // make lower case if necessary
                 newTabPath = AdvancedFriendlyUrlProvider.ForceLowerCaseIfAllowed(tab, newTabPath, settings);
             }
+
             return newTabPath;
         }
 
@@ -327,6 +335,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return isTabHomePage;
         }
 
@@ -343,6 +352,7 @@ namespace DotNetNuke.Entities.Urls
                     path = BuildTabPathWithReplacement(parentTab, options, parentTraceId);
                 }
             }
+
             bool modified;
             path = AppendToTabPath(path, tab, options, out modified);
 
@@ -367,6 +377,7 @@ namespace DotNetNuke.Entities.Urls
                     sb.Append(c);
                 }
             }
+
             string result = sb.ToString();
             replacedDiacritic = string.CompareOrdinal(tabPath, result) != 0;
             return sb.ToString();

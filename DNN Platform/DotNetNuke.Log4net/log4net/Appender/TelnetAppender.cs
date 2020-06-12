@@ -495,6 +495,7 @@ namespace log4net.Appender
                 {
                     client.Dispose();
                 }
+
                 this.m_clients.Clear();
 
                 Socket localSocket = this.m_serverSocket;

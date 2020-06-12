@@ -57,6 +57,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 normalizeFilePath = "/" + normalizeFilePath;
             }
+
             return normalizeFilePath;
         }
 
@@ -169,6 +170,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         {
                             uid = -1;
                         }
+
                         var uppTrans = new UserProfilePicTransform
                         {
                             UserID = uid,
@@ -223,16 +225,19 @@ namespace DotNetNuke.Services.GeneratedImage
                             {
                                 return this.GetEmptyImageInfo();
                             }
+
                             var folder = FolderManager.Instance.GetFolder(file.FolderId);
                             if (!secureFileTrans.DoesHaveReadFolderPermission(folder))
                             {
                                 return this.GetEmptyImageInfo();
                             }
+
                             this.ContentType = GetImageFormat(file.Extension);
                             secureFileTrans.SecureFile = file;
                             secureFileTrans.EmptyImage = this.EmptyImage;
                             this.ImageTransforms.Add(secureFileTrans);
                         }
+
                         break;
 
                     case "file":
@@ -249,6 +254,7 @@ namespace DotNetNuke.Services.GeneratedImage
                             {
                                 return this.GetEmptyImageInfo();
                             }
+
                             imgFile = fullFilePath;
                         }
                         else if (!string.IsNullOrEmpty(parameters["Url"]))
@@ -276,8 +282,10 @@ namespace DotNetNuke.Services.GeneratedImage
                                 string[] parts = parameters["Url"].Split('.');
                                 extension = parts[parts.Length - 1].ToLowerInvariant();
                             }
+
                             this.ContentType = GetImageFormat(extension);
                         }
+
                         var imageFileTrans = new ImageFileTransform { ImageFilePath = imgFile, ImageUrl = imgUrl };
                         this.ImageTransforms.Add(imageFileTrans);
                         break;
@@ -317,10 +325,12 @@ namespace DotNetNuke.Services.GeneratedImage
                                                 pi.SetValue(imageTransform, parameters[key], null);
                                                 break;
                                         }
+
                                         break;
                                 }
                             }
                         }
+
                         this.ImageTransforms.Add(imageTransform);
                         break;
                 }
@@ -491,6 +501,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 dimension = 0;
                 return false;
             }
+
             return true;
         }
 

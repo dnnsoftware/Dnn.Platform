@@ -80,6 +80,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 config = new OAuthConfigBase(service, portalId);
                 DataCache.SetCache(key, config);
             }
+
             return config;
         }
 

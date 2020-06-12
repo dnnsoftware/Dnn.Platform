@@ -182,6 +182,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         this.Language.LanguageId = this.TempLanguage.LanguageId;
                     }
+
                     if (this.LanguagePack.PackageType == LanguagePackType.Core)
                     {
                         // Update language

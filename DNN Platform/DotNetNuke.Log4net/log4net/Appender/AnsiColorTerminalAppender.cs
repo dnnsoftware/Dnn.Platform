@@ -505,26 +505,32 @@ namespace log4net.Appender
                 {
                     buf.Append(";1");
                 }
+
                 if ((this.m_attributes & AnsiAttributes.Dim) > 0)
                 {
                     buf.Append(";2");
                 }
+
                 if ((this.m_attributes & AnsiAttributes.Underscore) > 0)
                 {
                     buf.Append(";4");
                 }
+
                 if ((this.m_attributes & AnsiAttributes.Blink) > 0)
                 {
                     buf.Append(";5");
                 }
+
                 if ((this.m_attributes & AnsiAttributes.Reverse) > 0)
                 {
                     buf.Append(";7");
                 }
+
                 if ((this.m_attributes & AnsiAttributes.Hidden) > 0)
                 {
                     buf.Append(";8");
                 }
+
                 if ((this.m_attributes & AnsiAttributes.Strikethrough) > 0)
                 {
                     buf.Append(";9");

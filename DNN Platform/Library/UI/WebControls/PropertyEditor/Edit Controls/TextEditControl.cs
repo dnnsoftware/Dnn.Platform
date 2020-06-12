@@ -73,6 +73,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     strValue = Convert.ToString(this.Value);
                 }
+
                 return strValue;
             }
             set
@@ -117,6 +118,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Value, this.StringValue);
@@ -124,6 +126,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
             }
+
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);

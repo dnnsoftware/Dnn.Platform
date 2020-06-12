@@ -87,6 +87,7 @@ namespace UnitTests.Subtext
                 simulator.SimulateRequest();
                 Assert.IsNotNull(HttpContext.Current);
             }
+
             Assert.IsNull(HttpContext.Current);
         }
 

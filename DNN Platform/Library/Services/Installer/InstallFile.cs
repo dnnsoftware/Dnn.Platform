@@ -149,6 +149,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     return string.Empty;
                 }
+
                 return ext.Substring(1);
             }
         }
@@ -215,6 +216,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     fileName = this.FullName;
                 }
+
                 return System.IO.Path.Combine(this.InstallerInfo.TempInstallFolder, fileName);
             }
         }
@@ -254,11 +256,13 @@ namespace DotNetNuke.Services.Installer
                 this.Name = fileName.Substring(i + 1, fileName.Length - (i + 1));
                 this.Path = fileName.Substring(0, i);
             }
+
             if (string.IsNullOrEmpty(this.Path) && fileName.StartsWith("[app_code]"))
             {
                 this.Name = fileName.Substring(10, fileName.Length - 10);
                 this.Path = fileName.Substring(0, 10);
             }
+
             if (this.Name.Equals("manifest.xml", StringComparison.InvariantCultureIgnoreCase))
             {
                 this.Type = InstallFileType.Manifest;
@@ -299,6 +303,7 @@ namespace DotNetNuke.Services.Installer
                         {
                             this.Type = FileTypeMatchRegex.IsMatch(this.Name) ? InstallFileType.CleanUp : InstallFileType.Other;
                         }
+
                         break;
                 }
             }

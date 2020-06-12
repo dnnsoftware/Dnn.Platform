@@ -51,6 +51,7 @@ namespace DotNetNuke.Data
                     // Use connection string specified in provider
                     connectionString = this.Settings["connectionString"];
                 }
+
                 return connectionString;
             }
         }
@@ -64,6 +65,7 @@ namespace DotNetNuke.Data
                 {
                     databaseOwner += ".";
                 }
+
                 return databaseOwner;
             }
         }
@@ -84,6 +86,7 @@ namespace DotNetNuke.Data
                 {
                     objectQualifier += "_";
                 }
+
                 return objectQualifier;
             }
         }
@@ -132,6 +135,7 @@ namespace DotNetNuke.Data
             {
                 return DBNull.Value;
             }
+
             return RoleID;
         }
 
@@ -228,6 +232,7 @@ namespace DotNetNuke.Data
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return new Version(version);
         }
 
@@ -286,6 +291,7 @@ namespace DotNetNuke.Data
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return version;
         }
 
@@ -320,6 +326,7 @@ namespace DotNetNuke.Data
             {
                 path = "ERROR: providerPath folder value not specified in web.config for SqlDataProvider";
             }
+
             return path;
         }
 
@@ -350,6 +357,7 @@ namespace DotNetNuke.Data
                             bError = false;
                             break;
                         }
+
                         string filteredMessage = string.Empty;
                         switch (sqlError.Number)
                         {
@@ -366,11 +374,13 @@ namespace DotNetNuke.Data
                                 filteredMessage = "Sql deadlock victim";
                                 break;
                         }
+
                         errorMessages.Append("<b>Index #:</b> " + i + "<br/>" + "<b>Source:</b> " + sqlError.Source +
                                              "<br/>" + "<b>Class:</b> " + sqlError.Class + "<br/>" + "<b>Number:</b> " +
                                              sqlError.Number + "<br/>" + "<b>Message:</b> " + filteredMessage +
                                              "<br/><br/>");
                     }
+
                     if (bError)
                     {
                         connectionString = message + errorMessages;
@@ -381,6 +391,7 @@ namespace DotNetNuke.Data
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return connectionString;
         }
 
@@ -520,6 +531,7 @@ namespace DotNetNuke.Data
             {
                 reader = this.ExecuteReader("GetPortals", CultureCode);
             }
+
             return reader;
         }
 
@@ -553,6 +565,7 @@ namespace DotNetNuke.Data
                     result[reader.GetInt32(0)] = reader.GetString(1);
                 }
             }
+
             return result;
         }
 
@@ -2414,6 +2427,7 @@ namespace DotNetNuke.Data
                 // No users to process, quit method
                 return;
             }
+
             foreach (string key in userList.Keys)
             {
                 var info = userList[key] as AnonymousUserInfo;
@@ -2466,6 +2480,7 @@ namespace DotNetNuke.Data
                     throw;
                 }
             }
+
             return retValue;
         }
 
@@ -3412,6 +3427,7 @@ namespace DotNetNuke.Data
             {
                 logTypeKey = string.Empty;
             }
+
             if (logTypePortalID == "*")
             {
                 portalID = -1;
@@ -3420,6 +3436,7 @@ namespace DotNetNuke.Data
             {
                 portalID = Convert.ToInt32(logTypePortalID);
             }
+
             this.ExecuteNonQuery(
                 "AddEventLogConfig",
                 this.GetNull(logTypeKey),
@@ -3522,6 +3539,7 @@ namespace DotNetNuke.Data
             {
                 logTypeKey = string.Empty;
             }
+
             if (logTypePortalID == "*")
             {
                 portalID = -1;
@@ -3530,6 +3548,7 @@ namespace DotNetNuke.Data
             {
                 portalID = Convert.ToInt32(logTypePortalID);
             }
+
             this.ExecuteNonQuery(
                 "UpdateEventLogConfig",
                 id,
@@ -3769,6 +3788,7 @@ namespace DotNetNuke.Data
                     this.GetNull(contentItemID),
                     published);
             }
+
             return this.ExecuteScalar<int>(
                 "AddFileVersion",
                 fileId,
@@ -4193,6 +4213,7 @@ namespace DotNetNuke.Data
                     sqlCommandParameters[intIndex] = (SqlParameter)commandParameters[intIndex];
                 }
             }
+
             sql = DataUtil.ReplaceTokens(sql);
             try
             {

@@ -157,6 +157,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
                 }
+
                 return this._currentTab;
             }
         }
@@ -219,8 +220,10 @@ namespace DotNetNuke.UI.ControlPanel
                             {
                                 this.SkinLst.Items.Add(this.GetSeparatorItem());
                             }
+
                             strLastFolder = folder;
                         }
+
                         this.SkinLst.Items.Add(new RadComboBoxItem(
                             FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
                             "[L]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
@@ -256,8 +259,10 @@ namespace DotNetNuke.UI.ControlPanel
                                 {
                                     this.SkinLst.Items.Add(this.GetSeparatorItem());
                                 }
+
                                 strLastFolder = folder;
                             }
+
                             this.SkinLst.Items.Add(new RadComboBoxItem(
                                 FormatSkinName(folder, Path.GetFileNameWithoutExtension(strFile)),
                                 "[G]" + SkinController.RootSkin + "/" + folder + "/" + Path.GetFileName(strFile)));
@@ -289,6 +294,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return strSkinFile;
             }
+
             switch (strSkinFile.ToLowerInvariant())
             {
                 case "skin":
@@ -345,6 +351,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     return true;
                 }
+
                 tab = tab.ParentId != Null.NullInteger ? TabController.Instance.GetTab(tab.ParentId, tab.PortalID, false) : null;
             }
 

@@ -73,6 +73,7 @@ namespace DotNetNuke.Entities.Urls
                     throw;
                 }
             }
+
             if (!failedInitialization && !ignoreForInstall)
             {
                 // if made it through there and not installing, go to next call.  Not in exception catch because it implements it's own top-level exception handling
@@ -142,9 +143,11 @@ namespace DotNetNuke.Entities.Urls
                         // alias is in the query string, go to the next alias
                         continue;
                     }
+
                     // we are fine here, lets prepare URL to be validated in regex
                     urlToMatch = urlToMatch.ReplaceIgnoreCase(alias, "_ALIAS_");
                 }
+
                 // check whether requested URL has the right URL format containing existing alias
                 // i.e. url is http://dnndev.me/site1/query?string=test, alias is dnndev.me/site1
                 // in the below expression we will validate following value http://_ALIAS_/query?string=test
@@ -158,11 +161,13 @@ namespace DotNetNuke.Entities.Urls
                     {
                         wrongAlias = alias;
                     }
+
                     isPrimaryAlias = aliasEx.IsPrimary;
                     aliasInfo = aliasEx;
                     break;
                 }
             }
+
             return aliasInfo;
         }
 
@@ -224,6 +229,7 @@ namespace DotNetNuke.Entities.Urls
                             settings = new FriendlyUrlSettings(requestedAlias.PortalID);
                             result.SetRedirectAllowed(result.OriginalPath, settings);
                         }
+
                         result.PortalAlias = requestedAlias;
                         result.PrimaryAlias = requestedAlias; // this is the primary alias
                         result.PortalId = requestedAlias.PortalID;
@@ -265,6 +271,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+
                 ignoreRegex = settings.IgnoreRegex;
                 ignoreRequest = IgnoreRequest(result, fullUrl, ignoreRegex, request);
                 if (!ignoreRequest)
@@ -286,6 +293,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             result.PrimaryAlias = primaryAlias;
                         }
+
                         // try and redirect the alias if the settings allow it
                         redirectAlias = RedirectPortalAlias(primaryHttpAlias, ref result, settings);
                     }
@@ -298,6 +306,7 @@ namespace DotNetNuke.Entities.Urls
                         response.RedirectPermanent(result.FinalUrl, false);
                         finished = true;
                     }
+
                     if (!finished)
                     {
                         // Check to see if this to be rewritten into default.aspx?tabId=nn format
@@ -455,6 +464,7 @@ namespace DotNetNuke.Entities.Urls
                                     break;
                             }
                         }
+
                         finished = true;
                     }
 
@@ -479,6 +489,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 ShowDebugData(context, requestUri.AbsoluteUri, result, null);
                             }
+
                             // show the 404 page if configured
                             result.Reason = RedirectReason.Requested_404;
                             Handle404OrException(settings, context, null, result, true, showDebug);
@@ -535,6 +546,7 @@ namespace DotNetNuke.Entities.Urls
                                     context.Items.Add("PortalSettingsDictionary", PortalController.Instance.GetPortalSettings(portalSettings.PortalId));
                                     context.Items.Add("HostSettingsDictionary", HostController.Instance.GetSettingsDictionary());
                                 }
+
                                 // check if a secure redirection is needed
                                 // this would be done earlier in the piece, but need to know the portal settings, tabid etc before processing it
                                 bool redirectSecure = this.CheckForSecureRedirect(portalSettings, requestUri, result, queryStringCol, settings);
@@ -556,6 +568,7 @@ namespace DotNetNuke.Entities.Urls
                                                      */
                                                     ShowDebugData(context, fullUrl, result, null);
                                                 }
+
                                                 response.AppendHeader("X-Redirect-Reason", result.Reason.ToString().Replace("_", " ") + " Requested");
                                                 response.RedirectPermanent(result.FinalUrl);
                                                 finished = true;
@@ -582,6 +595,7 @@ namespace DotNetNuke.Entities.Urls
                                                          */
                                                         ShowDebugData(context, fullUrl, result, null);
                                                     }
+
                                                     // send the response
                                                     // 891 : reinstate the response.end to stop the entire page loading
                                                     response.End();
@@ -643,6 +657,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     ShowDebugData(context, fullUrl, result, null);
                                 }
+
                                 result.Reason = RedirectReason.Requested_404;
                                 // 912 : change 404 type to transfer to allow transfer to main portal in single-portal installs
                                 Handle404OrException(settings, context, null, result, true, showDebug);
@@ -674,6 +689,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 pathWithNoQs = pathWithNoQs.Substring(0, pathWithNoQs.IndexOf("?", StringComparison.Ordinal));
                             }
+
                             if (!pathWithNoQs.Substring(pathWithNoQs.Length - 5, 5).Contains("."))
                             {
                                 // no page extension, output a 404 if the Url is not found
@@ -723,17 +739,20 @@ namespace DotNetNuke.Entities.Urls
                 {
                     Services.Exceptions.Exceptions.LogException(ex);
                 }
+
                 if (response != null)
                 {
                     if (showDebug)
                     {
                         ShowDebugData(context, requestUri.AbsoluteUri, result, ex);
                     }
+
                     if (result != null)
                     {
                         result.Ex = ex;
                         result.Reason = RedirectReason.Exception;
                     }
+
                     Handle404OrException(settings, context, ex, result, false, showDebug);
                 }
                 else
@@ -743,6 +762,7 @@ namespace DotNetNuke.Entities.Urls
                         result.DebugMessages.Add("Exception: " + ex.Message);
                         result.DebugMessages.Add("Stack Trace: " + ex.StackTrace);
                     }
+
                     throw;
                 }
             }
@@ -769,6 +789,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     requestUri = "null Uri";
                 }
+
                 string finalUrl = "null final Url";
                 string rewritePath = "null rewrite path";
                 string action = "null action";
@@ -778,6 +799,7 @@ namespace DotNetNuke.Entities.Urls
                     action = result.Action.ToString();
                     rewritePath = result.RewritePath;
                 }
+
                 // format up the error message to show
                 const string debugMsg = "{0}, {1}, {2}, {3}, {4}, {5}, {6}";
                 string productVer = DotNetNukeContext.Current.Application.Version.ToString();
@@ -788,6 +810,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     browser = result.BrowserType.ToString();
                 }
+
                 if (context.Items.Contains("PortalSettings"))
                 {
                     var ps = (PortalSettings)context.Items["PortalSettings"];
@@ -800,6 +823,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+
                 response.AppendHeader(
                     "X-" + _productName + "-Debug",
                     string.Format(debugMsg, requestUri, finalUrl, rewritePath, action, productVer,
@@ -813,6 +837,7 @@ namespace DotNetNuke.Entities.Urls
                         msgNum++;
                     }
                 }
+
                 if (ex != null)
                 {
                     response.AppendHeader("X-" + _productName + "-Ex", ex.Message);
@@ -888,6 +913,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     ceSection = (CustomErrorsSection)WebConfigurationManager.GetSection("system.web/customErrors");
                 }
+
 // ReSharper disable EmptyGeneralCatchClause
                 catch (Exception)
 // ReSharper restore EmptyGeneralCatchClause
@@ -908,6 +934,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         isPostback = true;
                     }
+
                     if (result != null && ex != null)
                     {
                         result.DebugMessages.Add("Exception: " + ex.Message);
@@ -922,6 +949,7 @@ namespace DotNetNuke.Entities.Urls
                             result.DebugMessages.Add("Inner Ex : null");
                         }
                     }
+
                     string errRH;
                     string errRV;
                     int statusCode;
@@ -933,6 +961,7 @@ namespace DotNetNuke.Entities.Urls
                             useDNNTab = true;
                             errTabId = settings.TabId500;
                         }
+
                         errUrl = settings.Url500;
                         errRH = "X-UrlRewriter-500";
                         errRV = "500 Rewritten to {0} : {1}";
@@ -946,6 +975,7 @@ namespace DotNetNuke.Entities.Urls
                             useDNNTab = true;
                             errTabId = settings.TabId404;
                         }
+
                         if (!string.IsNullOrEmpty(settings.Regex404))
                             // with 404 errors, there's an option to catch certain urls and use an external url for extra processing.
                         {
@@ -957,6 +987,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     requestedUrl = result.OriginalPath;
                                 }
+
                                 if (Regex.IsMatch(requestedUrl, settings.Regex404, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                                 {
                                     useDNNTab = false;
@@ -969,6 +1000,7 @@ namespace DotNetNuke.Entities.Urls
                                 response.AppendHeader("X-UrlRewriter-404Exception", regexEx.Message);
                             }
                         }
+
                         errUrl = settings.Url404;
                         errRH = "X-UrlRewriter-404";
                         errRV = "404 Rewritten to {0} : {1} : Reason {2}";
@@ -982,6 +1014,7 @@ namespace DotNetNuke.Entities.Urls
                         // Log 404 errors to Event Log
                         UrlRewriterUtils.Log404(request, settings, result);
                     }
+
                     // 912 : use unhandled 404 switch
                     string reason404 = null;
                     bool unhandled404 = true;
@@ -998,6 +1031,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 reason = result.Reason.ToString();
                             }
+
                             response.AppendHeader(errRH, string.Format(errRV, "DNN Tab",
                                                                 errTab.TabName + "(Tabid:" + errTabId.ToString() + ")",
                                                                 reason));
@@ -1006,6 +1040,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 ShowDebugData(context, result.OriginalPath, result, null);
                             }
+
                             if (!isPostback)
                             {
                                 response.ClearContent();
@@ -1017,6 +1052,7 @@ namespace DotNetNuke.Entities.Urls
                                 redirect = true;
                                     // redirect postbacks as you can't postback successfully to a server.transfer
                             }
+
                             errUrl = Globals.glbDefaultPage + TabIndexController.CreateRewritePath(errTab.TabID, string.Empty);
                             // have to update the portal settings with the new tabid
                             PortalSettings ps = null;
@@ -1028,6 +1064,7 @@ namespace DotNetNuke.Entities.Urls
                                     context.Items.Remove("PortalSettings"); // nix it from the context
                                 }
                             }
+
                             if (ps != null && ps.PortalAlias != null)
                             {
                                 ps = new PortalSettings(errTabId, ps.PortalAlias);
@@ -1077,6 +1114,7 @@ namespace DotNetNuke.Entities.Urls
                                                 break; // no further checking
                                             }
                                         }
+
                                         // now configure that as the portal settings
                                         if (useFor404 != null)
                                         {
@@ -1091,11 +1129,13 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                 }
                             }
+
                             if (ps != null)
                             {
                                 // re-add the context items portal settings back in
                                 context.Items.Add("PortalSettings", ps);
                             }
+
                             if (redirect)
                             {
                                 errUrl = TestableGlobals.Instance.NavigateURL();
@@ -1112,6 +1152,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         context.User = GetCurrentPrincipal(context);
                                     }
+
                                     response.TrySkipIisCustomErrors = true;
                                     // 881 : spoof the basePage object so that the client dependency framework
                                     // is satisfied it's working with a page-based handler
@@ -1129,6 +1170,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                     }
+
                     // 912 : change to new if statement to handle cases where the TabId404 couldn't be handled correctly
                     if (unhandled404)
                     {
@@ -1142,11 +1184,13 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 reason = result.Reason.ToString();
                             }
+
                             response.AppendHeader(errRH, string.Format(errRV, "Url", errUrl, reason));
                             if (reason404 != null)
                             {
                                 response.AppendHeader("X-Url-Master-404-Data", reason404);
                             }
+
                             response.StatusCode = statusCode;
                             response.Status = status;
                             server.Transfer("~/" + errUrl, true);
@@ -1158,6 +1202,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 errorPageHtml.Write(status + "<br>" + reason404);
                             }
+
                             errorPageHtml.Write("<div style='font-weight:bolder'>Administrators</div>");
                             errorPageHtml.Write("<div>Change this message by configuring a specific 404 Error Page or Url for this website.</div>");
 
@@ -1167,10 +1212,12 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 reason = result.Reason.ToString();
                             }
+
                             if (!string.IsNullOrEmpty(errRH) && !string.IsNullOrEmpty(reason))
                             {
                                 response.AppendHeader(errRH, reason);
                             }
+
                             response.StatusCode = statusCode;
                             response.Status = status;
                         }
@@ -1245,6 +1292,7 @@ namespace DotNetNuke.Entities.Urls
                     response.Write(errorPageHtmlBody);
                     response.Write(errorPageHtmlFooter);
                 }
+
                 if (ex != null)
                 {
                     UrlRewriterUtils.LogExceptionInRequest(ex, status, result);
@@ -1297,6 +1345,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         debugValue = request.Params.Get("HTTP_" + debugToken.ToUpper());
                     }
+
                     if (debugValue == null)
                     {
                         debugValue = "false";
@@ -1310,6 +1359,7 @@ namespace DotNetNuke.Entities.Urls
                     retVal = true;
                     break;
             }
+
             return retVal;
         }
 
@@ -1367,10 +1417,12 @@ namespace DotNetNuke.Entities.Urls
                                         redirectUrl = fileUrl;
                                     }
                                 }
+
                                 if (redirectUrl != null)
                                 {
                                     doRedirect = true;
                                 }
+
                                 break;
                             case TabType.Url:
                                 result.Reason = RedirectReason.Tab_External_Url;
@@ -1389,6 +1441,7 @@ namespace DotNetNuke.Entities.Urls
                                         result.Reason = RedirectReason.Tab_External_Url;
                                     }
                                 }
+
                                 break;
                             case TabType.Tab:
                                 // if a tabType.tab is specified, it's either an external url or a permanent redirect
@@ -1406,11 +1459,13 @@ namespace DotNetNuke.Entities.Urls
                                             cleanPath,
                                             request.QueryString);
                                     }
+
                                     // get the redirect Url from the friendly url provider using the tab, path and settings
                                     redirectUrl = RedirectController.GetTabRedirectUrl(tab, settings, cleanPath, result,
                                                                                        out permanentRedirect,
                                                                                        parentTraceId);
                                 }
+
                                 // check to make sure there isn't a blank redirect Url
                                 if (redirectUrl == null)
                                 {
@@ -1447,6 +1502,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
                                 break;
                             default:
                                 // only concern here is if permanent redirect is requested, but there is no external url specified
@@ -1463,6 +1519,7 @@ namespace DotNetNuke.Entities.Urls
                                         RedirectController.CancelRedirect(ref result, context, settings, message);
                                     }
                                 }
+
                                 break;
                         }
 
@@ -1496,6 +1553,7 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                 }
                             }
+
                             finished = true;
                         }
                     }
@@ -1507,6 +1565,7 @@ namespace DotNetNuke.Entities.Urls
                 // do nothing, a threadAbortException will have occured from using a server.transfer or response.redirect within the code block.  This is the highest
                 // level try/catch block, so we handle it here.
             }
+
             return finished;
         }
 
@@ -1543,10 +1602,12 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 stdUrl = result.HttpAlias;
                             }
+
                             url = url.Replace("http://", "https://");
                             url = this.ReplaceDomainName(url, stdUrl, sslUrl);
                         }
                     }
+
                     // check ssl enforced
                     if (portalSettings.SSLEnforced)
                     {
@@ -1581,6 +1642,7 @@ namespace DotNetNuke.Entities.Urls
                         // match the raw url
                         exclude = Regex.IsMatch(result.RawUrl, doNotRedirectSecureRegex, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     }
+
                     if (!exclude)
                     {
                         result.Action = ActionType.Redirect302Now;
@@ -1596,6 +1658,7 @@ namespace DotNetNuke.Entities.Urls
                             // replace the /default.aspx in the Url if it was found
                             url = DefaultPageRegex.Replace(url, "/");
                         }
+
                         result.FinalUrl = url;
                     }
                     else
@@ -1605,6 +1668,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return redirectSecure;
         }
 
@@ -1621,6 +1685,7 @@ namespace DotNetNuke.Entities.Urls
                     url = Regex.Replace(url, replaceFind, withDomain, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                 }
             }
+
             return url;
         }
 
@@ -1667,6 +1732,7 @@ namespace DotNetNuke.Entities.Urls
                                         httpAlias = cpa.HTTPAlias;
                                         continueLoop = false;
                                     }
+
                                     if (string.IsNullOrEmpty(result.CultureCode) && cpa == null)
                                     {
                                         // if there is a specific culture for this portal alias, then check that
@@ -1679,6 +1745,7 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                 }
                             }
+
                             // check whether to still go on or not
                             if (continueLoop)
                             {
@@ -1734,8 +1801,10 @@ namespace DotNetNuke.Entities.Urls
                         }
                 }
             }
+
             return incorrectAlias;
         }
+
         /// <summary>
         /// Redirects an alias if that is allowed by the settings
         /// </summary>
@@ -1780,6 +1849,7 @@ namespace DotNetNuke.Entities.Urls
                 internalAliases,
                 settings);
         }
+
         /// <summary>
         /// Checks to see whether the specified alias is a customTabAlias
         /// </summary>
@@ -1801,10 +1871,13 @@ namespace DotNetNuke.Entities.Urls
                         customAliasesForTabs.Remove(cpa.HTTPAlias);
                     }
                 }
+
                 isACustomTabAlias = customAliasesForTabs.Contains(httpAlias.ToLowerInvariant());
             }
+
             return isACustomTabAlias;
         }
+
         /// <summary>
         /// Configures the result object to set the correct Alias redirect
         /// parameters and destination URL
@@ -1843,6 +1916,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 doRedirect = true; // do redirect, ignore custom alias entries for tabs
             }
+
             // check to see if it is an internal alias.  These are used to block redirects
             // to allow for reverse proxy requests, which must change the rewritten alias
             // while leaving the requested alias
@@ -1855,6 +1929,7 @@ namespace DotNetNuke.Entities.Urls
                     doRedirect = false;
                 }
             }
+
             // if still need to do redirect, then set the settings that will cause the redirect (redirect not done here)
             if (doRedirect)
             {
@@ -1875,6 +1950,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     destUrl = destUrl.Replace("/language/" + result.CultureCode, string.Empty);
                 }
+
                 destUrl = CheckForSiteRootRedirect(rightAlias, destUrl);
                 result.FinalUrl = destUrl;
             }
@@ -1889,6 +1965,7 @@ namespace DotNetNuke.Entities.Urls
                     result.Reason = RedirectReason.Custom_Tab_Alias;
                 }
             }
+
             return doRedirect;
         }
 
@@ -1949,6 +2026,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             // get PortalId from querystring ( this is used for host menu options as well as child portal navigation )
             if (queryStringCol["portalid"] != null)
             {
@@ -2019,6 +2097,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             // first try and identify the portal using the tabId, but only if we identified this tab by looking up the tabid
             // from the original url
             // 668 : error in child portal redirects to child portal home page because of mismatch in tab/domain name
@@ -2054,6 +2133,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             // if no alias, try and set by using the identified http alias or domain name
             if (result.PortalAlias == null)
             {
@@ -2079,6 +2159,7 @@ namespace DotNetNuke.Entities.Urls
                     // allows requests for aspx pages in custom folder locations to be processed
                     return;
                 }
+
                 // the domain name was not found so try using the host portal's first alias
                 if (Host.Host.HostPortalID != -1)
                 {
@@ -2113,6 +2194,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 url += requestUri.Query;
                             }
+
                             result.FinalUrl = url;
                             result.Reason = RedirectReason.Host_Portal_Used;
                             result.Action = ActionType.Redirect302Now;
@@ -2145,6 +2227,7 @@ namespace DotNetNuke.Entities.Urls
                             requestCultureCode = portal.DefaultLanguage;
                         }
                     }
+
                     // now that the culture code is known, look up the correct portal alias for this portalid/culture code
                     var cpa = primaryAliases.GetAliasByPortalIdAndSettings(result.PortalId, result, requestCultureCode, settings);
                     if (cpa != null)
@@ -2204,6 +2287,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 culture = primaryAliases.GetCultureByPortalIdAndAlias(result.PortalId, result.HttpAlias);
             }
+
             if (string.IsNullOrEmpty(culture))
                 // 732 : when no culture returned can be "" as well as null : no culture causes no rewrite, which results in redirect to parent alias
             {
@@ -2215,12 +2299,14 @@ namespace DotNetNuke.Entities.Urls
                     culture = pi.DefaultLanguage;
                 }
             }
+
             if (!string.IsNullOrEmpty(culture)) // a culture was identified for the alias root
             {
                 if (RewriteController.AddLanguageCodeToRewritePath(ref aliasQueryString, culture))
                 {
                     result.CultureCode = culture;
                 }
+
                 result.DoRewrite = true;
                 result.RewritePath = "~/" + Globals.glbDefaultPage + aliasQueryString;
                 // the expected /default.aspx path (defaultPageUrl) matches the requested Url (/default.aspx)
@@ -2252,6 +2338,7 @@ namespace DotNetNuke.Entities.Urls
                     isChildPortalRootUrl = true;
                     aliasQueryString = string.Empty;
                 }
+
                 if (!isChildPortalRootUrl && requestUrl.Contains("?"))
                 {
                     // is we didn't get an exact match but there is a querystring, then investigate
@@ -2274,6 +2361,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return isChildPortalRootUrl;
         }
 
@@ -2323,6 +2411,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return true;
             }
+
             return false;
         }
 
@@ -2353,6 +2442,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return true;
             }
+
             return false;
         }
 
@@ -2368,6 +2458,7 @@ namespace DotNetNuke.Entities.Urls
                     refererDomain = request.UrlReferrer.Host;
                     refererPath = request.UrlReferrer.LocalPath;
                 }
+
                 return IgnoreRequestForInstall(physicalPath, refererPath, requestedDomain, refererDomain);
             }
             catch (PathTooLongException)
@@ -2417,6 +2508,7 @@ namespace DotNetNuke.Entities.Urls
                     result.Ex = ex;
                 }
             }
+
             return retVal;
         }
 
@@ -2462,6 +2554,7 @@ namespace DotNetNuke.Entities.Urls
                         doSiteUrlProcessing = true;
                     }
                 }
+
                 if (doSiteUrlProcessing)
                 {
                     // 728 : compare requests against the siteurls.config file, either if no other match was found, or if we want to skip the rest of the processing
@@ -2512,10 +2605,12 @@ namespace DotNetNuke.Entities.Urls
                         result.Action = ActionType.CheckFor301;
                     }
                 }
+
                 if (settings.RedirectWrongCase && result.Action == ActionType.Continue)
                 {
                     result.Action = ActionType.CheckFor301;
                 }
+
                 string scheme = requestUri.Scheme + Uri.SchemeDelimiter;
                 bool queryStringHas301Parm = queryStringCol["do301"] != null;
                 // 727 : keep a bool value if there is a do301 request in the querystring
@@ -2599,6 +2694,7 @@ namespace DotNetNuke.Entities.Urls
                                         result.Reason = RedirectReason.Unfriendly_Url_1;
                                     }
                                 }
+
                                 result.FinalUrl = bestFriendlyUrl;
                                 result.RewritePath = pathOnly;
                                 redirected = true; // mark as redirected
@@ -2766,6 +2862,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         result.Reason = RedirectReason.Unfriendly_Url_2;
                                     }
+
                                     result.DebugMessages.Add("Compared :" + bestFriendlyNoScheme + " [generated] -> " + requestedPathNoScheme + " [requested with no scheme]");
                                     result.DebugMessages.Add("Compared :" + bestFriendlyNoScheme + " [generated] -> " + rawUrlWithHost + " [requested with host and scheme]");
                                     result.DebugMessages.Add("Compared :" + bestFriendlyNoScheme + " [generated] -> " + rawUrlWithHostNoScheme + " [requested with host, no scheme]");
@@ -2788,6 +2885,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         redirectPathOnly = redirectPathOnly.Substring(0, redirectPathOnly.IndexOf("?", StringComparison.Ordinal));
                     }
+
                     // Thanks Etienne for the fix for Diacritic Characters Terminal Loop!
                     // if the url contains url encoded characters, they appear here uppercase -> %C3%83%C2
                     // decode the url to get back the original character and do proper casing comparison
@@ -2823,6 +2921,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                         }
                     }
+
                     if (doRedirect)
                     {
                         result.Action = ActionType.Redirect301;
@@ -2831,6 +2930,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return redirected;
         }
 
@@ -2856,6 +2956,7 @@ namespace DotNetNuke.Entities.Urls
                     doRedirect = true;
                 }
             }
+
             return doRedirect;
         }
 
@@ -2876,6 +2977,7 @@ namespace DotNetNuke.Entities.Urls
                 // get everything up to the end of the portal alias
                 destUrl = destUrl.Substring(0, destUrl.IndexOf(aliasPlusSlash, StringComparison.Ordinal) + aliasPlusSlash.Length);
             }
+
             return destUrl;
         }
     }

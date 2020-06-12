@@ -37,6 +37,7 @@ namespace DotNetNuke.Entities.Tabs
                     PortalController.UpdatePortalSetting(portalId, DefaultTabWorkflowKey, workflowId.ToString(CultureInfo.InvariantCulture), true);
                 }
             }
+
             return workflowId;
         }
 

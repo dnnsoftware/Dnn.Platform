@@ -89,6 +89,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             break;
                     }
                 }
+
                 this.lblMessage.Text = strMessage;
 
                 if (!string.IsNullOrEmpty(this.Heading))

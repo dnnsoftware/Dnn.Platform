@@ -134,6 +134,7 @@ namespace DotNetNuke.Security.Roles
                 {
                     this.GetRoles();
                 }
+
                 return this._Roles;
             }
         }
@@ -197,10 +198,12 @@ namespace DotNetNuke.Security.Roles
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 if (reader.NodeType == XmlNodeType.Element)
                 {
                     switch (reader.Name.ToLowerInvariant())
@@ -212,6 +215,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.ReadRoles(reader);
                             }
+
                             break;
                         case "rolegroupname":
                             this.RoleGroupName = reader.ReadElementContentAsString();
@@ -224,6 +228,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }

@@ -124,6 +124,7 @@ namespace DotNetNuke.Modules.SearchResults
                 {
                     return "checked=\"true\"";
                 }
+
                 return string.Empty;
             }
         }

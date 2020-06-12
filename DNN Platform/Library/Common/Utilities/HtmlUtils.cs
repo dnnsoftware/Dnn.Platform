@@ -155,10 +155,12 @@ namespace DotNetNuke.Common.Utilities
                     formatEmail = Email;
                 }
             }
+
             if (cloak)
             {
                 formatEmail = Globals.CloakText(formatEmail);
             }
+
             return formatEmail;
         }
 
@@ -251,6 +253,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+
             return formatWebsite;
         }
 
@@ -328,6 +331,7 @@ namespace DotNetNuke.Common.Utilities
         {
             return RemoveInlineStylesRegEx.Replace(HTML, string.Empty);
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// StripTags removes the HTML Tags from the content
@@ -408,10 +412,12 @@ namespace DotNetNuke.Common.Utilities
             {
                 retHTML = BeforeRegEx.Replace(retHTML, repString);
             }
+
             while (AfterRegEx.IsMatch(retHTML))
             {
                 retHTML = AfterRegEx.Replace(retHTML, repString);
             }
+
             // Return modified string after trimming leading and ending quotation marks
             return retHTML.Trim('"');
         }
@@ -536,10 +542,12 @@ namespace DotNetNuke.Common.Utilities
                     {
                         strMessage += timeElapsed.ToString().Substring(0, timeElapsed.ToString().LastIndexOf(".", StringComparison.Ordinal) + 4) + " -";
                     }
+
                     for (int i = 0; i <= indent; i++)
                     {
                         strMessage += "&nbsp;";
                     }
+
                     strMessage += message;
                     response.Write(strMessage);
                     response.Flush();
@@ -605,11 +613,13 @@ namespace DotNetNuke.Common.Utilities
                     File.Copy(HttpContext.Current.Server.MapPath("~/Install/Install.template.htm"), HttpContext.Current.Server.MapPath("~/Install/Install.htm"));
                 }
             }
+
             // read install page and insert into response stream
             if (File.Exists(HttpContext.Current.Server.MapPath("~/Install/Install.htm")))
             {
                 response.Write(FileSystemUtils.ReadFile(HttpContext.Current.Server.MapPath("~/Install/Install.htm")));
             }
+
             switch (mode)
             {
                 case "install":
@@ -640,6 +650,7 @@ namespace DotNetNuke.Common.Utilities
                     response.Write("<h1>" + mode + "</h1>");
                     break;
             }
+
             response.Flush();
         }
 

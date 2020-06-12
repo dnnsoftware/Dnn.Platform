@@ -45,6 +45,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
                     : ep;
 #endif
             }
+
             return this._beaconEndpoint;
         }
 
@@ -187,6 +188,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
                     roles |= RolesEnum.CommunityManager;
                 }
             }
+
             return roles;
         }
     }

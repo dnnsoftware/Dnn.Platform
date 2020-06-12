@@ -121,6 +121,7 @@ namespace log4net.Core
                     // => use TimeStamp
                     return this.TimeStamp.ToUniversalTime();
                 }
+
                 return this._timeStampUtc;
             }
             set
@@ -130,6 +131,7 @@ namespace log4net.Core
                 this.TimeStamp = this._timeStampUtc.ToLocalTime();
             }
         }
+
         private DateTime _timeStampUtc;
 #pragma warning restore 618
 
@@ -632,6 +634,7 @@ namespace log4net.Core
                 {
                     this.m_data.LocationInfo = new LocationInfo(this.m_callerStackBoundaryDeclaringType);
                 }
+
                 return this.m_data.LocationInfo;
             }
         }
@@ -746,6 +749,7 @@ namespace log4net.Core
                         this.m_data.Message = this.m_message.ToString();
                     }
                 }
+
                 return this.m_data.Message;
             }
         }
@@ -834,6 +838,7 @@ namespace log4net.Core
                     }
 #endif
                 }
+
                 return this.m_data.ThreadName;
             }
         }
@@ -917,6 +922,7 @@ namespace log4net.Core
                     }
 #endif
                 }
+
                 return this.m_data.UserName;
             }
         }
@@ -975,6 +981,7 @@ namespace log4net.Core
                     }
 #endif
                 }
+
                 return this.m_data.Identity;
             }
         }
@@ -998,6 +1005,7 @@ namespace log4net.Core
                 {
                     this.m_data.Domain = SystemInfo.ApplicationFriendlyName;
                 }
+
                 return this.m_data.Domain;
             }
         }
@@ -1042,6 +1050,7 @@ namespace log4net.Core
                 {
                     this.m_eventProperties = new PropertiesDictionary();
                 }
+
                 return this.m_eventProperties;
             }
         }
@@ -1199,6 +1208,7 @@ namespace log4net.Core
                     this.m_data.ExceptionString = string.Empty;
                 }
             }
+
             return this.m_data.ExceptionString;
         }
 
@@ -1305,6 +1315,7 @@ namespace log4net.Core
 
                     this.m_fixFlags |= FixFlags.Message;
                 }
+
                 if ((updateFlags & FixFlags.ThreadName) != 0)
                 {
                     // Grab the thread name
@@ -1320,6 +1331,7 @@ namespace log4net.Core
 
                     this.m_fixFlags |= FixFlags.LocationInfo;
                 }
+
                 if ((updateFlags & FixFlags.UserName) != 0)
                 {
                     // Grab the user name
@@ -1327,6 +1339,7 @@ namespace log4net.Core
 
                     this.m_fixFlags |= FixFlags.UserName;
                 }
+
                 if ((updateFlags & FixFlags.Domain) != 0)
                 {
                     // Grab the domain name
@@ -1334,6 +1347,7 @@ namespace log4net.Core
 
                     this.m_fixFlags |= FixFlags.Domain;
                 }
+
                 if ((updateFlags & FixFlags.Identity) != 0)
                 {
                     // Grab the identity
@@ -1481,10 +1495,12 @@ namespace log4net.Core
             {
                 return this.m_data.Properties[key];
             }
+
             if (this.m_compositeProperties == null)
             {
                 this.CreateCompositeProperties();
             }
+
             return this.m_compositeProperties[key];
         }
 
@@ -1508,10 +1524,12 @@ namespace log4net.Core
             {
                 return this.m_data.Properties;
             }
+
             if (this.m_compositeProperties == null)
             {
                 this.CreateCompositeProperties();
             }
+
             return this.m_compositeProperties.Flatten();
         }
 

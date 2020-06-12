@@ -25,12 +25,14 @@ namespace DotNetNuke.Services.Tokens
             {
                 return string.Empty;
             }
+
             object valueObject = this.dr[propertyName];
             string OutputFormat = format;
             if (string.IsNullOrEmpty(format))
             {
                 OutputFormat = "g";
             }
+
             if (valueObject != null)
             {
                 switch (valueObject.GetType().Name)

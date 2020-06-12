@@ -23,6 +23,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Mocks
             {
                 AddSubscriptionToTable(datatable, subscription);
             }
+
             return datatable.CreateDataReader();
         }
 

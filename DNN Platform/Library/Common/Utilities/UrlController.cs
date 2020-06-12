@@ -48,6 +48,7 @@ namespace DotNetNuke.Common.Utilities
                         DataProvider.Instance().AddUrl(PortalID, Url.Replace(@"\", @"/"));
                     }
                 }
+
                 UrlTrackingInfo objURLTracking = this.GetUrlTracking(PortalID, Url, ModuleID);
                 if (objURLTracking == null)
                 {
@@ -80,6 +81,7 @@ namespace DotNetNuke.Common.Utilities
 
                 Url = "FileID=" + file.FileId;
             }
+
             UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
@@ -92,6 +94,7 @@ namespace DotNetNuke.Common.Utilities
                         {
                             UserID = UserController.Instance.GetCurrentUserInfo().UserID;
                         }
+
                         DataProvider.Instance().AddUrlLog(objUrlTracking.UrlTrackingID, UserID);
                     }
                 }
@@ -106,6 +109,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof(UrlLogInfo));
             }
+
             return arrUrlLog;
         }
     }

@@ -176,6 +176,7 @@ namespace DotNetNuke.Security.Permissions
                     hasPermission = provider.HasFolderPermission(objFolderPermissions, PermissionKey);
                 }
             }
+
             return hasPermission;
         }
 
@@ -206,8 +207,10 @@ namespace DotNetNuke.Security.Permissions
                     SaveFolderPermissions(f);
                     clearCache = true;
                 }
+
                 clearCache = CopyPermissionsToSubfoldersRecursive(f, newPermissions) || clearCache;
             }
+
             return clearCache;
         }
 

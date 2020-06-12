@@ -74,6 +74,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     regex = @"^(?:(?!" + this.PortalSettings.Registration.ExcludeTerms.Replace(" ", string.Empty).Replace(",", "|") + @").)*$\r?\n?";
                 }
+
                 return regex;
             }
         }
@@ -173,6 +174,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         fields.Add("PasswordQuestion");
                     }
+
                     if (!fields.Contains("PasswordAnswer"))
                     {
                         fields.Add("PasswordAnswer");
@@ -211,6 +213,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             {
                                 this.AddProperty(property);
                             }
+
                             break;
                     }
                 }
@@ -311,6 +314,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.userHelpLabel.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
                     break;
             }
+
             this.userHelpLabel.Text += Localization.GetString("Required", this.LocalResourceFile);
             this.userHelpLabel.Text += Localization.GetString("RegisterWarning", this.LocalResourceFile);
 
@@ -368,6 +372,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 formItem.ValidationExpression = regexValidator;
             }
+
             this.userForm.Items.Add(formItem);
         }
 
@@ -446,10 +451,12 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     formItem.Value = property.DefaultValue;
                 }
+
                 if (!string.IsNullOrEmpty(property.ValidationExpression))
                 {
                     formItem.ValidationExpression = property.ValidationExpression;
                 }
+
                 this.userForm.Items.Add(formItem);
             }
         }
@@ -547,6 +554,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.CreateStatus = UserCreateStatus.InvalidUserName;
                 }
+
                 var valid = UserController.Instance.IsValidUserName(name);
 
                 if (!valid)
@@ -571,6 +579,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.CreateStatus = UserCreateStatus.InvalidLastName;
                 }
+
                 if (string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
                 {
                     var cleanDisplayName = PortalSecurity.Instance.InputFilter(this.User.DisplayName, filterFlags);
@@ -661,6 +670,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.CreateStatus = UserCreateStatus.BannedPasswordUsed;
                 }
             }
+
             // Validate Profanity
             if (this.PortalSettings.Registration.UseProfanityFilter)
             {
@@ -668,6 +678,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.CreateStatus = UserCreateStatus.InvalidUserName;
                 }
+
                 if (!string.IsNullOrEmpty(this.User.DisplayName))
                 {
                     if (!portalSecurity.ValidateInput(this.User.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
@@ -696,6 +707,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         user = UserController.GetUserByName(this.PortalId, userName);
                         i++;
                     }
+
                     this.User.Username = userName;
                 }
             }
@@ -715,6 +727,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         user = UserController.Instance.GetUserByDisplayname(this.PortalId, displayName);
                         i++;
                     }
+
                     this.User.DisplayName = displayName;
                 }
             }
@@ -727,6 +740,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     // Invalid Question
                     this.CreateStatus = UserCreateStatus.InvalidQuestion;
                 }
+
                 if (this.CreateStatus == UserCreateStatus.AddUser)
                 {
                     if (string.IsNullOrEmpty(this.User.Membership.PasswordAnswer))
@@ -741,6 +755,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 _IsValid = false;
             }
+
             return _IsValid;
         }
 
@@ -773,6 +788,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                     }
                 }
+
                 if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page
@@ -848,6 +864,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     formItem.Visible = formItem.DataField == "Email";
                 }
+
                 this.userForm.DataBind();
             }
         }

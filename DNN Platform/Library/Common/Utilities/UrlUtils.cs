@@ -102,6 +102,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return nameValues[1];
             }
+
             return string.Empty;
         }
 
@@ -143,13 +144,16 @@ namespace DotNetNuke.Common.Utilities
                                     {
                                         returnValue += "&";
                                     }
+
                                     returnValue += keys[i] + "=" + values[j];
                                 }
                             }
+
                             break;
                     }
                 }
             }
+
             // return the new querystring as a string array
             return returnValue.Split('&');
         }
@@ -187,6 +191,7 @@ namespace DotNetNuke.Common.Utilities
                         return true;
                 }
             }
+
             return false;
         }
 
@@ -216,6 +221,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 url = url.Replace("http://", "https://");
             }
+
             var popUpUrl = url;
             // ensure delimiters are not used
             if (!popUpUrl.Contains("dnnModal.show"))

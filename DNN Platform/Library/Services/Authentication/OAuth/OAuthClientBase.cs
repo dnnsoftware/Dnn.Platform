@@ -101,6 +101,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             get { return HttpContext.Current.Request.Params[OAuthVerifierKey]; }
         }
+
         protected Uri RequestTokenEndpoint { get; set; }
         protected HttpMethod RequestTokenMethod { get; set; }
         protected string TokenSecret { get; set; }
@@ -269,10 +270,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 {
                     this.AuthToken = qs[OAuthTokenKey];
                 }
+
                 if (qs[OAuthTokenSecretKey] != null)
                 {
                     this.TokenSecret = qs[OAuthTokenSecretKey];
                 }
+
                 if (qs[this.UserGuidKey] != null)
                 {
                     this.UserGuid = qs[this.UserGuidKey];
@@ -391,6 +394,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                     }
                 }
             }
+
             return null;
         }
 
@@ -435,6 +439,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 normalizedUrl += ":" + url.Port;
             }
+
             normalizedUrl += url.AbsolutePath;
             string normalizedRequestParameters = requestParameters.ToNormalizedString();
 
@@ -626,26 +631,32 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 profileProperties.Add("FirstName", user.FirstName);
             }
+
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.LastName) && !string.IsNullOrEmpty(user.LastName)))
             {
                 profileProperties.Add("LastName", user.LastName);
             }
+
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Email) && !string.IsNullOrEmpty(user.Email)))
             {
                 profileProperties.Add("Email", user.PreferredEmail);
             }
+
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.DisplayName) && !string.IsNullOrEmpty(user.DisplayName)))
             {
                 profileProperties.Add("DisplayName", user.DisplayName);
             }
+
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("ProfileImage")) && !string.IsNullOrEmpty(user.ProfileImage)))
             {
                 profileProperties.Add("ProfileImage", user.ProfileImage);
             }
+
             if (objUserInfo == null || (string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("Website")) && !string.IsNullOrEmpty(user.Website)))
             {
                 profileProperties.Add("Website", user.Website);
             }
+
             if ((objUserInfo == null || string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredLocale"))) && !string.IsNullOrEmpty(user.Locale))
             {
                 if (LocaleController.IsValidCultureName(user.Locale.Replace('_', '-')))
@@ -694,6 +705,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 return this.AuthorizeV1();
             }
+
             return this.AuthorizeV2();
         }
 

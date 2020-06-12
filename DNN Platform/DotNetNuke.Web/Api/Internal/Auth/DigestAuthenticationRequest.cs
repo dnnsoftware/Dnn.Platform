@@ -31,6 +31,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
                 {
                     this.RequestParams.Add(m.Groups["name"].Value, m.Groups["value"].Value);
                 }
+
                 this.HttpMethod = httpMethod;
                 this.RawUsername = this.RequestParams["username"].Replace("\\\\", "\\");
                 this.CleanUsername = this.RawUsername;

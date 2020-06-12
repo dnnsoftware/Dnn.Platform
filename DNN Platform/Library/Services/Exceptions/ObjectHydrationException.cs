@@ -71,6 +71,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     _Message += columnName + ", ";
                 }
+
                 return _Message;
             }
         }

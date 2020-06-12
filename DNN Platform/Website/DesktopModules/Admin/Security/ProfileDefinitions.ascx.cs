@@ -92,6 +92,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     filterParams.SetValue("filter=" + this.Request.QueryString["filter"], 0);
                     filterParams.SetValue("filterProperty=" + this.Request.QueryString["filterProperty"], 1);
                 }
+
                 if (string.IsNullOrEmpty(this.Request.QueryString["filter"]))
                 {
                     returnURL = this._navigationManager.NavigateURL(this.TabId);
@@ -100,6 +101,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     returnURL = this._navigationManager.NavigateURL(this.TabId, string.Empty, filterParams);
                 }
+
                 return returnURL;
             }
         }
@@ -118,6 +120,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     intPortalId = Null.NullInteger;
                 }
+
                 return intPortalId;
             }
         }
@@ -239,15 +242,18 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     allRequired = false;
                 }
+
                 if (profProperty.Visible == false)
                 {
                     allVisible = false;
                 }
+
                 if (!allRequired && !allVisible)
                 {
                     break;
                 }
             }
+
             foreach (DataGridColumn column in this.grdProfileProperties.Columns)
             {
                 if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
@@ -258,12 +264,14 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         checkBoxColumn.Checked = allRequired;
                     }
+
                     if (checkBoxColumn.DataField == "Visible")
                     {
                         checkBoxColumn.Checked = allVisible;
                     }
                 }
             }
+
             this.grdProfileProperties.DataSource = this.ProfileProperties;
             this.grdProfileProperties.DataBind();
         }
@@ -295,6 +303,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         property.Required = false;
                     }
+
                     ProfileController.UpdatePropertyDefinition(property);
                 }
             }
@@ -324,6 +333,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.ProfileProperties[Convert.ToInt32(newOrder[i])].ViewOrder = i;
             }
+
             this.ProfileProperties.Sort();
         }
 
@@ -368,6 +378,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 retValue = definitionEntry.Value;
             }
+
             return retValue;
         }
 
@@ -378,6 +389,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 retValue = this.LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
             }
+
             return retValue;
         }
 
@@ -417,6 +429,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         checkBoxColumn.Visible = false;
                         this._requiredColumnHidden = true;
                     }
+
                     if (this.SupportsRichClient() == false)
                     {
                         checkBoxColumn.CheckedChanged += this.grdProfileProperties_ItemCheckedChanged;
@@ -532,6 +545,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         break;
                 }
             }
+
             this.BindGrid();
         }
 

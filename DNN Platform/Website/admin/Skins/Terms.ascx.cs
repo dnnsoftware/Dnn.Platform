@@ -51,6 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypTerms.CssClass = this.CssClass;
                 }
+
                 if (!string.IsNullOrEmpty(this.Text))
                 {
                     this.hypTerms.Text = this.Text;
@@ -59,6 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypTerms.Text = Localization.GetString("Terms", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 this.hypTerms.NavigateUrl = this.PortalSettings.TermsTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Terms") : this._navigationManager.NavigateURL(this.PortalSettings.TermsTabId);
 
                 this.hypTerms.Attributes["rel"] = "nofollow";

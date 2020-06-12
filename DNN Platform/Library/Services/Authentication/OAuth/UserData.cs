@@ -64,6 +64,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 {
                     return this.Email;
                 }
+
                 return this.Emails.PreferredEmail;
             }
         }

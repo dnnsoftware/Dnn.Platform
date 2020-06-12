@@ -134,6 +134,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
                 FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
             }
+
             // add item to identity install from install wizard.
             if (HttpContext.Current != null)
             {

@@ -86,6 +86,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     moduleControl = this.ModuleHost.ModuleControl;
                 }
+
                 return moduleControl;
             }
         }
@@ -191,6 +192,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     skinControl.ModuleControl = this.ModuleControl;
                 }
+
                 if (childControl.HasControls())
                 {
                     // recursive call for child controls
@@ -234,16 +236,19 @@ namespace DotNetNuke.UI.Containers
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
                 showMessage = !this.ModuleConfiguration.HideAdminBorder && !Globals.IsAdminControl();
             }
+
             if (this.ModuleConfiguration.StartDate >= DateTime.Now)
             {
                 adminMessage = string.Format(Localization.GetString("ModuleEffective.Text"), this.ModuleConfiguration.StartDate);
                 showMessage = !Globals.IsAdminControl();
             }
+
             if (this.ModuleConfiguration.EndDate <= DateTime.Now)
             {
                 adminMessage = string.Format(Localization.GetString("ModuleExpired.Text"), this.ModuleConfiguration.EndDate);
                 showMessage = !Globals.IsAdminControl();
             }
+
             if (showMessage)
             {
                 this.AddAdministratorOnlyHighlighting(adminMessage);
@@ -340,6 +345,7 @@ namespace DotNetNuke.UI.Containers
                 // Add Module Stylesheets
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
+
             if (this._tracelLogger.IsDebugEnabled)
             {
                 this._tracelLogger.Debug($"Container.ProcessModule End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): Module FriendlyName: '{this.ModuleConfiguration.ModuleDefinition.FriendlyName}')");
@@ -373,8 +379,10 @@ namespace DotNetNuke.UI.Containers
                     {
                         stylesheet = Globals.ApplicationPath + "/DesktopModules/" + folderName.Replace("\\", "/") + "/module.css";
                     }
+
                     ClientResourceManager.RegisterStyleSheet(this.Page, stylesheet, FileOrder.Css.ModuleCss);
                 }
+
                 var ix = controlSrc.LastIndexOf("/", StringComparison.Ordinal);
                 if (ix >= 0)
                 {

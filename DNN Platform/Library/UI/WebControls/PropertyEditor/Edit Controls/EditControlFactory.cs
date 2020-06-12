@@ -50,6 +50,7 @@ namespace DotNetNuke.UI.WebControls
                     propEditor = CreateEditControlInternal(editorInfo.Type);
                 }
             }
+
             propEditor.ID = editorInfo.Name;
             propEditor.Name = editorInfo.Name;
             propEditor.DataField = editorInfo.Name;
@@ -91,6 +92,7 @@ namespace DotNetNuke.UI.WebControls
                             {
                                 propEditor = new EnumEditControl(systemType);
                             }
+
                             break;
                     }
                 }
@@ -99,6 +101,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 // ignore
             }
+
             return propEditor ?? new TextEditControl(systemType);
         }
     }

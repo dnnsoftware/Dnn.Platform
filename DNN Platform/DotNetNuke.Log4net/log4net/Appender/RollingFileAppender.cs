@@ -797,6 +797,7 @@ namespace log4net.Appender
                     }
                 }
             }
+
             LogLog.Debug(declaringType, "Searched for existing files in [" + directory + "]");
             return alFiles;
         }
@@ -826,6 +827,7 @@ namespace log4net.Appender
                         }
 #endif
                     }
+
                     LogLog.Debug(declaringType, "[" + last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo) + "] vs. [" + this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo) + "]");
 
                     if (! last.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo).Equals(this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo)))
@@ -900,6 +902,7 @@ namespace log4net.Appender
                 // This is not a log file, so ignore
                 return;
             }
+
             if (curFileName.Equals(baseFile))
             {
                 // Base log file is not an incremented logfile (.1 or .2, etc)
@@ -968,6 +971,7 @@ namespace log4net.Appender
                             }
                         }
                     }
+
                     LogLog.Debug(declaringType, "File name [" + curFileName + "] moves current count to [" + this.m_curSizeRollBackups + "]");
                 }
             }
@@ -1315,6 +1319,7 @@ namespace log4net.Appender
                     {
                         System.IO.File.Move(fileName, tempFileName);
                     }
+
                     fileToDelete = tempFileName;
                 }
                 catch (Exception moveEx)
@@ -1329,6 +1334,7 @@ namespace log4net.Appender
                     {
                         System.IO.File.Delete(fileToDelete);
                     }
+
                     LogLog.Debug(declaringType, "Deleted file [" + fileName + "]");
                 }
                 catch (Exception deleteEx)
@@ -1537,6 +1543,7 @@ namespace log4net.Appender
                         current = current.AddHours(-current.Hour);
                         current = current.AddDays(1);
                     }
+
                     break;
 
                 case RollPoint.TopOfDay:
@@ -1564,6 +1571,7 @@ namespace log4net.Appender
                     current = current.AddMonths(1);
                     break;
             }
+
             return current;
         }
 

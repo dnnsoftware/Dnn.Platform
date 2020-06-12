@@ -103,6 +103,7 @@ namespace DesktopModules.Admin.Security
                 {
                     _Profile = this.User.Profile;
                 }
+
                 return _Profile;
             }
         }
@@ -155,6 +156,7 @@ namespace DesktopModules.Admin.Security
                 // Check if culture is RTL
                 this.ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
             }
+
             this.ProfileProperties.LocalResourceFile = this.LocalResourceFile;
         }
 

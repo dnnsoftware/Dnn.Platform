@@ -209,6 +209,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 ScriptManager.RegisterStartupScript(this.Page, script.Type, script.Key, script.Script, script.AddScriptTags);
             }
+
             base.Render(writer);
         }
 

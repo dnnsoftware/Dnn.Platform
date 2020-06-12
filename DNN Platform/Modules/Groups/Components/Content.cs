@@ -29,6 +29,7 @@ namespace DotNetNuke.Entities.Groups
             {
                 contentTypeName = "DNNCorp_SocialGroup";
             }
+
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeID;
 

@@ -142,6 +142,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     strMessage = Localization.GetString("ExportNotSupported", this.LocalResourceFile);
                 }
             }
+
             return strMessage;
         }
 
@@ -155,6 +156,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
             }
+
             return strName;
         }
 
@@ -166,6 +168,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
             }
+
             if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", this.Module))
             {
                 this.Response.Redirect(Globals.AccessDeniedURL(), true);
@@ -184,6 +187,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
                 }
+
                 if (!this.Page.IsPostBack)
                 {
                     this.cmdCancel.NavigateUrl = this.ReturnURL;

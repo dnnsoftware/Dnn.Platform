@@ -67,9 +67,11 @@ namespace DotNetNuke.Entities.Modules
                         {
                             log.AddProperty("Results", Results);
                         }
+
                         LogController.Instance.AddLog(log);
                     }
                 }
+
                 UpdateSupportedFeatures(controller, Convert.ToInt32(message.Attributes["DesktopModuleId"]));
             }
             catch (Exception exc)
@@ -165,6 +167,7 @@ namespace DotNetNuke.Entities.Modules
                 message.ExceptionMessage = ex.Message;
                 return false;
             }
+
             return true;
         }
     }

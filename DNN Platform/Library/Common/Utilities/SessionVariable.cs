@@ -45,11 +45,13 @@ namespace DotNetNuke.Common.Utilities
                 {
                     throw new InvalidOperationException("No HttpContext is not available.");
                 }
+
                 var items = current.Session;
                 if (items == null)
                 {
                     throw new InvalidOperationException("No Session State available on current HttpContext.");
                 }
+
                 return items;
             }
         }

@@ -42,6 +42,7 @@ namespace DotNetNuke.UI.Modules
                     {
                         controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
                     }
+
                     break;
                 case ".mvc":
                     factoryType = Reflection.CreateType("DotNetNuke.Web.Mvc.MvcModuleControlFactory");
@@ -49,6 +50,7 @@ namespace DotNetNuke.UI.Modules
                     {
                         controlFactory = Reflection.CreateObject(factoryType) as IModuleControlFactory;
                     }
+
                     break;
                 default:
                     controlFactory = new ReflectedModuleControlFactory();
@@ -208,6 +210,7 @@ namespace DotNetNuke.UI.Modules
                                         Path.GetFileName(moduleConfiguration.ModuleControl.ControlSrc);
                     break;
             }
+
             return moduleControl;
         }
     }

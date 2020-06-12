@@ -56,6 +56,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
                 return;
             }
+
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
             // Skip the export if all the users has been processed already.
@@ -69,6 +70,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 pageIndex = this.CheckPoint.Stage;
             }
+
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             this.CheckPoint.ProcessedItems = this.CheckPoint.Stage * pageSize;
@@ -112,6 +114,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 CBO.FillCollection(reader, exportUserProfileList, false);
                             }
+
                             reader.NextResult();
 
                             CBO.FillCollection(reader, exportUserPortalList, false);
@@ -151,6 +154,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Repository.CreateItems(exportUserProfileList, null);
                             totalProfilesExported += exportUserProfileList.Count;
                         }
+
                         exportUserPortalList.ForEach(
                             x =>
                             {
@@ -181,12 +185,14 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         this.Result.AddLogEntry($"Exporting Users from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                     }
+
                     this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                     this.CheckPoint.Stage++;
                     if (this.CheckPointStageCallback(this))
                     {
                         return;
                     }
+
                     // Rebuild the indexes in the exported database.
                     this.Repository.RebuildIndex<ExportUser>(x => x.Id, true);
                     this.Repository.RebuildIndex<ExportUserPortal>(x => x.ReferenceId);
@@ -201,6 +207,7 @@ namespace Dnn.ExportImport.Components.Services
 
                     pageIndex++;
                 }
+
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Progress = 100;
             }
@@ -214,6 +221,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     this.Result.AddSummary("Exported User Profiles", totalProfilesExported.ToString());
                 }
+
                 this.Result.AddSummary("Exported User Authentication", totalAuthenticationExported.ToString());
                 this.Result.AddSummary("Exported Aspnet User", totalAspnetUserExported.ToString());
                 this.Result.AddSummary("Exported Aspnet Membership", totalAspnetMembershipExported.ToString());
@@ -240,6 +248,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
                 return;
             }
+
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
             // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
@@ -333,6 +342,7 @@ namespace Dnn.ExportImport.Components.Services
                                     row["RefreshRoles"] = DBNull.Value;
                                     row["IsDeleted"] = DBNull.Value;
                                 }
+
                                 if (userAuthentication != null)
                                 {
                                     tempUserAuthenticationCount += 1;
@@ -389,6 +399,7 @@ namespace Dnn.ExportImport.Components.Services
 
                                 table.Rows.Add(row);
                             }
+
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
                             // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
@@ -404,6 +415,7 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             this.Result.AddLogEntry($"Importing Users from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                         }
+
                         table.Rows.Clear();
                         pageIndex++;
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
@@ -415,6 +427,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                     }
                 }
+
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Progress = 100;
             }

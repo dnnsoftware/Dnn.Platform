@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 {
                     this._tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
                 }
+
                 return this._tab;
             }
         }

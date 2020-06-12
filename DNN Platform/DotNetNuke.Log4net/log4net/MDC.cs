@@ -87,6 +87,7 @@ namespace log4net
             {
                 return null;
             }
+
             return obj.ToString();
         }
 

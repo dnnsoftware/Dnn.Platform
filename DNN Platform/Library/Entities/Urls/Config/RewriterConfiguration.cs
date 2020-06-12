@@ -65,6 +65,7 @@ namespace DotNetNuke.Entities.Urls.Config
                                            };
                                 config.Rules.Add(rule);
                             }
+
                             if (File.Exists(filePath))
                             {
                                 // Set back into Cache
@@ -92,6 +93,7 @@ namespace DotNetNuke.Entities.Urls.Config
                     fileReader.Close();
                 }
             }
+
             return config;
         }
 
@@ -111,6 +113,7 @@ namespace DotNetNuke.Entities.Urls.Config
                     // make sure file is not read-only
                     File.SetAttributes(filePath, FileAttributes.Normal);
                 }
+
                 using (var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
                 using (var writer = new StreamWriter(fileWriter))
                 {

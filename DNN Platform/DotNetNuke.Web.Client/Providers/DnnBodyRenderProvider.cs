@@ -135,6 +135,7 @@ namespace DotNetNuke.Web.Client.Providers
             {
                 throw new InvalidOperationException("The current HttpHandler in a WebFormsFileRegistrationProvider must be of type Page");
             }
+
             var page = (Page)http.CurrentHandler;
 
             if (page.Header == null)

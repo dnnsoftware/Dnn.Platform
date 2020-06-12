@@ -194,10 +194,12 @@ namespace DotNetNuke.UI.Modules
                         break;
                 }
             }
+
             if (Globals.IsAdminControl())
             {
                 content = true;
             }
+
             return content;
         }
 
@@ -247,6 +249,7 @@ namespace DotNetNuke.UI.Modules
                         // attempt to load the cached content
                         this._isCached = this.TryLoadCached();
                     }
+
                     if (!this._isCached)
                     {
                         // load the control dynamically
@@ -257,6 +260,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     this._control = this._moduleControlPipeline.CreateModuleControl(this._moduleConfiguration);
                 }
+
                 if (this.Skin != null)
                 {
                     // check for IMC
@@ -382,12 +386,14 @@ namespace DotNetNuke.UI.Modules
                 Exceptions.LogException(ex);
                 success = false;
             }
+
             if (success)
             {
                 this.RestoreCachedClientResourceRegistrations(cachedContent);
                 this._control = this._moduleControlPipeline.CreateCachedControl(cachedContent, this._moduleConfiguration);
                 this.Controls.Add(this._control);
             }
+
             return success;
         }
 
@@ -514,6 +520,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     moduleName = Globals.CleanName(moduleName);
                 }
+
                 this.Attributes.Add("class", string.Format("DNNModuleContent Mod{0}C", moduleName));
             }
         }

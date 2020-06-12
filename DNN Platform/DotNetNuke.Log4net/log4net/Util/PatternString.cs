@@ -408,6 +408,7 @@ namespace log4net.Util
                 converterInfo.Type = (Type)entry.Value;
                 patternParser.PatternConverters.Add(entry.Key, converterInfo);
             }
+
             // Add the instance patterns
             foreach (DictionaryEntry entry in this.m_instanceRulesRegistry)
             {
@@ -480,6 +481,7 @@ namespace log4net.Util
             {
                 throw new ArgumentException("The converter type specified [" + converterInfo.Type + "] must be a subclass of log4net.Util.PatternConverter", "converterInfo");
             }
+
             this.m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
         }
 

@@ -246,6 +246,7 @@ namespace log4net.ObjectRenderer
                         rendererMap.FindAndRender(array.GetValue(i), writer);
                     }
                 }
+
                 writer.Write("}");
             }
         }

@@ -40,6 +40,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 1)
             {
@@ -114,6 +115,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Skip the export if all the templates have been processed already.
             if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
             {
@@ -137,6 +139,7 @@ namespace Dnn.ExportImport.Components.Services
                 dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
+
             return 0;
         }
 
@@ -242,6 +245,7 @@ namespace Dnn.ExportImport.Components.Services
                                 break;
                             }
                         }
+
                         this.CheckPoint.Stage++;
                         this.CheckPoint.Completed = true;
                     }

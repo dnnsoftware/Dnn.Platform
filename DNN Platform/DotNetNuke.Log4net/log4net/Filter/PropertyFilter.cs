@@ -131,6 +131,7 @@ namespace log4net.Filter
                 {
                     return FilterDecision.Accept;
                 }
+
                 return FilterDecision.Deny;
             }
             else if (this.m_stringToMatch != null)
@@ -147,8 +148,10 @@ namespace log4net.Filter
                 {
                     return FilterDecision.Accept;
                 }
+
                 return FilterDecision.Deny;
             }
+
             return FilterDecision.Neutral;
         }
     }

@@ -19,6 +19,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 throw new ArgumentNullException("messages");
             }
+
             messages = new List<string>();
             if (File.Exists(fileName))
             {
@@ -41,6 +42,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     int.TryParse(portalIdRaw, out rulePortalId);
                                 }
+
                                 // 807 : if portal specific then import all regardless of portal id specified
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
                                 {
@@ -75,6 +77,7 @@ namespace DotNetNuke.Entities.Urls
                                             tabActionCol = new List<ParameterReplaceAction>();
                                             actions.Add(action.TabId, tabActionCol);
                                         }
+
                                         tabActionCol.Add(action);
 
                                         actionCount++;
@@ -82,12 +85,14 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                 }
                             }
+
                             break;
 
                         case XmlNodeType.EndElement:
                             break;
                     }
                 }
+
                 rdr.Close();
             }
             else
@@ -111,6 +116,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             if (File.Exists(fileName))
             {
                 var rdr = new XmlTextReader(fileName)
@@ -133,11 +139,13 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     portalIdRaw = rdr.GetAttribute("portalId");
                                 }
+
                                 int rulePortalId = -1;
                                 if (portalIdRaw != null)
                                 {
                                     int.TryParse(portalIdRaw, out rulePortalId);
                                 }
+
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
                                 // if portal specific, all rules are assumed to belong to the portal
                                 {
@@ -178,10 +186,12 @@ namespace DotNetNuke.Entities.Urls
                                             // or support the older convention, which was to include a tabid of -2
                                             action.ForDefaultPage = tabId == -2;
                                         }
+
                                         if (fromSiteRoot)
                                         {
                                             action.TabId = -3; // site root marker
                                         }
+
                                         List<ParameterRedirectAction> tabActionCol;
                                         if (actions.ContainsKey(action.TabId))
                                         {
@@ -192,22 +202,27 @@ namespace DotNetNuke.Entities.Urls
                                             tabActionCol = new List<ParameterRedirectAction>();
                                             actions.Add(action.TabId, tabActionCol);
                                         }
+
                                         tabActionCol.Add(action);
                                         actionCount++;
                                     }
+
                                     messages.Add(name + " redirect actions added:" + actionCount.ToString());
                                 }
+
                                 if (tabMessages.Count > 0)
                                 {
                                     messages.AddRange(tabMessages);
                                 }
                             }
+
                             break;
 
                         case XmlNodeType.EndElement:
                             break;
                     }
                 }
+
                 rdr.Close();
             }
         }
@@ -218,6 +233,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             if (File.Exists(fileName))
             {
                 var rdr = new XmlTextReader(fileName)
@@ -239,6 +255,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     int.TryParse(portalIdRaw, out rulePortalId);
                                 }
+
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalId == -1 || portalSpecific)
                                 {
                                     // now set up the action
@@ -281,9 +298,11 @@ namespace DotNetNuke.Entities.Urls
                                             tabActionCol = new SharedList<ParameterRewriteAction>();
                                             actions.Add(action.TabId, tabActionCol);
                                         }
+
                                         tabActionCol.Add(action);
                                         actionCount++;
                                     }
+
                                     messages.Add(name + " rewrite actions added:" + actionCount.ToString());
                                 }
                             }
@@ -294,6 +313,7 @@ namespace DotNetNuke.Entities.Urls
                             break;
                     }
                 }
+
                 rdr.Close();
             }
             else

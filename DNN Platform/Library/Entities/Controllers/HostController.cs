@@ -91,6 +91,7 @@ namespace DotNetNuke.Entities.Controllers
                 Logger.Error(exc);
                 // we just want to trap the error as we may not be installed so there will be no Settings
             }
+
             return retValue;
         }
 
@@ -383,6 +384,7 @@ namespace DotNetNuke.Entities.Controllers
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return dicSettings;
         }
 

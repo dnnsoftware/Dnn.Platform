@@ -55,8 +55,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                 }
                             }
                         }
+
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception exc)

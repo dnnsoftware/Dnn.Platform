@@ -88,6 +88,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                     {
                         elt.SetAttribute("select", "ddr:HtmlEncode(concat(" + nodeName + ", @" + nodeName + "))");
                     }
+
                     current.AppendChild(elt);
                 }
                 else if (directive == "*")
@@ -125,6 +126,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         {
                             test = string.Format("not({0})", test);
                         }
+
                         elt.SetAttribute("test", test);
 
                         var choose = xml.CreateElement("choose", xmlNs);
@@ -137,14 +139,17 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         elt = xml.CreateElement("otherwise", xmlNs);
                         current.ParentNode.AppendChild(elt);
                     }
+
                     current = elt;
                 }
                 else if (directive[0] == '/')
                 {
                     current = stack.Pop();
                 }
+
                 index = match.Index + match.Length;
             }
+
             current.AppendChild(xml.CreateTextNode(templateText.Substring(index)));
 
             this.xsl = new XslCompiledTransform();
@@ -206,6 +211,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         result.AppendFormat("{0}:{1},", option.Name, option.Value);
                     }
                 }
+
                 if (options.Count > 0)
                 {
                     result.Remove(result.Length - 1, 1);

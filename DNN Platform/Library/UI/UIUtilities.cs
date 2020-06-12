@@ -29,6 +29,7 @@ namespace DotNetNuke.UI
             {
                 key = request.QueryString["ctl"];
             }
+
             return key;
         }
 
@@ -41,6 +42,7 @@ namespace DotNetNuke.UI
             {
                 int.TryParse(request.QueryString["mid"], out moduleId);
             }
+
             if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
             {
                 int.TryParse(request.QueryString["moduleid"], out moduleId);
@@ -58,6 +60,7 @@ namespace DotNetNuke.UI
             {
                 renderMode = request.QueryString["render"];
             }
+
             return renderMode;
         }
 

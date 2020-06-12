@@ -86,9 +86,11 @@ namespace DotNetNuke.Entities.Content.Common
                     {
                         sb.Append(delimitter);
                     }
+
                     sb.Append(_Term.Name);
                 }
             }
+
             return sb.ToString();
         }
 
@@ -110,9 +112,11 @@ namespace DotNetNuke.Entities.Content.Common
                     {
                         sb.Append(delimitter);
                     }
+
                     sb.Append(string.Format(format, _Term.Name));
                 }
             }
+
             return sb.ToString();
         }
 

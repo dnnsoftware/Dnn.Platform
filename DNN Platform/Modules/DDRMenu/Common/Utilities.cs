@@ -78,6 +78,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                     }
                 }
             }
+
             return result;
         }
 

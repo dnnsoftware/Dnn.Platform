@@ -53,8 +53,10 @@ namespace DotNetNuke.Modules.Html
                     {
                         strDescription = strDescription + " >> " + "<strong>" + objState.StateName + "</strong>";
                     }
+
                     strDescription = strDescription + "<br />" + ((WorkflowStateInfo)arrStates[0]).Description;
                 }
+
                 this.lblDescription.Text = strDescription;
             }
         }
@@ -85,6 +87,7 @@ namespace DotNetNuke.Modules.Html
                             workflows.Add(state);
                         }
                     }
+
                     this.cboWorkflow.DataSource = workflows;
                     this.cboWorkflow.DataBind();
                     var workflow = htmlTextController.GetWorkflow(this.ModuleId, this.TabId, this.PortalId);
@@ -92,6 +95,7 @@ namespace DotNetNuke.Modules.Html
                     {
                         this.cboWorkflow.FindItemByValue(workflow.Value.ToString()).Selected = true;
                     }
+
                     this.DisplayWorkflowDetails();
 
                     if (this.rblApplyTo.Items.FindByValue(workflow.Key) != null)
@@ -101,6 +105,7 @@ namespace DotNetNuke.Modules.Html
 
                     this.txtSearchDescLength.Text = this.ModuleSettings.SearchDescLength.ToString();
                 }
+
                 // Module failed to load
             }
             catch (Exception exc)

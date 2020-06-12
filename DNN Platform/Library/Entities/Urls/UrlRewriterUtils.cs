@@ -99,6 +99,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     log.LogProperties.Add(new LogDetailInfo("Referer", request.Headers["Referer"]));
                 }
+
                 log.LogProperties.Add(new LogDetailInfo("Url", request.Url.AbsoluteUri));
                 log.LogProperties.Add(new LogDetailInfo("UserAgent", request.UserAgent));
                 log.LogProperties.Add(new LogDetailInfo("HostAddress", request.UserHostAddress));
@@ -169,6 +170,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         log.AddProperty("Result", "Result value null");
                     }
+
                     log.AddProperty("Exception Type", ex.GetType().ToString());
                     log.AddProperty("Message", ex.Message);
                     log.AddProperty("Stack Trace", ex.StackTrace);
@@ -177,6 +179,7 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Inner Exception Message", ex.InnerException.Message);
                         log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
                     }
+
                     log.BypassBuffering = true;
                     LogController.Instance.AddLog(log);
 

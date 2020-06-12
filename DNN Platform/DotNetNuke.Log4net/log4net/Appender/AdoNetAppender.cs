@@ -521,6 +521,7 @@ namespace log4net.Appender
                     {
                         dbCmd.Transaction = dbTran;
                     }
+
                     // prepare the command, which is significantly faster
                     dbCmd.Prepare();
                     // run for all events
@@ -550,6 +551,7 @@ namespace log4net.Appender
                     {
                         dbCmd.Transaction = dbTran;
                     }
+
                     // run for all events
                     foreach (LoggingEvent e in events)
                     {
@@ -648,6 +650,7 @@ namespace log4net.Appender
                 {
                     throw new LogException("Unable to find [" + this.AppSettingsKey + "] AppSettings key.");
                 }
+
                 return appSettingsConnectionString;
             }
 
@@ -733,6 +736,7 @@ namespace log4net.Appender
                 {
                     LogLog.Warn(declaringType, "Exception while disposing cached connection object", ex);
                 }
+
                 this.Connection = null;
             }
         }
@@ -1002,14 +1006,17 @@ namespace log4net.Appender
             {
                 param.DbType = this.DbType;
             }
+
             if (this.Precision != 0)
             {
                 param.Precision = this.Precision;
             }
+
             if (this.Scale != 0)
             {
                 param.Scale = this.Scale;
             }
+
             if (this.Size != 0)
             {
                 param.Size = this.Size;

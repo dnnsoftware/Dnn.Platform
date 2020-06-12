@@ -28,9 +28,11 @@ namespace DotNetNuke.Entities.Modules
                 {
                     this._desktopModule = this.DesktopModuleID > Null.NullInteger ? DesktopModuleController.GetDesktopModule(this.DesktopModuleID, this.PortalID) : new DesktopModuleInfo();
                 }
+
                 return this._desktopModule;
             }
         }
+
         [XmlIgnore]
         public int DesktopModuleID { get; set; }
 
@@ -44,6 +46,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     this._permissions = new DesktopModulePermissionCollection(DesktopModulePermissionController.GetDesktopModulePermissions(this.PortalDesktopModuleID));
                 }
+
                 return this._permissions;
             }
         }

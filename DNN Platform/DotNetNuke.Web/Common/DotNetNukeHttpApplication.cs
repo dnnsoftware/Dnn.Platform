@@ -167,6 +167,7 @@ namespace DotNetNuke.Web.Common.Internal
                     lucene.Dispose();
                 }
             }
+
             Logger.Trace("Dumping all Application Errors");
             if (HttpContext.Current != null)
             {
@@ -178,6 +179,7 @@ namespace DotNetNuke.Web.Common.Internal
                     }
                 }
             }
+
             Logger.Trace("End Dumping all Application Errors");
             Logger.Info("Application Ended");
         }

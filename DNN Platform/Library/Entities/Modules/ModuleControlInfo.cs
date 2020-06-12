@@ -160,10 +160,12 @@ namespace DotNetNuke.Entities.Modules
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 this.ReadXmlInternal(reader);
                 switch (reader.Name)
                 {
@@ -188,12 +190,14 @@ namespace DotNetNuke.Entities.Modules
                         {
                             this.ViewOrder = int.Parse(elementvalue);
                         }
+
                         break;
                     default:
                         if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }
+
                         break;
                 }
             }
@@ -221,6 +225,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 writer.WriteElementString("viewOrder", this.ViewOrder.ToString());
             }
+
             // Write end of main element
             writer.WriteEndElement();
         }

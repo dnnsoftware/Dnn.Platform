@@ -134,6 +134,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             return this.CreateRepository(repositoryAssembly, this.m_defaultRepositoryType);
         }
 
@@ -169,6 +170,7 @@ namespace log4net.Core
                 {
                     throw new LogException("Repository [" + repositoryName + "] is NOT defined.");
                 }
+
                 return rep;
             }
         }
@@ -329,8 +331,10 @@ namespace log4net.Core
                             }
                         }
                     }
+
                     this.m_assembly2repositoryMap[repositoryAssembly] = rep;
                 }
+
                 return rep;
             }
         }
@@ -490,6 +494,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAlias");
             }
+
             if (repositoryTarget == null)
             {
                 throw new ArgumentNullException("repositoryTarget");
@@ -507,6 +512,7 @@ namespace log4net.Core
                         throw new InvalidOperationException("Repository [" + repositoryAlias + "] is already aliased to repository [" + ((ILoggerRepository)this.m_alias2repositoryMap[repositoryAlias]).Name + "]. Aliases cannot be redefined.");
                     }
                 }
+
                     // Check if the alias is already mapped to a repository
                 else if (this.m_name2repositoryMap.Contains(repositoryAlias))
                 {
@@ -639,6 +645,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("assembly");
             }
+
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");
@@ -730,6 +737,7 @@ namespace log4net.Core
                         {
                             LogLog.Error(declaringType, "DefaultRepositorySelector: Exception while parsing log4net.Config file physical path [" + repositoryConfigFilePath + "]", ex);
                         }
+
                         try
                         {
                             LogLog.Debug(declaringType, "Loading and watching configuration for default repository from AppSettings specified Config path [" + repositoryConfigFilePath + "]");
@@ -790,6 +798,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("assembly");
             }
+
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");
@@ -834,6 +843,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("assembly");
             }
+
             if (repository == null)
             {
                 throw new ArgumentNullException("repository");

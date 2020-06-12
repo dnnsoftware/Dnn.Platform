@@ -176,6 +176,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
                 }
+
                 return this.mStates;
             }
             set
@@ -197,11 +198,13 @@ namespace DotNetNuke.UI.WebControls
             {
                 isDesignMode = true;
             }
+
             var template = new DNNMultiStateBoxColumnTemplate(type);
             if (type != ListItemType.Header)
             {
                 template.AutoPostBack = this.AutoPostBack;
             }
+
             template.DataField = this.DataField;
             template.Enabled = this.Enabled;
             template.EnabledField = this.EnabledField;
@@ -210,12 +213,14 @@ namespace DotNetNuke.UI.WebControls
             {
                 template.States.Add(objState);
             }
+
             template.SelectedStateKey = this.SelectedStateKey;
             if (type == ListItemType.Header)
             {
                 template.Text = this.HeaderText;
                 template.AutoPostBack = true;
             }
+
             template.DesignMode = isDesignMode;
             return template;
         }
@@ -236,6 +241,7 @@ namespace DotNetNuke.UI.WebControls
                 this.HeaderStyle.Font.Size = new FontUnit("10pt");
                 this.HeaderStyle.Font.Bold = true;
             }
+
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }

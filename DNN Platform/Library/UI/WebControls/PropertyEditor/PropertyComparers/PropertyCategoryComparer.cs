@@ -27,6 +27,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     xCategoryName = CategoryAttribute.Default.Category;
                 }
+
                 object[] yCategory = yProp.GetCustomAttributes(typeof(CategoryAttribute), true);
                 string yCategoryName = string.Empty;
                 if (yCategory.Length > 0)
@@ -37,6 +38,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     yCategoryName = CategoryAttribute.Default.Category;
                 }
+
                 if (xCategoryName == yCategoryName)
                 {
                     return string.Compare(xProp.Name, yProp.Name);

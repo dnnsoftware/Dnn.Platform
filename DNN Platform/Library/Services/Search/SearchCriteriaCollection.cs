@@ -66,6 +66,7 @@ namespace DotNetNuke.Services.Search
                     this.Add(criterion);
                 }
             }
+
             // Add all mandatory criteria
             foreach (string word in words)
             {
@@ -78,6 +79,7 @@ namespace DotNetNuke.Services.Search
                     this.Add(criterion);
                 }
             }
+
             // Add all excluded criteria
             foreach (string word in words)
             {

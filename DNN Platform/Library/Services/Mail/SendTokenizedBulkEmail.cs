@@ -253,6 +253,7 @@ namespace DotNetNuke.Services.Mail
             {
                 strSubject = this._tokenReplace.ReplaceEnvironmentTokens(strSubject);
             }
+
             var message = new Message { FromUserID = this._sendingUser.UserID, ToUserID = this._sendingUser.UserID, Subject = strSubject, Body = body, Status = MessageStatusType.Unread };
 
             Mail.SendEmail(this._sendingUser.Email, this._sendingUser.Email, message.Subject, message.Body);
@@ -295,6 +296,7 @@ namespace DotNetNuke.Services.Mail
                 {
                     key = user.UserID.ToString(CultureInfo.InvariantCulture);
                 }
+
                 if (key != string.Empty && !keyList.Contains(key))
                 {
                     userList.Add(user);
@@ -321,8 +323,10 @@ namespace DotNetNuke.Services.Mail
                         {
                             break;
                         }
+
                         memoryStream.Write(buffer, 0, read);
                     }
+
                     newAttachment = new Attachment(memoryStream, attachment.ContentType);
                     newAttachment.ContentStream.Position = 0;
                     attachments.Add(newAttachment);
@@ -335,6 +339,7 @@ namespace DotNetNuke.Services.Mail
                     memoryStream?.Dispose();
                 }
             }
+
             return attachments;
         }
 
@@ -447,6 +452,7 @@ namespace DotNetNuke.Services.Mail
                     var host = this.PortalAlias.Contains("/") ? this.PortalAlias.Substring(0, this.PortalAlias.IndexOf('/')) : this.PortalAlias;
                     body = "<html><head><base href='http://" + host + "'><title>" + this.Subject + "</title></head><body>" + body + "</body></html>";
                 }
+
                 string subject = this.Subject;
                 string startedAt = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
@@ -470,11 +476,13 @@ namespace DotNetNuke.Services.Mail
                             {
                                 body = this._tokenReplace.ReplaceEnvironmentTokens(body);
                             }
+
                             if (!individualSubj)
                             {
                                 subject = this._tokenReplace.ReplaceEnvironmentTokens(subject);
                             }
                         }
+
                         foreach (UserInfo user in this.Recipients())
                         {
                             recipients += 1;
@@ -486,11 +494,13 @@ namespace DotNetNuke.Services.Mail
                                 {
                                     body = this._tokenReplace.ReplaceEnvironmentTokens(this._body);
                                 }
+
                                 if (individualSubj)
                                 {
                                     subject = this._tokenReplace.ReplaceEnvironmentTokens(this.Subject);
                                 }
                             }
+
                             string recipient = this.AddressMethod == AddressMethods.Send_TO ? user.Email : this.RelayEmailAddress;
 
                             string mailError = Mail.SendMail(
@@ -550,6 +560,7 @@ namespace DotNetNuke.Services.Mail
                                 body = this._body;
                                 subject = this.Subject;
                             }
+
                             string mailError = Mail.SendMail(
                                 this._sendingUser.Email,
                                 this._sendingUser.Email,
@@ -577,12 +588,15 @@ namespace DotNetNuke.Services.Mail
                                 errors += 1;
                             }
                         }
+
                         break;
                 }
+
                 if (mailErrors.Length > 0)
                 {
                     mailRecipients = new StringBuilder();
                 }
+
                 this.SendConfirmationMail(recipients, messagesSent, errors, subject, startedAt, mailErrors.ToString(), mailRecipients.ToString());
             }
             catch (Exception exc) // send mail failure
@@ -598,6 +612,7 @@ namespace DotNetNuke.Services.Mail
                     attachment.Dispose();
                 }
             }
+
             return messagesSent;
         }
 
@@ -635,6 +650,7 @@ namespace DotNetNuke.Services.Mail
                         this._isDisposed = true;
                     }
                 }
+
                 // get rid of unmanaged resources
             }
         }

@@ -305,6 +305,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
+
             var tabs = this.GetPortalPages(portalId, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
             var sortedTree = new NTree<ItemDto> { Data = new ItemDto { Key = RootKey } };
             if (tabs == null)
@@ -334,6 +335,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return null;
             }
+
             int portalId;
             int parentIdAsInt;
             if (parentId.StartsWith(PortalPrefix))
@@ -343,6 +345,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     portalId = -1;
                 }
+
                 if (!string.IsNullOrEmpty(searchText))
                 {
                     return this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles).Children.Select(node => node.Data);
@@ -356,6 +359,7 @@ namespace DotNetNuke.Web.InternalServices
                     parentIdAsInt = -1;
                 }
             }
+
             return this.GetPageDescendantsInternal(portalId, parentIdAsInt, sortOrder, searchText, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
         }
 
@@ -596,6 +600,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return sortedTree;
             }
+
             SortPagesRecursevely(pages, sortedTree, openedNodesTree, sortOrder);
             return sortedTree;
         }
@@ -616,6 +621,7 @@ namespace DotNetNuke.Web.InternalServices
                     child.Children = pageTree.Children;
                 }
             }
+
             return treeNode;
         }
 
@@ -637,6 +643,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return treeNode;
             }
+
             foreach (var openedNodeChild in openedNode.Children)
             {
                 var portalIdString = openedNodeChild.Data.Id;
@@ -645,6 +652,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     continue;
                 }
+
                 int portalId;
                 if (int.TryParse(treeNodeChild.Data.Key.Replace(PortalPrefix, string.Empty), out portalId))
                 {
@@ -652,6 +660,7 @@ namespace DotNetNuke.Web.InternalServices
                     treeNodeChild.Children = pageTree.Children;
                 }
             }
+
             return treeNode;
         }
 
@@ -672,6 +681,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return treeNode;
             }
+
             var portals = GetPortalGroup(sortOrder);
             treeNode.Children = portals.Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             if (openedNode.HasChildren())
@@ -684,15 +694,18 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         continue;
                     }
+
                     int portalId;
                     if (!int.TryParse(portalIdString.Replace(PortalPrefix, string.Empty), out portalId))
                     {
                         portalId = -1;
                     }
+
                     var treeOfPages = this.SortPagesInternal(portalId, openedNodeChild, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
                     treeNodeChild.Children = treeOfPages.Children;
                 }
             }
+
             return treeNode;
         }
 
@@ -702,6 +715,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return;
             }
+
             var children = ApplySort(GetChildrenOf(tabs, openedNode.Data.Id), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             treeNode.Children = children;
             if (openedNode.HasChildren())
@@ -713,6 +727,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         continue;
                     }
+
                     SortPagesRecursevely(tabs, treeNodeChild, openedNodeChild, sortOrder);
                 }
             }
@@ -727,6 +742,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 itemIdAsInt = Null.NullInteger;
             }
+
             return this.GetTreePathForPageInternal(portalId, itemIdAsInt, sortOrder, includePortalTree, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
         }
 
@@ -740,6 +756,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return tree;
             }
+
             var portals = PortalController.GetPortalDictionary();
             int portalId;
             if (portals.ContainsKey(itemIdAsInt))
@@ -750,6 +767,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return tree;
             }
+
             return this.GetTreePathForPageInternal(portalId, itemIdAsInt, sortOrder, includePortalTree, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles);
         }
 
@@ -866,8 +884,10 @@ namespace DotNetNuke.Web.InternalServices
                         break;
                     }
                 }
+
                 rootTree = portalTree;
             }
+
             tree.Children = rootTree;
 
             return tree;
@@ -919,6 +939,7 @@ namespace DotNetNuke.Web.InternalServices
                 children = ApplySort(this.GetFolderDescendantsInternal(portalId, child.Data.Key, sortOrder, string.Empty, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
                 child.Children = children;
             }
+
             return tree;
         }
 
@@ -941,6 +962,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 return;
             }
+
             var children = ApplySort(this.GetFolderDescendantsInternal(portalId, openedNode.Data.Id, sortOrder, string.Empty, permissions), sortOrder).Select(dto => new NTree<ItemDto> { Data = dto }).ToList();
             treeNode.Children = children;
             if (openedNode.HasChildren())
@@ -952,6 +974,7 @@ namespace DotNetNuke.Web.InternalServices
                     {
                         continue;
                     }
+
                     this.SortFoldersRecursevely(portalId, treeNodeChild, openedNodeChild, sortOrder, permissions);
                 }
             }
@@ -977,6 +1000,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
+
             var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, string.Empty);
 
             if (parentFolder == null)
@@ -1129,6 +1153,7 @@ namespace DotNetNuke.Web.InternalServices
                 parentId = parentFolder.ParentID;
                 parentFolder = parentId > 0 ? FolderManager.Instance.GetFolder(parentId) : null;
             }
+
             selfTree.Data.Value = DynamicSharedConstants.RootFolder;
 
             tree.Children.Add(selfTree);
@@ -1158,6 +1183,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 searchFunc = folder => folder.FolderName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
+
             permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(parentFolder).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
@@ -1171,6 +1197,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
+
             Func<IFolderInfo, bool> searchFunc;
             if (string.IsNullOrEmpty(searchText))
             {
@@ -1180,6 +1207,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 searchFunc = folder => folder.FolderName.IndexOf(searchText, StringComparison.InvariantCultureIgnoreCase) > -1;
             }
+
             permission = string.IsNullOrEmpty(permission) ? null : permission.ToUpper();
             return FolderManager.Instance.GetFolders(portalId).Where(folder =>
                 (string.IsNullOrEmpty(permission) ?
@@ -1225,6 +1253,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
+
             var parentFolder = parentId > -1 ? FolderManager.Instance.GetFolder(parentId) : FolderManager.Instance.GetFolder(portalId, string.Empty);
 
             if (parentFolder == null)
@@ -1407,6 +1436,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 portalId = this.GetActivePortalId();
             }
+
             return portalId;
         }
 

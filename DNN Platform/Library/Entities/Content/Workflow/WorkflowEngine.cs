@@ -128,6 +128,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 return this._userController.GetUserById(workflow.PortalID, logDraftCompleted.User);
             }
+
             return null;
         }
 
@@ -344,6 +345,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     users.Add(superUser);
                 }
             }
+
             return users.ToList();
         }
 
@@ -358,15 +360,18 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 return;
             }
+
             var state = this._workflowStateRepository.GetWorkflowStateByID(contentItem.StateID);
             this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
         }
+
         private void AddWorkflowCommentLog(ContentItem contentItem, WorkflowState state, int userId, string userComment)
         {
             if (string.IsNullOrEmpty(userComment))
             {
                 return;
             }
+
             this.AddWorkflowLog(contentItem, state, WorkflowLogType.CommentProvided, userId, userComment);
         }
 
@@ -435,6 +440,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 nextState = states.ElementAt(index);
             }
+
             return nextState ?? workflow.FirstState;
         }
 

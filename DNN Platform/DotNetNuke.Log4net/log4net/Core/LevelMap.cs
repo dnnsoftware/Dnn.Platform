@@ -133,6 +133,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("name");
             }
+
             if (name.Length == 0)
             {
                 throw log4net.Util.SystemInfo.CreateArgumentOutOfRangeException("name", name, "Parameter: name, Value: [" + name + "] out of range. Level name must not be empty");
@@ -161,6 +162,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("level");
             }
+
             lock (this)
             {
                 this.m_mapName2Level[level.Name] = level;
@@ -220,6 +222,7 @@ namespace log4net.Core
                     this.m_mapName2Level[defaultLevel.Name] = defaultLevel;
                     return defaultLevel;
                 }
+
                 return level;
             }
         }

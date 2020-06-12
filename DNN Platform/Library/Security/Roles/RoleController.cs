@@ -104,6 +104,7 @@ namespace DotNetNuke.Security.Roles
                     delete = false;
                 }
             }
+
             return delete;
         }
 
@@ -119,6 +120,7 @@ namespace DotNetNuke.Security.Roles
                     {
                         preferredLocale = PortalSettings.DefaultLanguage;
                     }
+
                     var ci = new CultureInfo(preferredLocale);
                     UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(PortalSettings.PortalId, objUser.UserID, objRole.RoleID);
                     Custom.Add(Null.IsNull(objUserRole.EffectiveDate)
@@ -130,6 +132,7 @@ namespace DotNetNuke.Security.Roles
                     Custom.Add(string.Empty);
                     break;
             }
+
             var _message = new Message
             {
                 FromUserID = PortalSettings.AdministratorId,
@@ -171,6 +174,7 @@ namespace DotNetNuke.Security.Roles
                 {
                     this.AutoAssignUsers(role);
                 }
+
                 roleId = role.RoleID;
 
                 this.ClearRoleCache(role.PortalID);
@@ -246,6 +250,7 @@ namespace DotNetNuke.Security.Roles
                     _fileManager.DeleteFiles(_folderManager.GetFiles(groupFolder));
                     _folderManager.DeleteFolder(groupFolder);
                 }
+
                 JournalController.Instance.SoftDeleteJournalItemByGroupId(portalSettings.PortalId, role.RoleID);
             }
 
@@ -418,6 +423,7 @@ namespace DotNetNuke.Security.Roles
                     ExpiryDate = userRole.ExpiryDate;
                     IsTrialUsed = userRole.IsTrialUsed;
                 }
+
                 RoleInfo role = Instance.GetRole(portalId, r => r.RoleID == roleId);
                 if (role != null)
                 {
@@ -432,14 +438,17 @@ namespace DotNetNuke.Security.Roles
                         Frequency = role.BillingFrequency;
                     }
                 }
+
                 if (EffectiveDate < DateTime.Now)
                 {
                     EffectiveDate = Null.NullDate;
                 }
+
                 if (ExpiryDate < DateTime.Now)
                 {
                     ExpiryDate = DateTime.Now;
                 }
+
                 if (Period == Null.NullInteger)
                 {
                     ExpiryDate = Null.NullDate;
@@ -468,6 +477,7 @@ namespace DotNetNuke.Security.Roles
                             break;
                     }
                 }
+
                 if (UserRoleId != -1 && userRole != null)
                 {
                     userRole.ExpiryDate = ExpiryDate;
@@ -481,6 +491,7 @@ namespace DotNetNuke.Security.Roles
                     this.AddUserRole(portalId, userId, roleId, status, isOwner, EffectiveDate, ExpiryDate);
                 }
             }
+
             // Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
@@ -625,6 +636,7 @@ namespace DotNetNuke.Security.Roles
                     SendNotification(objUser, role, portalSettings, UserRoleActions.delete);
                 }
             }
+
             return canDelete;
         }
 

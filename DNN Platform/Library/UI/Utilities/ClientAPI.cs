@@ -120,8 +120,10 @@ namespace DotNetNuke.UI.Utilities
                     {
                         strPanes += objCtl.ClientID + ";";
                     }
+
                     strPaneNames += strPane + ";";
                 }
+
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_Panes", strPanes, true);
                 ClientAPI.RegisterClientVariable(objTitle.Page, "__dnn_PaneNames", strPaneNames, true);
             }
@@ -199,6 +201,7 @@ namespace DotNetNuke.UI.Utilities
                             AddAttribute(objButton, "max_icon", strMaxIconLoc);
                             AddAttribute(objButton, "min_icon", strMinIconLoc);
                         }
+
                         break;
                     case MinMaxPersistanceType.Page:
                         AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
@@ -207,6 +210,7 @@ namespace DotNetNuke.UI.Utilities
                             AddAttribute(objButton, "max_icon", strMaxIconLoc);
                             AddAttribute(objButton, "min_icon", strMinIconLoc);
                         }
+
                         break;
                     case MinMaxPersistanceType.Cookie:
                         if (intModuleId != -1)
@@ -226,6 +230,7 @@ namespace DotNetNuke.UI.Utilities
                                 ClientAPI.RegisterClientVariable(objButton.Page, "__dnn_" + intModuleId + ":defminimized", "true", true);
                             }
                         }
+
                         break;
                     case MinMaxPersistanceType.Personalization:
                         // Regardless if we determine whether or not the browser supports client-side personalization
@@ -241,9 +246,11 @@ namespace DotNetNuke.UI.Utilities
                                 AddAttribute(objButton, "min_icon", strMinIconLoc);
                             }
                         }
+
                         break;
                 }
             }
+
             if (MinMaxContentVisibile(objButton, intModuleId, blnDefaultMin, ePersistanceType))
             {
                 if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.DHTML))
@@ -254,6 +261,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     objContent.Visible = true;
                 }
+
                 if (!string.IsNullOrEmpty(strMinIconLoc))
                 {
                     SetMinMaxProperties(objButton, strMinIconLoc, Localization.GetString("Minimize"), Localization.GetString("Minimize"));
@@ -269,11 +277,13 @@ namespace DotNetNuke.UI.Utilities
                 {
                     objContent.Visible = false;
                 }
+
                 if (!string.IsNullOrEmpty(strMaxIconLoc))
                 {
                     SetMinMaxProperties(objButton, strMaxIconLoc, Localization.GetString("Maximize"), Localization.GetString("Maximize"));
                 }
             }
+
             if (intAnimationFrames != 5)
             {
                 ClientAPI.RegisterClientVariable(objButton.Page, "animf_" + objContent.ClientID, intAnimationFrames.ToString(), true);
@@ -351,6 +361,7 @@ namespace DotNetNuke.UI.Utilities
                         {
                             return !blnDefaultMin;
                         }
+
                     case MinMaxPersistanceType.Cookie:
                         if (intModuleId != -1)
                         {
@@ -368,6 +379,7 @@ namespace DotNetNuke.UI.Utilities
                         {
                             return true;
                         }
+
                     case MinMaxPersistanceType.Personalization:
                         string strVisible = Convert.ToString(Personalization.GetProfile(Globals.GetAttribute(objButton, "userctr"), Globals.GetAttribute(objButton, "userkey")));
                         if (string.IsNullOrEmpty(strVisible))
@@ -378,10 +390,12 @@ namespace DotNetNuke.UI.Utilities
                         {
                             return Convert.ToBoolean(strVisible);
                         }
+
                     default:
                         return !blnDefaultMin;
                 }
             }
+
             return Null.NullBoolean;
         }
 
@@ -468,8 +482,10 @@ namespace DotNetNuke.UI.Utilities
                         m_objEnabledClientPersonalizationKeys.Add(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey, string.Empty);
                     }
                 }
+
                 return true;
             }
+
             return false;
         }
 

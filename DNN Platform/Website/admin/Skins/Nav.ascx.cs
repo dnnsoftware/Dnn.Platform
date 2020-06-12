@@ -63,6 +63,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.SeparatorRightHTML = this.FixImagePath(this.SeparatorRightHTML);
                 }
+
                 if (!string.IsNullOrEmpty(this.SeparatorLeftHTMLBreadCrumb))
                 {
                     this.SeparatorLeftHTMLBreadCrumb = this.FixImagePath(this.SeparatorLeftHTMLBreadCrumb);
@@ -191,6 +192,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
+
             this.Response.Redirect(Globals.ApplicationURL(int.Parse(args.Node.Key)), true);
         }
 
@@ -200,6 +202,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
+
             this.BuildNodes(args.Node);
         }
     }

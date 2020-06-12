@@ -118,6 +118,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     strMode = "BASIC";
                 }
+
                 return strMode;
             }
             set
@@ -165,6 +166,7 @@ namespace DotNetNuke.UI.UserControls
                                 return this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
                                 // break;
                         }
+
                     default:
                         return this.IsRichEditorAvailable ? this.Encode(RemoveBaseTags(this._richTextEditor.Text)) : this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
                 }
@@ -193,6 +195,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     strMode = "H";
                 }
+
                 this.ViewState["textrender"] = strMode;
             }
         }
@@ -233,6 +236,7 @@ namespace DotNetNuke.UI.UserControls
                 return this.OptView.ClientID;
             }
         }
+
         public string LocalResourceFile
         {
             get
@@ -284,6 +288,7 @@ namespace DotNetNuke.UI.UserControls
                 this.OptRender.Items.Add(new ListItem(Localization.GetString("Html", Localization.GetResourceFile(this, MyFileName)), "H"));
                 this.OptRender.Items.Add(new ListItem(Localization.GetString("Raw", Localization.GetResourceFile(this, MyFileName)), "R"));
             }
+
             if (this.OptView.Items.Count == 0)
             {
                 this.OptView.Items.Add(new ListItem(Localization.GetString("BasicTextBox", Localization.GetResourceFile(this, MyFileName)), "BASIC"));
@@ -307,6 +312,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.Mode = this.OptView.SelectedItem.Value;
             }
+
             if (!string.IsNullOrEmpty(this.Mode))
             {
                 this.OptView.Items.FindByValue(this.Mode).Selected = true;
@@ -321,6 +327,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.TextRenderMode = this.OptRender.SelectedItem.Value;
             }
+
             if (!string.IsNullOrEmpty(this.TextRenderMode))
             {
                 this.OptRender.Items.FindByValue(this.TextRenderMode).Selected = true;
@@ -329,6 +336,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.OptRender.SelectedIndex = 0;
             }
+
             if (this.OptView.SelectedItem.Value == "BASIC")
             {
                 this.DivBasicTextBox.Visible = true;
@@ -353,6 +361,7 @@ namespace DotNetNuke.UI.UserControls
             this.OptView.SelectedItem.Value = mode;
             this.OptViewSelectedIndexChanged(this.OptView, EventArgs.Empty);
         }
+
         public void ChangeTextRenderMode(string textRenderMode)
         {
             this.OptRender.SelectedItem.Value = textRenderMode;
@@ -411,6 +420,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this.PanelView.Visible = false;
                 }
+
                 if (!this.ChooseRender)
                 {
                     this.DivBasicRender.Visible = false;
@@ -443,10 +453,12 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.TextRenderMode = this.OptRender.SelectedItem.Value;
             }
+
             if (this.Mode == "BASIC")
             {
                 this.TxtDesktopHTML.Text = this.TextRenderMode == "H" ? HtmlUtils.ConvertToHtml(this.TxtDesktopHTML.Text) : HtmlUtils.ConvertToText(this.TxtDesktopHTML.Text);
             }
+
             this.SetPanels();
         }
 
@@ -463,6 +475,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.Mode = this.OptView.SelectedItem.Value;
             }
+
             if (this.Mode == "BASIC")
             {
                 switch (this.TextRenderMode)
@@ -487,6 +500,7 @@ namespace DotNetNuke.UI.UserControls
                         break;
                 }
             }
+
             this.SetPanels();
         }
     }

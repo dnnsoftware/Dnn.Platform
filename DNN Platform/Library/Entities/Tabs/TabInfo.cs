@@ -248,6 +248,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     this._defaultLanguageTab = (from kvp in TabController.Instance.GetTabsByPortal(this.PortalID) where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
+
                 return this._defaultLanguageTab;
             }
         }
@@ -266,6 +267,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     doNotRedirect = false;
                 }
+
                 return doNotRedirect;
             }
         }
@@ -312,6 +314,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     indentedTabName += "...";
                 }
+
                 indentedTabName += this.LocalizedTabName;
                 return indentedTabName;
             }
@@ -344,6 +347,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     return this._isSuperTab;
                 }
+
                 return this.PortalID == Null.NullInteger;
             }
             set
@@ -364,6 +368,7 @@ namespace DotNetNuke.Entities.Tabs
                     // Child language
                     isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid;
                 }
+
                 return isTranslated;
             }
         }
@@ -431,6 +436,7 @@ namespace DotNetNuke.Entities.Tabs
                          where kvp.Value.DefaultLanguageGuid == this.UniqueId && LocaleController.Instance.GetLocale(this.PortalID, kvp.Value.CultureCode) != null
                          select kvp.Value).ToDictionary(t => t.CultureCode);
                 }
+
                 return this._localizedTabs;
             }
         }
@@ -448,6 +454,7 @@ namespace DotNetNuke.Entities.Tabs
                         this._skinDoctype = Host.Host.DefaultDocType;
                     }
                 }
+
                 return this._skinDoctype;
             }
             set
@@ -589,6 +596,7 @@ namespace DotNetNuke.Entities.Tabs
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
 
             string result = string.Empty;
@@ -729,11 +737,13 @@ namespace DotNetNuke.Entities.Tabs
                     result = PropertyAccess.FormatString(this.SiteMapPriority.ToString(), format);
                     break;
             }
+
             if (!isPublic && currentScope != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
 
@@ -970,6 +980,7 @@ namespace DotNetNuke.Entities.Tabs
                     url = tabUrl.Url;
                 }
             }
+
             return url ?? string.Empty;
         }
 

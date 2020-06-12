@@ -103,6 +103,7 @@ namespace DotNetNuke.UI.WebControls
                 pnlEditor.Controls.Add(this.TextEditControl);
                 this.Controls.Add(pnlEditor);
             }
+
             base.CreateChildControls();
         }
 
@@ -116,6 +117,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
 
@@ -145,6 +147,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.EditorText = this.Page.Server.HtmlDecode(Convert.ToString(this.Value));
             }
+
             if (this.Page != null && this.EditMode == PropertyEditorMode.Edit)
             {
                 this.Page.RegisterRequiresPostBack(this);

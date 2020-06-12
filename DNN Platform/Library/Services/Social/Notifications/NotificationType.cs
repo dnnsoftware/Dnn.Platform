@@ -117,6 +117,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 this.TimeToLive = new TimeSpan(0, timeToLive, 0);
             }
+
             this.DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
             this.IsTask = Null.SetNullBoolean(dr["IsTask"]);
 

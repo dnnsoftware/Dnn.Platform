@@ -97,6 +97,7 @@ namespace DotNetNuke.UI.UserControls
                         int.TryParse(this.Request.QueryString["mid"], out moduleID);
                     }
                 }
+
                 return moduleID;
             }
             set
@@ -118,6 +119,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -155,6 +157,7 @@ namespace DotNetNuke.UI.UserControls
 
                             this.lblLogURL.Text = "FileID=" + file.FileId;
                         }
+
                         var objUrls = new UrlController();
                         UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID);
                         if (objUrlTracking != null)
@@ -171,6 +174,7 @@ namespace DotNetNuke.UI.UserControls
                             {
                                 this.lblURL.Text = this._FormattedURL;
                             }
+
                             this.lblCreatedDate.Text = objUrlTracking.CreatedDate.ToString();
 
                             if (objUrlTracking.TrackClicks)
@@ -182,18 +186,21 @@ namespace DotNetNuke.UI.UserControls
                                     {
                                         this.lblTrackingURL.Text = Globals.AddHTTP(this.Request.Url.Host);
                                     }
+
                                     this.lblTrackingURL.Text += Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, objUrlTracking.TrackClicks);
                                 }
                                 else
                                 {
                                     this.lblTrackingURL.Text = this._TrackingURL;
                                 }
+
                                 this.lblClicks.Text = objUrlTracking.Clicks.ToString();
                                 if (!Null.IsNull(objUrlTracking.LastClick))
                                 {
                                     this.lblLastClick.Text = objUrlTracking.LastClick.ToString();
                                 }
                             }
+
                             if (objUrlTracking.LogActivity)
                             {
                                 this.pnlLog.Visible = true;
@@ -224,11 +231,13 @@ namespace DotNetNuke.UI.UserControls
                 {
                     strStartDate = strStartDate + " 00:00";
                 }
+
                 string strEndDate = this.txtEndDate.Text;
                 if (!string.IsNullOrEmpty(strEndDate))
                 {
                     strEndDate = strEndDate + " 23:59";
                 }
+
                 var objUrls = new UrlController();
                 // localize datagrid
                 Localization.LocalizeDataGrid(ref this.grdLog, this.LocalResourceFile);

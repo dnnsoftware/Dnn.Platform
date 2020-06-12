@@ -134,6 +134,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     template.KeyField = this.KeyField;
                 }
             }
+
             template.EditMode = this.EditMode;
             template.NavigateURL = this.NavigateURL;
             template.NavigateURLFormatString = this.NavigateURLFormatString;
@@ -164,6 +165,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.HeaderStyle.Font.Size = new FontUnit("10pt");
                 this.HeaderStyle.Font.Bold = true;
             }
+
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }

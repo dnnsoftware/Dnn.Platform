@@ -34,6 +34,7 @@ namespace Dnn.EditBar.UI.HttpModules
             {
                 return;
             }
+
             lock (LockAppStarted)
             {
                 if (_hasAppStarted)

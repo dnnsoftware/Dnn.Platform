@@ -77,6 +77,7 @@ namespace log4net.Util.TypeConverters
             {
                 return bool.Parse(str);
             }
+
             throw ConversionNotSupportedException.Create(typeof(bool), source);
         }
     }

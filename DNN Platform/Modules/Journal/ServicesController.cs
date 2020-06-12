@@ -530,6 +530,7 @@ namespace DotNetNuke.Modules.Journal
                     }
                 }
             }
+
             return content;
         }
 
@@ -549,6 +550,7 @@ namespace DotNetNuke.Modules.Journal
                 {
                     mentionText = mentionText.Substring(0, MentionNotificationLength) + MentionNotificationSuffix;
                 }
+
                 var notification = new Notification
                 {
                     Subject = string.Format(subjectTemplate, this.UserInfo.DisplayName, mentionType),

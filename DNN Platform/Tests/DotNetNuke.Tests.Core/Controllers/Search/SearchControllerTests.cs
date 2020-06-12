@@ -185,6 +185,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     LuceneController.ClearInstance();
                     this._luceneController.Dispose();
                 }
+
                 this._luceneController = new LuceneControllerImpl();
                 LuceneController.SetTestableInstance(this._luceneController);
             }
@@ -696,6 +697,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                     // 20 ms wait possible here
                     i++;
                 }
+
                 if (i >= 20)
                 {
                     // we didn't abort, might want to log this or take some other action
@@ -710,6 +712,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             {
                 throw ex; // oops
             }
+
             return r; // ah!
         }
 

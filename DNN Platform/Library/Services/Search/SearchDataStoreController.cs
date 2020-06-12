@@ -121,6 +121,7 @@ namespace DotNetNuke.Services.Search
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return dicSearchSettings;
         }
 

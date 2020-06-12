@@ -454,6 +454,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     return alias.HTTPAlias;
                 }
+
                 return string.Empty;
             }
         }
@@ -476,6 +477,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     return this.UserInfo.UserID;
                 }
+
                 return Null.NullInteger;
             }
         }
@@ -516,6 +518,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     mode = Mode.View;
                 }
+
                 return mode;
             }
         }
@@ -550,6 +553,7 @@ namespace DotNetNuke.Entities.Portals
                     // Hack to store empty string portalsetting with non empty default value
                     pageHead = (setting == "false") ? string.Empty : setting;
                 }
+
                 return pageHead;
             }
         }
@@ -568,6 +572,7 @@ namespace DotNetNuke.Entities.Portals
                 return PortalController.GetPortalSettingAsBoolean("InjectModuleHyperLink", this.PortalId, true);
             }
         }
+
         /*
          * generates a : Page.Response.AddHeader("X-UA-Compatible", "");
          *
@@ -584,6 +589,7 @@ namespace DotNetNuke.Entities.Portals
                     // Hack to store empty string portalsetting with non empty default value
                     CompatibleHttpHeader = (setting == "false") ? string.Empty : setting;
                 }
+
                 return CompatibleHttpHeader;
             }
         }
@@ -657,12 +663,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 outputFormat = "g";
             }
+
             var lowerPropertyName = propertyName.ToLowerInvariant();
             if (accessLevel == Scope.NoSettings)
             {
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
             var result = string.Empty;
             var isPublic = true;
@@ -687,6 +695,7 @@ namespace DotNetNuke.Entities.Portals
                     {
                         reminderUrl = Globals.RegisterURL(string.Empty, string.Empty);
                     }
+
                     result = PropertyAccess.FormatString(reminderUrl, format);
                     break;
                 case "portalid":
@@ -853,11 +862,13 @@ namespace DotNetNuke.Entities.Portals
                     result = PropertyAccess.Boolean2LocalizedYesNo(this.ControlPanelVisible, formatProvider);
                     break;
             }
+
             if (!isPublic && accessLevel != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
 

@@ -117,6 +117,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                         xmlDoc.DocumentElement.SelectSingleNode("system.webServer/modules").AppendChild(xmlFrag);
                     }
                 }
+
                 // Handler Config
                 var systemWebServerHandlersConfig = xmlDoc.DocumentElement.SelectSingleNode("system.webServer/handlers");
                 if (systemWebServerHandlersConfig != null)
@@ -142,6 +143,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
                         xmlDoc.DocumentElement.SelectSingleNode("system.web/httpModules").AppendChild(xmlFrag);
                     }
                 }
+
                 // HttpHandler Config
                 var systemWebServerHttpHandlersConfig = xmlDoc.DocumentElement.SelectSingleNode("system.web/httpHandlers");
                 if (systemWebServerHttpHandlersConfig != null)

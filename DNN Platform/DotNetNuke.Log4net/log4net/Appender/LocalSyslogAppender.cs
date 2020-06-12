@@ -467,6 +467,7 @@ namespace log4net.Appender
             {
                 return SyslogSeverity.Informational;
             }
+
             // Default setting
             return SyslogSeverity.Debug;
         }

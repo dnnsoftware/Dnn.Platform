@@ -251,6 +251,7 @@ namespace DotNetNuke.Entities.Users
                         }
                     }
                 }
+
                 return photoURL;
             }
         }
@@ -288,6 +289,7 @@ namespace DotNetNuke.Entities.Users
                                 break;
                         }
                     }
+
                     if (!string.IsNullOrEmpty(photoProperty.PropertyValue) && isVisible)
                     {
                         var fileInfo = FileManager.Instance.GetFile(int.Parse(photoProperty.PropertyValue));
@@ -303,13 +305,16 @@ namespace DotNetNuke.Entities.Users
                             {
                                 rootFolder = settings.HomeDirectory;
                             }
+
                             photoURLFile = TestableGlobals.Instance.ResolveUrl(rootFolder + fileInfo.Folder + fileInfo.FileName);
                         }
                     }
                 }
+
                 return photoURLFile;
             }
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets and sets the PostalCode part of the Address
@@ -358,6 +363,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     _TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_TimeZoneId);
                 }
+
                 // Next check if there is a Portal Setting
                 else
                 {
@@ -543,6 +549,7 @@ namespace DotNetNuke.Entities.Users
                     }
                 }
             }
+
             return propValue;
         }
 
@@ -558,6 +565,7 @@ namespace DotNetNuke.Entities.Users
                     return item.Text;
                 }
             }
+
             return value;
         }
 
@@ -652,6 +660,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     stringValue = Convert.ToString(value);
                 }
+
                 this.SetProfileProperty(name, stringValue);
             }
         }

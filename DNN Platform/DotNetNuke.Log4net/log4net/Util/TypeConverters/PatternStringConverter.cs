@@ -88,6 +88,7 @@ namespace log4net.Util.TypeConverters
             {
                 return patternString.Format();
             }
+
             throw ConversionNotSupportedException.Create(targetType, source);
         }
 
@@ -131,6 +132,7 @@ namespace log4net.Util.TypeConverters
             {
                 return new PatternString(str);
             }
+
             throw ConversionNotSupportedException.Create(typeof(PatternString), source);
         }
     }

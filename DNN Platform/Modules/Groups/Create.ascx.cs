@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.Groups
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected override void OnInit(EventArgs e)
         {
             this.InitializeComponent();
@@ -49,6 +50,7 @@ namespace DotNetNuke.Modules.Groups
         {
             this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, null));
         }
+
         private void Create_Click(object sender, EventArgs e)
         {
             var ps = Security.PortalSecurity.Instance;
@@ -112,6 +114,7 @@ namespace DotNetNuke.Modules.Groups
             {
                 roleGroupId = Null.NullInteger;
             }
+
             roleInfo.RoleGroupID = roleGroupId;
 
             roleInfo.RoleID = RoleController.Instance.AddRole(roleInfo);
@@ -123,6 +126,7 @@ namespace DotNetNuke.Modules.Groups
                 const int startIndex = 8; // length of https://
                 groupUrl = groupUrl.Substring(groupUrl.IndexOf("/", startIndex, StringComparison.InvariantCultureIgnoreCase));
             }
+
             roleInfo.Settings.Add("URL", groupUrl);
 
             roleInfo.Settings.Add("GroupCreatorName", this.UserInfo.DisplayName);
@@ -140,6 +144,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                 }
+
                 if (groupFolder != null)
                 {
                     var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);

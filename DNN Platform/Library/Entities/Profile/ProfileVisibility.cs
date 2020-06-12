@@ -42,6 +42,7 @@ namespace DotNetNuke.Entities.Profile
                         this.RoleVisibilities.Add(userRole);
                     }
                 }
+
                 if (!string.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
                 {
                     var relationships = lists[1].Substring(2).TrimEnd(',').Split(',');
@@ -81,6 +82,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     sb.Append(role.RoleID.ToString(CultureInfo.InvariantCulture) + ",");
                 }
+
                 sb.Append(";R:");
                 foreach (var relationship in this.RelationshipVisibilities)
                 {

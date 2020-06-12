@@ -74,6 +74,7 @@ namespace DotNetNuke.UI.Containers
                 {
                 ModuleActionIcon.ImageUrl = "~/images/" + action.Icon;
                 }
+
                 ModuleActionIcon.ToolTip = action.Title;
                 ModuleActionIcon.ID = "ico" + action.ID;
                 ModuleActionIcon.CausesValidation = false;

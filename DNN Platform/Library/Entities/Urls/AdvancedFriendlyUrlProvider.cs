@@ -49,6 +49,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 throw new ArgumentNullException("portalSettings");
             }
+
             return this.FriendlyUrlInternal(tab, path, pageName, string.Empty, (PortalSettings)portalSettings);
         }
 
@@ -155,6 +156,7 @@ namespace DotNetNuke.Entities.Urls
 
                 friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, settings);
             }
+
             OutputFriendlyUrlMessages(tab, path, "base/messages", messages, friendlyPath, settings);
             return friendlyPath;
         }
@@ -177,6 +179,7 @@ namespace DotNetNuke.Entities.Urls
                     friendlyPath = friendlyPath + "/" + pageName;
                 }
             }
+
             return friendlyPath;
         }
 
@@ -205,10 +208,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 debugValue = request.Params.Get("HTTP_" + debugToken);
             }
+
             if (debugValue == null)
             {
                 debugValue = "false";
             }
+
             return debugValue.ToLowerInvariant();
         }
 
@@ -285,6 +290,7 @@ namespace DotNetNuke.Entities.Urls
                     finalPathBuilder.Append(qs);
                 }
             }
+
             return finalPathBuilder.ToString();
         }
 
@@ -322,6 +328,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return extension;
         }
 
@@ -378,6 +385,7 @@ namespace DotNetNuke.Entities.Urls
                     // default page extension
                 }
             }
+
             return pageAndExtension;
         }
 
@@ -393,6 +401,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 portalAlias = portalSettings.PortalAlias.HTTPAlias;
             }
+
             string friendlyPath = GetFriendlyAlias(
                 path,
                 ref portalAlias,
@@ -422,6 +431,7 @@ namespace DotNetNuke.Entities.Urls
 
                     portalSettings = new PortalSettings(tab.TabID, alias);
                 }
+
                 // ImproveFriendlyUrl will attempt to remove tabid/nn and other information from the Url
                 friendlyPath = ImproveFriendlyUrl(
                     tab,
@@ -433,6 +443,7 @@ namespace DotNetNuke.Entities.Urls
                     localSettings,
                     parentTraceId);
             }
+
             // set it to lower case if so allowed by settings
             friendlyPath = ForceLowerCaseIfAllowed(tab, friendlyPath, localSettings);
 
@@ -474,6 +485,7 @@ namespace DotNetNuke.Entities.Urls
                                  " does not match http alias and no usable alias could be found");
                 }
             }
+
             return alias;
         }
 
@@ -496,6 +508,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return code;
         }
 
@@ -508,6 +521,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 cultureCode = (string)cultureCodePi.GetValue(portalSettings, null);
             }
+
             return cultureCode;
         }
 
@@ -612,10 +626,12 @@ namespace DotNetNuke.Entities.Urls
                     {
                         friendlyPath = friendlyPath.Substring(1);
                     }
+
                     if (friendlyPath.StartsWith("/") == false)
                     {
                         friendlyPath = "/" + friendlyPath;
                     }
+
                     // should now have a standard /path/path/page.aspx?key=value style of Url
                     httpAliasFull = Globals.AddHTTP(httpAlias);
 
@@ -652,8 +668,10 @@ namespace DotNetNuke.Entities.Urls
                 {
                     httpAliasFull = Globals.AddHTTP(httpAlias);
                 }
+
                 friendlyPath = httpAliasFull + friendlyPath;
             }
+
             return friendlyPath;
         }
 
@@ -672,6 +690,7 @@ namespace DotNetNuke.Entities.Urls
                     var pgNameRx = RegexUtils.GetCachedRegex(pageName, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     friendlyPath = pgNameRx.Replace(friendlyPath, string.Empty);
                 }
+
                 string queryString = queryStringMatch.Groups[2].Value.Replace("&amp;", "&");
                 if (queryString.StartsWith("?"))
                 {
@@ -726,11 +745,13 @@ namespace DotNetNuke.Entities.Urls
                                                     {
                                                         pathToAppend = "/" + pathToAppend;
                                                     }
+
                                                     pathToAppend = tab.TabPath.Replace("//", "/").TrimStart('/').TrimEnd('/') + pathToAppend;
                                                 }
                                             }
                                         }
                                     }
+
                                     if (pair[1].Contains(" "))
                                     {
                                         if (tab != null && (tab.IsSuperTab || RewriteController.IsAdminTab(tab.PortalID, tab.TabPath, settings)))
@@ -765,6 +786,7 @@ namespace DotNetNuke.Entities.Urls
                                             valueBuilder.Append(pair[j]);
                                         }
                                     }
+
                                     // Rewrite into URL, contains only alphanumeric and the % or space
                                     if (queryStringSpecialChars.Length == 0)
                                     {
@@ -774,6 +796,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         queryStringSpecialChars = queryStringSpecialChars + "&" + key + "=" + valueBuilder;
                                     }
+
                                     pathToAppend = string.Empty;
                                 }
                             }
@@ -807,6 +830,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
             }
+
             return AddPage(friendlyPath, pageName);
         }
 
@@ -853,6 +877,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             string httpAlias = portalSettings.PortalAlias.HTTPAlias;
             // invalid call just return the path
             if (tab == null)
@@ -904,6 +929,7 @@ namespace DotNetNuke.Entities.Urls
                             qs = "?" + rgxMatch.Groups["qs"].Value;
                         }
                     }
+
                     bool dropLangParms;
                     // 736: observe the culture code of the tab
                     string cultureCode = tab.CultureCode;
@@ -914,6 +940,7 @@ namespace DotNetNuke.Entities.Urls
                         isDefaultLanguage = true;
                         // 751 when using the default culture code, the redirect doesn't need an explicit language
                     }
+
                     bool isCustomUrl;
                     newTabPath = TabPathHelper.GetTabPath(
                         tab,
@@ -1006,6 +1033,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+
                         bool dropLangParms;
                         // determine if we allow the home page to be shown as the site root.  This is if :
                         // cultureCode = default culture, newPath is blank after removing languageParms
@@ -1112,6 +1140,7 @@ namespace DotNetNuke.Entities.Urls
                                         ref messages,
                                         parentTraceId);
                                 }
+
                                 // when no custom module Urls, check for any regex replacements by way of the friendlyurlparms.config file
                                 if (!customModuleUrl)
                                 {
@@ -1153,6 +1182,7 @@ namespace DotNetNuke.Entities.Urls
                                 dropLangParms = isDefaultLanguage || cultureSpecificAlias;
                                 // (defaultCode.ToLower() == cultureCode.ToLower()) || cultureSpecificAlias;
                             }
+
                             string finalPath = CreateFriendlyUrl(
                                 httpAlias,
                                 newTabPath,
@@ -1208,6 +1238,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return result;
         }
 
@@ -1236,6 +1267,7 @@ namespace DotNetNuke.Entities.Urls
                         tabId = tab.TabID;
                         tabName = tab.TabName;
                     }
+
                     msgId += "-" + tabId.ToString("000");
 
                     if (messages != null && messages.Count > 0)
@@ -1250,6 +1282,7 @@ namespace DotNetNuke.Entities.Urls
                             response.AppendHeader("X-Friendly-Url-" + msgId + "." + i.ToString("00"), msg);
                             i++;
                         }
+
                         if (resultUrl != null)
                         {
                             response.AppendHeader(
@@ -1361,6 +1394,7 @@ namespace DotNetNuke.Entities.Urls
                         break;
                 }
             }
+
             return builtInUrl;
         }
 
@@ -1381,6 +1415,7 @@ namespace DotNetNuke.Entities.Urls
                             forceLowerCase = !rx.IsMatch(url);
                         }
                     }
+
                     if (forceLowerCase)
                     {
                         // don't force lower case for Urls excluded from being 'friendly'
@@ -1393,6 +1428,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return url;
         }
     }

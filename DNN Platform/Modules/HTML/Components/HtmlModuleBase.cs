@@ -23,6 +23,7 @@ namespace DotNetNuke.Modules.Html.Components
                     var repo = new HtmlModuleSettingsRepository();
                     this._settings = repo.GetSettings(this.ModuleConfiguration);
                 }
+
                 return this._settings;
             }
             set { this._settings = value; }

@@ -39,6 +39,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypHostName.CssClass = this.CssClass;
                 }
+
                 this.hypHostName.Text = Host.HostTitle;
                 this.hypHostName.NavigateUrl = Globals.AddHTTP(Host.HostURL);
             }

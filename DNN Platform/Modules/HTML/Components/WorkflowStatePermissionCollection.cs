@@ -83,11 +83,13 @@ namespace DotNetNuke.Security.Permissions
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
                     id = this.Add(value);
                 }
             }
+
             return id;
         }
 
@@ -113,6 +115,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             this.InnerList.Sort(new CompareWorkflowStatePermissions());
             objWorkflowStatePermissionCollection.InnerList.Sort(new CompareWorkflowStatePermissions());
 
@@ -167,6 +170,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 list.Add(permission);
             }
+
             return list;
         }
 

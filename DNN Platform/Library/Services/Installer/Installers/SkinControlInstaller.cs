@@ -52,6 +52,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     SkinControlController.DeleteSkinControl(skinControl);
                 }
+
                 this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, skinControl.ControlKey));
             }
             catch (Exception ex)

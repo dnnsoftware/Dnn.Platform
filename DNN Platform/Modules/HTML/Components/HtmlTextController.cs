@@ -206,10 +206,12 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = "/" + portalRoot;
             }
+
             if (!portalRoot.EndsWith("/"))
             {
                 portalRoot = portalRoot + "/";
             }
+
             content = Regex.Replace(content, PortalRootToken + "\\/{0,1}", portalRoot, RegexOptions.IgnoreCase);
 
             return content;
@@ -224,6 +226,7 @@ namespace DotNetNuke.Modules.Html
             {
                 portalRoot = "/" + portalRoot;
             }
+
             if (!portalRoot.EndsWith("/"))
             {
                 portalRoot = portalRoot + "/";
@@ -374,6 +377,7 @@ namespace DotNetNuke.Modules.Html
                     htmlText = CBO.FillObject<HtmlTextInfo>(DataProvider.Instance().GetTopHtmlText(moduleId, false));
                 }
             }
+
             return htmlText;
         }
 
@@ -409,6 +413,7 @@ namespace DotNetNuke.Modules.Html
                 workFlowId = settings.WorkFlowID;
                 workFlowType = "Module";
             }
+
             if (workFlowId == Null.NullInteger)
             {
                 // if undefined at module level, get from tab settings
@@ -494,11 +499,13 @@ namespace DotNetNuke.Modules.Html
                         {
                             strDirectory += "/";
                         }
+
                         if (strURL.IndexOf(strDirectory) != -1)
                         {
                             S = S + strURL.IndexOf(strDirectory) + strDirectory.Length;
                             strURL = strURL.Substring(strURL.IndexOf(strDirectory) + strDirectory.Length);
                         }
+
                         // add upload directory
                         if (!strURL.StartsWith("/")
                             && !string.IsNullOrEmpty(strURL.Trim())) // We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
@@ -506,6 +513,7 @@ namespace DotNetNuke.Modules.Html
                             sbBuff.Append(uploadDirectory);
                         }
                     }
+
                     // find position of next occurrance
                     P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
                 }
@@ -514,6 +522,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     sbBuff.Append(strHTML.Substring(S));
                 }
+
                 // append characters of last URL and behind
             }
 
@@ -624,6 +633,7 @@ namespace DotNetNuke.Modules.Html
                             this.ClearModuleSettings(kvp.Value);
                         }
                     }
+
                     break;
                 case "Site":
                     PortalController.UpdatePortalSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
@@ -634,12 +644,14 @@ namespace DotNetNuke.Modules.Html
                         {
                             TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
                         }
+
                         // Get All Modules in the current Site
                         foreach (ModuleInfo objModule in ModuleController.Instance.GetModules(ObjectID))
                         {
                             this.ClearModuleSettings(objModule);
                         }
                     }
+
                     break;
             }
         }
@@ -750,6 +762,7 @@ namespace DotNetNuke.Modules.Html
                 // legacy module content
                 htmlContent.Content = this.DeTokeniseLinks(xml.SelectSingleNode("desktophtml").InnerText, module.PortalID);
             }
+
             htmlContent.WorkflowID = workflowID;
             htmlContent.StateID = workflowStateController.GetFirstWorkflowStateID(workflowID);
             // import
@@ -807,6 +820,7 @@ namespace DotNetNuke.Modules.Html
                         tags.AddRange(collectTagsFunc(t.ChildTerms, new List<string>()));
                     }
                 }
+
                 return tags;
             };
 

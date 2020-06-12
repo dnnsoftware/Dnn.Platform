@@ -49,6 +49,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
                         break;
                 }
             }
+
             // instance the correct provider implementation
             switch (this._urlFormat)
             {

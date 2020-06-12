@@ -132,6 +132,7 @@ namespace DotNetNuke.Framework
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -189,6 +190,7 @@ namespace DotNetNuke.Framework
             {
                 tabId = this.PortalSettings.ActiveTab.TabID;
             }
+
             if (this._tracelLogger.IsDebugEnabled)
             {
                 this._tracelLogger.Debug($"{origin} {action} (TabId:{tabId},{message})");
@@ -359,10 +361,12 @@ namespace DotNetNuke.Framework
                     }
                 }
             }
+
             if (key != null && affectedControls != null)
             {
                 affectedControls.Add(attributeCollection);
             }
+
             return key;
         }
 
@@ -402,11 +406,13 @@ namespace DotNetNuke.Framework
                     var resolvedUrl = this.Page.ResolveUrl(match.Groups[match.Groups.Count - 2].Value);
                     value = value.Replace(match.Groups[match.Groups.Count - 2].Value, resolvedUrl);
                 }
+
                 linkButton.Text = value;
                 if (string.IsNullOrEmpty(linkButton.ToolTip))
                 {
                     linkButton.ToolTip = value;
                 }
+
                 return;
             }
 
@@ -499,6 +505,7 @@ namespace DotNetNuke.Framework
                             listControl.Items[i].Text = value;
                         }
                     }
+
                     if (key != null && affectedControls != null)
                     {
                         affectedControls.Add(attributeCollection);
@@ -555,6 +562,7 @@ namespace DotNetNuke.Framework
                 {
                     ctrl.NavigateUrl = this.Page.ResolveUrl(ctrl.NavigateUrl);
                 }
+
                 if (ctrl.ImageUrl.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
                     ctrl.ImageUrl = this.Page.ResolveUrl(ctrl.ImageUrl);
@@ -613,6 +621,7 @@ namespace DotNetNuke.Framework
             {
                 return;
             }
+
             int i;
             for (i = 0; i <= affectedControls.Count - 1; i++)
             {

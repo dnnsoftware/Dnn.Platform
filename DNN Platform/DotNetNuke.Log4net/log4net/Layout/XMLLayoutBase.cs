@@ -108,6 +108,7 @@ namespace log4net.Layout
             get { return this.m_locationInfo; }
             set { this.m_locationInfo = value; }
         }
+
         /// <summary>
         /// The string to replace characters that can not be expressed in XML with.
         /// <remarks>

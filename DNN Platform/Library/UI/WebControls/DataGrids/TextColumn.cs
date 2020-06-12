@@ -55,11 +55,13 @@ namespace DotNetNuke.UI.WebControls
             {
                 isDesignMode = true;
             }
+
             var template = new TextColumnTemplate(type);
             if (type != ListItemType.Header)
             {
                 template.DataField = this.DataField;
             }
+
             template.Width = this.Width;
             if (type == ListItemType.Header)
             {
@@ -69,6 +71,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 template.Text = this.Text;
             }
+
             template.DesignMode = isDesignMode;
             return template;
         }

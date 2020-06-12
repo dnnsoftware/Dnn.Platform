@@ -262,6 +262,7 @@ namespace DNN.Integration.Test.Framework
                             this._cookieVerificationToken.HttpOnly = true;
                         }
                     }
+
                     break;
                 }
             }
@@ -674,6 +675,7 @@ namespace DNN.Integration.Test.Framework
                                     postParameters.Add(inputName.Value, value);
                                 }
                             }
+
                             break;
                         case "text":
                         case "checkbox":

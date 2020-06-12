@@ -298,6 +298,7 @@ namespace log4net.Plugin
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -319,6 +320,7 @@ namespace log4net.Plugin
                     return i;
                 }
             }
+
             return -1;
         }
 
@@ -365,6 +367,7 @@ namespace log4net.Plugin
             {
                 throw new System.ArgumentException("Cannot remove the specified item because it was not found in the specified Collection.");
             }
+
             ++this.m_version;
             this.RemoveAt(i);
         }
@@ -693,6 +696,7 @@ namespace log4net.Plugin
             {
                 this.m_collection.CopyTo(array, start);
             }
+
             public override int Count
             {
                 get { return this.m_collection.Count; }

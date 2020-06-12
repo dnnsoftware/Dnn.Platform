@@ -113,6 +113,7 @@ namespace DotNetNuke.Entities.Modules
                         _IsEdit = true;
                     }
                 }
+
                 return _IsEdit;
             }
         }
@@ -148,6 +149,7 @@ namespace DotNetNuke.Entities.Modules
                         }
                     }
                 }
+
                 return _IsProfile;
             }
         }
@@ -226,6 +228,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     _UserId = Convert.ToInt32(this.ViewState["UserId"]);
                 }
+
                 return _UserId;
             }
             set
@@ -246,6 +249,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 settings = UserController.GetUserSettings(portalId, settings);
             }
+
             return settings[settingKey];
         }
 
@@ -314,12 +318,14 @@ namespace DotNetNuke.Entities.Modules
 
                 newUser.Profile.Country = country;
             }
+
             // Set AffiliateId
             int AffiliateId = Null.NullInteger;
             if (this.Request.Cookies["AffiliateId"] != null)
             {
                 AffiliateId = int.Parse(this.Request.Cookies["AffiliateId"].Value);
             }
+
             newUser.AffiliateID = AffiliateId;
             return newUser;
         }
@@ -343,6 +349,7 @@ namespace DotNetNuke.Entities.Modules
                 // Set the IP address so we can find the country
                 IP = this.Page.Request.UserHostAddress;
             }
+
             // Check to see if we need to generate the Cache for the GeoIPData file
             if (this.Context.Cache.Get("GeoIPData") == null && _CacheGeoIPData)
             {
@@ -373,6 +380,7 @@ namespace DotNetNuke.Entities.Modules
                 // No, get it from file
                 _CountryLookup = new CountryLookup(this.Context.Server.MapPath(_GeoIPFile));
             }
+
             // Get the country code based on the IP address
             string country = Null.NullString;
             try
@@ -383,6 +391,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 Exceptions.LogException(ex);
             }
+
             return country;
         }
 
@@ -440,6 +449,7 @@ namespace DotNetNuke.Entities.Modules
                             strMessage += Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile);
                             message = ModuleMessage.ModuleMessageType.GreenSuccess;
                         }
+
                         break;
                     case (int)Globals.PortalRegistrationType.PublicRegistration:
                         Mail.SendMail(newUser, MessageType.UserRegistrationPublic, this.PortalSettings);
@@ -450,6 +460,7 @@ namespace DotNetNuke.Entities.Modules
                         UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, string.Empty, this.PortalSettings.PortalName, string.Empty, ref loginStatus, false);
                         break;
                 }
+
                 // store preferredlocale in cookie
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)

@@ -38,6 +38,7 @@ namespace DotNetNuke.Web.Api
                     alias = alias.Remove(i, appPath.Length);
                 }
             }
+
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
@@ -126,6 +127,7 @@ namespace DotNetNuke.Web.Api
                         }
                     }
                 }
+
                 IEnumerable<int> segmentCounts = segmentCounts1;
                 this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
             }

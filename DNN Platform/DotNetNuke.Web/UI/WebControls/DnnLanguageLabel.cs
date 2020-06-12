@@ -113,6 +113,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 localeName = Localization.GetLocaleName(this.Language, this.DisplayType);
             }
+
             this._Label.Text = localeName;
             this._Flag.AlternateText = localeName;
         }

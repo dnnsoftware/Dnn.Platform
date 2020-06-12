@@ -103,6 +103,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     _PhysicalBasePath += "\\";
                 }
+
                 return _PhysicalBasePath.Replace("/", "\\");
             }
         }
@@ -276,6 +277,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 file.Type = InstallFileType.AppCode;
             }
+
             if (file != null)
             {
                 // Set the Version
@@ -295,6 +297,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     file.Action = strAction;
                 }
+
                 if (this.InstallMode == InstallMode.Install && checkFileExists && file.Action != "UnRegister")
                 {
                     if (File.Exists(file.TempFileName))
@@ -307,6 +310,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
             }
+
             return file;
         }
 
@@ -355,6 +359,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.CommitFile(file);
                 }
+
                 this.Completed = true;
             }
             catch (Exception ex)
@@ -381,6 +386,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         break;
                     }
                 }
+
                 this.Completed = bSuccess;
             }
             catch (Exception ex)
@@ -404,6 +410,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.BasePath = baseNav.Value;
                 }
+
                 this.ReadCustomManifest(rootNav);
                 foreach (XPathNavigator nav in rootNav.Select(this.ItemNodeName))
                 {
@@ -426,6 +433,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.RollbackFile(file);
                 }
+
                 this.Completed = true;
             }
             catch (Exception ex)
@@ -447,6 +455,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this.UnInstallFile(file);
                 }
+
                 this.Completed = true;
             }
             catch (Exception ex)

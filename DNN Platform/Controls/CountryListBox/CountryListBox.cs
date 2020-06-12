@@ -94,6 +94,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
                 }
+
                 this.EnsureChildControls();
                 // Check to see if a TestIP is specified
                 if (!string.IsNullOrEmpty(this._TestIP))
@@ -152,6 +153,7 @@ namespace DotNetNuke.UI.WebControls
                         // No, get it from file
                         _CountryLookup = new CountryLookup(this.Context.Server.MapPath(this._GeoIPFile));
                     }
+
                     // Get the country code based on the IP address
                     string _UserCountryCode = _CountryLookup.LookupCountryCode(IP);
 

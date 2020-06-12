@@ -80,6 +80,7 @@ namespace Dnn.ExportImport.Components.Engines
                 {
                     finfo.Directory.Delete(true);
                 }
+
                 // Clear all the files in finfo.Directory. Create if doesn't exists.
                 finfo.Directory?.Create();
                 result.AddSummary("Starting Exporting Repository", finfo.Name);
@@ -116,6 +117,7 @@ namespace Dnn.ExportImport.Components.Engines
                 exportJob.JobStatus = JobStatus.Failed;
                 return;
             }
+
             scheduleHistoryItem.AddLogNote($"<br/><b>SITE EXPORT Preparing Check Points. JOB #{exportJob.JobId}: {exportJob.Name}</b>");
             this.PrepareCheckPoints(exportJob.JobId, parentServices, implementors, includedItems, checkpoints);
 
@@ -180,6 +182,7 @@ namespace Dnn.ExportImport.Components.Engines
                             {
                                 this.AddLogsToDatabase(exportJob.JobId, result.CompleteLog);
                             }
+
                             scheduleHistoryItem.AddLogNote("<br/>Exported: " + service.Category);
                         }
                     }
@@ -216,6 +219,7 @@ namespace Dnn.ExportImport.Components.Engines
                 {
                     BaseController.BuildJobSummary(exportJob.Directory, ctx, summary);
                 }
+
                 DoPacking(exportJob, dbName);
                 // Complete the job.
                 exportJob.JobStatus = JobStatus.Successful;
@@ -360,6 +364,7 @@ namespace Dnn.ExportImport.Components.Engines
                             {
                                 this.AddLogsToDatabase(importJob.JobId, result.CompleteLog);
                             }
+
                             scheduleHistoryItem.AddLogNote("<br/>Imported: " + service.Category);
                         }
                     }
@@ -566,6 +571,7 @@ namespace Dnn.ExportImport.Components.Engines
                     additionalItems.Add(basePortableService.Category);
                 }
             }
+
             additionalItems.ForEach(i => includedItems.Add(i));
 
             // must be included always when there is at least one other object to process
@@ -596,6 +602,7 @@ namespace Dnn.ExportImport.Components.Engines
             {
                 value = 12 * 60 * 60;
             }
+
             return value;
         }
 
@@ -739,6 +746,7 @@ namespace Dnn.ExportImport.Components.Engines
                     table.Rows.Clear();
                 }
             }
+
             completeLog.Clear();
         }
 

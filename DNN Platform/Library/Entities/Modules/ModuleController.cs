@@ -83,12 +83,14 @@ namespace DotNetNuke.Entities.Modules
                                 {
                                     newnode.Attributes.Append(xmlattr);
                                 }
+
                                 xmlattr = nodeModule.OwnerDocument.CreateAttribute("version");
                                 xmlattr.Value = module.DesktopModule.Version;
                                 if (newnode.Attributes != null)
                                 {
                                     newnode.Attributes.Append(xmlattr);
                                 }
+
                                 content = HttpContext.Current.Server.HtmlEncode(content);
                                 newnode.InnerXml = XmlUtils.XMLEncode(content);
                                 nodeModule.AppendChild(newnode);
@@ -193,6 +195,7 @@ namespace DotNetNuke.Entities.Modules
                     IsInstance = true;
                 }
             }
+
             return IsInstance;
         }
 
@@ -357,6 +360,7 @@ namespace DotNetNuke.Entities.Modules
                     module.Visibility = VisibilityState.None;
                     break;
             }
+
             module.Color = XmlUtils.GetNodeValue(nodeModule, "color", string.Empty);
             module.Border = XmlUtils.GetNodeValue(nodeModule, "border", string.Empty);
             module.Header = XmlUtils.GetNodeValue(nodeModule, "header", string.Empty);
@@ -370,6 +374,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 module.ContainerSrc = XmlUtils.GetNodeValue(nodeModule, "containersrc", string.Empty);
             }
+
             module.DisplayTitle = XmlUtils.GetNodeValueBoolean(nodeModule, "displaytitle", true);
             module.DisplayPrint = XmlUtils.GetNodeValueBoolean(nodeModule, "displayprint", true);
             module.DisplaySyndicate = XmlUtils.GetNodeValueBoolean(nodeModule, "displaysyndicate", false);
@@ -380,6 +385,7 @@ namespace DotNetNuke.Entities.Modules
                 module.WebSliceExpiryDate = XmlUtils.GetNodeValueDate(nodeModule, "websliceexpirydate", module.EndDate);
                 module.WebSliceTTL = XmlUtils.GetNodeValueInt(nodeModule, "webslicettl", module.CacheTime / 60);
             }
+
             return module;
         }
 
@@ -406,8 +412,10 @@ namespace DotNetNuke.Entities.Modules
                         {
                             roleID = role.RoleID;
                         }
+
                         break;
                 }
+
                 if (roleID != int.MinValue)
                 {
                     int permissionID = -1;
@@ -477,6 +485,7 @@ namespace DotNetNuke.Entities.Modules
                     moduleFound = true;
                 }
             }
+
             return moduleFound;
         }
 
@@ -524,6 +533,7 @@ namespace DotNetNuke.Entities.Modules
                         }
                     }
                 }
+
                 // ReSharper restore PossibleNullReferenceException
             }
         }
@@ -561,6 +571,7 @@ namespace DotNetNuke.Entities.Modules
                     moduleDefinition = ModuleDefinitionController.GetModuleDefinitionByFriendlyName(friendlyName, desktopModule.DesktopModuleID);
                 }
             }
+
             return moduleDefinition;
         }
 
@@ -596,6 +607,7 @@ namespace DotNetNuke.Entities.Modules
                                         settings[dr.GetString(1)] = string.Empty;
                                     }
                                 }
+
                                 CBO.CloseDataReader(dr, true);
                                 return moduleSettingsDic;
                             });
@@ -637,6 +649,7 @@ namespace DotNetNuke.Entities.Modules
                                         }
                                     }
                                 }
+
                                 return tabModuleSettingsDic;
                             });
 
@@ -853,6 +866,7 @@ namespace DotNetNuke.Entities.Modules
                 string sKey = key;
                 this.UpdateModuleSettingInternal(updatedModule.ModuleID, sKey, Convert.ToString(updatedModule.ModuleSettings[sKey]), false);
             }
+
             this.UpdateTabModuleVersionsByModuleID(updatedModule.ModuleID);
         }
 
@@ -876,6 +890,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 this.ClearCache(modInfo.TabID);
             }
+
             dataProvider.UpdateTabModuleVersionByModule(moduleID);
         }
 
@@ -1063,8 +1078,10 @@ namespace DotNetNuke.Entities.Modules
                 {
                     tmpModule = this.GetModule(module.ModuleID, module.TabID, false);
                 }
+
                 module.TabModuleID = tmpModule.TabModuleID;
             }
+
             this.UpdateTabModuleSettings(module);
 
             this.ClearCache(module.TabID);
@@ -1255,6 +1272,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 module.ContentTypeId = contentType.ContentTypeId;
             }
+
             module.ContentItemId = contentController.AddContentItem(module);
         }
 
@@ -1285,6 +1303,7 @@ namespace DotNetNuke.Entities.Modules
                     this.UncopyModule(objTab.TabID, moduleId, softDelete, tabId); // uncopy existing modules
                 }
             }
+
             // Optionally delete the Module
             if (includeCurrent && deleteBaseModule && !softDelete)
             {
@@ -1535,10 +1554,12 @@ namespace DotNetNuke.Entities.Modules
                 var dicModules = this.GetTabModules(tabID);
                 bFound = dicModules.TryGetValue(moduleID, out modInfo);
             }
+
             if (ignoreCache || !bFound)
             {
                 modInfo = CBO.FillObject<ModuleInfo>(dataProvider.GetModule(moduleID, tabID));
             }
+
             return modInfo;
         }
 
@@ -1590,6 +1611,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
+
             return localizedModule;
         }
 
@@ -1622,6 +1644,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     clonemodules[m.ModuleDefinition.DefinitionName] = m;
                 }
+
                 // get from database
                 IDataReader dr = DataProvider.Instance().GetModuleByDefinition(portalId, definitionName);
                 try
@@ -1634,6 +1657,7 @@ namespace DotNetNuke.Entities.Modules
                     // close connection
                     CBO.CloseDataReader(dr, true);
                 }
+
                 if (module != null)
                 {
                     // add the module to the dictionary
@@ -1649,6 +1673,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
+
             return module;
         }
 
@@ -1702,6 +1727,7 @@ namespace DotNetNuke.Entities.Modules
                     modules.AddRange(this.GetModulesByDefinition(portal.PortalID, moduleDefinition.Value.DefinitionName));
                 }
             }
+
             return modules;
         }
 
@@ -1754,6 +1780,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 dictionary[module.ModuleID] = module;
             }
+
             return dictionary;
         }
 
@@ -2028,6 +2055,7 @@ namespace DotNetNuke.Entities.Modules
                             // Update Setting
                             PortalController.UpdatePortalSetting(module.PortalID, "defaultmoduleid", module.ModuleID.ToString(CultureInfo.InvariantCulture));
                         }
+
                         if (module.TabID != PortalSettings.Current.DefaultTabId)
                         {
                             // Update Setting
@@ -2044,6 +2072,7 @@ namespace DotNetNuke.Entities.Modules
                         }
                     }
                 }
+
                 // apply settings to all desktop modules in portal
                 if (module.AllModules)
                 {
@@ -2092,6 +2121,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
+
             // Clear Cache for all TabModules
             foreach (ModuleInfo tabModule in this.GetTabModulesByModule(module.ModuleID))
             {
@@ -2133,8 +2163,10 @@ namespace DotNetNuke.Entities.Modules
                     {
                         CBO.CloseDataReader(dr, true);
                     }
+
                     moduleOrder += 2;
                 }
+
                 dataProvider.UpdateModuleOrder(tabId, moduleId, moduleOrder, paneName);
                 TabChangeTracker.Instance.TrackModuleModification(this.GetModule(moduleId, tabId, true), Null.NullInteger, UserController.Instance.GetCurrentUserInfo().UserID);
                 // clear cache
@@ -2213,6 +2245,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             // clear module cache
             this.ClearCache(tabId);
         }
@@ -2261,6 +2294,7 @@ namespace DotNetNuke.Entities.Modules
                 // Ensure DataReader is closed
                 CBO.CloseDataReader(dr, true);
             }
+
             ClearTabModuleSettingsCache(tabModuleId, settingName);
         }
 
@@ -2279,6 +2313,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 localizedModule.LocalizedVersionGuid = Guid.NewGuid();
             }
+
             DataProvider.Instance().UpdateTabModuleTranslationStatus(localizedModule.TabModuleID, localizedModule.LocalizedVersionGuid, UserController.Instance.GetCurrentUserInfo().UserID);
 
             // Clear Tab Caches
@@ -2396,6 +2431,7 @@ namespace DotNetNuke.Entities.Modules
                             return;
                         }
                     }
+
                     // deserialize Module's settings
                     XmlNodeList nodeModuleSettings = nodeModule.SelectNodes("modulesettings/modulesetting");
                     DeserializeModuleSettings(nodeModuleSettings, module);
@@ -2437,6 +2473,7 @@ namespace DotNetNuke.Entities.Modules
                     {
                         GetModuleContent(nodeModule, intModuleId, tabId, portalId);
                     }
+
                     // Process permissions only once
                     if (!isInstance && portalId != Null.NullInteger)
                     {
@@ -2506,16 +2543,19 @@ namespace DotNetNuke.Entities.Modules
                         nodePermission.RemoveChild(nodePermission.SelectSingleNode("displayname"));
                     }
                 }
+
                 if (includeContent)
                 {
                     AddContent(moduleNode, module);
                 }
+
                 // serialize ModuleSettings and TabModuleSettings
                 XmlUtils.SerializeHashtable(module.ModuleSettings, xmlModule, moduleNode, "modulesetting", "settingname", "settingvalue");
                 XmlUtils.SerializeHashtable(module.TabModuleSettings, xmlModule, moduleNode, "tabmodulesetting", "settingname", "settingvalue");
 
                 // ReSharper restore AssignNullToNotNullAttribute
             }
+
             XmlNode newNode = xmlModule.CreateElement("definition");
             ModuleDefinitionInfo objModuleDef = ModuleDefinitionController.GetModuleDefinitionByID(module.ModuleDefID);
             newNode.InnerText = DesktopModuleController.GetDesktopModule(objModuleDef.DesktopModuleID, module.PortalID).ModuleName;
@@ -2523,6 +2563,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 moduleNode.AppendChild(newNode);
             }
+
             // Add Module Definition Info
             XmlNode definitionNode = xmlModule.CreateElement("moduledefinition");
             definitionNode.InnerText = objModuleDef.FriendlyName;
@@ -2530,6 +2571,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 moduleNode.AppendChild(definitionNode);
             }
+
             return moduleNode;
         }
 
@@ -2572,6 +2614,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     Instance.UpdateTranslationStatus(module, false);
                 }
+
                 // and clear the cache
                 Instance.ClearCache(module.TabID);
             }

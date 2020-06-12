@@ -81,6 +81,7 @@ namespace Dnn.ExportImport.Repository
             {
                 item.ReferenceId = referenceId;
             }
+
             item.Id = collection.Insert(item);
             return item;
         }
@@ -104,6 +105,7 @@ namespace Dnn.ExportImport.Repository
             {
                 allItems.ForEach(x => { x.ReferenceId = referenceId; });
             }
+
             collection.Insert(allItems);
         }
 
@@ -127,6 +129,7 @@ namespace Dnn.ExportImport.Repository
             var collection = this.DbCollection<T>();
             return collection?.Count() ?? 0;
         }
+
         public int GetCount<T>(Expression<Func<T, bool>> predicate)
             where T : BasicExportImportDto
         {

@@ -56,12 +56,14 @@ namespace Dnn.ExportImport.Components.Services
                         taxonomyVocabularies = GetTaxonomyVocabularies(exportDto.PortalId, toDate, fromDate);
                         this.CheckPoint.TotalItems += taxonomyTerms.Count + taxonomyVocabularies.Count;
                     }
+
                     this.CheckPointStageCallback(this);
 
                     this.Repository.CreateItems(scopeTypes);
                     // Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
                     // CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
+
                 this.CheckPoint.Progress = 25;
 
                 if (taxonomyVocabularies == null)
@@ -225,6 +227,7 @@ namespace Dnn.ExportImport.Components.Services
                     changed = true;
                 }
             }
+
             if (changed)
             {
                 DataCache.ClearCache(DataCache.VocabularyCacheKey);
@@ -274,6 +277,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 dataService.UpdateSimpleTerm(term, modifiedBy);
                             }
+
                             DataCache.ClearCache(string.Format(DataCache.TermCacheKey, term.TermId));
                             this.Result.AddLogEntry("Updated taxonomy", other.Name);
                             break;

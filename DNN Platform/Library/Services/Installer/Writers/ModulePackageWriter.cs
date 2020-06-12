@@ -64,6 +64,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.ReadLegacyManifest(manifestNav.SelectSingleNode("folders/folder"), false);
             }
+
             string physicalFolderPath = Path.Combine(Globals.ApplicationMapPath, this.BasePath);
             this.ProcessModuleFolders(physicalFolderPath, physicalFolderPath);
         }
@@ -91,10 +92,12 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     dependencies["type"] = this.DesktopModule.Dependencies;
                 }
+
                 if (!string.IsNullOrEmpty(this.DesktopModule.Permissions))
                 {
                     dependencies["permission"] = this.DesktopModule.Permissions;
                 }
+
                 return dependencies;
             }
         }
@@ -129,6 +132,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 // or it allows the developer to use webcontrols rather than usercontrols
                 controlSrc = Path.Combine("DesktopModules", Path.Combine(moduleFolder, controlSrc));
             }
+
             controlSrc = controlSrc.Replace('\\', '/');
             moduleControl.ControlSrc = controlSrc;
 
@@ -148,17 +152,20 @@ namespace DotNetNuke.Services.Installer.Writers
                     throw new Exception(Util.EXCEPTION_Type);
                 }
             }
+
             string viewOrder = Util.ReadElement(controlNav, "vieworder");
             if (!string.IsNullOrEmpty(viewOrder))
             {
                 moduleControl.ViewOrder = int.Parse(viewOrder);
             }
+
             moduleControl.HelpURL = Util.ReadElement(controlNav, "helpurl");
             string supportsPartialRendering = Util.ReadElement(controlNav, "supportspartialrendering");
             if (!string.IsNullOrEmpty(supportsPartialRendering))
             {
                 moduleControl.SupportsPartialRendering = bool.Parse(supportsPartialRendering);
             }
+
             string supportsPopUps = Util.ReadElement(controlNav, "supportspopups");
             if (!string.IsNullOrEmpty(supportsPopUps))
             {
@@ -206,6 +213,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 ProcessControls(controlNav, moduleFolder, definition);
             }
+
             this.DesktopModule.ModuleDefinitions[definition.FriendlyName] = definition;
         }
 
@@ -223,36 +231,43 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     this.DesktopModule.FolderName = folderName;
                 }
+
                 if (string.IsNullOrEmpty(this.DesktopModule.FolderName))
                 {
                     this.DesktopModule.FolderName = "MyModule";
                 }
+
                 string friendlyname = Util.ReadElement(folderNav, "friendlyname");
                 if (!string.IsNullOrEmpty(friendlyname))
                 {
                     this.DesktopModule.FriendlyName = friendlyname;
                     this.DesktopModule.ModuleName = friendlyname;
                 }
+
                 string iconFile = Util.ReadElement(folderNav, "iconfile");
                 if (!string.IsNullOrEmpty(iconFile))
                 {
                     this.Package.IconFile = iconFile;
                 }
+
                 string modulename = Util.ReadElement(folderNav, "modulename");
                 if (!string.IsNullOrEmpty(modulename))
                 {
                     this.DesktopModule.ModuleName = modulename;
                 }
+
                 string permissions = Util.ReadElement(folderNav, "permissions");
                 if (!string.IsNullOrEmpty(permissions))
                 {
                     this.DesktopModule.Permissions = permissions;
                 }
+
                 string dependencies = Util.ReadElement(folderNav, "dependencies");
                 if (!string.IsNullOrEmpty(dependencies))
                 {
                     this.DesktopModule.Dependencies = dependencies;
                 }
+
                 this.DesktopModule.Version = Util.ReadElement(folderNav, "version", "01.00.00");
                 this.DesktopModule.Description = Util.ReadElement(folderNav, "description");
                 this.DesktopModule.BusinessControllerClass = Util.ReadElement(folderNav, "businesscontrollerclass");
@@ -282,6 +297,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     sourceFileName = Path.Combine(filePath, fileName);
                 }
+
                 string tempFolder = this.Package.InstallerInfo.TempInstallFolder;
                 if (!File.Exists(Path.Combine(tempFolder, sourceFileName)))
                 {
@@ -333,10 +349,12 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 upgradeVersions += version + ",";
             }
+
             if (upgradeVersions.Length > 1)
             {
                 upgradeVersions = upgradeVersions.Remove(upgradeVersions.Length - 1, 1);
             }
+
             writer.WriteElementString("upgradeVersionsList", upgradeVersions);
 
             // End end of Event Message Attribues
@@ -357,6 +375,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.DesktopModule.CodeSubDirectory = this.DesktopModule.FolderName;
             }
+
             CBO.SerializeObject(this.DesktopModule, writer);
 
             // Write EventMessage

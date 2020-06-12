@@ -176,6 +176,7 @@ namespace DotNetNuke.Security.Membership
                     }
                 }
             }
+
             return false;
         }
 
@@ -192,6 +193,7 @@ namespace DotNetNuke.Security.Membership
             {
                 user.DisplayName = HttpUtility.HtmlEncode(user.DisplayName);
             }
+
             var updatePassword = user.Membership.UpdatePassword;
             var isApproved = user.Membership.Approved;
             var createStatus = UserCreateStatus.Success;
@@ -221,6 +223,7 @@ namespace DotNetNuke.Security.Membership
                 user = null;
                 createStatus = UserCreateStatus.ProviderError;
             }
+
             return createStatus;
         }
 
@@ -260,6 +263,7 @@ namespace DotNetNuke.Security.Membership
                     true,
                     out status);
             }
+
             var createStatus = UserCreateStatus.Success;
             switch (status)
             {
@@ -297,6 +301,7 @@ namespace DotNetNuke.Security.Membership
                     createStatus = UserCreateStatus.UserRejected;
                     break;
             }
+
             return createStatus;
         }
 
@@ -327,6 +332,7 @@ namespace DotNetNuke.Security.Membership
                     // add to collection
                     arrUsers.Add(user);
                 }
+
                 // Get the next result (containing the total)
                 dr.NextResult();
 
@@ -342,6 +348,7 @@ namespace DotNetNuke.Security.Membership
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return arrUsers;
         }
 
@@ -367,6 +374,7 @@ namespace DotNetNuke.Security.Membership
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return users;
         }
 
@@ -397,6 +405,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
                 }
+
                 if (user.PortalID == Null.NullInteger)
                 {
                     user.PortalID = portalId;
@@ -440,6 +449,7 @@ namespace DotNetNuke.Security.Membership
 
                 user.Profile = userProfile;
             }
+
             return user;
         }
 
@@ -462,6 +472,7 @@ namespace DotNetNuke.Security.Membership
                         }
                     }
                 }
+
                 if (bContinue)
                 {
                     user = new UserInfo
@@ -480,14 +491,17 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.IsDeleted = Null.SetNullBoolean(dr["IsDeleted"]);
                         }
+
                         if (schema.Select("ColumnName = 'VanityUrl'").Length > 0)
                         {
                             user.VanityUrl = Null.SetNullString(dr["VanityUrl"]);
                         }
+
                         if (schema.Select("ColumnName = 'HasAgreedToTerms'").Length > 0)
                         {
                             user.HasAgreedToTerms = Null.SetNullBoolean(dr["HasAgreedToTerms"]);
                         }
+
                         if (schema.Select("ColumnName = 'HasAgreedToTermsOn'").Length > 0)
                         {
                             user.HasAgreedToTermsOn = Null.SetNullDateTime(dr["HasAgreedToTermsOn"]);
@@ -496,14 +510,17 @@ namespace DotNetNuke.Security.Membership
                         {
                             user.HasAgreedToTermsOn = Null.NullDate;
                         }
+
                         if (schema.Select("ColumnName = 'RequestsRemoval'").Length > 0)
                         {
                             user.RequestsRemoval = Null.SetNullBoolean(dr["RequestsRemoval"]);
                         }
+
                         if (schema.Select("ColumnName = 'PasswordResetExpiration'").Length > 0)
                         {
                             user.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
                         }
+
                         if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
                         {
                             user.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
@@ -520,6 +537,7 @@ namespace DotNetNuke.Security.Membership
                     {
                         user.Membership.Approved = Null.SetNullBoolean(dr["Authorised"]);
                     }
+
                     if (user.PortalID == Null.NullInteger)
                     {
                         user.PortalID = portalId;
@@ -532,6 +550,7 @@ namespace DotNetNuke.Security.Membership
             {
                 CBO.CloseDataReader(dr, closeDataReader);
             }
+
             return user;
         }
 
@@ -544,6 +563,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     user.Membership = new UserMembership(user);
                 }
+
                 user.Membership.CreatedDate = aspNetUser.CreationDate;
                 user.Membership.LastActivityDate = aspNetUser.LastActivityDate;
                 user.Membership.LastLockoutDate = aspNetUser.LastLockoutDate;
@@ -678,6 +698,7 @@ namespace DotNetNuke.Security.Membership
                     }
                 }
             }
+
             return loginStatus;
         }
 
@@ -788,6 +809,7 @@ namespace DotNetNuke.Security.Membership
                 aspnetUser.UnlockUser();
                 oldPassword = aspnetUser.GetPassword();
             }
+
             bool retValue = aspnetUser.ChangePassword(oldPassword, newPassword);
             if (retValue && this.PasswordRetrievalEnabled && !this.RequiresQuestionAndAnswer)
             {
@@ -801,6 +823,7 @@ namespace DotNetNuke.Security.Membership
                     retValue = false;
                 }
             }
+
             return retValue;
         }
 
@@ -825,6 +848,7 @@ namespace DotNetNuke.Security.Membership
             {
                 password = aspnetUser.GetPassword();
             }
+
             return aspnetUser.ChangePasswordQuestionAndAnswer(password, passwordQuestion, passwordAnswer);
         }
 
@@ -843,6 +867,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     createStatus = UserCreateStatus.InvalidUserName;
                 }
+
                 if (!string.IsNullOrEmpty(user.DisplayName))
                 {
                     if (!portalSecurity.ValidateInput(user.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
@@ -851,6 +876,7 @@ namespace DotNetNuke.Security.Membership
                     }
                 }
             }
+
             return createStatus;
         }
 
@@ -981,6 +1007,7 @@ namespace DotNetNuke.Security.Membership
                 Exceptions.LogException(ex);
                 retValue = false;
             }
+
             return retValue;
         }
 
@@ -1059,6 +1086,7 @@ namespace DotNetNuke.Security.Membership
             {
                 AutoUnlockUser(aspnetUser);
             }
+
             return this.RequiresQuestionAndAnswer ? aspnetUser.GetPassword(passwordAnswer) : aspnetUser.GetPassword();
         }
 
@@ -1149,6 +1177,7 @@ namespace DotNetNuke.Security.Membership
                 IDataReader dr = this._dataProvider.GetUserByVanityUrl(portalId, vanityUrl);
                 user = FillUserInfo(portalId, dr, true);
             }
+
             return user;
         }
 
@@ -1170,6 +1199,7 @@ namespace DotNetNuke.Security.Membership
                 IDataReader dr = this._dataProvider.GetUserByPasswordResetToken(portalId, resetToken);
                 user = FillUserInfo(portalId, dr, true);
             }
+
             return user;
         }
 
@@ -1532,6 +1562,7 @@ namespace DotNetNuke.Security.Membership
                     }
                 }
             }
+
             return isOnline;
         }
 
@@ -1646,6 +1677,7 @@ namespace DotNetNuke.Security.Membership
             {
                 retValue = membershipUser.UnlockUser();
             }
+
             DataCache.RemoveCache(GetCacheKey(user.Username));
             return retValue;
         }
@@ -1916,6 +1948,7 @@ namespace DotNetNuke.Security.Membership
                 // Clear the user object
                 user = null;
             }
+
             return user;
         }
 
@@ -1944,6 +1977,7 @@ namespace DotNetNuke.Security.Membership
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return arrUsers;
         }
 

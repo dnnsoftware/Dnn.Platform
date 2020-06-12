@@ -39,6 +39,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             var localizedText = Localization.GetString(key, this.LocalResourceFile);
             return string.IsNullOrEmpty(localizedText) ? key : localizedText;
         }
+
         protected void AddMessage(string message)
         {
             this.ValidationMessage += message;
@@ -99,12 +100,14 @@ namespace Dnn.PersonaBar.Library.Prompt
                         .Replace("[0]", fieldName)
                         .Replace("[1]", GetTypeName(typeof(T)));
             }
+
             if (checkpositive &&
                 (typeof(T) == typeof(int) || typeof(T) == typeof(long) || typeof(T) == typeof(int?) ||
                  typeof(T) == typeof(long?)) && value != null && Convert.ToInt32(value) <= 0)
             {
                 this.ValidationMessage += Localization.GetString("Promp_PositiveValueRequired", resourceFile)?.Replace("[0]", fieldName);
             }
+
             return value ?? defaultVal;
         }
 
@@ -141,6 +144,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                 {
                     continue;
                 }
+
                 // found a flag
                 var flagName = NormalizeFlagName(this.Args[i]);
                 var flagValue = string.Empty;
@@ -163,6 +167,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                         flagValue = string.Empty;
                     }
                 }
+
                 this.Flags.Add(flagName.ToLower(), flagValue);
             }
         }
@@ -196,20 +201,25 @@ namespace Dnn.PersonaBar.Library.Prompt
             {
                 return "Integer";
             }
+
             if (type.FullName.ToLowerInvariant().Contains("double"))
             {
                 return "Double";
             }
+
             if (type.FullName.ToLowerInvariant().Contains("bool"))
             {
                 return "Boolean";
             }
+
             if (type.FullName.ToLowerInvariant().Contains("datetime"))
             {
                 return "DateTime";
             }
+
             return string.Empty;
         }
+
         private static string NormalizeFlagName(string flagName)
         {
             if (flagName == null)

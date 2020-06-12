@@ -167,11 +167,13 @@ namespace DotNetNuke.UI.WebControls
             {
                 isDesignMode = true;
             }
+
             var template = new CheckBoxColumnTemplate(type);
             if (type != ListItemType.Header)
             {
                 template.AutoPostBack = this.AutoPostBack;
             }
+
             template.Checked = this.Checked;
             template.DataField = this.DataField;
             template.Enabled = this.Enabled;
@@ -183,6 +185,7 @@ namespace DotNetNuke.UI.WebControls
                 template.AutoPostBack = true;
                 template.HeaderCheckBox = this.HeaderCheckBox;
             }
+
             template.DesignMode = isDesignMode;
             return template;
         }
@@ -218,6 +221,7 @@ namespace DotNetNuke.UI.WebControls
                 this.HeaderStyle.Font.Size = new FontUnit("10pt");
                 this.HeaderStyle.Font.Bold = true;
             }
+
             this.ItemStyle.HorizontalAlign = HorizontalAlign.Center;
             this.HeaderStyle.HorizontalAlign = HorizontalAlign.Center;
         }

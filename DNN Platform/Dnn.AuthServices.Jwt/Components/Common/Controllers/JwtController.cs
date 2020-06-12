@@ -265,6 +265,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
                 // don't extend beyond renewal expiry and make sure it is marked in UTC
                 expiry = new DateTime(ptoken.RenewalExpiry.Ticks, DateTimeKind.Utc);
             }
+
             ptoken.TokenExpiry = expiry;
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();

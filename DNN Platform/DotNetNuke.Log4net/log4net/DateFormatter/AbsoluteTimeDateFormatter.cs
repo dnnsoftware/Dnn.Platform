@@ -58,6 +58,7 @@ namespace log4net.DateFormatter
             {
                 buffer.Append('0');
             }
+
             buffer.Append(hour);
             buffer.Append(':');
 
@@ -66,6 +67,7 @@ namespace log4net.DateFormatter
             {
                 buffer.Append('0');
             }
+
             buffer.Append(mins);
             buffer.Append(':');
 
@@ -74,6 +76,7 @@ namespace log4net.DateFormatter
             {
                 buffer.Append('0');
             }
+
             buffer.Append(secs);
         }
 
@@ -147,6 +150,7 @@ namespace log4net.DateFormatter
                     }
                 }
             }
+
             writer.Write(timeString);
 
             // Append the current millisecond info
@@ -156,10 +160,12 @@ namespace log4net.DateFormatter
             {
                 writer.Write('0');
             }
+
             if (millis < 10)
             {
                 writer.Write('0');
             }
+
             writer.Write(millis);
                     }
         }

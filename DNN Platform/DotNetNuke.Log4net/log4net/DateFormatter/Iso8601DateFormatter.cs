@@ -72,6 +72,7 @@ namespace log4net.DateFormatter
             {
                 buffer.Append('0');
             }
+
             buffer.Append(month);
             buffer.Append('-');
 
@@ -80,6 +81,7 @@ namespace log4net.DateFormatter
             {
                 buffer.Append('0');
             }
+
             buffer.Append(day);
             buffer.Append(' ');
 

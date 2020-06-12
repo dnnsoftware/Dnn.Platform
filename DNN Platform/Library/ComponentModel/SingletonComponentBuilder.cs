@@ -31,6 +31,7 @@ namespace DotNetNuke.ComponentModel
             {
                 this.CreateInstance();
             }
+
             return this._Instance;
         }
 

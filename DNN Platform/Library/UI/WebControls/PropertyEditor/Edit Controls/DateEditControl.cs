@@ -56,6 +56,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return dteValue;
             }
         }
@@ -100,6 +101,7 @@ namespace DotNetNuke.UI.WebControls
                         }
                     }
                 }
+
                 return _Format;
             }
         }
@@ -125,6 +127,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return dteValue;
             }
         }
@@ -141,6 +144,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     _StringValue = this.DateValue.ToString(this.Format);
                 }
+
                 return _StringValue;
             }
             set

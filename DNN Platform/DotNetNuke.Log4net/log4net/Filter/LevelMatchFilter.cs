@@ -126,6 +126,7 @@ namespace log4net.Filter
                 // Found match
                 return this.m_acceptOnMatch ? FilterDecision.Accept : FilterDecision.Deny;
             }
+
             return FilterDecision.Neutral;
         }
     }

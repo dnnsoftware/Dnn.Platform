@@ -76,6 +76,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     activeTab.StartDate = DateTime.MinValue;
                 }
+
                 if (Null.IsNull(activeTab.EndDate))
                 {
                     activeTab.EndDate = DateTime.MaxValue;
@@ -111,6 +112,7 @@ namespace DotNetNuke.Entities.Portals
                         continue;
                     }
                 }
+
                 break;
             }
         }
@@ -134,6 +136,7 @@ namespace DotNetNuke.Entities.Portals
                         break;
                 }
             }
+
             return aliasMapping;
         }
 
@@ -302,6 +305,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 portalSettings.DataConsentTermsLastChange = DateTime.Parse(setting, System.Globalization.CultureInfo.InvariantCulture);
             }
+
             setting = settings.GetValueOrDefault("DataConsentConsentRedirect", "-1");
             portalSettings.DataConsentConsentRedirect = int.Parse(setting);
             setting = settings.GetValueOrDefault("DataConsentUserDeleteAction", "0");
@@ -330,6 +334,7 @@ namespace DotNetNuke.Entities.Portals
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultPortalSkin : PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode);
             }
+
             activeTab.SkinSrc = SkinController.FormatSkinSrc(activeTab.SkinSrc, portalSettings);
             activeTab.SkinPath = SkinController.FormatSkinPath(activeTab.SkinSrc);
 

@@ -29,11 +29,13 @@ namespace DotNetNuke.Entities.Users
                 PropertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             string OutputFormat = string.Empty;
             if (format == string.Empty)
             {
                 OutputFormat = "g";
             }
+
             switch (propertyName.ToLowerInvariant())
             {
                 case "approved":
@@ -71,6 +73,7 @@ namespace DotNetNuke.Entities.Users
                 case "email":
                     return PropertyAccess.FormatString(this.objUser.Email, format);
             }
+
             return PropertyAccess.GetObjectProperty(objMembership, propertyName, format, formatProvider, ref PropertyNotFound);
         }
 

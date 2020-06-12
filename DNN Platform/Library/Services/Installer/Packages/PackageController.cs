@@ -101,6 +101,7 @@ namespace DotNetNuke.Services.Installer.Packages
             {
                 ClearCache(PortalSettings.Current.PortalId);
             }
+
             ClearCache(Null.NullInteger);
         }
 
@@ -164,6 +165,7 @@ namespace DotNetNuke.Services.Installer.Packages
                     {
                         AuthenticationController.DeleteAuthentication(authSystem);
                     }
+
                     break;
                 case "CoreLanguagePack":
                     LanguagePackInfo languagePack = LanguagePackController.GetLanguagePackByPackage(package.PackageID);
@@ -171,6 +173,7 @@ namespace DotNetNuke.Services.Installer.Packages
                     {
                         LanguagePackController.DeleteLanguagePack(languagePack);
                     }
+
                     break;
                 case "Module":
                     var controller = new DesktopModuleController();
@@ -179,6 +182,7 @@ namespace DotNetNuke.Services.Installer.Packages
                     {
                         controller.DeleteDesktopModule(desktopModule);
                     }
+
                     break;
                 case "SkinObject":
                     SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(package.PackageID);
@@ -186,8 +190,10 @@ namespace DotNetNuke.Services.Installer.Packages
                     {
                         SkinControlController.DeleteSkinControl(skinControl);
                     }
+
                     break;
             }
+
             DeletePackageInternal(package);
         }
 
@@ -301,6 +307,7 @@ namespace DotNetNuke.Services.Installer.Packages
                             strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
                             bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
                         }
+
                         break;
                     case "Provider":
                         // Check if the provider is the default provider
@@ -310,6 +317,7 @@ namespace DotNetNuke.Services.Installer.Packages
                         {
                             providerName = providerName.Substring(providerName.IndexOf(".", StringComparison.Ordinal) + 1);
                         }
+
                         switch (providerName)
                         {
                             case "SchedulingProvider":
@@ -322,6 +330,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                 providerName = "SearchDataStoreProvider";
                                 break;
                         }
+
                         XPathNavigator providerNavigator = configDoc.CreateNavigator().SelectSingleNode("/configuration/dotnetnuke/*[@defaultProvider='" + providerName + "']");
                         bCanDelete = providerNavigator == null;
                         break;
@@ -394,6 +403,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                     {
                                         package.FriendlyName = package.Name;
                                     }
+
                                     package.Description = XmlUtils.GetNodeValue(nav, "description");
                                     package.FileName = file.Replace(installPath + "\\", string.Empty);
 
@@ -478,6 +488,7 @@ namespace DotNetNuke.Services.Installer.Packages
                             break;
                         }
                     }
+
                     entry = unzip.GetNextEntry();
                 }
             }
@@ -510,6 +521,7 @@ namespace DotNetNuke.Services.Installer.Packages
                     }
                 }
             }
+
             return result;
         }
 

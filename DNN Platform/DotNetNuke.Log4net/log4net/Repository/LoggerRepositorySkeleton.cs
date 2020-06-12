@@ -471,6 +471,7 @@ namespace log4net.Repository
             {
                 throw new ArgumentNullException("typeToRender");
             }
+
             if (rendererInstance == null)
             {
                 throw new ArgumentNullException("rendererInstance");

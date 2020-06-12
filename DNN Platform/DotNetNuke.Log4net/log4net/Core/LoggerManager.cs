@@ -218,6 +218,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             return RepositorySelector.GetRepository(repository);
         }
 
@@ -237,6 +238,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             return RepositorySelector.GetRepository(repositoryAssembly);
         }
 
@@ -262,10 +264,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             if (name == null)
             {
                 throw new ArgumentNullException("name");
             }
+
             return RepositorySelector.GetRepository(repository).Exists(name);
         }
 
@@ -291,10 +295,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             if (name == null)
             {
                 throw new ArgumentNullException("name");
             }
+
             return RepositorySelector.GetRepository(repositoryAssembly).Exists(name);
         }
 
@@ -314,6 +320,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             return RepositorySelector.GetRepository(repository).GetCurrentLoggers();
         }
 
@@ -333,6 +340,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             return RepositorySelector.GetRepository(repositoryAssembly).GetCurrentLoggers();
         }
 
@@ -361,10 +369,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             if (name == null)
             {
                 throw new ArgumentNullException("name");
             }
+
             return RepositorySelector.GetRepository(repository).GetLogger(name);
         }
 
@@ -393,10 +403,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             if (name == null)
             {
                 throw new ArgumentNullException("name");
             }
+
             return RepositorySelector.GetRepository(repositoryAssembly).GetLogger(name);
         }
 
@@ -417,10 +429,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             if (type == null)
             {
                 throw new ArgumentNullException("type");
             }
+
             return RepositorySelector.GetRepository(repository).GetLogger(type.FullName);
         }
 
@@ -441,10 +455,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             if (type == null)
             {
                 throw new ArgumentNullException("type");
             }
+
             return RepositorySelector.GetRepository(repositoryAssembly).GetLogger(type.FullName);
         }
 
@@ -503,6 +519,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             RepositorySelector.GetRepository(repository).Shutdown();
         }
 
@@ -534,6 +551,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             RepositorySelector.GetRepository(repositoryAssembly).Shutdown();
         }
 
@@ -557,6 +575,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             RepositorySelector.GetRepository(repository).ResetConfiguration();
         }
 
@@ -580,6 +599,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             RepositorySelector.GetRepository(repositoryAssembly).ResetConfiguration();
         }
 
@@ -630,6 +650,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             return RepositorySelector.CreateRepository(repository, null);
         }
 
@@ -678,10 +699,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repository");
             }
+
             if (repositoryType == null)
             {
                 throw new ArgumentNullException("repositoryType");
             }
+
             return RepositorySelector.CreateRepository(repository, repositoryType);
         }
 
@@ -730,10 +753,12 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("repositoryAssembly");
             }
+
             if (repositoryType == null)
             {
                 throw new ArgumentNullException("repositoryType");
             }
+
             return RepositorySelector.CreateRepository(repositoryAssembly, repositoryType);
         }
 

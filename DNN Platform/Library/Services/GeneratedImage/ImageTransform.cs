@@ -65,6 +65,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     graph.SmoothingMode = this.SmoothingMode;
                     graph.DrawImage(srcImage, new Rectangle(0, 0, srcImage.Width, srcImage.Height));
                 }
+
                 return destImage;
             }
         }

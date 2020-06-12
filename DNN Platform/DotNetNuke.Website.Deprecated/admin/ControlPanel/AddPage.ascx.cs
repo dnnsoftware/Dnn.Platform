@@ -51,6 +51,7 @@ namespace DotNetNuke.UI.ControlPanel
                     this.cmdAddPage.Enabled = false;
                     this.cmdAddPage.ToolTip = Localization.GetString("ExceededQuota", this.LocalResourceFile);
                 }
+
                 if (!this.IsPostBack)
                 {
                     if (this.Visible)
@@ -146,6 +147,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     this._newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
                 }
+
                 return this._newTabObject;
             }
         }

@@ -82,6 +82,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return definition;
         }
 
@@ -99,6 +100,7 @@ namespace DotNetNuke.Entities.Profile
                     canContinue = true;
                 }
             }
+
             if (canContinue)
             {
                 int portalid = 0;
@@ -115,6 +117,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     definition.ReadOnly = Convert.ToBoolean(Null.SetNull(dr["ReadOnly"], definition.ReadOnly));
                 }
+
                 definition.Required = Convert.ToBoolean(Null.SetNull(dr["Required"], definition.Required));
                 definition.ValidationExpression = Convert.ToString(Null.SetNull(dr["ValidationExpression"], definition.ValidationExpression));
                 definition.ViewOrder = Convert.ToInt32(Null.SetNull(dr["ViewOrder"], definition.ViewOrder));
@@ -126,6 +129,7 @@ namespace DotNetNuke.Entities.Profile
                 };
                 definition.Deleted = Convert.ToBoolean(Null.SetNull(dr["Deleted"], definition.Deleted));
             }
+
             return definition;
         }
 
@@ -151,6 +155,7 @@ namespace DotNetNuke.Entities.Profile
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return arr;
         }
 
@@ -180,6 +185,7 @@ namespace DotNetNuke.Entities.Profile
                     DataCache.SetCache(key, definitions, TimeSpan.FromMinutes(timeOut));
                 }
             }
+
             return definitions;
         }
 
@@ -241,6 +247,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 definition.Visible = true;
             }
+
             int intDefinition = _dataProvider.AddPropertyDefinition(
                 portalId,
                 definition.ModuleDefId,
@@ -319,11 +326,13 @@ namespace DotNetNuke.Entities.Profile
                     break;
                 }
             }
+
             if (!bFound)
             {
                 // Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinition(definitionId));
             }
+
             return definition;
         }
 
@@ -350,11 +359,13 @@ namespace DotNetNuke.Entities.Profile
                     break;
                 }
             }
+
             if (!bFound)
             {
                 // Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinitionByName(portalId, name));
             }
+
             return definition;
         }
 
@@ -378,6 +389,7 @@ namespace DotNetNuke.Entities.Profile
                     definitions.Add(definition);
                 }
             }
+
             return definitions;
         }
 
@@ -427,6 +439,7 @@ namespace DotNetNuke.Entities.Profile
                     definitions.Add(clone ? definition.Clone() : definition);
                 }
             }
+
             return definitions;
         }
 
@@ -458,6 +471,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 definition.Visible = true;
             }
+
             _dataProvider.UpdatePropertyDefinition(
                 definition.PropertyDefinitionId,
                 definition.DataType,
@@ -557,6 +571,7 @@ namespace DotNetNuke.Entities.Profile
 
                 UserController.UpdateUser(portalId, user);
             }
+
             return user;
         }
 
@@ -607,6 +622,7 @@ namespace DotNetNuke.Entities.Profile
                     break;
                 }
             }
+
             return isValid;
         }
 
@@ -626,6 +642,7 @@ namespace DotNetNuke.Entities.Profile
             {
                 return res;
             }
+
             using (
                 IDataReader ir = Data.DataProvider.Instance()
                     .SearchProfilePropertyValues(portalId, propertyName, searchString))
@@ -635,6 +652,7 @@ namespace DotNetNuke.Entities.Profile
                     res.Add(Convert.ToString(ir[0]));
                 }
             }
+
             return res;
         }
 

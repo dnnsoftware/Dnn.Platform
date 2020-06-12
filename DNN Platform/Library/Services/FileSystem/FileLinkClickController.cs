@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.FileSystem
                         EnableUrlLanguage = Host.EnableUrlLanguage,
                     };
             }
+
             var portalSettings = new PortalSettings(portalId);
             return new LinkClickPortalSettings
                 {

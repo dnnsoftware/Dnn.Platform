@@ -110,6 +110,7 @@ namespace DotNetNuke.Entities.Icons
             {
                 return IconURL("Ext" + extension, "32x32", "Standard");
             }
+
             return IconURL("ExtFile", "32x32", "Standard");
         }
 
@@ -151,6 +152,7 @@ namespace DotNetNuke.Entities.Icons
                     result += iconDir.Name + ",";
                 }
             }
+
             return result.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
         }
     }

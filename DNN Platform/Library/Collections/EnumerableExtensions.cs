@@ -40,6 +40,7 @@ namespace DotNetNuke.Collections
             {
                 dt.Rows.Add(((IDictionary<string, object>)d).Values.ToArray());
             }
+
             return dt;
         }
     }

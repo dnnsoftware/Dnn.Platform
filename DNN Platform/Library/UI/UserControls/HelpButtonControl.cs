@@ -130,6 +130,7 @@ namespace DotNetNuke.UI.UserControls
                     // Set Help Key to the Resource Key plus ".Help"
                     this._HelpKey = this._ResourceKey + ".Help";
                 }
+
                 string helpText = Localization.GetString(this._HelpKey, this);
                 if (!string.IsNullOrEmpty(helpText))
                 {

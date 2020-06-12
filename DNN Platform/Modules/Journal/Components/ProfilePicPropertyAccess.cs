@@ -32,8 +32,10 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     this.Size = size;
                 }
+
                 return UserController.Instance.GetUserProfilePictureUrl(this._userId, this.Size, this.Size);
             }
+
             propertyNotFound = true;
             return string.Empty;
         }

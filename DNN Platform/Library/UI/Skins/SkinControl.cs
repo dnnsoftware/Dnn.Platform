@@ -98,6 +98,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -161,6 +162,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
+
                 if (!this.Page.IsPostBack)
                 {
                     // save persistent values
@@ -199,6 +201,7 @@ namespace DotNetNuke.UI.Skins
                             this.optSite.Checked = true;
                         }
                     }
+
                     this.LoadSkins();
                 }
             }
@@ -233,6 +236,7 @@ namespace DotNetNuke.UI.Skins
                         strURL += "&ModuleId=" + this.Request.QueryString["ModuleId"];
                     }
                 }
+
                 this.Response.Redirect(strURL, true);
             }
         }

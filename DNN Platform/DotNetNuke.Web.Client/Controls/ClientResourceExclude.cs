@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.Client.Controls
                         }
                     }
                 }
+
                 if (ctlToRemove != null)
                 {
                     loader.Controls.Remove(ctlToRemove);

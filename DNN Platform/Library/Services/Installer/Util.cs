@@ -219,6 +219,7 @@ namespace DotNetNuke.Services.Installer
                     propValue = defaultValue;
                 }
             }
+
             return propValue;
         }
 
@@ -350,6 +351,7 @@ namespace DotNetNuke.Services.Installer
             {
                 parameters[1] = "ptype=" + type;
             }
+
             var context = new ModuleInstanceContext();
             return context.NavigateUrl(tabId, "Install", false, parameters);
         }
@@ -362,10 +364,12 @@ namespace DotNetNuke.Services.Installer
             {
                 parameters[1] = "returnUrl=" + returnUrl;
             }
+
             if (!string.IsNullOrEmpty(type))
             {
                 parameters[2] = "ptype=" + type;
             }
+
             var context = new ModuleInstanceContext();
             return context.NavigateUrl(tabId, "Install", false, parameters);
         }
@@ -378,14 +382,17 @@ namespace DotNetNuke.Services.Installer
             {
                 parameters[1] = "returnUrl=" + returnUrl;
             }
+
             if (!string.IsNullOrEmpty(type))
             {
                 parameters[2] = "ptype=" + type;
             }
+
             if (!string.IsNullOrEmpty(package))
             {
                 parameters[3] = "package=" + package;
             }
+
             var context = new ModuleInstanceContext();
             return context.NavigateUrl(tabId, "Install", false, parameters);
         }
@@ -425,6 +432,7 @@ namespace DotNetNuke.Services.Installer
             {
                 filename = package.IconFile.StartsWith("~/" + package.FolderName) ? package.IconFile.Remove(0, ("~/" + package.FolderName).Length).TrimStart('/') : package.IconFile;
             }
+
             return filename;
         }
 
@@ -435,6 +443,7 @@ namespace DotNetNuke.Services.Installer
             {
                 iconFile = !package.IconFile.StartsWith("~/") ? "~/" + package.FolderName + "/" + package.IconFile : package.IconFile;
             }
+
             return iconFile;
         }
 
@@ -655,6 +664,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     URL = URL + "?";
                 }
+
                 URL = URL + restoftheurl;
             }
 
@@ -677,6 +687,7 @@ namespace DotNetNuke.Services.Installer
                     var proxyCredentials = new NetworkCredential(ProxyUsername, ProxyPassword);
                     proxy.Credentials = proxyCredentials;
                 }
+
                 wreq.Proxy = proxy;
             }
 
@@ -759,6 +770,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     remoteStream.Close();
                 }
+
                 if (localStream != null)
                 {
                     localStream.Close();

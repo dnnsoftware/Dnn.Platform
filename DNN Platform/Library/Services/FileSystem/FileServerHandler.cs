@@ -71,6 +71,7 @@ namespace DotNetNuke.Services.FileSystem
                     Language = context.Request.Cookies["language"].Value;
                 }
             }
+
             if (LocaleController.Instance.IsEnabled(ref Language, _portalSettings.PortalId))
             {
                 Localization.Localization.SetThreadCultures(new CultureInfo(Language), _portalSettings);
@@ -83,10 +84,12 @@ namespace DotNetNuke.Services.FileSystem
             {
                 URL = "FileID=" + FileLinkClickController.Instance.GetFileIdFromLinkClick(context.Request.QueryString);
             }
+
             if (context.Request.QueryString["userticket"] != null)
             {
                 URL = "UserId=" + UrlUtils.DecryptParameter(context.Request.QueryString["userticket"]);
             }
+
             if (context.Request.QueryString["link"] != null)
             {
                 URL = context.Request.QueryString["link"];
@@ -95,6 +98,7 @@ namespace DotNetNuke.Services.FileSystem
                     URL = string.Empty; // restrict direct access by FileID
                 }
             }
+
             if (!string.IsNullOrEmpty(URL))
             {
                 URL = URL.Replace(@"\", @"/");
@@ -111,6 +115,7 @@ namespace DotNetNuke.Services.FileSystem
                         this.Handle404Exception(context, context.Request.RawUrl);
                     }
                 }
+
                 if (UrlType != TabType.File)
                 {
                     URL = Globals.LinkClick(URL, TabId, ModuleId, false);
@@ -135,6 +140,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                      bool.TryParse(context.Request.QueryString["forcedownload"], out blnForceDownload);
                 }
+
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
 
                 // clear the current response
@@ -206,6 +212,7 @@ namespace DotNetNuke.Services.FileSystem
                             {
                                 this.Handle404Exception(context, URL);
                             }
+
                             break;
                         case TabType.Url:
                             // prevent phishing by verifying that URL exists in URLs table for Portal
@@ -213,6 +220,7 @@ namespace DotNetNuke.Services.FileSystem
                             {
                                 context.Response.Redirect(URL, true);
                             }
+
                             break;
                         default:
                             // redirect to URL
@@ -240,6 +248,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return true;
             }
+
             // We should allow creator to see the file that is pending to be approved
             var user = UserController.Instance.GetCurrentUserInfo();
             return user != null && user.UserID == file.CreatedByUserID;

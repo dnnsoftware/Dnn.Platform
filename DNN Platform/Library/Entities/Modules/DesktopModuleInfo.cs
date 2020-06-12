@@ -359,6 +359,7 @@ namespace DotNetNuke.Entities.Modules
                         this._moduleDefinitions = new Dictionary<string, ModuleDefinitionInfo>();
                     }
                 }
+
                 return this._moduleDefinitions;
             }
         }
@@ -476,10 +477,12 @@ namespace DotNetNuke.Entities.Modules
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleDefinitions" && !reader.IsEmptyElement)
                 {
                     this.ReadModuleDefinitions(reader);
@@ -526,6 +529,7 @@ namespace DotNetNuke.Entities.Modules
                             {
                                 this.HostPage = this.Page.Name;
                             }
+
                             break;
                         case "isAdmin":
                             bool isAdmin;
@@ -542,6 +546,7 @@ namespace DotNetNuke.Entities.Modules
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }
@@ -576,12 +581,14 @@ namespace DotNetNuke.Entities.Modules
                 writer.WriteAttributeString("type", "Portable");
                 writer.WriteEndElement();
             }
+
             if (this.IsSearchable)
             {
                 writer.WriteStartElement("supportedFeature");
                 writer.WriteAttributeString("type", "Searchable");
                 writer.WriteEndElement();
             }
+
             if (this.IsUpgradeable)
             {
                 writer.WriteStartElement("supportedFeature");
@@ -611,6 +618,7 @@ namespace DotNetNuke.Entities.Modules
                         writer.WriteString("Unsupported");
                         break;
                 }
+
                 writer.WriteEndElement();
             }
 
@@ -622,6 +630,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 definition.WriteXml(writer);
             }
+
             // Write end of Module Definitions
             writer.WriteEndElement();
 

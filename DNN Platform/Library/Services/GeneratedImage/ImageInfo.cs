@@ -41,6 +41,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(image));
             }
+
             this.Image = image;
         }
 
@@ -50,6 +51,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(imageBuffer));
             }
+
             this.ImageByteBuffer = imageBuffer;
         }
     }

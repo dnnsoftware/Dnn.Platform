@@ -96,11 +96,13 @@ namespace DotNetNuke.UI.UserControls
                             }
                         }
                     }
+
                     this.lblInfo.Text = this.Server.HtmlDecode(strInfo);
                 }
 
                 this.cmdHelp.Visible = !string.IsNullOrEmpty(objModuleControl.HelpURL);
             }
+
             if (this.Page.IsPostBack == false)
             {
                 if (this.Request.UrlReferrer != null)

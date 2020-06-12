@@ -52,6 +52,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 return false;
             }
+
             return HttpContextSource.Current.IsDebuggingEnabled;
         }
 
@@ -252,6 +253,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     finalScripts.Add(processingLibrary);
                 }
             }
+
             return finalScripts;
         }
 
@@ -261,6 +263,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 return null;
             }
+
             try
             {
                 return JavaScriptLibraryController.Instance.GetLibraries(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase))
@@ -293,9 +296,11 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     {
                         cdnPath = $"{(UrlUtils.IsSecureConnectionOrSslOffload(page.Request) ? "https" : "http")}:{cdnPath}";
                     }
+
                     return cdnPath;
                 }
             }
+
             return "~/Resources/libraries/" + js.LibraryName + "/" + Globals.FormatVersion(js.Version, "00", 3, "_") + "/" + js.FileName;
         }
 
@@ -338,6 +343,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     }
                 }
             }
+
             return finalScripts;
         }
 
@@ -409,6 +415,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         pagePortion = "BodySCRIPTS";
                         break;
                 }
+
                 Control scriptloader = page.FindControl(pagePortion);
                 var fallback = new DnnJsIncludeFallback(jsl.ObjectName, VirtualPathUtility.ToAbsolute("~/Resources/libraries/" + jsl.LibraryName + "/" + Globals.FormatVersion(jsl.Version, "00", 3, "_") + "/" + jsl.FileName));
                 if (scriptloader != null)
@@ -453,11 +460,13 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
                                 FileOrder.Js.jQuery, "DnnPageHeaderProvider");
                         }
+
                         if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
                         {
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
                                 FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
                         }
+
                         break;
                     case CommonJs.jQueryUI:
                         // register dependency
@@ -466,17 +475,20 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
                                 FileOrder.Js.jQuery, "DnnPageHeaderProvider");
                         }
+
                         if (GetHighestVersionLibrary(CommonJs.jQueryMigrate) == null)
                         {
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
                                 FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
                         }
+
                         // actual jqueryui
                         if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
                         {
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
                                 FileOrder.Js.jQueryUI, "DnnPageHeaderProvider");
                         }
+
                         break;
                     case CommonJs.DnnPlugins:
                         // This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
@@ -511,6 +523,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                 page,
                                 "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
                         }
+
                         // no package for this - CRM will deduplicate
                         ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
                         break;
@@ -529,6 +542,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                 page,
                                 "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
                         }
+
                         break;
                 }
             }
@@ -545,6 +559,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 jfile = jQueryUIMinFile;
             }
+
             return jfile;
         }
 
@@ -556,6 +571,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             {
                 scriptsrc = jQuery.JQueryFile(!jQuery.UseDebugScript);
             }
+
             return scriptsrc;
 #pragma warning restore 618
         }
@@ -584,6 +600,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     {
                         ClientAPI.RegisterEmbeddedResource(page, "dnn.scripts.js", typeof(ClientAPI));
                     }
+
                     break;
                 case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:
                     RegisterClientReference(page, ClientAPI.ClientNamespaceReferences.dnn);

@@ -54,6 +54,7 @@ namespace DotNetNuke.Services.Localization
             {
                 key += ".Text";
             }
+
             string resourceValue = Null.NullString;
             bool keyFound = TryGetStringInternal(key, language, resourceFileRoot, portalSettings, ref resourceValue);
 
@@ -99,6 +100,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     key += ".Text";
                 }
+
                 string resourceFileName = GetResourceFileName(resourceFileRoot, language);
                 resourceFileName = resourceFileName.Replace("." + language.ToLowerInvariant() + ".", "." + language + ".");
                 switch (resourceType)
@@ -110,6 +112,7 @@ namespace DotNetNuke.Services.Localization
                         resourceFileName = resourceFileName.Replace(".resx", ".Portal-" + portalSettings.PortalId + ".resx");
                         break;
                 }
+
                 resourceFileName = resourceFileName.TrimStart('~', '/', '\\');
                 string filePath = HostingEnvironment.MapPath("~/" + resourceFileName);
                 XmlDocument doc = null;
@@ -132,10 +135,12 @@ namespace DotNetNuke.Services.Localization
                         AddResourceFileNode(ref root, "resheader", "writer", "System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089");
                     }
                 }
+
                 if (doc == null)
                 {
                     return false;
                 }
+
                 XmlNode reskeyNode = doc.SelectSingleNode("root/data[@name=\"" + key + "\"]");
                 if (reskeyNode != null)
                 {
@@ -153,6 +158,7 @@ namespace DotNetNuke.Services.Localization
                         return false;
                     }
                 }
+
                 doc.Save(filePath);
                 DataCache.RemoveCache("/" + resourceFileName.ToLowerInvariant());
                 return true;
@@ -203,16 +209,19 @@ namespace DotNetNuke.Services.Localization
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage));
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, defaultLanguage, portalSettings.PortalId));
             }
+
             if (fallbackLanguage != defaultLanguage)
             {
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage));
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, fallbackLanguage, portalSettings.PortalId));
             }
+
             if (locale != fallbackLanguage)
             {
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale));
                 res = MergeResourceFile(res, GetResourceFileName(resourceFile, locale, portalSettings.PortalId));
             }
+
             return res;
         }
 
@@ -223,6 +232,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return current;
             }
+
             foreach (string key in current.Keys.ToList())
             {
                 if (resFile.ContainsKey(key))
@@ -230,6 +240,7 @@ namespace DotNetNuke.Services.Localization
                     current[key] = resFile[key];
                 }
             }
+
             return current;
         }
 
@@ -248,6 +259,7 @@ namespace DotNetNuke.Services.Localization
             {
                 newNode = newNode.AddAttribute("xml:space", "preserve");
             }
+
             newNode.AddElement("value", nodeValue);
         }
 
@@ -299,6 +311,7 @@ namespace DotNetNuke.Services.Localization
                                 }
                             }
                         }
+
                         cacheItemArgs.CacheDependency = new DNNCacheDependency(filePath);
 
                         // File exists so add it to lookup with value true, so we are safe to try again
@@ -321,6 +334,7 @@ namespace DotNetNuke.Services.Localization
             {
                 throw new Exception(string.Format("The following resource file caused an error while reading: {0}", filePath), ex);
             }
+
             return resources;
         }
 
@@ -348,6 +362,7 @@ namespace DotNetNuke.Services.Localization
             {
                 resourceFile = resourceFile.Replace(".resx", ".Portal-" + portalId + ".resx");
             }
+
             return resourceFile;
         }
 
@@ -405,6 +420,7 @@ namespace DotNetNuke.Services.Localization
                     resourceFile = Localization.SharedResourceFile.Replace(".resx", "." + language + ".resx");
                 }
             }
+
             return resourceFile;
         }
 
@@ -415,6 +431,7 @@ namespace DotNetNuke.Services.Localization
             {
                 mayExist = !resourceFileExistsLookup.ContainsKey(cacheKey) || resourceFileExistsLookup[cacheKey];
             }
+
             return mayExist;
         }
 
@@ -428,11 +445,13 @@ namespace DotNetNuke.Services.Localization
                 // Try fallback language next
                 bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, fallbackLanguage), portalID, ref resourceValue);
             }
+
             if (!bFound && !(defaultLanguage == userLanguage || defaultLanguage == fallbackLanguage))
             {
                 // Try default Language last
                 bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, defaultLanguage), portalID, ref resourceValue);
             }
+
             return bFound;
         }
 
@@ -445,11 +464,13 @@ namespace DotNetNuke.Services.Localization
                 // Try Host Resource File
                 bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.Host, ref resourceValue);
             }
+
             if (!bFound)
             {
                 // Try Portal Resource File
                 bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.None, ref resourceValue);
             }
+
             return bFound;
         }
 
@@ -477,6 +498,7 @@ namespace DotNetNuke.Services.Localization
             {
                 userLanguage = defaultLanguage;
             }
+
             Locale userLocale = null;
             try
             {
@@ -495,6 +517,7 @@ namespace DotNetNuke.Services.Localization
             {
                 fallbackLanguage = userLocale.Fallback;
             }
+
             if (string.IsNullOrEmpty(resourceFile))
             {
                 resourceFile = Localization.SharedResourceFile;
@@ -515,6 +538,7 @@ namespace DotNetNuke.Services.Localization
                     }
                 }
             }
+
             if (!bFound)
             {
                 if (Localization.SharedResourceFile.ToLowerInvariant() != resourceFile.ToLowerInvariant())
@@ -522,6 +546,7 @@ namespace DotNetNuke.Services.Localization
                     bFound = TryGetFromResourceFile(key, Localization.SharedResourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
                 }
             }
+
             return bFound;
         }
 

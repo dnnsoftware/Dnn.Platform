@@ -63,10 +63,12 @@ namespace DotNetNuke.Services.Syndication
                             {
                                 channelAttributes = ParseAttributesFromXml(n);
                             }
+
                             if (n.Name == "image")
                             {
                                 imageAttributes = ParseAttributesFromXml(n);
                             }
+
                             if (n.Name == "item")
                             {
                                 itemsAttributesList.Add(ParseAttributesFromXml(n));

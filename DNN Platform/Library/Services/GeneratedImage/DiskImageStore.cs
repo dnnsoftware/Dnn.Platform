@@ -54,9 +54,11 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 _cachePath = value;
             }
         }
+
         public static bool EnableAutoPurge { get; set; } // turn on/off purge feature
 
         public static TimeSpan PurgeInterval
@@ -71,10 +73,12 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
+
                 _purgeInterval = value;
             }
         }
@@ -87,6 +91,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     this._lastPurge = DateTime.Now.Subtract(PurgeInterval);
                 }
+
                 return this._lastPurge;
             }
             set
@@ -108,6 +113,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 Directory.CreateDirectory(CachePath);
             }
+
             this._lastPurge = DateTime.Now;
         }
 
@@ -125,6 +131,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         }
                     }
                 }
+
                 return _diskImageStore;
             }
         }
@@ -184,6 +191,7 @@ namespace DotNetNuke.Services.GeneratedImage
 #endif
                 }
             }
+
             Thread.Sleep(0);
             foreach (var fileinfo in toTryDeleteAgain)
             {
@@ -241,6 +249,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 this.QueueAutoPurge();
             }
+
             string path = BuildFilePath(id);
             lock (this.GetFileLockObject(id))
             {
@@ -249,6 +258,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     response.TransmitFile(path);
                     return true;
                 }
+
                 return false;
             }
         }

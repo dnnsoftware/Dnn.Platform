@@ -105,6 +105,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             {
                                 this.Text = this.Text.Replace("src=\"", "src=\"" + this.PortalSettings.ActiveTab.SkinPath);
                             }
+
                             this.registerLink.Text = this.Text;
                             this.enhancedRegisterLink.Text = this.Text;
                         }
@@ -115,6 +116,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.registerLink.ToolTip = this.registerLink.Text;
                             this.enhancedRegisterLink.ToolTip = this.registerLink.Text;
                         }
+
                         if (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0)
                         {
                             if (this.LegacyMode)

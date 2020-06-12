@@ -14,6 +14,7 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
             this.IsOpen = false;
             this.Selectable = true;
         }
+
         public string Name { get; set; }
 
         public string TabId { get; set; }

@@ -86,18 +86,22 @@ namespace DotNetNuke.Modules.Journal
             {
                 this.PageSize = Convert.ToInt16(this.Settings[Constants.DefaultPageSize]);
             }
+
             if (this.Settings.ContainsKey(Constants.MaxCharacters))
             {
                 this.MaxMessageLength = Convert.ToInt16(this.Settings[Constants.MaxCharacters]);
             }
+
             if (this.Settings.ContainsKey(Constants.AllowPhotos))
             {
                 this.AllowPhotos = Convert.ToBoolean(this.Settings[Constants.AllowPhotos]);
             }
+
             if (this.Settings.ContainsKey(Constants.AllowFiles))
             {
                 this.AllowFiles = Convert.ToBoolean(this.Settings[Constants.AllowFiles]);
             }
+
             this.ctlJournalList.Enabled = true;
             this.ctlJournalList.ProfileId = -1;
             this.ctlJournalList.PageSize = this.PageSize;
@@ -136,14 +140,17 @@ namespace DotNetNuke.Modules.Journal
                             {
                                 this.ctlJournalList.Enabled = false;
                             }
+
                             if (roleInfo.IsPublic && !this.ShowEditor)
                             {
                                 this.ctlJournalList.Enabled = true;
                             }
+
                             if (roleInfo.IsPublic && this.ShowEditor)
                             {
                                 this.ctlJournalList.Enabled = true;
                             }
+
                             if (roleInfo.IsPublic)
                             {
                                 this.IsPublicGroup = true;
@@ -205,6 +212,7 @@ namespace DotNetNuke.Modules.Journal
                     this.Gid = this.GroupId;
                     this.ctlJournalList.SocialGroupId = this.GroupId;
                 }
+
                 this.ctlJournalList.PageSize = this.PageSize;
             }
             catch (Exception exc) // Module failed to load

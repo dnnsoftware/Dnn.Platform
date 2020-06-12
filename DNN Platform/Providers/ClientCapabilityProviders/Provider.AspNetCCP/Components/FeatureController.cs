@@ -150,6 +150,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                 mappingCapabilites.Add("physical_screen_height", "ScreenMMHeight");
                 mappingCapabilites.Add("physical_screen_width", "ScreenMMWidth");
             }
+
             return mappingCapabilites;
         }
     }

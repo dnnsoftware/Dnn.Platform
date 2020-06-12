@@ -38,10 +38,12 @@ namespace DotNetNuke.UI.Containers
                 {
                     this.imgIcon.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
+
                 if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.imgIcon.CssClass = this.CssClass;
                 }
+
                 this.Visible = false;
                 if ((this.ModuleControl != null) && (this.ModuleControl.ModuleContext.Configuration != null))
                 {

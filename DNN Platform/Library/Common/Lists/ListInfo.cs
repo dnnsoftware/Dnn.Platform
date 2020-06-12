@@ -41,6 +41,7 @@ namespace DotNetNuke.Common.Lists
                 {
                     _DisplayName += ":";
                 }
+
                 return _DisplayName + this.Name;
             }
         }
@@ -60,6 +61,7 @@ namespace DotNetNuke.Common.Lists
                 {
                     _Key += ":";
                 }
+
                 return _Key + this.Name;
             }
         }

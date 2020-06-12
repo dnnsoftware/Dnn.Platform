@@ -73,6 +73,7 @@ namespace DotNetNuke.HttpModules.Config
                                                   };
                         config.AnalyticsEngines.Add(analyticsEngine);
                     }
+
                     if (File.Exists(filePath))
                     {
                         // Set back into Cache
@@ -102,6 +103,7 @@ namespace DotNetNuke.HttpModules.Config
                     fileReader.Close();
                 }
             }
+
             return config;
         }
     }

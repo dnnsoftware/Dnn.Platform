@@ -146,6 +146,7 @@ namespace DNN.Connectors.GoogleAnalytics
             {
                 return "true";
             }
+
             return string.Empty;
         }
 

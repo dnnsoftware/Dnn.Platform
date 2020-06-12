@@ -20,6 +20,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 TabVersionTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
             }
+
             if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
             {
                 TabWorkflowTracker.Instance.TrackModuleAddition(module, moduleVersion, userId);
@@ -54,6 +55,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 TabVersionTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);
             }
+
             if (TabWorkflowSettings.Instance.IsWorkflowEnabled(module.PortalID, module.TabID) && unPublishedVersion == null)
             {
                 TabWorkflowTracker.Instance.TrackModuleDeletion(module, moduleVersion, userId);

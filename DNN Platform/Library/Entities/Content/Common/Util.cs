@@ -26,6 +26,7 @@ namespace DotNetNuke.Entities.Content.Common
                 ds = new DataService();
                 ComponentFactory.RegisterComponentInstance<IDataService>(ds);
             }
+
             return ds;
         }
 
@@ -42,6 +43,7 @@ namespace DotNetNuke.Entities.Content.Common
                 ctl = new ContentController();
                 ComponentFactory.RegisterComponentInstance<IContentController>(ctl);
             }
+
             return ctl;
         }
 
@@ -58,6 +60,7 @@ namespace DotNetNuke.Entities.Content.Common
                 ctl = new ScopeTypeController();
                 ComponentFactory.RegisterComponentInstance<IScopeTypeController>(ctl);
             }
+
             return ctl;
         }
 
@@ -74,6 +77,7 @@ namespace DotNetNuke.Entities.Content.Common
                 ctl = new TermController();
                 ComponentFactory.RegisterComponentInstance<ITermController>(ctl);
             }
+
             return ctl;
         }
 
@@ -90,6 +94,7 @@ namespace DotNetNuke.Entities.Content.Common
                 ctl = new VocabularyController();
                 ComponentFactory.RegisterComponentInstance<IVocabularyController>(ctl);
             }
+
             return ctl;
         }
     }

@@ -95,6 +95,7 @@ namespace DotNetNuke.Tests.Data
                 {
                     index = 0;
                 }
+
                 ExecuteNonQuery(Constants.PETAPOCO_DatabaseName, string.Format(Constants.PETAPOCO_InsertDogRow, _dogNames[index], _dogAges[index]));
                 index++;
             }

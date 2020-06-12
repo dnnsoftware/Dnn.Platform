@@ -142,6 +142,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 permissionsString.Insert(0, ";");
             }
+
             return permissionsString;
         }
 
@@ -195,6 +196,7 @@ namespace DotNetNuke.Security.Permissions
                             {
                                 RoleID = _role.RoleID;
                             }
+
                             break;
                     }
                 }
@@ -207,10 +209,12 @@ namespace DotNetNuke.Security.Permissions
                     {
                         permission.RoleID = RoleID;
                     }
+
                     if (UserID != int.MinValue)
                     {
                         permission.UserID = UserID;
                     }
+
                     result = permission;
                 }
             }

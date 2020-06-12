@@ -15,6 +15,7 @@ namespace DotNetNuke.Entities.Urls
                     result = BrowserTypes.Mobile;
                     break;
             }
+
             return result;
         }
     }

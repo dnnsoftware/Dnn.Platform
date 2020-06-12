@@ -21,24 +21,28 @@ namespace DotNetNuke.Services.Tokens
                     {
                         format = "D";
                     }
+
                     return TimeZoneInfo.ConvertTime(DateTime.Now, userTimeZone).ToString(format, formatProvider);
                 case "now":
                     if (format == string.Empty)
                     {
                         format = "g";
                     }
+
                     return TimeZoneInfo.ConvertTime(DateTime.Now, userTimeZone).ToString(format, formatProvider);
                 case "system":
                     if (format == string.Empty)
                     {
                         format = "g";
                     }
+
                     return DateTime.Now.ToString(format, formatProvider);
                 case "utc":
                     if (format == string.Empty)
                     {
                         format = "g";
                     }
+
                     return DateTime.Now.ToUniversalTime().ToString(format, formatProvider);
                 default:
                     PropertyNotFound = true;

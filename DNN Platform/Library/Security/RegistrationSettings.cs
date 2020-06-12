@@ -54,6 +54,7 @@ namespace DotNetNuke.Security
             this.DisplayNameFormat = string.Empty;
             this.EmailValidator = Globals.glbEmailRegEx;
         }
+
         public RegistrationSettings(Dictionary<string, string> settings)
             : this()
         {

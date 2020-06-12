@@ -91,6 +91,7 @@ namespace DotNetNuke.Security.Permissions
                     _cacheDependencyDict[portalId] = dependency;
                 }
             }
+
             return dependency;
         }
 
@@ -103,12 +104,14 @@ namespace DotNetNuke.Security.Permissions
             {
                 _cacheDependencyDict.TryGetValue(portalId, out dependency);
             }
+
             if (dependency != null)
             {
                 using (_cacheDependencyDict.GetWriteLock())
                 {
                     _cacheDependencyDict.Remove(portalId);
                 }
+
                 dependency.Dispose();
             }
         }
@@ -229,6 +232,7 @@ namespace DotNetNuke.Security.Permissions
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return dic;
         }
 
@@ -296,6 +300,7 @@ namespace DotNetNuke.Security.Permissions
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return dic;
         }
 
@@ -340,6 +345,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 isDenied = PortalSecurity.IsDenied(modulePermissions.ToString(permissionKey));
             }
+
             return isDenied;
         }
 
@@ -361,6 +367,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 isDenied = PortalSecurity.IsDenied(tabPermissions.ToString(permissionKey));
             }
+
             return isDenied;
         }
 
@@ -431,6 +438,7 @@ namespace DotNetNuke.Security.Permissions
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return dic;
         }
 
@@ -612,6 +620,7 @@ namespace DotNetNuke.Security.Permissions
                     {
                         Exceptions.LogException(exc);
                     }
+
                     return collection;
                 });
 #endif
@@ -818,6 +827,7 @@ namespace DotNetNuke.Security.Permissions
                 // Return empty collection
                 modulePermissions = new ModulePermissionCollection();
             }
+
             return modulePermissions;
         }
 
@@ -856,6 +866,7 @@ namespace DotNetNuke.Security.Permissions
                         {
                             isAuthorized = true;
                         }
+
                         break;
                     case SecurityAccessLevel.ViewPermissions:
                         isAuthorized = TabPermissionController.CanAddContentToPage(tab);
@@ -889,17 +900,20 @@ namespace DotNetNuke.Security.Permissions
                                 }
                             }
                         }
+
                         break;
                     case SecurityAccessLevel.Admin:
                         if (!((moduleConfiguration.IsShared && moduleConfiguration.IsShareableViewOnly) && TabPermissionController.CanAddContentToPage(tab)))
                         {
                             isAuthorized = TabPermissionController.CanAddContentToPage(tab);
                         }
+
                         break;
                     case SecurityAccessLevel.Host:
                         break;
                 }
             }
+
             return isAuthorized;
         }
 
@@ -928,6 +942,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 hasPermission = PortalSecurity.IsInRoles(modulePermissions.ToString(permissionKey));
             }
+
             return hasPermission;
         }
 
@@ -1120,6 +1135,7 @@ namespace DotNetNuke.Security.Permissions
                 // Return empty collection
                 tabPermissions = new TabPermissionCollection();
             }
+
             return tabPermissions;
         }
 
@@ -1151,6 +1167,7 @@ namespace DotNetNuke.Security.Permissions
                     hasPermission = PortalSecurity.IsInRoles(tabPermissions.ToString(permissionKey));
                 }
             }
+
             return hasPermission;
         }
 
@@ -1186,6 +1203,7 @@ namespace DotNetNuke.Security.Permissions
                             objTabPermission.UserID,
                             userId);
                     }
+
                     EventLogController.Instance.AddLog(tab, portalSettings, userId, string.Empty, EventLogController.EventLogType.TABPERMISSION_CREATED);
                 }
             }
@@ -1221,6 +1239,7 @@ namespace DotNetNuke.Security.Permissions
                 // Return empty collection
                 desktopModulePermissions = new DesktopModulePermissionCollection();
             }
+
             return desktopModulePermissions;
         }
 

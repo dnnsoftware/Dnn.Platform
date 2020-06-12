@@ -79,6 +79,7 @@ namespace DotNetNuke.UI.WebControls
                     editor = definitionEntry.TextNonLocalized;
                 }
             }
+
             return editor;
         }
 
@@ -91,6 +92,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 editor = definitionEntry.TextNonLocalized;
             }
+
             return editor;
         }
     }

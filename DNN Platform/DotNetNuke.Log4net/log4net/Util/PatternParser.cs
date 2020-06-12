@@ -137,10 +137,12 @@ namespace log4net.Util
                 {
                     return 0;
                 }
+
                 if (s1 == null)
                 {
                     return 1;
                 }
+
                 if (s2 == null)
                 {
                     return -1;
@@ -198,6 +200,7 @@ namespace log4net.Util
                                 offset++;
                             }
                         }
+
                         // Look for the minimum length
                         while (offset < pattern.Length && char.IsDigit(pattern[offset]))
                         {
@@ -211,6 +214,7 @@ namespace log4net.Util
 
                             offset++;
                         }
+
                         // Look for the separator between min and max
                         if (offset < pattern.Length)
                         {
@@ -220,6 +224,7 @@ namespace log4net.Util
                                 offset++;
                             }
                         }
+
                         // Look for the maximum length
                         while (offset < pattern.Length && char.IsDigit(pattern[offset]))
                         {

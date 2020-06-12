@@ -55,13 +55,16 @@ namespace DotNetNuke.Services.Installer.Dependencies
                         // The class for the Installer is specified in the Text property
                         dependency = (DependencyBase)Reflection.CreateObject(entry.Text, "Dependency_" + entry.Value);
                     }
+
                     break;
             }
+
             if (dependency == null)
             {
                 // Could not create dependency, show generic error message
                 dependency = new InvalidDependency(Util.INSTALL_Dependencies);
             }
+
             // Read Manifest
             dependency.ReadManifest(dependencyNav);
 

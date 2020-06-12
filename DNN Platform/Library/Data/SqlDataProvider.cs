@@ -121,6 +121,7 @@ namespace DotNetNuke.Data
                 Logger.Error(ex);
                 errorMessage = ex.ToString();
             }
+
             errorMessage += Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             return null;
         }
@@ -148,6 +149,7 @@ namespace DotNetNuke.Data
                     }
                 }
             }
+
             return DBUser;
         }
 
@@ -230,6 +232,7 @@ namespace DotNetNuke.Data
 
                 exceptions += objException + Environment.NewLine + Environment.NewLine + sql + Environment.NewLine + Environment.NewLine;
             }
+
             return exceptions;
         }
 
@@ -326,6 +329,7 @@ namespace DotNetNuke.Data
                     exceptions += objException + Environment.NewLine + Environment.NewLine + script + Environment.NewLine + Environment.NewLine;
                 }
             }
+
             return exceptions;
         }
 

@@ -58,6 +58,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatPrice;
         }
 
@@ -132,6 +133,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatExpiryDate;
         }
 
@@ -169,6 +171,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatPrice;
         }
 
@@ -210,6 +213,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatTrial;
         }
 
@@ -231,12 +235,14 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     serverPath += "/";
                 }
+
                 formatURL = serverPath + "Register.aspx?tabid=" + this.TabId;
             }
             catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return formatURL;
         }
 
@@ -275,6 +281,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return serviceText;
         }
 
@@ -294,6 +301,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     showSubscribe = true;
                 }
             }
+
             return showSubscribe;
         }
 
@@ -314,6 +322,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     showTrial = true;
                 }
             }
+
             return showTrial;
         }
 
@@ -346,6 +355,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
+
             if (this.SubscriptionUpdated != null)
             {
                 this.SubscriptionUpdated(this, e);
@@ -381,6 +391,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
+
             // Get the RSVP code
             string code = this.txtRSVPCode.Text;
             bool rsvpCodeExists = false;
@@ -398,6 +409,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
                     }
                 }
+
                 if (rsvpCodeExists)
                 {
                     this.lblRSVP.Text = Localization.GetString("RSVPSuccess", this.LocalResourceFile);
@@ -409,6 +421,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     this.lblRSVP.Text = Localization.GetString("RSVPFailure", this.LocalResourceFile);
                 }
             }
+
             this.DataBind();
         }
 

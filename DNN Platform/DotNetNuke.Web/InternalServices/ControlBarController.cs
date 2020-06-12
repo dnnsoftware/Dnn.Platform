@@ -97,6 +97,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 category = "All";
             }
+
             var bookmarCategory = this.Controller.GetBookmarkCategory(PortalSettings.Current.PortalId);
             var bookmarkedModules = this.Controller.GetBookmarkedDesktopModules(PortalSettings.Current.PortalId, UserController.Instance.GetCurrentUserInfo().UserID, searchTerm);
             var bookmarkCategoryModules = this.Controller.GetCategoryDesktopModules(this.PortalSettings.PortalId, bookmarCategory, searchTerm);
@@ -111,6 +112,7 @@ namespace DotNetNuke.Web.InternalServices
                     filteredList.Where(kvp =>
                         !excludeList.Contains(kvp.Value.DesktopModule.Category.ToLowerInvariant()));
             }
+
             if (sortBookmarks)
             {
                 // sort bookmarked modules
@@ -197,6 +199,7 @@ namespace DotNetNuke.Web.InternalServices
                                     let imageUrl = this.GetTabModuleImage(tabID, kvp.Key)
                                     select new ModuleDefDTO { ModuleID = kvp.Key, ModuleName = kvp.Value, ModuleImage = imageUrl });
                 }
+
                 return this.Request.CreateResponse(HttpStatusCode.OK, result);
             }
 
@@ -856,6 +859,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     objModule.CultureCode = Null.NullString;
                 }
+
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
@@ -865,6 +869,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     tabModuleId = objModule.ModuleID;
                 }
+
                 // update the position to let later modules with add after previous one.
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }

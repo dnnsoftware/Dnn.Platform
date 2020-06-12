@@ -192,14 +192,17 @@ namespace DotNetNuke.Entities.Users
                 {
                     return new UserInfo();
                 }
+
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)
                 {
                     user = GetCachedUser(portalSettings.PortalId, Thread.CurrentPrincipal.Identity.Name);
                     return user ?? new UserInfo();
                 }
+
                 return new UserInfo();
             }
+
             user = (UserInfo)HttpContext.Current.Items["UserInfo"];
             return user ?? new UserInfo();
         }
@@ -234,38 +237,47 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Column_FirstName"] = false;
             }
+
             if (settings["Column_LastName"] == null)
             {
                 settings["Column_LastName"] = false;
             }
+
             if (settings["Column_DisplayName"] == null)
             {
                 settings["Column_DisplayName"] = true;
             }
+
             if (settings["Column_Address"] == null)
             {
                 settings["Column_Address"] = true;
             }
+
             if (settings["Column_Telephone"] == null)
             {
                 settings["Column_Telephone"] = true;
             }
+
             if (settings["Column_Email"] == null)
             {
                 settings["Column_Email"] = false;
             }
+
             if (settings["Column_CreatedDate"] == null)
             {
                 settings["Column_CreatedDate"] = true;
             }
+
             if (settings["Column_LastLogin"] == null)
             {
                 settings["Column_LastLogin"] = false;
             }
+
             if (settings["Column_Authorized"] == null)
             {
                 settings["Column_Authorized"] = true;
             }
+
             if (settings["Display_Mode"] == null)
             {
                 settings["Display_Mode"] = DisplayMode.All;
@@ -274,14 +286,17 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Display_Mode"] = (DisplayMode)Convert.ToInt32(settings["Display_Mode"]);
             }
+
             if (settings["Display_SuppressPager"] == null)
             {
                 settings["Display_SuppressPager"] = false;
             }
+
             if (settings["Records_PerPage"] == null)
             {
                 settings["Records_PerPage"] = 10;
             }
+
             if (settings["Profile_DefaultVisibility"] == null)
             {
                 settings["Profile_DefaultVisibility"] = UserVisibilityMode.AdminOnly;
@@ -290,60 +305,74 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Profile_DefaultVisibility"] = (UserVisibilityMode)Convert.ToInt32(settings["Profile_DefaultVisibility"]);
             }
+
             if (settings["Profile_DisplayVisibility"] == null)
             {
                 settings["Profile_DisplayVisibility"] = true;
             }
+
             if (settings["Profile_ManageServices"] == null)
             {
                 settings["Profile_ManageServices"] = true;
             }
+
             if (settings["Redirect_AfterLogin"] == null)
             {
                 settings["Redirect_AfterLogin"] = -1;
             }
+
             if (settings["Redirect_AfterRegistration"] == null)
             {
                 settings["Redirect_AfterRegistration"] = -1;
             }
+
             if (settings["Redirect_AfterLogout"] == null)
             {
                 settings["Redirect_AfterLogout"] = -1;
             }
+
             if (settings["Security_CaptchaLogin"] == null)
             {
                 settings["Security_CaptchaLogin"] = false;
             }
+
             if (settings["Security_CaptchaRegister"] == null)
             {
                 settings["Security_CaptchaRegister"] = false;
             }
+
             if (settings["Security_CaptchaChangePassword"] == null)
             {
                 settings["Security_CaptchaChangePassword"] = false;
             }
+
             if (settings["Security_CaptchaRetrivePassword"] == null)
             {
                 settings["Security_CaptchaRetrivePassword"] = false;
             }
+
             if (settings["Security_EmailValidation"] == null)
             {
                 settings["Security_EmailValidation"] = Globals.glbEmailRegEx;
             }
+
             if (settings["Security_UserNameValidation"] == null)
             {
                 settings["Security_UserNameValidation"] = Globals.glbUserNameRegEx;
             }
+
             // Forces a valid profile on registration
             if (settings["Security_RequireValidProfile"] == null)
             {
                 settings["Security_RequireValidProfile"] = false;
             }
+
             // Forces a valid profile on login
             if (settings["Security_RequireValidProfileAtLogin"] == null)
             {
                 settings["Security_RequireValidProfileAtLogin"] = true;
             }
+
             if (settings["Security_UsersControl"] == null)
             {
                 var portal = PortalController.Instance.GetPortal(portalId);
@@ -361,47 +390,58 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"]);
             }
+
             // Display name format
             if (settings["Security_DisplayNameFormat"] == null)
             {
                 settings["Security_DisplayNameFormat"] = string.Empty;
             }
+
             if (settings["Registration_RequireConfirmPassword"] == null)
             {
                 settings["Registration_RequireConfirmPassword"] = true;
             }
+
             if (settings["Registration_RandomPassword"] == null)
             {
                 settings["Registration_RandomPassword"] = false;
             }
+
             if (settings["Registration_UseEmailAsUserName"] == null)
             {
                 settings["Registration_UseEmailAsUserName"] = false;
             }
+
             if (settings["Registration_UseAuthProviders"] == null)
             {
                 settings["Registration_UseAuthProviders"] = false;
             }
+
             if (settings["Registration_UseProfanityFilter"] == null)
             {
                 settings["Registration_UseProfanityFilter"] = false;
             }
+
             if (settings["Registration_RegistrationFormType"] == null)
             {
                 settings["Registration_RegistrationFormType"] = 0;
             }
+
             if (settings["Registration_RegistrationFields"] == null)
             {
                 settings["Registration_RegistrationFields"] = string.Empty;
             }
+
             if (settings["Registration_ExcludeTerms"] == null)
             {
                 settings["Registration_ExcludeTerms"] = string.Empty;
             }
+
             if (settings["Registration_RequireUniqueDisplayName"] == null)
             {
                 settings["Registration_RequireUniqueDisplayName"] = false;
             }
+
             return settings;
         }
 
@@ -594,6 +634,7 @@ namespace DotNetNuke.Entities.Users
                     cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
                 }
             }
+
             return cdv;
         }
 
@@ -617,6 +658,7 @@ namespace DotNetNuke.Entities.Users
                     cdv = "&cdv=" + photoFile.LastModifiedOnDate.Ticks;
                 }
             }
+
             return cdv;
         }
 
@@ -739,6 +781,7 @@ namespace DotNetNuke.Entities.Users
             {
                 throw new Exception("Invalid Password");
             }
+
             return passwordChanged;
         }
 
@@ -761,11 +804,13 @@ namespace DotNetNuke.Entities.Users
             {
                 return false;
             }
+
             // check if the token supplied is the same as the users and is still valid
             if (user.PasswordResetToken != resetTokenGuid || user.PasswordResetExpiration < DateTime.Now)
             {
                 return false;
             }
+
             var m = new MembershipPasswordController();
             if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword))
             {
@@ -793,6 +838,7 @@ namespace DotNetNuke.Entities.Users
             {
                 throw new Exception("Invalid Password");
             }
+
             return passwordChanged;
         }
 
@@ -817,12 +863,14 @@ namespace DotNetNuke.Entities.Users
                 errorMessage = Localization.GetString("PasswordResetFailed_UserUndefined");
                 return false;
             }
+
             // check if the token supplied is the same as the users and is still valid
             if (user.PasswordResetToken != resetTokenGuid || user.PasswordResetExpiration < DateTime.Now)
             {
                 errorMessage = Localization.GetString("PasswordResetFailed_ResetLinkExpired");
                 return false;
             }
+
             var m = new MembershipPasswordController();
             if (m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, false))
             {
@@ -865,8 +913,10 @@ namespace DotNetNuke.Entities.Users
             {
                 throw new Exception("Invalid Password");
             }
+
             return passwordChanged;
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
@@ -903,6 +953,7 @@ namespace DotNetNuke.Entities.Users
             {
                 loginStatus = UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
             }
+
             if (username == "host" && (password == "host" || password == "dnnhost"))
             {
                 loginStatus = UserLoginStatus.LOGIN_INSECUREHOSTPASSWORD;
@@ -1202,6 +1253,7 @@ namespace DotNetNuke.Entities.Users
                 // Throw a configuration exception as password retrieval is not enabled
                 throw new ConfigurationErrorsException("Password Retrieval is not enabled");
             }
+
             return user.Membership.Password;
         }
 
@@ -1251,6 +1303,7 @@ namespace DotNetNuke.Entities.Users
             {
                 userFound = lookUp.TryGetValue(userId, out userName);
             }
+
             if (userFound)
             {
                 user = GetCachedUser(portalId, userName);
@@ -1267,6 +1320,7 @@ namespace DotNetNuke.Entities.Users
                     }
                 }
             }
+
             return user;
         }
 
@@ -1411,6 +1465,7 @@ namespace DotNetNuke.Entities.Users
             {
                 portalId = portalSettings.PortalId;
             }
+
             return GetUserSettings(portalId, new Hashtable());
         }
 
@@ -1435,6 +1490,7 @@ namespace DotNetNuke.Entities.Users
             {
                 currentPortalSettings = PortalController.Instance.GetPortalSettings(portalId);
             }
+
             if (settingsDictionary != null)
             {
                 foreach (KeyValuePair<string, string> kvp in settingsDictionary)
@@ -1469,6 +1525,7 @@ namespace DotNetNuke.Entities.Users
                                         settings[kvp.Key] = kvp.Value;
                                         break;
                                 }
+
                                 break;
                         }
                     }
@@ -1482,6 +1539,7 @@ namespace DotNetNuke.Entities.Users
                     settings[kvp.Key] = kvp.Value;
                 }
             }
+
             return settings;
         }
 
@@ -1590,6 +1648,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return GetUserById(portalId, uid);
             }
+
             return null;
         }
 
@@ -1840,6 +1899,7 @@ namespace DotNetNuke.Entities.Users
                 string resetPassword = ResetPassword(user, string.Empty);
                 return ChangePassword(user, resetPassword, newPassword);
             }
+
             return false;
         }
 
@@ -1850,6 +1910,7 @@ namespace DotNetNuke.Entities.Users
                 string resetPassword = ResetPassword(user, string.Empty);
                 return ChangePassword(user, resetPassword, newPassword);
             }
+
             return false;
         }
 
@@ -1872,6 +1933,7 @@ namespace DotNetNuke.Entities.Users
                 // Throw a configuration exception as password reset is not enabled
                 throw new ConfigurationErrorsException("Password Reset is not enabled");
             }
+
             return user.Membership.Password;
         }
 
@@ -1901,6 +1963,7 @@ namespace DotNetNuke.Entities.Users
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 return Mail.SendMail(user, MessageType.PasswordReminder, portalSettings) == string.Empty;
             }
+
             return true;
         }
 
@@ -2155,11 +2218,13 @@ namespace DotNetNuke.Entities.Users
             {
                 isValid = false;
             }
+
             // Validate Regex
             if (!string.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
             {
                 isValid = Regex.IsMatch(password, MembershipProviderConfig.PasswordStrengthRegularExpression);
             }
+
             return isValid;
         }
 
@@ -2367,6 +2432,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return relativeUrl;
             }
+
             var portalAlias = PortalAliasController.Instance.GetPortalAliasesByPortalId(portalId).First(p => p.IsPrimary);
             var domainName = GetDomainName(portalAlias);
             return Globals.AddHTTP(domainName + relativeUrl);

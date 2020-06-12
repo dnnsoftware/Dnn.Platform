@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.Groups
         {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

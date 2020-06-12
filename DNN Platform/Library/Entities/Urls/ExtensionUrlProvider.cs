@@ -60,13 +60,17 @@ namespace DotNetNuke.Entities.Urls
                         {
                             qs.Append("=" + urlPathPart);
                         }
+
                         // switch odd/even
                         odd = !odd;
                     }
+
                     i++;
                 }
+
                 result = qs.ToString();
             }
+
             return result;
         }
 

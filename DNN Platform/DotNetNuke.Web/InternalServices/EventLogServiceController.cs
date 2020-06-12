@@ -71,6 +71,7 @@ namespace DotNetNuke.Web.InternalServices
                     str.Append("<p><strong>" + ldi.PropertyName + "</strong>:" + HttpUtility.HtmlEncode(ldi.PropertyValue) + "</p>");
                 }
             }
+
             str.Append("<p><b>Server Name</b>: " + HttpUtility.HtmlEncode(logInfo.LogServerName) + "</p>");
             return str.ToString();
         }

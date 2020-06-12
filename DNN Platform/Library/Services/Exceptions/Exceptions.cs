@@ -88,6 +88,7 @@ namespace DotNetNuke.Services.Exceptions
 
                     objExceptionInfo.Method = "N/A - Reflection Permission required";
                 }
+
                 if (!string.IsNullOrEmpty(sf.GetFileName()))
                 {
                     objExceptionInfo.FileName = sf.GetFileName();
@@ -95,6 +96,7 @@ namespace DotNetNuke.Services.Exceptions
                     objExceptionInfo.FileLineNumber = sf.GetFileLineNumber();
                 }
             }
+
             return objExceptionInfo;
         }
 
@@ -158,6 +160,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 log.LogProperties.Add(new LogDetailInfo("URL:", URL));
             }
+
             LogController.Instance.AddLog(log);
 
             throw exc;
@@ -208,6 +211,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
+
             ProcessModuleLoadException(ctrl, exc, true);
         }
 
@@ -224,6 +228,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
+
             string friendlyMessage = Localization.Localization.GetString("ErrorOccurred");
             var ctrlModule = ctrl as IModuleControl;
             if (ctrlModule == null)
@@ -239,8 +244,10 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     moduleTitle = ctrlModule.ModuleContext.Configuration.ModuleTitle;
                 }
+
                 friendlyMessage = string.Format(Localization.Localization.GetString("ModuleUnavailable"), moduleTitle);
             }
+
             ProcessModuleLoadException(friendlyMessage, ctrl, exc, DisplayErrorMessage);
         }
 
@@ -257,6 +264,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
+
             ProcessModuleLoadException(FriendlyMessage, ctrl, exc, true);
         }
 
@@ -274,6 +282,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
+
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             try
             {
@@ -314,6 +323,7 @@ namespace DotNetNuke.Services.Exceptions
                         {
                             ErrorPlaceholder = (PlaceHolder)ctrl.Parent.FindControl("MessagePlaceHolder");
                         }
+
                         if (ErrorPlaceholder != null)
                         {
                             // hide the module
@@ -334,6 +344,7 @@ namespace DotNetNuke.Services.Exceptions
                 Logger.Fatal(exc2);
                 ProcessPageLoadException(exc2);
             }
+
             Logger.ErrorFormat("FriendlyMessage=\"{0}\" ctrl=\"{1}\" exc=\"{2}\"", FriendlyMessage, ctrl, exc);
         }
 
@@ -353,6 +364,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 appURL += "&def=ErrorMessage";
             }
+
             ProcessPageLoadException(exc, appURL);
         }
 
@@ -368,6 +380,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 return;
             }
+
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (!Host.UseCustomErrorMessages)
             {

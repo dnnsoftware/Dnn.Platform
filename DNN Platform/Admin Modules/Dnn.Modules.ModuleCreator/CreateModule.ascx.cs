@@ -60,6 +60,7 @@ namespace Dnn.Module.ModuleCreator
             {
                 this.optLanguage.Items.Add(new ListItem(Path.GetFileName(folderPath)));
             }
+
             this.optLanguage.SelectedIndex = 0;
         }
 
@@ -75,6 +76,7 @@ namespace Dnn.Module.ModuleCreator
                     this.cboTemplate.Items.Add(new ListItem(Path.GetFileName(folderPath)));
                 }
             }
+
             this.cboTemplate.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
             if (this.cboTemplate.Items.FindByText("Module - User Control") != null)
             {
@@ -84,6 +86,7 @@ namespace Dnn.Module.ModuleCreator
             {
                 this.cboTemplate.SelectedIndex = 0;
             }
+
             this.LoadReadMe();
         }
 
@@ -153,12 +156,14 @@ namespace Dnn.Module.ModuleCreator
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
+
                         break;
                     case ".cs":
                         if (filePath.ToLowerInvariant().IndexOf(".ascx") == -1)
                         {
                             modulePath = modulePath.Replace("DesktopModules", "App_Code");
                         }
+
                         break;
                     case ".js":
                         modulePath = modulePath + "\\js\\";
@@ -286,10 +291,12 @@ namespace Dnn.Module.ModuleCreator
                                 termId = term.TermId;
                             }
                         }
+
                         if (termId == -1)
                         {
                             termId = objTermController.AddTerm(new Term(vocabularyId) { Name = this.txtOwner.Text });
                         }
+
                         var objTerm = objTermController.GetTerm(termId);
                         var objContentController = DotNetNuke.Entities.Content.Common.Util.GetContentController();
                         var objContent = objContentController.GetContentItem(objDesktopModule.ContentItemId);
@@ -380,6 +387,7 @@ namespace Dnn.Module.ModuleCreator
                     {
                         this.txtOwner.Text = HostSettings["Owner"];
                     }
+
                     this.LoadLanguages();
                     this.LoadModuleTemplates();
                     this.txtControl.Text = "View";

@@ -31,18 +31,22 @@ namespace DotNetNuke.Framework
                 {
                     strPermissions += ", " + ReflectionPermission;
                 }
+
                 if (HasWebPermission())
                 {
                     strPermissions += ", " + WebPermission;
                 }
+
                 if (HasAspNetHostingPermission())
                 {
                     strPermissions += ", " + AspNetHostingPermission;
                 }
+
                 if (!string.IsNullOrEmpty(strPermissions))
                 {
                     strPermissions = strPermissions.Substring(2);
                 }
+
                 return strPermissions;
             }
         }
@@ -90,6 +94,7 @@ namespace DotNetNuke.Framework
                     // code access security error
                     m_AspNetHostingPermission = false;
                 }
+
                 m_Initialized = true;
 
                 // Test for Unmanaged Code permission
@@ -147,29 +152,34 @@ namespace DotNetNuke.Framework
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                             case ReflectionPermission:
                                 if (HasReflectionPermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                             case UnManagedCodePermission:
                                 if (HasUnManagedCodePermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                             case WebPermission:
                                 if (HasWebPermission() == false)
                                 {
                                     _HasPermission = false;
                                 }
+
                                 break;
                         }
                     }
                 }
             }
+
             return _HasPermission;
         }
 

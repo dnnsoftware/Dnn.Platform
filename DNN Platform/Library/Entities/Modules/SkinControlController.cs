@@ -112,6 +112,7 @@ namespace DotNetNuke.Entities.Modules
                     UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(skinControl, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.SKINCONTROL_UPDATED);
             }
+
             return skinControlID;
         }
     }

@@ -69,6 +69,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 synonyms = this._emptySynonums;
             }
+
             return synonyms;
         }
 
@@ -492,6 +493,7 @@ namespace DotNetNuke.Services.Search.Internals
                             newPhraseBulder.Append(currentWord + " ");
                             currentWord.Clear();
                         }
+
                         break;
                     case ' ':
                         if (!insideQuote && useWildCard)
@@ -500,6 +502,7 @@ namespace DotNetNuke.Services.Search.Internals
                             newPhraseBulder.Append(this.FixLastWord(currentWord.ToString().Trim(), allowLeadingWildcard) + " ");
                             currentWord.Clear();
                         }
+
                         break;
                 }
             }
@@ -597,6 +600,7 @@ namespace DotNetNuke.Services.Search.Internals
                     lastWord += c2;
                 }
             }
+
             return lastWord;
         }
 
@@ -751,6 +755,7 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                 }
             }
+
             // Update Portal Settings
             PortalController.UpdatePortalSetting(portalId, setting, "true", true);
         }
@@ -789,6 +794,7 @@ namespace DotNetNuke.Services.Search.Internals
                     space = " ";
                 }
             }
+
             return sb.ToString();
         }
     }

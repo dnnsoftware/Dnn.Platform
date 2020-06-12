@@ -85,6 +85,7 @@ namespace DotNetNuke.Modules.Html
             {
                 intStateID = ((WorkflowStateInfo) arrWorkflowStates[0]).StateID;
             }
+
             return intStateID;
         }
 
@@ -124,6 +125,7 @@ namespace DotNetNuke.Modules.Html
                         intPreviousStateID = ((WorkflowStateInfo) arrWorkflowStates[intItem]).StateID;
                         break;
                     }
+
                     intItem = intItem - 1;
                 }
             }
@@ -173,6 +175,7 @@ namespace DotNetNuke.Modules.Html
                         intNextStateID = ((WorkflowStateInfo) arrWorkflowStates[intItem]).StateID;
                         break;
                     }
+
                     intItem = intItem + 1;
                 }
             }
@@ -202,6 +205,7 @@ namespace DotNetNuke.Modules.Html
             {
                 intStateID = ((WorkflowStateInfo) arrWorkflowStates[arrWorkflowStates.Count - 1]).StateID;
             }
+
             return intStateID;
         }
     }

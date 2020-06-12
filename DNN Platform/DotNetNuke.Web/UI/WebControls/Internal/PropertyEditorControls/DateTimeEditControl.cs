@@ -52,6 +52,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 {
                     Logger.Error(exc);
                 }
+
                 return dteValue;
             }
         }
@@ -96,6 +97,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                         }
                     }
                 }
+
                 return _Format;
             }
         }
@@ -124,6 +126,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 {
                     Logger.Error(exc);
                 }
+
                 return dteValue;
             }
         }
@@ -140,6 +143,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 {
                     _StringValue = this.DateValue.ToString(this.Format);
                 }
+
                 return _StringValue;
             }
             set
@@ -215,6 +219,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                     }
                 }
             }
+
             this.LoadDateControls();
             return dataChanged;
         }

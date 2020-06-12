@@ -69,6 +69,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("?returnurl=", StringComparison.Ordinal));
                 }
+
                 returnUrl = HttpUtility.UrlEncode(returnUrl);
 
                 return Globals.LoginURL(returnUrl, this.Request.QueryString["override"] != null);

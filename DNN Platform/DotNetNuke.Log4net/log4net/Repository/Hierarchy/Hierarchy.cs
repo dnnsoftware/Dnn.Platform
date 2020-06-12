@@ -241,6 +241,7 @@ namespace log4net.Repository.Hierarchy
                         }
                     }
                 }
+
                 return this.m_root;
             }
         }
@@ -263,6 +264,7 @@ namespace log4net.Repository.Hierarchy
                 {
                     throw new ArgumentNullException("value");
                 }
+
                 this.m_defaultFactory = value;
             }
         }
@@ -319,6 +321,7 @@ namespace log4net.Repository.Hierarchy
                         loggers.Add(node);
                     }
                 }
+
                 return (Logger[])loggers.ToArray(typeof(Logger));
             }
         }
@@ -699,6 +702,7 @@ namespace log4net.Repository.Hierarchy
             {
                 throw new ArgumentNullException("name");
             }
+
             if (factory == null)
             {
                 throw new ArgumentNullException("factory");
@@ -839,6 +843,7 @@ namespace log4net.Repository.Hierarchy
                         }
                     }
                 }
+
                 if (i == 0)
                 {
                     // logger name starts with a dot

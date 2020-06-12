@@ -138,6 +138,7 @@ namespace DotNetNuke.Modules.Groups
                 this.drpRoleGroup.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString()));
             }
         }
+
         private void BindPages()
         {
             foreach (ModuleInfo moduleInfo in ModuleController.Instance.GetModules(this.PortalId))

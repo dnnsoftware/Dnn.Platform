@@ -134,6 +134,7 @@ namespace DotNetNuke.HttpModules.Analytics
                     {
                         objEngine = new GenericAnalyticsEngine();
                     }
+
                     if (objEngine == null)
                     {
                         continue;

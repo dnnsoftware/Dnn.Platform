@@ -36,6 +36,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 IsFound = true;
             }
+
             if (!IsFound)
             {
                 try
@@ -49,6 +50,7 @@ namespace DotNetNuke.UI.WebControls
                     Logger.Error(exc);
                 }
             }
+
             if (!IsFound)
             {
                 try

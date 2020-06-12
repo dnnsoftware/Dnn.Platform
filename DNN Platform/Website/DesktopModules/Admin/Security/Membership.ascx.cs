@@ -52,6 +52,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     membership = this.User.Membership;
                 }
+
                 return membership;
             }
         }
@@ -79,6 +80,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.MembershipPromoteToSuperuser != null)
             {
                 this.MembershipPromoteToSuperuser(this, e);
@@ -97,6 +99,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.MembershipDemoteFromSuperuser != null)
             {
                 this.MembershipDemoteFromSuperuser(this, e);
@@ -115,6 +118,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.MembershipAuthorized != null)
             {
                 this.MembershipAuthorized(this, e);
@@ -132,6 +136,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.MembershipPasswordUpdateChanged != null)
             {
                 this.MembershipPasswordUpdateChanged(this, e);
@@ -149,6 +154,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.MembershipUnAuthorized != null)
             {
                 this.MembershipUnAuthorized(this, e);
@@ -166,6 +172,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.MembershipUnLocked != null)
             {
                 this.MembershipUnLocked(this, e);
@@ -194,6 +201,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.cmdAuthorize.Visible = !this.UserMembership.Approved || this.User.IsInRole("Unverified Users");
                 this.cmdPassword.Visible = !this.UserMembership.UpdatePassword;
             }
+
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser && UserController.Instance.GetCurrentUserInfo().UserID != this.User.UserID)
             {
                 this.cmdToggleSuperuser.Visible = true;
@@ -206,11 +214,13 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.cmdToggleSuperuser.Text = Localization.GetString("PromoteToSuperUser", this.LocalResourceFile);
                 }
+
                 if (PortalController.GetPortalsByUser(this.User.UserID).Count == 0)
                 {
                     this.cmdToggleSuperuser.Visible = false;
                 }
             }
+
             this.lastLockoutDate.Value = this.UserMembership.LastLockoutDate.Year > 2000
                                         ? (object)this.UserMembership.LastLockoutDate
                                         : this.LocalizeString("Never");
@@ -262,6 +272,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.Request.IsAuthenticated != true)
             {
                 return;
@@ -297,6 +308,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.Request.IsAuthenticated != true)
             {
                 return;
@@ -334,6 +346,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.Request.IsAuthenticated != true)
             {
                 return;
@@ -349,6 +362,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             this.OnMembershipUnAuthorized(EventArgs.Empty);
         }
+
         /// <summary>
         /// cmdToggleSuperuser_Click runs when the toggle superuser button is clicked
         /// </summary>
@@ -360,6 +374,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.Request.IsAuthenticated != true)
             {
                 return;
@@ -385,6 +400,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.OnMembershipPromoteToSuperuser(EventArgs.Empty);
             }
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// cmdUnlock_Click runs when the Unlock Account Button is clicked
@@ -396,6 +412,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.Request.IsAuthenticated != true)
             {
                 return;

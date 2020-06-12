@@ -84,6 +84,7 @@ namespace log4net.Util.TypeConverters
             {
                 return new PatternLayout(str);
             }
+
             throw ConversionNotSupportedException.Create(typeof(PatternLayout), source);
         }
     }

@@ -125,11 +125,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
                 this._dtRedirections.Dispose();
                 this._dtRedirections = null;
             }
+
             if (this._dtRules != null)
             {
                 this._dtRules.Dispose();
                 this._dtRules = null;
             }
+
             ComponentFactory.Container = null;
         }
 
@@ -154,6 +156,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 affectedCount++;
             }
+
             Assert.AreEqual(1, affectedCount);
         }
 
@@ -171,6 +174,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 affectedCount++;
             }
+
             Assert.AreEqual(1, affectedCount);
 
             var getRe = this._redirectionController.GetRedirectionsByPortal(Portal0)[0];
@@ -767,6 +771,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 table.Columns.Add(col);
             }
+
             table.Columns["ModuleID"].DataType = typeof(int);
 
             var portalId = tabId == HomePageOnPortal0 ? Portal0 : Portal1;

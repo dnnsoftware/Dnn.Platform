@@ -75,6 +75,7 @@ namespace log4net.Repository.Hierarchy
             {
                 return new RootLogger(repository.LevelMap.LookupWithDefault(Level.Debug));
             }
+
             return new LoggerImpl(name);
         }
 

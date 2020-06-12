@@ -47,16 +47,19 @@ namespace DotNetNuke.Collections
                     {
                         key = keyValues[0];
                     }
+
                     if (keyValues.GetUpperBound(0) >= 1)
                     {
                         value = keyValues[1];
                     }
+
                     if (!string.IsNullOrEmpty(key) && value != null && !dictionary.ContainsKey(key))
                     {
                         dictionary.Add(key, value);
                     }
                 }
             }
+
             return dictionary;
         }
 
@@ -760,6 +763,7 @@ namespace DotNetNuke.Collections
             {
                 Logger.ErrorFormat("Error loading portal setting: {0} Default value {1} was used instead", key + ":" + dictionary[key], defaultValue.ToString());
             }
+
             return value;
         }
 

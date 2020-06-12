@@ -145,6 +145,7 @@ namespace DotNetNuke.Tests.Utilities
             {
                 return;
             }
+
             alreadyLoaded = true;
             if (providerList != null)
             {

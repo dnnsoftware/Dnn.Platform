@@ -35,6 +35,7 @@ namespace DotNetNuke.Entities.Portals
                     aliasCultures.Add(cpa.HTTPAlias.ToLowerInvariant(), cpa.CultureCode);
                 }
             }
+
             return aliasCultures;
         }
 
@@ -56,6 +57,7 @@ namespace DotNetNuke.Entities.Portals
                 HttpResponse response = HttpContext.Current.Response;
                 browserType = FriendlyUrlController.GetBrowserType(request, response, settings);
             }
+
             return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
         }
 
@@ -77,6 +79,7 @@ namespace DotNetNuke.Entities.Portals
                     HttpAlias = requestedAlias,
                 };
             }
+
             return GetAliasByPortalIdAndSettings(aliases, portalId, result, cultureCode, browserType);
         }
 
@@ -118,6 +121,7 @@ namespace DotNetNuke.Entities.Portals
                                                          && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
                 }
             }
+
             // 27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
             if (foundAlias == null)
             {
@@ -139,6 +143,7 @@ namespace DotNetNuke.Entities.Portals
                        .ThenByDescending(a => a.CultureCode)
                        .FirstOrDefault();
             }
+
             // END DNN-4882
             if (foundAlias != null)
             {
@@ -180,6 +185,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 httpAliases.Add(cpa.HTTPAlias.ToLowerInvariant());
             }
+
             return httpAliases;
         }
 

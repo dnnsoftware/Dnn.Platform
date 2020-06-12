@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     DataCache.ClearUserCache(this.PortalSettings.PortalId, this.Context.User.Identity.Name);
                 }
+
                 var objPortalSecurity = PortalSecurity.Instance;
                 objPortalSecurity.SignOut();
             }

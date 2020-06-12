@@ -33,6 +33,7 @@ namespace DotNetNuke.Web.InternalServices
             public string ViewUrl { get; set; }
             public string EditUrl { get; set; }
         }
+
         private bool IsDefaultLanguage(string code)
         {
             return code == this.PortalSettings.DefaultLanguage;
@@ -59,6 +60,7 @@ namespace DotNetNuke.Web.InternalServices
                     });
                 }
             }
+
             return this.Request.CreateResponse(HttpStatusCode.OK, pages);
         }
     }

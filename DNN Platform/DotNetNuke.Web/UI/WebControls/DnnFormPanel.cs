@@ -23,6 +23,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnSectionExpanded");
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.A);
             writer.Write(this.Text);
             writer.RenderEndTag();

@@ -90,6 +90,7 @@ namespace Dnn.ExportImport.Components.Providers
         {
             return this._dataProvider.ExecuteReader("ExportImport_Settings");
         }
+
         public void AddExportImportSetting(ExportImportSetting exportImportSetting)
         {
             this._dataProvider.ExecuteNonQuery("ExportImport_AddSetting", exportImportSetting.SettingName,
@@ -141,6 +142,7 @@ namespace Dnn.ExportImport.Components.Providers
                 var d = datim.Value;
                 datim = new DateTime(d.Year, d.Month, d.Day, d.Hour, d.Minute, d.Second, d.Millisecond, DateTimeKind.Utc);
             }
+
             return datim;
         }
 

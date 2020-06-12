@@ -27,6 +27,7 @@ namespace DotNetNuke.Services.Exceptions
                 this.InnerMessage = e.InnerException.Message;
                 this.InnerStackTrace = e.InnerException.StackTrace;
             }
+
             this.ExceptionHash = e.Hash();
         }
 
@@ -72,6 +73,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     this.ReadXml(reader);
                 }
+
                 reader.Close();
             }
         }
@@ -134,6 +136,7 @@ namespace DotNetNuke.Services.Exceptions
                         this.Method = reader.ReadContentAsString();
                         break;
                 }
+
                 reader.ReadEndElement();
                 reader.Read();
             }

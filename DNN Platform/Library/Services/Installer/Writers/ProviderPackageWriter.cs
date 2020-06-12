@@ -29,6 +29,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 providerPath = Util.ReadAttribute(providerNavigator, "providerPath");
             }
+
             if (!string.IsNullOrEmpty(providerPath))
             {
                 this.BasePath = providerPath.Replace("~/", string.Empty).Replace("/", "\\");

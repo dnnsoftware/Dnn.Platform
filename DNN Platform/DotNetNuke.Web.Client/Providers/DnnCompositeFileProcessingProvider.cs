@@ -68,6 +68,7 @@ namespace DotNetNuke.Web.Client.Providers
                         return JSMin.CompressJS(ms);
                     }
                 }
+
                 default:
                     return fileContents;
             }

@@ -217,6 +217,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         return;
                     }
+
                     Thread.Sleep(1000);
                 }
             }

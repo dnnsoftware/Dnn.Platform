@@ -138,6 +138,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 case RequestFilterOperatorType.Regex:
                     return Regex.IsMatch(ServerVariableValue, this.Values[0], RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             }
+
             return false;
         }
 

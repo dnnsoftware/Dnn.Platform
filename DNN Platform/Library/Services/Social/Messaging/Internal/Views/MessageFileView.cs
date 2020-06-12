@@ -53,6 +53,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 
                     max /= scale;
                 }
+
                 this._size = "0 B";
             }
         }

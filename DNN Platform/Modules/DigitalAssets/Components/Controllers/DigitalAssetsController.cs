@@ -67,6 +67,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 throw new DotNetNukeException(LocalizationHelper.GetString("FolderDoesNotExists.Error"));
             }
+
             return folder;
         }
 
@@ -198,6 +199,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 return (bool)MappedPathsSupported[folderMappingId];
             }
+
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderMappingId);
             var folderProvider = FolderProvider.Instance(folderMapping.FolderProviderType);
             var result = folderProvider.SupportsMappedPaths;
@@ -211,10 +213,12 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 return "onlyUnlink";
             }
+
             if (this.AreMappedPathsSupported(folder.FolderMappingID))
             {
                 return "true";
             }
+
             return "false";
         }
 
@@ -242,6 +246,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 folderTypeId = FolderMappingController.Instance.GetDefaultFolderMapping(this.GetCurrentPortalId(moduleId)).FolderMappingID;
             }
+
             return folderTypeId;
         }
 
@@ -279,6 +284,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 // The user cannot access the content
                 return new List<FolderViewModel>();
             }
+
             return AssetManager.Instance.GetFolders(folder, "FolderName", true).Select(this.GetFolderViewModel);
         }
 
@@ -422,6 +428,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToUnlinkFolder.Error"));
             }
+
             FolderManager.Instance.UnlinkFolder(folder);
         }
 
@@ -432,6 +439,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
             {
                 return totalSubfoldersCount;
             }
+
             var allFolders = FolderManager.Instance.GetFolders(portalID);
             foreach (var item in items.Where(i => i.IsFolder && this.HasPermission(FolderManager.Instance.GetFolder(i.ItemID), "VIEW")))
             {
@@ -439,6 +447,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                 var allSubFolders = allFolders.Where(f => f.FolderPath.StartsWith(folder.FolderPath));
                 totalSubfoldersCount = totalSubfoldersCount + allSubFolders.Count(f => this.GetUnlinkAllowedStatus(f) == "onlyUnlink");
             }
+
             return totalSubfoldersCount;
         }
 
@@ -578,6 +587,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                     throw new DotNetNukeException(LocalizationHelper.GetString("UserHasNoPermissionToDownload.Error"));
                 }
             }
+
             return FileManager.Instance.GetUrl(file);
         }
 
@@ -810,6 +820,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception)

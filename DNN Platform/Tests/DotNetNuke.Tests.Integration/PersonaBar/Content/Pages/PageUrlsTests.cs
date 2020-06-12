@@ -71,10 +71,12 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
                 connector.PostJson(AddLanguageApi, new { Code = SpainishLanguageCode });
                 UpdateLanguageSettings(connector, languageSettings, SpainishLanguageCode);
             }
+
             if (isEnglishEnabled)
             {
                 EnableEnglish(connector, false);
             }
+
             return connector;
         }
 
@@ -84,6 +86,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             {
                 EnableEnglish(connector, true);
             }
+
             if (string.Compare(languageSettings.SiteDefaultLanguage.Value, EnglishLanguageCode, StringComparison.InvariantCultureIgnoreCase) == 0)
             {
                 UpdateLanguageSettings(connector, languageSettings, EnglishLanguageCode);

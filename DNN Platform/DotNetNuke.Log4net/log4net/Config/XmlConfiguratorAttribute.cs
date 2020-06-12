@@ -388,6 +388,7 @@ namespace log4net.Config
                         {
                             path = path.Substring(0, startOfExtension);
                         }
+
                         path += this.m_configFileExtension;
 
                         builder.Path = path;
@@ -432,6 +433,7 @@ namespace log4net.Config
                     {
                         LogLog.Warn(declaringType, "XmlConfiguratorAttribute: Unable to watch config file loaded from a URI");
                     }
+
                     XmlConfigurator.Configure(targetRepository, fullPath2ConfigFile);
                 }
             }

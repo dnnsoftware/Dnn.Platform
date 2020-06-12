@@ -39,10 +39,12 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             : this(null, false)
         {
         }
+
         public ModuleApplication(bool disableMvcResponseHeader)
             : this(null, disableMvcResponseHeader)
         {
         }
+
         public ModuleApplication(RequestContext requestContext, bool disableMvcResponseHeader)
         {
             this.RequestContext = requestContext;
@@ -101,6 +103,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                     ValidationUtility.EnableDynamicValidation(currentContext);
                 }
             }
+
             this.AddVersionHeader(this.RequestContext.HttpContext);
             this.RemoveOptionalRoutingParameters();
 

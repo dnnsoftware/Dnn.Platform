@@ -91,6 +91,7 @@ namespace log4net.Util
                 {
                     return dictionary[key];
                 }
+
                 return null;
             }
             set
@@ -167,6 +168,7 @@ namespace log4net.Util
                         properties = new PropertiesDictionary();
                         SetCallContextData(properties);
                     }
+
                     return properties;
                 }
                 catch (SecurityException secEx)
@@ -183,6 +185,7 @@ namespace log4net.Util
             {
                 return new PropertiesDictionary();
             }
+
             return null;
         }
 

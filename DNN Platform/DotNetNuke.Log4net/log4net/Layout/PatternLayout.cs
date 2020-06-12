@@ -1017,6 +1017,7 @@ namespace log4net.Layout
                 converterInfo.Type = (Type)entry.Value;
                 patternParser.PatternConverters[entry.Key] = converterInfo;
             }
+
             // Add the instance patterns
             foreach (DictionaryEntry entry in this.m_instanceRulesRegistry)
             {
@@ -1060,6 +1061,7 @@ namespace log4net.Layout
                         break;
                     }
                 }
+
                 curConverter = curConverter.Next;
             }
         }
@@ -1081,6 +1083,7 @@ namespace log4net.Layout
             {
                 throw new ArgumentNullException("writer");
             }
+
             if (loggingEvent == null)
             {
                 throw new ArgumentNullException("loggingEvent");
@@ -1117,6 +1120,7 @@ namespace log4net.Layout
             {
                 throw new ArgumentException("The converter type specified [" + converterInfo.Type + "] must be a subclass of log4net.Util.PatternConverter", "converterInfo");
             }
+
             this.m_instanceRulesRegistry[converterInfo.Name] = converterInfo;
         }
 

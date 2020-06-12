@@ -227,8 +227,10 @@ namespace Dnn.ExportImport.Components.Services
                                 this.Result.AddLogEntry("Importing existing tab skipped as its parent was not found", $"{otherTab.TabName} ({otherTab.TabPath})", ReportLevel.Warn);
                                 return;
                             }
+
                             this.CheckForPartialImportedTabs(otherTab);
                         }
+
                         var tabType = Globals.GetURLType(otherTab.Url);
                         if (tabType == TabType.Tab && !referenceTabs.Contains(localTab.TabID))
                         {
@@ -244,6 +246,7 @@ namespace Dnn.ExportImport.Components.Services
                             localTab.UniqueId = otherTab.UniqueId;
                             this.UpdateTabUniqueId(localTab.TabID, localTab.UniqueId);
                         }
+
                         try
                         {
                             localTab.TabPermissions.Clear(); // without this the UpdateTab() could fail
@@ -252,6 +255,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 localTab.Url = otherTab.Url;
                             }
+
                             this.SetPartialImportSettings(otherTab, localTab);
                             this._tabController.UpdateTab(localTab);
 
@@ -300,6 +304,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         localTab.Url = otherTab.Url;
                     }
+
                     localTab.UniqueId = Guid.NewGuid();
                     this.SetPartialImportSettings(otherTab, localTab);
                     otherTab.LocalId = localTab.TabID = this._tabController.AddTab(localTab, false);
@@ -341,6 +346,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.AddTabRelatedItems(localTab, otherTab, true);
                 this.TriggerImportEvent(localTab);
             }
+
             var portalSettings = new PortalSettings(portalId);
 
             if (otherTab.IsDeleted)
@@ -355,6 +361,7 @@ namespace Dnn.ExportImport.Components.Services
                     this.RestoreTab(tab, portalSettings);
                 }
             }
+
             this.UpdateParentInPartialImportTabs(localTab, otherTab, portalId, exportedTabs, localTabs);
         }
 
@@ -418,6 +425,7 @@ namespace Dnn.ExportImport.Components.Services
                     return;
                 }
             }
+
             localTab.DefaultLanguageGuid = exportedTab.DefaultLanguageGuid ?? Null.NullGuid;
         }
 
@@ -434,6 +442,7 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     localTab.TabSettings.Add("TabImported", "Y");
                 }
+
                 this._tabController.UpdateTab(localTab);
                 TabController.Instance.DeleteTabSetting(localTab.TabID, "TabImported");
             }
@@ -485,6 +494,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 goto case CollisionResolution.Ignore;
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored tab setting", other.SettingName);
@@ -566,8 +576,10 @@ namespace Dnn.ExportImport.Components.Services
                                     $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                                 continue;
                             }
+
                             local.UserID = userId.Value;
                         }
+
                         if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                         {
                             if (roleId == null)
@@ -577,8 +589,10 @@ namespace Dnn.ExportImport.Components.Services
                                     $"{other.PermissionKey} - {other.PermissionID}", ReportLevel.Warn);
                                 continue;
                             }
+
                             local.RoleID = roleId.Value;
                         }
+
                         localTab.TabPermissions.Add(local, true);
                         // UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
                         // var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
@@ -628,6 +642,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 this.Result.AddLogEntry("EXCEPTION updating tab, Tab ID=" + local.TabId, ex.Message, ReportLevel.Error);
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored tab url", other.Url);
@@ -998,6 +1013,7 @@ namespace Dnn.ExportImport.Components.Services
                     {
                         Logger.Error(new Exception($"Delete TabModule Failed: {moduleId}", ex));
                     }
+
                     this.Result.AddLogEntry("Removed existing tab module", "Module ID=" + moduleId);
                 }
             }
@@ -1129,6 +1145,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 goto case CollisionResolution.Ignore;
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored module setting", other.SettingName);
@@ -1179,6 +1196,7 @@ namespace Dnn.ExportImport.Components.Services
 
                         local.UserID = userId.Value;
                     }
+
                     if (other.RoleID != null && other.RoleID > noRole && !string.IsNullOrEmpty(other.RoleName))
                     {
                         if (roleId == null)
@@ -1277,6 +1295,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return 0;
         }
 
@@ -1366,6 +1385,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 goto case CollisionResolution.Ignore;
                             }
+
                             break;
                         case CollisionResolution.Ignore:
                             this.Result.AddLogEntry("Ignored module setting", other.SettingName);
@@ -1608,6 +1628,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.ExportTabModuleSettings(exportPage, this._exportDto.IncludeDeletions, toDate, fromDate);
                         this._totals.TotalTabs++;
                     }
+
                     this._totals.LastProcessedId = index;
                 }
 
@@ -1749,6 +1770,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return 0;
         }
 
@@ -1825,6 +1847,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return 0;
         }
 
@@ -1919,6 +1942,7 @@ namespace Dnn.ExportImport.Components.Services
                     items.ForEach(item => item.IsRestored = false);
                     repository.UpdateItems(items);
                 }
+
                 toSkip += batchSize;
                 totalCount -= batchSize;
             }
@@ -2071,6 +2095,7 @@ namespace Dnn.ExportImport.Components.Services
                     }
                 }
             }
+
             return isParentPresent;
         }
 

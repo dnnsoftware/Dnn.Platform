@@ -47,6 +47,7 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
+
             index = Convert.ToInt32(this._keyIndexLookup[key.ToLowerInvariant()]);
             return (ListEntryInfo)this.List[index];
         }

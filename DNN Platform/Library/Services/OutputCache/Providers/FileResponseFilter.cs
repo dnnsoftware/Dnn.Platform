@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     this.HasErrored = true;
                 }
             }
+
             if (this.HasErrored == false)
             {
                 try
@@ -93,6 +94,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 oWrite.WriteLine(this._cacheExpiration.ToString());
                 oWrite.Close();
             }
+
             if (deleteData)
             {
                 FileSystemUtils.DeleteFileWithWait(this.CachedOutputFileName, 100, 200);

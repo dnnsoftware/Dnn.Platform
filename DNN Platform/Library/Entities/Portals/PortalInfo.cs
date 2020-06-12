@@ -613,6 +613,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     this._users = UserController.GetUserCountByPortal(this.PortalID);
                 }
+
                 return this._users;
             }
             set { this._users = value; }
@@ -648,6 +649,7 @@ namespace DotNetNuke.Entities.Portals
                         this._administratorRoleName = adminRole.RoleName;
                     }
                 }
+
                 return this._administratorRoleName;
             }
             set
@@ -701,6 +703,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     this._pages = TabController.Instance.GetUserTabsByPortal(this.PortalID).Count;
                 }
+
                 return this._pages;
             }
             set
@@ -730,6 +733,7 @@ namespace DotNetNuke.Entities.Portals
                         this._registeredRoleName = regUsersRole.RoleName;
                     }
                 }
+
                 return this._registeredRoleName;
             }
             set
@@ -800,6 +804,7 @@ namespace DotNetNuke.Entities.Portals
                 // for backward compatibility
                 this.ProcessorPassword = p;
             }
+
             this.SplashTabId = Null.SetNullInteger(dr["SplashTabID"]);
             this.HomeTabId = Null.SetNullInteger(dr["HomeTabID"]);
             this.LoginTabId = Null.SetNullInteger(dr["LoginTabID"]);
@@ -815,11 +820,13 @@ namespace DotNetNuke.Entities.Portals
                 {
                     this.Custom404TabId = Null.SetNullInteger(dr["Custom404TabId"]);
                 }
+
                 if (schema.Select("ColumnName = 'Custom500TabId'").Length > 0)
                 {
                     this.Custom500TabId = Null.SetNullInteger(dr["Custom500TabId"]);
                 }
             }
+
             this.TermsTabId = Null.SetNullInteger(dr["TermsTabId"]);
             this.PrivacyTabId = Null.SetNullInteger(dr["PrivacyTabId"]);
 

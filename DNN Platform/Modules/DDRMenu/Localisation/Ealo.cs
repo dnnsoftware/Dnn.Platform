@@ -73,11 +73,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                     {
                         tab.TabName = ealoTab.EaloTabName.StringTextOrFallBack;
                     }
+
                     if (ealoTab.EaloTitle != null)
                     {
                         tab.Title = ealoTab.EaloTitle.StringTextOrFallBack;
                     }
                 }
+
                 return tab;
             }
         }

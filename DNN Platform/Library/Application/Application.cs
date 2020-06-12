@@ -134,6 +134,7 @@ namespace DotNetNuke.Application
                         }
                     }
                 }
+
                 return _status;
             }
         }
@@ -187,6 +188,7 @@ namespace DotNetNuke.Application
                 {
                     return "https://dnnplatform.io";
                 }
+
                 return url;
             }
         }

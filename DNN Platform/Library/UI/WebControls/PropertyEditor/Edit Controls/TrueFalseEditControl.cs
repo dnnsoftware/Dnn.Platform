@@ -59,6 +59,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return boolValue;
             }
         }
@@ -83,6 +84,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return boolValue;
             }
         }
@@ -134,6 +136,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
+
             writer.AddAttribute(HtmlTextWriterAttribute.Value, "True");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
@@ -147,6 +150,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
+
             writer.AddAttribute(HtmlTextWriterAttribute.Value, "False");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Input);

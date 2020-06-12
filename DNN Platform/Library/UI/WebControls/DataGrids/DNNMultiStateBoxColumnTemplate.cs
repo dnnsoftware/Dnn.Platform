@@ -199,6 +199,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.mStates = new DNNMultiStateCollection(new DNNMultiStateBox());
                 }
+
                 return this.mStates;
             }
             set
@@ -219,6 +220,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 container.Controls.Add(new LiteralControl(this.Text + "<br/>"));
             }
+
             if (this.ItemType != ListItemType.Header)
             {
                 var box = new DNNMultiStateBox();
@@ -228,6 +230,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     box.States.Add(objState);
                 }
+
                 box.DataBinding += this.Item_DataBinding;
                 container.Controls.Add(box);
             }
@@ -257,6 +260,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 box.SelectedStateKey = this.SelectedStateKey;
             }
+
             if (!string.IsNullOrEmpty(this.EnabledField))
             {
                 if (this.DesignMode)

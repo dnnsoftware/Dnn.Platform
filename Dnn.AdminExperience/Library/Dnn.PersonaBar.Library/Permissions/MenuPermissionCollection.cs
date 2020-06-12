@@ -80,6 +80,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
                     id = this.Add(value);
@@ -116,6 +117,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 return false;
             }
+
             this.InnerList.Sort(new CompareMenuPermissions());
             menuPermissionCollection.InnerList.Sort(new CompareMenuPermissions());
             for (int i = 0; i <= this.Count - 1; i++)
@@ -126,6 +128,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -168,6 +171,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 list.Add(permission);
             }
+
             return list;
         }
 

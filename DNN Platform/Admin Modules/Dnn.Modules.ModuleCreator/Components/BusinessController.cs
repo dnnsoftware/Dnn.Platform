@@ -29,6 +29,7 @@ namespace Dnn.Modules.ModuleCreator.Components
 
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception)

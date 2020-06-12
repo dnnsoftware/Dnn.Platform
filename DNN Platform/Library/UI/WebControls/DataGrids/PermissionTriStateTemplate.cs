@@ -18,6 +18,7 @@ namespace DotNetNuke.UI.WebControls.Internal
         {
             this._permission = permission;
         }
+
         public void InstantiateIn(Control container)
         {
             var triState = new PermissionTriState();

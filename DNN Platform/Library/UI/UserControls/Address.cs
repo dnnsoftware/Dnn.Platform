@@ -189,6 +189,7 @@ namespace DotNetNuke.UI.UserControls
                             break;
                     }
                 }
+
                 return retValue;
             }
             set
@@ -213,6 +214,7 @@ namespace DotNetNuke.UI.UserControls
                                 {
                                     retValue = this.cboRegion.SelectedItem.Text;
                                 }
+
                                 break;
                             case "value":
                                 retValue = this.cboRegion.SelectedItem.Value;
@@ -224,6 +226,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     retValue = this.txtRegion.Text;
                 }
+
                 return retValue;
             }
             set
@@ -399,6 +402,7 @@ namespace DotNetNuke.UI.UserControls
                     this.cboRegion.DataBind();
                     this.cboRegion.Items.Insert(0, new ListItem("<" + Localization.GetString("Not_Specified", Localization.SharedResourceFile) + ">", string.Empty));
                 }
+
                 if (countryCode.Equals("us", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.valRegion1.Enabled = true;
@@ -417,6 +421,7 @@ namespace DotNetNuke.UI.UserControls
                     this.plPostal.Text = Localization.GetString("plPostal", Localization.GetResourceFile(this, MyFileName));
                     this.plPostal.HelpText = Localization.GetString("plPostal.Help", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 this.valRegion1.Enabled = true;
                 this.valRegion2.Enabled = false;
             }
@@ -471,6 +476,7 @@ namespace DotNetNuke.UI.UserControls
                     this.valCountry.Enabled = false;
                     this.cboCountry.CssClass = string.Empty;
                 }
+
                 if (reqRegion)
                 {
                     this.chkRegion.Checked = true;
@@ -495,6 +501,7 @@ namespace DotNetNuke.UI.UserControls
                     this.txtRegion.CssClass = string.Empty;
                     this.cboRegion.CssClass = string.Empty;
                 }
+
                 if (reqCity)
                 {
                     this.chkCity.Checked = true;
@@ -506,6 +513,7 @@ namespace DotNetNuke.UI.UserControls
                     this.valCity.Enabled = false;
                     this.txtCity.CssClass = string.Empty;
                 }
+
                 if (reqStreet)
                 {
                     this.chkStreet.Checked = true;
@@ -517,6 +525,7 @@ namespace DotNetNuke.UI.UserControls
                     this.valStreet.Enabled = false;
                     this.txtStreet.CssClass = string.Empty;
                 }
+
                 if (reqPostal)
                 {
                     this.chkPostal.Checked = true;
@@ -528,6 +537,7 @@ namespace DotNetNuke.UI.UserControls
                     this.valPostal.Enabled = false;
                     this.txtPostal.CssClass = string.Empty;
                 }
+
                 if (reqTelephone)
                 {
                     this.chkTelephone.Checked = true;
@@ -539,6 +549,7 @@ namespace DotNetNuke.UI.UserControls
                     this.valTelephone.Enabled = false;
                     this.txtTelephone.CssClass = string.Empty;
                 }
+
                 if (reqCell)
                 {
                     this.chkCell.Checked = true;
@@ -550,6 +561,7 @@ namespace DotNetNuke.UI.UserControls
                     this.valCell.Enabled = false;
                     this.txtCell.CssClass = string.Empty;
                 }
+
                 if (reqFax)
                 {
                     this.chkFax.Checked = true;
@@ -575,6 +587,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.chkRegion.Checked = false;
             }
+
             PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addressstreet", this.chkStreet.Checked ? string.Empty : "N");
             PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscity", this.chkCity.Checked ? string.Empty : "N");
             PortalController.UpdatePortalSetting(this.PortalSettings.PortalId, "addresscountry", this.chkCountry.Checked ? string.Empty : "N");
@@ -655,6 +668,7 @@ namespace DotNetNuke.UI.UserControls
                                     this.cboCountry.Items.FindByText(this._country).Selected = true;
                                 }
                             }
+
                             break;
                         case "value":
                             if (this.cboCountry.Items.FindByValue(this._country) != null)
@@ -662,8 +676,10 @@ namespace DotNetNuke.UI.UserControls
                                 this.cboCountry.ClearSelection();
                                 this.cboCountry.Items.FindByValue(this._country).Selected = true;
                             }
+
                             break;
                     }
+
                     this.Localize();
 
                     if (this.cboRegion.Visible)
@@ -682,12 +698,14 @@ namespace DotNetNuke.UI.UserControls
                                         this.cboRegion.Items.FindByText(this._region).Selected = true;
                                     }
                                 }
+
                                 break;
                             case "value":
                                 if (this.cboRegion.Items.FindByValue(this._region) != null)
                                 {
                                     this.cboRegion.Items.FindByValue(this._region).Selected = true;
                                 }
+
                                 break;
                         }
                     }
@@ -695,6 +713,7 @@ namespace DotNetNuke.UI.UserControls
                     {
                         this.txtRegion.Text = this._region;
                     }
+
                     this.txtStreet.Text = this._street;
                     this.txtUnit.Text = this._unit;
                     this.txtCity.Text = this._city;
@@ -724,6 +743,7 @@ namespace DotNetNuke.UI.UserControls
                         this.chkCell.Visible = true;
                         this.chkFax.Visible = true;
                     }
+
                     this.ViewState["ModuleId"] = Convert.ToString(this._moduleId);
                     this.ViewState["LabelColumnWidth"] = this._labelColumnWidth;
                     this.ViewState["ControlColumnWidth"] = this._controlColumnWidth;

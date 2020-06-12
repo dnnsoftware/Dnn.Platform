@@ -145,6 +145,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                         baseDef.Scripts.Add(jsObject, script);
                                     }
                                 }
+
                                 break;
                             case "stylesheets":
                                 foreach (XmlElement cssElt in elt.GetElementsByTagName("stylesheet"))
@@ -152,6 +153,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                     var cssPath = Globals.ResolveUrl(GetResolvedPath(cssElt, resolver));
                                     baseDef.StyleSheets.Add(cssPath);
                                 }
+
                                 break;
                             case "defaultClientOptions":
                                 foreach (XmlElement optionElt in elt.GetElementsByTagName("clientOption"))
@@ -163,6 +165,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                     {
                                         optionType = "passthrough";
                                     }
+
                                     switch (optionType)
                                     {
                                         case "number":
@@ -179,6 +182,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                             break;
                                     }
                                 }
+
                                 break;
                             case "defaultTemplateArguments":
                                 foreach (XmlElement argElt in elt.GetElementsByTagName("templateArgument"))
@@ -187,6 +191,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                     var argValue = argElt.GetAttribute("value");
                                     baseDef.DefaultTemplateArguments.Add(new TemplateArgument(argName, argValue));
                                 }
+
                                 break;
                         }
                     }
@@ -274,6 +279,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 objectToCheck.AppendFormat(".{0}", part);
                 objectsToCheck.Add(objectToCheck.ToString());
             }
+
             return string.Join(" && ", objectsToCheck.ToArray());
         }
 
@@ -299,6 +305,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                     {
                         this.ClientOptions.RemoveAll(o => o.Name == option1.Name);
                     }
+
                     if (!this.ClientOptions.Exists(o => o.Name == option1.Name))
                     {
                         this.ClientOptions.Add(option);
@@ -318,6 +325,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                     {
                         this.TemplateArguments.RemoveAll(a => a.Name == arg1.Name);
                     }
+
                     if (!this.TemplateArguments.Exists(a => a.Name == arg1.Name))
                     {
                         this.TemplateArguments.Add(arg);

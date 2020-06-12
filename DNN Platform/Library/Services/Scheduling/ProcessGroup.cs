@@ -91,9 +91,11 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             Process.ScheduleHistoryItem.Succeeded = false;
                         }
+
                         Process.Errored(ref exc);
                     }
                 }
+
                 if (Process.ScheduleHistoryItem.Succeeded)
                 {
                     Process.Completed();
@@ -128,6 +130,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         Process.ScheduleHistoryItem.Succeeded = false;
                     }
+
                     Process.Errored(ref exc);
                 }
                 else

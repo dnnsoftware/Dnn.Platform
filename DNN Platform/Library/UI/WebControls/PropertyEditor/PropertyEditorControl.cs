@@ -388,8 +388,10 @@ namespace DotNetNuke.UI.WebControls
                         Array.Sort(properties, new PropertySortOrderComparer());
                         break;
                 }
+
                 return properties;
             }
+
             return null;
         }
 
@@ -405,6 +407,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 editor.EditControlWidth = this.EditControlWidth;
             }
+
             editor.LocalResourceFile = this.LocalResourceFile;
             editor.RequiredUrl = this.RequiredUrl;
             editor.ShowRequired = this.ShowRequired;
@@ -513,11 +516,13 @@ namespace DotNetNuke.UI.WebControls
                 {
                     editor.EditMode = this.EditMode;
                 }
+
                 editor.HelpDisplayMode = this.HelpDisplayMode;
                 if (editor.LabelMode == LabelMode.None)
                 {
                     editor.LabelMode = this.LabelMode;
                 }
+
                 if (editor.LabelWidth == Unit.Empty)
                 {
                     editor.LabelWidth = this.LabelWidth;
@@ -550,11 +555,13 @@ namespace DotNetNuke.UI.WebControls
                 {
                     editor.EditMode = this.EditMode;
                 }
+
                 editor.HelpDisplayMode = this.HelpDisplayMode;
                 if (editor.LabelMode == LabelMode.None)
                 {
                     editor.LabelMode = this.LabelMode;
                 }
+
                 if (editor.LabelWidth == Unit.Empty)
                 {
                     editor.LabelWidth = this.LabelWidth;
@@ -594,6 +601,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 panel.Controls.Add(new LiteralControl("<hr noshade=\"noshade\" size=\"1\"/>"));
             }
+
             this.Controls.Add(panel);
 
             // Get the Hashtable
@@ -601,6 +609,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this._sections = new Hashtable();
             }
+
             this._sections[icon] = tbl;
         }
 
@@ -664,6 +673,7 @@ namespace DotNetNuke.UI.WebControls
                                     {
                                         localizedGroupName = strGroup;
                                     }
+
                                     var link = new HyperLink() { Text = localizedGroupName, NavigateUrl = "#" };
                                     header.Controls.Add(link);
 
@@ -676,6 +686,7 @@ namespace DotNetNuke.UI.WebControls
                                     {
                                         this.AddEditorRow(container, obj);
                                     }
+
                                     this.Controls.Add(fieldset);
                                 }
                             }
@@ -759,6 +770,7 @@ namespace DotNetNuke.UI.WebControls
                 var category = (CategoryAttribute)categoryAttributes[0];
                 categoryString = category.Category;
             }
+
             return categoryString;
         }
 
@@ -784,11 +796,13 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             var strGroups = new string[arrGroups.Count];
             for (int i = 0; i <= arrGroups.Count - 1; i++)
             {
                 strGroups[i] = Convert.ToString(arrGroups[i]);
             }
+
             return strGroups;
         }
 
@@ -812,6 +826,7 @@ namespace DotNetNuke.UI.WebControls
                     isVisible = false;
                 }
             }
+
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
                 // Check if property is required - as this will need to override visibility
@@ -825,6 +840,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             return isVisible;
         }
 
@@ -880,6 +896,7 @@ namespace DotNetNuke.UI.WebControls
                 // editors are updated
                 this.DataBind();
             }
+
             if (string.IsNullOrEmpty(this.CssClass))
             {
                 this.CssClass = "dnnForm";
@@ -895,6 +912,7 @@ namespace DotNetNuke.UI.WebControls
                     DNNClientAPI.EnableMinMax(icon, tbl, false, IconController.IconURL("Minus", "12X15"), IconController.IconURL("Plus", "12X15"), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
             }
+
             base.OnPreRender(e);
         }
 

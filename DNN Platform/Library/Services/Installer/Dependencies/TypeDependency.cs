@@ -49,6 +49,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
                         }
                     }
                 }
+
                 return isValid;
             }
         }

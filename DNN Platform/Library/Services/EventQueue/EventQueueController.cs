@@ -58,6 +58,7 @@ namespace DotNetNuke.Services.EventQueue
                     canContinue = true;
                 }
             }
+
             if (canContinue)
             {
                 message = new EventMessage();
@@ -82,6 +83,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 message = null;
             }
+
             return message;
         }
 
@@ -108,6 +110,7 @@ namespace DotNetNuke.Services.EventQueue
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return arr;
         }
 
@@ -124,6 +127,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 subscribers = new string[] { };
             }
+
             return subscribers;
         }
 
@@ -206,10 +210,12 @@ namespace DotNetNuke.Services.EventQueue
                     {
                         log.AddProperty(key, message.Attributes[key]);
                     }
+
                     if (!string.IsNullOrEmpty(message.ExceptionMessage))
                     {
                         log.AddProperty("ExceptionMessage", message.ExceptionMessage);
                     }
+
                     LogController.Instance.AddLog(log);
                     if (message.ExpirationDate < DateTime.Now)
                     {
@@ -218,6 +224,7 @@ namespace DotNetNuke.Services.EventQueue
                     }
                 }
             }
+
             return success;
         }
 
@@ -265,6 +272,7 @@ namespace DotNetNuke.Services.EventQueue
                 Exceptions.Exceptions.LogException(ex);
                 success = Null.NullBoolean;
             }
+
             return success;
         }
 

@@ -165,6 +165,7 @@ namespace Dnn.ExportImport.Components.Common
                     return AddFileToArchive(archive, file, folderOffset, folder);
                 }
             }
+
             return false;
         }
 
@@ -186,6 +187,7 @@ namespace Dnn.ExportImport.Components.Common
                     string.IsNullOrEmpty(folder) ? entryName : Path.Combine(folder, entryName), CompressionLevel.Fastest);
                 return true;
             }
+
             return false;
         }
 

@@ -26,6 +26,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                     {
                         DataProvider.Instance().UnRegisterAssembly(package.PackageID, "Microsoft.WindowsAzure.StorageClient.dll");
                     }
+
                     break;
             }
 

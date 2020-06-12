@@ -155,6 +155,7 @@ namespace log4net.ObjectRenderer
 
                             writer.Write("<stackTrace>" + exceptionText + "</stackTrace>");
                         }
+
                         writer.Write("</log4net.Error>");
                     }
                 }
@@ -263,6 +264,7 @@ namespace log4net.ObjectRenderer
                     }
                 }
             }
+
             return null;
         }
 
@@ -316,6 +318,7 @@ namespace log4net.ObjectRenderer
             {
                 throw new ArgumentNullException("typeToRender");
             }
+
             if (renderer == null)
             {
                 throw new ArgumentNullException("renderer");

@@ -39,6 +39,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 {
                     value = GetMatchedListEntryIds(name, value);
                 }
+
                 propertyValues += value + ",";
             }
         }
@@ -71,6 +72,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 canView = ModulePermissionController.CanViewModule(this.ActiveModule) && group.IsPublic;
             }
+
             return canView;
         }
 
@@ -86,6 +88,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             {
                 setting = Convert.ToString(settings[key]);
             }
+
             return setting;
         }
 
@@ -134,6 +137,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     {
                         groupId = int.Parse(filterValue);
                     }
+
                     if (this.CanViewGroupMembers(portalId, groupId))
                     {
                         users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId,
@@ -146,6 +150,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     {
                         users = new List<UserInfo>();
                     }
+
                     break;
                 case "Relationship":
                     users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
@@ -173,10 +178,12 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                                                                propertyNames, propertyValues);
                     break;
             }
+
             if (excludeHostUsers)
             {
                 return this.FilterExcludedUsers(users);
             }
+
             return users;
         }
 

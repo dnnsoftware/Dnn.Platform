@@ -131,6 +131,7 @@ namespace log4net.Util
                 {
                     buf.Append("Exception during StringFormat");
                 }
+
                 buf.Append(" <format>").Append(format).Append("</format>");
                 buf.Append("<args>");
                 RenderArray(args, buf);
@@ -182,6 +183,7 @@ namespace log4net.Util
                             RenderObject(array.GetValue(i), buffer);
                         }
                     }
+
                     buffer.Append("}");
                 }
             }

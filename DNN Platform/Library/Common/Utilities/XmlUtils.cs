@@ -42,6 +42,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return;
             }
+
             if (cdata)
             {
                 objNode.AppendChild(CreateCDataElement(objDoc, attName, attValue));
@@ -89,24 +90,28 @@ namespace DotNetNuke.Common.Utilities
                 obj = DeSerializeDictionary<TabInfo>(objStream, "dictionary");
                 return obj;
             }
+
             var moduleDic = obj as Dictionary<int, ModuleInfo>;
             if (moduleDic != null)
             {
                 obj = DeSerializeDictionary<ModuleInfo>(objStream, "dictionary");
                 return obj;
             }
+
             var tabPermDic = obj as Dictionary<int, TabPermissionCollection>;
             if (tabPermDic != null)
             {
                 obj = DeSerializeDictionary<TabPermissionCollection>(objStream, "dictionary");
                 return obj;
             }
+
             var modPermDic = obj as Dictionary<int, ModulePermissionCollection>;
             if (modPermDic != null)
             {
                 obj = DeSerializeDictionary<ModulePermissionCollection>(objStream, "dictionary");
                 return obj;
             }
+
             var serializer = new XmlSerializer(type);
             using (TextReader tr = new StreamReader(objStream))
             {
@@ -143,6 +148,7 @@ namespace DotNetNuke.Common.Utilities
                 // in the Hashtable
                 objDictionary.Add(key, (TValue)xser.Deserialize(reader));
             }
+
             return objDictionary;
         }
 
@@ -207,6 +213,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 boolValue = Convert.ToBoolean(strValue);
             }
+
             return boolValue;
         }
 
@@ -218,6 +225,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 intValue = Convert.ToInt32(strValue);
             }
+
             return intValue;
         }
 
@@ -303,6 +311,7 @@ namespace DotNetNuke.Common.Utilities
                     strValue = defaultValue;
                 }
             }
+
             return strValue;
         }
 
@@ -345,6 +354,7 @@ namespace DotNetNuke.Common.Utilities
                     bValue = Convert.ToBoolean(strValue);
                 }
             }
+
             return bValue;
         }
 
@@ -406,6 +416,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+
             return dateValue;
         }
 
@@ -476,6 +487,7 @@ namespace DotNetNuke.Common.Utilities
                     intValue = Convert.ToInt32(strValue);
                 }
             }
+
             return intValue;
         }
 
@@ -549,6 +561,7 @@ namespace DotNetNuke.Common.Utilities
                     sValue = Convert.ToSingle(strValue, CultureInfo.InvariantCulture);
                 }
             }
+
             return sValue;
         }
 
@@ -631,6 +644,7 @@ namespace DotNetNuke.Common.Utilities
                     xmlItem.AppendChild(xmlDoc.ImportNode(xmlObject.DocumentElement, true));
                     xmlRoot.AppendChild(xmlItem);
                 }
+
                 // Return the OuterXml of the profile
                 strString = xmlDoc.OuterXml;
             }
@@ -638,6 +652,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 strString = string.Empty;
             }
+
             return strString;
         }
 
@@ -702,6 +717,7 @@ namespace DotNetNuke.Common.Utilities
                     newString.Append(ch);
                 }
             }
+
             return newString.ToString();
         }
 
@@ -736,6 +752,7 @@ namespace DotNetNuke.Common.Utilities
 
                 xmlObject = xmlDocEl.OuterXml;
             }
+
             return xmlObject;
         }
 
@@ -759,6 +776,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return "\"" + value + "\"";
             }
+
             if (!value.Contains("'"))
             {
                 return "'" + value + "'";
@@ -781,23 +799,28 @@ namespace DotNetNuke.Common.Utilities
                     {
                         sb.Append(", ");
                     }
+
                     sb.Append("\"");
                     sb.Append(substrings[i]);
                     sb.Append("\"");
                     needComma = true;
                 }
+
                 if (i < substrings.Length - 1)
                 {
                     if (needComma)
                     {
                         sb.Append(", ");
                     }
+
                     sb.Append("'\"'");
                 }
             }
+
             sb.Append(")");
             return sb.ToString();
         }
+
         [Obsolete("This method is obsolete. Use .Net XmlDocument.Load instead. Scheduled removal in v11.0.0.")]
         public static XmlDocument GetXMLContent(string contentUrl)
         {

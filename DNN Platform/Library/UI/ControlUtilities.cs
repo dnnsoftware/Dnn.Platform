@@ -31,6 +31,7 @@ namespace DotNetNuke.UI
                     parent = FindParentControl<T>(control.Parent);
                 }
             }
+
             return parent;
         }
 
@@ -104,6 +105,7 @@ namespace DotNetNuke.UI
                 Type objType = Reflection.CreateType(ControlSrc);
                 ctrl = (T)containerControl.LoadControl(objType, null);
             }
+
             return ctrl;
         }
     }

@@ -244,6 +244,7 @@ namespace DotNetNuke.UI.ControlPanels
                                     this.CommonTasksPanel.Visible = false;
                                 }
                             }
+
                             if (this.PortalSettings.AllowUserUICulture)
                             {
                                 object oCulture = DotNetNuke.Services.Personalization.Personalization.GetProfile("Usability", "UICulture");
@@ -257,6 +258,7 @@ namespace DotNetNuke.UI.ControlPanels
                                     Localization l = new Localization();
                                     currentCulture = l.CurrentUICulture;
                                 }
+
                                 // Localization.LoadCultureDropDownList(ddlUICulture, CultureDropDownTypes.NativeName, currentCulture);
                                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, currentCulture, string.Empty, false);
                                 foreach (var cultureItem in cultureListItems)
@@ -283,6 +285,7 @@ namespace DotNetNuke.UI.ControlPanels
                                 }
                             }
                         }
+
                         this.SetMode(false);
                     }
                 }
@@ -313,6 +316,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 return;
             }
+
             this.SetMode(true);
             this.Response.Redirect(this.Request.RawUrl, true);
         }
@@ -323,6 +327,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 return;
             }
+
             this.SetLanguage(true);
             this.Response.Redirect(this.Request.RawUrl, true);
         }

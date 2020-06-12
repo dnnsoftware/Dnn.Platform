@@ -129,12 +129,14 @@ namespace log4net.Appender
             {
                 throw new ArgumentNullException("newAppender");
             }
+
             lock (this)
             {
                 if (this.m_appenderAttachedImpl == null)
                 {
                     this.m_appenderAttachedImpl = new log4net.Util.AppenderAttachedImpl();
                 }
+
                 this.m_appenderAttachedImpl.AddAppender(newAppender);
             }
         }
@@ -232,6 +234,7 @@ namespace log4net.Appender
                     return this.m_appenderAttachedImpl.RemoveAppender(appender);
                 }
             }
+
             return null;
         }
 
@@ -254,6 +257,7 @@ namespace log4net.Appender
                     return this.m_appenderAttachedImpl.RemoveAppender(name);
                 }
             }
+
             return null;
         }
 

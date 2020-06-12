@@ -23,12 +23,15 @@ namespace DotNetNuke.Modules.Groups
             {
                 Template = Template.Replace(match.Value, Condition ? match.Groups[2].Value : string.Empty);
             }
+
             return Template;
         }
+
         public static string NavigateUrl(int TabId, string[] @params)
         {
             return Globals.DependencyProvider.GetRequiredService<INavigationManager>()?.NavigateURL(TabId, string.Empty, @params);
         }
+
         public static string[] AddParams(string param, string[] currParams)
         {
             var tmpParams = new string[] { param };

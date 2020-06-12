@@ -83,6 +83,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                                 engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
+
                             EntitiesController.Instance.UpdateJobStatus(job);
                             break;
                         case JobType.Import:
@@ -111,12 +112,14 @@ namespace Dnn.ExportImport.Components.Scheduler
                                 engine.AddLogsToDatabase(job.JobId, result.CompleteLog);
                                 throw;
                             }
+
                             EntitiesController.Instance.UpdateJobStatus(job);
                             if (job.JobStatus == JobStatus.Successful || job.JobStatus == JobStatus.Cancelled)
                             {
                                 // clear everything to be sure imported items take effect
                                 DataCache.ClearCache();
                             }
+
                             break;
                         default:
                             throw new Exception("Unknown job type: " + job.JobType);
@@ -150,6 +153,7 @@ namespace Dnn.ExportImport.Components.Scheduler
                         {
                             sb.Append($"<li>{entry.Name}: {entry.Value}</li>");
                         }
+
                         sb.Append("</ul>");
                     }
 
@@ -158,6 +162,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
+
                 // SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
             catch (Exception ex)

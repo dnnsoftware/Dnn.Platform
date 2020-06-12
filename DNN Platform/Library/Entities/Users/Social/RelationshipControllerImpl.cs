@@ -132,6 +132,7 @@ namespace DotNetNuke.Entities.Users.Social
             {
                 pid = PortalController.GetEffectivePortalId(portalId);
             }
+
             var cacheArgs = new CacheItemArgs(
                 string.Format(DataCache.RelationshipByPortalIDCacheKey, pid),
                 DataCache.RelationshipByPortalIDCacheTimeOut,
@@ -201,6 +202,7 @@ namespace DotNetNuke.Entities.Users.Social
                                                                                       relationship.RelationshipTypeId).
                                                                                       Direction));
             }
+
             return userRelationship;
         }
 

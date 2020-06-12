@@ -370,6 +370,7 @@ namespace DotNetNuke.Common
             {
                 dir = dir.Substring(0, dir.Length - 1);
             }
+
             return dir;
         }
 
@@ -385,6 +386,7 @@ namespace DotNetNuke.Common
                 {
                     _desktopModulePath = ApplicationPath + "/DesktopModules/";
                 }
+
                 return _desktopModulePath;
             }
         }
@@ -401,6 +403,7 @@ namespace DotNetNuke.Common
                 {
                     _imagePath = ApplicationPath + "/Images/";
                 }
+
                 return _imagePath;
             }
         }
@@ -428,6 +431,7 @@ namespace DotNetNuke.Common
                 {
                     _hostMapPath = Path.Combine(ApplicationMapPath, @"Portals\_default\");
                 }
+
                 return _hostMapPath;
             }
         }
@@ -444,6 +448,7 @@ namespace DotNetNuke.Common
                 {
                     _hostPath = ApplicationPath + "/Portals/_default/";
                 }
+
                 return _hostPath;
             }
         }
@@ -460,6 +465,7 @@ namespace DotNetNuke.Common
                 {
                     _installMapPath = ApplicationMapPath + "\\Install\\";
                 }
+
                 return _installMapPath;
             }
         }
@@ -476,6 +482,7 @@ namespace DotNetNuke.Common
                 {
                     _installPath = ApplicationPath + "/Install/";
                 }
+
                 return _installPath;
             }
         }
@@ -580,6 +587,7 @@ namespace DotNetNuke.Common
                             strMessage = "ERROR:" + ex.Message;
                         }
                     }
+
                     if (strMessage.StartsWith("ERROR"))
                     {
                         if (IsInstalled())
@@ -630,6 +638,7 @@ namespace DotNetNuke.Common
                     Logger.Trace(string.Format("result of getting providerpath: {0}", strMessage));
                     Logger.Trace("Application status is " + _status);
                 }
+
                 return _status;
             }
         }
@@ -652,6 +661,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return false;
         }
 
@@ -702,6 +712,7 @@ namespace DotNetNuke.Common
                     return Directory.GetFiles(providerpath, "*.log.resources").Length > 0;
                 }
             }
+
             return false;
         }
 
@@ -753,6 +764,7 @@ namespace DotNetNuke.Common
             {
                 return Directory.GetDirectories(dir).Length > 1;
             }
+
             return false;
         }
 
@@ -785,6 +797,7 @@ namespace DotNetNuke.Common
                 {
                     cultureCode = linkTab.CultureCode;
                 }
+
                 if (string.IsNullOrEmpty(cultureCode))
                 {
                     cultureCode = Thread.CurrentThread.CurrentCulture.Name;
@@ -808,6 +821,7 @@ namespace DotNetNuke.Common
                 {
                     return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
                 }
+
                 return string.Join(",", listEntries.Select(l => l.Value));
             }
         }
@@ -884,6 +898,7 @@ namespace DotNetNuke.Common
                     tab.Columns.Add(col);
                 }
             }
+
             // add table to dataset
             crosstab.Tables.Add(tab);
             // add rows to table
@@ -899,6 +914,7 @@ namespace DotNetNuke.Common
                     {
                         tab.Rows.Add(row);
                     }
+
                     // create new row
                     row = tab.NewRow();
                     // assign fixed column values
@@ -907,6 +923,7 @@ namespace DotNetNuke.Common
                         arrField = arrFixedColumns[intColumn].Split('|');
                         row[arrField[0]] = result[arrField[0]];
                     }
+
                     // initialize variable column values
                     if (!string.IsNullOrEmpty(VariableColumns))
                     {
@@ -924,8 +941,10 @@ namespace DotNetNuke.Common
                             }
                         }
                     }
+
                     intKeyColumn = Convert.ToInt32(result[KeyColumn]);
                 }
+
                 // assign pivot column value
                 if (!string.IsNullOrEmpty(FieldTypeColumn))
                 {
@@ -935,6 +954,7 @@ namespace DotNetNuke.Common
                 {
                     FieldType = "String";
                 }
+
                 switch (FieldType)
                 {
                     case "Decimal":
@@ -961,15 +981,18 @@ namespace DotNetNuke.Common
                                     break;
                             }
                         }
+
                         break;
                 }
             }
+
             result.Close();
             // add row
             if (intKeyColumn != -1)
             {
                 tab.Rows.Add(row);
             }
+
             // finalize dataset
             crosstab.AcceptChanges();
             // return the dataset
@@ -1030,6 +1053,7 @@ namespace DotNetNuke.Common
                 {
                     objDataTable.Columns.Add(reader.GetName(intCounter), reader.GetFieldType(intCounter));
                 }
+
                 // populate datatable
                 objDataTable.BeginLoadData();
                 var objValues = new object[intFieldCount];
@@ -1038,6 +1062,7 @@ namespace DotNetNuke.Common
                     reader.GetValues(objValues);
                     objDataTable.LoadDataRow(objValues, true);
                 }
+
                 objDataTable.EndLoadData();
                 return objDataTable;
             }
@@ -1063,6 +1088,7 @@ namespace DotNetNuke.Common
             {
                 strServerPath += "\\";
             }
+
             return strServerPath;
         }
 
@@ -1096,6 +1122,7 @@ namespace DotNetNuke.Common
             {
                 appName = Convert.ToString(HttpContext.Current.Items["ApplicationName"]);
             }
+
             return appName;
         }
 
@@ -1120,6 +1147,7 @@ namespace DotNetNuke.Common
             {
                 _objectQualifier += "_";
             }
+
             appName = _objectQualifier + Convert.ToString(PortalID);
             return appName;
         }
@@ -1151,6 +1179,7 @@ namespace DotNetNuke.Common
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return version;
         }
 
@@ -1263,6 +1292,7 @@ namespace DotNetNuke.Common
             {
                 usePort = bool.Parse(Config.GetSetting("UsePortNumber"));
             }
+
             return usePort;
         }
 
@@ -1383,6 +1413,7 @@ namespace DotNetNuke.Common
                     Exceptions.LogException(ex);
                 }
             }
+
             return arrFileList;
         }
 
@@ -1403,6 +1434,7 @@ namespace DotNetNuke.Common
                 objPortalAliasInfo = new PortalAliasInfo();
                 objPortalAliasInfo.PortalID = PortalId;
             }
+
             // load the PortalSettings into current context
             return new PortalSettings(TabId, objPortalAliasInfo);
         }
@@ -1423,6 +1455,7 @@ namespace DotNetNuke.Common
             {
                 strURL = GetDomainName(Request);
             }
+
             string[] arrPortalAlias = strPortalAlias.Split(',');
             for (intAlias = 0; intAlias <= arrPortalAlias.Length - 1; intAlias++)
             {
@@ -1431,14 +1464,17 @@ namespace DotNetNuke.Common
                     strDomainName = arrPortalAlias[intAlias];
                 }
             }
+
             if (string.IsNullOrEmpty(strDomainName))
             {
                 strDomainName = arrPortalAlias[0];
             }
+
             if (blnAddHTTP)
             {
                 strDomainName = AddHTTP(strDomainName);
             }
+
             return strDomainName;
         }
 
@@ -1454,11 +1490,13 @@ namespace DotNetNuke.Common
             {
                 portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
+
             // If nothing then try getting the Host Settings
             if (portalSettings == null)
             {
                 portalSettings = GetHostPortalSettings();
             }
+
             return portalSettings;
         }
 
@@ -1483,6 +1521,7 @@ namespace DotNetNuke.Common
                 PortalInfo objPortal = PortalController.Instance.GetPortal(portalId);
                 ParentFolderName = objPortal.HomeDirectoryMapPath.Replace("/", "\\");
             }
+
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
             return strFolderpath.Substring(ParentFolderName.Length).Replace("\\", "/");
         }
@@ -1509,6 +1548,7 @@ namespace DotNetNuke.Common
                     total = -1;
                 }
             }
+
             return total;
         }
 
@@ -1614,6 +1654,7 @@ namespace DotNetNuke.Common
                     strAddress += ", " + Unit;
                 }
             }
+
             if (Street != null)
             {
                 if (!string.IsNullOrEmpty(Street.ToString().Trim()))
@@ -1621,6 +1662,7 @@ namespace DotNetNuke.Common
                     strAddress += ", " + Street;
                 }
             }
+
             if (City != null)
             {
                 if (!string.IsNullOrEmpty(City.ToString().Trim()))
@@ -1628,6 +1670,7 @@ namespace DotNetNuke.Common
                     strAddress += ", " + City;
                 }
             }
+
             if (Region != null)
             {
                 if (!string.IsNullOrEmpty(Region.ToString().Trim()))
@@ -1635,6 +1678,7 @@ namespace DotNetNuke.Common
                     strAddress += ", " + Region;
                 }
             }
+
             if (Country != null)
             {
                 if (!string.IsNullOrEmpty(Country.ToString().Trim()))
@@ -1642,6 +1686,7 @@ namespace DotNetNuke.Common
                     strAddress += ", " + Country;
                 }
             }
+
             if (PostalCode != null)
             {
                 if (!string.IsNullOrEmpty(PostalCode.ToString().Trim()))
@@ -1649,10 +1694,12 @@ namespace DotNetNuke.Common
                     strAddress += ", " + PostalCode;
                 }
             }
+
             if (!string.IsNullOrEmpty(strAddress.Trim()))
             {
                 strAddress = strAddress.Substring(2);
             }
+
             return strAddress;
         }
 
@@ -1685,6 +1732,7 @@ namespace DotNetNuke.Common
             {
                 strVersion += " (" + version.Revision + ")";
             }
+
             return strVersion;
         }
 
@@ -1713,6 +1761,7 @@ namespace DotNetNuke.Common
                         strVersion += intZero.ToString(fieldFormat);
                     }
                 }
+
                 if (fieldCount > 1)
                 {
                     strVersion += delimiterCharacter;
@@ -1725,6 +1774,7 @@ namespace DotNetNuke.Common
                         strVersion += intZero.ToString(fieldFormat);
                     }
                 }
+
                 if (fieldCount > 2)
                 {
                     strVersion += delimiterCharacter;
@@ -1737,6 +1787,7 @@ namespace DotNetNuke.Common
                         strVersion += intZero.ToString(fieldFormat);
                     }
                 }
+
                 if (fieldCount > 3)
                 {
                     strVersion += delimiterCharacter;
@@ -1750,6 +1801,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return strVersion;
         }
 
@@ -1797,6 +1849,7 @@ namespace DotNetNuke.Common
                 string strDay = datDate.Day.ToString();
                 strDate = strDay + "-" + strMonth + "-" + strYear;
             }
+
             return strDate;
         }
 
@@ -1815,6 +1868,7 @@ namespace DotNetNuke.Common
                 string strDay = datDate.Day.ToString();
                 strDate = strMonth + "/" + strDay + "/" + strYear;
             }
+
             return strDate;
         }
 
@@ -1831,6 +1885,7 @@ namespace DotNetNuke.Common
             {
                 return false;
             }
+
             return (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) || (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
@@ -1851,14 +1906,17 @@ namespace DotNetNuke.Common
                 {
                     ControlKey = HttpContext.Current.Request.QueryString["ctl"].ToLowerInvariant();
                 }
+
                 int ModuleID = -1;
                 if (HttpContext.Current.Request.QueryString["mid"] != null)
                 {
                     int.TryParse(HttpContext.Current.Request.QueryString["mid"], out ModuleID);
                 }
+
                 _IsAdminSkin = (!string.IsNullOrEmpty(ControlKey) && ControlKey != "view" && ModuleID != -1) ||
                                (!string.IsNullOrEmpty(ControlKey) && AdminKeys.IndexOf(ControlKey) != -1 && ModuleID == -1);
             }
+
             return _IsAdminSkin;
         }
 
@@ -1933,12 +1991,14 @@ namespace DotNetNuke.Common
                             {
                                 strRSS.Append(strRelativePath + dr[URLField]);
                             }
+
                             strRSS.AppendLine("</link>");
                         }
                         else
                         {
                             strRSS.AppendLine("  <link>" + dr[URLField] + "</link>");
                         }
+
                         strRSS.AppendLine("  <description>" + _portalSettings.PortalName + " " + GetMediumDate(dr[CreatedDateField].ToString()) + "</description>");
                         strRSS.AppendLine(" </item>");
                     }
@@ -2027,19 +2087,23 @@ namespace DotNetNuke.Common
                     {
                         strURL = strHTML.Substring(S).ToLowerInvariant();
                     }
+
                     // add uploaddirectory if we are linking internally and the uploaddirectory is not already included
                     if (!strURL.Contains("://") && !strURL.StartsWith("/") && !strURL.StartsWith(_UploadDirectory))
                     {
                         sbBuff.Append(strUploadDirectory);
                     }
+
                     // find position of next occurrance:
                     P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
                 }
+
                 if (S > -1)
                 {
                     sbBuff.Append(strHTML.Substring(S));
                 }
             }
+
             return sbBuff.ToString();
         }
 
@@ -2096,6 +2160,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return objCtl;
         }
 
@@ -2131,6 +2196,7 @@ namespace DotNetNuke.Common
                         {
                             objParent = objParent.Parent;
                         }
+
                         sb.Append(objParent.ClientID);
                         sb.Append("['");
                         sb.Append(control.UniqueID);
@@ -2178,9 +2244,11 @@ namespace DotNetNuke.Common
                     // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
+
                 // Apply Proxy to request
                 objRequest.Proxy = Proxy;
             }
+
             return objRequest;
         }
 
@@ -2203,6 +2271,7 @@ namespace DotNetNuke.Common
             {
                 objRequest.Credentials = Credentials;
             }
+
             // If there is Proxy info, apply it to the request
             if (!string.IsNullOrEmpty(Host.ProxyServer))
             {
@@ -2219,8 +2288,10 @@ namespace DotNetNuke.Common
                     // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
+
                 objRequest.Proxy = Proxy;
             }
+
             return objRequest;
         }
 
@@ -2232,6 +2303,7 @@ namespace DotNetNuke.Common
         {
             FileSystemUtils.DeleteFolderRecursive(strRoot);
         }
+
         /// <summary>
         /// Deletes the files recursive which match the filter, will not delete folders and will ignore folder which is hidden or system.
         /// </summary>
@@ -2314,15 +2386,18 @@ namespace DotNetNuke.Common
             {
                 BadChars = ":/\\?*|" + ((char)34) + ((char)39) + ((char)9);
             }
+
             if (string.IsNullOrEmpty(ReplaceChar))
             {
                 ReplaceChar = "_";
             }
+
             int intCounter;
             for (intCounter = 0; intCounter <= BadChars.Length - 1; intCounter++)
             {
                 strFileName = strFileName.Replace(BadChars.Substring(intCounter, 1), ReplaceChar);
             }
+
             return strFileName;
         }
 
@@ -2344,6 +2419,7 @@ namespace DotNetNuke.Common
             {
                 strName = strName.Replace(strBadChars.Substring(intCounter, 1), string.Empty);
             }
+
             return strName;
         }
 
@@ -2460,6 +2536,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return returnValue;
         }
 
@@ -2501,6 +2578,7 @@ namespace DotNetNuke.Common
             {
                 strURL = LoginURL(HttpUtility.UrlEncode(HttpContext.Current.Request.RawUrl), false);
             }
+
             return strURL;
         }
 
@@ -2518,6 +2596,7 @@ namespace DotNetNuke.Common
                     strURL = ((HttpContext.Current != null && UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request)) ? "https://" : "http://") + strURL;
                 }
             }
+
             return strURL;
         }
 
@@ -2537,6 +2616,7 @@ namespace DotNetNuke.Common
             {
                 return ApplicationURL(_portalSettings.ActiveTab.TabID);
             }
+
             return ApplicationURL(-1);
         }
 
@@ -2557,6 +2637,7 @@ namespace DotNetNuke.Common
             {
                 strURL += "?tabid=" + TabID;
             }
+
             return strURL;
         }
 
@@ -2591,6 +2672,7 @@ namespace DotNetNuke.Common
             {
                 strURL += "?helpculture=";
             }
+
             if (!string.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
             {
                 strURL += Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant();
@@ -2599,14 +2681,17 @@ namespace DotNetNuke.Common
             {
                 strURL += objPortalSettings.DefaultLanguage.ToLowerInvariant();
             }
+
             if (!string.IsNullOrEmpty(Name))
             {
                 strURL += "&helpmodule=" + HttpUtility.UrlEncode(Name);
             }
+
             if (!string.IsNullOrEmpty(Version))
             {
                 strURL += "&helpversion=" + HttpUtility.UrlEncode(Version);
             }
+
             return AddHTTP(strURL);
         }
 
@@ -2738,18 +2823,22 @@ namespace DotNetNuke.Common
             {
                 return TabType.Normal;
             }
+
             if (URL.ToLowerInvariant().StartsWith("mailto:") == false && URL.IndexOf("://") == -1 && URL.StartsWith("~") == false && URL.StartsWith("\\\\") == false && URL.StartsWith("/") == false)
             {
                 if (NumberMatchRegex.IsMatch(URL))
                 {
                     return TabType.Tab;
                 }
+
                 if (URL.ToLowerInvariant().StartsWith("userid="))
                 {
                     return TabType.Member;
                 }
+
                 return TabType.File;
             }
+
             return TabType.Url;
         }
 
@@ -2785,6 +2874,7 @@ namespace DotNetNuke.Common
                         // failed to get fileId
                         strUrl = string.Empty;
                     }
+
                     break;
                 case TabType.Member:
                     if (int.TryParse(url.Replace("UserID=", string.Empty), out intId))
@@ -2800,6 +2890,7 @@ namespace DotNetNuke.Common
                         // failed to get UserId
                         strUrl = string.Empty;
                     }
+
                     break;
                 case TabType.Tab:
                     if (int.TryParse(url, out intId))
@@ -2815,8 +2906,10 @@ namespace DotNetNuke.Common
                         // failed to get TabId
                         strUrl = string.Empty;
                     }
+
                     break;
             }
+
             return strUrl;
         }
 
@@ -2846,6 +2939,7 @@ namespace DotNetNuke.Common
             {
                 returnUrl = string.Format("returnurl={0}", returnUrl);
             }
+
             var popUpParameter = string.Empty;
             if (HttpUtility.UrlDecode(returnUrl).IndexOf("popUp=true", StringComparison.OrdinalIgnoreCase) >= 0)
             {
@@ -2876,6 +2970,7 @@ namespace DotNetNuke.Common
                                 ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
                                 : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
             }
+
             return loginUrl;
         }
 
@@ -3083,11 +3178,13 @@ namespace DotNetNuke.Common
             {
                 Exceptions.ProcessHttpException(exc);
             }
+
             string strDoubleDecodeURL = HttpContext.Current.Server.UrlDecode(HttpContext.Current.Server.UrlDecode(QueryString));
             if (QueryString.IndexOf("..") != -1 || strDoubleDecodeURL.IndexOf("..") != -1)
             {
                 Exceptions.ProcessHttpException();
             }
+
             return QueryString;
         }
 
@@ -3107,10 +3204,12 @@ namespace DotNetNuke.Common
             {
                 extraParams = string.Concat("returnurl=", returnURL);
             }
+
             if (!string.IsNullOrEmpty(originalURL))
             {
                 extraParams += string.Concat("&orignalurl=", originalURL);
             }
+
             if (_portalSettings.RegisterTabId != -1)
             {
                 // user defined tab
@@ -3120,6 +3219,7 @@ namespace DotNetNuke.Common
             {
                 strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Register", extraParams);
             }
+
             return strURL;
         }
 
@@ -3139,16 +3239,19 @@ namespace DotNetNuke.Common
             {
                 return url;
             }
+
             // String does not contain a ~, so just return Url
             if (url.StartsWith("~") == false)
             {
                 return url;
             }
+
             // There is just the ~ in the Url, return the appPath
             if (url.Length == 1)
             {
                 return ApplicationPath;
             }
+
             if (url.ToCharArray()[1] == '/' || url.ToCharArray()[1] == '\\')
             {
                 // Url looks like ~/ or ~\
@@ -3331,30 +3434,36 @@ namespace DotNetNuke.Common
                         strLink += "&hf=1";
                     }
                 }
+
                 if (string.IsNullOrEmpty(strLink))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?link=" + HttpUtility.UrlEncode(Link);
                 }
+
                 // tabid is required to identify the portal where the click originated
                 if (TabID != Null.NullInteger)
                 {
                     strLink += "&tabid=" + TabID;
                 }
+
                 // append portal id to query string to identity portal the click originated.
                 if (PortalId != Null.NullInteger)
                 {
                     strLink += "&portalid=" + PortalId;
                 }
+
                 // moduleid is used to identify the module where the url is stored
                 if (ModuleID != -1)
                 {
                     strLink += "&mid=" + ModuleID;
                 }
+
                 // only add language to url if more than one locale is enabled, and if admin did not turn it off
                 if (LocaleController.Instance.GetLocales(PortalId).Count > 1 && EnableUrlLanguage)
                 {
                     strLink += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
                 }
+
                 // force a download dialog
                 if (ForceDownload)
                 {
@@ -3373,6 +3482,7 @@ namespace DotNetNuke.Common
                         break;
                 }
             }
+
             return strLink;
         }
 
@@ -3390,11 +3500,13 @@ namespace DotNetNuke.Common
                 case glbRoleUnauthUser:
                     return glbRoleUnauthUserName;
             }
+
             Hashtable htRoles = null;
             if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
             {
                 htRoles = (Hashtable)DataCache.GetCache("GetRoles");
             }
+
             if (htRoles == null)
             {
                 var roles = RoleController.Instance.GetRoles(Null.NullInteger, r => r.SecurityMode != SecurityMode.SocialGroup);
@@ -3405,11 +3517,13 @@ namespace DotNetNuke.Common
                     RoleInfo role = roles[i];
                     htRoles.Add(role.RoleID, role.RoleName);
                 }
+
                 if (Host.PerformanceSetting != PerformanceSettings.NoCaching)
                 {
                     DataCache.SetCache("GetRoles", htRoles);
                 }
             }
+
             return Convert.ToString(htRoles[RoleID]);
         }
 
@@ -3482,6 +3596,7 @@ namespace DotNetNuke.Common
                     helpText = Localization.GetString(ModuleActionType.HelpText, LocalResourceFile);
                 }
             }
+
             return helpText;
         }
 
@@ -3509,6 +3624,7 @@ namespace DotNetNuke.Common
                 HelpUrl = Host.HelpURL;
                 // }
             }
+
             return HelpUrl;
         }
 
@@ -3544,6 +3660,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return hasModule;
         }
 
@@ -3567,6 +3684,7 @@ namespace DotNetNuke.Common
                     {
                         ext = "." + extension;
                     }
+
                     result = filename.EndsWith(extension);
                     if (result)
                     {
@@ -3574,6 +3692,7 @@ namespace DotNetNuke.Common
                     }
                 }
             }
+
             return result;
         }
 
@@ -3607,6 +3726,7 @@ namespace DotNetNuke.Common
 
                         objHashTable = new Hashtable();
                     }
+
                     mem.Close();
                 }
             }
@@ -3614,6 +3734,7 @@ namespace DotNetNuke.Common
             {
                 objHashTable = new Hashtable();
             }
+
             return objHashTable;
         }
 
@@ -3670,6 +3791,7 @@ namespace DotNetNuke.Common
             {
                 strString = string.Empty;
             }
+
             return strString;
         }
 
@@ -3702,6 +3824,7 @@ namespace DotNetNuke.Common
             {
                 isHostTab = hostTabs.Any(t => t.Value.TabID == tabId);
             }
+
             return isHostTab;
         }
 
@@ -3721,6 +3844,7 @@ namespace DotNetNuke.Common
             {
                 avatarUrl = HttpContext.Current.Request.Url.Host;
             }
+
             avatarUrl = string.Format(
                 "{0}://{1}{2}",
                 UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
@@ -3826,6 +3950,7 @@ namespace DotNetNuke.Common
                 {
                     strExtension = File.Substring(File.LastIndexOf(".") + 1);
                 }
+
                 string FileName = File.Substring(CurrentDirectory.FullName.Length);
                 if (strExtensions.IndexOf(strExtension, StringComparison.InvariantCultureIgnoreCase) != -1 || string.IsNullOrEmpty(strExtensions))
                 {
@@ -3850,6 +3975,7 @@ namespace DotNetNuke.Common
             {
                 ParentFolderName = _portalSettings.HomeDirectoryMapPath.Replace("/", "\\");
             }
+
             string strFolderpath = strFileNamePath.Substring(0, strFileNamePath.LastIndexOf("\\") + 1);
 
             return strFolderpath.Substring(ParentFolderName.Length).Replace("\\", "/");

@@ -98,6 +98,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 {
                     throw new WorkflowNameAlreadyExistsException();
                 }
+
                 rep.Insert(workflow);
             }
 
@@ -115,6 +116,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Repositories
                 {
                     throw new WorkflowNameAlreadyExistsException();
                 }
+
                 rep.Update(workflow);
             }
 

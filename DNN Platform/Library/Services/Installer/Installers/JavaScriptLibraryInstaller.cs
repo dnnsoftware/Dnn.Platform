@@ -51,6 +51,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this._library.JavaScriptLibraryID = this._installedLibrary.JavaScriptLibraryID;
                 }
+
                 // Save JavaScript Library  to database
                 this._library.PackageID = this.Package.PackageID;
                 JavaScriptLibraryController.Instance.SaveLibrary(this._library);

@@ -86,6 +86,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         break;
                     }
                 }
+
                 return isValid;
             }
         }
@@ -116,6 +117,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     items.AddRange(section.Items);
                 }
+
                 items.AddRange(page.Items);
             }
 
@@ -164,6 +166,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         resourceKey = section.ID;
                     }
+
                     panel.Text = Localization.GetString(resourceKey, this.LocalResourceFile);
                     panel.Expanded = section.Expanded;
 
@@ -245,6 +248,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     item.LocalResourceFile = this.LocalResourceFile;
                 }
+
                 if (item.FormMode == DnnFormMode.Inherit)
                 {
                     item.FormMode = this.FormMode;
@@ -256,6 +260,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     item.DataBindItem(useDataSource);
                 }
             }
+
             this._itemCount = this.GetAllItems().Count;
         }
 
@@ -321,6 +326,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             scriptBuilder.Append(formTab.ExpandAllScript);
                         }
                     }
+
                     scriptBuilder.Append("\t\t}\r\n");
                     scriptBuilder.Append("\t\t$(document).ready(function () {\r\n");
                     scriptBuilder.Append("\t\t\tsetupFormEditor();\r\n");

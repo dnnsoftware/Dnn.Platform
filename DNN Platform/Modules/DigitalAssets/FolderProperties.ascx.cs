@@ -81,6 +81,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         {
                             throw new Exception("Invalid group folder");
                         }
+
                         break;
 
                     case DigitalAssestsMode.User:

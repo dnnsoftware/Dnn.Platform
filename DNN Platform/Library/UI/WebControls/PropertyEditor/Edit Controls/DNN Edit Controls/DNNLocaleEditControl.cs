@@ -69,6 +69,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "English"));
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
             writer.Write(Localization.GetString("EnglishName", Localization.GlobalResourceFile));
@@ -83,6 +84,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onclick, this.Page.ClientScript.GetPostBackEventReference(this, "Native"));
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
 
@@ -150,6 +152,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(locale.Text);
             }
+
             writer.RenderEndTag();
         }
 
@@ -192,6 +195,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, "onLocaleChanged(this)");
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
             // Render None selected option
@@ -203,6 +207,7 @@ namespace DotNetNuke.UI.WebControls
                 // Add the Selected Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write(Localization.GetString("Not_Specified", Localization.SharedResourceFile));
             writer.RenderEndTag();

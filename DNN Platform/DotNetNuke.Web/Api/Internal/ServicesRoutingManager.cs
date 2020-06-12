@@ -140,6 +140,7 @@ namespace DotNetNuke.Web.Api.Internal
                 this._routes.Clear();
                 this.LocateServicesAndMapRoutes();
             }
+
             Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
         }
 
@@ -185,6 +186,7 @@ namespace DotNetNuke.Web.Api.Internal
                     {
                         DnnAuthorizeAttribute.AppendToDefaultAuthTypes(handler.AuthScheme);
                     }
+
                     if (handler.BypassAntiForgeryToken)
                     {
                         ValidateAntiForgeryTokenAttribute.AppendToBypassAuthTypes(handler.AuthScheme);

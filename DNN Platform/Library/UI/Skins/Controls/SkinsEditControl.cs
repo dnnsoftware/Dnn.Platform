@@ -106,6 +106,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         strValue += Skin + ",";
                     }
                 }
+
                 return strValue;
             }
         }
@@ -128,6 +129,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         strValue += Skin + ",";
                     }
                 }
+
                 return strValue;
             }
             set
@@ -221,6 +223,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                 }
             }
+
             if (this.DictionaryValue != null)
             {
                 foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
@@ -249,12 +252,14 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
                     }
+
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skin" + kvp.Key);
                     writer.RenderBeginTag(HtmlTextWriterTag.Input);
                     writer.RenderEndTag();
 
                     writer.WriteBreak();
                 }
+
                 writer.WriteBreak();
 
                 // Create Add Row
@@ -281,6 +286,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, length.ToString());
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_skinnew");
                 writer.RenderBeginTag(HtmlTextWriterTag.Input);
                 writer.RenderEndTag();
@@ -327,11 +333,13 @@ namespace DotNetNuke.UI.Skins.Controls
                     dataChanged = true;
                 }
             }
+
             postedValue = postCollection[this.UniqueID + "_skinnew"];
             if (!string.IsNullOrEmpty(postedValue))
             {
                 this.AddedItem = postedValue;
             }
+
             this.DictionaryValue = newDictionaryValue;
             return dataChanged;
         }

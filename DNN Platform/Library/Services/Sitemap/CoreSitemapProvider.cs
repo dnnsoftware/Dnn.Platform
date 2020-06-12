@@ -52,6 +52,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 currentLanguage = Localization.Localization.GetPageLocale(ps).Name;
             }
+
             var languagePublished = LocaleController.Instance.GetLocale(ps.PortalId, currentLanguage).IsPublished;
             var tabs = TabController.Instance.GetTabsByPortal(portalId).Values
                         .Where(t => (!t.IsSystem
@@ -106,6 +107,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 url = "https://" + url.Substring("http://".Length);
             }
+
             pageUrl.Url = url;
             pageUrl.Priority = this.GetPriority(objTab);
             pageUrl.LastModified = objTab.LastModifiedOnDate;
@@ -116,6 +118,7 @@ namespace DotNetNuke.Services.Sitemap
                     pageUrl.LastModified = m.LastModifiedOnDate;
                 }
             }
+
             pageUrl.ChangeFrequency = SitemapChangeFrequency.Daily;
 
             // support for alternate pages: https://support.google.com/webmasters/answer/2620865?hl=en
@@ -217,6 +220,7 @@ namespace DotNetNuke.Services.Sitemap
                                 hasPublicRole = false;
                                 break;
                             }
+
                             // Grant permission
                         }
                         else

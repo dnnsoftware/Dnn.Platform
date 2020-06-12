@@ -79,6 +79,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     FilterParams.SetValue("filterProperty=" + this.Request.QueryString["filterProperty"], 1);
                     FilterParams.SetValue("currentpage=" + this.Request.QueryString["currentpage"], 2);
                 }
+
                 if (string.IsNullOrEmpty(this.Request.QueryString["filter"]))
                 {
                     _ReturnURL = this._navigationManager.NavigateURL(this.TabId);
@@ -87,6 +88,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     _ReturnURL = this._navigationManager.NavigateURL(this.TabId, string.Empty, FilterParams);
                 }
+
                 return _ReturnURL;
             }
         }
@@ -106,6 +108,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this._Role = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == Convert.ToInt32(this.cboRoles.SelectedItem.Value));
                     }
                 }
+
                 return this._Role;
             }
         }
@@ -129,6 +132,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this._User = UserController.GetUserById(this.PortalId, Convert.ToInt32(this.cboUsers.SelectedItem.Value));
                     }
                 }
+
                 return this._User;
             }
         }
@@ -214,12 +218,15 @@ namespace DotNetNuke.Modules.Admin.Security
                                 roleIndex = roles.IndexOf(tmpRole);
                             }
                         }
+
                         break;
                     }
+
                     if (roleIndex > Null.NullInteger)
                     {
                         roles.RemoveAt(roleIndex);
                     }
+
                     this.cboRoles.DataSource = roles;
                     this.cboRoles.DataBind();
                 }
@@ -235,6 +242,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this.cboRoles.Items[0].Selected = true;
                         this.lblTitle.Text = string.Format(Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
                     }
+
                     this.cboRoles.Visible = false;
                     this.plRoles.Visible = false;
                 }
@@ -252,6 +260,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     this.chkNotify.Visible = false;
                     return;
                 }
+
                 if (this.UsersControl == UsersControl.Combo)
                 {
                     if (this.cboUsers.Items.Count == 0)
@@ -262,6 +271,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             this.cboUsers.AddItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString());
                         }
                     }
+
                     this.txtUsers.Visible = false;
                     this.cboUsers.Visible = true;
                     this.cmdValidate.Visible = false;
@@ -280,6 +290,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     this.txtUsers.Text = this.User.UserID.ToString();
                     this.lblTitle.Text = string.Format(Localization.GetString("UserTitle.Text", this.LocalResourceFile), this.User.Username, this.User.UserID);
                 }
+
                 this.txtUsers.Visible = false;
                 this.cboUsers.Visible = false;
                 this.cmdValidate.Visible = false;
@@ -302,6 +313,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.grdUserRoles.DataKeyField = "UserId";
                 this.grdUserRoles.Columns[2].Visible = false;
             }
+
             if (this.UserId != Null.NullInteger)
             {
                 this.cmdAdd.Text = Localization.GetString("AddRole.Text", this.LocalResourceFile);
@@ -359,6 +371,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     effectiveDate = objUserRole.EffectiveDate;
                 }
+
                 if (Null.IsNull(objUserRole.ExpiryDate) == false)
                 {
                     expiryDate = objUserRole.ExpiryDate;
@@ -387,6 +400,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
+
             this.effectiveDatePicker.SelectedDate = effectiveDate;
             this.expiryDatePicker.SelectedDate = expiryDate;
         }
@@ -402,6 +416,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
             }
+
             base.DataBind();
 
             // Localize Headers
@@ -432,6 +447,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 // User can only delete if in Admin role
                 canDelete = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
             }
+
             return canDelete;
         }
 
@@ -480,6 +496,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.RoleId = int.Parse(this.Request.QueryString["RoleId"]);
             }
+
             if (this.Request.QueryString["UserId"] != null)
             {
                 int userId;
@@ -562,6 +579,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.SelectedUserID = int.Parse(this.cboUsers.SelectedItem.Value);
                 this.GetDates(this.SelectedUserID, int.Parse(this.cboRoles.SelectedItem.Value));
             }
+
             this.BindGrid();
         }
 
@@ -593,6 +611,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     this.txtUsers.Text = string.Empty;
                 }
             }
+
             this.BindGrid();
         }
 
@@ -623,6 +642,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
+
             try
             {
                 if (this.Page.IsValid)
@@ -668,6 +688,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this.chkIsOwner.Checked = false; // reset the checkbox
                     }
                 }
+
                 this.BindGrid();
             }
             catch (Exception exc) // Module failed to load
@@ -682,6 +703,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
+
             try
             {
                 var cmdDeleteUserRole = (ImageButton)sender;
@@ -693,6 +715,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("RoleRemoveError", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
+
                 this.BindGrid();
             }
             catch (Exception exc)
@@ -728,6 +751,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
+
                     cmdDeleteUserRole.Attributes.Add("roleId", role.RoleID.ToString());
                     cmdDeleteUserRole.Attributes.Add("userId", role.UserID.ToString());
                 }
@@ -753,6 +777,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this.cmdAdd.Text = Localization.GetString("UpdateRole.Text", this.LocalResourceFile);
                     }
                 }
+
                 if (this.UserId == Null.NullInteger)
                 {
                     if (userRole.UserID == this.SelectedUserID)

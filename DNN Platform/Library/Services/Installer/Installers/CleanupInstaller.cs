@@ -52,6 +52,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // DNN-9202: MUST NOT fail installation when cleanup files deletion fails
                 // return false;
             }
+
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
@@ -77,6 +78,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
             }
+
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
         }
@@ -184,6 +186,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     bSuccess = this.ProcessGlob();
                 }
+
                 this.Completed = bSuccess;
             }
             catch (Exception ex)

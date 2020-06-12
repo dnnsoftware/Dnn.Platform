@@ -52,6 +52,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     includeButton = Convert.ToBoolean(this.ModuleContext.Settings["IncludeButton"]);
                 }
+
                 return includeButton;
             }
         }
@@ -97,6 +98,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     template = Localization.GetString("DefaultTemplate", this.LocalResourceFile);
                 }
+
                 var editUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=1");
                 var profileUrl = this._navigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "Profile", "userId=" + this.ProfileUserId, "pageno=2");
 
@@ -107,6 +109,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                         string editHyperLink = string.Format("<a href=\"{0}\" class=\"dnnPrimaryAction\">{1}</a>", profileUrl, this.LocalizeString("Edit"));
                         template = template.Replace("[BUTTON:EDITPROFILE]", editHyperLink);
                     }
+
                     this.buttonPanel.Visible = false;
                 }
                 else
@@ -114,6 +117,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     this.buttonPanel.Visible = this.IncludeButton;
                     this.editLink.NavigateUrl = editUrl;
                 }
+
                 if (template.Contains("[HYPERLINK:EDITPROFILE]"))
                 {
                     if (this.IsUser)
@@ -122,6 +126,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                         template = template.Replace("[HYPERLINK:EDITPROFILE]", editHyperLink);
                     }
                 }
+
                 if (template.Contains("[HYPERLINK:MYACCOUNT]"))
                 {
                     if (this.IsUser)
@@ -129,6 +134,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                         string editHyperLink = string.Format("<a href=\"{0}\" class=\"dnnSecondaryAction\">{1}</a>", editUrl, this.LocalizeString("MyAccount"));
                         template = template.Replace("[HYPERLINK:MYACCOUNT]", editHyperLink);
                     }
+
                     this.buttonPanel.Visible = false;
                 }
 
@@ -187,6 +193,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                             .Replace("//", string.Empty)
                             .Replace(":||", "://"); // restore http protocols
                     }
+
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
                     sb.Append("self['" + clientName + "Text'] = '");
@@ -246,6 +253,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 string loginUrl = Common.Globals.LoginURL(this.Request.RawUrl, false);
                 this.Response.Redirect(loginUrl);
             }
+
             if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // only process this for authenticated requests
             {
                 // current user, i.e. the one that the request was for

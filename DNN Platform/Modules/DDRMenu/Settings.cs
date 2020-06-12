@@ -78,6 +78,7 @@ namespace DotNetNuke.Web.DDRMenu
                     result.Add(new ClientOption(clientOption.Substring(0, n), clientOption.Substring(n + 1)));
                 }
             }
+
             return result;
         }
 
@@ -92,6 +93,7 @@ namespace DotNetNuke.Web.DDRMenu
                     result.Add(new TemplateArgument(templateArgument.Substring(0, n), templateArgument.Substring(n + 1)));
                 }
             }
+
             return result;
         }
 

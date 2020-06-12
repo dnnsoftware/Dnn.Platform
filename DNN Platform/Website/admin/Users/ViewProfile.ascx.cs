@@ -24,6 +24,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.UserId = int.Parse(UrlUtils.DecryptParameter(this.Context.Request.QueryString["userticket"]));
             }
+
             this.ctlProfile.ID = "Profile";
             this.ctlProfile.UserId = this.UserId;
         }
@@ -38,6 +39,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.lblNoProperties.Visible = true;
                     return;
                 }
+
                 this.ctlProfile.DataBind();
                 if (this.ctlProfile.UserProfile.ProfileProperties.Cast<ProfilePropertyDefinition>().Count(profProperty => profProperty.Visible) == 0)
                 {

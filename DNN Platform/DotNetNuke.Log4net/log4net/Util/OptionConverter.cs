@@ -153,6 +153,7 @@ namespace log4net.Util
                     LogLog.Error(declaringType, "[" + argValue + "] is not in proper bool form.", e);
                 }
             }
+
             return defaultValue;
         }
 
@@ -227,6 +228,7 @@ namespace log4net.Util
                 multiplier = 1024 * 1024 * 1024;
                 s = s.Substring(0, index);
             }
+
             if (s != null)
             {
                 // Try again to remove whitespace between the number and the size specifier
@@ -242,6 +244,7 @@ namespace log4net.Util
                     LogLog.Error(declaringType, "OptionConverter: [" + s + "] is not in the correct file size syntax.");
                 }
             }
+
             return defaultValue;
         }
 
@@ -315,6 +318,7 @@ namespace log4net.Util
                     }
                 }
             }
+
             return null;
         }
 
@@ -489,6 +493,7 @@ namespace log4net.Util
                         LogLog.Error(declaringType, "OptionConverter: A [" + className + "] object is not assignable to a [" + superClass.FullName + "] variable.");
                         return defaultValue;
                     }
+
                     return Activator.CreateInstance(classObj);
                 }
                 catch (Exception e)
@@ -496,6 +501,7 @@ namespace log4net.Util
                     LogLog.Error(declaringType, "Could not instantiate class [" + className + "].", e);
                 }
             }
+
             return defaultValue;
         }
 
@@ -583,6 +589,7 @@ namespace log4net.Util
                         {
                             buf.Append(replacement);
                         }
+
                         i = k + DELIM_STOP_LEN;
                     }
                 }

@@ -236,6 +236,7 @@ namespace DotNetNuke.UI.Skins
                     strMessage += objSkinFile.PrependASCXDirectives(Registrations);
                     break;
             }
+
             objSkinFile.Write();
             strMessage += objSkinFile.Messages;
             strMessage += SkinController.FormatMessage(this.FILE_END, Path.GetFileName(FileName), 1, false);
@@ -262,6 +263,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.Message += this.ProcessFile(FileName, ParseOption);
             }
+
             this.Message += SkinController.FormatMessage(this.FILES_END, this.SkinRoot + " :: " + this.SkinName, 0, false);
             return this.Message;
         }
@@ -497,6 +499,7 @@ namespace DotNetNuke.UI.Skins
                             this.Messages += SkinController.FormatMessage(TOKEN_NOTFOUND_INFILE, "[" + AttributeNode + "]", 2, false);
                         }
                     }
+
                     if (this.ControlList.ContainsKey(Token))
                     {
                         // create the skin object user control tag
@@ -520,6 +523,7 @@ namespace DotNetNuke.UI.Skins
                         {
                             SkinControl = " id=\"ContentPane\"";
                         }
+
                         SkinControl = "div runat=\"server\"" + SkinControl + "></div";
 
                         // return the control statement
@@ -527,6 +531,7 @@ namespace DotNetNuke.UI.Skins
 
                         SkinControl = "<" + SkinControl + ">";
                     }
+
                     return SkinControl;
                 }
                 else
@@ -769,6 +774,7 @@ namespace DotNetNuke.UI.Skins
                             {
                                 SkinControl += "id=\"" + ControlName + "\" ";
                             }
+
                             SkinControl += Parameters;
 
                             // save control registration statement
@@ -793,12 +799,14 @@ namespace DotNetNuke.UI.Skins
                             {
                                 SkinControl += "id=\"ContentPane\" ";
                             }
+
                             SkinControl += Parameters + "></div";
 
                             // return the control statement
                             this.Messages += SkinController.FormatMessage(CONTROL_FORMAT, "&lt;" + SkinControl + "&gt;", 2, false);
                             SkinControl = "<" + SkinControl + ">";
                         }
+
                         return SkinControl;
                     }
                     else
@@ -888,6 +896,7 @@ namespace DotNetNuke.UI.Skins
                         // optimize the arraylist size since it will not change
                         this.m_HTMLPatterns.TrimToSize();
                     }
+
                     return this.m_HTMLPatterns;
                 }
             }
@@ -917,6 +926,7 @@ namespace DotNetNuke.UI.Skins
                         // optimize the arraylist size since it will not change
                         this.m_CSSPatterns.TrimToSize();
                     }
+
                     return this.m_CSSPatterns;
                 }
             }
@@ -970,6 +980,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     Source = ((Regex)RegexList[i]).Replace(Source, this.Handler);
                 }
+
                 return this.m_Messages;
             }
 
@@ -1003,6 +1014,7 @@ namespace DotNetNuke.UI.Skins
                                 // insert the localized path
                                 strNewTag = m.Groups["tag"].Value + this.SkinPath + m.Groups["content"].Value + m.Groups["endtag"].Value;
                             }
+
                             break;
                         case SkinParser.Portable:
                             // if the tag does not contain a reference to the skinpath
@@ -1018,9 +1030,11 @@ namespace DotNetNuke.UI.Skins
                                 // remove the localized path
                                 strNewTag = strNewTag.Replace(this.SkinPath, string.Empty);
                             }
+
                             break;
                     }
                 }
+
                 this.m_Messages += SkinController.FormatMessage(this.SUBST, string.Format(this.SUBST_DETAIL, HttpUtility.HtmlEncode(strOldTag), HttpUtility.HtmlEncode(strNewTag)), 2, false);
                 return strNewTag;
             }
@@ -1132,6 +1146,7 @@ namespace DotNetNuke.UI.Skins
                                 this.m_Messages += SkinController.FormatMessage(this.FILE_LOAD_ERROR, FileName, 2, true);
                             }
                         }
+
                         break;
                     default:
                         // output file name is same as input file name
@@ -1215,6 +1230,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     File.Delete(this.WriteFileName);
                 }
+
                 this.m_Messages += SkinController.FormatMessage(this.FILE_WRITE, Path.GetFileName(this.WriteFileName), 2, false);
                 using (var objStreamWriter = new StreamWriter(this.WriteFileName))
                 {
@@ -1246,6 +1262,7 @@ namespace DotNetNuke.UI.Skins
                     // if the skin source is an HTML document, extract the content within the <body> tags
                     this.Contents = objMatch.Groups[1].Value;
                 }
+
                 if (this.SkinRoot == SkinController.RootSkin)
                 {
                     Prefix += "<%@ Control language=\"vb\" AutoEventWireup=\"false\" Explicit=\"True\" Inherits=\"DotNetNuke.UI.Skins.Skin\" %>" + Environment.NewLine;
@@ -1254,6 +1271,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     Prefix += "<%@ Control language=\"vb\" AutoEventWireup=\"false\" Explicit=\"True\" Inherits=\"DotNetNuke.UI.Containers.Container\" %>" + Environment.NewLine;
                 }
+
                 Messages += SkinController.FormatMessage(this.CONTROL_DIR, HttpUtility.HtmlEncode(Prefix), 2, false);
 
                 // add preformatted Control Registrations

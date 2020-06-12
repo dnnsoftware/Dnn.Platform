@@ -93,6 +93,7 @@ namespace DotNetNuke.Entities.Portals
                     folderManager.AddAllUserReadPermission(folder, permission);
                 }
             }
+
             FolderPermissionController.SaveFolderPermissions((FolderInfo)folder);
         }
 
@@ -103,18 +104,22 @@ namespace DotNetNuke.Entities.Portals
             {
                 administratorRoleId = CreateRole(portalId, "Administrators", "Administrators of this Website", 0, 0, "M", 0, 0, "N", false, false);
             }
+
             if (registeredRoleId == -1)
             {
                 registeredRoleId = CreateRole(portalId, "Registered Users", "Registered Users", 0, 0, "M", 0, 0, "N", false, true);
             }
+
             if (subscriberRoleId == -1)
             {
                 subscriberRoleId = CreateRole(portalId, "Subscribers", "A public role for site subscriptions", 0, 0, "M", 0, 0, "N", true, true);
             }
+
             if (unverifiedRoleId == -1)
             {
                 CreateRole(portalId, "Unverified Users", "Unverified Users", 0, 0, "M", 0, 0, "N", false, false);
             }
+
             RoleController.Instance.AddUserRole(portalId, administratorId, administratorRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             RoleController.Instance.AddUserRole(portalId, administratorId, registeredRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             RoleController.Instance.AddUserRole(portalId, administratorId, subscriberRoleId, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
@@ -141,6 +146,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 homeDirectory = "Portals/" + portalId;
             }
+
             string mappedHomeDirectory = string.Format(Globals.ApplicationMapPath + "\\" + homeDirectory + "\\").Replace("/", "\\");
 
             if (Directory.Exists(mappedHomeDirectory))
@@ -255,6 +261,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     throw new Exception(message);
                 }
+
                 if (message == Null.NullString)
                 {
                     var portal = this.GetPortal(portalId);
@@ -265,6 +272,7 @@ namespace DotNetNuke.Entities.Portals
                     {
                         portal.UserTabId = TabController.GetTabByTabPath(portal.PortalID, "//ActivityFeed", portal.CultureCode);
                     }
+
                     portal.SearchTabId = TabController.GetTabByTabPath(portal.PortalID, "//SearchResults", portal.CultureCode);
                     this.UpdatePortalInfo(portal);
 
@@ -398,6 +406,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     Logger.Error(ex);
                 }
+
                 // parse profile definitions if available
                 var node = xmlDoc.SelectSingleNode("//portal/profiledefinitions");
                 if (node != null)
@@ -414,6 +423,7 @@ namespace DotNetNuke.Entities.Portals
                 strMessage = Localization.GetString("CreateProfileDefinitions.Error");
                 Exceptions.LogException(ex);
             }
+
             return strMessage;
         }
 
@@ -476,6 +486,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 roleId = objRoleInfo.RoleID;
             }
+
             return roleId;
         }
 
@@ -557,6 +568,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 return false;
             }
+
             return true;
         }
 
@@ -699,6 +711,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 objPortalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
+
             return objPortalSettings;
         }
 
@@ -739,6 +752,7 @@ namespace DotNetNuke.Entities.Portals
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return portalDic;
         }
 
@@ -757,6 +771,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 cultureCode = GetActivePortalLanguage(portalId);
             }
+
             var dr = DataProvider.Instance().GetPortalSettings(portalId, cultureCode);
             try
             {
@@ -792,6 +807,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return dicSettings;
         }
 
@@ -867,6 +883,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     permissionId = permission.PermissionID;
                 }
+
                 int roleId = int.MinValue;
                 switch (roleName)
                 {
@@ -882,6 +899,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             roleId = objRole.RoleID;
                         }
+
                         break;
                 }
 
@@ -908,6 +926,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             FolderPermissionController.SaveFolderPermissions(folder);
         }
 
@@ -921,6 +940,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(Localization.GetString("CreatingConfiguredFolderMapping.Error"), ex);
             }
+
             var webConfig = Config.Load();
             foreach (FolderTypeConfig folderTypeConfig in FolderMappingsConfigController.Instance.FolderTypes)
             {
@@ -1015,6 +1035,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -1027,6 +1048,7 @@ namespace DotNetNuke.Entities.Portals
                 return FolderProvider.Instance(folderProviderType).EncryptValue(ensuredSettingValue);
                 // return PortalSecurity.Instance.Encrypt(Host.Host.GUID, ensuredSettingValue.Trim());
             }
+
             return ensuredSettingValue;
         }
 
@@ -1085,6 +1107,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 dictionary = httpContext.Items[dictionaryKey] as Dictionary<string, string>;
             }
+
             if (dictionary == null)
             {
                 var cacheKey = string.Format(DataCache.PortalSettingsCacheKey, portalId, cultureCode);
@@ -1100,6 +1123,7 @@ namespace DotNetNuke.Entities.Portals
                     httpContext.Items[dictionaryKey] = dictionary;
                 }
             }
+
             return dictionary;
         }
 
@@ -1113,6 +1137,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 cultureCode = (string)httpContext.Items[activeLanguageKey];
             }
+
             if (string.IsNullOrEmpty(cultureCode))
             {
                 cultureCode = GetActivePortalLanguage(portalId);
@@ -1153,10 +1178,12 @@ namespace DotNetNuke.Entities.Portals
                     returnCollection.Add(locale.Code, locale);
                 }
             }
+
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
             }
+
             return returnCollection;
         }
 
@@ -1188,6 +1215,7 @@ namespace DotNetNuke.Entities.Portals
                             Logger.Error(ex);
                             folderMapping = folderMappingController.GetDefaultFolderMapping(portalId);
                         }
+
                         var isProtected = XmlUtils.GetNodeValueBoolean(node, "isprotected");
 
                         try
@@ -1209,6 +1237,7 @@ namespace DotNetNuke.Entities.Portals
                                 throw;
                             }
                         }
+
                         objInfo.IsProtected = isProtected;
 
                         folderManager.UpdateFolder(objInfo);
@@ -1240,6 +1269,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     typeInfo = colDataTypes["DataType:Unknown"];
                 }
+
                 objProfileDefinition = new ProfilePropertyDefinition(portalId);
                 objProfileDefinition.DataType = typeInfo.EntryID;
                 objProfileDefinition.DefaultValue = string.Empty;
@@ -1334,6 +1364,7 @@ namespace DotNetNuke.Entities.Portals
                                     desktopModulePermission = new DesktopModulePermissionInfo(permission);
                                 }
                             }
+
                             desktopModulePermission.AllowAccess = bool.Parse(XmlUtils.GetNodeValue(permissionNav, "allowaccess"));
                             string rolename = XmlUtils.GetNodeValue(permissionNav, "rolename");
                             if (!string.IsNullOrEmpty(rolename))
@@ -1344,8 +1375,10 @@ namespace DotNetNuke.Entities.Portals
                                     desktopModulePermission.RoleID = role.RoleID;
                                 }
                             }
+
                             permissions.Add(desktopModulePermission);
                         }
+
                         DesktopModuleController.AddDesktopModuleToPortal(portalID, desktopModule, permissions, false);
                     }
                 }
@@ -1362,28 +1395,34 @@ namespace DotNetNuke.Entities.Portals
             {
                 objPortal.ExpiryDate = XmlUtils.GetNodeValueDate(nodeSettings, "expirydate", Null.NullDate);
             }
+
             objPortal.UserRegistration = XmlUtils.GetNodeValueInt(nodeSettings, "userregistration");
             objPortal.BannerAdvertising = XmlUtils.GetNodeValueInt(nodeSettings, "banneradvertising");
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "currency")))
             {
                 objPortal.Currency = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "currency");
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "hostfee")))
             {
                 objPortal.HostFee = XmlUtils.GetNodeValueSingle(nodeSettings, "hostfee");
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "hostspace")))
             {
                 objPortal.HostSpace = XmlUtils.GetNodeValueInt(nodeSettings, "hostspace");
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "pagequota")))
             {
                 objPortal.PageQuota = XmlUtils.GetNodeValueInt(nodeSettings, "pagequota");
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "userquota")))
             {
                 objPortal.UserQuota = XmlUtils.GetNodeValueInt(nodeSettings, "userquota");
             }
+
             objPortal.BackgroundFile = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "backgroundfile");
             objPortal.PaymentProcessor = XmlUtils.GetNodeValue(nodeSettings.CreateNavigator(), "paymentprocessor");
 
@@ -1394,14 +1433,17 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "DefaultPortalSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrc", string.Empty), true, currentCulture);
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "DefaultAdminSkin", XmlUtils.GetNodeValue(nodeSettings, "skinsrcadmin", string.Empty), true, currentCulture);
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrc", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "DefaultPortalContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrc", string.Empty), true, currentCulture);
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "DefaultAdminContainer", XmlUtils.GetNodeValue(nodeSettings, "containersrcadmin", string.Empty), true, currentCulture);
@@ -1417,6 +1459,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "ShowCookieConsent", XmlUtils.GetNodeValue(nodeSettings, "showcookieconsent", "False"));
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "CookieMoreLink", XmlUtils.GetNodeValue(nodeSettings, "cookiemorelink", string.Empty), true, currentCulture);
@@ -1438,6 +1481,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "PortalAliasMapping", XmlUtils.GetNodeValue(nodeSettings, "portalaliasmapping", "CANONICALURL").ToUpperInvariant());
             }
+
             // Set Time Zone maping
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "timezone", Localization.SystemTimeZone)))
             {
@@ -1478,22 +1522,27 @@ namespace DotNetNuke.Entities.Portals
             {
                 UpdatePortalSetting(portalId, "ControlPanelVisibility", XmlUtils.GetNodeValue(nodeSettings, "controlpanelvisibility"));
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "PageHeadText", XmlUtils.GetNodeValue(nodeSettings, "pageheadtext", string.Empty));
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "InjectModuleHyperLink", XmlUtils.GetNodeValue(nodeSettings, "injectmodulehyperlink", string.Empty));
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "AddCompatibleHttpHeader", XmlUtils.GetNodeValue(nodeSettings, "addcompatiblehttpheader", string.Empty));
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "AllowUserUICulture", XmlUtils.GetNodeValue(nodeSettings, "allowuseruiculture", string.Empty));
             }
+
             if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", string.Empty)))
             {
                 UpdatePortalSetting(portalId, "EnableBrowserLanguage", XmlUtils.GetNodeValue(nodeSettings, "enablebrowserlanguage", string.Empty));
@@ -1516,6 +1565,7 @@ namespace DotNetNuke.Entities.Portals
                     roleGroup.PortalID = portalID;
                     CreateRoleGroup(roleGroup);
                 }
+
                 foreach (var role in roleGroup.Roles.Values)
                 {
                     role.PortalID = portalID;
@@ -1541,6 +1591,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             CreateDefaultPortalRoles(portalID, administratorId, ref administratorRoleId, ref registeredRoleId, ref subscriberRoleId, unverifiedRoleId);
 
             // update portal setup
@@ -1635,11 +1686,13 @@ namespace DotNetNuke.Entities.Portals
                     {
                         parenttabname = XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent") + "/";
                     }
+
                     if (hTabs[parenttabname + strName] != null)
                     {
                         tab = TabController.Instance.GetTab(Convert.ToInt32(hTabs[parenttabname + strName]), portalId, false);
                     }
                 }
+
                 if (tab == null || isNewPortal)
                 {
                     tab = TabController.DeserializeTab(nodeTab, null, hTabs, portalId, isAdminTemplate, mergeTabs, hModules);
@@ -1651,6 +1704,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     portal.AdminTabId = tab.TabID;
                 }
+
                 // when processing the template we can find: hometab, usertab, logintab
                 switch (XmlUtils.GetNodeValue(nodeTab, "tabtype", string.Empty).ToLowerInvariant())
                 {
@@ -1683,6 +1737,7 @@ namespace DotNetNuke.Entities.Portals
                         logType = "Custom500Tab";
                         break;
                 }
+
                 this.UpdatePortalSetup(
                     portalId,
                     portal.AdministratorId,
@@ -1733,6 +1788,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             tabname = Convert.ToString(hTabNames[objTab.ParentId]) + "/" + objTab.TabName;
                         }
+
                         hTabNames.Add(objTab.TabID, tabname);
                     }
                 }
@@ -1745,8 +1801,10 @@ namespace DotNetNuke.Entities.Portals
                         hTabs.Add(hTabNames[i], i);
                     }
                 }
+
                 hTabNames.Clear();
             }
+
             foreach (XmlNode nodeTab in nodeTabs.SelectNodes("//tab"))
             {
                 HtmlUtils.WriteKeepAlive();
@@ -1766,6 +1824,7 @@ namespace DotNetNuke.Entities.Portals
                     TabController.Instance.UpdateTab(objTab);
                 }
             }
+
             var folderManager = FolderManager.Instance;
             var fileManager = FileManager.Instance;
             // Process tabs that are linked to files
@@ -1811,12 +1870,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(ex);
             }
+
             var node = xmlPortal.SelectSingleNode("//portal/settings");
             if (node != null && isNewPortal)
             {
                 HtmlUtils.WriteKeepAlive();
                 this.ParsePortalSettings(node, portalId);
             }
+
             node = xmlPortal.SelectSingleNode("//locales");
             if (node != null && isNewPortal)
             {
@@ -1832,18 +1893,22 @@ namespace DotNetNuke.Entities.Portals
                     defaultLocale = new Locale { Code = portalInfo.DefaultLanguage, Fallback = Localization.SystemLocale, Text = CultureInfo.GetCultureInfo(portalInfo.DefaultLanguage).NativeName };
                     Localization.SaveLanguage(defaultLocale, false);
                 }
+
                 localeCollection = new LocaleCollection { { defaultLocale.Code, defaultLocale } };
             }
+
             node = xmlPortal.SelectSingleNode("//portal/rolegroups");
             if (node != null)
             {
                 this.ParseRoleGroups(node.CreateNavigator(), portalId, administratorId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/roles");
             if (node != null)
             {
                 this.ParseRoles(node.CreateNavigator(), portalId, administratorId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/portalDesktopModules");
             if (node != null)
             {
@@ -1855,6 +1920,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 this.ParseFolders(node, portalId);
             }
+
             node = xmlPortal.SelectSingleNode("//portal/extensionUrlProviders");
             if (node != null)
             {
@@ -1909,6 +1975,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             node = xmlPortal.SelectSingleNode("//portal/tabs");
             if (node != null)
             {
@@ -1939,6 +2006,7 @@ namespace DotNetNuke.Entities.Portals
                         Logger.Error(ex);
                     }
                 }
+
                 this.ParseTabs(node, portalId, false, mergeTabs, isNewPortal);
             }
 
@@ -2140,6 +2208,7 @@ namespace DotNetNuke.Entities.Portals
                     // Create Portal Templates folder
                     Directory.CreateDirectory(portalTemplateFolder);
                 }
+
                 string portalTemplateFile = portalTemplateFolder + templateFile;
                 if (!File.Exists(portalTemplateFile))
                 {
@@ -2205,6 +2274,7 @@ namespace DotNetNuke.Entities.Portals
                 message += Localization.GetString("CreatePortal.Error");
                 throw new Exception(message);
             }
+
             try
             {
                 EnsureRequiredEventLogTypesExist();
@@ -2287,6 +2357,7 @@ namespace DotNetNuke.Entities.Portals
                 message += Localization.GetString("CreatePortal.Error");
                 throw new Exception(message);
             }
+
             try
             {
                 EnsureRequiredEventLogTypesExist();
@@ -2371,6 +2442,7 @@ namespace DotNetNuke.Entities.Portals
                 defaultLanguage = GetPortalDefaultLanguage(portalId);
                 portal = this.GetPortal(portalId, defaultLanguage);
             }
+
             return portal;
         }
 
@@ -2405,10 +2477,12 @@ namespace DotNetNuke.Entities.Portals
                     {
                         fallbackLanguage = userLocale.Fallback;
                     }
+
                     if (string.IsNullOrEmpty(fallbackLanguage))
                     {
                         fallbackLanguage = Localization.SystemLocale;
                     }
+
                     portal = GetPortalInternal(portalId, fallbackLanguage);
                     // if we cannot find any fallback, it mean's it's a non portal default langauge
                     if (portal == null)
@@ -2419,6 +2493,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             return portal;
         }
 
@@ -2520,6 +2595,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return size;
         }
 
@@ -2549,6 +2625,7 @@ namespace DotNetNuke.Entities.Portals
                     hostSpace = portal.HostSpace;
                 }
             }
+
             return (((this.GetPortalSpaceUsedBytes(portalId) + fileSizeBytes) / Math.Pow(1024, 2)) <= hostSpace) || hostSpace == 0;
         }
 
@@ -2576,6 +2653,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.HomeTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.LoginTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.LoginTabId, portalId, targetLocale);
@@ -2584,6 +2662,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.LoginTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.RegisterTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.RegisterTabId, portalId, targetLocale);
@@ -2592,6 +2671,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.RegisterTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.SplashTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.SplashTabId, portalId, targetLocale);
@@ -2600,6 +2680,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.SplashTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.UserTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.UserTabId, portalId, targetLocale);
@@ -2608,6 +2689,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.UserTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.SearchTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.SearchTabId, portalId, targetLocale);
@@ -2616,6 +2698,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.SearchTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.Custom404TabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.Custom404TabId, portalId, targetLocale);
@@ -2624,6 +2707,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.Custom404TabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.Custom500TabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.Custom500TabId, portalId, targetLocale);
@@ -2632,6 +2716,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.Custom500TabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.TermsTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.TermsTabId, portalId, targetLocale);
@@ -2640,6 +2725,7 @@ namespace DotNetNuke.Entities.Portals
                     targetPortal.TermsTabId = tempTab.TabID;
                 }
             }
+
             if (defaultPortal.PrivacyTabId != Null.NullInteger)
             {
                 tempTab = TabController.Instance.GetTabByCulture(defaultPortal.PrivacyTabId, portalId, targetLocale);
@@ -2721,6 +2807,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 portal.ExpiryDate = DateTime.Now;
             }
+
             portal.ExpiryDate = portal.ExpiryDate.AddMonths(1);
 
             this.UpdatePortalInfo(portal);
@@ -2847,11 +2934,13 @@ namespace DotNetNuke.Entities.Portals
                         {
                             portalName = GetPortalFolder(portalAliasInfo.HTTPAlias);
                         }
+
                         if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
                         {
                             DeletePortalFolder(serverPath, portalName);
                         }
                     }
+
                     // delete upload directory
                     if (!string.IsNullOrEmpty(portal.HomeDirectory))
                     {
@@ -2870,6 +2959,7 @@ namespace DotNetNuke.Entities.Portals
                             }
                         }
                     }
+
                     // remove database references
                     DeletePortalInternal(portal.PortalID);
                 }
@@ -2878,6 +2968,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 message = Localization.GetString("LastPortal");
             }
+
             return message;
         }
 
@@ -2951,6 +3042,7 @@ namespace DotNetNuke.Entities.Portals
                 pageIndex = 0;
                 pageSize = int.MaxValue;
             }
+
             Type type = typeof(PortalInfo);
             return CBO.FillCollection(DataProvider.Instance().GetPortalsByName(nameToMatch, pageIndex, pageSize), ref type, ref totalRecords);
         }
@@ -3009,11 +3101,13 @@ namespace DotNetNuke.Entities.Portals
                 {
                     portalName = GetPortalFolder(portalAlias.HTTPAlias);
                 }
+
                 if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
                 {
                     isChild = true;
                 }
             }
+
             return isChild;
         }
 
@@ -3103,6 +3197,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3127,6 +3222,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3157,6 +3253,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3188,6 +3285,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3218,6 +3316,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3248,6 +3347,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -3279,8 +3379,10 @@ namespace DotNetNuke.Entities.Portals
             {
                 Logger.Error(exc);
             }
+
             return retValue;
         }
+
         /// <summary>
         /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
         /// </summary>
@@ -3403,6 +3505,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             return modulesNotInstalled.ToString();
         }
 
@@ -3425,11 +3528,13 @@ namespace DotNetNuke.Entities.Portals
                 Language = tmpLanguage;
                 isDefaultLanguage = true;
             }
+
             // handles case where portalcontroller methods invoked before a language is installed
             if (portalID > Null.NullInteger && Globals.Status == Globals.UpgradeStatus.None && Localization.ActiveLanguagesByPortalID(portalID) == 1)
             {
                 return Language;
             }
+
             if (HttpContext.Current != null && Globals.Status == Globals.UpgradeStatus.None)
             {
                 if (HttpContext.Current.Request.QueryString["language"] != null)

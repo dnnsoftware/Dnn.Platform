@@ -117,6 +117,7 @@ namespace DotNetNuke.Services.Search
                 // we just want to trap the error as we may not be installed so there will be no Settings
                 Logger.Error(exc);
             }
+
             return retValue;
         }
 
@@ -141,6 +142,7 @@ namespace DotNetNuke.Services.Search
                 // we just want to trap the error as we may not be installed so there will be no Settings
                 Logger.Error(exc);
             }
+
             return retValue;
         }
     }

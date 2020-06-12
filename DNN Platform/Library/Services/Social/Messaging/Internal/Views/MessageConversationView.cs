@@ -92,6 +92,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
                 {
                     this._displayDate = DateUtils.CalculateDateForDisplay(this._createdOnDate);
                 }
+
                 return this._displayDate;
             }
         }

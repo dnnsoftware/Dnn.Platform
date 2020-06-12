@@ -297,6 +297,7 @@ namespace log4net.Appender
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -318,6 +319,7 @@ namespace log4net.Appender
                     return i;
                 }
             }
+
             return -1;
         }
 
@@ -533,6 +535,7 @@ namespace log4net.Appender
             {
                 Array.Copy(this.m_array, 0, resultArray, 0, this.m_count);
             }
+
             return resultArray;
         }
 

@@ -300,6 +300,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
                 {
                     ms.Write(buffer, 0, read);
                 }
+
                 resultBytes = ms.ToArray();
             }
 

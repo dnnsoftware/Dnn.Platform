@@ -92,6 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.CssClass = this.DisabledCssClass;
             }
+
             writer.AddAttribute("class", this.CssClass.Trim());
             base.Render(writer);
         }

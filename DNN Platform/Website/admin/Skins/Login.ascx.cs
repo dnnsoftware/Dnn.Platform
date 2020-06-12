@@ -88,6 +88,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             {
                                 this.LogoffText = this.LogoffText.Replace("src=\"", "src=\"" + this.PortalSettings.ActiveTab.SkinPath);
                             }
+
                             this.loginLink.Text = this.LogoffText;
                             this.enhancedLoginLink.Text = this.LogoffText;
                         }
@@ -98,6 +99,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.loginLink.ToolTip = this.loginLink.Text;
                             this.enhancedLoginLink.ToolTip = this.loginLink.Text;
                         }
+
                         this.loginLink.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Logoff");
                         this.enhancedLoginLink.NavigateUrl = this.loginLink.NavigateUrl;
                     }
@@ -109,6 +111,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             {
                                 this.Text = this.Text.Replace("src=\"", "src=\"" + this.PortalSettings.ActiveTab.SkinPath);
                             }
+
                             this.loginLink.Text = this.Text;
                             this.enhancedLoginLink.Text = this.Text;
                         }
@@ -125,6 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         {
                             returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("?returnurl="));
                         }
+
                         returnUrl = HttpUtility.UrlEncode(returnUrl);
 
                         this.loginLink.NavigateUrl = Globals.LoginURL(returnUrl, this.Request.QueryString["override"] != null);

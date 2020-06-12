@@ -19,6 +19,7 @@ namespace DotNetNuke.Entities.Groups
         public GroupInfo()
         {
         }
+
         public GroupInfo(RoleInfo roleInfo)
         {
             this.RoleID = roleInfo.RoleID;
@@ -29,6 +30,7 @@ namespace DotNetNuke.Entities.Groups
             this.ServiceFee = roleInfo.ServiceFee;
             this.RSVPCode = roleInfo.RSVPCode;
         }
+
         // public RoleInfo Role {
         //    get {
         //        return roleInfo;
@@ -55,6 +57,7 @@ namespace DotNetNuke.Entities.Groups
                 this.SetString("Street", value);
             }
         }
+
         public string City
         {
             get
@@ -133,6 +136,7 @@ namespace DotNetNuke.Entities.Groups
             {
                 return defaultValue;
             }
+
             if (this.Settings.ContainsKey(keyName))
             {
                 return this.Settings[keyName];
@@ -142,6 +146,7 @@ namespace DotNetNuke.Entities.Groups
                 return defaultValue;
             }
         }
+
         private void SetString(string keyName, string value)
         {
             if (this.Settings.ContainsKey(keyName))

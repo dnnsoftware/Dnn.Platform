@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.Journal
             {
                 contentTypeName = "DNNCorp_JournalGroup";
             }
+
             var colContentTypes = from t in typeController.GetContentTypes() where t.ContentType == contentTypeName select t;
             int contentTypeID;
 
@@ -67,6 +68,7 @@ namespace DotNetNuke.Services.Journal
             {
                 return;
             }
+
             // Only update content the contentitem if it was created by the journal
             if ((objContent.ContentTypeId == GetContentTypeID("DNNCorp_JournalProfile") && objJournalItem.ProfileId > 0)
                     || (objContent.ContentTypeId == GetContentTypeID("DNNCorp_JournalGroup") && objJournalItem.SocialGroupId > 0))
@@ -141,6 +143,7 @@ namespace DotNetNuke.Services.Journal
 
             return typeController.AddContentType(objContentType);
         }
+
         /// <summary>
         /// Creates the content text
         /// </summary>

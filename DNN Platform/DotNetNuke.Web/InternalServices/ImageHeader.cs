@@ -61,6 +61,7 @@ namespace DotNetNuke.Web.InternalServices
                     size = b.Size;
                 }
             }
+
             return size;
         }
 
@@ -85,6 +86,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
             }
+
             throw new ArgumentException(ErrorMessage, "binaryReader");
         }
 
@@ -97,6 +99,7 @@ namespace DotNetNuke.Web.InternalServices
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -107,6 +110,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 bytes[sizeof(short) - 1 - i] = binaryReader.ReadByte();
             }
+
             return BitConverter.ToInt16(bytes, 0);
         }
 
@@ -117,6 +121,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 bytes[sizeof(ushort) - 1 - i] = binaryReader.ReadByte();
             }
+
             return BitConverter.ToUInt16(bytes, 0);
         }
 
@@ -127,6 +132,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 bytes[sizeof(int) - 1 - i] = binaryReader.ReadByte();
             }
+
             return BitConverter.ToInt32(bytes, 0);
         }
 
@@ -166,6 +172,7 @@ namespace DotNetNuke.Web.InternalServices
                     int width = ReadLittleEndianInt16(binaryReader);
                     return new Size(width, height);
                 }
+
                 if (chunkLength < 0)
                 {
                     var uchunkLength = (ushort)chunkLength;
@@ -176,6 +183,7 @@ namespace DotNetNuke.Web.InternalServices
                     binaryReader.ReadBytes(chunkLength - 2);
                 }
             }
+
             throw new ArgumentException(ErrorMessage);
         }
     }

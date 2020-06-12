@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
                 }
+
                 return moduleControlId;
             }
         }
@@ -67,6 +68,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 // cboFile.Items.Add(new ListItem("Code File", "CodeFile"));
                 this.cboFile.AddItem("Code File", "CodeFile");
             }
+
             var fileName = Path.GetFileName(srcPhysicalPath);
             var folder = Path.GetDirectoryName(srcPhysicalPath);
             if (File.Exists(folder + "\\App_LocalResources\\" + fileName + ".resx"))
@@ -94,6 +96,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         srcFile = srcPhysicalPath + ".cs";
                     }
+
                     break;
                 case "ResourceFile":
                     var fileName = Path.GetFileName(srcPhysicalPath);
@@ -101,6 +104,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     srcFile = folder + "\\App_LocalResources\\" + fileName + ".resx";
                     break;
             }
+
             return srcFile;
         }
 
@@ -122,6 +126,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.txtSource.Text = objStreamReader.ReadToEnd();
                     objStreamReader.Close();
                 }
+
                 this.lblSourceFile.Visible = displaySource;
                 this.trSource.Visible = displaySource;
             }
@@ -143,6 +148,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     this.BindFiles(objModuleControl.ControlSrc);
                 }
+
                 if (this.Request.UrlReferrer != null)
                 {
                     this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
@@ -152,6 +158,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.ViewState["UrlReferrer"] = string.Empty;
                 }
             }
+
             this.cmdUpdate.Visible = this.CanEditSource;
             this.txtSource.Enabled = this.CanEditSource;
         }
@@ -185,6 +192,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             objStream.Close();
                         }
                     }
+
                     this.Response.Redirect(this.ReturnURL, true);
                 }
             }

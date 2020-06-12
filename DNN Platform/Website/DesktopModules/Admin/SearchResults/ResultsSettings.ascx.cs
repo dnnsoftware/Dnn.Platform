@@ -146,6 +146,7 @@ namespace DotNetNuke.Modules.SearchResults
                     {
                         maxDescriptionLength = "100";
                     }
+
                     ModuleController.Instance.UpdateModuleSetting(this.ModuleId, "MaxDescriptionLength", maxDescriptionLength);
                 }
             }
@@ -197,6 +198,7 @@ namespace DotNetNuke.Modules.SearchResults
                     }
                 }
             }
+
             return result;
         }
 

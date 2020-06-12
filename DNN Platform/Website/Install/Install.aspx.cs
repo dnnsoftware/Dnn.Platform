@@ -48,6 +48,7 @@ namespace DotNetNuke.Services.Install
             {
                 Upgrade.Upgrade.ExecuteScripts(strProviderPath);
             }
+
             this.Response.Write("<h2>Execution Complete</h2>");
             this.Response.Flush();
 
@@ -105,6 +106,7 @@ namespace DotNetNuke.Services.Install
                         {
                             return;
                         }
+
                         // Add the install blocker logic
                         lock (installLocker)
                         {
@@ -114,6 +116,7 @@ namespace DotNetNuke.Services.Install
                                 this.WriteInstallationInProgress();
                                 return;
                             }
+
                             RegisterInstallBegining();
                         }
 
@@ -123,6 +126,7 @@ namespace DotNetNuke.Services.Install
                         {
                             FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
                         }
+
                         Upgrade.Upgrade.InstallDNN(strProviderPath);
                         // remove en-US from portal if installing in a different language
                         if (!installConfig.InstallCulture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
@@ -253,6 +257,7 @@ namespace DotNetNuke.Services.Install
                         this.WriteInstallationInProgress();
                         return;
                     }
+
                     RegisterInstallBegining();
                 }
 
@@ -284,6 +289,7 @@ namespace DotNetNuke.Services.Install
                         {
                             ignoreWarning = this.Request.QueryString["ignoreWarning"].ToLowerInvariant();
                         }
+
                         strWarning = Upgrade.Upgrade.CheckUpgrade();
                     }
                     else
@@ -320,6 +326,7 @@ namespace DotNetNuke.Services.Install
                         {
                             Logger.Error(strError);
                         }
+
                         this.Response.Write("<h2>Upgrade Complete</h2>");
                         this.Response.Write("<br><br><h2><a href='../Default.aspx'>Click Here To Access Your Site</a></h2><br><br>");
 
@@ -332,6 +339,7 @@ namespace DotNetNuke.Services.Install
 
                         this.Response.Write("<br><br><a href='Install.aspx?mode=upgrade&ignoreWarning=true'>Click Here To Proceed With The Upgrade.</a>");
                     }
+
                     this.Response.Flush();
                 }
                 else
@@ -470,6 +478,7 @@ namespace DotNetNuke.Services.Install
                             this.Response.Write("<br><br><h2><a href='Install.aspx?mode=Install'>Click Here To Install DotNetNuke</a></h2>");
                             this.Response.Flush();
                         }
+
                         dr.Close();
                     }
                 }
@@ -569,6 +578,7 @@ namespace DotNetNuke.Services.Install
                                 this.ExecuteScripts();
                                 break;
                         }
+
                         break;
                     case Globals.UpgradeStatus.Error:
                         this.NoUpgrade();

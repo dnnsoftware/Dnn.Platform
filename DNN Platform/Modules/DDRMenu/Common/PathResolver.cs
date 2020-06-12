@@ -70,6 +70,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                             {
                                 container = container.Parent;
                             }
+
                             var containerRoot = (container == null)
                                                     ? context.SkinPath
 // ReSharper disable PossibleNullReferenceException
@@ -86,6 +87,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                             {
                                 resolvedPath = Path.Combine(this.manifestFolder + "/", path);
                             }
+
                             break;
                         case RelativeTo.Module:
                             resolvedPath = Path.Combine(DNNContext.ModuleFolder, path);

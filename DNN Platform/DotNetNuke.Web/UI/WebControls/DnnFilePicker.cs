@@ -161,6 +161,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return int.Parse(this.Page.Request.QueryString["pid"]);
                 }
+
                 if (!this.IsHost)
                 {
                     return this.PortalSettings.PortalId;
@@ -237,8 +238,10 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         fileId = int.Parse(this._cboFiles.SelectedItem.Value);
                     }
+
                     this.ViewState["FileID"] = fileId;
                 }
+
                 return Convert.ToInt32(this.ViewState["FileID"]);
             }
             set
@@ -495,6 +498,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 effectivePortalId = PortalController.GetEffectivePortalId(this.PortalId);
             }
+
             this._cboFiles.DataSource = Globals.GetFileList(effectivePortalId, this.FileFilter, !this.Required, this._cboFolders.SelectedItem.Value);
             this._cboFiles.DataBind();
         }
@@ -582,6 +586,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 button.Text = Utilities.GetLocalizedString(command);
             }
+
             AJAX.RegisterPostBackControl(button);
             this._pnlButtons.Visible = true;
         }
@@ -695,6 +700,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._cboFiles.Items.FindByText(fileName).Selected = true;
                 }
+
                 if (this._cboFiles.SelectedItem == null || string.IsNullOrEmpty(this._cboFiles.SelectedItem.Value))
                 {
                     this.FileID = -1;
@@ -712,6 +718,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._pnlFolder.Visible = false;
                 }
+
                 // Configure Mode
                 switch (this.Mode)
                 {
@@ -725,6 +732,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             this.ShowButton(this._cmdUpload, "Upload");
                         }
+
                         break;
 
                     case FileControlMode.UpLoadFile:
@@ -837,6 +845,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.SetFilePath(fileName);
                 }
             }
+
             this.Mode = FileControlMode.Normal;
         }
 

@@ -286,6 +286,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -308,6 +309,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     this._moduleContext = new ModuleInstanceContext(this);
                 }
+
                 return this._moduleContext;
             }
         }
@@ -325,6 +327,7 @@ namespace DotNetNuke.Entities.Modules
                 this._tracelLogger.Debug($"PortalModuleBase.OnInit End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
             }
         }
+
         protected override void OnLoad(EventArgs e)
         {
             if (this._tracelLogger.IsDebugEnabled)

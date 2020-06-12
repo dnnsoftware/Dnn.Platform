@@ -84,8 +84,10 @@ namespace DotNetNuke.Services.Journal
                         role.Settings.Add(settingName, dr["JournalTypeCount"].ToString());
                     }
                 }
+
                 dr.Close();
             }
+
             RoleController.Instance.UpdateRoleSettings(role, true);
         }
 
@@ -184,12 +186,14 @@ namespace DotNetNuke.Services.Journal
                    this.GetBooleanSetting(AllowPhotosSetting, true, module) &&
                    this.GetBooleanSetting(EditorEnabledSetting, true, module);
         }
+
         private bool GetBooleanSetting(string settingName, bool defaultValue, ModuleInfo module)
         {
             if (module.ModuleSettings.Contains(settingName))
             {
                 return Convert.ToBoolean(module.ModuleSettings[settingName].ToString());
             }
+
             return defaultValue;
         }
 
@@ -296,10 +300,12 @@ namespace DotNetNuke.Services.Journal
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
             }
+
             if (!string.IsNullOrEmpty(journalItem.Summary))
             {
                 journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
+
             if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
@@ -322,25 +328,30 @@ namespace DotNetNuke.Services.Journal
                 journalItem.JournalXML = xDoc;
                 xml = journalItem.JournalXML.OuterXml;
             }
+
             if (journalItem.ItemData != null)
             {
                 if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
                 {
                     journalItem.ItemData.Title = portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
                 }
+
                 if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
                     journalItem.ItemData.Description = portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
+
                 if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
                     journalItem.ItemData.Url = portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
                 }
+
                 if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
                 {
                     journalItem.ItemData.ImageUrl = portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
                 }
             }
+
             string journalData = journalItem.ItemData.ToJson();
             if (journalData == "null")
             {
@@ -383,6 +394,7 @@ namespace DotNetNuke.Services.Journal
                 this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
+
             if (journalItem.SocialGroupId > 0)
             {
                 try
@@ -402,25 +414,30 @@ namespace DotNetNuke.Services.Journal
             {
                 throw new ArgumentException("journalItem.UserId must be for a real user");
             }
+
             UserInfo currentUser = UserController.GetUserById(journalItem.PortalId, journalItem.UserId);
             if (currentUser == null)
             {
                 throw new Exception("Unable to locate the current user");
             }
+
             string xml = null;
             var portalSecurity = PortalSecurity.Instance;
             if (!string.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
             }
+
             if (!string.IsNullOrEmpty(journalItem.Summary))
             {
                 journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
+
             if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
+
             if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 var xDoc = new XmlDocument { XmlResolver = null };
@@ -438,26 +455,31 @@ namespace DotNetNuke.Services.Journal
                 journalItem.JournalXML = xDoc;
                 xml = journalItem.JournalXML.OuterXml;
             }
+
             if (journalItem.ItemData != null)
             {
                 if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
                 {
                     journalItem.ItemData.Title = portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
                 }
+
                 if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
                     journalItem.ItemData.Description =
                         portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
+
                 if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
                     journalItem.ItemData.Url = portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
                 }
+
                 if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
                 {
                     journalItem.ItemData.ImageUrl = portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
                 }
             }
+
             string journalData = journalItem.ItemData.ToJson();
             if (journalData == "null")
             {
@@ -500,6 +522,7 @@ namespace DotNetNuke.Services.Journal
                 this._dataService.Journal_UpdateContentItemId(journalItem.JournalId, ci.ContentItemId);
                 journalItem.ContentItemId = ci.ContentItemId;
             }
+
             if (journalItem.SocialGroupId > 0)
             {
                 try
@@ -549,6 +572,7 @@ namespace DotNetNuke.Services.Journal
             {
                 return null;
             }
+
             return CBO.FillObject<JournalItem>(this._dataService.Journal_GetByKey(portalId, objectKey, includeAllItems, isDeleted));
         }
 
@@ -563,6 +587,7 @@ namespace DotNetNuke.Services.Journal
                     return FileManager.Instance.AddFile(userFolder, fileName, stream, true);
                 }
             }
+
             // todo: deal with the case where the exact file name already exists.
             return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);
         }
@@ -686,6 +711,7 @@ namespace DotNetNuke.Services.Journal
                 comment.Comment =
                     portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
             }
+
             // TODO: enable once the profanity filter is working properly.
             // objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
             string xml = null;

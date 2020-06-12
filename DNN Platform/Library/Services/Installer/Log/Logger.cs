@@ -50,6 +50,7 @@ namespace DotNetNuke.Services.Installer.Log
                 {
                     this._errorClass = "NormalRed";
                 }
+
                 return this._errorClass;
             }
             set
@@ -80,6 +81,7 @@ namespace DotNetNuke.Services.Installer.Log
                 {
                     this._highlightClass = "NormalBold";
                 }
+
                 return this._highlightClass;
             }
             set
@@ -116,6 +118,7 @@ namespace DotNetNuke.Services.Installer.Log
                 {
                     this._normalClass = "Normal";
                 }
+
                 return this._normalClass;
             }
             set
@@ -229,6 +232,7 @@ namespace DotNetNuke.Services.Installer.Log
                         tdDescription.Attributes.Add("class", this.NormalClass);
                         break;
                 }
+
                 arrayTable.Rows.Add(tr);
                 if (entry.Type == LogType.EndJob)
                 {
@@ -237,6 +241,7 @@ namespace DotNetNuke.Services.Installer.Log
                     arrayTable.Rows.Add(spaceTR);
                 }
             }
+
             return arrayTable;
         }
 

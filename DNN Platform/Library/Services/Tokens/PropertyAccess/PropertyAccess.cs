@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 return string.Empty;
             }
+
             return GetObjectProperty(this.obj, propertyName, format, formatProvider, ref PropertyNotFound);
         }
 
@@ -120,6 +121,7 @@ namespace DotNetNuke.Services.Tokens
                             {
                                 strFormat = "g";
                             }
+
                             return ((IFormattable)propValue).ToString(strFormat, formatProvider);
                     }
                 }
@@ -128,6 +130,7 @@ namespace DotNetNuke.Services.Tokens
                     return string.Empty;
                 }
             }
+
             PropertyNotFound = true;
             return string.Empty;
         }

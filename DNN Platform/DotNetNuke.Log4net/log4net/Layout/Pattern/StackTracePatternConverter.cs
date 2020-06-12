@@ -122,6 +122,7 @@ namespace log4net.Layout.Pattern
                     // TODO: make this user settable?
                     writer.Write(" > ");
                 }
+
                 stackFrameIndex--;
             }
         }

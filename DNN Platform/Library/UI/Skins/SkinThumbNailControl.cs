@@ -166,6 +166,7 @@ namespace DotNetNuke.UI.Skins
             {
                 strImage += "<img src=\"" + Globals.ApplicationPath.Replace("\\", "/") + "/images/thumbnail.jpg\" border=\"1\">";
             }
+
             this.OptSkin.Items.Add(new ListItem(FormatSkinName(strFolder, Path.GetFileNameWithoutExtension(strFile)) + "<br />" + strImage, root + "/" + strFolder + "/" + Path.GetFileName(strFile)));
         }
 
@@ -220,6 +221,7 @@ namespace DotNetNuke.UI.Skins
                     blnCreate = false;
                 }
             }
+
             if (blnCreate)
             {
                 const int intSize = 140; // size of the thumbnail
@@ -272,6 +274,7 @@ namespace DotNetNuke.UI.Skins
                     Logger.Error(ex);
                 }
             }
+
             strThumbnail = Globals.ApplicationPath + "\\" + strThumbnail.Substring(strThumbnail.IndexOf("portals\\", StringComparison.InvariantCultureIgnoreCase));
             return strThumbnail;
         }
@@ -387,6 +390,7 @@ namespace DotNetNuke.UI.Skins
             {
                 this.AddDefaultSkin();
             }
+
             if (Directory.Exists(strFolder))
             {
                 var arrFiles = Directory.GetFiles(strFolder, "*.ascx");

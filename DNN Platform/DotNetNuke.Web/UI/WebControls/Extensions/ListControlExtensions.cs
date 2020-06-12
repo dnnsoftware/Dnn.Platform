@@ -68,6 +68,7 @@ namespace DotNetNuke.Web.UI.WebControls.Extensions
                 }
             }
         }
+
         /// <summary>
         /// Use this method instead of ListItemCollection.FindByText to find the specific item with case-insensitive.
         /// </summary>

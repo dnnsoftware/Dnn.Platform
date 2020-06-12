@@ -35,6 +35,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 queryString = context.Request.QueryString;
             }
+
             result.RewritePath = RedirectTokens.RemoveAnyRedirectTokens(result.RewritePath, queryString);
             // redo the rewrite to fix up the problem.  The user has ticked 'permanent redirect' but hasn't supplied a forwarding Url
             if (context != null)
@@ -43,6 +44,7 @@ namespace DotNetNuke.Entities.Urls
                 // RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
                 RewriterUtils.RewriteUrl(context, result.RewritePath);
             }
+
             result.DebugMessages.Add(message);
         }
 
@@ -76,12 +78,14 @@ namespace DotNetNuke.Entities.Urls
             {
                 result.DebugMessages.AddRange(messages);
             }
+
             if (redirected)
             {
                 result.FinalUrl = location;
                 result.Action = ActionType.Redirect301;
                 result.Reason = RedirectReason.Custom_Redirect;
             }
+
             return redirected;
         }
 
@@ -115,6 +119,7 @@ namespace DotNetNuke.Entities.Urls
                             parmRedirects = redirectActions[tabId];
                         }
                     }
+
                     // check for 'all tabs' redirections
                     if (redirectActions.ContainsKey(-1)) // -1 means 'all tabs' - rewriting across all tabs
                     {
@@ -123,11 +128,13 @@ namespace DotNetNuke.Entities.Urls
                         {
                             parmRedirects = new List<ParameterRedirectAction>();
                         }
+
                         // add in the all redirects
                         List<ParameterRedirectAction> allRedirects = redirectActions[-1];
                         parmRedirects.AddRange(allRedirects); // add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
+
                     if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
                         // for the default.aspx page
@@ -135,10 +142,12 @@ namespace DotNetNuke.Entities.Urls
                         {
                             parmRedirects = new List<ParameterRedirectAction>();
                         }
+
                         List<ParameterRedirectAction> defaultRedirects = redirectActions[-2];
                         parmRedirects.AddRange(defaultRedirects); // add the default.aspx redirects to the list
                         tabId = result.TabId;
                     }
+
                     // 726 : allow for site-root redirects, ie redirects where no page match
                     if (redirectActions.ContainsKey(-3))
                     {
@@ -147,9 +156,11 @@ namespace DotNetNuke.Entities.Urls
                         {
                             parmRedirects = new List<ParameterRedirectAction>();
                         }
+
                         List<ParameterRedirectAction> siteRootRedirects = redirectActions[-3];
                         parmRedirects.AddRange(siteRootRedirects); // add the site root redirects to the collection
                     }
+
                     // OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
                     if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
@@ -173,6 +184,7 @@ namespace DotNetNuke.Entities.Urls
                                 regexMatch = redirectRegex.Match(compareWith);
                                 success = regexMatch.Success;
                             }
+
                             if (!success)
                             {
                                 result.DebugMessages.Add(parmRedirect.Name + " redirect not matched (" + rewrittenUrl +
@@ -197,6 +209,7 @@ namespace DotNetNuke.Entities.Urls
                                     result.DebugMessages.Add(parmRedirect.Name + " redirect matched with (" +
                                                              compareWith + "), replaced with " + parms);
                                 }
+
                                 string finalUrl = string.Empty;
                                 // now we need to generate the friendly Url
 
@@ -217,6 +230,7 @@ namespace DotNetNuke.Entities.Urls
                                             // remove the tabid/xx from the path
                                             break; // that's it, we're finished
                                         }
+
                                         if (parmPart.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                                         {
                                             tabIdNext = true;
@@ -230,6 +244,7 @@ namespace DotNetNuke.Entities.Urls
                                     PortalInfo portal = CacheController.GetPortal(result.PortalId, true);
                                     tabId = portal.HomeTabId;
                                 }
+
                                 if (parmRedirect.ChangeToSiteRoot)
                                 {
                                     // when change to siteroot requested, new path goes directly off the portal alias
@@ -257,8 +272,10 @@ namespace DotNetNuke.Entities.Urls
                                             {
                                                 friendlyUrlNoParms += "/";
                                             }
+
                                             finalUrl = friendlyUrlNoParms;
                                         }
+
                                         if (tab == null)
                                         {
                                             result.DebugMessages.Add(parmRedirect.Name +
@@ -277,10 +294,12 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
                                 if (parms.StartsWith("//"))
                                 {
                                     parms = parms.Substring(2);
                                 }
+
                                 if (parms.StartsWith("/"))
                                 {
                                     parms = parms.Substring(1);
@@ -292,6 +311,7 @@ namespace DotNetNuke.Entities.Urls
                                     {
                                         parms = parms.TrimEnd('/');
                                     }
+
                                     if (parms.Length > 0)
                                     {
                                         // we are adding more parms onto the end, so remove the page extension
@@ -319,6 +339,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
                                 // put the replaced parms back on the end
                                 finalUrl += parms;
 
@@ -337,6 +358,7 @@ namespace DotNetNuke.Entities.Urls
                                         result.Action = ActionType.Output404;
                                         break;
                                 }
+
                                 redirect = true;
                                 break;
                             }
@@ -356,6 +378,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return redirect;
         }
 
@@ -416,6 +439,7 @@ namespace DotNetNuke.Entities.Urls
                     permRedirect = false;
                 }
             }
+
             return bestFriendlyUrl;
         }
     }

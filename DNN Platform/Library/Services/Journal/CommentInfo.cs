@@ -49,6 +49,7 @@ namespace DotNetNuke.Services.Journal
                 this.CommentXML = new XmlDocument { XmlResolver = null };
                 this.CommentXML.LoadXml(dr["CommentXML"].ToString());
             }
+
             this.UserId = Null.SetNullInteger(dr["UserId"]);
             this.DisplayName = Null.SetNullString(dr["DisplayName"]);
         }

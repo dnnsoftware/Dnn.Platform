@@ -21,6 +21,7 @@ namespace DotNetNuke.Modules.Groups.Components
         {
             this.PropertySource["groupitem"] = groupInfo;
         }
+
         public string ReplaceGroupItemTokens(string source)
         {
             return this.ReplaceTokens(source);

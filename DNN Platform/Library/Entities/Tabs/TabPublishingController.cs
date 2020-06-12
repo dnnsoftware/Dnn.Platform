@@ -95,6 +95,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 tab.TabPermissions.Remove(tab.TabPermissions.Cast<TabPermissionInfo>().SingleOrDefault(p => p.TabPermissionID == tabPermissionId));
             }
+
             TabPermissionController.SaveTabPermissions(tab);
             this.ClearTabCache(tab);
         }

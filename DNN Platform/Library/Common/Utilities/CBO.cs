@@ -46,6 +46,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 InitializeObject(objObject);
             }
+
             return objObject;
         }
 
@@ -64,6 +65,7 @@ namespace DotNetNuke.Common.Utilities
                     canRead = true;
                 }
             }
+
             try
             {
                 if (canRead)
@@ -74,6 +76,7 @@ namespace DotNetNuke.Common.Utilities
                     // hydrate the custom business object
                     FillObjectFromReader(objObject, dr);
                 }
+
                 isSuccess = true;
             }
             finally
@@ -83,8 +86,10 @@ namespace DotNetNuke.Common.Utilities
                 {
                     closeReader = true;
                 }
+
                 CloseDataReader(dr, closeReader);
             }
+
             return objObject;
         }
 
@@ -126,12 +131,14 @@ namespace DotNetNuke.Common.Utilities
                             keyValue = (TKey)Convert.ChangeType(Null.SetNull(dr[keyField], string.Empty), typeof(TKey));
                         }
                     }
+
                     // add to dictionary
                     if (objObject != null)
                     {
                         objDictionary[keyValue] = objObject;
                     }
                 }
+
                 isSuccess = true;
             }
             finally
@@ -141,6 +148,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     closeReader = true;
                 }
+
                 CloseDataReader(dr, closeReader);
             }
 
@@ -162,6 +170,7 @@ namespace DotNetNuke.Common.Utilities
                     // add to collection
                     objList.Add(objObject);
                 }
+
                 isSuccess = true;
             }
             finally
@@ -171,8 +180,10 @@ namespace DotNetNuke.Common.Utilities
                 {
                     closeReader = true;
                 }
+
                 CloseDataReader(dr, closeReader);
             }
+
             return objList;
         }
 
@@ -190,6 +201,7 @@ namespace DotNetNuke.Common.Utilities
                     // add to collection
                     objList.Add(objObject);
                 }
+
                 isSuccess = true;
             }
             finally
@@ -199,8 +211,10 @@ namespace DotNetNuke.Common.Utilities
                 {
                     closeReader = true;
                 }
+
                 CloseDataReader(dr, closeReader);
             }
+
             return objList;
         }
 
@@ -252,6 +266,7 @@ namespace DotNetNuke.Common.Utilities
                 // Call the base classes fill method to populate base class properties
                 ((BaseEntityInfo)hydratedObject).FillBaseProperties(dr);
             }
+
             // fill object with values from datareader
             for (intIndex = 0; intIndex <= dr.FieldCount - 1; intIndex++)
             {
@@ -336,6 +351,7 @@ namespace DotNetNuke.Common.Utilities
 
                  return Convert.ChangeType(obj, u);
              }
+
              return Convert.ChangeType(obj, type);
          }
 
@@ -373,6 +389,7 @@ namespace DotNetNuke.Common.Utilities
                     objMap.Properties.Add(objProperty.Name.ToUpperInvariant(), objProperty);
                     objMap.ColumnNames.Add(objProperty.Name.ToUpperInvariant(), GetColumnName(objProperty));
                 }
+
                 // Persist to Cache
                 DataCache.SetCache(cacheKey, objMap);
             }
@@ -400,11 +417,13 @@ namespace DotNetNuke.Common.Utilities
                     tableName.Replace("Info", string.Empty);
                 }
             }
+
             // Check if there is an object qualifier
             if (!string.IsNullOrEmpty(Config.GetSetting("ObjectQualifier")))
             {
                 tableName = Config.GetSetting("ObjectQualifier") + tableName;
             }
+
             return tableName;
         }
 
@@ -452,6 +471,7 @@ namespace DotNetNuke.Common.Utilities
                         {
                             objProperty.SetValue(objNewObject, objPropertyClone.Clone(), null);
                         }
+
                         // Check if Property is IEnumerable
                         var enumerable = objProperty.GetValue(objObject, null) as IEnumerable;
                         if (enumerable != null)
@@ -464,6 +484,7 @@ namespace DotNetNuke.Common.Utilities
                                     list.Add(CloneObject(obj));
                                 }
                             }
+
                             var dic = objProperty.GetValue(objNewObject, null) as IDictionary;
                             if (dic != null)
                             {
@@ -475,6 +496,7 @@ namespace DotNetNuke.Common.Utilities
                         }
                     }
                 }
+
                 return objNewObject;
             }
             catch (Exception exc)
@@ -546,6 +568,7 @@ namespace DotNetNuke.Common.Utilities
                 // Use XmlReader
                 xmlSerializableObject.ReadXml(reader);
             }
+
             return objObject;
         }
 
@@ -657,6 +680,7 @@ namespace DotNetNuke.Common.Utilities
                 // Ensure DataReader is closed
                 CloseDataReader(dr, true);
             }
+
             return objFillCollection;
         }
 
@@ -691,6 +715,7 @@ namespace DotNetNuke.Common.Utilities
                 // Ensure DataReader is closed
                 CloseDataReader(dr, true);
             }
+
             return (List<T>)objFillCollection;
         }
 
@@ -914,6 +939,7 @@ namespace DotNetNuke.Common.Utilities
                     objPropertyInfo.SetValue(objObject, Null.SetNull(objPropertyInfo), null);
                 }
             }
+
             return objObject;
         }
 

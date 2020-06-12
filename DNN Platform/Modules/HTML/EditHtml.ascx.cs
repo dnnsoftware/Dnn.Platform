@@ -78,6 +78,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     content = this.ViewState["TempContent"].ToString();
                 }
+
                 return content;
             }
             set
@@ -141,6 +142,7 @@ namespace DotNetNuke.Modules.Html
             {
                 return;
             }
+
             var htmlLogging = this._htmlTextLogController.GetHtmlTextLog(htmlContent.ItemID);
             this.dgHistory.DataSource = htmlLogging;
             this.dgHistory.DataBind();
@@ -160,6 +162,7 @@ namespace DotNetNuke.Modules.Html
             {
                 item.StateName = this.GetLocalizedString(item.StateName);
             }
+
             this.dgVersions.DataSource = versions;
             this.dgVersions.DataBind();
 
@@ -425,6 +428,7 @@ namespace DotNetNuke.Modules.Html
         {
             this.txtContent.ChangeMode(this.ddlRender.SelectedValue);
         }
+
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
@@ -508,6 +512,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     content = HtmlUtils.AbsoluteToRelativeUrls(content, aliases);
                 }
+
                 htmlContent.Content = content;
 
                 var draftStateID = this._workflowStateController.GetFirstWorkflowStateID(this.WorkflowID);
@@ -559,6 +564,7 @@ namespace DotNetNuke.Modules.Html
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
+
         protected void OnEditClick(object sender, EventArgs e)
         {
             try
@@ -575,6 +581,7 @@ namespace DotNetNuke.Modules.Html
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
         protected void OnPreviewClick(object sender, EventArgs e)
         {
             try
@@ -591,6 +598,7 @@ namespace DotNetNuke.Modules.Html
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
+
         private void OnHistoryClick(object sender, EventArgs e)
         {
             try

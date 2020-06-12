@@ -261,6 +261,7 @@ namespace log4net.Util.TypeConverters
             {
                 LogLog.Error(declaringType, "Cannot CreateConverterInstance of type [" + converterType.FullName + "], type does not implement IConvertFrom or IConvertTo");
             }
+
             return null;
         }
 

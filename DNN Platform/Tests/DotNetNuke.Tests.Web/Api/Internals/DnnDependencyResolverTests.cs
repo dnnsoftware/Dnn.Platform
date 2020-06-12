@@ -113,6 +113,7 @@ namespace DotNetNuke.Tests.Web.Api.Internals
         private interface ITestService
         {
         }
+
         private class TestService : ITestService
         {
         }

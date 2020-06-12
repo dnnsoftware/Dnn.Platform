@@ -106,6 +106,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 {
                     this._childTerms = this.GetChildTerms(this._termId, this._vocabularyId);
                 }
+
                 return this._childTerms;
             }
         }
@@ -226,6 +227,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 {
                     this._vocabulary = this.GetVocabulary(this._vocabularyId);
                 }
+
                 return this._vocabulary;
             }
         }
@@ -266,10 +268,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             {
                 this._left = Convert.ToInt32(dr["TermLeft"]);
             }
+
             if (dr["TermRight"] != DBNull.Value)
             {
                 this._right = Convert.ToInt32(dr["TermRight"]);
             }
+
             if (dr["ParentTermID"] != DBNull.Value)
             {
                 this.ParentTermId = Convert.ToInt32(dr["ParentTermID"]);
@@ -306,6 +310,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                     path = parentTerm.GetTermPath() + path;
                 }
             }
+
             return path;
         }
     }

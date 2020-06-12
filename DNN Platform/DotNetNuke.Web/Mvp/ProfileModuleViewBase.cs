@@ -37,6 +37,7 @@ namespace DotNetNuke.Web.Mvp
                 {
                     UserId = int.Parse(this.Request.Params["UserId"]);
                 }
+
                 return UserId;
             }
         }

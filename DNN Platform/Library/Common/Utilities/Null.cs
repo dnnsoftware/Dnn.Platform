@@ -144,6 +144,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 returnValue = objValue;
             }
+
             return returnValue;
         }
 
@@ -198,8 +199,10 @@ namespace DotNetNuke.Common.Utilities
                     {
                         returnValue = null;
                     }
+
                     break;
             }
+
             return returnValue;
         }
 
@@ -234,6 +237,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return new Guid(objValue.ToString());
             }
+
             return Guid.Empty;
         }
 
@@ -323,6 +327,7 @@ namespace DotNetNuke.Common.Utilities
                     returnValue = objDBNull;
                 }
             }
+
             return returnValue;
         }
 
@@ -382,6 +387,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 isNull = true;
             }
+
             return isNull;
         }
     }

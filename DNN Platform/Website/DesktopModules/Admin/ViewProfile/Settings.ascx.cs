@@ -27,6 +27,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         this.txtTemplate.Text = (string)this.TabModuleSettings["ProfileTemplate"];
                     }
+
                     if (this.Settings.ContainsKey("IncludeButton"))
                     {
                         this.IncludeButton.Checked = Convert.ToBoolean(this.Settings["IncludeButton"]);

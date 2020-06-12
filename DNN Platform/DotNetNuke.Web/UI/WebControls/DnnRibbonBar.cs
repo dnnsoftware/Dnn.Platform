@@ -85,6 +85,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     writer.RenderEndTag();
                 }
             }
+
             // MyBase.RenderChildren(writer)
             writer.RenderEndTag();
             // tr

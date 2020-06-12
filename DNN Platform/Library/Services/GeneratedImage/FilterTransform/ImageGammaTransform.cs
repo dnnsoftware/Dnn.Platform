@@ -58,6 +58,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                         gammaArray[c.G], gammaArray[c.B]));
                 }
             }
+
             return (Image)bmap.Clone();
         }
     }

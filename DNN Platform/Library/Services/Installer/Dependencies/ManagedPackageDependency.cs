@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
                 {
                     _IsValid = false;
                 }
+
                 return _IsValid;
             }
         }

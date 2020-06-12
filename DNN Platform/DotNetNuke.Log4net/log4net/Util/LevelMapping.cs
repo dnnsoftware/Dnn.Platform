@@ -67,6 +67,7 @@ namespace log4net.Util
             {
                 this.m_entriesMap.Remove(entry.Level);
             }
+
             this.m_entriesMap.Add(entry.Level, entry);
         }
 
@@ -97,6 +98,7 @@ namespace log4net.Util
                     }
                 }
             }
+
             return null;
         }
 

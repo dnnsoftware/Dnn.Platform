@@ -111,6 +111,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -147,6 +148,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     int.TryParse(this.Request.QueryString["mid"], out myMid);
                 }
+
                 return myMid;
             }
             set
@@ -412,6 +414,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     strCurrentType = this.optType.SelectedItem.Value;
                 }
+
                 switch (strCurrentType)
                 {
                     case "I":
@@ -419,6 +422,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             r = this.cboImages.SelectedItem.Value;
                         }
+
                         break;
                     case "U":
                         if (this.cboUrls.Visible)
@@ -441,6 +445,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                 r = Globals.AddHTTP(mCustomUrl);
                             }
                         }
+
                         break;
                     case "T":
                         string strTab = string.Empty;
@@ -453,6 +458,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                 r = strTab;
                             }
                         }
+
                         break;
                     case "F":
                         if (this.ctlFile.FileID > Null.NullInteger)
@@ -463,6 +469,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             r = string.Empty;
                         }
+
                         break;
                     case "M":
                         if (!string.IsNullOrEmpty(this.txtUser.Text))
@@ -479,8 +486,10 @@ namespace DotNetNuke.Web.UI.WebControls
                                 this.txtUser.Text = string.Empty;
                             }
                         }
+
                         break;
                 }
+
                 return r;
             }
             set
@@ -556,6 +565,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     _Urltype = "I";
                 }
+
                 this.ViewState["UrlType"] = _Urltype;
                 if (_Urltype == "F")
                 {
@@ -583,9 +593,11 @@ namespace DotNetNuke.Web.UI.WebControls
                                 fileId = file.FileId;
                             }
                         }
+
                         TrackingUrl = "FileID=" + fileId.ToString();
                     }
                 }
+
                 if (_Urltype == "M")
                 {
                     if (_Url.StartsWith("userid=", StringComparison.InvariantCultureIgnoreCase))
@@ -597,6 +609,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
                 }
+
                 UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this._objPortal.PortalID, TrackingUrl, this.ModuleID);
                 if (objUrlTracking != null)
                 {
@@ -609,6 +622,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.chkTrack.Checked = false;
                     this.chkLog.Checked = false;
                 }
+
                 this.ViewState["Url"] = _Url;
             }
             else
@@ -633,6 +647,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.optType.Items[0].Selected = true;
                     }
                 }
+
                 this.chkNewWindow.Checked = false; // Need check
                 this.chkTrack.Checked = false; // Need check
                 this.chkLog.Checked = false; // Need check
@@ -650,6 +665,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 strCurrent = this.optType.SelectedItem.Value; // Save current selected value
             }
+
             this.optType.Items.Clear();
             if (this.ShowNone)
             {
@@ -665,6 +681,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items.Remove(this.optType.Items.FindByValue("N"));
                 }
             }
+
             if (this.ShowUrls)
             {
                 if (this.optType.Items.FindByValue("U") == null)
@@ -679,6 +696,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items.Remove(this.optType.Items.FindByValue("U"));
                 }
             }
+
             if (this.ShowTabs)
             {
                 if (this.optType.Items.FindByValue("T") == null)
@@ -693,6 +711,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items.Remove(this.optType.Items.FindByValue("T"));
                 }
             }
+
             if (this.ShowFiles)
             {
                 if (this.optType.Items.FindByValue("F") == null)
@@ -707,6 +726,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items.Remove(this.optType.Items.FindByValue("F"));
                 }
             }
+
             if (this.ShowImages)
             {
                 if (this.optType.Items.FindByValue("I") == null)
@@ -721,6 +741,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items.Remove(this.optType.Items.FindByValue("I"));
                 }
             }
+
             if (this.ShowUsers)
             {
                 if (this.optType.Items.FindByValue("M") == null)
@@ -735,6 +756,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items.Remove(this.optType.Items.FindByValue("M"));
                 }
             }
+
             if (this.optType.Items.Count > 0)
             {
                 if (!string.IsNullOrEmpty(strCurrent))
@@ -754,6 +776,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.optType.Items[0].Selected = true;
                     this._doRenderTypeControls = true; // Type changed, re-draw
                 }
+
                 this.TypeRow.Visible = this.optType.Items.Count > 1;
             }
             else
@@ -829,6 +852,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             selecteItem.Selected = true;
                         }
+
                         break;
 
                     case "U": // Url
@@ -841,10 +865,12 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             this.txtUrl.Text = _Url;
                         }
+
                         if (string.IsNullOrEmpty(this.txtUrl.Text))
                         {
                             this.txtUrl.Text = "http://";
                         }
+
                         this.txtUrl.Visible = true;
 
                         this.cmdSelect.Visible = true;
@@ -873,6 +899,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
                             this.cboTabs.SelectedPage = page;
                         }
+
                         break;
                     case "F": // file
                         this.URLRow.Visible = false;
@@ -892,10 +919,12 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             LastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
                         }
+
                         if (this.ViewState["LastFileName"] != null)
                         {
                             LastFileName = Convert.ToString(this.ViewState["LastFileName"]);
                         }
+
                         if (_Url != string.Empty)
                         {
                             // Let's use the new URL
@@ -923,6 +952,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             this.txtUser.Text = _Url;
                         }
+
                         break;
                 }
             }
@@ -970,6 +1000,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._objPortal = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 }
+
                 if (this.ViewState["IsUrlControlLoaded"] == null)
                 {
                     // If Not Page.IsPostBack Then
@@ -999,16 +1030,19 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this.DoRenderTypes();
                 }
+
                 if (this._doChangeURL)
                 {
                     this.DoChangeURL();
                 }
+
                 this.DoCorrectRadioButtonList();
 
                 if (this._doRenderTypeControls)
                 {
                     this.DoRenderTypeControls();
                 }
+
                 this.ViewState["Url"] = null;
                 this.ViewState["IsUrlControlLoaded"] = "Loaded";
 
@@ -1041,6 +1075,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 objUrls.DeleteUrl(this._objPortal.PortalID, this.cboUrls.SelectedItem.Value);
                 this.LoadUrls(); // we must reload the url list
             }
+
             this._doRenderTypeControls = false; // Must not render on this postback
             this._doRenderTypes = false;
             this._doChangeURL = false;
@@ -1059,6 +1094,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.cboUrls.ClearSelection();
                 this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
             }
+
             this._doRenderTypeControls = false; // Must not render on this postback
             this._doRenderTypes = false;
             this._doChangeURL = false;

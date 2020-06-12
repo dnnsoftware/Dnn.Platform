@@ -123,6 +123,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 fileIcon = IconController.IconURL("File", "32x32");
             }
+
             return fileIcon;
         }
 
@@ -150,6 +151,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 size = size / 1024;
             }
+
             return size.ToString(CultureInfo.InvariantCulture) + (biggerThanAMegabyte ? "Mb" : "k");
         }
 

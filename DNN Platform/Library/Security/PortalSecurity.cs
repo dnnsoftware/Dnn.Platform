@@ -194,6 +194,7 @@ namespace DotNetNuke.Security
             {
                 return result;
             }
+
             return Null.NullInteger;
         }
 
@@ -232,14 +233,17 @@ namespace DotNetNuke.Security
             {
                 return RoleType.Friend;
             }
+
             if (roleName.StartsWith(RoleFollowerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Follower;
             }
+
             if (roleName.StartsWith(RoleOwnerPrefix, StringComparison.InvariantCultureIgnoreCase))
             {
                 return RoleType.Owner;
             }
+
             return RoleType.Security;
         }
 
@@ -250,6 +254,7 @@ namespace DotNetNuke.Security
             {
                 hexString.Append(string.Format("{0:X2}", b));
             }
+
             return hexString.ToString();
         }
 
@@ -440,6 +445,7 @@ namespace DotNetNuke.Security
             {
                 return string.Empty;
             }
+
             var tempInput = userInput;
             if ((filterType & FilterFlag.NoAngleBrackets) == FilterFlag.NoAngleBrackets)
             {
@@ -449,26 +455,32 @@ namespace DotNetNuke.Security
                     tempInput = FormatAngleBrackets(tempInput);
                 }
             }
+
             if ((filterType & FilterFlag.NoSQL) == FilterFlag.NoSQL)
             {
                 tempInput = FormatRemoveSQL(tempInput);
             }
+
             if ((filterType & FilterFlag.NoMarkup) == FilterFlag.NoMarkup && IncludesMarkup(tempInput))
             {
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
+
             if ((filterType & FilterFlag.NoScripting) == FilterFlag.NoScripting)
             {
                 tempInput = this.FormatDisableScripting(tempInput);
             }
+
             if ((filterType & FilterFlag.MultiLine) == FilterFlag.MultiLine)
             {
                 tempInput = FormatMultiLine(tempInput);
             }
+
             if ((filterType & FilterFlag.NoProfanity) == FilterFlag.NoProfanity)
             {
                 tempInput = this.Replace(tempInput, ConfigType.ListController, "ProfanityFilter", FilterScope.SystemAndPortalList);
             }
+
             return tempInput;
         }
 
@@ -523,6 +535,7 @@ namespace DotNetNuke.Security
                             inputString = listEntryPortalInfos.Aggregate(inputString, (current, removeItem) => Regex.Replace(current, @"\b" + Regex.Escape(removeItem.Text) + @"\b", removeItem.Value, options));
                             break;
                     }
+
                     break;
                 case ConfigType.ExternalFile:
                     throw new NotImplementedException();
@@ -840,6 +853,7 @@ namespace DotNetNuke.Security
                 {
                     url = url + "&ssl=1";
                 }
+
                 // redirect to secure connection
                 HttpContext.Current.Response.Redirect(url, true);
             }
@@ -958,6 +972,7 @@ namespace DotNetNuke.Security
                     }
                 }
             }
+
             return isInRoles;
         }
 

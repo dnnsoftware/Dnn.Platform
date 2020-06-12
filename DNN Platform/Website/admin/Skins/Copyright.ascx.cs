@@ -25,6 +25,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.lblCopyright.CssClass = this.CssClass;
             }
+
             if (!string.IsNullOrEmpty(this.PortalSettings.FooterText))
             {
                 this.lblCopyright.Text = this.PortalSettings.FooterText.Replace("[year]", DateTime.Now.ToString("yyyy"));

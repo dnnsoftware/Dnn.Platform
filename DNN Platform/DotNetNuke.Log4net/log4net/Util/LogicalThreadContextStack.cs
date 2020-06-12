@@ -143,6 +143,7 @@ namespace log4net.Util
             {
                 result = ((StackFrame) stack.Pop()).Message;
             }
+
             LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_propertyKey, this.m_registerNew);
             ltcs.m_stack = stack;
             this.m_registerNew(this.m_propertyKey, ltcs);
@@ -195,6 +196,7 @@ namespace log4net.Util
             {
                 return ((StackFrame) stack.Peek()).FullMessage;
             }
+
             return null;
         }
 
@@ -312,6 +314,7 @@ namespace log4net.Util
                     {
                         this.m_fullMessage = string.Concat(this.m_parent.FullMessage, " ", this.m_message);
                     }
+
                     return this.m_fullMessage;
                 }
             }
@@ -372,6 +375,7 @@ namespace log4net.Util
                     {
                         stack.Pop();
                     }
+
                     LogicalThreadContextStack ltcs = new LogicalThreadContextStack(this.m_logicalThreadContextStack.m_propertyKey, this.m_logicalThreadContextStack.m_registerNew);
                     ltcs.m_stack = stack;
                     this.m_logicalThreadContextStack.m_registerNew(

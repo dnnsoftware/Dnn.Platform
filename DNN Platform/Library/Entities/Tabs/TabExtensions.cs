@@ -50,6 +50,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             return seqNum;
         }
 
@@ -77,6 +78,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             // look at the results
             if (lastCustomUrl != null)
             {
@@ -86,6 +88,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 result = lastSystemUrl;
             }
+
             return result;
         }
     }

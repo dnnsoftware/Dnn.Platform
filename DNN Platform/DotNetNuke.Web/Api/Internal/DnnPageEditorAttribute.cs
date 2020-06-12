@@ -36,6 +36,7 @@ namespace DotNetNuke.Web.Api.Internal
                     }
                 }
             }
+
             return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && isModuleAdmin;
         }
     }

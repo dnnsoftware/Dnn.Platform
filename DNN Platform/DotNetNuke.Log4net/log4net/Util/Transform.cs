@@ -154,6 +154,7 @@ namespace log4net.Util
             {
                 return 0;
             }
+
             if (substringLength == 0)
             {
                 return 0;
@@ -171,6 +172,7 @@ namespace log4net.Util
                 count++;
                 offset = index + substringLength;
             }
+
             return count;
         }
 

@@ -120,6 +120,7 @@ namespace DotNetNuke.Entities.Host
                         return true;
                     }
                 }
+
                 // check any allows - if one exists set flag but let processing continue to verify no deny overrides
                 if (ipFilterInfo.RuleType == (int)FilterType.Allow)
                 {
@@ -129,6 +130,7 @@ namespace DotNetNuke.Entities.Host
                     }
                 }
             }
+
             return ipAllowed;
         }
 
@@ -221,6 +223,7 @@ namespace DotNetNuke.Entities.Host
             {
                 return false;
             }
+
             return true;
         }
 

@@ -66,6 +66,7 @@ namespace Dnn.Modules.Console
                 {
                     this._consoleCtrl = new ConsoleController();
                 }
+
                 return this._consoleCtrl;
             }
         }
@@ -102,10 +103,12 @@ namespace Dnn.Modules.Console
                         this._defaultSize = Convert.ToString(personalizedValue);
                     }
                 }
+
                 if (this._defaultSize == string.Empty)
                 {
                     this._defaultSize = this.Settings.ContainsKey("DefaultSize") ? Convert.ToString(this.Settings["DefaultSize"]) : "IconFile";
                 }
+
                 return this._defaultSize;
             }
         }
@@ -122,10 +125,12 @@ namespace Dnn.Modules.Console
                         this._defaultView = Convert.ToString(personalizedValue);
                     }
                 }
+
                 if (this._defaultView == string.Empty)
                 {
                     this._defaultView = this.Settings.ContainsKey("DefaultView") ? Convert.ToString(this.Settings["DefaultView"]) : "Hide";
                 }
+
                 return this._defaultView;
             }
         }
@@ -139,6 +144,7 @@ namespace Dnn.Modules.Console
                 {
                     groupId = int.Parse(this.Request.Params["GroupId"]);
                 }
+
                 return groupId;
             }
         }
@@ -168,6 +174,7 @@ namespace Dnn.Modules.Console
                 {
                     userId = int.Parse(this.Request.Params["UserId"]);
                 }
+
                 return userId;
             }
         }
@@ -227,10 +234,12 @@ namespace Dnn.Modules.Console
             {
                 iconURL = (size == "IconFile") ? "~/images/icon_unknown_16px.gif" : "~/images/icon_unknown_32px.gif";
             }
+
             if (iconURL.Contains("~") == false)
             {
                 iconURL = Path.Combine(this.PortalSettings.HomeDirectory, iconURL);
             }
+
             return this.ResolveUrl(iconURL);
         }
 
@@ -257,6 +266,7 @@ namespace Dnn.Modules.Console
             {
                 returnValue = this.PortalSettings.ActiveTab.IsSuperTab;
             }
+
             return returnValue;
         }
 
@@ -283,6 +293,7 @@ namespace Dnn.Modules.Console
 
                     consoleModuleID = -1;
                 }
+
                 if (consoleModuleID == this.TabModuleId)
                 {
                     string consoleSize = string.Empty;
@@ -290,15 +301,18 @@ namespace Dnn.Modules.Console
                     {
                         consoleSize = this.Request.QueryString["CS"];
                     }
+
                     string consoleView = string.Empty;
                     if (this.Request.QueryString["CV"] != null)
                     {
                         consoleView = this.Request.QueryString["CV"];
                     }
+
                     if (consoleSize != string.Empty && ConsoleController.GetSizeValues().Contains(consoleSize))
                     {
                         this.SaveUserSetting("DefaultSize", consoleSize);
                     }
+
                     if (consoleView != string.Empty && ConsoleController.GetViewValues().Contains(consoleView))
                     {
                         this.SaveUserSetting("DefaultView", consoleView);
@@ -345,10 +359,12 @@ namespace Dnn.Modules.Console
                 {
                     this.IconSize.Items.Add(new ListItem(Localization.GetString(val + ".Text", this.LocalResourceFile), val));
                 }
+
                 foreach (string val in ConsoleController.GetViewValues())
                 {
                     this.View.Items.Add(new ListItem(Localization.GetString(val + ".Text", this.LocalResourceFile), val));
                 }
+
                 this.IconSize.SelectedValue = this.DefaultSize;
                 this.View.SelectedValue = this.DefaultView;
 
@@ -382,12 +398,14 @@ namespace Dnn.Modules.Console
                         {
                             continue;
                         }
+
                         if (tabIdList.Contains(tab.ParentId))
                         {
                             if (!tabIdList.Contains(tab.TabID))
                             {
                                 tabIdList.Add(tab.TabID);
                             }
+
                             this._tabs.Add(tab);
                         }
                     }
@@ -404,9 +422,11 @@ namespace Dnn.Modules.Console
                     {
                         minLevel = this._tabs.Min(t => t.Level);
                     }
+
                     this.DetailView.DataSource = (minLevel > -1) ? this._tabs.Where(t => t.Level == minLevel) : this._tabs;
                     this.DetailView.DataBind();
                 }
+
                 if (this.ConsoleWidth != string.Empty)
                 {
                     this.Console.Attributes.Add("style", "width:" + this.ConsoleWidth);
@@ -443,6 +463,7 @@ namespace Dnn.Modules.Console
                     returnValue = "<br style=\"clear:both;\" /><br />";
                 }
             }
+
             if (tab.DisableLink)
             {
                 const string headerHtml = "<br style=\"clear:both;\" /><br /><h1><span class=\"TitleHead\">{0}</span></h1><br style=\"clear:both\" />";
@@ -460,6 +481,7 @@ namespace Dnn.Modules.Console
                 {
                     sb.Append("<div class=\"console-none \">");
                 }
+
                 sb.Append("<a href=\"{0}\" aria-label=\"{3}\">");
 
                 if (this.DefaultSize != "IconNone" || (this.AllowSizeChange || this.AllowViewChange))
@@ -467,6 +489,7 @@ namespace Dnn.Modules.Console
                     sb.Append("<img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/>");
                     sb.Append("<img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/>");
                 }
+
                 sb.Append("</a>");
                 sb.Append("<h3>{3}</h3>");
                 sb.Append("<div>{4}</div>");
@@ -492,6 +515,7 @@ namespace Dnn.Modules.Console
                     tab.LocalizedTabName,
                     tab.Description);
             }
+
             return returnValue;
         }
 
@@ -502,6 +526,7 @@ namespace Dnn.Modules.Console
             {
                 tmid = this.TabModuleId.ToString(CultureInfo.InvariantCulture);
             }
+
             return string.Format(
                 "allowIconSizeChange: {0}, allowDetailChange: {1}, selectedSize: '{2}', showDetails: '{3}', tabModuleID: {4}, showTooltip: {5}",
                 this.AllowSizeChange.ToString(CultureInfo.InvariantCulture).ToLowerInvariant(),

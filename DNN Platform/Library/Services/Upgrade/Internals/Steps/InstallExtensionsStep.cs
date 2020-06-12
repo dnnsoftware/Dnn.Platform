@@ -50,8 +50,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     this.Errors.Add(message);
                     break;
                 }
+
                 this.Percentage = percentForEachStep * counter++;
             }
+
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
     }

@@ -281,6 +281,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         ms.Write(buffer, 0, read);
                     }
+
                     fileContent = ms.ToArray();
                 }
 

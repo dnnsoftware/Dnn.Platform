@@ -174,9 +174,11 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     CBO.CloseDataReader(dr, true);
                 }
+
                 var intCacheTimeout = 20 * Convert.ToInt32(Host.PerformanceSetting);
                 DataCache.SetCache(strCacheKey, objSettings, TimeSpan.FromMinutes(intCacheTimeout));
             }
+
             return objSettings;
         }
 

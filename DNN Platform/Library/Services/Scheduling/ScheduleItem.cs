@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     this._NextStart = MinNextTime;
                 }
+
                 return this._NextStart.Value > MinNextTime ? this._NextStart.Value : MinNextTime;
             }
             set
@@ -124,6 +125,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 return true;
             }
+
             return false;
         }
 
@@ -138,6 +140,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 this.GetSettings();
             }
+
             if (this._ScheduleItemSettings != null && this._ScheduleItemSettings.ContainsKey(Key))
             {
                 return Convert.ToString(this._ScheduleItemSettings[Key]);
@@ -177,11 +180,13 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     this.NextStart = Null.SetNullDateTime(dr["NextStart"]);
                 }
+
                 if (schema.Select("ColumnName = 'ScheduleStartDate'").Length > 0)
                 {
                     this.ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
                 }
             }
+
             // Fill BaseEntityInfo
             base.FillInternal(dr);
         }

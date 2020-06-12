@@ -55,6 +55,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     queryString = queryString.Substring(1);
                 }
+
                 string[] parms = queryString.Split('&');
                 // iterate through the array of parameters
                 for (int i = 0; i < parms.Length; i++)
@@ -69,6 +70,7 @@ namespace DotNetNuke.Entities.Urls
                         parmName = parmName.Substring(0, parmName.IndexOf("=", StringComparison.Ordinal));
                         hasValue = true;
                     }
+
                     // 597 : do a compare with the '=' on the end to only
                     // compare the entire parmname, not just the start
                     string comparePath1 = "?" + parmName.ToLowerInvariant();
@@ -78,6 +80,7 @@ namespace DotNetNuke.Entities.Urls
                         comparePath1 += "=";
                         comparePath2 += "=";
                     }
+
                     // check if parameter already exists in the rewrite path
                     // we only want to add the querystring back on if the
                     // query string keys were not already shown in the friendly
@@ -103,6 +106,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return rewritePath;
         }
 
@@ -147,6 +151,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             tabKey = tabKey.TrimEnd('/');
                         }
+
                         tabKey += "::";
                         using (tabDict.GetReadLock())
                         {
@@ -156,6 +161,7 @@ namespace DotNetNuke.Entities.Urls
                                 reWritten = true;
                             }
                         }
+
                         // if no home tab, but matched a portal alias, and no trailing /default.aspx
                         // and no 'newUrl' value because not rewritten, then append the /default.aspx
                         // and ask for a rewrite on that one.
@@ -188,6 +194,7 @@ namespace DotNetNuke.Entities.Urls
                             // check for a specific culture for the alias
                             culture = portalAliases.GetCultureByPortalIdAndAlias(portal.PortalID, portalAlias.HTTPAlias);
                         }
+
                         if (checkForCustomAlias)
                         {
                             // ok, this isnt' a chosen portal alias, check the list of custom aliases
@@ -200,10 +207,12 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     tabKey = tabKey.TrimEnd('/');
                                 }
+
                                 if (tabKey.EndsWith("/default.aspx"))
                                 {
                                     tabKey = tabKey.Substring(0, tabKey.Length - 13); // 13 = "/default.aspx".length
                                 }
+
                                 tabKey += "::";
                                 using (tabDict.GetReadLock())
                                 {
@@ -216,6 +225,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+
                         if (customTabAlias == false)
                         {
                             int tabId;
@@ -241,6 +251,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     tabId = portal.HomeTabId;
                                 }
+
                                 if (culture == null)
                                 {
                                     culture = portal.DefaultLanguage; // set culture to default if not found specifically
@@ -256,6 +267,7 @@ namespace DotNetNuke.Entities.Urls
                                         tabId);
                                 }
                             }
+
                             // see if there is a skin for the alias/culture combination
                             string skin = TabPathHelper.GetTabAliasSkinForTabAndAlias(
                                 portalAlias.PortalID,
@@ -291,6 +303,7 @@ namespace DotNetNuke.Entities.Urls
                     result.Reason = reason;
                 }
             }
+
             return newUrl;
         }
 
@@ -304,6 +317,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 lastPath = pathStart;
             }
+
             if (lastPath >= 0)
             {
                 int defaultStart = tabKeyVal.IndexOf("default", lastPath, StringComparison.OrdinalIgnoreCase);
@@ -320,6 +334,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return found;
         }
 
@@ -437,6 +452,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     newUrl = newUrl + "&" + userParam;
                 }
+
                 // if this is a match on the trigger dictionary rebuild,
                 // then temporarily store this value in case it's a page name change
                 // 677 : only match if is on actual tabKeyVal match, to prevent site root redirects
@@ -444,6 +460,7 @@ namespace DotNetNuke.Entities.Urls
                 result.dictVal = newUrl;
                 result.dictKey = tabKeyVal;
             }
+
             return found;
         }
 
@@ -479,6 +496,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return langParms;
         }
 
@@ -494,6 +512,7 @@ namespace DotNetNuke.Entities.Urls
                     break;
                 }
             }
+
             return url;
         }
 
@@ -525,6 +544,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 result.CustomParmRewrite = true;
             }
+
             return rewrittenUrl;
         }
 
@@ -545,6 +565,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             result.TabId = tabidtemp;
                         }
+
                         break;
                     case "portalid":
                         int pid;
@@ -552,6 +573,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             result.PortalId = pid;
                         }
+
                         break;
                     case "language":
                         result.CultureCode = val;
@@ -562,6 +584,7 @@ namespace DotNetNuke.Entities.Urls
                         break;
                 }
             }
+
             // remove the application path
             result.RewritePath = result.RewritePath.Replace(result.ApplicationPath + "/", string.Empty);
         }
@@ -588,6 +611,7 @@ namespace DotNetNuke.Entities.Urls
                     rewritePath += "?language=" + cultureCode;
                 }
             }
+
             return changed;
         }
 
@@ -609,6 +633,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 tab = TabController.Instance.GetTab(tabId, portalId, false);
             }
+
             // don't overwrite specific skin at tab level for rewritten Urls
             if (tab == null || string.IsNullOrEmpty(tab.SkinSrc))
             {
@@ -630,6 +655,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return changed;
         }
 
@@ -666,6 +692,7 @@ namespace DotNetNuke.Entities.Urls
                         retVal = false;
                         result.CanRewrite = StateBoolean.False;
                     }
+
                 // }
             }
             catch (Exception ex)
@@ -675,6 +702,7 @@ namespace DotNetNuke.Entities.Urls
                 UrlRewriterUtils.LogExceptionInRequest(ex, "NotSet", result);
                 result.Ex = ex;
             }
+
             return retVal;
         }
 
@@ -730,6 +758,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return result;
         }
 
@@ -753,8 +782,10 @@ namespace DotNetNuke.Entities.Urls
                 {
                     pathOnly = pathOnly.Substring(aliasEnd);
                 }
+
                 pathOnly = HttpUtility.UrlDecode(pathOnly, Encoding.UTF8);
             }
+
             return pathOnly;
         }
 
@@ -829,6 +860,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 tabPath = string.Join("/", splitUrl, tabPathStart, tabPathLength);
                             }
+
                             string aliasPath;
                             if (curAliasPathDepth <= lastIndex)
                             {
@@ -839,6 +871,7 @@ namespace DotNetNuke.Entities.Urls
                                 finished = true;
                                 break;
                             }
+
                             int parmsSize = lastIndex - i;
                             int parmStart = i + 1; // determine if any parameters on this value
 
@@ -853,6 +886,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 found = CheckTabPath(tabKeyVal.Replace(" ", settings.SpaceEncodingValue) + "?" + querystringCol.ToString().Split('&')[0].ToLowerInvariant(), result, settings, tabDict, ref newUrl);
                             }
+
                             if (!found)
                             {
                                 found = CheckTabPath(tabKeyVal.Replace(" ", settings.SpaceEncodingValue), result, settings, tabDict, ref newUrl);
@@ -955,6 +989,7 @@ namespace DotNetNuke.Entities.Urls
                                                 finished = true;
                                             }
                                         }
+
                                         // do a rewrite on the parameters from the stored parameter regex rewrites
                                         if (!rewriteParms)
                                         {
@@ -967,6 +1002,7 @@ namespace DotNetNuke.Entities.Urls
                                                 out rewriteParms,
                                                 parentTraceId);
                                         }
+
                                         if (rewriteParms && isSiteRootMatch)
                                         {
                                             // set rewrite parameters to take tabid for site root matches
@@ -992,6 +1028,7 @@ namespace DotNetNuke.Entities.Urls
                                                 result.CultureCode = cultureCode;
                                             }
                                         }
+
                                         // now check if the request involved a page pageAndExtension, (.aspx) and shouldn't have
                                         if (!finished)
                                         {
@@ -1049,6 +1086,7 @@ namespace DotNetNuke.Entities.Urls
                                                 }
                                             }
                                         }
+
                                         RedirectTokens.DetermineRedirectReasonAndAction(newUrl, result, false, settings,
                                                                                         out resultUrl, out reason,
                                                                                         out action);
@@ -1071,6 +1109,7 @@ namespace DotNetNuke.Entities.Urls
                                                 urlParms = langParms.Split('/');
                                                 // split the lang parms into the url Parms
                                             }
+
                                             bool rewriteParms;
                                             List<string> messages = result.DebugMessages;
                                             newUrl = RewriteParametersFromModuleProvider(
@@ -1104,11 +1143,13 @@ namespace DotNetNuke.Entities.Urls
                                                 result.SetActionWithNoDowngrade(ActionType.CheckFor301);
                                             }
                                         }
+
                                         // rewriting done
                                         reWritten = true;
                                         finished = true;
                                     }
                                 }
+
                                 if (finished)
                                 {
                                     break;
@@ -1160,6 +1201,7 @@ namespace DotNetNuke.Entities.Urls
                 urlWoutQuery = urlWoutQuery.Replace(requestUri.Query, string.Empty);
                 // replace the querystring on the reuqest absolute Uri
             }
+
             // 926 : do not use querystring.toString() because of encoding errors that restul,
             // the encoding type is changed from utf-8 to latin-1
             querystring = requestUri.Query;
@@ -1170,6 +1212,7 @@ namespace DotNetNuke.Entities.Urls
                 fullUrl = fullUrl.Replace("_noext.aspx", string.Empty);
                 // replace this marker pattern so it looks as though it isn't there *(leave on trailing slash)
             }
+
             if (querystring != string.Empty)
             {
                 // set up the querystring and the fullUrl to include the querystring
@@ -1177,6 +1220,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     querystring = "?" + querystring;
                 }
+
                 fullUrl += querystring;
             }
         }
@@ -1250,6 +1294,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+
                         result.DoRewrite = false;
                         checkFurtherForRewrite = false;
                         // no more checking for rewrites, we have our physical file and our query string
@@ -1295,6 +1340,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     throw new NullReferenceException("DotNetNuke.HttpModules.Config.RewriterRuleCollection is null");
                 }
+
                 for (var i = 0; i <= rules.Count - 1; i++)
                 {
                     // iterate the Config Rules looking for a match
@@ -1311,6 +1357,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             result.Action = ActionType.CheckFor301;
                         }
+
                         // if a match is found here, there is the potential for a 'friendlier' url
                         if (sesUrlParams.Trim().Length > 0)
                         {
@@ -1333,6 +1380,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+
                         // add back the query string if it was there
                         rewritePath = AddQueryStringToRewritePath(rewritePath, queryString);
 
@@ -1352,6 +1400,7 @@ namespace DotNetNuke.Entities.Urls
                             result.Reason = RedirectReason.SiteUrls_Config_Rule;
                             result.FinalUrl = rewritePath;
                         }
+
                         break; // exit loop, match found
                     }
                 }
@@ -1373,11 +1422,13 @@ namespace DotNetNuke.Entities.Urls
             {
                 absoluteUri = absoluteUri.Substring(scheme.Length);
             }
+
             // Remove QueryString if it exists in the Url value
             if (queryString != string.Empty)
             {
                 absoluteUri = absoluteUri.Replace(queryString, string.Empty);
             }
+
             absoluteUri = HttpUtility.UrlDecode(absoluteUri); // decode the incoming request
             string rewritePath = GetTabFromDictionary(absoluteUri, queryStringCol, settings, result, parentTraceId);
             // put the query string back on the end
@@ -1398,6 +1449,7 @@ namespace DotNetNuke.Entities.Urls
                     result.DebugMessages.Add("Current Language code " + currentLocale + " added");
                 }
             }
+
             // set the rewrite path
             result.RewritePath = rewritePath;
             return result.DoRewrite;
@@ -1418,6 +1470,7 @@ namespace DotNetNuke.Entities.Urls
                     result.Reason = RedirectReason.Unfriendly_Url_TabId;
                 }
             }
+
             result.DoRewrite = doRewrite;
             return doRewrite;
         }
@@ -1449,6 +1502,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return true;
             }
+
             return false;
         }
 
@@ -1559,6 +1613,7 @@ namespace DotNetNuke.Entities.Urls
                                 break;
                             }
                         }
+
                         if (pos1 > -1 && pos2 > -1)
                         {
                             // this hacky operation removes the language urls from the array
@@ -1574,6 +1629,7 @@ namespace DotNetNuke.Entities.Urls
                                 cultureId = cultureMatch.Groups[1].Value + "-" +
                                             cultureMatch.Groups[2].ToString().ToUpper();
                             }
+
                             // set procedure level culture code, which indicates a language was found in the path
                             cultureCode = cultureId;
                         }
@@ -1624,6 +1680,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 result.Action = ActionType.CheckFor301;
                             }
+
                             if (valueField)
                             {
                                 // this parameter is going into the value half of a &key=value pair
@@ -1636,6 +1693,7 @@ namespace DotNetNuke.Entities.Urls
                                     int.TryParse(urlParm, out userIdVal);
                                     isUserParm = false;
                                 }
+
                                 // 786 : redirect ctl/terms etc
                                 if (keyName != null && keyName.ToLowerInvariant() == "ctl")
                                 {
@@ -1679,12 +1737,14 @@ namespace DotNetNuke.Entities.Urls
                         newUrl = newUrl.Substring(0, newUrl.Length - 1);
                     }
                 }
+
                 // chop the last char off if it is an empty parameter
                 if (newUrl[newUrl.Length - 1] == '&')
                 {
                     newUrl = newUrl.Substring(0, newUrl.Length - 1);
                 }
             }
+
             return newUrl;
         }
 
@@ -1719,6 +1779,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             try
             {
                 if (rewriteActions != null && rewriteActions.Count > 0)
@@ -1746,6 +1807,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             tabRewrites = new SharedList<ParameterRewriteAction>();
                         }
+
                         // add in the all rewrites
                         SharedList<ParameterRewriteAction> allRewrites = rewriteActions[AllTabsRewrite];
                         foreach (ParameterRewriteAction rewrite in allRewrites)
@@ -1753,6 +1815,7 @@ namespace DotNetNuke.Entities.Urls
                             tabRewrites.Add(rewrite); // add the 'all' range to the tab range
                         }
                     }
+
                     if (isSiteRoot && rewriteActions.ContainsKey(SiteRootRewrite))
                     {
                         // initialise to empty collection if there are no specific tab rewrites
@@ -1760,12 +1823,14 @@ namespace DotNetNuke.Entities.Urls
                         {
                             tabRewrites = new SharedList<ParameterRewriteAction>();
                         }
+
                         SharedList<ParameterRewriteAction> siteRootRewrites = rewriteActions[SiteRootRewrite];
                         foreach (ParameterRewriteAction rewrite in siteRootRewrites)
                         {
                             tabRewrites.Add(rewrite); // add the site root rewrites to the collection
                         }
                     }
+
                     // get the parms as a string
                     string parms = string.Join("/", urlParms);
 
@@ -1802,6 +1867,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     parms = parms.Substring(1);
                                 }
+
                                 // parameters are added to the back fo the newUrl
                                 newUrl += parms;
                                 // it's a rewrite, all right
@@ -1810,6 +1876,7 @@ namespace DotNetNuke.Entities.Urls
                                 urlAction.CustomParmRewrite = true;
                                 break;
                             }
+
                             messages.Add(rewrite.Name + " rewrite not matched (" + parms + ")");
                         }
                     }

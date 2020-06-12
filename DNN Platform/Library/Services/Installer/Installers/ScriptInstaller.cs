@@ -148,6 +148,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 strScript = strScript.Substring(1);
             }
+
             string strSQLExceptions = DataProvider.Instance().ExecuteScript(strScript);
             if (!string.IsNullOrEmpty(strSQLExceptions))
             {
@@ -161,6 +162,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     bSuccess = false;
                 }
             }
+
             this.Log.AddInfo(string.Format(Util.SQL_EndFile, scriptFile.Name));
             return bSuccess;
         }
@@ -186,6 +188,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     bSuccess = this.ExecuteSql(scriptFile);
                 }
             }
+
             return bSuccess;
         }
 
@@ -325,12 +328,14 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
                     }
                 }
+
                 this.Completed = bSuccess;
             }
             catch (Exception ex)
             {
                 this.Log.AddFailure(ex);
             }
+
             this.Log.AddInfo(Util.SQL_End);
         }
 

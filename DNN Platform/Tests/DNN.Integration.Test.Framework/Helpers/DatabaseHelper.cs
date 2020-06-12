@@ -77,11 +77,13 @@ namespace DNN.Integration.Test.Framework.Helpers
                             {
                                 values.Add(reader.GetName(i), reader.GetValue(i));
                             }
+
                             results.Add(values);
                         }
                     }
                 }
             }
+
             return results;
         }
 
@@ -110,11 +112,13 @@ namespace DNN.Integration.Test.Framework.Helpers
                                 // values[reader.GetName(i)] = reader.GetValue(i);
                                 // values.Add(reader.GetName(i), reader.GetValue(i));
                             }
+
                             results.Add(values);
                         }
                     }
                 }
             }
+
             return results;
         }
 
@@ -149,9 +153,11 @@ namespace DNN.Integration.Test.Framework.Helpers
                     {
                         values.Add(reader.GetName(i), reader.GetValue(i));
                     }
+
                     results.Add(values);
                 }
             }
+
             return results;
         }
 
@@ -216,9 +222,11 @@ namespace DNN.Integration.Test.Framework.Helpers
                     {
                         values.Add(reader.GetName(i), reader.GetValue(i));
                     }
+
                     break; // get the first record only
                 }
             }
+
             return values;
         }
 

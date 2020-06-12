@@ -62,6 +62,7 @@ namespace DotNetNuke.Services.Personalization
                     }
                 }
             }
+
             personalization.Profile = string.IsNullOrEmpty(profileData)
                 ? new Hashtable() : Globals.DeserializeHashTableXml(profileData);
             return personalization;

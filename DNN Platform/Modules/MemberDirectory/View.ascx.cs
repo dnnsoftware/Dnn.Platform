@@ -73,6 +73,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     groupId = int.Parse(this.Request.Params["GroupId"]);
                 }
+
                 return groupId;
             }
         }
@@ -180,6 +181,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 setting = Convert.ToString(settings[key]);
             }
+
             return setting;
         }
 
@@ -190,6 +192,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 setting = Convert.ToInt32(settings[key]);
             }
+
             return setting;
         }
     }

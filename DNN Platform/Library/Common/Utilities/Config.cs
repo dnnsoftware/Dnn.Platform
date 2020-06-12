@@ -79,6 +79,7 @@ namespace DotNetNuke.Common.Utilities
                     xmlAppSettings.AppendChild(xmlElement);
                 }
             }
+
             // return the xml doc
             return xmlDoc;
         }
@@ -104,6 +105,7 @@ namespace DotNetNuke.Common.Utilities
                 // Try location node
                 xmlCompilation = xmlConfig.SelectSingleNode("configuration/location/system.web/compilation");
             }
+
             // Get the CodeSubDirectories Node
             if (xmlCompilation != null)
             {
@@ -132,6 +134,7 @@ namespace DotNetNuke.Common.Utilities
                     xmlSubDirectories.AppendChild(xmlSubDirectory);
                 }
             }
+
             Save(xmlConfig);
         }
 
@@ -145,6 +148,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     Directory.CreateDirectory(Globals.ApplicationMapPath + backupFolder);
                 }
+
                 if (File.Exists(Globals.ApplicationMapPath + "\\web.config"))
                 {
                     File.Copy(Globals.ApplicationMapPath + "\\web.config", Globals.ApplicationMapPath + backupFolder + "web_old.config", true);
@@ -186,6 +190,7 @@ namespace DotNetNuke.Common.Utilities
                 // This will be for new v4.x installs or upgrades from v4.x
                 connectionString = WebConfigurationManager.ConnectionStrings[name].ConnectionString;
             }
+
             if (string.IsNullOrEmpty(connectionString))
             {
                 if (!string.IsNullOrEmpty(name))
@@ -195,6 +200,7 @@ namespace DotNetNuke.Common.Utilities
                     connectionString = GetSetting(name);
                 }
             }
+
             return connectionString;
         }
 
@@ -281,6 +287,7 @@ namespace DotNetNuke.Common.Utilities
                 var maxAllowedContentLength = XmlUtils.GetAttributeValueAsLong(httpNode.CreateNavigator(), "maxAllowedContentLength", 30000000);
                 return maxAllowedContentLength / 1024 / 1024;
             }
+
             return defaultRequestFilter;
         }
 
@@ -347,6 +354,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 databaseOwner += ".";
             }
+
             return databaseOwner;
         }
 
@@ -407,6 +415,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 objectQualifier += "_";
             }
+
             return objectQualifier;
         }
 
@@ -425,6 +434,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 formsNav = configNav.SelectSingleNode("configuration/location/system.web/authentication/forms");
             }
+
             return (formsNav != null) ? XmlUtils.GetAttributeValueAsInteger(formsNav, "timeout", 30) : 30;
         }
 
@@ -493,6 +503,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 customErrorMode = "RemoteOnly";
             }
+
             return (customErrorsNav != null) ? customErrorMode : "RemoteOnly";
         }
 
@@ -508,6 +519,7 @@ namespace DotNetNuke.Common.Utilities
                 string strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", string.Empty);
                 xmlDoc.LoadXml(strDoc);
             }
+
             return xmlDoc;
         }
 
@@ -521,6 +533,7 @@ namespace DotNetNuke.Common.Utilities
                 // Try location node
                 xmlCompilation = xmlConfig.SelectSingleNode("configuration/location/system.web/compilation");
             }
+
             // Get the CodeSubDirectories Node
             XmlNode xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
             if (xmlSubDirectories == null)
@@ -583,6 +596,7 @@ namespace DotNetNuke.Common.Utilities
                             writer.Flush();
                             writer.Close();
                         }
+
                         break;
                     }
                     catch (IOException exc)
@@ -759,6 +773,7 @@ namespace DotNetNuke.Common.Utilities
                 string validationKey = objSecurity.CreateKey(20);
                 XmlUtils.UpdateAttribute(xmlMachineKey, "validationKey", validationKey);
             }
+
             return xmlConfig;
         }
 
@@ -890,6 +905,7 @@ namespace DotNetNuke.Common.Utilities
                 // in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
             }
+
             return string.Empty;
         }
     }

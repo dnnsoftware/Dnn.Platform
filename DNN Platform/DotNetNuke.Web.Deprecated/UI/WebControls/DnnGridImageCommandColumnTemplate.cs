@@ -155,6 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             hypLink.Text = this.Text;
                         }
+
                         hypLink.DataBinding += this.ItemDataBinding;
                         container.Controls.Add(hypLink);
                     }
@@ -168,10 +169,12 @@ namespace DotNetNuke.Web.UI.WebControls
                             {
                                 ClientAPI.AddButtonConfirm(colIcon, this.OnClickJs);
                             }
+
                             colIcon.CommandName = this.CommandName;
                             colIcon.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colIcon);
                         }
+
                         if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
                             var colLink = new LinkButton { ToolTip = this.Text };
@@ -179,12 +182,14 @@ namespace DotNetNuke.Web.UI.WebControls
                             {
                                 ClientAPI.AddButtonConfirm(colLink, this.OnClickJs);
                             }
+
                             colLink.CommandName = this.CommandName;
                             colLink.Text = this.Text;
                             colLink.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colLink);
                         }
                     }
+
                     break;
                 case GridItemType.Footer:
                 case GridItemType.Header:
@@ -225,6 +230,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
             }
+
             return keyValue;
         }
 
@@ -264,6 +270,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colIcon.Visible = this.GetIsVisible(container);
                 }
+
                 if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
                     // Bind Link Button

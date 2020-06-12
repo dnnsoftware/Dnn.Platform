@@ -80,6 +80,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.Package.PackageType = "ExtensionLanguagePack";
             }
+
             this.BasePath = Null.NullString;
         }
 
@@ -186,6 +187,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\HostSettings\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "lists":
                                 filePath = "DesktopModules\\Admin\\Lists\\App_LocalResources";
@@ -209,6 +211,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = string.Empty;
                                         break;
                                 }
+
                                 break;
                             case "logging":
                                 filePath = "DesktopModules\\Admin\\LogViewer\\App_LocalResources";
@@ -229,6 +232,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = string.Empty;
                                         break;
                                 }
+
                                 break;
                             case "modules":
                                 filePath = "Admin\\Modules\\App_LocalResources";
@@ -273,6 +277,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "Admin\\Portal\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "scheduling":
                                 filePath = "DesktopModules\\Admin\\Scheduler\\App_LocalResources";
@@ -296,6 +301,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\SearchResults\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "security":
                                 switch (fileName.Replace(extendedExtension, string.Empty))
@@ -328,6 +334,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = string.Empty;
                                         break;
                                 }
+
                                 break;
                             case "skins":
                                 filePath = "Admin\\Skins\\App_LocalResources";
@@ -354,6 +361,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Tabs\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "users":
                                 switch (fileName.Replace(extendedExtension, string.Empty))
@@ -396,6 +404,7 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "Admin\\Users\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                             case "vendors":
                                 switch (fileName.Replace(extendedExtension, string.Empty))
@@ -431,8 +440,10 @@ namespace DotNetNuke.Services.Installer.Writers
                                         filePath = "DesktopModules\\Admin\\Vendors\\App_LocalResources";
                                         break;
                                 }
+
                                 break;
                         }
+
                         break;
                     case "LocalResource":
                         filePath = Path.Combine("DesktopModules", Path.Combine(moduleName, "App_LocalResources"));
@@ -465,12 +476,14 @@ namespace DotNetNuke.Services.Installer.Writers
                                         break;
                                     }
                                 }
+
                                 if (this._LanguagePack == null)
                                 {
                                     this.LegacyError = "DependencyError";
                                 }
                             }
                         }
+
                         break;
                     case "ProviderResource":
                         filePath = Path.Combine("Providers", Path.Combine(moduleName, "App_LocalResources"));
@@ -479,6 +492,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         filePath = "Install\\App_LocalResources";
                         break;
                 }
+
                 if (!string.IsNullOrEmpty(filePath))
                 {
                     this.AddFile(Path.Combine(filePath, fileName), sourceFileName);
@@ -500,11 +514,13 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     return;
                 }
+
                 if (folder.FullName.ToLowerInvariant().Contains("install") && folder.FullName.ToLowerInvariant().Contains("temp"))
                 {
                     return;
                 }
             }
+
             if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
             {
                 // Add the Files in the Folder
@@ -516,6 +532,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     {
                         filePath = filePath.Substring(1);
                     }
+
                     if (file.Name.ToLowerInvariant().Contains(this.Language.Code.ToLowerInvariant()) || (this.Language.Code.ToLowerInvariant() == "en-us" && !file.Name.Contains("-")))
                     {
                         this.AddFile(Path.Combine(filePath, file.Name));
@@ -535,6 +552,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 languageFileWriter = new LanguageComponentWriter(this.LanguagePack, this.BasePath, this.Files, this.Package);
             }
+
             languageFileWriter.WriteManifest(writer);
         }
     }

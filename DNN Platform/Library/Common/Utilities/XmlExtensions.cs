@@ -54,6 +54,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 newElement.InnerText = elementValue;
             }
+
             node.AppendChild(newElement);
             return newElement;
         }
@@ -82,6 +83,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 newElement.InnerText = elementValue;
             }
+
             node.AppendChild(newElement);
             return newElement;
         }

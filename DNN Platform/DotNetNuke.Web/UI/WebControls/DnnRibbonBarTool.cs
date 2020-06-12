@@ -46,6 +46,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this.ViewState.Add("ToolInfo", new RibbonBarToolInfo());
                 }
+
                 return (RibbonBarToolInfo)this.ViewState["ToolInfo"];
             }
             set
@@ -111,6 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     // Appending _CPCommandBtn is also assumed in the RibbonBar.ascx. If changed, one would need to change in both places.
                     this._dnnLinkButton = new DnnTextButton { ID = this.ID + "_CPCommandBtn" };
                 }
+
                 return this._dnnLinkButton;
             }
         }
@@ -123,6 +125,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._dnnLink = new DnnTextLink();
                 }
+
                 return this._dnnLink;
             }
         }
@@ -217,6 +220,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         string url = TestableGlobals.Instance.NavigateURL(PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                         this.Page.Response.Redirect(url, true);
                     }
+
                     break;
                 case "CopyPermissionsToChildren":
                     if (this.HasToolPermissions("CopyPermissionsToChildren"))
@@ -224,6 +228,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         TabController.CopyPermissionsToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.TabPermissions);
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
+
                     break;
                 case "CopyDesignToChildren":
                     if (this.HasToolPermissions("CopyDesignToChildren"))
@@ -231,6 +236,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         TabController.CopyDesignToChildren(PortalSettings.ActiveTab, PortalSettings.ActiveTab.SkinSrc, PortalSettings.ActiveTab.ContainerSrc);
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
+
                     break;
                 case "ClearCache":
                     if (this.HasToolPermissions("ClearCache"))
@@ -239,6 +245,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         ClientResourceManager.ClearCache();
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
+
                     break;
                 case "RecycleApp":
                     if (this.HasToolPermissions("RecycleApp"))
@@ -246,6 +253,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.RestartApplication();
                         this.Page.Response.Redirect(this.Page.Request.RawUrl);
                     }
+
                     break;
             }
         }
@@ -284,6 +292,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         {
                             this.DnnLink.Enabled = false;
                         }
+
                         // create popup event
                         else if (this.ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
                         {
@@ -323,6 +332,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         returnValue = false;
                     }
+
                     break;
                 case "CopyDesignToChildren":
                 case "CopyPermissionsToChildren":
@@ -334,6 +344,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             returnValue = false;
                         }
                     }
+
                     break;
             }
 
@@ -372,6 +383,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             returnValue = false;
                         }
                     }
+
                     break;
                 case "CopyPage":
                     returnValue = TabPermissionController.CanCopyPage();
@@ -423,6 +435,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             returnValue = ModulePermissionController.CanViewModule(moduleInfo);
                         }
                     }
+
                     break;
             }
 
@@ -473,6 +486,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         var version = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
                         returnValue = TestableGlobals.Instance.FormatHelpUrl(Host.HelpURL, PortalSettings, "Home", version);
                     }
+
                     break;
                 case "UploadFile":
                 case "HostUploadFile":
@@ -484,8 +498,10 @@ namespace DotNetNuke.Web.UI.WebControls
                         var additionalParams = new List<string>();
                         returnValue = this.GetTabURL(additionalParams);
                     }
+
                     break;
             }
+
             return returnValue;
         }
 
@@ -516,6 +532,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     tip = this.GetString(string.Format("Tool.{0}.Text", this.ToolInfo.ToolName));
                 }
+
                 return tip;
             }
 

@@ -61,6 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.SetTypedValue();
             }
+
             return controlsStateChanged;
         }
 

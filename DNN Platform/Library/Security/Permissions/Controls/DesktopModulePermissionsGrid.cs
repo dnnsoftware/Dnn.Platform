@@ -29,6 +29,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._PermissionsList = this._DesktopModulePermissions.ToList();
                 }
+
                 return this._PermissionsList;
             }
         }
@@ -102,6 +103,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objDesktopModulePermission.DesktopModulePermissionID = Convert.ToInt32(Settings[2]);
             }
+
             objDesktopModulePermission.PortalDesktopModuleID = this.PortalDesktopModuleID;
             return objDesktopModulePermission;
         }
@@ -270,6 +272,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
+
                     sb.Append(this.BuildKey(
                         objDesktopModulePermission.AllowAccess,
                         objDesktopModulePermission.PermissionID,
@@ -280,6 +283,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         objDesktopModulePermission.DisplayName));
                 }
             }
+
             allStates[2] = sb.ToString();
             return allStates;
         }

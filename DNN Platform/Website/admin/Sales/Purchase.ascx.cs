@@ -59,6 +59,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     this.RoleID = int.Parse(this.Request.QueryString["RoleID"]);
                 }
+
                 if (this.Page.IsPostBack == false)
                 {
                     if (this.RoleID != -1)
@@ -72,6 +73,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             {
                                 this.lblDescription.Text = objRole.Description;
                             }
+
                             if (this.RoleID == this.PortalSettings.AdministratorRoleId)
                             {
                                 if (!Null.IsNull(this.PortalSettings.HostFee))
@@ -86,12 +88,14 @@ namespace DotNetNuke.Modules.Admin.Sales
                                     this.lblFee.Text = objRole.ServiceFee.ToString("#,##0.00");
                                 }
                             }
+
                             if (!Null.IsNull(objRole.BillingFrequency))
                             {
                                 var ctlEntry = new ListController();
                                 ListEntryInfo entry = ctlEntry.GetListEntryInfo("Frequency", objRole.BillingFrequency);
                                 this.lblFrequency.Text = entry.Text;
                             }
+
                             this.txtUnits.Text = "1";
                             if (objRole.BillingFrequency == "O") // one-time fee
                             {
@@ -114,6 +118,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         this.ViewState["UrlReferrer"] = string.Empty;
                     }
                 }
+
                 if (this.RoleID == this.PortalSettings.AdministratorRoleId)
                 {
                     strCurrency = Host.HostCurrency;
@@ -122,6 +127,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 {
                     strCurrency = this.PortalSettings.Currency;
                 }
+
                 dblTotal = Convert.ToDouble(this.lblFee.Text) * Convert.ToDouble(this.txtUnits.Text);
                 this.lblTotal.Text = dblTotal.ToString("#.##");
 
@@ -151,6 +157,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         strProcessorUserId = objPortalInfo.ProcessorUserId;
                         strProcessorPassword = objPortalInfo.ProcessorPassword;
                     }
+
                     if (strPaymentProcessor == "PayPal")
                     {
                         // build secure PayPal URL
@@ -223,6 +230,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
+
             return retValue;
         }
     }

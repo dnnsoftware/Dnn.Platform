@@ -198,6 +198,7 @@ namespace log4net.Util
             {
                 throw new ArgumentException("key must be a string", "key");
             }
+
             this.InnerHashtable.Add(key, value);
         }
 
@@ -238,6 +239,7 @@ namespace log4net.Util
                 {
                     throw new ArgumentException("key must be a string", "key");
                 }
+
                 return this.InnerHashtable[key];
             }
             set
@@ -246,6 +248,7 @@ namespace log4net.Util
                 {
                     throw new ArgumentException("key must be a string", "key");
                 }
+
                 this.InnerHashtable[key] = value;
             }
         }

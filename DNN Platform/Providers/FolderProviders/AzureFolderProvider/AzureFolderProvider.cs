@@ -39,6 +39,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                 return "Azure File Not Found";
             }
         }
+
         protected override string ObjectCacheKey
         {
             get { return "Azure_Object_{0}_{1}"; }

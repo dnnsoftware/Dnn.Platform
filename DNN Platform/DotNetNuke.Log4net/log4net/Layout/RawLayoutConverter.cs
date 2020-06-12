@@ -83,6 +83,7 @@ namespace log4net.Layout
             {
                 return new Layout2RawLayoutAdapter(layout);
             }
+
             throw ConversionNotSupportedException.Create(typeof(IRawLayout), source);
         }
     }

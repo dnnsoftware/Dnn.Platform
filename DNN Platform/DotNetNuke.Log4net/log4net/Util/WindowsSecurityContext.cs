@@ -256,6 +256,7 @@ namespace log4net.Util
                 // Impersonate(0) will revert to the process credentials
                 return new DisposableImpersonationContext(WindowsIdentity.Impersonate(IntPtr.Zero));
             }
+
             return null;
         }
 
@@ -299,6 +300,7 @@ namespace log4net.Util
                 {
                     CloseHandle(tokenHandle);
                 }
+
                 throw new Exception("Failed to DuplicateToken after LogonUser. Error: " + error.ToString());
             }
 
@@ -309,6 +311,7 @@ namespace log4net.Util
             {
                 CloseHandle(dupeTokenHandle);
             }
+
             if (tokenHandle != IntPtr.Zero)
             {
                 CloseHandle(tokenHandle);

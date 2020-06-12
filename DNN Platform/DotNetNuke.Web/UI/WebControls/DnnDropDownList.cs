@@ -112,6 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return new ListItem { Text = this.StateControl.TypedValue.SelectedItem.Value, Value = this.StateControl.TypedValue.SelectedItem.Key };
                 }
+
                 return null;
             }
             set
@@ -136,6 +137,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     var parsed = int.TryParse(this.SelectedItem.Value, out valueAsInt);
                     return parsed ? valueAsInt : Null.NullInteger;
                 }
+
                 return Null.NullInteger;
             }
         }
@@ -315,6 +317,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 return;
             }
+
             eventHandler(this, e);
         }
 
@@ -330,6 +333,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList." + skin + ".css", FileOrder.Css.ResourceCss);
             }
+
             ClientResourceManager.RegisterStyleSheet(page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
             ClientResourceManager.RegisterScript(page, "~/Resources/Shared/scripts/dnn.extensions.js");
@@ -353,17 +357,20 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.Attributes.Remove("onchange");
                 }
             }
+
             var options = new PostBackOptions(this, string.Empty);
             if (this.CausesValidation)
             {
                 options.PerformValidation = true;
                 options.ValidationGroup = this.ValidationGroup;
             }
+
             if (this.Page.Form != null)
             {
                 options.AutoPostBack = true;
                 options.TrackFocus = true;
             }
+
             return script.Append(this.Page.ClientScript.GetPostBackEventReference(options), "; ");
         }
 

@@ -112,6 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Attributes.Add("SelectedTerms", string.Join(",", this.Terms.Select(t => t.TermId.ToString()).ToArray()));
             }
+
             this.Attributes.Add("IncludeSystemVocabularies", this.IncludeSystemVocabularies.ToString().ToLowerInvariant());
             this.Attributes.Add("IncludeTags", this.IncludeTags.ToString().ToLowerInvariant());
             this.Attributes.Add("PortalId", this.PortalId.ToString());
@@ -186,12 +187,14 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 terms.Add(new { termId = -v.VocabularyId, name = v.Name, parentTermId = Null.NullInteger });
             }
+
             foreach (Term t in termRep.GetTermsByVocabulary(v.VocabularyId))
             {
                 if (v.Type == VocabularyType.Simple)
                 {
                     t.ParentTermId = -v.VocabularyId;
                 }
+
                 terms.Add(new { termId = t.TermId, name = t.Name, parentTermId = t.ParentTermId });
             }
         }

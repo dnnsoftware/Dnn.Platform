@@ -140,6 +140,7 @@ namespace DotNetNuke.UI.Skins
                 // Pane contains more than 1 control
                 canCollapsePane = false;
             }
+
             return canCollapsePane;
         }
 
@@ -167,6 +168,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     containerPath = containerPath.Remove(0, Globals.ApplicationPath.Length);
                 }
+
                 container = ControlUtilities.LoadControl<Containers.Container>(this.PaneControl.Page, containerPath);
                 container.ContainerSrc = containerSrc;
                 // call databind so that any server logic in the container is executed
@@ -181,8 +183,10 @@ namespace DotNetNuke.UI.Skins
                     // only display the error to administrators
                     this._containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, string.Format(Skin.CONTAINERLOAD_ERROR, containerPath), lex).Container);
                 }
+
                 Exceptions.LogException(lex);
             }
+
             return container;
         }
 
@@ -204,6 +208,7 @@ namespace DotNetNuke.UI.Skins
                     container = this.LoadContainerByPath(SkinController.FormatSkinSrc(cookie.Value + ".ascx", this.PortalSettings));
                 }
             }
+
             return container;
         }
 
@@ -234,6 +239,7 @@ namespace DotNetNuke.UI.Skins
                 containerSrc = SkinController.FormatSkinSrc(containerSrc, this.PortalSettings);
                 container = this.LoadContainerByPath(containerSrc);
             }
+
             return container;
         }
 
@@ -252,6 +258,7 @@ namespace DotNetNuke.UI.Skins
                 string containerSrc = SkinController.FormatSkinSrc(Globals.QueryStringDecode(request.QueryString["ContainerSrc"]) + ".ascx", this.PortalSettings);
                 container = this.LoadContainerByPath(containerSrc);
             }
+
             return container;
         }
 
@@ -276,6 +283,7 @@ namespace DotNetNuke.UI.Skins
                     container = this.LoadContainerByPath(SkinController.FormatSkinSrc(noContainerSrc, this.PortalSettings));
                 }
             }
+
             return container;
         }
 
@@ -364,6 +372,7 @@ namespace DotNetNuke.UI.Skins
             {
                 container.ID += module.ModuleID.ToString();
             }
+
             return container;
         }
 
@@ -517,6 +526,7 @@ namespace DotNetNuke.UI.Skins
                     // only display the error to administrators
                     this._containerWrapperControl.Controls.Add(new ErrorContainer(this.PortalSettings, Skin.MODULELOAD_ERROR, lex).Container);
                 }
+
                 Exceptions.LogException(exc);
                 throw lex;
             }
@@ -550,6 +560,7 @@ namespace DotNetNuke.UI.Skins
                     {
                         this.PaneControl.Attributes["class"] = cssclass.Replace(CPaneOutline, string.Empty).Trim().Replace("  ", " ") + " " + CPaneOutline;
                     }
+
                     // display pane name
                     var ctlLabel = new Label { Text = "<center>" + this.Name + "</center><br />", CssClass = "SubHead" };
                     this.PaneControl.Controls.AddAt(0, ctlLabel);
@@ -568,6 +579,7 @@ namespace DotNetNuke.UI.Skins
                         {
                             this.PaneControl.Attributes.Remove("style");
                         }
+
                         if (this.PaneControl.Attributes["class"] != null)
                         {
                             this.PaneControl.Attributes["class"] = this.PaneControl.Attributes["class"] + " DNNEmptyPane";

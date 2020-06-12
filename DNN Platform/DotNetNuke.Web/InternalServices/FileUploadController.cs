@@ -171,6 +171,7 @@ namespace DotNetNuke.Web.InternalServices
                                     {
                                         fileName = Path.GetFileName(fileName);
                                     }
+
                                     stream = item.ReadAsStreamAsync().Result;
                                     break;
                             }
@@ -465,6 +466,7 @@ namespace DotNetNuke.Web.InternalServices
                             : string.Empty;
                         result.Prompt = string.Format("{{\"invalidFiles\":[{0}], \"totalCount\": {1}}}", invalidFilesJson, filesCount);
                     }
+
                     result.FileId = file.FileId;
                 }
 
@@ -522,6 +524,7 @@ namespace DotNetNuke.Web.InternalServices
                     reader.Close();
                     reader.Dispose();
                 }
+
                 if (fileContent != null)
                 {
                     fileContent.Close();
@@ -549,6 +552,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 throw new HttpResponseException(HttpStatusCode.UnsupportedMediaType);
             }
+
             if (portalId > -1)
             {
                 if (!this.IsPortalIdValid(portalId))
@@ -608,6 +612,7 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     int.TryParse(item.ReadAsStringAsync().Result, out portalId);
                                 }
+
                                 break;
                             case "\"VALIDATIONCODE\"":
                                 validationCode = item.ReadAsStringAsync().Result ?? string.Empty;
@@ -618,10 +623,12 @@ namespace DotNetNuke.Web.InternalServices
                                 {
                                     fileName = Path.GetFileName(fileName);
                                 }
+
                                 if (Globals.FileEscapingRegex.Match(fileName).Success == false)
                                 {
                                     stream = item.ReadAsStreamAsync().Result;
                                 }
+
                                 break;
                         }
                     }
@@ -731,6 +738,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     response.Close();
                 }
+
                 if (responseStream != null)
                 {
                     responseStream.Close();
@@ -758,10 +766,12 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     return false;
                 }
+
                 if (uri.IsLoopback)
                 {
                     return false;
                 }
+
                 if (uri.PathAndQuery.Contains("#") || uri.PathAndQuery.Contains(":"))
                 {
                     return false;
@@ -780,6 +790,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 return true;
             }
+
             return false;
         }
 

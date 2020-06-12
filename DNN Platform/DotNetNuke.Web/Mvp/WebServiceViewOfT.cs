@@ -22,6 +22,7 @@ namespace DotNetNuke.Web.Mvp
                     throw new InvalidOperationException(
                         "The Model property is currently null, however it should have been automatically initialized by the presenter. This most likely indicates that no presenter was bound to the control. Check your presenter bindings.");
                 }
+
                 return this._model;
             }
             set { this._model = value; }

@@ -21,6 +21,7 @@ namespace DotNetNuke.Web.Api.Internal
                 this.permissionKey = value;
             }
         }
+
         public override bool IsAuthorized(AuthFilterContext context)
         {
             Requires.NotNull("context", context);

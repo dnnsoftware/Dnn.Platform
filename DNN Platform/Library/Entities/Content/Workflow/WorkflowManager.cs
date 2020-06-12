@@ -61,6 +61,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 return null;
             }
+
             var state = WorkflowStateRepository.Instance.GetWorkflowStateByID(contentItem.StateID);
             return state == null ? null : this.GetWorkflow(state.WorkflowID);
         }

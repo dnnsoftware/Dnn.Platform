@@ -87,6 +87,7 @@ namespace DotNetNuke.Common
             while (vreader.Read())
             {
             }
+
             vreader.Close();
             return this._errs.Count == 0;
         }

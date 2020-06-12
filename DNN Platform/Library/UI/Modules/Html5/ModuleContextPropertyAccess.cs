@@ -44,6 +44,7 @@ namespace DotNetNuke.UI.Modules.Html5
                     {
                         return (string)this._moduleContext.Settings[propertyName];
                     }
+
                     break;
             }
 

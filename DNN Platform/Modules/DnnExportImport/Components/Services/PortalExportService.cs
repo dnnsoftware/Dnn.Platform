@@ -68,10 +68,12 @@ namespace Dnn.ExportImport.Components.Services
                                 DataProvider.Instance().GetPortalLanguages(exportJob.PortalId, toDate, fromDate));
                         this.CheckPoint.TotalItems += portalLanguages.Count;
                     }
+
                     this.CheckPointStageCallback(this);
 
                     this.Repository.CreateItems(portalSettings);
                 }
+
                 this.Result.AddSummary("Exported Portal Settings", portalSettings.Count.ToString());
 
                 this.CheckPoint.Progress = 50;
@@ -132,6 +134,7 @@ namespace Dnn.ExportImport.Components.Services
                     return;
                 }
             }
+
             if (this.CheckPoint.Stage == 1)
             {
                 var portalLanguages = this.Repository.GetAllItems<ExportPortalLanguage>().ToList();
@@ -143,6 +146,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.ProcessedItems += portalLanguages.Count;
                 this.CheckPointStageCallback(this);
             }
+
             /*
             ProgressPercentage = 0;
             var portalLocalizations = Repository.GetAllItems<ExportPortalLocalization>().ToList();
@@ -192,6 +196,7 @@ namespace Dnn.ExportImport.Components.Services
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
+
                 if (isUpdate)
                 {
                     var modifiedBy = Util.GetUserIdByName(importJob, exportPortalSetting.LastModifiedByUserId,
@@ -246,6 +251,7 @@ namespace Dnn.ExportImport.Components.Services
                     Localization.SaveLanguage(locale);
                     localLanguageId = locale.LanguageId;
                 }
+
                 var existingPortalLanguage =
                     localPortalLanguages.FirstOrDefault(
                         t =>
@@ -265,6 +271,7 @@ namespace Dnn.ExportImport.Components.Services
                             throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                     }
                 }
+
                 if (isUpdate)
                 {
                     DotNetNuke.Data.DataProvider.Instance()

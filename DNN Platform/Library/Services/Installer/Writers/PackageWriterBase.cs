@@ -265,6 +265,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     filepath = Path.Combine(Path.Combine(Globals.ApplicationMapPath, basePath), packageFile.FullName.Replace(basePath + "\\", string.Empty));
                 }
+
                 if (File.Exists(filepath))
                 {
                     string packageFilePath = packageFile.Path;
@@ -272,6 +273,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     {
                         packageFilePath = packageFilePath.Replace(basePath + "\\", string.Empty);
                     }
+
                     FileSystemUtils.AddToZip(ref stream, filepath, packageFile.Name, packageFilePath);
                     this.Log.AddInfo(string.Format(Util.WRITER_SavedFile, packageFile.FullName));
                 }
@@ -318,6 +320,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         strmZipStream.Close();
                     }
                 }
+
                 this.Log.EndJob(Util.WRITER_CreatedPackage);
             }
             catch (Exception ex)
@@ -386,6 +389,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     writer.WriteString(kvp.Value);
                     writer.WriteEndElement();
                 }
+
                 writer.WriteEndElement();
             }
 
@@ -454,10 +458,12 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     filePath = filePath.Substring(1);
                 }
+
                 if (folder.FullName.ToLowerInvariant().Contains("app_code"))
                 {
                     filePath = "[app_code]" + filePath;
                 }
+
                 if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) && (file.Attributes & FileAttributes.Hidden) == 0)
                 {
                     this.AddFile(Path.Combine(filePath, file.Name));
@@ -512,6 +518,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     fileName = fileName.Substring(0, fileName.IndexOf(","));
                 }
+
                 if (
                     !(fileName.StartsWith("system", StringComparison.InvariantCultureIgnoreCase) || fileName.StartsWith("microsoft", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke", StringComparison.InvariantCultureIgnoreCase) ||
                       fileName.Equals("dotnetnuke.webutility", StringComparison.InvariantCultureIgnoreCase) || fileName.Equals("dotnetnuke.webcontrols", StringComparison.InvariantCultureIgnoreCase)))
@@ -575,6 +582,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     this._Files[file.FullName.ToLowerInvariant()] = file;
                     break;
             }
+
             if ((file.Type == InstallFileType.CleanUp || file.Type == InstallFileType.Script) && FileVersionMatchRegex.IsMatch(file.Name))
             {
                 string version = Path.GetFileNameWithoutExtension(file.Name);
@@ -596,6 +604,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 this.WriteManifest(manifestName, manifest);
             }
+
             this.AddFile(manifestName);
             this.CreateZipFile(archiveName);
         }
@@ -726,6 +735,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 // Close Dotnetnuke Element
                 WriteManifestEndElement(writer);
             }
+
             this.Log.EndJob(Util.WRITER_CreatedManifest);
         }
 

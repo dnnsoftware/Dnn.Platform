@@ -76,6 +76,7 @@ namespace DotNetNuke.Services.UserRequest
                     return true;
                 }
             }
+
             return false;
         }
 

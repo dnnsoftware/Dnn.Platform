@@ -64,6 +64,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this._textBox.Attributes.Add("autocomplete", "off");
             }
+
             if (this.MaxLength > 0)
             {
                 this._textBox.MaxLength = this.MaxLength;

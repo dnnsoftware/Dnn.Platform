@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Library.Security
             var user = UserController.Instance.GetCurrentUserInfo();
             return user.IsSuperUser || user.IsInRole(PortalSettings.Current?.AdministratorRoleName);
         }
+
         public static ISecurityService Instance
         {
             get

@@ -53,11 +53,13 @@ namespace DotNetNuke.Services.Mail
                         senderAddress = smtpUsername;
                         needUpdateSender = true;
                     }
+
                     if (string.IsNullOrEmpty(senderDisplayName))
                     {
                         senderDisplayName = Host.SMTPPortalEnabled ? PortalSettings.Current.PortalName : Host.HostTitle;
                         needUpdateSender = true;
                     }
+
                     if (needUpdateSender)
                     {
                         mailMessage.Sender = new MailAddress(senderAddress, senderDisplayName);
@@ -111,6 +113,7 @@ namespace DotNetNuke.Services.Mail
 
                             smtpClient.Port = port;
                         }
+
                         // else the port defaults to 25 by .NET when not set
                         smtpClient.ServicePoint.MaxIdleTime = Host.SMTPMaxIdleTime;
                         smtpClient.ServicePoint.ConnectionLimit = Host.SMTPConnectionLimit;
@@ -126,11 +129,13 @@ namespace DotNetNuke.Services.Mail
                                     smtpClient.UseDefaultCredentials = false;
                                     smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
                                 }
+
                                 break;
                             case "2": // NTLM
                                 smtpClient.UseDefaultCredentials = true;
                                 break;
                         }
+
                         smtpClient.EnableSsl = smtpEnableSSL;
                         smtpClient.Send(mailMessage);
                         smtpClient.Dispose();
@@ -188,6 +193,7 @@ namespace DotNetNuke.Services.Mail
             {
                 pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"]);
             }
+
             pattern = string.IsNullOrEmpty(pattern) ? Globals.glbEmailRegEx : pattern;
             return Regex.Match(Email, pattern).Success;
         }
@@ -300,6 +306,7 @@ namespace DotNetNuke.Services.Mail
                                 user, Scope.SystemMessages, ref propertyNotFound)),
                         };
                     }
+
                     break;
                 case MessageType.PasswordReminder:
                     subject = "EMAIL_PASSWORD_REMINDER_SUBJECT";
@@ -375,6 +382,7 @@ namespace DotNetNuke.Services.Mail
                         break;
                 }
             }
+
             return SendMail(mailFrom, mailTo, string.Empty, bcc, MailPriority.Normal, subject, bodyFormat, Encoding.UTF8, body, attachment, smtpServer, smtpAuthentication, smtpUsername, smtpPassword);
         }
 
@@ -542,14 +550,17 @@ namespace DotNetNuke.Services.Mail
             {
                 smtpServer = Host.SMTPServer;
             }
+
             if (string.IsNullOrEmpty(smtpAuthentication) && !string.IsNullOrEmpty(Host.SMTPAuthentication))
             {
                 smtpAuthentication = Host.SMTPAuthentication;
             }
+
             if (string.IsNullOrEmpty(smtpUsername) && !string.IsNullOrEmpty(Host.SMTPUsername))
             {
                 smtpUsername = Host.SMTPUsername;
             }
+
             if (string.IsNullOrEmpty(smtpPassword) && !string.IsNullOrEmpty(Host.SMTPPassword))
             {
                 smtpPassword = Host.SMTPPassword;
@@ -584,18 +595,21 @@ namespace DotNetNuke.Services.Mail
                 mailTo = mailTo.Replace(";", ",");
                 mailMessage.To.Add(mailTo);
             }
+
             if (!string.IsNullOrEmpty(cc))
             {
                 // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 cc = cc.Replace(";", ",");
                 mailMessage.CC.Add(cc);
             }
+
             if (!string.IsNullOrEmpty(bcc))
             {
                 // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 bcc = bcc.Replace(";", ",");
                 mailMessage.Bcc.Add(bcc);
             }
+
             if (replyTo != string.Empty)
             {
                 mailMessage.ReplyToList.Add(new MailAddress(replyTo));

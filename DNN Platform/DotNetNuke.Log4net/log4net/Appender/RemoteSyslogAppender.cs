@@ -381,6 +381,7 @@ namespace log4net.Appender
                         {
                             builder.Append(c);
                         }
+
                         // If character is newline, break and send the current line
                         else if ((c == '\r') || (c == '\n'))
                         {
@@ -389,6 +390,7 @@ namespace log4net.Appender
                             {
                                 i++;
                             }
+
                             i++;
                             break;
                         }
@@ -473,6 +475,7 @@ namespace log4net.Appender
             {
                 return SyslogSeverity.Informational;
             }
+
             // Default setting
             return SyslogSeverity.Debug;
         }

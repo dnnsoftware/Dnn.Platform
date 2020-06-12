@@ -41,10 +41,12 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return false;
             }
+
             if (!this.CheckPermissionForAdmin && PortalSecurity.IsInRole(Constants.AdminsRoleName))
             {
                 return true;
             }
+
             // Permissions seperated by & should be treated with AND operand.
             // Permissions seperated by , are internally treated with OR operand.
             var allPermissionGroups = this.Permission.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);

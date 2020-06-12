@@ -38,6 +38,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
             {
                 return;
             }
+
             var request = app.Context.Request;
 
             if (!Initialize.ProcessHttpModule(request, true, true))
@@ -64,6 +65,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 {
                     return;
                 }
+
                 foreach (var rule in settings.Rules)
                 {
                     // Added ability to determine the specific value types for addresses
@@ -83,6 +85,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
                                 break;
                         }
                     }
+
                     if (!string.IsNullOrEmpty(varVal))
                     {
                         if (rule.Matches(varVal))

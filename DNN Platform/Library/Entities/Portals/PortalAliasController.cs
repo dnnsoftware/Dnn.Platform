@@ -75,9 +75,11 @@ namespace DotNetNuke.Entities.Portals
                 {
                     strPortalAlias = string.Concat("www.", httpAlias);
                 }
+
                 // perform the lookup
                 portalAlias = this.GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
             }
+
             // allow domain wildcards
             if (portalAlias == null)
             {
@@ -90,6 +92,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     strPortalAlias = httpAlias;
                 }
+
                 // try an explicit lookup using the wildcard entry ( ie. *.domain.com )
                 portalAlias = this.GetPortalAliasLookupInternal("*." + strPortalAlias.ToLowerInvariant()) ??
                               this.GetPortalAliasLookupInternal(strPortalAlias.ToLowerInvariant());
@@ -100,6 +103,7 @@ namespace DotNetNuke.Entities.Portals
                     portalAlias = this.GetPortalAliasLookupInternal("www." + strPortalAlias.ToLowerInvariant());
                 }
             }
+
             if (portalAlias == null)
             {
                 // check if this is a fresh install ( no alias values in collection )
@@ -122,6 +126,7 @@ namespace DotNetNuke.Entities.Portals
                     portalAlias = this.GetPortalAliasLookupInternal(httpAlias.ToLowerInvariant());
                 }
             }
+
             return portalAlias;
         }
 
@@ -307,6 +312,7 @@ namespace DotNetNuke.Entities.Portals
                         retValue = currentAlias.Value.HTTPAlias;
                         break;
                     }
+
                     httpAlias = httpAlias.StartsWith("www.") ? httpAlias.Replace("www.", string.Empty) : string.Concat("www.", httpAlias);
                     if (httpAlias.StartsWith(portalAlias.ToLowerInvariant()) && currentAlias.Value.PortalID == portalId)
                     {
@@ -315,6 +321,7 @@ namespace DotNetNuke.Entities.Portals
                     }
                 }
             }
+
             return retValue;
         }
 
@@ -339,6 +346,7 @@ namespace DotNetNuke.Entities.Portals
                     intPortalId = tab.PortalID;
                 }
             }
+
             switch (intPortalId)
             {
                 case -2: // tab does not exist
@@ -351,6 +359,7 @@ namespace DotNetNuke.Entities.Portals
                     retValue = GetPortalAliasByPortal(intPortalId, portalAlias);
                     break;
             }
+
             return retValue;
         }
 
@@ -366,12 +375,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 return ValidateAlias(portalAlias, true, false);
             }
+
             // validate the domain
             Uri result;
             if (Uri.TryCreate(Globals.AddHTTP(portalAlias), UriKind.Absolute, out result))
             {
                 return ValidateAlias(result.Host, false, true) && ValidateAlias(portalAlias, false, false);
             }
+
             return false;
         }
     }

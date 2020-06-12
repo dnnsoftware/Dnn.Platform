@@ -61,6 +61,7 @@ namespace DotNetNuke.Tests.Core.Common
                     return portalSettings;
                 }
             }
+
             ITabController TabControllerMock()
             {
                 var mockTabController = new Mock<ITabController>();
@@ -76,6 +77,7 @@ namespace DotNetNuke.Tests.Core.Common
 
                 return mockTabController.Object;
             }
+
             ILocaleController LocaleControllerMock()
             {
                 var mockLocaleController = new Mock<ILocaleController>();

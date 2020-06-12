@@ -33,6 +33,7 @@ namespace DotNetNuke.Entities.Portals
                         portalName = portal.PortalName;
                     }
                 }
+
                 return portalName;
             }
         }

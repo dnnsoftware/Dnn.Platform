@@ -128,11 +128,13 @@ namespace DotNetNuke.Services.Authentication
                     break;
                 }
             }
+
             if (authInfo == null)
             {
                 // Go to database
                 return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationService(authenticationID));
             }
+
             return authInfo;
         }
 
@@ -154,11 +156,13 @@ namespace DotNetNuke.Services.Authentication
                     break;
                 }
             }
+
             if (authInfo == null)
             {
                 // Go to database
                 return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByPackageID(packageID));
             }
+
             return authInfo;
         }
 
@@ -180,11 +184,13 @@ namespace DotNetNuke.Services.Authentication
                     break;
                 }
             }
+
             if (authInfo == null)
             {
                 // Go to database
                 return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByType(authenticationType));
             }
+
             return authInfo;
         }
 
@@ -223,6 +229,7 @@ namespace DotNetNuke.Services.Authentication
                     Logger.Error(ex);
                 }
             }
+
             return objAuthentication;
         }
 
@@ -243,6 +250,7 @@ namespace DotNetNuke.Services.Authentication
                     enabled.Add(authService);
                 }
             }
+
             return enabled;
         }
 
@@ -316,6 +324,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
+
             return _RedirectURL;
         }
 
@@ -353,6 +362,7 @@ namespace DotNetNuke.Services.Authentication
                         {
                             cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
                         }
+
                         Response.Cookies.Add(cookie);
                     }
                 }
@@ -365,6 +375,7 @@ namespace DotNetNuke.Services.Authentication
                         {
                             cookie.Expires = DateTime.Now.AddMinutes(PersistentCookieTimeout);
                         }
+
                         Response.Cookies.Set(cookie);
                     }
                     else

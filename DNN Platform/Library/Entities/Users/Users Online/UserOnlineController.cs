@@ -76,6 +76,7 @@ namespace DotNetNuke.Entities.Users
                     }
                 }
             }
+
             return userList;
         }
 
@@ -103,6 +104,7 @@ namespace DotNetNuke.Entities.Users
             {
                 isOnline = memberProvider.IsUserOnline(user);
             }
+
             return isOnline;
         }
 
@@ -132,6 +134,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return;
             }
+
             AnonymousUserInfo user;
             Hashtable userList = this.GetUserList();
             string userID;
@@ -221,6 +224,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return;
             }
+
             // Get the logged in User ID
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
@@ -232,6 +236,7 @@ namespace DotNetNuke.Entities.Users
             {
                 user.UserID = objUserInfo.UserID;
             }
+
             user.PortalID = portalSettings.PortalId;
             user.TabID = portalSettings.ActiveTab.TabID;
             user.LastActiveDate = DateTime.Now;
@@ -239,6 +244,7 @@ namespace DotNetNuke.Entities.Users
             {
                 user.CreationDate = user.LastActiveDate;
             }
+
             userList[objUserInfo.UserID.ToString()] = user;
             this.SetUserList(userList);
         }
@@ -262,6 +268,7 @@ namespace DotNetNuke.Entities.Users
             {
                 context.Items["CheckedUsersOnlineCookie"] = "true";
             }
+
             if (context.Request.IsAuthenticated)
             {
                 this.TrackAuthenticatedUser(context);

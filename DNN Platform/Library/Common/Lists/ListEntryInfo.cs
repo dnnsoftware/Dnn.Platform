@@ -36,6 +36,7 @@ namespace DotNetNuke.Common.Lists
                 {
                     _Key += ".";
                 }
+
                 return _Key + this.ListName + ":" + this.Value;
             }
         }
@@ -83,10 +84,12 @@ namespace DotNetNuke.Common.Lists
                 {
                     // ignore
                 }
+
                 if (string.IsNullOrEmpty(res))
                 {
                     res = this._Text;
                 }
+
                 return res;
             }
             set

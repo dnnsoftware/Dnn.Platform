@@ -165,10 +165,12 @@ namespace DotNetNuke.Entities.Modules
                     moduleControl.SupportsPopUps,
                     UserController.Instance.GetCurrentUserInfo().UserID);
             }
+
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
             }
+
             return moduleControlID;
         }
 

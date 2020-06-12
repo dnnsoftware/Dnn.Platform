@@ -30,6 +30,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 versionInt = Null.NullInteger;
                 return false;
             }
+
             return int.TryParse(version, out versionInt);
         }
 
@@ -59,6 +60,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 return false;
             }
+
             var isAdminUser = currentPortalSettings.UserInfo.IsSuperUser || PortalSecurity.IsInRole(currentPortalSettings.AdministratorRoleName);
             if (isAdminUser)
             {

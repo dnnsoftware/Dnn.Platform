@@ -44,10 +44,12 @@ namespace DotNetNuke.Web.DDRMenu
         {
             get { return (this.Parent == null) || (this.Parent.Children[0] == this); }
         }
+
         public bool Last
         {
             get { return (this.Parent == null) || (this.Parent.Children[this.Parent.Children.Count - 1] == this); }
         }
+
         public string Target { get; set; }
 
         public int Depth
@@ -61,6 +63,7 @@ namespace DotNetNuke.Web.DDRMenu
                     result++;
                     current = current.Parent;
                 }
+
                 return result;
             }
         }
@@ -244,6 +247,7 @@ namespace DotNetNuke.Web.DDRMenu
                     result = defaultImagePath + result;
                 }
             }
+
             return result;
         }
 
@@ -336,6 +340,7 @@ namespace DotNetNuke.Web.DDRMenu
                             default:
                                 throw new XmlException(string.Format("Unexpected element '{0}'", reader.Name));
                         }
+
                         break;
                     case XmlNodeType.EndElement:
                         reader.ReadEndElement();

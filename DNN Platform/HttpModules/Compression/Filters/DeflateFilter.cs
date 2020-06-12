@@ -34,6 +34,7 @@ namespace DotNetNuke.HttpModules.Compression
             {
                 this.WriteHeaders();
             }
+
             this.m_stream.Write(buffer, offset, count);
         }
 

@@ -33,14 +33,17 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     objPaneModules.Add(configuringModule.PaneName, 0);
                 }
+
                 configuringModule.PaneModuleCount = 0;
                 if (!configuringModule.IsDeleted)
                 {
                     objPaneModules[configuringModule.PaneName] = objPaneModules[configuringModule.PaneName] + 1;
                     configuringModule.PaneModuleIndex = objPaneModules[configuringModule.PaneName] - 1;
                 }
+
                 configuredModules.Add(configuringModule);
             }
+
             foreach (ModuleInfo module in configuredModules)
             {
                 module.PaneModuleCount = objPaneModules[module.PaneName];
@@ -65,6 +68,7 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             result[dr.GetInt32(0)] = dr.GetString(1);
                         }
+
                         return result;
                     }
                 });
@@ -91,6 +95,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     result.Add(dr.GetInt32(0));
                 }
+
                 return result;
             }
         }
@@ -101,10 +106,12 @@ namespace DotNetNuke.Entities.Tabs
             {
                 cloneModule.StartDate = DateTime.MinValue;
             }
+
             if (Null.IsNull(cloneModule.EndDate))
             {
                 cloneModule.EndDate = DateTime.MaxValue;
             }
+
             if (string.IsNullOrEmpty(cloneModule.ContainerSrc))
             {
                 cloneModule.ContainerSrc = tab.ContainerSrc;

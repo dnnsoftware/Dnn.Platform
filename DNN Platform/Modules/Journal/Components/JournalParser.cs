@@ -62,6 +62,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 this.url = HttpContext.Current.Request.Url.Host;
             }
+
             this.url = string.Format(
                 "{0}://{1}{2}",
                 UrlUtils.IsSecureConnectionOrSslOffload(HttpContext.Current.Request) ? "https" : "http",
@@ -77,6 +78,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 this.isAdmin = this.CurrentUser.IsInRole(this.PortalSettings.AdministratorRoleName);
             }
+
             this.isUnverifiedUser = !this.CurrentUser.IsSuperUser && this.CurrentUser.IsInRole("Unverified Users");
 
             var journalControllerInternal = InternalJournalController.Instance;
@@ -198,6 +200,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     sb.Append("<div class=\"minidel\" onclick=\"journalDelete(this);\"></div>");
                 }
+
                 sb.Append(tmp);
                 sb.Append("</div>");
             }
@@ -228,11 +231,13 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 return string.Empty;
             }
+
             XmlNodeList xLikes = ji.JournalXML.DocumentElement.SelectNodes("//likes/u");
             if (xLikes == null)
             {
                 return string.Empty;
             }
+
             foreach (XmlNode xLike in xLikes)
             {
                 if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID)
@@ -242,6 +247,7 @@ namespace DotNetNuke.Modules.Journal.Components
                     break;
                 }
             }
+
             int xc = 0;
             sb.Append("<div class=\"likes\">");
             if (xLikes.Count == 1 && ji.CurrentUserLikes)
@@ -255,6 +261,7 @@ namespace DotNetNuke.Modules.Journal.Components
                     sb.Append("{resx:you}");
                     xc += 1;
                 }
+
                 foreach (XmlNode l in xLikes)
                 {
                     int userId = Convert.ToInt32(l.Attributes["uid"].Value);
@@ -281,12 +288,15 @@ namespace DotNetNuke.Modules.Journal.Components
                             {
                                 sb.Append(" {resx:other}");
                             }
+
                             break;
                         }
+
                         sb.AppendFormat("<span id=\"user-{0}\" class=\"juser\">{1}</span>", userId, name);
                         xc += 1;
                     }
                 }
+
                 if (xc == 1)
                 {
                     sb.Append(" {resx:likesthis}");
@@ -313,6 +323,7 @@ namespace DotNetNuke.Modules.Journal.Components
                     sb.Append(", ");
                 }
             }
+
             if (xc == 1)
             {
                 sb.Append(" {resx:likesthis}");
@@ -333,6 +344,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 return string.Empty;
             }
+
             var sb = new StringBuilder();
             sb.AppendFormat("<ul class=\"jcmt\" id=\"jcmt-{0}\">", journal.JournalId);
             foreach (CommentInfo ci in comments)
@@ -342,6 +354,7 @@ namespace DotNetNuke.Modules.Journal.Components
                     sb.Append(this.GetCommentRow(journal, ci));
                 }
             }
+
             if (this.CurrentUser.UserID > 0 && !journal.CommentsDisabled)
             {
                 sb.AppendFormat("<li id=\"jcmt-{0}-txtrow\" class=\"cmteditarea\">", journal.JournalId);
@@ -364,6 +377,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 sb.Append("<div class=\"miniclose\"></div>");
             }
+
             sb.AppendFormat("<img src=\"{0}\" />", pic);
             sb.Append("<p>");
             string userUrl = this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=" + comment.UserId });
@@ -381,6 +395,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     text = comment.CommentXML.SelectSingleNode("/root/comment").InnerText;
                 }
+
                 sb.Append(text.Replace("\n", "<br />"));
             }
             else
@@ -404,10 +419,12 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 replacement = "$1";
             }
+
             if (this.CurrentUser.UserID > 0 && journalItem.SocialGroupId > 0 && !this.isUnverifiedUser)
             {
                 replacement = this.CurrentUser.IsInRole(journalItem.JournalOwner.Name) ? "$1" : string.Empty;
             }
+
             return replacement;
         }
     }

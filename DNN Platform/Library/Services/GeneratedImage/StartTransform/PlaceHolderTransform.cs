@@ -131,6 +131,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                 // Save indicator to file
                 objGraphics.Flush();
             }
+
             return bitmap;
         }
     }

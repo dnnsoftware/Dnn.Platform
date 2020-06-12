@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.Groups
                     path += "GroupView.ascx";
                     break;
             }
+
             GroupsModuleBase ctl = new GroupsModuleBase();
             ctl = (GroupsModuleBase)this.LoadControl(path);
             ctl.ModuleConfiguration = this.ModuleConfiguration;

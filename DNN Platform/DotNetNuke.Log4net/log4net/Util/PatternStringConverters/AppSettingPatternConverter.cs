@@ -72,11 +72,14 @@ namespace log4net.Util.PatternStringConverters
                     {
                         h.Add(key, System.Configuration.ConfigurationManager.AppSettings[key]);
                     }
+
                     _appSettingsHashTable = h;
                 }
+
                 return _appSettingsHashTable;
             }
         }
+
         private static Hashtable _appSettingsHashTable;
 
         /// <summary>

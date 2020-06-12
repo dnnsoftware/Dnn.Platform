@@ -262,6 +262,7 @@ namespace DotNetNuke.UI.UserControls
                         this.txtWebsite.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtIM.Width = Unit.Parse(this._ControlColumnWidth);
                     }
+
                     if (!this._ShowPassword)
                     {
                         this.valPassword.Enabled = false;
@@ -286,10 +287,12 @@ namespace DotNetNuke.UI.UserControls
                         this.PasswordRow.Visible = true;
                         this.ConfirmPasswordRow.Visible = true;
                     }
+
                     this.ViewState["ModuleId"] = Convert.ToString(this._ModuleId);
                     this.ViewState["LabelColumnWidth"] = this._LabelColumnWidth;
                     this.ViewState["ControlColumnWidth"] = this._ControlColumnWidth;
                 }
+
                 this.txtPassword.Attributes.Add("value", this.txtPassword.Text);
                 this.txtConfirm.Attributes.Add("value", this.txtConfirm.Text);
             }

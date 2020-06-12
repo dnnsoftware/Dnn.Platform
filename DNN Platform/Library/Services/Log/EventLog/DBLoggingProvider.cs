@@ -44,12 +44,15 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     logTypeConfigInfo.LogTypeKey = "*";
                 }
+
                 if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
                 {
                     logTypeConfigInfo.LogTypePortalID = "*";
                 }
+
                 ht.Add(logTypeConfigInfo.LogTypeKey + "|" + logTypeConfigInfo.LogTypePortalID, logTypeConfigInfo);
             }
+
             DataCache.SetCache(LogTypeInfoByKeyCacheKey, ht);
             return ht;
         }
@@ -82,6 +85,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 return logTypeConfigInfo;
             }
+
             return logTypeConfigInfo;
         }
 
@@ -126,6 +130,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 Logger.Error(exc);
             }
+
             return obj;
         }
 
@@ -138,6 +143,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     LogInfo logInfo = FillLogInfo(dr);
                     logs.Add(logInfo);
                 }
+
                 dr.NextResult();
                 while (dr.Read())
                 {
@@ -168,6 +174,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         HtmlUtils.WriteError(response, logTypeConfigInfo.LogFileNameWithPath, message);
                     }
+
                     HtmlUtils.WriteFooter(response);
                     response.End();
                 }
@@ -239,6 +246,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 return;
             }
+
             logInfo.LogConfigID = logTypeConfigInfo.ID;
             var logQueueItem = new LogQueueItem { LogInfo = logInfo, LogTypeConfigInfo = logTypeConfigInfo };
             SchedulingProvider scheduler = SchedulingProvider.Instance();
@@ -271,18 +279,22 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 intThreshold = Convert.ToInt32(threshold);
             }
+
             if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
             {
                 intThresholdTime = Convert.ToInt32(thresholdTime);
             }
+
             if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
             {
                 intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
             }
+
             if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
             {
                 intKeepMostRecent = Convert.ToInt32(keepMostRecent);
             }
+
             DataProvider.Instance().AddLogTypeConfigInfo(
                 loggingIsActive,
                 logTypeKey,
@@ -353,6 +365,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
                 }
             }
+
             return list;
         }
 
@@ -384,15 +397,18 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             if (returnType == ReturnType.LogInfoObjects)
             {
                 return log;
             }
+
             var xmlDoc = new XmlDocument { XmlResolver = null };
             if (log != null)
             {
                 xmlDoc.LoadXml(log.Serialize());
             }
+
             return xmlDoc.DocumentElement;
         }
 
@@ -403,11 +419,13 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 configPortalID = "*";
             }
+
             LogTypeConfigInfo configInfo = this.GetLogTypeConfigInfoByKey(logType, configPortalID);
             if (configInfo == null)
             {
                 return false;
             }
+
             return configInfo.LoggingIsActive;
         }
 
@@ -436,6 +454,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 LockQueueLog.ExitWriteLock();
             }
+
             DataProvider.Instance().PurgeLog();
         }
 
@@ -458,6 +477,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     CBO.CloseDataReader(dr, true);
                 }
+
                 Mail.Mail.SendEmail(typeConfigInfo.MailFromAddress, typeConfigInfo.MailToAddress, "Event Notification", string.Format("<pre>{0}</pre>", HttpUtility.HtmlEncode(log)));
                 DataProvider.Instance().UpdateEventLogPendingNotif(Convert.ToInt32(typeConfigInfo.ID));
             }
@@ -500,18 +520,22 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 intThreshold = Convert.ToInt32(threshold);
             }
+
             if (Globals.NumberMatchRegex.IsMatch(thresholdTime))
             {
                 intThresholdTime = Convert.ToInt32(thresholdTime);
             }
+
             if (Globals.NumberMatchRegex.IsMatch(thresholdTimeType))
             {
                 intThresholdTimeType = Convert.ToInt32(thresholdTimeType);
             }
+
             if (Globals.NumberMatchRegex.IsMatch(keepMostRecent))
             {
                 intKeepMostRecent = Convert.ToInt32(keepMostRecent);
             }
+
             DataProvider.Instance().UpdateLogTypeConfigInfo(
                 id,
                 loggingIsActive,

@@ -42,6 +42,7 @@ namespace DotNetNuke.UI.Containers
                         {
                             this.Controls.Clear();
                         }
+
                         var PreSpacer = new LiteralControl(this.ItemSeparator);
                         this.Controls.Add(PreSpacer);
 

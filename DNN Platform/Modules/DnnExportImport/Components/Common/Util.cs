@@ -208,6 +208,7 @@ namespace Dnn.ExportImport.Components.Common
                     dateTime.Millisecond, DateTimeKind.Utc);
                 return userInfo.LocalTime(dateTime);
             }
+
             return dateTime;
         }
 

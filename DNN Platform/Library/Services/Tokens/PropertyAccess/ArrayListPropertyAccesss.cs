@@ -25,17 +25,20 @@ namespace DotNetNuke.Services.Tokens
             {
                 return string.Empty;
             }
+
             object valueObject = null;
             string OutputFormat = format;
             if (string.IsNullOrEmpty(format))
             {
                 OutputFormat = "g";
             }
+
             int intIndex = int.Parse(propertyName);
             if ((this.custom != null) && this.custom.Count > intIndex)
             {
                 valueObject = this.custom[intIndex].ToString();
             }
+
             if (valueObject != null)
             {
                 switch (valueObject.GetType().Name)

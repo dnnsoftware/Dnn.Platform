@@ -104,6 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return this.InternalPortalId.Value;
                 }
+
                 return PortalSettings.Current.ActiveTab.IsSuperTab ? -1 : PortalSettings.Current.PortalId;
             }
             set

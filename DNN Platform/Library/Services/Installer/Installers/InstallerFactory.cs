@@ -98,8 +98,10 @@ namespace DotNetNuke.Services.Installer.Installers
                         // The class for the Installer is specified in the Text property
                         installer = (ComponentInstallerBase)Reflection.CreateObject(entry.Text, "Installer_" + entry.Value);
                     }
+
                     break;
             }
+
             return installer;
         }
 
@@ -139,6 +141,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     installer.ReadManifest(manifestNav);
                 }
             }
+
             return installer;
         }
     }

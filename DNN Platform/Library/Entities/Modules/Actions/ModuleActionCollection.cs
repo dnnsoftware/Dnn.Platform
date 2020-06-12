@@ -243,6 +243,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                     retAction = modAction;
                     break;
                 }
+
                 // If action has children check them
                 if (modAction.HasChildren())
                 {
@@ -254,6 +255,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                     }
                 }
             }
+
             return retAction;
         }
 
@@ -268,12 +270,14 @@ namespace DotNetNuke.Entities.Modules.Actions
                 {
                     retActions.Add(modAction);
                 }
+
                 // If action has children check them
                 if (modAction.HasChildren())
                 {
                     retActions.AddRange(modAction.Actions.GetActionsByCommandName(name));
                 }
             }
+
             return retActions;
         }
 
@@ -289,6 +293,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                     retAction = modAction;
                     break;
                 }
+
                 // If action has children check them
                 if (modAction.HasChildren())
                 {
@@ -300,6 +305,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                     }
                 }
             }
+
             return retAction;
         }
 

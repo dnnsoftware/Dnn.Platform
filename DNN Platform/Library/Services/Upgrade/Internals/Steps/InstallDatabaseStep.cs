@@ -54,6 +54,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                         this.Status = StepStatus.Retry;
                         return;
                     }
+
                     this.Percentage += percentForMiniStep;
                 }
 
@@ -70,6 +71,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     return;
                 }
             }
+
             this.Percentage = percentForEachStep * counter++;
 
             // Step 2 - Process the Upgrade Script files
@@ -102,6 +104,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     this.Percentage += percentForMiniStep;
                 }
             }
+
             this.Percentage = percentForEachStep * counter++;
 
             // Step 3 - Perform version specific application upgrades
@@ -116,8 +119,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     this.Status = StepStatus.Retry;
                     return;
                 }
+
                 this.Percentage += percentForMiniStep;
             }
+
             this.Percentage = percentForEachStep * counter++;
 
             // Step 4 - Execute config file updates
@@ -132,8 +137,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     this.Status = StepStatus.Retry;
                     return;
                 }
+
                 this.Percentage += percentForMiniStep;
             }
+
             this.Percentage = percentForEachStep * counter++;
 
             // Step 5 - Delete files which are no longer used
@@ -148,8 +155,10 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     this.Status = StepStatus.Retry;
                     return;
                 }
+
                 this.Percentage += percentForMiniStep;
             }
+
             this.Percentage = percentForEachStep * counter++;
 
             // Step 6 - Perform general application upgrades

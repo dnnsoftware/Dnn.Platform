@@ -51,10 +51,12 @@ namespace DotNetNuke.Services.Tokens
                 {
                     throw new ArgumentException("If the jsname property is not specified then the JavaScript token must specify a path or property.");
                 }
+
                 if (model.Priority == 0)
                 {
                     model.Priority = (int)FileOrder.Js.DefaultPriority;
                 }
+
                 if (string.IsNullOrEmpty(model.Provider))
                 {
                     ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority);
@@ -70,6 +72,7 @@ namespace DotNetNuke.Services.Tokens
                 {
                     model.Priority = (int)FileOrder.Js.DefaultPriority;
                 }
+
                 if (string.IsNullOrEmpty(model.Provider))
                 {
                     ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, string.Empty, model.JsName, model.Version);
@@ -106,6 +109,7 @@ namespace DotNetNuke.Services.Tokens
                         }
                     }
                 }
+
                 JavaScript.RequestRegistration(model.JsName, version, specific);
             }
 

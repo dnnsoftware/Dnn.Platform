@@ -375,6 +375,7 @@ namespace DotNetNuke.Services.Installer
                     matchingNode = this.FindNode(rootNode, rootNodePath, nsmgr);
                 }
             }
+
             return matchingNode;
         }
 
@@ -477,6 +478,7 @@ namespace DotNetNuke.Services.Installer
                 keyAttribute = actionNode.Attributes["key"].Value;
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "UpdateNode: keyAttribute=" + keyAttribute.ToString());
             }
+
             foreach (XmlNode child in actionNode.ChildNodes)
             {
                 Debug.Assert(child.Attributes != null, "child.Attributes != null");
@@ -496,6 +498,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         targetNode = this.FindMatchingNode(rootNode, actionNode, "targetpath");
                     }
+
                     if (targetNode == null)
                     {
                         // Since there is no collision we can just add the node
@@ -637,6 +640,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         targetProductName = configNode.Attributes["productName"].Value;
                     }
+
                     bool isAppliedToProduct;
 
                     if (!File.Exists(Globals.ApplicationMapPath + "\\" + this.TargetFileName))
@@ -654,6 +658,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         isAppliedToProduct = DotNetNukeContext.Current.Application.ApplyToProduct(targetProductName);
                     }
+
                     // The nodes definition is not correct so skip changes
                     if (this.TargetConfig != null && isAppliedToProduct)
                     {

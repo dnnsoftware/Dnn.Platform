@@ -26,6 +26,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     xSortOrderValue = SortOrderAttribute.DefaultOrder;
                 }
+
                 object[] ySortOrder = yProp.GetCustomAttributes(typeof(SortOrderAttribute), true);
                 int ySortOrderValue;
                 if (ySortOrder.Length > 0)
@@ -36,6 +37,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     ySortOrderValue = SortOrderAttribute.DefaultOrder;
                 }
+
                 if (xSortOrderValue == ySortOrderValue)
                 {
                     return string.Compare(xProp.Name, yProp.Name);

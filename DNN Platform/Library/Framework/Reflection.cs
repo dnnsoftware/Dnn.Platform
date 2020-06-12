@@ -188,6 +188,7 @@ namespace DotNetNuke.Framework
                     }
                 }
             }
+
             return CreateObject(TypeName, TypeName, UseCache);
         }
 
@@ -267,6 +268,7 @@ namespace DotNetNuke.Framework
             {
                 CacheKey = TypeName;
             }
+
             Type type = null;
 
             // use the cache for performance
@@ -296,6 +298,7 @@ namespace DotNetNuke.Framework
                     }
                 }
             }
+
             return type;
         }
 

@@ -47,6 +47,7 @@ namespace DotNetNuke.Web.Mvc
                 Initialize.Init(app);
             }
         }
+
         public void Dispose()
         {
         }

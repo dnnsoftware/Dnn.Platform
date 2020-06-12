@@ -86,6 +86,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._dataType = value;
             }
         }
@@ -109,6 +110,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._defaultValue = value;
             }
         }
@@ -132,6 +134,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._defaultVisibility = value;
             }
         }
@@ -183,6 +186,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._length = value;
             }
         }
@@ -245,6 +249,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._propertyCategory = value;
             }
         }
@@ -280,6 +285,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._propertyName = value;
             }
         }
@@ -303,6 +309,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._propertyValue = value;
             }
         }
@@ -326,6 +333,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._readOnly = value;
             }
         }
@@ -349,6 +357,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._required = value;
             }
         }
@@ -372,6 +381,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._ValidationExpression = value;
             }
         }
@@ -396,6 +406,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._viewOrder = value;
             }
         }
@@ -419,6 +430,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._visible = value;
             }
         }
@@ -442,6 +454,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this._profileVisibility = value;
             }
         }
@@ -500,6 +513,7 @@ namespace DotNetNuke.Entities.Profile
                 {
                     this.IsDirty = true;
                 }
+
                 this.ProfileVisibility.VisibilityMode = value;
             }
         }

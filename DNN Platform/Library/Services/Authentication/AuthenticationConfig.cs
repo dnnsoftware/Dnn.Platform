@@ -34,6 +34,7 @@ namespace DotNetNuke.Services.Authentication
                 {
                     this.Enabled = bool.Parse(setting);
                 }
+
                 setting = Null.NullString;
                 if (PortalController.Instance.GetPortalSettings(portalID).TryGetValue("DNN_UseCaptcha", out setting))
                 {
@@ -65,6 +66,7 @@ namespace DotNetNuke.Services.Authentication
                 config = new AuthenticationConfig(portalId);
                 DataCache.SetCache(key, config);
             }
+
             return config;
         }
 

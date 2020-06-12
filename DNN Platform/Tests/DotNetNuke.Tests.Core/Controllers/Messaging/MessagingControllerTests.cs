@@ -1524,4 +1524,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
     }
 }
+
 // ReSharper restore InconsistentNaming

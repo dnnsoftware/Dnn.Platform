@@ -164,6 +164,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                     waitTime = (int)(interval - this.GetDateTimeNow().Subtract(lastSentMessage.CreatedOnDate).TotalSeconds);
                 }
             }
+
             return waitTime < 0 ? 0 : waitTime;
         }
 

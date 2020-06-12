@@ -28,6 +28,7 @@ namespace DotNetNuke.Common.Controls
                 html = html.Remove(StartPoint, EndPoint - StartPoint);
                 html = html.Insert(StartPoint, "action=\"" + HttpUtility.HtmlEncode(HttpContext.Current.Request.RawUrl) + "\"");
             }
+
             if (this.ID != null)
             {
             // Locate and replace id attribute
@@ -39,6 +40,7 @@ namespace DotNetNuke.Common.Controls
                     html = html.Insert(StartPoint, "id=\"" + this.ClientID + "\"");
                 }
             }
+
             writer.Write(html);
         }
     }

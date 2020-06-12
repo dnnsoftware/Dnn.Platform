@@ -130,6 +130,7 @@ namespace DotNetNuke.Services.Exceptions
                 {
                     innerException = innerException.InnerException;
                 }
+
                 var exceptionInfo = Exceptions.GetExceptionInfo(innerException);
 
                 this.AssemblyVersion = DotNetNukeContext.Current.Application.Version.ToString(3);
@@ -169,6 +170,7 @@ namespace DotNetNuke.Services.Exceptions
                     {
                         this.AbsoluteURLReferrer = HttpUtility.HtmlEncode(context.Request.UrlReferrer.AbsoluteUri);
                     }
+
                     this.UserAgent = HttpUtility.HtmlEncode(context.Request.UserAgent ?? string.Empty);
                 }
                 else
@@ -178,6 +180,7 @@ namespace DotNetNuke.Services.Exceptions
                     this.AbsoluteURLReferrer = string.Empty;
                     this.UserAgent = string.Empty;
                 }
+
                 try
                 {
                     ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
@@ -218,6 +221,7 @@ namespace DotNetNuke.Services.Exceptions
 
                     this.m_StackTrace = string.Empty;
                 }
+
                 try
                 {
                     this.m_Message = this.Message;
@@ -228,6 +232,7 @@ namespace DotNetNuke.Services.Exceptions
 
                     this.m_Message = string.Empty;
                 }
+
                 try
                 {
                     this.m_Source = this.Source;

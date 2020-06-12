@@ -617,6 +617,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             }
+
             return GetTabs(portalId, includeStdUrls, portalSettings, settings);
         }
 
@@ -639,6 +640,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     tabs[tab.TabID] = tab;
                 }
             }
+
             return tabs;
         }
 
@@ -666,6 +668,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return aliases;
         }
 
@@ -684,6 +687,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 // replacing spaces, diacritic characters and languages
                 // BuildFriendlyUrls(tab, true, portalSettings, settings);
             }
+
             return tab;
         }
 
@@ -706,6 +710,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     resultingCh.Append(c);
                 }
             }
+
             ch = resultingCh.ToString();
         }
 
@@ -762,6 +767,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                         };
                         response.Cookies.Set(cookie);
                     }
+
                     // check the DotNetNuke cookies for allowed
                     if (request.Cookies[DisableMobileRedirectCookieName] != null
                         && request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
@@ -804,6 +810,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 options = new FriendlyUrlOptions();
             }
+
             bool convertDiacritics = options.ConvertDiacriticChars;
             Regex regexMatch = options.RegexMatchRegex;
             string replaceWith = options.PunctuationReplacement;
@@ -814,6 +821,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 urlName = string.Empty;
             }
+
             var result = new StringBuilder(urlName.Length);
             int i = 0;
             string normalisedUrl = urlName;
@@ -884,6 +892,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                 {
                     result.Append(ch);
                 }
+
                 i++; // increment counter
             }
 
@@ -891,6 +900,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
             {
                 result = result.Replace("..", string.Empty);
             }
+
             // replace any duplicated replacement characters by doing replace twice
             // replaces -- with - or --- with -  //749 : ampersand not completed replaced
             if (replaceDoubleChars && !string.IsNullOrEmpty(replaceWith))
@@ -920,6 +930,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     path = leading + path;
                 }
             }
+
             return path;
         }
 
@@ -935,6 +946,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     path = path.Substring(leading.Length);
                 }
             }
+
             return path;
         }
 
@@ -953,6 +965,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     {
                         isCookieSet = true;
                     }
+
                     if (isMobile == false)
                     {
                         if (!isCookieSet)
@@ -981,6 +994,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     }
                 }
             }
+
             return browserType;
         }
 
@@ -997,6 +1011,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     uniqueUrl = uniqueUrl + counter.ToString(CultureInfo.InvariantCulture);
                     modified = true;
                 }
+
                 isUnique = ValidateUrl(uniqueUrl, validateUrlForTabId, settings);
                 counter++;
             }
@@ -1062,6 +1077,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
                     }
                 }
             }
+
             return isUnique;
         }
     }

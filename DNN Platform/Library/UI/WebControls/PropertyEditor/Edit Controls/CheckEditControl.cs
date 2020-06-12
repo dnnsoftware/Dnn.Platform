@@ -36,11 +36,13 @@ namespace DotNetNuke.UI.WebControls
             {
                 boolValue = true;
             }
+
             if (!this.BooleanValue.Equals(boolValue))
             {
                 this.Value = boolValue;
                 return true;
             }
+
             return false;
         }
 

@@ -58,6 +58,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 {
                     this.Capabilities = new Dictionary<string, string>();
                 }
+
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 
@@ -262,10 +263,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             {
                 properties.Add("PlatformVendor", platformVendor);
             }
+
             if (!properties.ContainsKey("PlatformName"))
             {
                 properties.Add("PlatformName", platformName);
             }
+
             if (!properties.ContainsKey("PlatformVersion"))
             {
                 properties.Add("PlatformVersion", platformVersion);

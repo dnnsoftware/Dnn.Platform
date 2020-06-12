@@ -87,6 +87,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 return;
             }
+
             if (workflow == null || workflow.WorkflowID != workflowID)
             {
                 workflow = this.GetWorkflowByID(workflowID);
@@ -117,6 +118,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 {
                     this.AddWorkflowCommentLog(item, comment, userID);
                 }
+
                 this.AddWorkflowLog(item, currentState.StateID == this.GetFirstWorkflowStateID(workflow) ? ContentWorkflowLogType.DraftCompleted : ContentWorkflowLogType.StateCompleted, userID);
 
                 var endStateID = this.GetNextWorkflowStateID(workflow, item.StateID);
@@ -151,6 +153,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 {
                     this.AddWorkflowCommentLog(item, comment, userID);
                 }
+
                 this.AddWorkflowLog(item, ContentWorkflowLogType.StateDiscarded, userID);
                 int previousStateID = this.GetPreviousWorkflowStateID(workflow, item.StateID);
                 this.SetWorkflowState(previousStateID, item);
@@ -329,6 +332,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 workflow.States = this.GetWorkflowStates(workflowID);
                 return workflow;
             }
+
             return null;
         }
 
@@ -511,6 +515,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 this.SendEmailNotifications(settings, roles, users, subject, body, comment);
             }
+
             if (sendMessage)
             {
                 this.SendMessageNotifications(settings, roles, users, subject, body, comment, userID, source, parameters);
@@ -553,6 +558,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 {
                     source = string.Format("{0};{1}", source, string.Join(";", parameters));
                 }
+
                 notification.Context = source;
             }
 
@@ -597,6 +603,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 var adminRole = RoleController.Instance.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
                 roles.Add(adminRole);
             }
+
             return roles;
         }
 
@@ -615,6 +622,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     users.Add(UserController.GetUserById(settings.PortalId, permission.UserID));
                 }
             }
+
             return IncludeSuperUsers(users);
         }
 
@@ -677,6 +685,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 intStateID = states.OrderBy(s => s.Order).FirstOrDefault().StateID;
             }
+
             return intStateID;
         }
 
@@ -688,6 +697,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 intStateID = states.OrderBy(s => s.Order).LastOrDefault().StateID;
             }
+
             return intStateID;
         }
 
@@ -704,6 +714,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 intPreviousStateID = initState.StateID;
             }
+
             for (int i = 0; i < states.Count(); i++)
             {
                 if (states.ElementAt(i).StateID == stateID)
@@ -712,6 +723,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                     intItem = i;
                 }
             }
+
             // get previous active state
             if (intPreviousStateID == stateID)
             {
@@ -723,6 +735,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                         intPreviousStateID = states.ElementAt(intItem).StateID;
                         break;
                     }
+
                     intItem = intItem - 1;
                 }
             }
@@ -763,6 +776,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                         intNextStateID = states.ElementAt(intItem).StateID;
                         break;
                     }
+
                     intItem = intItem + 1;
                 }
             }

@@ -23,6 +23,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     summary = summary.Substring(0, 75);
                 }
+
                 return summary;
             }
         }
@@ -36,6 +37,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     this.ReadXml(reader);
                 }
+
                 reader.Close();
             }
         }
@@ -79,6 +81,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 sb.Append(logDetail.ToString());
             }
+
             return sb.ToString();
         }
 
@@ -89,6 +92,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 logDetail.WriteXml(writer);
             }
+
             writer.WriteEndElement();
         }
     }

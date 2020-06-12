@@ -212,6 +212,7 @@ namespace DotNetNuke.Web.DDRMenu
                     xmlValue = xmlAttr.Value;
                 }
             }
+
             return xmlValue;
         }
     }

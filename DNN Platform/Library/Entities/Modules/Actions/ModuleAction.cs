@@ -211,11 +211,13 @@ namespace DotNetNuke.Entities.Modules.Actions
                             endIndex = this.Url.IndexOf("&", startIndex + 1);
                         }
                     }
+
                     if (startIndex > -1)
                     {
                         controlKey = endIndex > -1 ? this.Url.Substring(startIndex + 1, endIndex - startIndex - 1) : this.Url.Substring(startIndex + 1);
                     }
                 }
+
                 return controlKey;
             }
         }

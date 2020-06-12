@@ -110,6 +110,7 @@ namespace DotNetNuke.UI.WebControls
 
                 dataChanged = true;
             }
+
             return dataChanged;
         }
 
@@ -140,6 +141,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Checked, "checked");
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.Write(optionText);
             writer.RenderEndTag();

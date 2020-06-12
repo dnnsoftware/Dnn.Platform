@@ -189,6 +189,7 @@ namespace DotNetNuke.Services.FileSystem
                 Logger.Error(ex);
             }
         }
+
         private static ImageFormat GetImageFormat(Image img)
         {
             if (img.RawFormat.Equals(ImageFormat.Jpeg))
@@ -240,6 +241,7 @@ namespace DotNetNuke.Services.FileSystem
                 return ImageFormat.Wmf;
             }
         }
+
         private static Stream ToStream(Image image, ImageFormat formaw)
         {
             var stream = new MemoryStream();
@@ -285,6 +287,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         return Host.AllowedExtensionWhitelist;
                     }
+
                     if (!user.IsAdmin)
                     {
                         var settings = PortalSettings.Current;
@@ -294,6 +297,7 @@ namespace DotNetNuke.Services.FileSystem
                         }
                     }
                 }
+
                 return Host.AllowedExtensionWhitelist;
             }
         }
@@ -467,6 +471,7 @@ namespace DotNetNuke.Services.FileSystem
                                 // File Events for updating will be not fired. Only events for adding nust be fired
                                 this.UpdateFile(file, true, false);
                             }
+
                             contentFileName = this.ProcessVersioning(folder, oldFile, file, createdByUserID);
                         }
                         else
@@ -476,6 +481,7 @@ namespace DotNetNuke.Services.FileSystem
                             this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
+
                     // Versioning
                     else
                     {
@@ -698,6 +704,7 @@ namespace DotNetNuke.Services.FileSystem
                 // File Events for updating will not be fired. Only events for adding nust be fired
                 this.UpdateFile(file, true, false);
             }
+
             if (folderWorkflow != null && this.StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
                 if (!fileExists) // if file exists it could have been published. So We don't have to update the field
@@ -739,6 +746,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return FileVersionController.Instance.AddFileVersion(oldFile, createdByUserID);
             }
+
             return file.FileName;
         }
 
@@ -952,6 +960,7 @@ namespace DotNetNuke.Services.FileSystem
                     DataCache.SetCache(strCacheKey, file, TimeSpan.FromMinutes(intCacheTimeout));
                 }
             }
+
             return (IFileInfo)file;
         }
 
@@ -1188,6 +1197,7 @@ namespace DotNetNuke.Services.FileSystem
                         this.AddFileToFolderProvider(fileContent, file.FileName, destinationFolder, destinationFolderProvider);
                     }
                 }
+
                 this.DeleteFileFromFolderProvider(file, sourceFolderProvider);
             }
 
@@ -1266,6 +1276,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 file.Extension = Path.GetExtension(newFileName).Replace(".", string.Empty);
             }
+
             var renamedFile = this.UpdateFile(file);
 
             // Notify File Renamed event
@@ -1560,6 +1571,7 @@ namespace DotNetNuke.Services.FileSystem
                 ////We assume User can add content to folder
                 return true;
             }
+
             return WorkflowSecurity.Instance.HasStateReviewerPermission(folder.PortalID, createdByUserID, item.StateID);
         }
 
@@ -1570,8 +1582,10 @@ namespace DotNetNuke.Services.FileSystem
                 WorkflowEngine.Instance.StartWorkflow(folderWorkflow.WorkflowID, contentItemID, createdByUserID);
                 return true;
             }
+
             return false;
         }
+
         private string UpdateWhileApproving(IFolderInfo folder, int createdByUserID, IFileInfo file, IFileInfo oldFile, Stream content)
         {
             var contentController = new ContentController();
@@ -1585,6 +1599,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return file.FileName;
             }
+
             if (workflowCompleted) // We assume User can add content to folder
             {
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
@@ -1598,6 +1613,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     FileVersionController.Instance.DeleteFileVersion(file, versions.OrderByDescending(f => f.Version).FirstOrDefault().Version);
                 }
+
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 
@@ -1643,6 +1659,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 invalidFiles = new List<string>();
             }
+
             var exactFilesCount = 0;
 
             try
@@ -1977,6 +1994,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 this.OnFileMetadataChanged(updatedFile ?? this.GetFile(file.FileId, true), this.GetCurrentUserID());
             }
+
             return updatedFile;
         }
 

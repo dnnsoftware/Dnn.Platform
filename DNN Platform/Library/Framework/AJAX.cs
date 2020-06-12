@@ -24,6 +24,7 @@ namespace DotNetNuke.Framework
         {
             AddScriptManager(page, true);
         }
+
         /// <summary>
         /// AddScriptManager is used internally by the framework to add a ScriptManager control to the page.
         /// </summary>
@@ -49,8 +50,10 @@ namespace DotNetNuke.Framework
                                 scriptManager.EnableCdn = Host.EnableMsAjaxCdn;
                                 scriptManager.EnableCdnFallback = Host.EnableMsAjaxCdn;
                             }
+
                             page.Form.Controls.AddAt(0, scriptManager);
                         }
+
                         if (HttpContext.Current.Items["System.Web.UI.ScriptManager"] == null)
                         {
                             HttpContext.Current.Items.Add("System.Web.UI.ScriptManager", true);
@@ -61,6 +64,7 @@ namespace DotNetNuke.Framework
                         // suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
                     }
                 }
+
                 if (page.Form != null)
                 {
                     try

@@ -59,6 +59,7 @@ namespace DotNetNuke.Modules.Groups
                        this.Response.Redirect(this._navigationManager.NavigateURL(this.GroupListTabId));
                     }
                 }
+
                 GroupsModuleBase ctl = (GroupsModuleBase)this.LoadControl(this.ControlPath);
                 ctl.ModuleConfiguration = this.ModuleConfiguration;
                 this.plhContent.Controls.Clear();

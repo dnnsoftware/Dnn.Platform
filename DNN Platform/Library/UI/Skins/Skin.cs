@@ -212,6 +212,7 @@ namespace DotNetNuke.UI.Skins
                     return controlToReturn;
                 }
             }
+
             return null;
         }
 
@@ -225,6 +226,7 @@ namespace DotNetNuke.UI.Skins
                     blnExpired = true;
                 }
             }
+
             return blnExpired;
         }
 
@@ -328,6 +330,7 @@ namespace DotNetNuke.UI.Skins
                                 // Control Panel pane
                                 this._controlPanel = objPaneControl;
                             }
+
                             break;
                     }
                 }
@@ -344,6 +347,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     skinPath = skinPath.Remove(0, Globals.ApplicationPath.Length);
                 }
+
                 ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
                 ctlSkin.SkinSrc = skinSrc;
                 // call databind so that any server logic in the skin is executed
@@ -360,8 +364,10 @@ namespace DotNetNuke.UI.Skins
                     skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                     skinError.Visible = true;
                 }
+
                 Exceptions.LogException(lex);
             }
+
             return ctlSkin;
         }
 
@@ -386,6 +392,7 @@ namespace DotNetNuke.UI.Skins
                     Exceptions.LogException(lex);
                 }
             }
+
             return success;
         }
 
@@ -476,6 +483,7 @@ namespace DotNetNuke.UI.Skins
 
                 this.Response.Redirect(redirectUrl, true);
             }
+
             return success;
         }
 
@@ -522,6 +530,7 @@ namespace DotNetNuke.UI.Skins
             {
                 slaveModule.ContainerSrc = this.PortalSettings.DefaultPortalContainer;
             }
+
             slaveModule.ContainerSrc = SkinController.FormatSkinSrc(slaveModule.ContainerSrc, this.PortalSettings);
             slaveModule.ContainerPath = SkinController.FormatSkinPath(slaveModule.ContainerSrc);
 
@@ -610,6 +619,7 @@ namespace DotNetNuke.UI.Skins
                 {
                     messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
                 }
+
                 AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
 
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
@@ -988,6 +998,7 @@ namespace DotNetNuke.UI.Skins
                 Exceptions.LogException(ex);
                 bSuccess = false;
             }
+
             return bSuccess;
         }
 
@@ -1011,6 +1022,7 @@ namespace DotNetNuke.UI.Skins
             {
                 defaultSkinPath = defaultSkinPath.Substring(0, defaultSkinPath.Length - 1);
             }
+
             return skinPath.IndexOf(defaultSkinPath, StringComparison.CurrentCultureIgnoreCase) != -1;
         }
 
@@ -1027,6 +1039,7 @@ namespace DotNetNuke.UI.Skins
                     list.Add(skin);
                 }
             }
+
             return list;
         }
     }

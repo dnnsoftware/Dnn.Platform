@@ -375,6 +375,7 @@ namespace DotNetNuke.Tests.Data
                 }
             }
         }
+
         [Test]
         public void PetaPoco_Update_Overload_Updates_Item()
         {

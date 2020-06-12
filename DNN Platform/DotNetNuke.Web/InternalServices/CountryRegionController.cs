@@ -46,6 +46,7 @@ namespace DotNetNuke.Web.InternalServices
                     Value = r.EntryID.ToString(),
                 });
             }
+
             return this.Request.CreateResponse(HttpStatusCode.OK, res.OrderBy(r => r.Text));
         }
     }

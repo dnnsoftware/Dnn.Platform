@@ -293,6 +293,7 @@ namespace DotNetNuke.Entities.Modules
                         this._moduleSettings = new ModuleController().GetModuleSettings(this.ModuleID, this.TabID);
                     }
                 }
+
                 return this._moduleSettings;
             }
         }
@@ -399,6 +400,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     this._defaultLanguageModule = (from kvp in this.ParentTab.DefaultLanguageTab.ChildModules where kvp.Value.UniqueId == this.DefaultLanguageGuid select kvp.Value).SingleOrDefault();
                 }
+
                 return this._defaultLanguageModule;
             }
         }
@@ -421,6 +423,7 @@ namespace DotNetNuke.Entities.Modules
                     // Child language
                     isLocalized = this.ModuleID != this.DefaultLanguageModule.ModuleID;
                 }
+
                 return isLocalized;
             }
         }
@@ -444,6 +447,7 @@ namespace DotNetNuke.Entities.Modules
                     // Child language
                     isTranslated = this.LocalizedVersionGuid == this.DefaultLanguageModule.LocalizedVersionGuid;
                 }
+
                 return isTranslated;
             }
         }
@@ -469,6 +473,7 @@ namespace DotNetNuke.Entities.Modules
                         }
                     }
                 }
+
                 return this._localizedModules;
             }
         }
@@ -502,6 +507,7 @@ namespace DotNetNuke.Entities.Modules
                         this._parentTab = TabController.Instance.GetTabByCulture(this.TabID, this.PortalID, locale);
                     }
                 }
+
                 return this._parentTab;
             }
         }
@@ -581,6 +587,7 @@ namespace DotNetNuke.Entities.Modules
                             break;
                     }
                 }
+
                 this.ContainerSrc = Null.SetNullString(dr["ContainerSrc"]);
                 this.DisplayTitle = Null.SetNullBoolean(dr["DisplayTitle"]);
                 this.DisplayPrint = Null.SetNullBoolean(dr["DisplayPrint"]);
@@ -592,6 +599,7 @@ namespace DotNetNuke.Entities.Modules
                     this.WebSliceExpiryDate = Null.SetNullDateTime(dr["WebSliceExpiryDate"]);
                     this.WebSliceTTL = Null.SetNullInteger(dr["WebSliceTTL"]);
                 }
+
                 this.DesktopModuleID = Null.SetNullInteger(dr["DesktopModuleID"]);
                 this.ModuleControlId = Null.SetNullInteger(dr["ModuleControlID"]);
             }
@@ -627,11 +635,13 @@ namespace DotNetNuke.Entities.Modules
             {
                 outputFormat = "g";
             }
+
             if (currentScope == Scope.NoSettings)
             {
                 propertyNotFound = true;
                 return PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
             string result = string.Empty;
             bool isPublic = true;
@@ -921,11 +931,13 @@ namespace DotNetNuke.Entities.Modules
                     result = PropertyAccess.FormatString(this.DesktopModule.HostPage, format);
                     break;
             }
+
             if (!isPublic && currentScope != Scope.Debug)
             {
                 propertyNotFound = true;
                 result = PropertyAccess.ContentLocked;
             }
+
             return result;
         }
 
@@ -1009,10 +1021,12 @@ namespace DotNetNuke.Entities.Modules
                 var defaultModuleCache = ComponentFactory.GetComponent<ModuleCachingProvider>();
                 effectiveCacheMethod = (from provider in ModuleCachingProvider.GetProviderList() where provider.Value.Equals(defaultModuleCache) select provider.Key).SingleOrDefault();
             }
+
             if (string.IsNullOrEmpty(effectiveCacheMethod))
             {
                 throw new InvalidOperationException(Localization.GetString("EXCEPTION_ModuleCacheMissing"));
             }
+
             return effectiveCacheMethod;
         }
 

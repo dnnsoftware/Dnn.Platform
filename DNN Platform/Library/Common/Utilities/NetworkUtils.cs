@@ -34,11 +34,13 @@ namespace DotNetNuke.Common.Utils
                     addrFamily = AddressFamily.InterNetworkV6;
                     break;
             }
+
             IPHostEntry IPE = Dns.GetHostEntry(Host);
             if (Host != IPE.HostName)
             {
                 IPE = Dns.GetHostEntry(IPE.HostName);
             }
+
             foreach (IPAddress IPA in IPE.AddressList)
             {
                 if (IPA.AddressFamily == addrFamily)
@@ -46,8 +48,10 @@ namespace DotNetNuke.Common.Utils
                     return IPA.ToString();
                 }
             }
+
             return string.Empty;
         }
+
         /// <summary>
         /// Convert IP address to long integer
         /// </summary>
@@ -64,6 +68,7 @@ namespace DotNetNuke.Common.Utils
             {
                 addr = addr | (Convert.ToInt64(addressBytes[x]) << ((3 - x) * 8));
             }
+
             return addr;
         }
 
@@ -90,6 +95,7 @@ namespace DotNetNuke.Common.Utils
                 addr += ipByte[x].ToString() + ".";
                 // add current octet to string
             }
+
             return addr.TrimEnd('.');
         }
 
@@ -200,6 +206,7 @@ namespace DotNetNuke.Common.Utils
                 ip += Convert.ToUInt32(elements[2]) << 8;
                 ip += Convert.ToUInt32(elements[3]);
             }
+
             return ip;
         }
 
@@ -245,6 +252,7 @@ namespace DotNetNuke.Common.Utils
                 // catch case where IP cannot be resolved such as when debugger is attached
                 return false;
             }
+
             return false;
         }
 

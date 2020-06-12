@@ -253,6 +253,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 DataCache.RemoveCache(string.Format(ToastsCacheKey, recipient.UserID));
             }
+
             this._dataService.DeleteNotification(notificationId);
         }
 
@@ -320,6 +321,7 @@ namespace DotNetNuke.Services.Social.Notifications
             {
                 pid = PortalController.GetEffectivePortalId(portalId);
             }
+
             return userId <= 0
                 ? new List<Notification>(0)
                 : CBO.FillCollection<Notification>(this._dataService.GetNotifications(userId, pid, afterNotificationId, numberOfRecords));
@@ -395,6 +397,7 @@ namespace DotNetNuke.Services.Social.Notifications
                 {
                     this._dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
                 }
+
                 // Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
                 // This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
                 DataCache.SetCache(cacheKey, new List<Notification>());

@@ -389,6 +389,7 @@ namespace log4net.Appender
                     {
                         eventIDPropertyString = eventIDPropertyObj.ToString();
                     }
+
                     if (eventIDPropertyString != null && eventIDPropertyString.Length > 0)
                     {
                         // Read the string property into a number
@@ -421,6 +422,7 @@ namespace log4net.Appender
                     {
                         categoryPropertyString = categoryPropertyObj.ToString();
                     }
+
                     if (categoryPropertyString != null && categoryPropertyString.Length > 0)
                     {
                         // Read the string property into a number

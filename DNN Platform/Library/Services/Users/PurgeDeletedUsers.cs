@@ -41,6 +41,7 @@ namespace DotNetNuke.Services.Users
                                     thresholdDate = DateTime.Now.AddDays(-7 * settings.DataConsentDelay);
                                     break;
                             }
+
                             var deletedUsers = UserController.GetDeletedUsers(portal.PortalID);
                             foreach (UserInfo user in deletedUsers)
                             {
@@ -53,6 +54,7 @@ namespace DotNetNuke.Services.Users
                         }
                     }
                 }
+
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Purging deleted users task completed");
             }

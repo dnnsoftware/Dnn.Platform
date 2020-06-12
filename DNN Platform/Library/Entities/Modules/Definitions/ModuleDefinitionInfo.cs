@@ -100,6 +100,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 {
                     this.LoadControls();
                 }
+
                 return this._ModuleControls;
             }
         }
@@ -172,10 +173,12 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 if (reader.NodeType == XmlNodeType.Element && reader.Name == "moduleControls")
                 {
                     this.ReadModuleControls(reader);
@@ -195,6 +198,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             {
                                 this.DefaultCacheTime = int.Parse(elementvalue);
                             }
+
                             break;
                         case "permissions": // Ignore permissons node
                             reader.Skip();
@@ -207,6 +211,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }
@@ -236,6 +241,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             {
                 control.WriteXml(writer);
             }
+
             // Write end of Module Controls
             writer.WriteEndElement();
 

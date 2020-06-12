@@ -78,6 +78,7 @@ namespace Dnn.AzureConnector.Components
                 });
                 return finalCon;
             }
+
             return new List<IConnector> { this };
         }
 
@@ -140,11 +141,13 @@ namespace Dnn.AzureConnector.Components
                 DeleteAzureFolderMapping(portalId);
                 return true;
             }
+
             if (!this.Validation(azureAccountName, azureAccountKey, azureContainerName))
             {
                 validated = false;
                 return true;
             }
+
             if (this.FolderMappingNameExists(portalId, this.DisplayName,
                 Convert.ToInt32(!string.IsNullOrEmpty(this.Id) ? this.Id : null)))
             {
@@ -201,15 +204,18 @@ namespace Dnn.AzureConnector.Components
                 {
                     folderMapping.FolderMappingSettings[Constants.DirectLink] = "True";
                 }
+
                 if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.UseHttps))
                 {
                     folderMapping.FolderMappingSettings[Constants.UseHttps] = "True";
                 }
+
                 if (folderMapping.MappingName != this.DisplayName && !string.IsNullOrEmpty(this.DisplayName) &&
                    this.DisplayName != DefaultDisplayName)
                 {
                     folderMapping.MappingName = this.DisplayName;
                 }
+
                 if (!folderMapping.FolderMappingSettings.ContainsKey(Constants.SyncBatchSize))
                 {
                     folderMapping.FolderMappingSettings[Constants.SyncBatchSize] = Constants.DefaultSyncBatchSize.ToString();
@@ -236,12 +242,14 @@ namespace Dnn.AzureConnector.Components
                         "AccountNameCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
+
                 if (string.IsNullOrWhiteSpace(azureAccountKey))
                 {
                     throw new ConnectorArgumentException(Localization.GetString(
                         "AccountKeyCannotBeEmpty.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
+
                 StorageCredentials sc = new StorageCredentials(azureAccountName, azureAccountKey);
                 var csa = new CloudStorageAccount(sc, true);
                 var blobClient = csa.CreateCloudBlobClient();
@@ -308,6 +316,7 @@ namespace Dnn.AzureConnector.Components
                         "InvalidAccountName.ErrorMessage",
                         Constants.LocalResourceFile));
                 }
+
                 throw new ConnectorArgumentException(Localization.GetString(
                     "InvalidAccountKey.ErrorMessage",
                     Constants.LocalResourceFile));
@@ -345,6 +354,7 @@ namespace Dnn.AzureConnector.Components
             {
                 return CreateAzureFolderMappingStatic(portalId);
             }
+
             return folderMappings.FirstOrDefault();
         }
 
@@ -370,6 +380,7 @@ namespace Dnn.AzureConnector.Components
             {
                 folderMapping = this.CreateAzureFolderMapping(portalId);
             }
+
             return folderMapping;
         }
 

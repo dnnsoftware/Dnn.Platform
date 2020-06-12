@@ -39,8 +39,10 @@ namespace DotNetNuke.Instrumentation
                         frameDepth++;
                         reflectedType = stack[frameDepth].GetMethod().ReflectedType;
                     }
+
                     frame = stack[frameDepth];
                 }
+
                 return frame;
             }
         }
@@ -72,6 +74,7 @@ namespace DotNetNuke.Instrumentation
                         {
                             XmlConfigurator.ConfigureAndWatch(new FileInfo(configPath));
                         }
+
                         _configured = true;
                     }
                 }

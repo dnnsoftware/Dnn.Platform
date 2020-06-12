@@ -58,11 +58,13 @@ namespace DotNetNuke.Collections
                 {
                     throw new IndexOutOfRangeException("Index cannot be negative");
                 }
+
                 if (pageIndex >= this.PageCount)
                 {
                     throw new IndexOutOfRangeException("Invalid Page Index");
                 }
             }
+
             this.TotalCount = totalCount;
             this.PageSize = pageSize;
             this.PageIndex = pageIndex;

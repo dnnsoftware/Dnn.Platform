@@ -98,6 +98,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     lastModifiedDate = File.GetLastWriteTime(cultureNeutralFile);
                 }
             }
+
             return lastModifiedDate;
         }
 

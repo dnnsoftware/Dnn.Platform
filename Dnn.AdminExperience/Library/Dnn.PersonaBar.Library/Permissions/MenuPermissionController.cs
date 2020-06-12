@@ -126,6 +126,7 @@ namespace Dnn.PersonaBar.Library.Permissions
             {
                 hasPermission = PortalSecurity.IsInRoles(menuPermissions.ToString(permissionKey));
             }
+
             return hasPermission;
         }
 
@@ -247,6 +248,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                 {
                     roleName = defaultPermissions[0];
                 }
+
                 defaultPermissions.RemoveAt(0);
                 var administratorRole = PortalController.Instance.GetPortal(portalId).AdministratorRoleName;
 
@@ -275,6 +277,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                         {
                             Logger.Error($"Role \"{roleName}\" in portal \"{portalId}\" doesn't marked as system role, will ignore add this default permission to {menuItem.Identifier}.");
                         }
+
                         break;
                 }
 
@@ -289,6 +292,7 @@ namespace Dnn.PersonaBar.Library.Permissions
                                     !menuPermissions.ToList()
                                         .Exists(y => y.PermissionID == x.PermissionId && y.RoleID == roleId));
                     }
+
                     foreach (var permission in permissions)
                     {
                         var menuPermissionInfo = new MenuPermissionInfo

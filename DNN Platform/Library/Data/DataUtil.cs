@@ -31,6 +31,7 @@ namespace DotNetNuke.Data
                     { // Add output for output params
                         parameterFormat += " output";
                     }
+
                     parameterName = param.ParameterName;
                 }
 

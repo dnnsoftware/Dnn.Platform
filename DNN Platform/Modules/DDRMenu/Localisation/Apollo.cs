@@ -33,11 +33,13 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                         this.apiMember = apiType.GetMethod("getLocalizedTab", new[] { typeof(TabInfo) });
                     }
                 }
+
 // ReSharper disable EmptyGeneralCatchClause
                 catch
 // ReSharper restore EmptyGeneralCatchClause
                 {
                 }
+
                 this.haveChecked = true;
             }
 

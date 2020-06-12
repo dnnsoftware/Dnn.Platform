@@ -85,6 +85,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -107,6 +108,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     this._moduleContext = new ModuleInstanceContext(this);
                 }
+
                 return this._moduleContext;
             }
         }

@@ -50,6 +50,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionRoot = new ModuleAction(this.ModuleControl.ModuleContext.GetNextActionID(), " ", string.Empty, string.Empty, "action.gif");
                 }
+
                 return this._ActionRoot;
             }
         }
@@ -82,6 +83,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     return -1;
                 }
+
                 return this._ExpandDepth;
             }
             set
@@ -140,6 +142,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionManager = new ActionManager(this);
                 }
+
                 return this._ActionManager;
             }
         }
@@ -169,6 +172,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this.ProcessNodes(objNode);
                 }
+
                 this.ProviderControl.Bind(objNodes);
             }
         }
@@ -185,6 +189,7 @@ namespace DotNetNuke.UI.Containers
             {
                 objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID));
             }
+
             foreach (DNNNode objNode in objParent.DNNNodes)
             {
                 this.ProcessNodes(objNode);
@@ -327,10 +332,12 @@ namespace DotNetNuke.UI.Containers
             {
                 objAction = this.ModuleControl.ModuleContext.Actions.GetActionByID(Convert.ToInt32(args.ID));
             }
+
             if (args.Node == null)
             {
                 args.Node = Navigation.GetActionNode(args.ID, this.ProviderControl.ID, objAction, this);
             }
+
             this.ProviderControl.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }

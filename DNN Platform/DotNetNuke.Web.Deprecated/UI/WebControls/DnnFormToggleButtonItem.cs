@@ -44,6 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     newValue = this._checkBox.Checked ? "true" : "false";
                     break;
             }
+
             this.UpdateDataSource(this.Value, newValue, this.DataField);
         }
 
@@ -59,6 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (!this._checkBox.Page.IsPostBack)
             {
             }
+
             switch (this.Mode)
             {
                 case CheckBoxMode.YN:
@@ -68,6 +70,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         this._checkBox.Checked = stringValue.StartsWith("Y", StringComparison.InvariantCultureIgnoreCase);
                     }
+
                     break;
                 default:
                     this._checkBox.Checked = Convert.ToBoolean(this.Value);

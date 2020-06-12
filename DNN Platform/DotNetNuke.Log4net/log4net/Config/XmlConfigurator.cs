@@ -548,6 +548,7 @@ namespace log4net.Config
                                 // The stream cannot be valid
                                 fs = null;
                             }
+
                             System.Threading.Thread.Sleep(250);
                         }
                     }

@@ -105,6 +105,7 @@ namespace DotNetNuke.Security.Permissions
                     dr.Close();
                 }
             }
+
             return dic;
         }
 

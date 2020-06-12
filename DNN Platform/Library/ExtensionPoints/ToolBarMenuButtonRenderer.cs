@@ -22,6 +22,7 @@ namespace DotNetNuke.ExtensionPoints
                 cssClass += " disabled";
                 action = "void(0);";
             }
+
             var icon = extension.Icon;
             if (icon.StartsWith("~/"))
             {

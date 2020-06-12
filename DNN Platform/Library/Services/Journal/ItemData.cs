@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.Journal
                 {
                     OutputFormat = format;
                 }
+
                 propertyName = propertyName.ToLowerInvariant();
                 switch (propertyName)
                 {

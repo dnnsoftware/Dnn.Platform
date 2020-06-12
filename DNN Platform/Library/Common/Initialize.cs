@@ -61,6 +61,7 @@ namespace DotNetNuke.Common
                         retValue = "~/Install/UnderConstruction.htm";
                         Logger.Info("UnderConstruction page was shown because application needs to be installed, and both the AutoUpgrade and UseWizard AppSettings in web.config are false. Use /install/install.aspx?mode=install to install application. ");
                     }
+
                     break;
                 case Globals.UpgradeStatus.Upgrade:
                     if (autoUpgrade || useWizard)
@@ -73,6 +74,7 @@ namespace DotNetNuke.Common
                         retValue = "~/Install/UnderConstruction.htm";
                         Logger.Info("UnderConstruction page was shown because application needs to be upgraded, and both the AutoUpgrade and UseInstallWizard AppSettings in web.config are false. Use /install/install.aspx?mode=upgrade to upgrade application. ");
                     }
+
                     break;
                 case Globals.UpgradeStatus.Error:
                     // here we need to check if the application is already installed
@@ -100,6 +102,7 @@ namespace DotNetNuke.Common
                             {
                                 Logger.Error("The connection to the database has failed, however, the application is already completely installed, a 500 error page will be shown to visitors");
                             }
+
                             string url = "~/ErrorPage.aspx?status=500&error=Site Unavailable&error2=Connection To The Database Failed";
                             HttpContext.Current.Response.Clear();
                             HttpContext.Current.Server.Transfer(url);
@@ -108,6 +111,7 @@ namespace DotNetNuke.Common
 
                     break;
             }
+
             return retValue;
         }
 
@@ -171,6 +175,7 @@ namespace DotNetNuke.Common
             {
                 // ignore
             }
+
             return -1;
         }
 
@@ -228,6 +233,7 @@ namespace DotNetNuke.Common
                 Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                 Globals.OperatingSystemVersion = Environment.OSVersion.Version;
             }
+
             return redirect;
         }
 
@@ -254,6 +260,7 @@ namespace DotNetNuke.Common
             {
                 return;
             }
+
             lock (InitializeLock)
             {
                 // Double-Check if app was initialised by another request
@@ -261,9 +268,11 @@ namespace DotNetNuke.Common
                 {
                     return;
                 }
+
                 // Initialize ...
                 redirect = InitializeApp(app, ref InitializedAlready);
             }
+
             if (!string.IsNullOrEmpty(redirect))
             {
                 app.Response.Redirect(redirect, true);
@@ -344,6 +353,7 @@ namespace DotNetNuke.Common
                         shutdownDetail = "Shutdown reason: " + shutdownReason;
                         break;
                 }
+
                 var log = new LogInfo
                 {
                     BypassBuffering = true,
@@ -383,6 +393,7 @@ namespace DotNetNuke.Common
             {
                 Exceptions.LogException(exc);
             }
+
             if (Globals.Status != Globals.UpgradeStatus.Install)
             {
                 // purge log buffer
@@ -457,6 +468,7 @@ namespace DotNetNuke.Common
             {
                 Globals.ResetAppStartElapseTime();
             }
+
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 

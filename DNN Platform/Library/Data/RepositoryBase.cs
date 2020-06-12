@@ -214,6 +214,7 @@ namespace DotNetNuke.Data
                 {
                     cacheKey += "_" + this.Scope + "_{0}";
                 }
+
                 this.CacheArgs = new CacheItemArgs(cacheKey, cacheTimeOut, cachePriority);
             }
             else

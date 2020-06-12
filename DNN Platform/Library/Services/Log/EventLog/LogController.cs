@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 var f = Globals.HostMapPath + "\\Logs\\LogFailures.xml.resources";
                 WriteLog(f, logInfo.Serialize());
             }
+
             // ReSharper disable EmptyGeneralCatchClause
             catch (Exception exc) // ReSharper restore EmptyGeneralCatchClause
             {
@@ -74,6 +75,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     message = "<logs>" + message;
                 }
+
                 sw.WriteLine(message + "</logs>");
                 sw.Flush();
             }
@@ -103,6 +105,7 @@ namespace DotNetNuke.Services.Log.EventLog
                         Thread.Sleep(1);
                     }
                 }
+
                 if (fs == null)
                 {
                     if (HttpContext.Current != null)
@@ -146,6 +149,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     fs.Close();
                 }
+
                 LockLog.ExitWriteLock();
             }
         }
@@ -166,6 +170,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         logInfo.LogServerName = "NA";
                     }
+
                     if (string.IsNullOrEmpty(logInfo.LogUserName))
                     {
                         if (HttpContext.Current != null)

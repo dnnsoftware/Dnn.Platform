@@ -134,6 +134,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         this._StdAdapter = new StandardEditorInfoAdapter(this.DataSource, this.DataField);
                     }
+
                     return this._StdAdapter;
                 }
                 else
@@ -194,6 +195,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.Validate();
                 }
+
                 return this._IsValid;
             }
         }
@@ -373,6 +375,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.Controls.Add(visibility);
                 }
+
                 if (propLabel != null)
                 {
                     this.Controls.Add(propLabel);
@@ -407,6 +410,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 propEditor.ControlStyle.CopyFrom(editInfo.ControlStyle);
             }
+
             propEditor.ItemAdded += this.CollectionItemAdded;
             propEditor.ItemDeleted += this.CollectionItemDeleted;
             propEditor.ValueChanged += this.ValueChanged;
@@ -415,6 +419,7 @@ namespace DotNetNuke.UI.WebControls
                 var listEditor = (DNNListEditControl)propEditor;
                 listEditor.ItemChanged += this.ListItemChanged;
             }
+
             this.Editor = propEditor;
 
             return propEditor;
@@ -444,11 +449,13 @@ namespace DotNetNuke.UI.WebControls
                     {
                         propLabel.ShowHelp = false;
                     }
+
                     break;
                 case HelpDisplayMode.Never:
                     propLabel.ShowHelp = false;
                     break;
             }
+
             propLabel.Caption = editInfo.Name;
             propLabel.HelpText = editInfo.Name;
             propLabel.ResourceKey = editInfo.ResourceKey;
@@ -456,6 +463,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 propLabel.Width = this.LabelWidth;
             }
+
             return propLabel;
         }
 
@@ -478,8 +486,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     img.ImageUrl = this.RequiredUrl;
                 }
+
                 img.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Required");
             }
+
             return img;
         }
 
@@ -502,6 +512,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 labelCell.Width = this.LabelWidth;
             }
+
             // Build Editor Cell
             editorCell.VerticalAlign = VerticalAlign.Top;
             EditControl propEditor = this.BuildEditor(editInfo);
@@ -511,10 +522,12 @@ namespace DotNetNuke.UI.WebControls
             {
                 editorCell.Controls.Add(requiredIcon);
             }
+
             if (editInfo.LabelMode == LabelMode.Left || editInfo.LabelMode == LabelMode.Right)
             {
                 editorCell.Width = this.EditControlWidth;
             }
+
             VisibilityControl visibility = this.BuildVisibility(editInfo);
             if (visibility != null)
             {
@@ -534,10 +547,12 @@ namespace DotNetNuke.UI.WebControls
                     labelCell.ColumnSpan = 2;
                     labelRow.Cells.Add(labelCell);
                 }
+
                 if (editInfo.LabelMode == LabelMode.Top)
                 {
                     tbl.Rows.Add(labelRow);
                 }
+
                 tbl.Rows.Add(editorRow);
                 if (editInfo.LabelMode == LabelMode.Bottom)
                 {
@@ -568,6 +583,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 validatorsCell.Controls.Add(validator);
             }
+
             validatorsRow.Cells.Add(validatorsCell);
             tbl.Rows.Add(validatorsRow);
 
@@ -598,6 +614,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     reqValidator.CssClass = "dnnFormMessage dnnFormError";
                 }
+
                 reqValidator.EnableClientScript = this.EnableClientValidation;
                 reqValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Required");
                 reqValidator.ErrorMessage = editInfo.Name + " is Required";
@@ -617,6 +634,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     regExValidator.CssClass = "dnnFormMessage dnnFormError";
                 }
+
                 regExValidator.EnableClientScript = this.EnableClientValidation;
                 regExValidator.Attributes.Add("resourcekey", editInfo.ResourceKey + ".Validation");
                 regExValidator.ErrorMessage = editInfo.Name + " is Invalid";
@@ -644,6 +662,7 @@ namespace DotNetNuke.UI.WebControls
                 visControl.ControlStyle.CopyFrom(this.VisibilityStyle);
                 visControl.VisibilityChanged += this.VisibilityChanged;
             }
+
             return visControl;
         }
 
@@ -844,6 +863,7 @@ namespace DotNetNuke.UI.WebControls
                         break;
                     }
                 }
+
                 this._Validated = true;
             }
         }

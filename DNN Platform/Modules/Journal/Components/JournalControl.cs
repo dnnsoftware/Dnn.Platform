@@ -18,6 +18,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 return CacheLevel.fullyCacheable;
             }
         }
+
         public string CommentLink { get; set; }
         public string LikeLink { get; set; }
         public string LikeList { get; set; }
@@ -34,6 +35,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 OutputFormat = format;
             }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

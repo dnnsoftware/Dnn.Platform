@@ -37,6 +37,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         {
             return "null";
         }
+
         var builder = new StringBuilder();
         builder.Append('{');
         var isFirstPair = true;
@@ -50,6 +51,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
             {
                 builder.Append(',');
             }
+
             builder.Append('"');
             builder.Append(HttpUtility.JavaScriptStringEncode(keyValuePair.Key));
             builder.Append('"');
@@ -57,6 +59,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
             var methodValue = string.IsNullOrEmpty(keyValuePair.Value) ? "null" : keyValuePair.Value;
             builder.Append(methodValue);
         }
+
         builder.Append('}');
         return builder.ToString();
     }
@@ -72,6 +75,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         {
             return "null";
         }
+
         var builder = new StringBuilder();
         builder.Append('[');
         var isFirstPair = true;
@@ -85,9 +89,11 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
             {
                 builder.Append(',');
             }
+
             var methodValue = string.IsNullOrEmpty(keyValuePair.Value) ? "null" : keyValuePair.Value;
             builder.Append(methodValue);
         }
+
         builder.Append(']');
         return builder.ToString();
     }
@@ -98,6 +104,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
         {
             return "null";
         }
+
         var builder = new StringBuilder();
         builder.Append('[');
         var isFirstPair = true;
@@ -111,9 +118,11 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
             {
                 builder.Append(',');
             }
+
             var methodValue = string.IsNullOrEmpty(method) ? "null" : method;
             builder.Append(methodValue);
         }
+
         builder.Append(']');
         return builder.ToString();
     }
@@ -136,6 +145,7 @@ public class JavaScriptObjectDictionary : IEnumerable<KeyValuePair<string, strin
     {
         return this.GetEnumerator();
     }
+
     IEnumerator IEnumerable.GetEnumerator()
     {
         return this.GetEnumeratorPrivate();

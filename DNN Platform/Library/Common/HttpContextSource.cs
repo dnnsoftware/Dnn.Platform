@@ -30,6 +30,7 @@ namespace DotNetNuke.Common
                 {
                     return new HttpContextWrapper(HttpContext.Current);
                 }
+
                 return null;
             }
         }

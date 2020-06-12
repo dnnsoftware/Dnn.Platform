@@ -40,6 +40,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypHelp.CssClass = this.CssClass;
                 }
+
                 if (this.Request.IsAuthenticated)
                 {
                     if (TabPermissionController.CanAdminPage())

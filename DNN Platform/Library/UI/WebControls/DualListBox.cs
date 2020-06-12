@@ -199,8 +199,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._AddValues.Add(addItem);
                 }
+
                 retValue = true;
             }
+
             string removeItems = postCollection[postDataKey + "_Selected"];
             if (!string.IsNullOrEmpty(removeItems))
             {
@@ -209,8 +211,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._RemoveValues.Add(removeItem);
                 }
+
                 retValue = true;
             }
+
             return retValue;
         }
 
@@ -263,6 +267,7 @@ namespace DotNetNuke.UI.WebControls
                     list.Add(objText, objValue);
                 }
             }
+
             return list;
         }
 
@@ -342,6 +347,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.RenderButton("Add", writer);
             }
+
             if (this.ShowAddAllButton)
             {
                 this.RenderButton("AddAll", writer);
@@ -365,6 +371,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.RenderButton("Remove", writer);
             }
+
             if (this.ShowRemoveAllButton)
             {
                 this.RenderButton("RemoveAll", writer);
@@ -413,6 +420,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.HeaderStyle.AddAttributesToRender(writer);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write(Localization.GetString(this.ID + "_Available", this.LocalResourceFile));
             writer.RenderEndTag();
@@ -423,6 +431,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.HeaderStyle.AddAttributesToRender(writer);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             writer.Write(Localization.GetString(this.ID + "_Selected", this.LocalResourceFile));
             writer.RenderEndTag();
@@ -461,6 +470,7 @@ namespace DotNetNuke.UI.WebControls
                 postBackOptions.PerformValidation = true;
                 postBackOptions.ValidationGroup = this.ValidationGroup;
             }
+
             return postBackOptions;
         }
 
@@ -512,6 +522,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.ContainerStyle.AddAttributesToRender(writer);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
             // Render Header Row

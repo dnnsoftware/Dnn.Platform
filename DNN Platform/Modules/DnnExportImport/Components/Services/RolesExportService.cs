@@ -54,6 +54,7 @@ namespace Dnn.ExportImport.Components.Services
                         DataProvider.Instance().GetAllRoleSettings(exportJob.PortalId, toDate, fromDate));
                     this.CheckPoint.TotalItems += roles.Count + roleSettings.Count;
                 }
+
                 this.CheckPointStageCallback(this);
 
                 this.Repository.CreateItems(roleGroups);
@@ -119,6 +120,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
             this.CheckPointStageCallback(this);
@@ -236,6 +238,7 @@ namespace Dnn.ExportImport.Components.Services
                     this.Result.AddLogEntry("Added role group", other.RoleGroupName);
                 }
             }
+
             if (changedGroups.Count > 0)
             {
                 RefreshRecordsUserIds(changedGroups);
@@ -391,6 +394,7 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             this.Result.AddLogEntry("Ignored role setting", other.SettingName);
                         }
+
                         break;
                     default:
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());

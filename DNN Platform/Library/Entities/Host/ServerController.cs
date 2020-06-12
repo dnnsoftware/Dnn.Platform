@@ -38,6 +38,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     uniqueServers[server.ServerName] = server.IISAppName;
                 }
+
                 return uniqueServers.Count < GetEnabledServers().Count;
             }
         }
@@ -67,6 +68,7 @@ namespace DotNetNuke.Entities.Host
                     }
                 }
             }
+
             return servers;
         }
 
@@ -77,6 +79,7 @@ namespace DotNetNuke.Entities.Host
             {
                 executingServerName += "-" + Globals.IISAppName;
             }
+
             Logger.Debug("GetExecutingServerName:" + executingServerName);
             return executingServerName;
         }
@@ -88,6 +91,7 @@ namespace DotNetNuke.Entities.Host
             {
                 serverName += "-" + webServer.IISAppName;
             }
+
             Logger.Debug("GetServerName:" + serverName);
             return serverName;
         }

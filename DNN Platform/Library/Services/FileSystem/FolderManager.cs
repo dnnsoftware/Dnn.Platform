@@ -114,6 +114,7 @@ namespace DotNetNuke.Services.FileSystem
                     // Ensure that Parent Id is repaired
                     folder.ParentID = parentFolder.FolderID;
                 }
+
                 this.UpdateFolderInternal(folder, false);
             }
 
@@ -129,6 +130,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return true;
             }
+
             return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(folder.FolderMappingID).FolderProviderType).SupportsMappedPaths &&
                 this.GetFolder(folder.ParentID).FolderMappingID != folder.FolderMappingID;
         }
@@ -141,6 +143,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
             }
+
             this.DeleteFolder(folder.PortalID, folder.FolderPath);
 
             // Notify folder deleted event
@@ -172,6 +175,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 DirectoryWrapper.Instance.Delete(folder.PhysicalPath, true);
             }
+
             this.DeleteFolder(folder.PortalID, folder.FolderPath);
 
             // Notify folder deleted event
@@ -307,6 +311,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         FileDeletionController.Instance.DeleteFile(file);
                     }
+
                     this.OnFileDeleted(file, this.GetCurrentUserId(), true);
                 }
 
@@ -320,6 +325,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         this.DeleteFolderInternal(folder, !isRecursiveDeletionFolder);
                     }
+
                     return true;
                 }
             }
@@ -335,6 +341,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return string.Empty;
             }
+
             return defaultMappedPath.ToString();
         }
 
@@ -1003,6 +1010,7 @@ namespace DotNetNuke.Services.FileSystem
                     var item = mergedTree.Values[i];
                     this.ProcessMergedTreeItemInAddMode(item, portalId);
                 }
+
                 this.RemoveSyncFoldersData(relativePath);
 
                 // Step 2: Delete Files and Folders
@@ -1121,10 +1129,12 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     return SyncFoldersData[threadId].Permissions;
                 }
+
                 permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
                 SyncFoldersData[threadId] = new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions };
                 return permissions;
             }
+
             permissions = FolderPermissionController.GetFolderPermissionsCollectionByFolder(portalId, relativePath);
             SyncFoldersData.Add(threadId, new SyncFolderData { PortalId = portalId, FolderPath = relativePath, Permissions = permissions });
 
@@ -1366,6 +1376,7 @@ namespace DotNetNuke.Services.FileSystem
                         break;
                 }
             }
+
             var folder = new FolderInfo(true)
                                 {
                                     PortalID = portalId,
@@ -1756,6 +1767,7 @@ namespace DotNetNuke.Services.FileSystem
 
             return this.IsMoveOperationValid(folderToMove, newFolderPath);
         }
+
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual bool IsMoveOperationValid(IFolderInfo folderToMove, string newFolderPath)
         {
@@ -1792,10 +1804,12 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         existingItem.FolderID = item.FolderID;
                     }
+
                     if (existingItem.FolderMappingID < 0)
                     {
                         existingItem.FolderMappingID = item.FolderMappingID;
                     }
+
                     if (string.IsNullOrEmpty(existingItem.MappedPath))
                     {
                         existingItem.MappedPath = item.MappedPath;
@@ -1841,6 +1855,7 @@ namespace DotNetNuke.Services.FileSystem
                     stack.Push(new MoveFoldersInfo(folder, Path.Combine(folders.Target, Path.GetFileName(folder))));
                 }
             }
+
             // ReSharper restore AssignNullToNotNullAttribute
             Directory.Delete(source, true);
         }
@@ -1936,6 +1951,7 @@ namespace DotNetNuke.Services.FileSystem
                 Logger.Error(string.Format("Could not create folder {0}. EXCEPTION: {1}", item.FolderPath, ex.Message), ex);
             }
         }
+
         private void InitialiseSyncFoldersData(int portalId, string relativePath)
         {
             var threadId = Thread.CurrentThread.ManagedThreadId;
@@ -2178,6 +2194,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 this.UpdateFolderInternal(folderInfo, false);
             }
+
             this.ClearFolderCache(folder.PortalID);
         }
 

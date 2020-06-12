@@ -64,6 +64,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         Config.RemoveCodeSubDirectory(this._desktopModule.CodeSubDirectory);
                     }
+
                     var controller = new DesktopModuleController();
 
                     this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
@@ -89,15 +90,18 @@ namespace DotNetNuke.Services.Installer.Installers
                                         noOtherTabModule = false;
                                     }
                                 }
+
                                 if (noOtherTabModule)
                                 {
                                     this.Log.AddInfo(string.Format(Util.MODULE_AdminPageRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                                     TabController.Instance.DeleteTab(tabID, portal.PortalID);
                                 }
+
                                 this.Log.AddInfo(string.Format(Util.MODULE_AdminPagemoduleRemoved, tempDesktopModule.AdminPage, portal.PortalID));
                             }
                         }
                     }
+
                     if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
                         Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
@@ -136,6 +140,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 Config.AddCodeSubDirectory(this._desktopModule.CodeSubDirectory);
             }
+
             if (this._desktopModule.SupportedFeatures == Null.NullInteger)
             {
                 // Set an Event Message so the features are loaded by reflection on restart
@@ -287,6 +292,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
             }
+
             if (this.Log.Valid)
             {
                 this.Log.AddInfo(Util.MODULE_ReadSuccess);

@@ -28,6 +28,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._CountryName = new TextBox();
                 }
+
                 return this._CountryName;
             }
         }
@@ -41,6 +42,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._CountryId = new HiddenField();
                 }
+
                 return this._CountryId;
             }
         }
@@ -63,6 +65,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     strValue = Convert.ToString(this.Value);
                 }
+
                 return strValue;
             }
             set { this.Value = value; }
@@ -77,6 +80,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.Init += this.DnnCountryRegionControl_Init;
         }
+
         public DnnCountryAutocompleteControl(string type)
         {
             this.Init += this.DnnCountryRegionControl_Init;
@@ -119,6 +123,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
 
@@ -161,6 +166,7 @@ namespace DotNetNuke.UI.WebControls
                 this.CountryName.Text = c.Text;
                 countryCode = c.Value;
             }
+
             this.CountryId.Value = this.StringValue;
 
             var regionControl2 = ControlUtilities.FindFirstDescendent<DNNRegionEditControl>(this.Page, c => this.IsCoupledRegionControl(c));
@@ -180,6 +186,7 @@ namespace DotNetNuke.UI.WebControls
                     return true;
                 }
             }
+
             return false;
         }
     }

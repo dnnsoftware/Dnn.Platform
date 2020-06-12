@@ -70,14 +70,17 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     PropertyValue = string.Empty;
                 }
+
                 if (PropertyName.Length > 50)
                 {
                     PropertyName = PropertyName.Substring(0, 50);
                 }
+
                 if (PropertyValue.Length > 500)
                 {
                     PropertyValue = "(TRUNCATED TO 500 CHARS): " + PropertyValue.Substring(0, 500);
                 }
+
                 var objLogDetailInfo = new LogDetailInfo();
                 objLogDetailInfo.PropertyName = PropertyName;
                 objLogDetailInfo.PropertyValue = PropertyValue;
@@ -97,6 +100,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 {
                     this.ReadXml(reader);
                 }
+
                 reader.Close();
             }
         }
@@ -162,6 +166,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     this.LogProperties.ReadXml(reader);
                 }
             }
+
             // Check for Exception child node
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
             {
@@ -186,6 +191,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 case "LogServerName":
                     return true;
             }
+
             return false;
         }
 
@@ -220,6 +226,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 str.Append(this.Exception.ToString());
             }
+
             return str.ToString();
         }
 
@@ -244,6 +251,7 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 this.Exception.WriteXml(writer);
             }
+
             writer.WriteEndElement();
         }
     }

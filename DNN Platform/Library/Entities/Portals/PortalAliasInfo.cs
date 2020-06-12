@@ -78,10 +78,12 @@ namespace DotNetNuke.Entities.Portals
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 switch (reader.Name)
                 {
                     case "portalAlias":
@@ -113,6 +115,7 @@ namespace DotNetNuke.Entities.Portals
                         {
                             reader.ReadElementContentAsString();
                         }
+
                         break;
                 }
             }

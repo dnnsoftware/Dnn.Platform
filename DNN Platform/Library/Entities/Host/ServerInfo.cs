@@ -72,10 +72,12 @@ namespace DotNetNuke.Entities.Host
                 {
                     this.PingFailureCount = Null.SetNullInteger(dr["PingFailureCount"]);
                 }
+
                 if (schema.Select("ColumnName = 'ServerGroup'").Length > 0)
                 {
                     this.ServerGroup = Null.SetNullString(dr["ServerGroup"]);
                 }
+
                 if (schema.Select("ColumnName = 'UniqueId'").Length > 0)
                 {
                     this.UniqueId = Null.SetNullString(dr["UniqueId"]);

@@ -68,6 +68,7 @@ namespace DotNetNuke.Modules.Groups
                 groupInfo.Description = Constants.DefaultGroupName;
                 groupId = RoleController.AddRoleGroup(groupInfo);
             }
+
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.DefaultRoleGroupSetting, groupId.ToString());
 
             this.Response.Redirect(this.Request.RawUrl);
@@ -115,6 +116,7 @@ namespace DotNetNuke.Modules.Groups
                 id = TabController.Instance.AddTab(newTab);
                 newTab = TabController.Instance.GetTab(id, portalId, true);
             }
+
             return newTab;
         }
 
@@ -139,6 +141,7 @@ namespace DotNetNuke.Modules.Groups
                     skinSource = string.Empty; // this will load the default skin
                 }
             }
+
             return skinSource;
         }
 
@@ -156,6 +159,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         moduleId = this.AddNewModule(tab, string.Empty, desktopModuleId, pane, 0, string.Empty);
                     }
+
                     id = moduleId;
                     ModuleInfo mi = ModuleController.Instance.GetModule(moduleId, tab.TabID, false);
                     if (moduleName == "Social Groups")
@@ -163,6 +167,7 @@ namespace DotNetNuke.Modules.Groups
                         ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupLoadView, GroupMode.View.ToString());
                         ModuleController.Instance.UpdateTabModuleSetting(mi.TabModuleID, Constants.GroupListPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
                     }
+
                     if (moduleName == "Console")
                     {
                         ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "AllowSizeChange", "False");
@@ -172,6 +177,7 @@ namespace DotNetNuke.Modules.Groups
                         ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "DefaultSize", "IconNone");
                         ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "ParentTabID", tab.TabID.ToString(CultureInfo.InvariantCulture));
                     }
+
                     if (moduleName == "DotNetNuke.Modules.MemberDirectory")
                     {
                         ModuleController.Instance.UpdateModuleSetting(mi.ModuleID, "FilterBy", "Group");
@@ -216,6 +222,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     objModule.ModuleTitle = title;
                 }
+
                 objModule.PaneName = paneName;
                 objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                 objModule.CacheTime = 0;
@@ -273,6 +280,7 @@ namespace DotNetNuke.Modules.Groups
 
                 return ModuleController.Instance.AddModule(objModule);
             }
+
             return -1;
         }
 
@@ -291,6 +299,7 @@ namespace DotNetNuke.Modules.Groups
             {
                 objModule.ModulePermissions = new ModulePermissionCollection();
             }
+
             if (!objModule.ModulePermissions.Contains(objModulePermission))
             {
                 objModule.ModulePermissions.Add(objModulePermission);

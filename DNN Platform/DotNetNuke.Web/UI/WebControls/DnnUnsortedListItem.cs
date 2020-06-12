@@ -37,6 +37,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, this.CssClass);
             }
+
             if (!string.IsNullOrEmpty(this.ToolTip))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, this.ToolTip);

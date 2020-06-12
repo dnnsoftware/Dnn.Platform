@@ -49,6 +49,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 1)
             {
@@ -110,6 +111,7 @@ namespace Dnn.ExportImport.Components.Services
                                 folder.Username =
                                     UserController.GetUserById(portalId, Convert.ToInt32(userId))?.Username;
                             }
+
                             if (folder.ParentId != null && folder.ParentId > 0)
                             {
                                 // If parent id exists then change the parent folder id to parent id.
@@ -129,6 +131,7 @@ namespace Dnn.ExportImport.Components.Services
                                 this.Repository.CreateItems(permissions, folder.Id);
                                 totalFolderPermissionsExported += permissions.Count;
                             }
+
                             this.Repository.CreateItems(files, folder.Id);
                             totalFilesExported += files.Count;
                             var folderOffset = portal.HomeDirectoryMapPath.Length +
@@ -139,6 +142,7 @@ namespace Dnn.ExportImport.Components.Services
                                 CompressionUtil.AddFilesToArchive(zipArchive, files.Select(file => portal.HomeDirectoryMapPath + folder.FolderPath + this.GetActualFileName(file)),
                                     folderOffset, isUserFolder ? "TempUsers" : null);
                             }
+
                             this.CheckPoint.ProcessedItems++;
                             this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalFolders;
                             this.CheckPoint.StageData = null;
@@ -154,6 +158,7 @@ namespace Dnn.ExportImport.Components.Services
                             this.Repository.RebuildIndex<ExportFile>(x => x.ReferenceId);
                         }
                     }
+
                     this.CheckPoint.Completed = true;
                     this.CheckPoint.Stage++;
                     currentIndex = 0;
@@ -176,6 +181,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Stage 1: Portals files unzipped.
             // Stage 2: All folders and files imported.
             // Stage 3: Synchronization completed.
@@ -239,6 +245,7 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             break;
                         }
+
                         // PROCESS FOLDERS
                         // Create new or update existing folder
                         if (this.ProcessFolder(importJob, importDto, sourceFolder))
@@ -270,6 +277,7 @@ namespace Dnn.ExportImport.Components.Services
                                     this.ProcessFolderPermission(importJob, importDto, folderPermission,
                                         localPermissions);
                                 }
+
                                 totalFolderPermissionsImported += sourceFolderPermissions.Count;
                             }
 
@@ -293,6 +301,7 @@ namespace Dnn.ExportImport.Components.Services
                             {
                                 this.ProcessFiles(importJob, importDto, file, localFiles);
                             }
+
                             totalFilesImported += sourceFiles.Count;
                         }
 
@@ -305,6 +314,7 @@ namespace Dnn.ExportImport.Components.Services
                             return;
                         }
                     }
+
                     currentIndex = 0;
                     this.CheckPoint.Completed = true;
                     this.CheckPoint.Stage++;
@@ -358,6 +368,7 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
+
             folder.FolderPath = string.IsNullOrEmpty(folder.FolderPath) ? string.Empty : folder.FolderPath;
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, folder.FolderMappingName);
             if (folderMapping == null)
@@ -391,6 +402,7 @@ namespace Dnn.ExportImport.Components.Services
                     // Find the previously created parent folder id.
                     folder.ParentId = CBO.FillObject<ExportFolder>(DotNetNuke.Data.DataProvider.Instance().GetFolder(portalId, folder.ParentFolderPath ?? string.Empty))?.FolderId;
                 }
+
                 // ignore folders which start with Users but are not user folders.
                 if (!folder.FolderPath.StartsWith(DefaultUsersFoldersPath))
                 {
@@ -401,6 +413,7 @@ namespace Dnn.ExportImport.Components.Services
                             createdBy, folderMapping.FolderMappingID, folder.IsVersioned, workFlowId,
                             folder.ParentId ?? Null.NullInteger);
                 }
+
                 // Case when the folder is a user folder.
                 else if (folder.UserId != null && folder.UserId > 0 && !string.IsNullOrEmpty(folder.Username))
                 {
@@ -410,6 +423,7 @@ namespace Dnn.ExportImport.Components.Services
                         folder.FolderId = 0;
                         return false;
                     }
+
                     userInfo.IsSuperUser = false;
                     var newFolder = FolderManager.Instance.GetUserFolder(userInfo);
                     folder.FolderId = newFolder.FolderID;
@@ -423,6 +437,7 @@ namespace Dnn.ExportImport.Components.Services
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -461,6 +476,7 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
+
             if (isUpdate)
             {
                 var modifiedBy = Util.GetUserIdByName(importJob, folderPermission.LastModifiedByUserId,
@@ -490,6 +506,7 @@ namespace Dnn.ExportImport.Components.Services
                             return;
                         }
                     }
+
                     if (folderPermission.RoleId != null && folderPermission.RoleId > noRole && !string.IsNullOrEmpty(folderPermission.RoleName))
                     {
                         folderPermission.RoleId = roleId;
@@ -498,6 +515,7 @@ namespace Dnn.ExportImport.Components.Services
                             return;
                         }
                     }
+
                     var createdBy = Util.GetUserIdByName(importJob, folderPermission.CreatedByUserId,
                         folderPermission.CreatedByUserName);
 
@@ -507,6 +525,7 @@ namespace Dnn.ExportImport.Components.Services
                             folderPermission.UserId ?? Null.NullInteger, createdBy);
                 }
             }
+
             folderPermission.LocalId = folderPermission.FolderPermissionId;
         }
 
@@ -532,6 +551,7 @@ namespace Dnn.ExportImport.Components.Services
                         throw new ArgumentOutOfRangeException(importDto.CollisionResolution.ToString());
                 }
             }
+
             if (isUpdate)
             {
                 var modifiedBy = Util.GetUserIdByName(importJob, file.LastModifiedByUserId, file.LastModifiedByUserName);
@@ -628,6 +648,7 @@ namespace Dnn.ExportImport.Components.Services
                 dynamic stageData = JsonConvert.DeserializeObject(this.CheckPoint.StageData);
                 return Convert.ToInt32(stageData.skip) ?? 0;
             }
+
             return 0;
         }
 
@@ -638,6 +659,7 @@ namespace Dnn.ExportImport.Components.Services
                 var state = this.Repository.GetItem<ExportWorkflow>(item => item.WorkflowID == exportedWorkFlowId);
                 return state?.LocalId ?? -1;
             }
+
             return -1;
         }
     }

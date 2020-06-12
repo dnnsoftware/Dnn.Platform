@@ -84,6 +84,7 @@ namespace DotNetNuke.Entities
                 UserInfo user = UserController.GetUserById(portalId, this.CreatedByUserID);
                 return user;
             }
+
             return null;
         }
 
@@ -101,6 +102,7 @@ namespace DotNetNuke.Entities
                 UserInfo user = UserController.GetUserById(portalId, this.LastModifiedByUserID);
                 return user;
             }
+
             return null;
         }
 

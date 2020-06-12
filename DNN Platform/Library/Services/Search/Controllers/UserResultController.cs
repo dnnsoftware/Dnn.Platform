@@ -132,6 +132,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         break;
                     }
                 }
+
                 // Groups/Roles
                 if (profileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
                 {

@@ -114,10 +114,12 @@ namespace DotNetNuke.Modules.DigitalAssets
                                 contentControl.OnItemUpdated += this.OnItemUpdated;
                                 tabContentControlsInstances.Add(contentControl);
                             }
+
                             container.Controls.Add(control);
                             this.TabsPanel.Controls.Add(container);
                         }
                     }
+
                     this.tabContentControls = tabContentControlsInstances.ToList();
                 }
             }

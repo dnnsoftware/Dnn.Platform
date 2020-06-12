@@ -550,6 +550,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 return original;
             }
+
             // mod to add one onto the search length - otherwise strange results??
             // return original.Substring(original.IndexOf(search) + search.Length + 1);
             // return original.Substring(original.IndexOf(search) + search.Length);
@@ -670,6 +671,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 // Shoot, we need to grab it via reflection.
                 environment = ReflectionHelper.GetStaticFieldValue<HostingEnvironment>("_theHostingEnvironment", typeof(HostingEnvironment));
             }
+
             return environment;
         }
 

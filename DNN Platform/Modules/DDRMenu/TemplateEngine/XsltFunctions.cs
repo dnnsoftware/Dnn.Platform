@@ -96,6 +96,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
             {
                 resolvedFile = "~/" + resourceFile;
             }
+
             return Localization.GetString(name, resolvedFile);
         }
 

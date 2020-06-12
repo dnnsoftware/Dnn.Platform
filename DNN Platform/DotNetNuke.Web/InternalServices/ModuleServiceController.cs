@@ -94,6 +94,7 @@ namespace DotNetNuke.Web.InternalServices
                     }
                 }
             }
+
             ModuleController.Instance.UpdateModuleOrder(postData.TabId, postData.ModuleId, moduleOrder, postData.Pane);
             ModuleController.Instance.UpdateTabModuleOrder(postData.TabId);
 

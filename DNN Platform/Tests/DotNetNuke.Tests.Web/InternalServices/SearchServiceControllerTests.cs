@@ -134,6 +134,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             this.CreateNewLuceneControllerInstance();
         }
+
         [TearDown]
         public void TearDown()
         {
@@ -154,15 +155,18 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 LuceneController.ClearInstance();
                 this._luceneController.Dispose();
             }
+
             this._luceneController = new LuceneControllerImpl();
             LuceneController.SetTestableInstance(this._luceneController);
         }
+
         private void SetupUserController()
         {
             this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
             new UserInfo { UserID = UserId1, Username = UserName1, Profile = new UserProfile { } });
             UserController.SetTestableInstance(this._mockUserController.Object);
         }
+
         private void SetupHostController()
         {
             this._mockHostController.Setup(c => c.GetString(Constants.SearchIndexFolderKey, It.IsAny<string>())).Returns(
@@ -187,6 +191,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 DefaultSearchRetryTimes);
             HostController.RegisterInstance(this._mockHostController.Object);
         }
+
         private void SetupDataProvider()
         {
             // Standard DataProvider Path for Logging
@@ -202,12 +207,14 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             DataService.RegisterInstance(this._mockDataService.Object);
         }
+
         private void SetupPortalSettings()
         {
             var mockPortalController = new Mock<IPortalController>();
             mockPortalController.Setup(x => x.GetPortal(It.IsAny<int>())).Returns(new PortalInfo { PortalID = PortalId0, PortalGroupID = -1, UserTabId = TabId1, });
             PortalController.SetTestableInstance(mockPortalController.Object);
         }
+
         private void SetupModuleController()
         {
             this._mockModuleController.Setup(mc => mc.GetModule(It.Is<int>(m => m == HtmlModuleId1), It.Is<int>(p => p == PortalId0), false)).Returns(
@@ -221,6 +228,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             new ModuleInfo { ModuleID = HtmlModuleId4, ModuleDefID = HtmlModDefId, ModuleTitle = HtmlModuleTitle4 });
             ModuleController.SetTestableInstance(this._mockModuleController.Object);
         }
+
         private void DeleteIndexFolder()
         {
             try
@@ -235,6 +243,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 Console.WriteLine(ex);
             }
         }
+
         private IDataReader GetUser()
         {
             var table = new DataTable("Users");
@@ -266,6 +275,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                            -1, DateTime.Now);
             return table.CreateDataReader();
         }
+
         private IDataReader GetPortalGroups()
         {
             var table = new DataTable("ModuleDefinitions");
@@ -283,6 +293,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
             return table.CreateDataReader();
         }
+
         // return 2 test tabs(TabId 56 - Home,  TabId 57 - AboutUs)
         private IDataReader GetTabs()
         {
@@ -335,6 +346,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             return table.CreateDataReader();
         }
+
         // return 4 html modules (TabId 56 - Home: ModuleIDs:367, 368, 370  TabId 57 - AboutUs: 378//)
         private IDataReader GetSearchModules()
         {
@@ -436,6 +448,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                            "664BAA98-7E24-461F-8180-36527619D042", string.Empty);
             return table.CreateDataReader();
         }
+
         // returns 2 moduledefinitions - Text/HTML and Journal
         private IDataReader GetModuleDefinitions()
         {
@@ -456,6 +469,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             return table.CreateDataReader();
         }
+
         // returns all search types - 3 SearchTypes - module, tab, user
         private IDataReader GetAllSearchTypes()
         {
@@ -471,10 +485,12 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Rows.Add(3, "user", FakeResultControllerClass, 0);
             return table.CreateDataReader();
         }
+
         private IDataReader GetPortalsCallBack(string culture)
         {
             return this.GetPortalCallBack(PortalId0, CultureEnUs);
         }
+
         private IDataReader GetPortalCallBack(int portalId, string culture)
         {
             DataTable table = new DataTable("Portal");

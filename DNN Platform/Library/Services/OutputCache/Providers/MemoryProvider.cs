@@ -30,6 +30,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 {
                     runtimeCache = HttpRuntime.Cache;
                 }
+
                 return runtimeCache;
             }
         }
@@ -48,6 +49,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
+
             return string.Concat(cachePrefix, CacheKey);
         }
 
@@ -62,6 +64,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     keys.Add(CacheEnum.Key.ToString());
                 }
             }
+
             return keys;
         }
 
@@ -76,6 +79,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     keys.Add(CacheEnum.Key.ToString());
                 }
             }
+
             return keys;
         }
 

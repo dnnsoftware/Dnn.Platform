@@ -79,6 +79,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return intValue;
             }
         }
@@ -103,6 +104,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return intValue;
             }
         }

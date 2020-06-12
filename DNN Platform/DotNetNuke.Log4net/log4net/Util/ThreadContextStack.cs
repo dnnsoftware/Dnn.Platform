@@ -113,6 +113,7 @@ namespace log4net.Util
             {
                 return ((StackFrame) stack.Pop()).Message;
             }
+
             return string.Empty;
         }
 
@@ -158,6 +159,7 @@ namespace log4net.Util
             {
                 return ((StackFrame) stack.Peek()).FullMessage;
             }
+
             return null;
         }
 
@@ -275,6 +277,7 @@ namespace log4net.Util
                     {
                         this.m_fullMessage = string.Concat(this.m_parent.FullMessage, " ", this.m_message);
                     }
+
                     return this.m_fullMessage;
                 }
             }

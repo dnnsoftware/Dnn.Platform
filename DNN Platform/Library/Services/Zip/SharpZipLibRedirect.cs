@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.Zip
             {
                 return;
             }
+
             // stop any further attempts to access this
             AlreadyRun = true;
 

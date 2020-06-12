@@ -90,6 +90,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                         }
                     }
                 }
+
                 return this._control as IPackageEditor;
             }
         }
@@ -103,6 +104,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     packageID = int.Parse(this.Request.QueryString["PackageID"]);
                 }
+
                 return packageID;
             }
         }
@@ -116,6 +118,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     viewMode = PropertyEditorMode.Edit;
                 }
+
                 return viewMode;
             }
         }
@@ -161,6 +164,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     {
                         moduleControl.ModuleContext.Configuration = this.ModuleContext.Configuration;
                     }
+
                     this.PackageEditor.PackageID = this.PackageID;
                     this.PackageEditor.Initialize();
 
@@ -186,6 +190,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this.packageType.Visible = false;
                 }
+
                 // Determine if Package is ready for packaging
                 PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
                 this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
@@ -200,6 +205,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     this.packageForm.DataBind();
                     this.packageFormReadOnly.DataBind();
                 }
+
                 this.packageForm.Visible = this.IsSuperTab;
                 this.packageFormReadOnly.Visible = !this.IsSuperTab;
             }
@@ -216,11 +222,13 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     package.IconFile = (pkgIconFile.Trim().Length > 0) ? Util.ParsePackageIconFile(package) : null;
                     PackageController.Instance.SaveExtensionPackage(package);
                 }
+
                 if (displayMessage)
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("PackageUpdated", this.LocalResourceFile), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
             }
+
             if (this.PackageEditor != null)
             {
                 this.PackageEditor.UpdatePackage();

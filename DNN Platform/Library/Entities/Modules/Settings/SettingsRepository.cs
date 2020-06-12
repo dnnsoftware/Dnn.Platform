@@ -295,6 +295,7 @@ namespace DotNetNuke.Entities.Modules.Settings
             {
                 return bool.TrueString;
             }
+
             if (propertyValue.Equals("0"))
             {
                 return bool.FalseString;

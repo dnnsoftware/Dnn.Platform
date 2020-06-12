@@ -83,6 +83,7 @@ namespace DotNetNuke.Tests.Core
             {
                 Directory.CreateDirectory(destPath);
             }
+
             try
             {
                 using (var stream = File.OpenRead(zipFilePath))
@@ -173,6 +174,7 @@ namespace DotNetNuke.Tests.Core
                 }
             }
         }
+
         private void DeleteUnzippedFolder(string zippedFolder)
         {
             try

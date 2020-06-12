@@ -34,6 +34,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return base.ToString();
             }
+
             return string.Format(CultureInfo.InvariantCulture, "{0} = {1}", this.Name, this.Value);
         }
 

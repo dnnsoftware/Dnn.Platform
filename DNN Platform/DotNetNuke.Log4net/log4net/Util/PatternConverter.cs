@@ -319,6 +319,7 @@ namespace log4net.Util
                 {
                     writer.Write(", ");
                 }
+
                 WriteObject(writer, repository, value.Key);
                 writer.Write("=");
                 WriteObject(writer, repository, value.Value);

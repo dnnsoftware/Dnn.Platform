@@ -268,6 +268,7 @@ namespace log4net.Repository.Hierarchy
                     {
                         this.m_appenderBag[appenderName] = appender;
                     }
+
                     return appender;
                 }
             }
@@ -638,6 +639,7 @@ namespace log4net.Repository.Hierarchy
                         {
                         environmentVariables = this.CreateCaseInsensitiveWrapper(environmentVariables);
                         }
+
                         propertyValue = OptionConverter.SubstituteVariables(propertyValue, environmentVariables);
                     }
                     catch (System.Security.SecurityException)
@@ -840,6 +842,7 @@ namespace log4net.Repository.Hierarchy
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -863,6 +866,7 @@ namespace log4net.Repository.Hierarchy
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -906,6 +910,7 @@ namespace log4net.Repository.Hierarchy
                     }
                 }
             }
+
             return null;
         }
 
@@ -935,6 +940,7 @@ namespace log4net.Repository.Hierarchy
 
                 return levelValue;
             }
+
             return OptionConverter.ConvertStringTo(type, value);
         }
 
@@ -1078,11 +1084,13 @@ namespace log4net.Repository.Hierarchy
             {
             return dict;
             }
+
             Hashtable hash = SystemInfo.CreateCaseInsensitiveHashtable();
             foreach (DictionaryEntry entry in dict)
             {
             hash[entry.Key] = entry.Value;
             }
+
             return hash;
         }
 #endif

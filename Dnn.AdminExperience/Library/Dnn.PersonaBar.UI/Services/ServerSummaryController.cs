@@ -121,6 +121,7 @@ namespace Dnn.PersonaBar.UI.Services
                         {
                             return false;
                         }
+
                         using (var sha256 = SHA256.Create())
                         {
                             hash =
@@ -130,6 +131,7 @@ namespace Dnn.PersonaBar.UI.Services
                         }
                     }
                 }
+
                 switch (hash)
                 {
                     case NormalUpdateHash:

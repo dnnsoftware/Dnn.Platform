@@ -149,10 +149,12 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+
             return (this.AllowAccess == other.AllowAccess) && (this.MenuId == other.MenuId) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
@@ -176,14 +178,17 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return false;
             }
+
             if (ReferenceEquals(this, obj))
             {
                 return true;
             }
+
             if (obj.GetType() != typeof(MenuPermissionInfo))
             {
                 return false;
             }
+
             return this.Equals((MenuPermissionInfo)obj);
         }
 

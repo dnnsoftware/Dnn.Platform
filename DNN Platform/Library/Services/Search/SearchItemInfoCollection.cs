@@ -193,6 +193,7 @@ namespace DotNetNuke.Services.Search
                     retValue.Add(info);
                 }
             }
+
             return retValue;
         }
     }

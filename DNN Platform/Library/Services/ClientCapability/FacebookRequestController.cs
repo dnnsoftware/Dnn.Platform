@@ -151,6 +151,7 @@ namespace DotNetNuke.Services.ClientCapability
                 return hmacAlgorithm.Hash;
             }
         }
+
         /// <summary>
         /// method for converting a System.DateTime value to a UNIX Timestamp
         /// </summary>

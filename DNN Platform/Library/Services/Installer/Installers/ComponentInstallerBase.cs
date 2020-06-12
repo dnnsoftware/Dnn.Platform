@@ -148,12 +148,14 @@ namespace DotNetNuke.Services.Installer.Installers
                                         {
                                             attribValue += version + ",";
                                         }
+
                                         break;
                                     case "upgrade":
                                         if (this.Package.InstalledVersion > new Version(0, 0, 0))
                                         {
                                             attribValue += version + ",";
                                         }
+
                                         break;
                                     default:
                                         Version upgradeVersion = null;
@@ -174,15 +176,19 @@ namespace DotNetNuke.Services.Installer.Installers
                                         {
                                             attribValue += version + ",";
                                         }
+
                                         break;
                                 }
                             }
+
                             attribValue = attribValue.TrimEnd(',');
                         }
                     }
+
                     eventMessage.Attributes.Add(attribName, attribValue);
                 }
             }
+
             return eventMessage;
         }
 

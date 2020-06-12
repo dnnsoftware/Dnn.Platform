@@ -58,6 +58,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPointStageCallback(this);
                 return;
             }
+
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
             // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
@@ -111,6 +112,7 @@ namespace Dnn.ExportImport.Components.Services
                                 {
                                     return;
                                 }
+
                                 // Find the correct userId from the system which was added/updated by UserExportService.
                                 var userId = UserController.GetUserByName(user.Username)?.UserID;
                                 if (userId != null)
@@ -144,6 +146,7 @@ namespace Dnn.ExportImport.Components.Services
                                         tableUserRoles.Rows.Add(userRoleRow);
                                         tempUserRolesCount++;
                                     }
+
                                     if (includeProfile)
                                     {
                                         var userProfiles =
@@ -179,6 +182,7 @@ namespace Dnn.ExportImport.Components.Services
                                     }
                                 }
                             }
+
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
                             // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
@@ -202,6 +206,7 @@ namespace Dnn.ExportImport.Components.Services
                         {
                             this.Result.AddLogEntry($"Importing Users Data from {pageIndex * pageSize} to {(pageIndex * pageSize) + pageSize} exception", ex.Message, ReportLevel.Error);
                         }
+
                         tableUserRoles.Rows.Clear();
                         tableUserProfile.Rows.Clear();
                         pageIndex++;
@@ -214,6 +219,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                     }
                 }
+
                 this.CheckPoint.Completed = true;
                 this.CheckPoint.Progress = 100;
             }
@@ -267,6 +273,7 @@ namespace Dnn.ExportImport.Components.Services
                             .FileId);
                 }
             }
+
             return null;
         }
 

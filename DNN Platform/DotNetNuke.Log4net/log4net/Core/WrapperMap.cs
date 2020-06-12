@@ -175,6 +175,7 @@ namespace log4net.Core
             {
                 return this.m_createWrapperHandler(logger);
             }
+
             return null;
         }
 

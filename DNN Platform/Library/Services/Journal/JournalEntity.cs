@@ -19,6 +19,7 @@ namespace DotNetNuke.Services.Journal
         public JournalEntity()
         {
         }
+
         public JournalEntity(string entityXML)
         {
             if (!string.IsNullOrEmpty(entityXML))
@@ -59,6 +60,7 @@ namespace DotNetNuke.Services.Journal
             {
                 OutputFormat = format;
             }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

@@ -97,6 +97,7 @@ namespace DotNetNuke.ComponentModel
                     {
                         settingsDict.Add(key, provider.Attributes.Get(key));
                     }
+
                     // Register the settings as dependencies
                     container.RegisterComponentSettings(type.FullName, settingsDict);
                 }

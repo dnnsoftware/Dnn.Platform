@@ -164,6 +164,7 @@ namespace DotNetNuke.Services.Installer.Writers
                         path = file.Path.ToLowerInvariant().Replace(this._BasePath.ToLowerInvariant() + "\\", string.Empty);
                     }
                 }
+
                 writer.WriteElementString("path", path);
             }
 
@@ -189,6 +190,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 writer.WriteAttributeString("installOrder", this.InstallOrder.ToString());
             }
+
             if (this.UnInstallOrder > Null.NullInteger)
             {
                 writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
@@ -205,6 +207,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 writer.WriteElementString("basePath", this._BasePath);
             }
+
             foreach (InstallFile file in this._Files.Values)
             {
                 this.WriteFileElement(writer, file);

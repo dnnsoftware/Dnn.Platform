@@ -49,10 +49,12 @@ namespace DotNetNuke.UI.UserControls
                 {
                     this._ViewType = Convert.ToString(Personalization.GetProfile("LanguageEnabler", string.Format("ViewType{0}", this.PortalSettings.PortalId)));
                 }
+
                 if (string.IsNullOrEmpty(this._ViewType))
                 {
                     this._ViewType = "NATIVE";
                 }
+
                 return this._ViewType;
             }
         }
@@ -89,6 +91,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     item.Selected = true;
                 }
+
                 item = new ListItem(Localization.GetString("EnglishName.Text", Localization.GetResourceFile(this, this.MyFileName)), "ENGLISH");
                 this.rbViewType.Items.Add(item);
                 if (this.ViewType == "ENGLISH")

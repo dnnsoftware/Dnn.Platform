@@ -69,6 +69,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Views
                 this.LocalResourceFile = "/DesktopModules/Admin/HtmlEditorManager/App_LocalResources/ProviderConfiguration.ascx.resx";
                 Globals.Redirect(Globals.AccessDeniedURL(this.LocalizeString("CannotManageHTMLEditorProviders")), true);
             }
+
             base.OnInit(e);
         }
     }

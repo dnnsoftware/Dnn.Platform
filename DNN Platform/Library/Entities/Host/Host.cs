@@ -195,6 +195,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = SkinController.GetDefaultAdminContainer();
                 }
+
                 return setting;
             }
         }
@@ -213,6 +214,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = SkinController.GetDefaultAdminSkin();
                 }
+
                 return setting;
             }
         }
@@ -246,6 +248,7 @@ namespace DotNetNuke.Entities.Host
                             break;
                     }
                 }
+
                 return doctype;
             }
         }
@@ -264,6 +267,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = SkinController.GetDefaultPortalContainer();
                 }
+
                 return setting;
             }
         }
@@ -282,6 +286,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = SkinController.GetDefaultPortalSkin();
                 }
+
                 return setting;
             }
         }
@@ -581,6 +586,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     return PortalController.GetPortalSettingAsBoolean("SMTPEnableSSL", PortalSettings.Current.PortalId, false);
                 }
+
                 return HostController.Instance.GetBoolean("SMTPEnableSSL", false);
             }
         }
@@ -666,6 +672,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = "USD";
                 }
+
                 return setting;
             }
         }
@@ -901,6 +908,7 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = "P";
                 }
+
                 return setting;
             }
         }
@@ -1092,9 +1100,11 @@ namespace DotNetNuke.Entities.Host
                 {
                     setting = (SchedulerMode)Enum.Parse(typeof(SchedulerMode), s);
                 }
+
                 return setting;
             }
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the delayAtAppStart value
@@ -1110,6 +1120,7 @@ namespace DotNetNuke.Entities.Host
                 return HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1);
             }
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether to inlcude Common Words in the Search Index
@@ -1343,6 +1354,7 @@ namespace DotNetNuke.Entities.Host
                             decryptedText = string.Empty;
                         }
                     }
+
                     return decryptedText;
                 }
             }
@@ -1387,9 +1399,11 @@ namespace DotNetNuke.Entities.Host
                 {
                     return PortalController.GetPortalSettingAsInteger("SMTPConnectionLimit", PortalSettings.Current.PortalId, 2);
                 }
+
                 return HostController.Instance.GetInteger("SMTPConnectionLimit", 2);
             }
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets the SMTP MaxIdleTime
@@ -1403,9 +1417,11 @@ namespace DotNetNuke.Entities.Host
                 {
                     return PortalController.GetPortalSettingAsInteger("SMTPMaxIdleTime", PortalSettings.Current.PortalId, 100000);
                 }
+
                 return HostController.Instance.GetInteger("SMTPMaxIdleTime", 100000);
             }
         }
+
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   Gets whether Exceptions are rethrown

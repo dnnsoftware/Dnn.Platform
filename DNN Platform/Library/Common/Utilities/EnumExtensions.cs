@@ -27,6 +27,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 pairs.Add(new KeyValuePair<int, string>((int)values.GetValue(i), names[i]));
             }
+
             return pairs;
         }
     }

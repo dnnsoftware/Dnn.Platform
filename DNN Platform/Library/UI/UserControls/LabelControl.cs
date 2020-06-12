@@ -173,6 +173,7 @@ namespace DotNetNuke.UI.UserControls
                 // Set Resource Key to the ID of the control
                 this.ResourceKey = this.ID;
             }
+
             if (!string.IsNullOrEmpty(this.ResourceKey))
             {
                 var localText = Localization.GetString(this.ResourceKey, this);
@@ -226,6 +227,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     clientId = string.Format(this.AssociateFormat, clientId);
                 }
+
                 this.label.Attributes["for"] = clientId;
             }
         }

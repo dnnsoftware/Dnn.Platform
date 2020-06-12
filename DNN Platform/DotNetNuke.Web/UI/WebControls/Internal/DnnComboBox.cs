@@ -123,6 +123,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             {
                 this.Options.Localization.Add("ItemsChecked", Utilities.GetLocalizedString("ItemsCheckedString"));
             }
+
             if (!this.Options.Localization.ContainsKey("AllItemsChecked"))
             {
                 this.Options.Localization.Add("AllItemsChecked", Utilities.GetLocalizedString("AllItemsCheckedString"));

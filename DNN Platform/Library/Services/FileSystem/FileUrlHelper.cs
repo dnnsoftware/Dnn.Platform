@@ -27,9 +27,11 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     portalId = int.Parse(portal);
                 }
+
                 fileRequested = FileManager.Instance.GetFile(portalId, filePath);
                 return true;
             }
+
             fileRequested = null;
             return false;
         }
@@ -42,6 +44,7 @@ namespace DotNetNuke.Services.FileSystem
                 fileRequested = FileManager.Instance.GetFile(fileId);
                 return true;
             }
+
             fileRequested = null;
             return false;
         }

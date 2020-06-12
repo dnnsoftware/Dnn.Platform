@@ -87,6 +87,7 @@ namespace Dnn.PersonaBar.UI.HttpModules
                 }
             });
         }
+
         private void OnSkinPreRender(object sender, SkinEventArgs e)
         {
             IocUtil.GetInstanceContracts<ISkinEvents>().ForEach(instance =>

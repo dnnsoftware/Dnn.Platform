@@ -60,6 +60,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             {
                 return;
             }
+
             var portalSettings = (PortalSettings) HttpContext.Current.Items["PortalSettings"];
             int tabId = portalSettings.ActiveTab.TabID;
 
@@ -126,6 +127,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     }
                 }
             }
+
             var excludeVaryByKeys = new StringCollection();
             if (includeExclude == IncludeExcludeType.IncludeByDefault)
             {
@@ -167,18 +169,22 @@ namespace DotNetNuke.HttpModules.OutputCaching
                     }
                 }
             }
+
             if (! varyBy.ContainsKey("portalid"))
             {
                 varyBy.Add("portalid", portalId.ToString());
             }
+
             if (! varyBy.ContainsKey("tabid"))
             {
                 varyBy.Add("tabid", tabId.ToString());
             }
+
             if (! varyBy.ContainsKey("locale"))
             {
                 varyBy.Add("locale", locale);
             }
+
             if (! varyBy.ContainsKey("alias"))
             {
                 varyBy.Add("alias", portalSettings.PortalAlias.HTTPAlias);

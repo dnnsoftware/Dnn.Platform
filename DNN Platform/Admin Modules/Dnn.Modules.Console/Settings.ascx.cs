@@ -53,12 +53,14 @@ namespace Dnn.Modules.Console
                 {
                     continue;
                 }
+
                 if (tabIdList.Contains(tab.ParentId))
                 {
                     if (!tabIdList.Contains(tab.TabID))
                     {
                         tabIdList.Add(tab.TabID);
                     }
+
                     tabList.Add(tab);
                 }
             }
@@ -74,6 +76,7 @@ namespace Dnn.Modules.Console
             {
                 parentTabId = Convert.ToInt32(this.Settings["ParentTabID"]);
             }
+
             switch (this.modeList.SelectedValue)
             {
                 case "Normal":
@@ -115,6 +118,7 @@ namespace Dnn.Modules.Console
                         // DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultSize.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
+
                     this.SelectDropDownListItem(ref this.DefaultSize, "DefaultSize");
 
                     this.SelectDropDownListItem(ref this.modeList, "Mode");
@@ -123,32 +127,39 @@ namespace Dnn.Modules.Console
                     {
                         this.AllowResize.Checked = Convert.ToBoolean(this.Settings["AllowSizeChange"]);
                     }
+
                     foreach (var val in ConsoleController.GetViewValues())
                     {
                         // DefaultView.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultView.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
+
                     this.SelectDropDownListItem(ref this.DefaultView, "DefaultView");
                     if (this.Settings.ContainsKey("IncludeParent"))
                     {
                         this.IncludeParent.Checked = Convert.ToBoolean(this.Settings["IncludeParent"]);
                     }
+
                     if (this.Settings.ContainsKey("AllowViewChange"))
                     {
                         this.AllowViewChange.Checked = Convert.ToBoolean(this.Settings["AllowViewChange"]);
                     }
+
                     if (this.Settings.ContainsKey("ShowTooltip"))
                     {
                         this.ShowTooltip.Checked = Convert.ToBoolean(this.Settings["ShowTooltip"]);
                     }
+
                     if (this.Settings.ContainsKey("OrderTabsByHierarchy"))
                     {
                         this.OrderTabsByHierarchy.Checked = Convert.ToBoolean(this.Settings["OrderTabsByHierarchy"]);
                     }
+
                     if (this.Settings.ContainsKey("IncludeHiddenPages"))
                     {
                         this.IncludeHiddenPages.Checked = Convert.ToBoolean(this.Settings["IncludeHiddenPages"]);
                     }
+
                     if (this.Settings.ContainsKey("ConsoleWidth"))
                     {
                         this.ConsoleWidth.Text = Convert.ToString(this.Settings["ConsoleWidth"]);
@@ -182,6 +193,7 @@ namespace Dnn.Modules.Console
                         throw new Exception("ConsoleWidth value is invalid. Value must be numeric.");
                     }
                 }
+
                 if (this.ParentTab.SelectedItemValueAsInt == Null.NullInteger)
                 {
                     ModuleController.Instance.DeleteModuleSetting(this.ModuleId, "ParentTabID");

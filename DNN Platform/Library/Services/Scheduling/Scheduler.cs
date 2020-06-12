@@ -189,6 +189,7 @@ namespace DotNetNuke.Services.Scheduling
                     Interlocked.Increment(ref _writerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
+
                 return null;
             }
 
@@ -397,26 +398,32 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             strDebug.Append(" and");
                         }
+
                         strDebug.Append(" task is not enabled");
                         appended = true;
                     }
+
                     if (IsInProgress(scheduleItem))
                     {
                         if (appended)
                         {
                             strDebug.Append(" and");
                         }
+
                         strDebug.Append(" task is already in progress");
                         appended = true;
                     }
+
                     if (HasDependenciesConflict(scheduleItem))
                     {
                         if (appended)
                         {
                             strDebug.Append(" and");
                         }
+
                         strDebug.Append(" task has conflicting dependency");
                     }
+
                     var log = new LogInfo();
                     log.AddProperty("EVENT NOT RUN REASON", strDebug.ToString());
                     log.AddProperty("SCHEDULE ID", scheduleItem.ScheduleID.ToString());
@@ -477,6 +484,7 @@ namespace DotNetNuke.Services.Scheduling
                     Interlocked.Increment(ref _readerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
+
                 return c;
             }
 
@@ -528,6 +536,7 @@ namespace DotNetNuke.Services.Scheduling
                             c.Add(item, item.ScheduleID.ToString(), null, null);
                         }
                     }
+
                     return c;
                 }
                 catch (ApplicationException ex)
@@ -535,6 +544,7 @@ namespace DotNetNuke.Services.Scheduling
                     Interlocked.Increment(ref _readerTimeouts);
                     Exceptions.Exceptions.LogException(ex);
                 }
+
                 return c;
             }
 
@@ -584,6 +594,7 @@ namespace DotNetNuke.Services.Scheduling
                     // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
                 }
+
                 return ScheduleStatus.NOT_SET;
             }
 
@@ -599,6 +610,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     return;
                 }
+
                 SetScheduleStatus(ScheduleStatus.SHUTTING_DOWN);
                 var log = new LogInfo { LogTypeKey = "SCHEDULER_SHUTTING_DOWN" };
                 log.AddProperty("Initiator", sourceOfHalt);
@@ -614,6 +626,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         return;
                     }
+
                     Thread.Sleep(1000);
                 }
 
@@ -678,6 +691,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         scheduleItem.Servers = serverGroupServers;
                     }
+
                     var historyItem = new ScheduleHistoryItem(scheduleItem);
 
                     if (!IsInQueue(historyItem) &&
@@ -733,6 +747,7 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             historyItem.ScheduleSource = ScheduleSource.STARTED_FROM_BEGIN_REQUEST;
                         }
+
                         AddToScheduleQueue(historyItem);
                     }
                 }
@@ -900,6 +915,7 @@ namespace DotNetNuke.Services.Scheduling
                             {
                                 SetScheduleStatus(ScheduleStatus.RUNNING_REQUEST_SCHEDULE);
                             }
+
                             // Load the queue to determine which schedule
                             // items need to be run.
                             LoadQueueFromTimer();
@@ -935,6 +951,7 @@ namespace DotNetNuke.Services.Scheduling
                                 {
                                     FireEvents();
                                 }
+
                                 if (KeepThreadAlive == false)
                                 {
                                     return;
@@ -1008,6 +1025,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         SetScheduleStatus(ScheduleStatus.WAITING_FOR_REQUEST);
                     }
+
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
                         var log = new LogInfo { LogTypeKey = "SCHEDULER_STOPPED" };
@@ -1195,6 +1213,7 @@ namespace DotNetNuke.Services.Scheduling
                                 break;
                         }
                     }
+
                     // Update the ScheduleHistory in the database
                     UpdateScheduleHistory(scheduleHistoryItem);
 
@@ -1219,6 +1238,7 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             log.AddProperty("EXCEPTION", exception.Message);
                         }
+
                         log.AddProperty("RESCHEDULED FOR", Convert.ToString(scheduleHistoryItem.NextStart));
                         log.AddProperty("SOURCE", scheduleHistoryItem.ScheduleSource.ToString());
                         log.AddProperty("ACTIVE THREADS", _activeThreadCount.ToString());
@@ -1317,6 +1337,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         Interlocked.Decrement(ref _activeThreadCount);
                     }
+
                     Exceptions.Exceptions.ProcessSchedulerException(exc);
                 }
             }
@@ -1333,6 +1354,7 @@ namespace DotNetNuke.Services.Scheduling
                         {
                             maxThreads = 1;
                         }
+
                         _numberOfProcessGroups = maxThreads;
                         _maxThreadCount = maxThreads;
                         for (int i = 0; i < _numberOfProcessGroups; i++)
@@ -1441,6 +1463,7 @@ namespace DotNetNuke.Services.Scheduling
                                 }
                             }
                         }
+
                         // Update the ScheduleHistory in the database
                         UpdateScheduleHistory(scheduleHistoryItem);
 

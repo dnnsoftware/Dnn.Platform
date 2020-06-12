@@ -47,6 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
                 }
+
                 return _SelectedTerm;
             }
         }
@@ -64,6 +65,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     _SelectedValue = this._ListBox.SelectedValue;
                 }
+
                 return _SelectedValue;
             }
         }
@@ -81,6 +83,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     _DataSource = this._ListBox.DataSource;
                 }
+
                 return _DataSource as List<Term>;
             }
         }

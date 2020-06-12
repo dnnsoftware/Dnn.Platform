@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         this.chkMemberApproved.Checked = Convert.ToBoolean(roleInfo.Settings["ReviewMembers"].ToString());
                     }
+
                     this.imgGroup.Src = roleInfo.PhotoURL;
                 }
                 else
@@ -83,6 +84,7 @@ namespace DotNetNuke.Modules.Groups
                 }
             }
         }
+
         private void Cancel_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, string.Empty, false, new string[] { "groupid=" + this.GroupId.ToString() }));
@@ -145,6 +147,7 @@ namespace DotNetNuke.Modules.Groups
                         {
                             groupFolder = _folderManager.AddFolder(this.PortalSettings.PortalId, "Groups/" + roleInfo.RoleID);
                         }
+
                         if (groupFolder != null)
                         {
                             var fileName = Path.GetFileName(this.inpFile.PostedFile.FileName);

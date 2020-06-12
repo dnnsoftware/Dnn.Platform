@@ -42,6 +42,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                         }
                     }
                 }
+
                 return _allCapabilities;
             }
         }
@@ -75,6 +76,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                             {
                                 return HighPiorityCapabilityValues[kvp.Key];
                             }
+
                             return 0;
                         }).ThenBy(kvp => kvp.Key).ToDictionary(pair => pair.Key, pair => pair.Value);
                 }

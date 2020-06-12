@@ -47,17 +47,20 @@ namespace DotNetNuke.Modules.Admin.Sales
                         intUserID = objUserInfo.UserID;
                     }
                 }
+
                 int intRoleId = -1;
                 if (this.Request.QueryString["roleid"] != null)
                 {
                     intRoleId = int.Parse(this.Request.QueryString["roleid"]);
                 }
+
                 string strProcessorUserId = string.Empty;
                 PortalInfo objPortalInfo = PortalController.Instance.GetPortal(this.PortalSettings.PortalId);
                 if (objPortalInfo != null)
                 {
                     strProcessorUserId = objPortalInfo.ProcessorUserId;
                 }
+
                 Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
                 string strPayPalURL;
                 if (intUserID != -1 && intRoleId != -1 && !string.IsNullOrEmpty(strProcessorUserId))
@@ -88,6 +91,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             {
                                 intTrialPeriod = objRole.TrialPeriod;
                             }
+
                             int intBillingPeriod = 1;
                             if (objRole.BillingPeriod != 0)
                             {
@@ -126,6 +130,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                     strPayPalURL += "&p1=" + Globals.HTTPPOSTEncode(intTrialPeriod.ToString());
                                     strPayPalURL += "&t1=" + Globals.HTTPPOSTEncode(objRole.TrialFrequency);
                                 }
+
                                 strPayPalURL += "&a3=" + Globals.HTTPPOSTEncode(strService);
                                 strPayPalURL += "&p3=" + Globals.HTTPPOSTEncode(intBillingPeriod.ToString());
                                 strPayPalURL += "&t3=" + Globals.HTTPPOSTEncode(objRole.BillingFrequency);
@@ -133,6 +138,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 strPayPalURL += "&currency_code=" + Globals.HTTPPOSTEncode(this.PortalSettings.Currency);
                             }
                         }
+
                         var ctlList = new ListController();
 
                         strPayPalURL += "&custom=" + Globals.HTTPPOSTEncode(intUserID.ToString());
@@ -186,6 +192,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                         {
                             strPayPalURL += "&notify_url=" + Globals.HTTPPOSTEncode(Globals.AddHTTP(Globals.GetDomainName(this.Request)) + "/admin/Sales/PayPalIPN.aspx");
                         }
+
                         strPayPalURL += "&sra=1"; // reattempt on failure
                     }
 

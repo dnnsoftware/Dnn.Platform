@@ -627,6 +627,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             {
                 subject.Append("1234567890");
             }
+
             notification.Subject = subject.ToString();
 
             var mockPortalInfo = CreatePortalInfo(Constants.PORTAL_Zero, Null.NullInteger);
@@ -769,6 +770,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             this._mockDataService.Verify();
         }
+
         [Test]
         public void SendNotification_Calls_Messaging_DataService_CreateSocialMessageRecipientsForRole_When_Passing_Roles()
         {
@@ -1297,4 +1299,5 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         }
     }
 }
+
 // ReSharper restore InconsistentNaming

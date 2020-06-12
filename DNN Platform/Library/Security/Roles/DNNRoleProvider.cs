@@ -131,8 +131,10 @@ namespace DotNetNuke.Security.Roles
                 {
                     settings.Add(dr["SettingName"].ToString(), dr["SettingValue"].ToString());
                 }
+
                 dr.Close();
             }
+
             return settings;
         }
 
@@ -210,6 +212,7 @@ namespace DotNetNuke.Security.Roles
 
                 createStatus = false;
             }
+
             return createStatus;
         }
 

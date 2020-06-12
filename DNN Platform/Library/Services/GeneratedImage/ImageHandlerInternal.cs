@@ -43,6 +43,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "ClientCacheExpiration must be positive");
                 }
+
                 this._clientCacheExpiration = value;
                 this.EnableClientCache = true;
             }
@@ -168,6 +169,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     logInfo.AddProperty("IP", ipAddress);
                     logController.AddLog(logInfo);
                 }
+
                 context.Response.StatusCode = 403;
                 context.Response.StatusDescription = message;
                 context.Response.End();
@@ -226,6 +228,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new InvalidOperationException("The DnnImageHandler cannot return null.");
             }
+
             if (imageMethodData.IsEmptyImage)
             {
                 using (var imageOutputBuffer = new MemoryStream())
@@ -250,6 +253,7 @@ namespace DotNetNuke.Services.GeneratedImage
                     cacheCleared = this.ClearDiskImageCacheIfNecessary(userId, PortalSettings.Current.PortalId, cacheId);
                 }
             }
+
             // Handle client cache
             var cachePolicy = context.Response.Cache;
             cachePolicy.SetValidUntilExpires(true);
@@ -268,6 +272,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         return;
                     }
                 }
+
                 cachePolicy.SetCacheability(HttpCacheability.Public);
                 cachePolicy.SetLastModified(this.DateTime_Now);
                 cachePolicy.SetExpires(this.DateTime_Now + this.ClientCacheExpiration);
@@ -304,6 +309,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         logInfo.AddProperty("IP", ipAddress);
                         logController.AddLog(logInfo);
                     }
+
                     context.Response.StatusCode = 429;
                     context.Response.StatusDescription = message;
                     context.Response.End();
@@ -352,6 +358,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 builder.Append(key);
                 builder.Append(context.Request.QueryString.Get(key));
             }
+
             foreach (var tran in this.ImageTransforms)
             {
                 builder.Append(tran.UniqueString);
@@ -370,6 +377,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     sb.Append(b.ToString("X2"));
                 }
+
                 return sb.ToString();
             }
         }
@@ -384,6 +392,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     temp = tran.ProcessImage(temp);
                 }
+
                 return temp;
             }
             finally
@@ -409,6 +418,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return true;
             }
+
             // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);

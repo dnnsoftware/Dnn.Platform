@@ -214,6 +214,7 @@ namespace DotNetNuke.UI.WebControls
                     _Category = Convert.ToString(objProperty.GetValue(obj, null));
                 }
             }
+
             return _Category;
         }
 
@@ -244,11 +245,13 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             var strGroups = new string[arrGroups.Count];
             for (int i = 0; i <= arrGroups.Count - 1; i++)
             {
                 strGroups[i] = Convert.ToString(arrGroups[i]);
             }
+
             return strGroups;
         }
 
@@ -267,6 +270,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
             }
+
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
                 // Check if property is required - as this will need to override visibility
@@ -276,6 +280,7 @@ namespace DotNetNuke.UI.WebControls
                     isVisible = Convert.ToBoolean(objProperty.GetValue(obj, null));
                 }
             }
+
             return isVisible;
         }
     }

@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
                 // Run the module
                 return moduleRequestContext.ModuleApplication.ExecuteRequest(moduleRequestContext);
             }
+
             return null;
         }
 

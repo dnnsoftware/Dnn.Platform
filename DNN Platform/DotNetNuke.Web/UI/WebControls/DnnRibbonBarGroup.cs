@@ -95,6 +95,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 ControlCollection controls = this._contentContainer.Controls;
                 returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);
             }
+
             return returnValue;
         }
 

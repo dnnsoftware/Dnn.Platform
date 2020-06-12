@@ -15,6 +15,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Models
             this.Message = msg;
             this.Data = string.Empty;
         }
+
         public ResponseModel(bool err, string msg, string data)
         {
             this.IsError = err;

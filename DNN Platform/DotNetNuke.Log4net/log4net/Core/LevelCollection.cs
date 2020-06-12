@@ -289,6 +289,7 @@ namespace log4net.Core
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -310,6 +311,7 @@ namespace log4net.Core
                     return i;
                 }
             }
+
             return -1;
         }
 
@@ -677,6 +679,7 @@ namespace log4net.Core
             {
                 this.m_collection.CopyTo(array, start);
             }
+
             public override int Count
             {
                 get { return this.m_collection.Count; }

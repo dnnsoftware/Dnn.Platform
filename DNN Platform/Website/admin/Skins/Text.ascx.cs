@@ -51,6 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 tr.AccessingUser = this.PortalSettings.UserInfo;
                 strText = tr.ReplaceEnvironmentTokens(strText);
             }
+
             this.lblText.Text = strText;
             if (!string.IsNullOrEmpty(this.CssClass))
             {

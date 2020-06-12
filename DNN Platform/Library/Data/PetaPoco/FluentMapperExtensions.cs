@@ -63,6 +63,7 @@ namespace DotNetNuke.Data.PetaPoco
 
                 mapper.TableInfo.PrimaryKey += column;
             }
+
             return mapper;
         }
 

@@ -73,6 +73,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 item.TryGetValue("ModuleID", out moduleId);
                 listOfModules.Add(Convert.ToInt32(moduleId));
             }
+
             return listOfModules;
         }
 

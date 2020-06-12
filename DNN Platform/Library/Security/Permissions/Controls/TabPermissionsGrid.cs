@@ -43,6 +43,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._PermissionsList = this._TabPermissions.ToList();
                 }
+
                 return this._PermissionsList;
             }
         }
@@ -122,6 +123,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objTabPermission.TabPermissionID = Convert.ToInt32(Settings[2]);
             }
+
             objTabPermission.TabID = this.TabID;
 
             return objTabPermission;
@@ -265,6 +267,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Call base class method to handle standard permissions
                 permission = base.GetPermission(objPerm, role, column, PermissionTypeNull);
             }
+
             return permission;
         }
 
@@ -359,6 +362,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
+
                     sb.Append(this.BuildKey(
                         objTabPermission.AllowAccess,
                         objTabPermission.PermissionID,
@@ -369,6 +373,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         objTabPermission.DisplayName));
                 }
             }
+
             allStates[2] = sb.ToString();
             return allStates;
         }

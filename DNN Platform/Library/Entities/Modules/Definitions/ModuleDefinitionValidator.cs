@@ -46,6 +46,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 case ModuleDefinitionVersion.VUnknown:
                     throw new Exception(GetLocalizedString("EXCEPTION_LoadFailed"));
             }
+
             return Path.Combine(Globals.ApplicationMapPath, schemaPath);
         }
 
@@ -56,6 +57,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             {
                 return key;
             }
+
             return Localization.GetString(key, objPortalSettings);
         }
 
@@ -91,6 +93,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                                 default:
                                     return ModuleDefinitionVersion.VUnknown;
                             }
+
                             break;
                         case "SkinObject":
                             retValue = ModuleDefinitionVersion.V2_Skin;
@@ -102,11 +105,13 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             retValue = ModuleDefinitionVersion.VUnknown;
                             break;
                     }
+
                     break;
                 default:
                     retValue = ModuleDefinitionVersion.VUnknown;
                     break;
             }
+
             return retValue;
         }
 

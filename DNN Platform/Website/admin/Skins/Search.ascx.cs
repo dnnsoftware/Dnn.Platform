@@ -97,6 +97,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return IconController.IconURL("DnnSearch");
                 }
+
                 return this._siteIconURL;
             }
             set
@@ -151,6 +152,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Site", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._siteText;
             }
             set
@@ -173,6 +175,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Site.ToolTip", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._siteToolTip;
             }
             set
@@ -197,6 +200,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("URL", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._siteURL;
             }
             set
@@ -243,6 +247,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return IconController.IconURL("GoogleSearch");
                 }
+
                 return this._webIconURL;
             }
             set
@@ -265,6 +270,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Web", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._webText;
             }
             set
@@ -287,6 +293,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("Web.ToolTip", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._webToolTip;
             }
             set
@@ -312,6 +319,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     return Localization.GetString("URL", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 return this._webURL;
             }
             set
@@ -387,6 +395,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return;
             }
+
             string strURL;
             if (!string.IsNullOrEmpty(searchText))
             {
@@ -415,6 +424,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 this.Response.Redirect(this._navigationManager.NavigateURL(searchTabId) + "&Search=" + this.Server.UrlEncode(searchText));
                             }
                         }
+
                         break;
                     case "W":
                         // web
@@ -425,6 +435,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             strURL = strURL.Replace("[DOMAIN]", string.Empty);
                             UrlUtils.OpenNewWindow(this.Page, this.GetType(), strURL);
                         }
+
                         break;
                 }
             }
@@ -480,6 +491,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.Submit = Localization.GetString("Search", Localization.GetResourceFile(this, MyFileName));
             }
+
             this.cmdSearch.Text = this.Submit;
             this.cmdSearchNew.Text = this.Submit;
             if (!string.IsNullOrEmpty(this.CssClass))
@@ -507,6 +519,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.SearchType = "W";
                 }
             }
+
             this.ExecuteSearch(this.txtSearch.Text.Trim(), this.SearchType);
         }
 
@@ -568,6 +581,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.WebRadioButton.Text = this.WebText;
                     this.WebRadioButton.ToolTip = this.WebToolTip;
                 }
+
                 if (this.SiteRadioButton.Visible)
                 {
                     this.SiteRadioButton.Checked = true;

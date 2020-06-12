@@ -15,6 +15,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 return;
             }
+
             this.MenuStyle.Value = this.Settings["MenuStyle"] ?? string.Empty;
             this.NodeXmlPath.Value = this.Settings["NodeXmlPath"] ?? string.Empty;
             this.NodeSelector.Value = this.Settings["NodeSelector"] ?? string.Empty;

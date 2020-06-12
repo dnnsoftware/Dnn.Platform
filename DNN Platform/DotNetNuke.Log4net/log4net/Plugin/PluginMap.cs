@@ -163,6 +163,7 @@ namespace log4net.Plugin
             {
                 throw new ArgumentNullException("plugin");
             }
+
             lock (this)
             {
                 this.m_mapName2Plugin.Remove(plugin.Name);

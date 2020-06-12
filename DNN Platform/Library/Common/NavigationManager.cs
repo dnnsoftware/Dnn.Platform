@@ -175,10 +175,12 @@ namespace DotNetNuke.Common
             {
                 url += "&ctl=" + controlKey;
             }
+
             if (additionalParameters != null)
             {
                 url = additionalParameters.Where(parameter => !string.IsNullOrEmpty(parameter)).Aggregate(url, (current, parameter) => current + ("&" + parameter));
             }
+
             if (isSuperTab)
             {
                 url += "&portalid=" + settings.PortalId;

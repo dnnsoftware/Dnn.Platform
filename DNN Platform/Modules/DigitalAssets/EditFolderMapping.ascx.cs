@@ -48,6 +48,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         int.TryParse(this.Request.QueryString["ItemID"], out this._folderMappingID);
                     }
                 }
+
                 return this._folderMappingID;
             }
         }
@@ -157,6 +158,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                             {
                                 this._folderMappingController.DeleteFolderMapping(this.FolderPortalID, folderMappingID);
                             }
+
                             return;
                         }
                     }
@@ -208,6 +210,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 this.FolderProvidersComboBox.AddItem(provider, provider);
             }
+
             this.FolderProvidersComboBox.InsertItem(0, string.Empty, string.Empty);
         }
 

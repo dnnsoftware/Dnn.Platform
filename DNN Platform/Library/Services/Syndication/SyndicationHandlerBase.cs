@@ -36,6 +36,7 @@ namespace DotNetNuke.Services.Syndication
                         this._tabId = Null.NullInteger;
                     }
                 }
+
                 return this._tabId;
             }
         }
@@ -51,6 +52,7 @@ namespace DotNetNuke.Services.Syndication
                         this._moduleId = Null.NullInteger;
                     }
                 }
+
                 return this._moduleId;
             }
         }

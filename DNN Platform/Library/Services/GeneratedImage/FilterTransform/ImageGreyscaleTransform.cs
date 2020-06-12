@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                     bmap.SetPixel(i, j, Color.FromArgb(gray, gray, gray));
                 }
             }
+
             return (Bitmap)bmap.Clone();
         }
     }

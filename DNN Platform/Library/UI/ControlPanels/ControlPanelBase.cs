@@ -95,6 +95,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     fileRoot = this._localResourceFile;
                 }
+
                 return fileRoot;
             }
             set
@@ -139,6 +140,7 @@ namespace DotNetNuke.UI.ControlPanels
                     }
                 }
             }
+
             return PortalController.Instance.GetCurrentPortalSettings().ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && _IsModuleAdmin;
         }
 
@@ -150,6 +152,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 _IsPageAdmin = true;
             }
+
             return _IsPageAdmin;
         }
 
@@ -178,6 +181,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 objModule.ModulePermissions.Add(objModulePermission);
             }
+
             return objModulePermission;
         }
 
@@ -201,6 +205,7 @@ namespace DotNetNuke.UI.ControlPanels
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
+
             objModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if (objModule != null)
             {
@@ -242,12 +247,14 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 Exceptions.LogException(ex);
             }
+
             int UserId = -1;
             if (this.Request.IsAuthenticated)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
                 UserId = objUserInfo.UserID;
             }
+
             foreach (ModuleDefinitionInfo objModuleDefinition in
                 ModuleDefinitionController.GetModuleDefinitionsByDesktopModuleID(desktopModuleId).Values)
             {
@@ -264,6 +271,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     objModule.ModuleTitle = title;
                 }
+
                 objModule.PaneName = paneName;
                 objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                 if (objModuleDefinition.DefaultCacheTime > 0)
@@ -278,6 +286,7 @@ namespace DotNetNuke.UI.ControlPanels
                         }
                     }
                 }
+
                 switch (permissionType)
                 {
                     case ViewPermissionType.View:
@@ -313,6 +322,7 @@ namespace DotNetNuke.UI.ControlPanels
                             // Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
+
                         ModulePermissionInfo objModulePermission = this.AddModulePermission(
                             objModule,
                             objSystemModulePermission,
@@ -389,6 +399,7 @@ namespace DotNetNuke.UI.ControlPanels
                     strURL = TestableGlobals.Instance.NavigateURL(objModule.TabID);
                 }
             }
+
             return strURL;
         }
 
@@ -400,6 +411,7 @@ namespace DotNetNuke.UI.ControlPanels
             {
                 AllowAccess = ModulePermissionController.CanViewModule(objModule);
             }
+
             return AllowAccess;
         }
 

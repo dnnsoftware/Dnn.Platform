@@ -155,6 +155,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     return false;
                 }
+
                 return Convert.ToBoolean(this.ViewState["ShowUnauthenticatedUsers"]);
             }
             set
@@ -174,6 +175,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     return false;
                 }
+
                 return Convert.ToBoolean(this.ViewState["ShowAllUsers"]);
             }
             set
@@ -245,6 +247,7 @@ namespace DotNetNuke.UI.WebControls
 
                 this.dtRolesSelection.Rows.Add(row);
             }
+
             this.dgRoleSelection.DataSource = this.dtRolesSelection;
             this.dgRoleSelection.DataBind();
         }
@@ -275,11 +278,13 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleUnauthUser), RoleName = Globals.glbRoleUnauthUserName });
                 }
+
                 if (this.ShowAllUsers)
                 {
                     this._roles.Add(new RoleInfo { RoleID = int.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName });
                 }
             }
+
             this._roles = this._roles.OrderBy(r => r.RoleName).ToList();
         }
 
@@ -353,8 +358,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     addDelimiter = true;
                 }
+
                 sb.Append(role);
             }
+
             allStates[1] = sb.ToString();
             return allStates;
         }
@@ -385,10 +392,12 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString(CultureInfo.InvariantCulture)));
                 }
+
                 this.pnlRoleSlections.Controls.Add(this.cboRoleGroups);
 
                 this.pnlRoleSlections.Controls.Add(new LiteralControl("<br/><br/>"));
             }
+
             this.dgRoleSelection = new DataGrid { AutoGenerateColumns = false, CellSpacing = 0, GridLines = GridLines.None };
             this.dgRoleSelection.FooterStyle.CssClass = "dnnGridFooter";
             this.dgRoleSelection.HeaderStyle.CssClass = "dnnGridHeader";
@@ -426,6 +435,7 @@ namespace DotNetNuke.UI.WebControls
                         // Remove from collection as we only keep selected roles
                         this.CurrentRoleSelection.Remove(currentRoleName);
                     }
+
                     isMatch = true;
                     break;
                 }

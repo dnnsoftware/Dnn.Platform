@@ -18,6 +18,7 @@ namespace DotNetNuke.Tests.Utilities
             {
                 list.Add(i);
             }
+
             return list;
         }
 
@@ -82,6 +83,7 @@ namespace DotNetNuke.Tests.Utilities
             {
                 stream = new FileStream(GetFileName(testFilesFolder, fileName), FileMode.Open, FileAccess.Read);
             }
+
             return stream;
         }
 
@@ -96,6 +98,7 @@ namespace DotNetNuke.Tests.Utilities
                     text = reader.ReadToEnd();
                 }
             }
+
             return text;
         }
 
@@ -121,6 +124,7 @@ namespace DotNetNuke.Tests.Utilities
                         {
                             header = line;
                         }
+
                         count++;
                     }
                 }

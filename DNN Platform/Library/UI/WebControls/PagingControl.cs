@@ -126,6 +126,7 @@ namespace DotNetNuke.UI.WebControls
                 this._totalPages = 1;
                 return;
             }
+
             this._totalPages = TotalRecords / RecordsPerPage >= 1 ? Convert.ToInt32(Math.Ceiling(Convert.ToDouble(TotalRecords) / RecordsPerPage)) : 0;
             if (this._totalPages > 0)
             {
@@ -140,10 +141,12 @@ namespace DotNetNuke.UI.WebControls
                 {
                     tmpNum = 1;
                 }
+
                 if (this.CurrentPage > (pageLinksPerPage / 2))
                 {
                     LowNum = Convert.ToInt32(Math.Floor(tmpNum));
                 }
+
                 if (Convert.ToInt32(this._totalPages) <= pageLinksPerPage)
                 {
                     HighNum = Convert.ToInt32(this._totalPages);
@@ -152,6 +155,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     HighNum = LowNum + pageLinksPerPage - 1;
                 }
+
                 if (HighNum > Convert.ToInt32(this._totalPages))
                 {
                     HighNum = Convert.ToInt32(this._totalPages);
@@ -160,14 +164,17 @@ namespace DotNetNuke.UI.WebControls
                         LowNum = HighNum - pageLinksPerPage + 1;
                     }
                 }
+
                 if (HighNum > Convert.ToInt32(this._totalPages))
                 {
                     HighNum = Convert.ToInt32(this._totalPages);
                 }
+
                 if (LowNum < 1)
                 {
                     LowNum = 1;
                 }
+
                 int i;
                 for (i = LowNum; i <= HighNum; i++)
                 {
@@ -175,6 +182,7 @@ namespace DotNetNuke.UI.WebControls
                     tmpRow["PageNum"] = i;
                     ht.Rows.Add(tmpRow);
                 }
+
                 this.PageNumbers.DataSource = ht;
                 this.PageNumbers.DataBind();
             }
@@ -204,6 +212,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return this.CSSClassLinkInactive.Trim().Length > 0 ? "<span class=\"" + this.CSSClassLinkInactive + "\">[" + PageNum + "]</span>" : "<span>[" + PageNum + "]</span>";
             }
+
             return this.CSSClassLinkActive.Trim().Length > 0
                        ? "<a href=\"" + this.CreateURL(PageNum.ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + PageNum + "</a>"
                        : "<a href=\"" + this.CreateURL(PageNum.ToString()) + "\">" + PageNum + "</a>";
@@ -256,6 +265,7 @@ namespace DotNetNuke.UI.WebControls
                            ? "<a href=\"" + this.CreateURL("1") + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>"
                            : "<a href=\"" + this.CreateURL("1") + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</a>";
             }
+
             return this.CSSClassLinkInactive.Trim().Length > 0
                        ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>"
                        : "<span>" + Localization.GetString("First", Localization.SharedResourceFile) + "</span>";
@@ -274,6 +284,7 @@ namespace DotNetNuke.UI.WebControls
                            ? "<a href=\"" + this.CreateURL(this._totalPages.ToString()) + "\" class=\"" + this.CSSClassLinkActive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>"
                            : "<a href=\"" + this.CreateURL(this._totalPages.ToString()) + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</a>";
             }
+
             return this.CSSClassLinkInactive.Trim().Length > 0
                        ? "<span class=\"" + this.CSSClassLinkInactive + "\">" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>"
                        : "<span>" + Localization.GetString("Last", Localization.SharedResourceFile) + "</span>";
@@ -301,6 +312,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 intTotalPages = 1;
             }
+
             var str = string.Format(Localization.GetString("Pages"), this.CurrentPage, intTotalPages);
             var lit = new LiteralControl(str);
             this.cellDisplayStatus.Controls.Add(lit);
@@ -322,6 +334,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.CreateChildControls();
             }
+
             var str = new StringBuilder();
             str.Append(this.GetFirstLink() + "&nbsp;&nbsp;&nbsp;");
             str.Append(this.GetPreviousLink() + "&nbsp;&nbsp;&nbsp;");

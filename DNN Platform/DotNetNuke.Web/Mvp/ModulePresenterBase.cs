@@ -39,6 +39,7 @@ namespace DotNetNuke.Web.Mvp
                 this.LocalResourceFile = moduleControl.LocalResourceFile;
                 this.ModuleContext = moduleControl.ModuleContext;
             }
+
             this.Validator = new Validator(new DataAnnotationsObjectValidator());
 
             view.Initialize += this.InitializeInternal;
@@ -132,6 +133,7 @@ namespace DotNetNuke.Web.Mvp
                 {
                     this.Settings[key.ToString()] = (string)this.ModuleContext.Settings[key];
                 }
+
                 this.TabId = this.ModuleContext.TabId;
                 this.UserId = this.ModuleContext.PortalSettings.UserInfo.UserID;
             }
@@ -148,6 +150,7 @@ namespace DotNetNuke.Web.Mvp
             {
                 localizedString = Null.NullString;
             }
+
             return localizedString;
         }
 
@@ -213,6 +216,7 @@ namespace DotNetNuke.Web.Mvp
                     messageHeader = this.LocalizeString(messageHeader);
                     message = this.LocalizeString(message);
                 }
+
                 this.View.ShowMessage(messageHeader, message, messageType);
             }
         }

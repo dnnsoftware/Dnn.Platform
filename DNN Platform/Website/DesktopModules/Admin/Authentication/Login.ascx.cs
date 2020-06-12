@@ -82,6 +82,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     authenticationType = Convert.ToString(this.ViewState["AuthenticationType"]);
                 }
+
                 return authenticationType;
             }
             set
@@ -102,6 +103,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     autoRegister = Convert.ToBoolean(this.ViewState["AutoRegister"]);
                 }
+
                 return autoRegister;
             }
             set
@@ -119,6 +121,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     profile = (NameValueCollection)this.ViewState["ProfileProperties"];
                 }
+
                 return profile;
             }
             set
@@ -139,6 +142,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     pageNo = Convert.ToInt32(this.ViewState["PageNo"]);
                 }
+
                 return pageNo;
             }
             set
@@ -167,6 +171,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (this.Request.Cookies["returnurl"] != null)
                 {
                     // return to the url passed to signin
@@ -175,6 +180,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (this.Request.Params["appctx"] != null)
                 {
                     // HACK return to the url passed to signin (LiveID)
@@ -231,6 +237,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     qsDelimiter = "&";
                 }
+
                 if (this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD)
                 {
                     redirectURL = redirectURL + qsDelimiter + "runningDefault=1";
@@ -239,6 +246,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     redirectURL = redirectURL + qsDelimiter + "runningDefault=2";
                 }
+
                 return redirectURL;
             }
         }
@@ -282,6 +290,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     rememberMe = Convert.ToBoolean(this.ViewState["RememberMe"]);
                 }
+
                 return rememberMe;
             }
             set
@@ -311,6 +320,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     loginStatus = (UserLoginStatus)this.ViewState["LoginStatus"];
                 }
+
                 return loginStatus;
             }
             set
@@ -331,6 +341,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     userToken = Convert.ToString(this.ViewState["UserToken"]);
                 }
+
                 return userToken;
             }
             set
@@ -351,6 +362,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 {
                     userName = Convert.ToString(this.ViewState["UserName"]);
                 }
+
                 return userName;
             }
             set
@@ -368,6 +380,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 username.Attributes.Add("AUTOCOMPLETE", "off");
             }
+
             var password = loginControl.FindControl("txtPassword") as WebControl;
             if (password != null)
             {
@@ -430,6 +443,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     Exceptions.LogException(ex);
                 }
             }
+
             int authCount = this._loginControls.Count + this._defaultauthLogin.Count;
             switch (authCount)
             {
@@ -452,6 +466,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             this.DisplayLoginControl(defaultLoginControl, false, false);
                         }
                     }
+
                     break;
                 case 1:
                     // We don't want the control to render with tabbed interface
@@ -478,6 +493,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
                     break;
             }
+
             this.BindOAuthControls();
         }
 
@@ -519,6 +535,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL("Access Denied"), true);
             }
+
             this.lblRegisterHelp.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
             switch (this.PortalSettings.UserRegistration)
             {
@@ -532,15 +549,18 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     this.lblRegisterHelp.Text += Localization.GetString("VerifiedMembership", Localization.SharedResourceFile);
                     break;
             }
+
             if (this.AutoRegister)
             {
                 this.InitialiseUser();
             }
+
             bool UserValid = true;
             if (string.IsNullOrEmpty(this.User.Username) || string.IsNullOrEmpty(this.User.Email) || string.IsNullOrEmpty(this.User.FirstName) || string.IsNullOrEmpty(this.User.LastName))
             {
                 UserValid = Null.NullBoolean;
             }
+
             if (this.AutoRegister && UserValid)
             {
                 this.ctlUser.Visible = false;
@@ -631,6 +651,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 this.User.FirstName = this.AuthenticationType;
             }
+
             // Set FirstName to "User" (if null)
             if (string.IsNullOrEmpty(this.User.LastName))
             {
@@ -780,6 +801,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.FirstName = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         case "LastName":
                             if (objUser.LastName != this.ProfileProperties[key])
@@ -787,6 +809,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.LastName = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         case "Email":
                             if (objUser.Email != this.ProfileProperties[key])
@@ -794,6 +817,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.Email = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         case "DisplayName":
                             if (objUser.DisplayName != this.ProfileProperties[key])
@@ -801,18 +825,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 objUser.DisplayName = this.ProfileProperties[key];
                                 bUpdateUser = true;
                             }
+
                             break;
                         default:
                             objUser.Profile.SetProfileProperty(key, this.ProfileProperties[key]);
                             break;
                     }
                 }
+
                 if (update)
                 {
                     if (bUpdateUser)
                     {
                         UserController.UpdateUser(this.PortalId, objUser);
                     }
+
                     ProfileController.UpdateUserProfile(objUser);
                 }
             }
@@ -839,6 +866,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             {
                 expiryDate = objUser.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry);
             }
+
             this.UserId = objUser.UserID;
 
             // Check if the User has valid Password/Profile
@@ -922,6 +950,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         UserController.ResetPasswordToken(this.User);
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
                     }
+
                     var redirTo = string.Format("{0}/default.aspx?ctl=PasswordReset&resetToken={1}&forced=true", portalAlias, objUser.PasswordResetToken);
                     this.Response.Redirect(redirTo);
                     break;
@@ -950,8 +979,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         objUser = UserController.GetUserById(objUser.PortalID, objUser.UserID);
                         this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.DataConsentConsentRedirect, string.Empty, string.Format("token={0}", objUser.PasswordResetToken)));
                     }
+
                     break;
             }
+
             if (okToShowPanel)
             {
                 this.ShowPanel();
@@ -1036,17 +1067,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         parameters[0] = "returnUrl=" + HttpUtility.UrlEncode(this.Request.QueryString["returnUrl"]);
                     }
+
                     if (!string.IsNullOrEmpty(this.Request.QueryString["username"]))
                     {
                         parameters[1] = "username=" + HttpUtility.UrlEncode(this.Request.QueryString["username"]);
                     }
+
                     if (!string.IsNullOrEmpty(this.Request.QueryString["verificationcode"]))
                     {
                         parameters[2] = "verificationcode=" + HttpUtility.UrlEncode(this.Request.QueryString["verificationcode"]);
                     }
+
                     this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId, string.Empty, parameters));
                 }
             }
+
             if (this.Page.IsPostBack == false)
             {
                 try
@@ -1059,6 +1094,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     Logger.Error(ex);
                 }
             }
+
             if (!this.Request.IsAuthenticated || this.UserNeedsVerification())
             {
                 this.ShowPanel();
@@ -1089,6 +1125,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     }
                 }
             }
+
             this.divCaptcha.Visible = this.UseCaptcha;
 
             if (this.UseCaptcha)
@@ -1127,6 +1164,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         this.UpdateProfile(objUser, true);
                     }
+
                     this.ValidateUser(objUser, true);
                 }
                 else
@@ -1256,6 +1294,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                                 this.UpdateProfile(e.User, true);
                                 this.ValidateUser(e.User, false);
                             }
+
                             break;
                         case "EnterCode":
                             this.AddModuleMessage(e.Message, ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -1268,6 +1307,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
                             break;
                     }
+
                     break;
                 case UserLoginStatus.LOGIN_USERLOCKEDOUT:
                     if (Host.AutoAccountUnlockDuration > 0)
@@ -1278,6 +1318,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     {
                         this.AddLocalizedModuleMessage(Localization.GetString("UserLockedOut_ContactAdmin", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError, true);
                     }
+
                     // notify administrator about account lockout ( possible hack attempt )
                     var Custom = new ArrayList { e.UserToken };
 
@@ -1331,6 +1372,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                             this.AddLocalizedModuleMessage(e.Message, ModuleMessage.ModuleMessageType.RedError, true);
                         }
                     }
+
                     break;
                 default:
                     if (e.User != null)
@@ -1342,6 +1384,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                         this.UpdateProfile(e.User, true);
                         this.ValidateUser(e.User, e.AuthenticationType != "DNN");
                     }
+
                     break;
             }
         }

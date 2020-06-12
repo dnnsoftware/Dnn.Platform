@@ -22,10 +22,12 @@ namespace DotNetNuke.Common.Utilities
             {
                 return stringToLink;
             }
+
             if (string.IsNullOrEmpty(stringToLink))
             {
                 return stringValue;
             }
+
             return stringValue + delimiter + stringToLink;
         }
 
@@ -59,6 +61,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return source;
             }
+
             return Regex.Replace(source, Regex.Escape(oldValue), newValue, RegexOptions.IgnoreCase);
         }
 

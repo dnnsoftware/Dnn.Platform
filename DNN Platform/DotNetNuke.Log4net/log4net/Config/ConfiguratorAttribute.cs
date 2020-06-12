@@ -107,6 +107,7 @@ namespace log4net.Config
                     result = -1;
                 }
             }
+
             return result;
         }
     }

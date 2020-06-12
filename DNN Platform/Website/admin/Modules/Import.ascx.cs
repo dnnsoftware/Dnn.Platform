@@ -74,6 +74,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             {
                                 strMessage = Localization.GetString("NotValidXml", this.LocalResourceFile);
                             }
+
                             if (string.IsNullOrEmpty(strMessage))
                             {
                                 var strType = xmlDoc.DocumentElement.GetAttribute("type");
@@ -85,11 +86,13 @@ namespace DotNetNuke.Modules.Admin.Modules
                                     {
                                         ((IPortable)objObject).ImportModule(this.ModuleId, xmlDoc.DocumentElement.InnerXml, strVersion, this.UserInfo.UserID);
                                     }
+
                                     // otherwise (="module") import the new way
                                     else
                                     {
                                         ModuleController.DeserializeModule(xmlDoc.DocumentElement, this.Module, this.PortalId, this.TabId);
                                     }
+
                                     this.Response.Redirect(this._navigationManager.NavigateURL(), true);
                                 }
                                 else
@@ -113,6 +116,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     strMessage = Localization.GetString("ImportNotSupported", this.LocalResourceFile);
                 }
             }
+
             return strMessage;
         }
 
@@ -163,6 +167,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 return;
             }
+
             if (this.Module == null)
             {
                 return;
@@ -214,6 +219,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 this.txtContent.Text = string.Empty;
                 return;
             }
+
             try
             {
                 var fileId = Convert.ToInt32(this.cboFiles.SelectedValue);

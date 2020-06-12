@@ -200,6 +200,7 @@ namespace DotNetNuke.Tests.Content.Mocks
                 ComponentFactory.RegisterComponentInstance<Mock<TMock>>(getMock);
                 ComponentFactory.RegisterComponentInstance<TMock>(getMock.Object);
             }
+
             return getMock;
         }
 

@@ -56,6 +56,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     template = sr.ReadToEnd();
                 }
+
                 return template;
             }
         }
@@ -69,6 +70,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     template = sr.ReadToEnd();
                 }
+
                 return template;
             }
         }
@@ -84,6 +86,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 {
                     template = sr.ReadToEnd();
                 }
+
                 return template;
             }
         }
@@ -283,6 +286,7 @@ namespace DotNetNuke.Modules.MemberDirectory
             {
                 text = resourceKey;
             }
+
             var item = new ListItem(text, name);
             return item;
         }

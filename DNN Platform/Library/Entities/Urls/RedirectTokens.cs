@@ -53,6 +53,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return reasons;
         }
 
@@ -114,6 +115,7 @@ namespace DotNetNuke.Entities.Urls
                     result = "&rr=cr";
                     break;
             }
+
             return result;
         }
 
@@ -135,6 +137,7 @@ namespace DotNetNuke.Entities.Urls
                     results.Add(tk, val);
                 }
             }
+
             return results;
         }
 
@@ -168,8 +171,10 @@ namespace DotNetNuke.Entities.Urls
                         result = existingRewritePath.Replace("do301=check", tokenAndValue);
                     }
                 }
+
                 addToken = false; // already done
             }
+
             if (addToken)
             {
                 if (result.Contains(tokenAndValue) == false)
@@ -200,6 +205,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return result;
         }
 
@@ -238,6 +244,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 action = foundAction;
             }
+
             // get the list of redirect reason tokens from the url
             List<string> redirectReasons = GetRedirectReasonTokensFromRewritePath(rewrittenUrl);
 
@@ -246,6 +253,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 redirectReasons.Add("cr");
             }
+
             bool clearActionToken = false;
             foreach (string rrTkn in redirectReasons)
             {
@@ -321,6 +329,7 @@ namespace DotNetNuke.Entities.Urls
                             reason = RedirectReason.Site_Root_Home;
                             clearActionToken = true;
                         }
+
                         break;
 
                     default:
@@ -329,10 +338,12 @@ namespace DotNetNuke.Entities.Urls
                         {
                             reason = RedirectReason.Custom_Redirect;
                         }
+
                         clearActionToken = true;
                         break;
                 }
             }
+
             if (clearActionToken)
             {
                 // clear both action and reason
@@ -377,20 +388,24 @@ namespace DotNetNuke.Entities.Urls
                                     action = ActionType.CheckFor301;
                                 }
                             }
+
                             break;
                         case "do404":
                             if (val == "true")
                             {
                                 action = ActionType.Output404;
                             }
+
                             break;
                         case "do302":
                             if (val == "true")
                             {
                                 action = ActionType.Redirect302;
                             }
+
                             break;
                     }
+
                     // if there is more than one match, if we have a solid action, then break
                     if (action != ActionType.Continue)
                     {
@@ -398,6 +413,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return found;
         }
 
@@ -428,10 +444,12 @@ namespace DotNetNuke.Entities.Urls
                 {
                     val = queryStringCol["do301"];
                 }
+
                 if (string.IsNullOrEmpty(val))
                 {
                     val = "true";
                 }
+
                 // nix the 301 redirect query string value or terminal loops-a-plenty
                 path = path.Replace("&do301=" + val, string.Empty);
                 path = path.Replace("?do301=" + val, string.Empty);
@@ -441,14 +459,17 @@ namespace DotNetNuke.Entities.Urls
                 {
                     val = queryStringCol["do302"];
                 }
+
                 if (string.IsNullOrEmpty(val))
                 {
                     val = "true";
                 }
+
                 // nix the 302 redirect query string value or terminal loops-a-plenty
                 path = path.Replace("&do302=" + val, string.Empty);
                 path = path.Replace("?do302=" + val, string.Empty);
             }
+
             return path;
         }
 

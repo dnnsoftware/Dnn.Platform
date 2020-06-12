@@ -29,6 +29,7 @@ namespace Dnn.Modules.Console.Components
 
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception)

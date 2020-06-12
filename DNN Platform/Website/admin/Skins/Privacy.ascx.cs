@@ -51,6 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypPrivacy.CssClass = this.CssClass;
                 }
+
                 if (!string.IsNullOrEmpty(this.Text))
                 {
                     this.hypPrivacy.Text = this.Text;
@@ -59,6 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypPrivacy.Text = Localization.GetString("Privacy", Localization.GetResourceFile(this, MyFileName));
                 }
+
                 this.hypPrivacy.NavigateUrl = this.PortalSettings.PrivacyTabId == Null.NullInteger ? this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Privacy") : this._navigationManager.NavigateURL(this.PortalSettings.PrivacyTabId);
                 this.hypPrivacy.Attributes["rel"] = "nofollow";
             }

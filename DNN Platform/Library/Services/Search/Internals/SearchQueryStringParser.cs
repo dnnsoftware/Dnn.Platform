@@ -52,11 +52,13 @@ namespace DotNetNuke.Services.Search.Internals
                     {
                         tags.Add(HttpUtility.HtmlEncode(tag.Trim()));
                     }
+
                     m = m.NextMatch();
                 }
 
                 outputKeywords = TagRegex.Replace(keywords, string.Empty).Trim();
             }
+
             return tags;
         }
 

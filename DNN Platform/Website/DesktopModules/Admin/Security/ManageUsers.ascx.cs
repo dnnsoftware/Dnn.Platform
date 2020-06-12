@@ -83,6 +83,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
+
                     if (string.IsNullOrEmpty(_RedirectURL))
                     {
                         // redirect to current page
@@ -93,6 +94,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     _RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
+
                 return _RedirectURL;
             }
         }
@@ -125,14 +127,17 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     filterString += "&";
                 }
+
                 if (!string.IsNullOrEmpty(filterProperty))
                 {
                     filterString += filterProperty + "&";
                 }
+
                 if (!string.IsNullOrEmpty(page))
                 {
                     filterString += page;
                 }
+
                 return filterString;
             }
         }
@@ -165,6 +170,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
                 }
+
                 return _PageNo;
             }
             set
@@ -207,6 +213,7 @@ namespace DotNetNuke.Modules.Admin.Users
                                 true,
                                 false);
                         }
+
                         Actions.Add(
                             this.GetNextActionID(),
                             Localization.GetString("Cancel.Action", this.LocalResourceFile),
@@ -220,6 +227,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             false);
                     }
                 }
+
                 return Actions;
             }
         }
@@ -257,6 +265,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                     }
                 }
+
                 if (!this.Page.IsPostBack)
                 {
                     if (this.Request.QueryString["pageno"] != null)
@@ -268,6 +277,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         this.PageNo = 0;
                     }
                 }
+
                 this.ShowPanel();
             }
             else
@@ -301,6 +311,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.DisableForm();
                 return false;
             }
+
             if (this.IsEdit)
             {
                 // Check if user has admin rights
@@ -334,6 +345,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
+
             return true;
         }
 
@@ -353,6 +365,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ctlUser.ShowUpdate = false;
                 this.CheckQuota();
             }
+
             this.ctlUser.User = this.User;
             this.ctlUser.DataBind();
 
@@ -408,6 +421,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.dnnManageUsers.Visible = true;
                     this.actionsRow.Visible = true;
                 }
+
                 this.BindUser();
                 this.dnnProfileDetails.Visible = false;
             }
@@ -422,6 +436,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.ctlPassword.User = this.User;
                     this.ctlPassword.DataBind();
                 }
+
                 if (!this.IsEdit || this.User.IsSuperUser)
                 {
                     this.rolesTab.Visible = false;
@@ -577,6 +592,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.ctlUser.IsValid && this.ctlProfile.IsValid)
             {
                 this.ctlUser.CreateUser();
@@ -631,6 +647,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             try
             {
                 this.AddModuleMessage("UserAuthorized", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -662,6 +679,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             try
             {
                 this.AddModuleMessage("UserPasswordUpdateChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -687,6 +705,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             try
             {
                 this.AddModuleMessage("UserPromotedToSuperuser", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -712,6 +731,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             try
             {
                 this.AddModuleMessage("UserDemotedFromSuperuser", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -736,6 +756,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             try
             {
                 this.AddModuleMessage("UserUnAuthorized", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -760,6 +781,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             try
             {
                 this.AddModuleMessage("UserUnLocked", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -783,6 +805,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             PasswordUpdateStatus status = e.UpdateStatus;
             if (status == PasswordUpdateStatus.Success)
             {
@@ -806,6 +829,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             PasswordUpdateStatus status = e.UpdateStatus;
 
             if (status == PasswordUpdateStatus.Success)
@@ -824,6 +848,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         // The User changed his own password
                         Mail.SendMail(this.User, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
                     }
+
                     this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 }
                 catch (Exception ex)
@@ -867,6 +892,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 message = string.Format(Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
             }
+
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);
         }
 

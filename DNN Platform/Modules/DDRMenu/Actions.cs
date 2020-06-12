@@ -91,6 +91,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 this.ProcessNode(node);
             }
+
             this.navProvider.Bind(objNodes, false);
         }
 
@@ -115,6 +116,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 this.actions.Add(action.ID, action);
             }
+
             if (action.HasChildren())
             {
                 foreach (ModuleAction a in action.Actions)

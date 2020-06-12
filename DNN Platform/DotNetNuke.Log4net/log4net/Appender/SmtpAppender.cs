@@ -440,6 +440,7 @@ namespace log4net.Appender
             {
                 smtpClient.Host = this.m_smtpHost;
             }
+
             smtpClient.Port = this.m_port;
             smtpClient.DeliveryMethod = SmtpDeliveryMethod.Network;
             smtpClient.EnableSsl = this.m_enableSsl;
@@ -465,10 +466,12 @@ namespace log4net.Appender
                 {
                     mailMessage.CC.Add(this.m_cc);
                 }
+
                 if (!string.IsNullOrEmpty(this.m_bcc))
                 {
                     mailMessage.Bcc.Add(this.m_bcc);
                 }
+
                 if (!string.IsNullOrEmpty(this.m_replyTo))
                 {
                     // .NET 4.0 warning CS0618: 'System.Net.Mail.MailMessage.ReplyTo' is obsolete:
@@ -479,6 +482,7 @@ namespace log4net.Appender
                     mailMessage.ReplyToList.Add(new MailAddress(this.m_replyTo));
 #endif
                 }
+
                 mailMessage.Subject = this.m_subject;
                 mailMessage.SubjectEncoding = this.m_subjectEncoding;
                 mailMessage.Priority = this.m_mailPriority;

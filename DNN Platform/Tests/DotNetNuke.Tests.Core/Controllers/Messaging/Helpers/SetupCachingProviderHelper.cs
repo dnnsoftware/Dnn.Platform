@@ -22,6 +22,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging.Helpers
 
                         return portals;
                     }
+
                     return key.Contains("PortalGroups") ? new List<PortalGroupInfo>() : null;
                 });
         }

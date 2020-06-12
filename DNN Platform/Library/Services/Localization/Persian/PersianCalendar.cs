@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Localization.Persian
             {
                 // ignore
             }
+
             return time.Year;
         }
 
@@ -31,6 +32,7 @@ namespace DotNetNuke.Services.Localization.Persian
             {
                 // ignore
             }
+
             return time.Month;
         }
 
@@ -44,6 +46,7 @@ namespace DotNetNuke.Services.Localization.Persian
             {
                 // ignore
             }
+
             return time.Day;
         }
 
@@ -57,6 +60,7 @@ namespace DotNetNuke.Services.Localization.Persian
             {
                 // ignore
             }
+
             return time.DayOfYear;
         }
 
@@ -70,6 +74,7 @@ namespace DotNetNuke.Services.Localization.Persian
             {
                 // ignore
             }
+
             return time.DayOfWeek;
         }
     }

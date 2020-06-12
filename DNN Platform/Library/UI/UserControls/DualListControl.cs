@@ -64,6 +64,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     objList.Add(objListItem);
                 }
+
                 return objList;
             }
             set
@@ -81,6 +82,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     objList.Add(objListItem);
                 }
+
                 return objList;
             }
             set
@@ -141,6 +143,7 @@ namespace DotNetNuke.UI.UserControls
                         this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
                         this.lstAssigned.Width = Unit.Parse(this._ListBoxWidth);
                     }
+
                     if (!string.IsNullOrEmpty(this._ListBoxHeight))
                     {
                         this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
@@ -183,6 +186,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 objList.Add(objListItem);
             }
+
             foreach (ListItem objListItem in objList)
             {
                 if (objListItem.Selected)
@@ -191,6 +195,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lstAssigned.Items.Add(objListItem);
                 }
             }
+
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAssigned);
@@ -203,6 +208,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 objList.Add(objListItem);
             }
+
             foreach (ListItem objListItem in objList)
             {
                 if (objListItem.Selected)
@@ -211,6 +217,7 @@ namespace DotNetNuke.UI.UserControls
                     this.lstAvailable.Items.Add(objListItem);
                 }
             }
+
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
             this.Sort(this.lstAvailable);
@@ -222,6 +229,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.lstAssigned.Items.Add(objListItem);
             }
+
             this.lstAvailable.Items.Clear();
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
@@ -234,6 +242,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.lstAvailable.Items.Add(objListItem);
             }
+
             this.lstAssigned.Items.Clear();
             this.lstAvailable.ClearSelection();
             this.lstAssigned.ClearSelection();
@@ -247,6 +256,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 arrListItems.Add(objListItem);
             }
+
             arrListItems.Sort(new ListItemComparer());
             ctlListBox.Items.Clear();
             foreach (ListItem objListItem in arrListItems)

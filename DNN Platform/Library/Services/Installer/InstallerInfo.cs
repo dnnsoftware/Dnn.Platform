@@ -142,6 +142,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     _HasValidFiles = Null.NullBoolean;
                 }
+
                 return _HasValidFiles;
             }
         }
@@ -186,6 +187,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     _InvalidFileExtensions = _InvalidFileExtensions.Substring(2);
                 }
+
                 return _InvalidFileExtensions;
             }
         }
@@ -368,14 +370,18 @@ namespace DotNetNuke.Services.Installer
                             }
                         }
                     }
+
                     this.Log.AddInfo(string.Format(Util.FILE_ReadSuccess, file.FullName));
                 }
+
                 entry = unzip.GetNextEntry();
             }
+
             if (this.ManifestFile == null)
             {
                 this.Log.AddFailure(Util.EXCEPTION_MissingDnn);
             }
+
             if (this.Log.Valid)
             {
                 this.Log.EndJob(Util.FILES_ReadingEnd);

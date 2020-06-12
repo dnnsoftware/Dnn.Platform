@@ -65,6 +65,7 @@ namespace DotNetNuke.Modules.Groups.Components
             {
                 return;
             }
+
             NotificationsController.Instance.DeleteNotificationTypeAction(action.NotificationTypeActionId);
         }
 

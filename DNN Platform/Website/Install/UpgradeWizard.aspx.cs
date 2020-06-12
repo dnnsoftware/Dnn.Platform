@@ -118,6 +118,7 @@ namespace DotNetNuke.Services.Install
                         {
                             _supportedLanguages.SetValue(nav.GetAttribute("key", string.Empty), i);
                         }
+
                         i++;
                     }
                 }
@@ -211,6 +212,7 @@ namespace DotNetNuke.Services.Install
                     _upgradeRunning = false;
                     return;
                 }
+
                 switch (_currentStep.Status)
                 {
                     case StepStatus.AppRestart:
@@ -226,8 +228,10 @@ namespace DotNetNuke.Services.Install
                             _upgradeRunning = false;
                             return;
                         }
+
                         break;
                 }
+
                 if (useGenericPercent)
                 {
                     _upgradeProgress += percentForEachStep;
@@ -495,6 +499,7 @@ namespace DotNetNuke.Services.Install
 
                     data = sb.ToString();
                 }
+
                 if (errorLogged == false)
                 {
                     Localization.Localization.GetString("NoErrorsLogged", "~/Install/App_LocalResources/InstallWizard.aspx.resx");

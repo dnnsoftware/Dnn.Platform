@@ -28,6 +28,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 throw new ArgumentNullException("key");
             }
+
             this._key = key + this.GetType().FullName;
         }
 
@@ -44,6 +45,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 throw new ArgumentNullException("initializer");
             }
+
             this._initializer = initializer;
         }
 
@@ -55,6 +57,7 @@ namespace DotNetNuke.Common.Utilities
                 value = this._initializer();
                 this[this._key] = value;
             }
+
             return value;
         }
 
@@ -100,6 +103,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     throw new InvalidOperationException("There is no value for the '" + this._key + "' key.");
                 }
+
                 return (T)returnedValue;
             }
             set
@@ -120,6 +124,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     return default(T);
                 }
+
                 return (T)returnedValue;
             }
         }

@@ -138,6 +138,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 this.Options.FolderPicker.Services.Parameters["portalId"] = portalSettings.PortalId.ToString();
             }
+
             this.Options.FolderPicker.Services.GetTreeMethod = "ItemListService/GetFolders";
             this.Options.FolderPicker.Services.GetNodeDescendantsMethod = "ItemListService/GetFolderDescendants";
             this.Options.FolderPicker.Services.SearchTreeMethod = "ItemListService/SearchFolders";

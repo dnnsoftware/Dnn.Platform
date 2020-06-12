@@ -67,6 +67,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                                                                searchResult.QueryString);
                                     }
                                 }
+
                                 break;
                             }
                         }

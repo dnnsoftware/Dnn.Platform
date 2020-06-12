@@ -54,6 +54,7 @@ namespace DotNetNuke.Modules.Groups.Components
                         membershipPending = true;
                     }
                 }
+
                 if (this.RoleInfo.CreatedByUserID == this.CurrentUser.UserID || this.CurrentUser.IsSuperUser)
                 {
                     isOwner = true;

@@ -62,6 +62,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     this.LoadActions(HttpContext.Current.Request);
                 }
+
                 return this._actions;
             }
             set
@@ -126,11 +127,13 @@ namespace DotNetNuke.UI.Modules
                     {
                         blnPreview = false;
                     }
+
                     bool blnHasModuleEditPermissions = false;
                     if (this._configuration != null)
                     {
                         blnHasModuleEditPermissions = ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "CONTENT", this.Configuration);
                     }
+
                     if (blnPreview == false && blnHasModuleEditPermissions)
                     {
                         this._isEditable = true;
@@ -140,6 +143,7 @@ namespace DotNetNuke.UI.Modules
                         this._isEditable = false;
                     }
                 }
+
                 return this._isEditable.Value;
             }
         }
@@ -221,6 +225,7 @@ namespace DotNetNuke.UI.Modules
                         this._settings[strKey] = tabModuleSettings[strKey];
                     }
                 }
+
                 return this._settings;
             }
         }
@@ -393,6 +398,7 @@ namespace DotNetNuke.UI.Modules
                         true,
                         false);
                 }
+
                 if ((this.Configuration.ModuleOrder != 0) && (this.Configuration.PaneModuleIndex < (this.Configuration.PaneModuleCount - 1)))
                 {
                     this._moduleMoveActions.Actions.Add(
@@ -465,6 +471,7 @@ namespace DotNetNuke.UI.Modules
                     count = GetActionsCount(count, action.Actions);
                 }
             }
+
             return count;
         }
 
@@ -502,10 +509,12 @@ namespace DotNetNuke.UI.Modules
                         {
                             action.Icon = "edit.gif";
                         }
+
                         if (action.ID > maxActionId)
                         {
                             maxActionId = action.ID;
                         }
+
                         this._moduleSpecificActions.Actions.Add(action);
 
                         if (!UIUtilities.IsLegacyUI(this.ModuleId, action.ControlKey, this.PortalId) && action.Url.Contains("ctl"))
@@ -514,6 +523,7 @@ namespace DotNetNuke.UI.Modules
                         }
                     }
                 }
+
                 if (this._moduleSpecificActions.Actions.Count > 0)
                 {
                     this._actions.Add(this._moduleSpecificActions);
@@ -526,6 +536,7 @@ namespace DotNetNuke.UI.Modules
             {
                 this._nextActionId = maxActionId;
             }
+
             if (this._nextActionId < actionCount)
             {
                 this._nextActionId = actionCount;
@@ -589,6 +600,7 @@ namespace DotNetNuke.UI.Modules
                             true,
                             false);
                     }
+
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "IMPORT", this.Configuration))
                     {
                         this._moduleGenericActions.Actions.Add(
@@ -605,6 +617,7 @@ namespace DotNetNuke.UI.Modules
                             false);
                     }
                 }
+
                 if (this.Configuration.DesktopModule.IsSearchable && this.Configuration.DisplaySyndicate)
                 {
                     this.AddSyndicateAction();
@@ -670,6 +683,7 @@ namespace DotNetNuke.UI.Modules
                         true,
                         false);
                 }
+
                 if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
                 {
                     this._moduleGenericActions.Actions.Add(
@@ -751,6 +765,7 @@ namespace DotNetNuke.UI.Modules
             {
                 key = "Edit";
             }
+
             string moduleIdParam = string.Empty;
             if (this.Configuration != null)
             {
@@ -795,6 +810,7 @@ namespace DotNetNuke.UI.Modules
                     url = UrlUtils.PopUpUrl(url, null, this.PortalSettings, false, pageRedirect);
                 }
             }
+
             return url;
         }
 

@@ -83,6 +83,7 @@ namespace DotNetNuke.Entities.Modules
                     {
                         this.SupportsPartialRendering = bool.Parse(elementvalue);
                     }
+
                     break;
             }
         }

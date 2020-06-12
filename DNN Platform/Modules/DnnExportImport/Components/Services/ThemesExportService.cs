@@ -39,6 +39,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 1)
             {
@@ -82,6 +83,7 @@ namespace Dnn.ExportImport.Components.Services
                                     var folderOffset = Path.Combine(Globals.ApplicationMapPath, "Portals").Length + 1;
                                     CompressionUtil.AddFileToArchive(archive, file, folderOffset);
                                 }
+
                                 totalThemesExported += 1;
                             }
 
@@ -114,6 +116,7 @@ namespace Dnn.ExportImport.Components.Services
             {
                 return;
             }
+
             // Skip the export if all the templates have been processed already.
             if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
             {
@@ -185,6 +188,7 @@ namespace Dnn.ExportImport.Components.Services
                                 Logger.Error(ex);
                             }
                         }
+
                         this.CheckPoint.Stage++;
                         this.CheckPoint.Completed = true;
                     }

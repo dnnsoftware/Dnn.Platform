@@ -169,6 +169,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
 

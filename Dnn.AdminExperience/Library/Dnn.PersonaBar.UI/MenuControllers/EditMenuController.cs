@@ -48,6 +48,7 @@ namespace Dnn.PersonaBar.UI.MenuControllers
                     }
                 }
             }
+
             return portalSettings.ControlPanelSecurity == PortalSettings.ControlPanelPermission.ModuleEditor && moduleAdmin;
         }
 

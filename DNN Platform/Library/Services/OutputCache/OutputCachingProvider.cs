@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 sOutput.Append(arrInput[i].ToString("X2"));
             }
+
             return sOutput.ToString();
         }
 
@@ -50,6 +51,7 @@ namespace DotNetNuke.Services.OutputCache
                 {
                     stream.Seek(offset, SeekOrigin.Begin);
                 }
+
                 var buffer = new byte[Convert.ToInt32(length)];
                 int count = stream.Read(buffer, 0, Convert.ToInt32(length));
                 char[] output = Encoding.UTF8.GetChars(buffer, 0, count);
@@ -103,6 +105,7 @@ namespace DotNetNuke.Services.OutputCache
                     }
                 }
             }
+
             return this.GenerateCacheKeyHash(tabId, cacheKey.ToString());
         }
 

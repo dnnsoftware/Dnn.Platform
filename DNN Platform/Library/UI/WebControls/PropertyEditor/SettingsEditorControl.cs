@@ -74,8 +74,10 @@ namespace DotNetNuke.UI.WebControls
                 {
                     info.Editor = Convert.ToString(this.CustomEditors[settingsEnumerator.Key]);
                 }
+
                 arrSettings.Add(info);
             }
+
             arrSettings.Sort(new SettingNameComparer());
             return arrSettings;
         }
@@ -112,6 +114,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 _IsVisible = Convert.ToBoolean(this.Visibility[info.Name]);
             }
+
             return _IsVisible;
         }
     }

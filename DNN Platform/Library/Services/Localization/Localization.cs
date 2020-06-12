@@ -275,6 +275,7 @@ namespace DotNetNuke.Services.Localization
                     controlField.AccessibleHeaderText = controlField.HeaderText;
                 }
             }
+
             if (controlField is TemplateField)
             {
                 // do nothing
@@ -305,31 +306,37 @@ namespace DotNetNuke.Services.Localization
                 {
                     commands.CancelText = localizedText;
                 }
+
                 localizedText = GetString(commands.DeleteText, resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
                     commands.DeleteText = localizedText;
                 }
+
                 localizedText = GetString(commands.EditText, resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
                     commands.EditText = localizedText;
                 }
+
                 localizedText = GetString(commands.InsertText, resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
                     commands.InsertText = localizedText;
                 }
+
                 localizedText = GetString(commands.NewText, resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
                     commands.NewText = localizedText;
                 }
+
                 localizedText = GetString(commands.SelectText, resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
                     commands.SelectText = localizedText;
                 }
+
                 localizedText = GetString(commands.UpdateText, resourceFile);
                 if (!string.IsNullOrEmpty(localizedText))
                 {
@@ -365,6 +372,7 @@ namespace DotNetNuke.Services.Localization
             {
                 count = locales.Count;
             }
+
             return count;
         }
 
@@ -412,6 +420,7 @@ namespace DotNetNuke.Services.Localization
                         {
                             AddLanguageHttpAlias(portalID, LocaleController.Instance.GetLocale(portalID, portalInfo.DefaultLanguage));
                         }
+
                         AddLanguageHttpAlias(portalID, newLocale);
                     }
 
@@ -524,6 +533,7 @@ namespace DotNetNuke.Services.Localization
                 // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portalID, language.LanguageId, false);
             }
+
             DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portalID));
         }
 
@@ -684,6 +694,7 @@ namespace DotNetNuke.Services.Localization
                             break;
                         }
                     }
+
                     break;
             }
 
@@ -721,6 +732,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return defaultValue;
             }
+
             return GetString(key, ExceptionsResourceFile);
         }
 
@@ -730,6 +742,7 @@ namespace DotNetNuke.Services.Localization
             {
                 return string.Format(defaultValue, @params);
             }
+
             var content = GetString(key, ExceptionsResourceFile);
             return string.Format(string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
         }
@@ -764,6 +777,7 @@ namespace DotNetNuke.Services.Localization
             {
                 viewType = "NATIVE";
             }
+
             return viewType;
         }
 
@@ -964,6 +978,7 @@ namespace DotNetNuke.Services.Localization
                     }
                 }
             }
+
             return culture;
         }
 
@@ -990,6 +1005,7 @@ namespace DotNetNuke.Services.Localization
                     break;
                 }
             }
+
             return culture;
         }
 
@@ -1028,6 +1044,7 @@ namespace DotNetNuke.Services.Localization
                     }
                 }
             }
+
             return culture;
         }
 
@@ -1037,6 +1054,7 @@ namespace DotNetNuke.Services.Localization
             {
                 resourceFileName += ".resx";
             }
+
             if (language != SystemLocale)
             {
                 if (resourceFileName.ToLowerInvariant().EndsWith(".en-us.resx"))
@@ -1048,6 +1066,7 @@ namespace DotNetNuke.Services.Localization
                     resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + language + ".resx";
                 }
             }
+
             if (mode == "Host")
             {
                 resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Host.resx";
@@ -1056,6 +1075,7 @@ namespace DotNetNuke.Services.Localization
             {
                 resourceFileName = resourceFileName.Substring(0, resourceFileName.Length - 5) + "." + "Portal-" + portalId + ".resx";
             }
+
             return resourceFileName;
         }
 
@@ -1090,6 +1110,7 @@ namespace DotNetNuke.Services.Localization
                 // Get Resource File Root from Parents LocalResourceFile Property
                 localizedText = GetString(key, moduleControl.LocalResourceFile);
             }
+
             return localizedText;
         }
 
@@ -1486,6 +1507,7 @@ namespace DotNetNuke.Services.Localization
                     {
                         customCaption = "Custom";
                     }
+
                     var objTokenReplace = new TokenReplace(Scope.SystemMessages, strLanguage, portalSettings, userInfo);
                     if ((accessingUserID != -1) && (userInfo != null))
                     {
@@ -1495,6 +1517,7 @@ namespace DotNetNuke.Services.Localization
                                 UserController.Instance.GetUser(portalSettings.PortalId, accessingUserID);
                         }
                     }
+
                     if (customArray != null)
                     {
                         strMessageValue =
@@ -1506,6 +1529,7 @@ namespace DotNetNuke.Services.Localization
                             objTokenReplace.ReplaceEnvironmentTokens(strMessageValue, customDictionary, customCaption);
                     }
                 }
+
                 return strMessageValue;
             }
             catch (NullReferenceException ex)
@@ -1666,6 +1690,7 @@ namespace DotNetNuke.Services.Localization
                     controlTitle = localizedvalue;
                 }
             }
+
             return controlTitle;
         }
 
@@ -1691,6 +1716,7 @@ namespace DotNetNuke.Services.Localization
                         col.HeaderText = localizedText;
                     }
                 }
+
                 if (col is EditCommandColumn)
                 {
                     var editCol = (EditCommandColumn)col;
@@ -1792,6 +1818,7 @@ namespace DotNetNuke.Services.Localization
                     localRole = role;
                     break;
             }
+
             return localRole;
         }
 
@@ -1915,6 +1942,7 @@ namespace DotNetNuke.Services.Localization
                 DataProvider.Instance().UpdateLanguage(locale.LanguageId, locale.Code, locale.Text, locale.Fallback, UserController.Instance.GetCurrentUserInfo().UserID);
                 EventLogController.Instance.AddLog(locale, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LANGUAGE_UPDATED);
             }
+
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
@@ -2023,6 +2051,7 @@ namespace DotNetNuke.Services.Localization
                 // UserCulture seems not valid anymore, update to current culture
                 Personalization.Personalization.SetProfile("Usability", "UICulture", currentCulture.Name);
             }
+
             return uiCulture;
         }
 

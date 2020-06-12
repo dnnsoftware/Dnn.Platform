@@ -47,6 +47,7 @@ namespace DotNetNuke.Web.Mvc.Common
                     removeCount++;
                 }
             }
+
             for (int i = 0; i < removeCount; i++)
             {
                 dictionary.Remove(keys[i]);

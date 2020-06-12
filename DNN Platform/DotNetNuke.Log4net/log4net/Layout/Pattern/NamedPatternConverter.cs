@@ -141,6 +141,7 @@ namespace log4net.Layout.Pattern
                 {
                     end = name.LastIndexOf('.', end - 1);
                 }
+
                 if (end == -1)
                 {
                     writer.Write(name + trailingDot);

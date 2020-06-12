@@ -144,6 +144,7 @@ namespace DotNetNuke.Framework
                 return File.Exists(minFile) || File.Exists(dbgFile);
             }
         }
+
         public static bool IsRequested
         {
             get
@@ -245,6 +246,7 @@ namespace DotNetNuke.Framework
                         ver = Localization.GetString("jQuery.NotInstalled.Text");
                     }
                 }
+
                 return ver;
             }
         }
@@ -278,6 +280,7 @@ namespace DotNetNuke.Framework
                         ver = Localization.GetString("jQueryUI.NotInstalled.Text");
                     }
                 }
+
                 return ver;
             }
         }
@@ -297,6 +300,7 @@ namespace DotNetNuke.Framework
             {
                 Exceptions.LogException(ex);
             }
+
             return retValue;
         }
 
@@ -320,6 +324,7 @@ namespace DotNetNuke.Framework
             {
                 jfile = jQueryMinFile;
             }
+
             return jfile;
         }
 
@@ -331,6 +336,7 @@ namespace DotNetNuke.Framework
             {
                 jfile = jQueryMigrateMinFile;
             }
+
             return jfile;
         }
 
@@ -342,6 +348,7 @@ namespace DotNetNuke.Framework
             {
                 jfile = jQueryUIMinFile;
             }
+
             return jfile;
         }
 
@@ -353,6 +360,7 @@ namespace DotNetNuke.Framework
             {
                 scriptsrc = JQueryFile(!UseDebugScript);
             }
+
             return scriptsrc;
         }
 
@@ -364,6 +372,7 @@ namespace DotNetNuke.Framework
             {
                 scriptsrc = JQueryMigrateFile(!UseDebugScript);
             }
+
             return scriptsrc;
         }
 
@@ -375,6 +384,7 @@ namespace DotNetNuke.Framework
             {
                 scriptsrc = JQueryUIFile(!UseDebugScript);
             }
+
             return scriptsrc;
         }
 
@@ -394,6 +404,7 @@ namespace DotNetNuke.Framework
             {
                 cookieTimeout = 5; // ping server in 5 minutes to make sure the server is not IDLE.
             }
+
             JavaScript.RequestRegistration(CommonJs.jQuery);
 
             var seconds = ((cookieTimeout * 60) - 30) * 1000; // ping server 30 seconds before cookie is time out.

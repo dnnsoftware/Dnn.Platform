@@ -30,6 +30,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 return;
             }
+
             // extract old and new user profile from args and clear both client and server caching
             var user = profileArgs.User;
             var newProfile = user.Profile;
@@ -44,6 +45,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     userIds = new Dictionary<int, DateTime>();
                 }
+
                 // Add the userid to the clear cache list, if not already in the list.
                 if (userIds.ContainsKey(user.UserID))
                 {

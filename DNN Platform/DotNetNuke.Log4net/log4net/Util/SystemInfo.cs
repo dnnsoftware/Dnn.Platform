@@ -303,6 +303,7 @@ namespace log4net.Util
                         LogLog.Debug(declaringType, "Could not determine the hostname. Error Ignored. Empty host name will be used");
                     }
                 }
+
                 return s_hostName;
             }
         }
@@ -359,6 +360,7 @@ namespace log4net.Util
                         s_appFriendlyName = s_notAvailableText;
                     }
                 }
+
                 return s_appFriendlyName;
             }
         }
@@ -579,6 +581,7 @@ namespace log4net.Util
             {
                 name = name.Substring(0, offset);
             }
+
             return name.Trim();
 
             // TODO: Do we need to unescape the assembly name string?
@@ -747,6 +750,7 @@ namespace log4net.Util
                                                         }
                         }
                     }
+
                     if (fallback != null)
                                         {
                                             return fallback;
@@ -758,6 +762,7 @@ namespace log4net.Util
                 {
                     throw new TypeLoadException("Could not load type [" + typeName + "]. Tried assembly [" + relativeAssembly.FullName + "] and all loaded assemblies");
                 }
+
                 return null;
 #endif
             }
@@ -994,6 +999,7 @@ namespace log4net.Util
                 // If an exception is thrown here then it looks like the config file does not parse correctly.
                 LogLog.Error(declaringType, "Exception while reading ConfigurationSettings. Check your .config file is well formed XML.", ex);
             }
+
             return null;
         }
 
@@ -1044,6 +1050,7 @@ namespace log4net.Util
                 // Note that Path.Combine will return the second path if it is rooted
                 return Path.GetFullPath(Path.Combine(baseDirectory, path));
             }
+
             return Path.GetFullPath(path);
         }
 

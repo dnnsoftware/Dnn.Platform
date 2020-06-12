@@ -72,6 +72,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     return false;
                 }
+
                 return PortalSettings.Current.UserInfo.IsSuperUser && base.Visible;
             }
             set

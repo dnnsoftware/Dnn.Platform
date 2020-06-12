@@ -89,6 +89,7 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
             }
+
             return skins;
         }
 
@@ -101,6 +102,7 @@ namespace DotNetNuke.UI.Skins
                 ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot, PortalSystemSkinPrefix);
                 ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); // to be compliant with all versions
             }
+
             return skins;
         }
 
@@ -146,6 +148,7 @@ namespace DotNetNuke.UI.Skins
                 skinType = "L";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), string.Empty).Replace("\\", "/");
             }
+
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             string skin = "[" + skinType.ToLowerInvariant() + "]" + skinFolder.ToLowerInvariant();
@@ -165,11 +168,13 @@ namespace DotNetNuke.UI.Skins
                     canDelete = false;
                 }
             }
+
             if (canDelete)
             {
                 // Check if used for Tabs or Modules
                 canDelete = DataProvider.Instance().CanDeleteSkin(skinType, skinFolder);
             }
+
             return canDelete;
         }
 
@@ -191,6 +196,7 @@ namespace DotNetNuke.UI.Skins
             {
                 message = "<span class=\"NormalRed\">" + title + "</span>";
             }
+
             switch (level)
             {
                 case -1:
@@ -206,6 +212,7 @@ namespace DotNetNuke.UI.Skins
                     message = "<br /><li>" + message + "</li>";
                     break;
             }
+
             return message + ": " + body + Environment.NewLine;
         }
 
@@ -216,6 +223,7 @@ namespace DotNetNuke.UI.Skins
             {
                 strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/") + 1);
             }
+
             return strSkinSrc;
         }
 
@@ -237,6 +245,7 @@ namespace DotNetNuke.UI.Skins
                         break;
                 }
             }
+
             return strSkinSrc;
         }
 
@@ -290,6 +299,7 @@ namespace DotNetNuke.UI.Skins
                     skins.AddRange(GetPortalSkins(portalInfo, skinRoot));
                     break;
             }
+
             return skins;
         }
 
@@ -363,6 +373,7 @@ namespace DotNetNuke.UI.Skins
                             PortalController.UpdatePortalSetting(portalId, "DefaultPortalSkin", skinSrc, true, selectedCultureCode);
                         }
                     }
+
                     break;
                 case "Containers":
                     if (skinType == SkinType.Admin)
@@ -387,6 +398,7 @@ namespace DotNetNuke.UI.Skins
                             PortalController.UpdatePortalSetting(portalId, "DefaultPortalContainer", skinSrc, true, selectedCultureCode);
                         }
                     }
+
                     break;
             }
         }
@@ -458,6 +470,7 @@ namespace DotNetNuke.UI.Skins
                                     objMemoryStream.Write(arrData, 0, intSize);
                                     intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
                                 }
+
                                 objMemoryStream.Seek(0, SeekOrigin.Begin);
                                 strMessage += UploadLegacySkin(rootPath, RootSkin, skinName, objMemoryStream);
                             }
@@ -472,6 +485,7 @@ namespace DotNetNuke.UI.Skins
                                     objMemoryStream.Write(arrData, 0, intSize);
                                     intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
                                 }
+
                                 objMemoryStream.Seek(0, SeekOrigin.Begin);
                                 strMessage += UploadLegacySkin(rootPath, RootContainer, skinName, objMemoryStream);
                             }
@@ -505,6 +519,7 @@ namespace DotNetNuke.UI.Skins
                                 objFileStream.Write(arrData, 0, intSize);
                                 intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
                             }
+
                             objFileStream.Close();
 
                             // save the skin file
@@ -518,8 +533,10 @@ namespace DotNetNuke.UI.Skins
                                     {
                                         arrSkinFiles.Add(strFileName);
                                     }
+
                                     break;
                             }
+
                             break;
                         }
                     }
@@ -528,8 +545,10 @@ namespace DotNetNuke.UI.Skins
                         strMessage += string.Format(FILE_RESTICTED, objZipEntry.Name, Host.AllowedExtensionWhitelist.ToStorageString(), ",", ", *.").Replace("2", "true");
                     }
                 }
+
                 objZipEntry = objZipInputStream.GetNextEntry();
             }
+
             strMessage += FormatMessage(END_MESSAGE, skinName + ".zip", 1, false);
             objZipInputStream.Close();
 
@@ -547,12 +566,14 @@ namespace DotNetNuke.UI.Skins
                 {
                     log.LogProperties.Add(new LogDetailInfo("Info:", HtmlUtils.StripTags(strRow, true)));
                 }
+
                 LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
             {
                 Logger.Error(exc);
             }
+
             return strMessage;
         }
     }

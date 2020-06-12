@@ -36,6 +36,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                 {
                     userId = int.Parse(this.Request.Params["UserId"]);
                 }
+
                 return userId;
             }
         }
@@ -76,6 +77,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                 UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("ContentNotAvailable", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
                 return;
             }
+
             if (this.UserId != this.ProfileUserId && (this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId || this.TabId == this.PortalSettings.UserTabId))
             {
                 // Do not redirect but hide the content of the module.

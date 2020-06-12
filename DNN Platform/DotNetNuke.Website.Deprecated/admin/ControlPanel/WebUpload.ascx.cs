@@ -66,6 +66,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                         this._DestinationFolder = Globals.QueryStringDecode(this.Request.QueryString["dest"]);
                     }
                 }
+
                 return PathUtils.Instance.RemoveTrailingSlash(this._DestinationFolder.Replace("\\", "/"));
             }
         }
@@ -85,6 +86,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                             break;
                     }
                 }
+
                 return this._FileType;
             }
         }
@@ -97,6 +99,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     this._FileTypeName = Localization.GetString(this.FileType.ToString(), this.LocalResourceFile);
                 }
+
                 return this._FileTypeName;
             }
         }
@@ -131,6 +134,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                         this._RootFolder = this.PortalSettings.HomeDirectoryMapPath;
                     }
                 }
+
                 return this._RootFolder;
             }
         }
@@ -148,6 +152,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                         this._UploadRoles = Convert.ToString(this.Settings["uploadroles"]);
                     }
                 }
+
                 return this._UploadRoles;
             }
         }
@@ -210,6 +215,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             {
                 TabID = int.Parse(this.Request.Params["rtab"]);
             }
+
             return this._navigationManager.NavigateURL(TabID);
         }
 
@@ -266,8 +272,10 @@ namespace DotNetNuke.Modules.Admin.FileManager
                             this.lblRootType.Text = strPortal + ":";
                             this.lblRootFolder.Text = this.RootFolder;
                         }
+
                         this.LoadFolders();
                     }
+
                     this.chkUnzip.Checked = false;
                 }
             }
@@ -333,6 +341,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                                 Logger.Error(exc);
                                 strMessage += "<br />" + string.Format(Localization.GetString("SaveFileError"), strFileName);
                             }
+
                             break;
                     }
                 }
@@ -340,6 +349,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     strMessage = Localization.GetString("NoFile", this.LocalResourceFile);
                 }
+
                 if (this.phPaLogs.Controls.Count > 0)
                 {
                     this.tblLogs.Visible = true;

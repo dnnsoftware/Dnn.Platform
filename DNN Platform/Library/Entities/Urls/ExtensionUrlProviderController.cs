@@ -93,6 +93,7 @@ namespace DotNetNuke.Entities.Urls
                         providersToCall.AddRange(allProviders);
                     }
                 }
+
                 // always return an instantiated provider collection
                 providers = providersToCall ?? new List<ExtensionUrlProvider>();
             }
@@ -142,13 +143,16 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+
                 // now store back in cache
                 CacheController.StoreAlwaysCallProviderTabs(portalId, alwaysCallTabids, settings);
             }
+
             if (alwaysCallTabids.Contains(tabId) || alwaysCallTabids.Contains(RewriteController.AllTabsRewrite))
             {
                 checkForAlwaysCallResult = true;
             }
+
             return checkForAlwaysCallResult;
         }
 
@@ -198,11 +202,13 @@ namespace DotNetNuke.Entities.Urls
                 {
                     providerName = activeProvider.ProviderConfig.ProviderName;
                 }
+
                 if (result != null)
                 {
                     result.DebugMessages.Add("Exception in provider [" + providerName + "] :" + ex.Message);
                 }
             }
+
             return redirected;
         }
 
@@ -238,6 +244,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             try
             {
                 List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(tab.TabID, portalId, settings,
@@ -261,6 +268,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         endingPageName = Globals.glbDefaultPage; // set back to default.aspx if provider cleared it
                     }
+
                     // now check to see if a change was made or not.  Don't trust the provider.
                     if (!string.IsNullOrEmpty(customPath))
                     {
@@ -285,6 +293,7 @@ namespace DotNetNuke.Entities.Urls
                 changedPath = friendlyUrlPath;
                 changeToSiteRoot = false;
             }
+
             return wasChanged;
         }
 
@@ -311,6 +320,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     tabId = RewriteController.SiteRootRewrite;
                 }
+
                 List<ExtensionUrlProvider> providersToCall = GetProvidersToCall(
                     tabId,
                     result.PortalId,
@@ -328,6 +338,7 @@ namespace DotNetNuke.Entities.Urls
                         bool replaced;
                         parms[upperBound] = RewriteController.CleanExtension(parms[upperBound], settings, out replaced);
                     }
+
                     // get options from current settings
                     FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                     foreach (ExtensionUrlProvider provider in providersToCall)
@@ -365,9 +376,11 @@ namespace DotNetNuke.Entities.Urls
                                         // keep any other querystring remainders
                                         qsRemainder = rewrittenUrlMatch.Groups["qs"].Captures.Cast<Capture>().Aggregate(string.Empty, (current, qsCapture) => current + qsCapture.Value); // initialise
                                     }
+
                                     // supplied value overwrites existing value, so remove from the rewritten url
                                     rewrittenUrl = RewrittenUrlRegex.Replace(rewrittenUrl, string.Empty);
                                 }
+
                                 if (rewrittenUrl.Contains("?") == false)
                                 {
                                     // use a leading ?, not a leading &
@@ -387,6 +400,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     rewrittenUrl += qsRemainder;
                                 }
+
                                 break;
                             }
                         }
@@ -411,6 +425,7 @@ namespace DotNetNuke.Entities.Urls
                                     result.Action = ActionType.Output500;
                                     break;
                             }
+
                             newAction = true; // not doing a 200 status
                             break;
                         }
@@ -430,11 +445,13 @@ namespace DotNetNuke.Entities.Urls
                 {
                     providerName = activeProvider.ProviderConfig.ProviderName;
                 }
+
                 if (result != null)
                 {
                     result.DebugMessages.Add("Exception in provider [" + providerName + "] :" + ex.Message);
                 }
             }
+
             return rewriteDone;
         }
 
@@ -590,6 +607,7 @@ namespace DotNetNuke.Entities.Urls
                     moduleProviderName = provider.ProviderConfig.ProviderName;
                     moduleProviderVersion = provider.GetType().Assembly.GetName(false).Version.ToString();
                 }
+
                 // this logic prevents a site logging an exception for every request made.  Instead
                 // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
                 // create a cache key for this exception type
@@ -640,6 +658,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     msg = "[message was null]";
                                 }
+
                                 log.AddProperty("Debug Message[result] " + i.ToString(), msg);
                                 i++;
                             }
@@ -649,6 +668,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         log.AddProperty("Result", "Result value null");
                     }
+
                     if (messages != null)
                     {
                         int i = 1;
@@ -658,6 +678,7 @@ namespace DotNetNuke.Entities.Urls
                             i++;
                         }
                     }
+
                     log.AddProperty("Exception Type", ex.GetType().ToString());
                     log.AddProperty("Message", ex.Message);
                     log.AddProperty("Stack Trace", ex.StackTrace);
@@ -666,6 +687,7 @@ namespace DotNetNuke.Entities.Urls
                         log.AddProperty("Inner Exception Message", ex.InnerException.Message);
                         log.AddProperty("Inner Exception Stacktrace", ex.InnerException.StackTrace);
                     }
+
                     log.BypassBuffering = true;
                     LogController.Instance.AddLog(log);
                 }

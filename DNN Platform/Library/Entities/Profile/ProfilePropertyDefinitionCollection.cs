@@ -158,6 +158,7 @@ namespace DotNetNuke.Entities.Profile
                     collection.Add(profileProperty);
                 }
             }
+
             return collection;
         }
 
@@ -178,6 +179,7 @@ namespace DotNetNuke.Entities.Profile
                     profileItem = profileProperty;
                 }
             }
+
             return profileItem;
         }
 
@@ -199,6 +201,7 @@ namespace DotNetNuke.Entities.Profile
                     profileItem = profileProperty;
                 }
             }
+
             return profileItem;
         }
 

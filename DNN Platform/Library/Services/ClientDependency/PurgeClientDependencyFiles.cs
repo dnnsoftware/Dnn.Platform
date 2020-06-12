@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.ClientDependency
                 {
                     File.Delete(filePath);
                 }
+
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("Purging client dependency files task succeeded");
             }

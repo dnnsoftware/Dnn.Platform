@@ -70,6 +70,7 @@ namespace DotNetNuke.Modules.Journal.Components
                         {
                             sExt = ".gif";
                         }
+
                         if (!string.IsNullOrEmpty(sExt))
                         {
                             bmp = new Bitmap(myStream);
@@ -92,18 +93,22 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 url = "http://" + url;
             }
+
             if (url.Contains("https://"))
             {
                 url = url.Replace("https://", "http://");
             }
+
             if (url.Contains("http://http://"))
             {
                 url = url.Replace("http://http://", "http://");
             }
+
             if (!(url.IndexOf("http://") == 0))
             {
                 url = "http://" + url;
             }
+
             Uri objURI = null;
 
             objURI = new Uri(url);
@@ -118,6 +123,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 return link;
             }
+
             string sTitle = string.Empty;
             string sDescription = string.Empty;
             string sImage = string.Empty;
@@ -129,6 +135,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 link.Title = m.Groups[2].ToString().Trim();
             }
+
             MatchCollection matches = default(MatchCollection);
             matches = MetaRegex.Matches(sPage);
             int i = 0;
@@ -145,6 +152,7 @@ namespace DotNetNuke.Modules.Journal.Components
                     {
                         link.Description = subM.Groups[9].Value;
                     }
+
                     if (subM.Groups[4].Value.Equals("OG:TITLE", StringComparison.InvariantCultureIgnoreCase))
                     {
                         link.Title = subM.Groups[9].Value;
@@ -160,16 +168,19 @@ namespace DotNetNuke.Modules.Journal.Components
                     }
                 }
             }
+
             if (!string.IsNullOrEmpty(link.Description))
             {
                 link.Description = HttpUtility.HtmlDecode(link.Description);
                 link.Description = HttpUtility.UrlDecode(link.Description);
                 link.Description = RemoveHTML(link.Description);
             }
+
             if (!string.IsNullOrEmpty(link.Title))
             {
                 link.Title = link.Title.Replace("&amp;", "&");
             }
+
             matches = MetaSubRegex2.Matches(sPage);
 
             string imgList = string.Empty;
@@ -178,6 +189,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 URL = "http://" + URL;
             }
+
             Uri uri = new Uri(URL);
             hostUrl = uri.Host;
             if (URL.Contains("https:"))
@@ -188,6 +200,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 hostUrl = "http://" + hostUrl;
             }
+
             foreach (Match match in matches)
             {
                 string sImg = match.Groups[5].Value;
@@ -195,6 +208,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     sImg = match.Groups[8].Value;
                 }
+
                 if (!string.IsNullOrEmpty(sImg))
                 {
                     if (!sImg.Contains("http"))
@@ -217,14 +231,17 @@ namespace DotNetNuke.Modules.Journal.Components
                             }
                         }
                     }
+
                     if (i == 10)
                     {
                         break;
                     }
                 }
             }
+
             return link;
         }
+
         internal static string GetPageFromURL(ref string url, string username, string password)
         {
             url = PrepareURL(url);
@@ -241,6 +258,7 @@ namespace DotNetNuke.Modules.Journal.Components
                 NetworkCredential nc = new NetworkCredential(username, password);
                 objWebRequest.Credentials = nc;
             }
+
             string sHTML = string.Empty;
             try
             {
@@ -260,6 +278,7 @@ namespace DotNetNuke.Modules.Journal.Components
                         objStream.Close();
                     }
                 }
+
                 objWebResponse.Close();
             }
             catch (Exception ex)
@@ -286,11 +305,13 @@ namespace DotNetNuke.Modules.Journal.Components
                 {
                     newValue = sReplace;
                 }
+
                 controlText = controlText.Replace(sKey, newValue);
             }
 
             return controlText;
         }
+
         public static string GetSharedResource(string key)
         {
             string sValue = key;
@@ -311,6 +332,7 @@ namespace DotNetNuke.Modules.Journal.Components
             {
                 return string.Empty;
             }
+
             sText = HttpUtility.HtmlDecode(sText);
             sText = HttpUtility.UrlDecode(sText);
             sText = sText.Trim();

@@ -55,6 +55,7 @@ namespace DotNetNuke.Common.Utilities
                 errorMessages.Append("<b>Index #:</b> " + i + "<br/>" + "<b>Source:</b> " + sqlError.Source + "<br/>" + "<b>Class:</b> " + sqlError.Class + "<br/>" + "<b>Number:</b> " +
                                      sqlError.Number + "<br/>" + "<b>Procedure:</b> " + sqlError.Procedure + "<br/>" + "<b>Message:</b> " + filteredMessage + "<br/>");
             }
+
             return errorMessages.ToString();
         }
     }

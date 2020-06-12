@@ -322,6 +322,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     _CachePersistenceEnabled = Config.GetSetting("EnableCachePersistence") ?? "false";
                 }
+
                 return bool.Parse(_CachePersistenceEnabled);
             }
         }
@@ -359,6 +360,7 @@ namespace DotNetNuke.Common.Utilities
                             log.LogTypeKey = EventLogController.EventLogType.CACHE_DEPENDENCYCHANGED.ToString();
                             break;
                     }
+
                     log.LogProperties.Add(new LogDetailInfo(key, removedReason.ToString()));
                     LogController.Instance.AddLog(log);
                 }
@@ -616,6 +618,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return default(TObject);
             }
+
             return (TObject)objObject;
         }
 
@@ -639,6 +642,7 @@ namespace DotNetNuke.Common.Utilities
                     dictionaryLock.ExitReadLock();
                 }
             }
+
             if (@lock == null)
             {
                 if (dictionaryLock.TryEnterWriteLock(_5seconds))
@@ -651,6 +655,7 @@ namespace DotNetNuke.Common.Utilities
                             // Create new lock
                             lockDictionary[key] = new object();
                         }
+
                         // Retrieve lock
                         @lock = lockDictionary[key];
                     }
@@ -660,6 +665,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+
             return @lock;
         }
 
@@ -692,6 +698,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return default(TObject);
             }
+
             return (TObject)objObject;
         }
 
@@ -748,6 +755,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     OnRemoveCallback = ItemRemovedCallback;
                 }
+
                 CachingProvider.Instance().Insert(GetDnnCacheKey(CacheKey), objObject, objDependency, AbsoluteExpiration, SlidingExpiration, Priority, OnRemoveCallback);
             }
         }

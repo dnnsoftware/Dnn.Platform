@@ -80,6 +80,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this.m_MemoryStream.Write(_Byte, 0, _Byte.Length);
                 }
+
                 _FileStream.Close();
             }
         }
@@ -122,6 +123,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         _MemStream.Write(_Byte, 0, _Byte.Length);
                     }
+
                     _FileStream.Close();
                 }
             }
@@ -130,6 +132,7 @@ namespace DotNetNuke.UI.WebControls
                 throw new Exception(exc.Message +
                                     "  Please set the \"GeoIPFile\" Property to specify the location of this file.  The property value must be set to the virtual path to GeoIP.dat (i.e. \"/controls/CountryListBox/Data/GeoIP.dat\")");
             }
+
             return _MemStream;
         }
 
@@ -151,6 +154,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return "--";
             }
+
             return this.LookupCountryCode(_Address);
         }
 
@@ -172,6 +176,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 return "N/A";
             }
+
             return this.LookupCountryName(_Address);
         }
 
@@ -188,6 +193,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     throw new Exception();
                 }
+
                 this.m_MemoryStream.Seek(6 * Offset, 0);
                 var len = this.m_MemoryStream.Read(Buffer, 0, 6);
                 if (len == 6)
@@ -202,6 +208,7 @@ namespace DotNetNuke.UI.WebControls
                             {
                                 Y = Convert.ToByte(Y + 256);
                             }
+
                             X[I] = Convert.ToInt32(X[I] + (Y << (J * 8)));
                         }
                     }
@@ -220,6 +227,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         return Convert.ToInt32(X[1] - CountryBegin);
                     }
+
                     return this.SeekCountry(X[1], Ipnum, Convert.ToInt16(Depth - 1));
                 }
                 else
@@ -228,6 +236,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         return Convert.ToInt32(X[0] - CountryBegin);
                     }
+
                     return this.SeekCountry(X[0], Ipnum, Convert.ToInt16(Depth - 1));
                 }
             }

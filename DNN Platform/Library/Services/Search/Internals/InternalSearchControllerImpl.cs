@@ -100,6 +100,7 @@ namespace DotNetNuke.Services.Search.Internals
                             {
                                 text = def.FriendlyName;
                             }
+
                             var result = new SearchContentSource
                             {
                                 SearchTypeId = crawler.SearchTypeId,
@@ -456,24 +457,28 @@ namespace DotNetNuke.Services.Search.Internals
                         {
                             field.Boost = this._titleBoost / 10f;
                         }
+
                         break;
                     case Constants.SubjectTag:
                         if (this._contentBoost > 0 && this._contentBoost != Constants.StandardLuceneBoost)
                         {
                             field.Boost = this._contentBoost / 10f;
                         }
+
                         break;
                     case Constants.CommentsTag:
                         if (this._descriptionBoost > 0 && this._descriptionBoost != Constants.StandardLuceneBoost)
                         {
                             field.Boost = this._descriptionBoost / 10f;
                         }
+
                         break;
                     case Constants.AuthorNameTag:
                         if (this._authorBoost > 0 && this._authorBoost != Constants.StandardLuceneBoost)
                         {
                             field.Boost = this._authorBoost / 10f;
                         }
+
                         break;
                 }
 
@@ -498,6 +503,7 @@ namespace DotNetNuke.Services.Search.Internals
                         tagBoostApplied = true;
                     }
                 }
+
                 doc.Add(field);
             }
 

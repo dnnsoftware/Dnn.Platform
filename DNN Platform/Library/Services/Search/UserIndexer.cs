@@ -137,6 +137,7 @@ namespace DotNetNuke.Services.Search
                 this.SetLastCheckpointData(portalId, schedule.ScheduleID, Null.NullInteger.ToString());
                 this.SetLocalTimeOfLastIndexedItem(portalId, schedule.ScheduleID, DateTime.Now);
             }
+
             return totalIndexed;
         }
 
@@ -246,6 +247,7 @@ namespace DotNetNuke.Services.Search
                     rowsAffected++;
                 }
             }
+
             return rowsAffected;
         }
 
@@ -259,6 +261,7 @@ namespace DotNetNuke.Services.Search
                 {
                     indexedUsers.Add(userSearch.UserId);
                 }
+
                 // if the user doesn't exist in search collection, we need add it with ALLUsers mode,
                 // so that can make sure DisplayName will be indexed
                 var searchDoc = new SearchDocument
@@ -285,6 +288,7 @@ namespace DotNetNuke.Services.Search
                 {
                     indexedUsers.Add(userSearch.UserId);
                 }
+
                 // if the user doesn't exist in search collection, we need add it with ALLUsers mode,
                 // so that can make sure DisplayName will be indexed
                 var searchDoc = new SearchDocument

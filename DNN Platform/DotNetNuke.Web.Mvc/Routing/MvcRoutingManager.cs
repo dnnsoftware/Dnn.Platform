@@ -90,6 +90,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                 // _routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
             }
+
             Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
         }
 
@@ -176,11 +177,13 @@ namespace DotNetNuke.Web.Mvc.Routing
             {
                 route.DataTokens = new RouteValueDictionary();
             }
+
             ConstraintValidation.Validate(route);
             if ((namespaces != null) && (namespaces.Length > 0))
             {
                 route.SetNameSpaces(namespaces);
             }
+
             route.SetName(name);
             return route;
         }

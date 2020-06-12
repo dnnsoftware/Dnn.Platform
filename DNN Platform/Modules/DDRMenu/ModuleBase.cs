@@ -16,6 +16,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 result = (string)this.Settings[name];
             }
+
             if (string.IsNullOrEmpty(result))
             {
                 result = defaultValue;
@@ -25,6 +26,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 result = result.Trim();
             }
+
             if (result == "-")
             {
                 result = string.Empty;

@@ -63,6 +63,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
                     return this.CopyImage(content);
                 }
             }
+
             return this.GetNoAvatarImage();
         }
 

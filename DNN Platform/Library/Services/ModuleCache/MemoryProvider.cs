@@ -28,6 +28,7 @@ namespace DotNetNuke.Services.ModuleCache
                     keys.Add(CacheEnum.Key.ToString());
                 }
             }
+
             return keys;
         }
 
@@ -41,6 +42,7 @@ namespace DotNetNuke.Services.ModuleCache
                     cacheKey.Append(string.Concat(kvp.Key.ToLowerInvariant(), "=", kvp.Value, "|"));
                 }
             }
+
             return string.Concat(cachePrefix, "|", tabModuleId.ToString(), "|", cacheKey.ToString());
         }
 

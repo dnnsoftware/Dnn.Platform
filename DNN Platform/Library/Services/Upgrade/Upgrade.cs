@@ -288,6 +288,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     package.IsSystemPackage = true;
                 }
+
                 package.Version = new Version(1, 0, 0);
 
                 PackageController.Instance.SaveExtensionPackage(package);
@@ -310,6 +311,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     desktopModule.SupportedFeatures = 1;
                 }
+
                 desktopModule.IsPremium = premium;
                 desktopModule.IsAdmin = admin;
 
@@ -329,6 +331,7 @@ namespace DotNetNuke.Services.Upgrade
 
                 moduleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(moduleDefinition, false, false);
             }
+
             return moduleDefinition.ModuleDefID;
         }
 
@@ -425,9 +428,11 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         tab.TabPermissions.Add(tabPermission, true);
                     }
+
                     TabPermissionController.SaveTabPermissions(tab);
                 }
             }
+
             return tab;
         }
 
@@ -654,12 +659,14 @@ namespace DotNetNuke.Services.Upgrade
                     default:
                         break;
                 }
+
                 if (update)
                 {
                     if (desktopModuleInfo.Value.PackageID == Null.NullInteger)
                     {
                         LegacyUtil.ProcessLegacyModule(desktopModuleInfo.Value);
                     }
+
                     DesktopModuleController.SaveDesktopModule(desktopModuleInfo.Value, false, false);
                 }
             }
@@ -726,6 +733,7 @@ namespace DotNetNuke.Services.Upgrade
                                 }
                             }
                         }
+
                         break;
                     default:
                         break;
@@ -1013,6 +1021,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         moduleDefId = RemoveModule(desktopModuleName, tabName, tab.TabID, removeTab);
                     }
+
                     break;
                 case "Admin":
                     var portals = PortalController.Instance.GetPortals();
@@ -1023,6 +1032,7 @@ namespace DotNetNuke.Services.Upgrade
                         var portal = (PortalInfo)portals[intPortal];
                         moduleDefId = RemoveModule(desktopModuleName, tabName, portal.AdminTabId, removeTab);
                     }
+
                     break;
             }
 
@@ -1146,6 +1156,7 @@ namespace DotNetNuke.Services.Upgrade
                                 FileManager.Instance.AddFile(folder, fileName, stream, /*overwrite*/ false);
                             }
                         }
+
                         fileId = FileManager.Instance.GetFile(folder, fileName).FileId;
 
                         new FavIcon(portalInfo.PortalID).Update(fileId);
@@ -1211,6 +1222,7 @@ namespace DotNetNuke.Services.Upgrade
                         // Create Portal Templates folder
                         Directory.CreateDirectory(portalTemplateFolder);
                     }
+
                     string portalTemplateFile = portalTemplateFolder + "Default.page.template";
                     if (!File.Exists(portalTemplateFile))
                     {
@@ -1267,6 +1279,7 @@ namespace DotNetNuke.Services.Upgrade
                             {
                                 childTab.TabPermissions.Add(tabPermission);
                             }
+
                             // Save Tab Permissions to Data Base
                             TabPermissionController.SaveTabPermissions(childTab);
                         }
@@ -1311,6 +1324,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     permissionId = permission.PermissionID;
                 }
+
                 foreach (PortalInfo portal in portals)
                 {
                     foreach (DesktopModuleInfo desktopModule in DesktopModuleController.GetDesktopModules(Null.NullInteger).Values)
@@ -1654,6 +1668,7 @@ namespace DotNetNuke.Services.Upgrade
                     File.Copy(installTemplateFile, hostTemplateFile);
                 }
             }
+
             if (File.Exists(hostTemplateFile))
             {
                 ArrayList portals = PortalController.Instance.GetPortals();
@@ -1708,6 +1723,7 @@ namespace DotNetNuke.Services.Upgrade
                             portal.UserTabId = userTab.TabID;
                         }
                     }
+
                     PortalController.Instance.UpdatePortalInfo(portal);
 
                     // Add Users folder to every portal
@@ -1723,6 +1739,7 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
             }
+
             AddEventQueueApplicationStartFirstRequest();
 
             // Change Key for Module Defintions;
@@ -1787,6 +1804,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         File.Delete(fileName + ".resources");
                     }
+
                     // copy requires use of move
                     File.Move(fileName, fileName + ".resources");
                 }
@@ -1838,6 +1856,7 @@ namespace DotNetNuke.Services.Upgrade
                         FolderPermissionController.SaveFolderPermissions(folder);
                     }
                 }
+
                 // Remove user page template from portal if it exists (from 5.3)
                 if (File.Exists(string.Format("{0}Templates\\UserProfile.page.template", portal.HomeDirectoryMapPath)))
                 {
@@ -1863,6 +1882,7 @@ namespace DotNetNuke.Services.Upgrade
                     Locale language = LocaleController.Instance.GetLocale(defaultLanguage);
                     Localization.Localization.AddLanguageToPortal(portal.PortalID, language.LanguageId, true);
                 }
+
                 // preemptively create any missing localization records rather than relying on dynamic creation
                 foreach (Locale locale in LocaleController.Instance.GetLocales(portal.PortalID).Values)
                 {
@@ -2358,6 +2378,7 @@ namespace DotNetNuke.Services.Upgrade
                 entry.Text = "FindThisText";
                 entry.SystemList = true;
             }
+
             listController.AddListEntry(entry);
 
             // add same list to each portal
@@ -2721,6 +2742,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     TabController.Instance.DeleteTab(tab.TabID, Null.NullInteger);
                 }
+
                 TabController.Instance.DeleteTab(advancedFeaturesTabId, Null.NullInteger);
             }
 
@@ -3017,6 +3039,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 // suppress
             }
+
             md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("User Accounts", desktopInfo.DesktopModuleID);
             try
             {
@@ -3034,6 +3057,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 // suppress
             }
+
             md = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Security Roles", desktopInfo.DesktopModuleID);
             try
             {
@@ -3107,6 +3131,7 @@ namespace DotNetNuke.Services.Upgrade
                             term = new Term(dr["CategoryName"].ToString(), null, vocabulary.VocabularyId);
                             termController.AddTerm(term);
                         }
+
                         termController.AddTermToContent(term, attachContentItem);
                     }
                 }
@@ -3413,6 +3438,7 @@ namespace DotNetNuke.Services.Upgrade
                         childPath = childPath.Replace("\\", "/");
                         childPath = childPath.Replace(Globals.ApplicationPath, string.Empty);
                     }
+
                     childPath = childPath.Replace("/", "\\");
                     // check if File exists and make sure it's not the site's main default.aspx page
                     string childDefaultPage = childPath + "\\" + Globals.glbDefaultPage;
@@ -3498,6 +3524,7 @@ namespace DotNetNuke.Services.Upgrade
                         {
                             TabController.Instance.DeleteTab(gettingStartedTabId, portal.PortalID);
                         }
+
                         PortalController.DeletePortalSetting(portal.PortalID, "GettingStartedTabId");
                     }
                 }
@@ -3517,6 +3544,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 return false;
             }
+
             return true;
         }
 
@@ -3574,6 +3602,7 @@ namespace DotNetNuke.Services.Upgrade
                 AddPagePermission(tabPermissionCollection, "Edit", Convert.ToInt32(portal.AdministratorRoleId));
                 return AddPage(adminPage, tabName, description, tabIconFile, tabIconFileLarge, isVisible, tabPermissionCollection, true);
             }
+
             return null;
         }
 
@@ -3596,6 +3625,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 return AddPage(hostPage, tabName, description, tabIconFile, tabIconFileLarge, isVisible, new TabPermissionCollection(), true);
             }
+
             return null;
         }
 
@@ -3707,6 +3737,7 @@ namespace DotNetNuke.Services.Upgrade
                     }
                 }
             }
+
             DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "AddModuleToPage:" + moduleDefId);
             return moduleId;
         }
@@ -3724,6 +3755,7 @@ namespace DotNetNuke.Services.Upgrade
                     moduleId = AddModuleToPage(tab, moduleDefId, moduleTitle, moduleIconFile, inheritPermissions);
                 }
             }
+
             return moduleId;
         }
 
@@ -3764,6 +3796,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     domain = Globals.GetDomainName(HttpContext.Current.Request, true).ToLowerInvariant().Replace("/install", string.Empty);
                 }
+
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogStart", Localization.Localization.GlobalResourceFile) + "AddPortal:" + domain);
                 string portalName = XmlUtils.GetNodeValue(node.CreateNavigator(), "portalname");
                 if (status)
@@ -3851,6 +3884,7 @@ namespace DotNetNuke.Services.Upgrade
                                             HtmlUtils.WriteFeedback(HttpContext.Current.Response, indent, "Creating Site Alias: " + portalAlias.InnerText + "<br>");
                                         }
                                     }
+
                                     PortalController.Instance.AddPortalAlias(portalId, portalAlias.InnerText);
                                 }
                             }
@@ -3875,9 +3909,11 @@ namespace DotNetNuke.Services.Upgrade
                     HtmlUtils.WriteFeedback(HttpContext.Current.Response, indent, "<font color='red'>Error!</font> " + ex.Message + ex.StackTrace + "<br>");
                     DnnInstallLogger.InstallLogError(ex);
                 }
+
                 // failure
                 portalId = -1;
             }
+
             return portalId;
         }
 
@@ -3931,6 +3967,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 match = defaultTemplates.FirstOrDefault(x => x.CultureCode.ToLowerInvariant().StartsWith(currentCulture.Substring(0, 2)));
             }
+
             if (match == null)
             {
                 match = defaultTemplates.FirstOrDefault(x => string.IsNullOrEmpty(x.CultureCode));
@@ -3961,6 +3998,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 currentCulture = Localization.Localization.SystemLocale;
             }
+
             currentCulture = currentCulture.ToLowerInvariant();
 
             return FindBestTemplate(templateFileName, currentCulture);
@@ -4169,6 +4207,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 stringVersion += "." + version.Revision.ToString("D2");
             }
+
             return stringVersion;
         }
 
@@ -4364,11 +4403,13 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     stringVersion += versionArray[i].ToString();
                 }
+
                 if (i < 2)
                 {
                     stringVersion += ".";
                 }
             }
+
             return stringVersion;
         }
 
@@ -4425,6 +4466,7 @@ namespace DotNetNuke.Services.Upgrade
                     superUser.Membership.UpdatePassword = true;
                 }
             }
+
             return superUser;
         }
 
@@ -4557,6 +4599,7 @@ namespace DotNetNuke.Services.Upgrade
                                 {
                                     settingValue = domainName;
                                 }
+
                                 break;
                             case "HostEmail":
                                 if (string.IsNullOrEmpty(settingValue))
@@ -4759,6 +4802,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Loading Host Files:<br>");
                 }
+
                 ParseFiles(node, Null.NullInteger);
             }
 
@@ -4840,6 +4884,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 HtmlUtils.WriteSuccessError(HttpContext.Current.Response, success);
             }
+
             if (success)
             {
                 // delete file
@@ -4853,6 +4898,7 @@ namespace DotNetNuke.Services.Upgrade
                     Logger.Error(exc);
                 }
             }
+
             return success;
         }
 
@@ -4889,10 +4935,12 @@ namespace DotNetNuke.Services.Upgrade
                         addedPackages.Add(package.Key);
                     }
                 }
+
                 foreach (var packageKey in addedPackages)
                 {
                     dependentPackages.Remove(packageKey);
                 }
+
                 dependentCount = dependentPackages.Count;
             }
 
@@ -4920,6 +4968,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     continue;
                 }
+
                 Array.Sort(files); // The order of the returned file names is not guaranteed on certain NAS systems; use the Sort method if a specific sort order is required.
 
                 var optionalPackages = new List<string>();
@@ -4996,6 +5045,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 0, "Installing Optional " + packageType + "s:<br>");
             }
+
             string installPackagePath = Globals.ApplicationMapPath + "\\Install\\" + packageType;
             if (Directory.Exists(installPackagePath))
             {
@@ -5020,6 +5070,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         isCurrent = true;
                     }
+
                     break;
                 case "4.0":
                     // Look for requestValidationMode attribute
@@ -5029,6 +5080,7 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         isCurrent = true;
                     }
+
                     break;
                 case "4.5":
                     // Try and instantiate a 4.5 Class
@@ -5036,8 +5088,10 @@ namespace DotNetNuke.Services.Upgrade
                     {
                         isCurrent = true;
                     }
+
                     break;
             }
+
             return isCurrent;
         }
 
@@ -5096,6 +5150,7 @@ namespace DotNetNuke.Services.Upgrade
                             EventLogController.Instance.AddLog("UpgradeNet", string.Format("Upgrade to .NET 3.5 failed. Error reported during attempt to update:{0}", message), PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, EventLogController.EventLogType.HOST_ALERT);
                         }
                     }
+
                     break;
                 case "4.0":
                     if (!IsNETFrameworkCurrent("4.0"))
@@ -5112,6 +5167,7 @@ namespace DotNetNuke.Services.Upgrade
                             UserController.Instance.GetCurrentUserInfo().UserID,
                             EventLogController.EventLogType.HOST_ALERT);
                     }
+
                     break;
             }
         }
@@ -5169,6 +5225,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 FileSystemUtils.DeleteFile(file);
             }
+
             foreach (string file in Directory.GetFiles(Globals.InstallMapPath + "Config\\", "??.??.??.config")
                                         .Concat(Directory.GetFiles(Globals.InstallMapPath + "Config\\", "??.??.??.??.config")))
             {
@@ -5194,6 +5251,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, Localization.Localization.GetString("ApplicationUpgrades", Localization.Localization.GlobalResourceFile) + " : " + GetStringVersionWithRevision(version));
             }
+
             try
             {
                 if (version.Revision == -1)
@@ -5582,6 +5640,7 @@ namespace DotNetNuke.Services.Upgrade
                 Logger.Warn("Unable to run orphaned user check. Application name is missing or not defined.");
                 return;
             }
+
             using (var reader = DataProvider.Instance().ExecuteReader("DeleteOrphanedAspNetUsers", applicationName))
             {
                 while (reader.Read())
@@ -5685,6 +5744,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 HtmlUtils.WriteFeedback(HttpContext.Current.Response, 2, $"Updating Config Files: {stringVersion}");
             }
+
             string strExceptions = UpdateConfig(providerPath, Globals.InstallMapPath + "Config\\" + stringVersion + ".config", version, "Core Upgrade");
             if (string.IsNullOrEmpty(strExceptions))
             {
@@ -5729,6 +5789,7 @@ namespace DotNetNuke.Services.Upgrade
                     stream.Close();
                 }
             }
+
             if (string.IsNullOrEmpty(exceptions))
             {
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
@@ -5737,6 +5798,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 DnnInstallLogger.InstallLogError(exceptions);
             }
+
             return exceptions;
         }
 
@@ -5779,6 +5841,7 @@ namespace DotNetNuke.Services.Upgrade
                     stream.Close();
                 }
             }
+
             if (string.IsNullOrEmpty(exceptions))
             {
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "UpdateConfig:" + version.ToString(3));
@@ -5787,6 +5850,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 DnnInstallLogger.InstallLogError(exceptions);
             }
+
             return exceptions;
         }
 
@@ -5828,11 +5892,13 @@ namespace DotNetNuke.Services.Upgrade
                 // delete files which are no longer used
                 DeleteFiles(providerPath, ver, true);
             }
+
             foreach (Version ver in versions)
             {
                 // execute config file updates
                 UpdateConfig(providerPath, ver, true);
             }
+
             DataProvider.Instance().SetCorePackageVersions();
 
             // perform general application upgrades
@@ -5873,6 +5939,7 @@ namespace DotNetNuke.Services.Upgrade
                         url += "&no=" + moduleType.Instances;
                     }
                 }
+
                 url += "&id=" + Host.GUID;
                 if (packageType.Equals(DotNetNukeContext.Current.Application.Type, StringComparison.OrdinalIgnoreCase))
                 {
@@ -5892,11 +5959,13 @@ namespace DotNetNuke.Services.Upgrade
                         url += "&src=" + source;
                     }
                 }
+
                 if (!string.IsNullOrEmpty(culture))
                 {
                     url += "&culture=" + culture;
                 }
             }
+
             return url;
         }
 
@@ -5924,6 +5993,7 @@ namespace DotNetNuke.Services.Upgrade
                     url += "&culture=" + culture;
                 }
             }
+
             return url;
         }
 
@@ -5983,6 +6053,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     log.AddProperty("No Warnings", string.Empty);
                 }
+
                 LogController.Instance.AddLog(log);
             }
 
@@ -6010,6 +6081,7 @@ namespace DotNetNuke.Services.Upgrade
                 {
                     log.AddProperty("No Warnings", string.Empty);
                 }
+
                 LogController.Instance.AddLog(log);
             }
 
@@ -6021,6 +6093,7 @@ namespace DotNetNuke.Services.Upgrade
             {
                 DnnInstallLogger.InstallLogError(exceptions);
             }
+
             return exceptions;
         }
 

@@ -26,6 +26,7 @@ namespace DotNetNuke.Services.Connections
             {
                 allConnectors.AddRange(con.GetConnectors(portalId));
             }
+
             return allConnectors;
         }
 

@@ -34,6 +34,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return;
             }
+
             this.FolderMappings.Clear();
             foreach (XmlNode folderMappingNode in folderMappingsNode)
             {
@@ -48,6 +49,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return;
             }
+
             this.FolderTypes.Clear();
             foreach (XmlNode folderTypeNode in folderTypesNode)
             {
@@ -77,6 +79,7 @@ namespace DotNetNuke.Services.FileSystem
                         Encrypt = !string.IsNullOrEmpty(encryptValue) && bool.Parse(encryptValue),
                     });
                 }
+
                 folderType.Settings = settings;
             }
 
@@ -128,6 +131,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return null;
             }
+
             return FolderMappingController.Instance.GetFolderMapping(portalId, this.FolderMappings[folderPath]);
         }
 

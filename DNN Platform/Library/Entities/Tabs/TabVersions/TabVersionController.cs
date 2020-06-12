@@ -31,6 +31,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 DataCache.RemoveCache(tabCacheKey);
             }
+
             var tabVersions = CBO.Instance.GetCachedObject<List<TabVersion>>(
                 new CacheItemArgs(
                 tabCacheKey,
@@ -41,6 +42,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             return tabVersions;
         }
+
         public void SaveTabVersion(TabVersion tabVersion)
         {
             this.SaveTabVersion(tabVersion, tabVersion.CreatedByUserID, tabVersion.LastModifiedByUserID);
@@ -68,6 +70,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 {
                     throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
                 }
+
                 newVersion = lastTabVersion.Version + 1;
             }
 

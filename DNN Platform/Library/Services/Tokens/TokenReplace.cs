@@ -99,6 +99,7 @@ namespace DotNetNuke.Services.Tokens
                 {
                     this.PortalSettings = portalSettings;
                 }
+
                 if (user == null)
                 {
                     if (HttpContext.Current != null)
@@ -109,6 +110,7 @@ namespace DotNetNuke.Services.Tokens
                     {
                         this.User = new UserInfo();
                     }
+
                     this.AccessingUser = this.User;
                 }
                 else
@@ -123,12 +125,14 @@ namespace DotNetNuke.Services.Tokens
                         this.AccessingUser = new UserInfo();
                     }
                 }
+
                 this.Language = string.IsNullOrEmpty(language) ? new Localization.Localization().CurrentUICulture : language;
                 if (moduleID != Null.NullInteger)
                 {
                     this.ModuleId = moduleID;
                 }
             }
+
             this.PropertySource["date"] = new DateTimePropertyAccess();
             this.PropertySource["datetime"] = new DateTimePropertyAccess();
             this.PropertySource["ticks"] = new TicksPropertyAccess();
@@ -159,6 +163,7 @@ namespace DotNetNuke.Services.Tokens
                         this._moduleInfo = ModuleController.Instance.GetModule(this.ModuleId, Null.NullInteger, true);
                     }
                 }
+
                 return this._moduleInfo;
             }
             set
@@ -205,12 +210,14 @@ namespace DotNetNuke.Services.Tokens
                     this.PropertySource["portal"] = this.PortalSettings;
                     this.PropertySource["tab"] = this.PortalSettings.ActiveTab;
                 }
+
                 this.PropertySource["host"] = new HostPropertyAccess();
                 if (this.ModuleInfo != null)
                 {
                     this.PropertySource["module"] = this.ModuleInfo;
                 }
             }
+
             if (this.CurrentAccessLevel >= Scope.DefaultSettings && !(this.User == null || this.User.UserID == -1))
             {
                 this.PropertySource["user"] = this.User;
@@ -282,6 +289,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 this.PropertySource[customCaption.ToLowerInvariant()] = new DictionaryPropertyAccess(custom);
             }
+
             return this.ReplaceTokens(sourceText);
         }
 

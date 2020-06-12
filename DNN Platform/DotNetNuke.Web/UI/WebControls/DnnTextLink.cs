@@ -110,6 +110,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._textHyperlinkControl = new HyperLink();
                 }
+
                 return this._textHyperlinkControl;
             }
         }
@@ -136,6 +137,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this.CssClass = this.DisabledCssClass;
                 }
+
                 this.NavigateUrl = "javascript:void(0);";
             }
 

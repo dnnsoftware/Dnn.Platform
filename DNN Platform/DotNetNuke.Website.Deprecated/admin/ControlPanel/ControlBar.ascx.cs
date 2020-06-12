@@ -96,6 +96,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     return string.Empty;
                 }
+
                 return bookmarkModules.ToString();
             }
         }
@@ -188,6 +189,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     return string.Empty;
                 }
+
                 return this.GetUpgradeIndicatorButton(upgradeIndicator);
             }
 
@@ -304,60 +306,70 @@ namespace DotNetNuke.UI.ControlPanels
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=settingTab");
                     }
+
                     break;
                 case "CopyPage":
                     if (TabPermissionController.CanCopyPage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Tab", "action=copy&activeTab=copyTab");
                     }
+
                     break;
                 case "DeletePage":
                     if (TabPermissionController.CanDeletePage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Tab", "action=delete");
                     }
+
                     break;
                 case "PageTemplate":
                     if (TabPermissionController.CanManagePage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=advancedTab");
                     }
+
                     break;
                 case "PageLocalization":
                     if (TabPermissionController.CanManagePage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=localizationTab");
                     }
+
                     break;
                 case "PagePermission":
                     if (TabPermissionController.CanAdminPage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "Tab", "action=edit&activeTab=permissionsTab");
                     }
+
                     break;
                 case "ImportPage":
                     if (TabPermissionController.CanImportPage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "ImportTab");
                     }
+
                     break;
                 case "ExportPage":
                     if (TabPermissionController.CanExportPage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID, "ExportTab");
                     }
+
                     break;
                 case "NewPage":
                     if (TabPermissionController.CanAddPage())
                     {
                         returnValue = this._navigationManager.NavigateURL("Tab", "activeTab=settingTab");
                     }
+
                     break;
                 case "PublishPage":
                     if (TabPermissionController.CanAdminPage())
                     {
                         returnValue = this._navigationManager.NavigateURL(this.PortalSettings.ActiveTab.TabID);
                     }
+
                     break;
                 default:
                     if (!string.IsNullOrEmpty(moduleFriendlyName))
@@ -366,8 +378,10 @@ namespace DotNetNuke.UI.ControlPanels
                         returnValue = this.GetTabURL(additionalParams, toolName, isHostTool,
                                                 moduleFriendlyName, controlKey, showAsPopUp);
                     }
+
                     break;
             }
+
             return returnValue;
         }
 
@@ -457,6 +471,7 @@ namespace DotNetNuke.UI.ControlPanels
                     ? this.GetButtonConfirmHeader("UnpublishPage")
                     : this.GetButtonConfirmHeader("PublishPage");
         }
+
         protected string GetMenuItem(string tabName, bool isHostTool)
         {
             if (isHostTool && !UserController.Instance.GetCurrentUserInfo().IsSuperUser)
@@ -558,6 +573,7 @@ namespace DotNetNuke.UI.ControlPanels
                     ClientAPI.GetSafeJSString(tab.TabName),
                     linkClass);
             }
+
             return string.Empty;
         }
 
@@ -626,6 +642,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     sb.Append(this.GetMenuItem(itemKey, isHostTool, true));
                 }
+
                 return sb.ToString();
             }
 
@@ -996,6 +1013,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     this.GetAdminTabs();
                 }
+
                 return this._adminBaseTabs;
             }
         }
@@ -1008,6 +1026,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     this.GetAdminTabs();
                 }
+
                 return this._adminAdvancedTabs;
             }
         }
@@ -1020,6 +1039,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     this.GetHostTabs();
                 }
+
                 return this._hostBaseTabs;
             }
         }
@@ -1032,6 +1052,7 @@ namespace DotNetNuke.UI.ControlPanels
                 {
                     this.GetHostTabs();
                 }
+
                 return this._hostAdvancedTabs;
             }
         }

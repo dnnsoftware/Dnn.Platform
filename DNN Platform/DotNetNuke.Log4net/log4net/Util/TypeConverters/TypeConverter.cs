@@ -86,6 +86,7 @@ namespace log4net.Util.TypeConverters
                 return SystemInfo.GetTypeFromString(str, true, true);
 #endif
             }
+
             throw ConversionNotSupportedException.Create(typeof(Type), source);
         }
     }

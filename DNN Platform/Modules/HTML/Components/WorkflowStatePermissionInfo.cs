@@ -112,14 +112,17 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             if (ReferenceEquals(this, obj))
             {
                 return true;
             }
+
             if (obj.GetType() != typeof(WorkflowStatePermissionInfo))
             {
                 return false;
             }
+
             return this.Equals((WorkflowStatePermissionInfo)obj);
         }
 
@@ -129,10 +132,12 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+
             return (this.AllowAccess == other.AllowAccess) && (this.StateID == other.StateID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 

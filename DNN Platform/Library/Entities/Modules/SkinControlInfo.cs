@@ -101,10 +101,12 @@ namespace DotNetNuke.Entities.Modules
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 this.ReadXmlInternal(reader);
             }
         }

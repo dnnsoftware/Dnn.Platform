@@ -76,6 +76,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             {
                 return false;
             }
+
             return true;
         }
     }

@@ -178,6 +178,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     enabled = false;
                 }
+
                 return enabled;
             }
             set

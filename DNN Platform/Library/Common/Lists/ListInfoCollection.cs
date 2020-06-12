@@ -72,6 +72,7 @@ namespace DotNetNuke.Common.Lists
                 Logger.Error(exc);
                 return null;
             }
+
             index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
             obj = this.List[index];
             return obj;
@@ -94,6 +95,7 @@ namespace DotNetNuke.Common.Lists
             {
                 Logger.Error(exc);
             }
+
             // key will be in format Country.US:Region
             if (!itemExists)
             {
@@ -113,6 +115,7 @@ namespace DotNetNuke.Common.Lists
                 index = Convert.ToInt32(this.mKeyIndexLookup[key.ToLowerInvariant()]);
                 obj = this.List[index];
             }
+
             return obj;
         }
 
@@ -126,6 +129,7 @@ namespace DotNetNuke.Common.Lists
                     childList.Add(child);
                 }
             }
+
             return childList;
         }
     }

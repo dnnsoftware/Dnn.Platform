@@ -126,6 +126,7 @@ namespace DotNetNuke.Common.Utilities.Internal
                         currentDelay = (int)(currentDelay * this.DelayMultiplier);
                     }
                 }
+
                 retrysRemaining--;
             }
             while (true);

@@ -40,6 +40,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._PermissionsList = this._ModulePermissions.ToList();
                 }
+
                 return this._PermissionsList;
             }
         }
@@ -148,6 +149,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objModulePermission.ModulePermissionID = Convert.ToInt32(Settings[2]);
             }
+
             objModulePermission.ModuleID = this.ModuleID;
             return objModulePermission;
         }
@@ -250,6 +252,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return;
             }
+
             base.UpdatePermission(permission, roleId, roleName, stateKey);
         }
 
@@ -259,6 +262,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return;
             }
+
             base.UpdatePermission(permission, displayName, userId, stateKey);
         }
 
@@ -281,6 +285,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 enabled = !this.IsImplicitRole(role.PortalID, role.RoleID);
             }
+
             return enabled;
         }
 
@@ -303,6 +308,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 enabled = true;
             }
+
             return enabled;
         }
 
@@ -329,6 +335,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                                 ? PermissionTypeGrant
                                 : base.GetPermission(objPerm, role, column, defaultState);
             }
+
             return permission;
         }
 
@@ -354,6 +361,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Call base class method to handle standard permissions
                 permission = base.GetPermission(objPerm, user, column, defaultState);
             }
+
             return permission;
         }
 
@@ -386,6 +394,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                 }
             }
+
             return permissionList;
         }
 
@@ -498,6 +507,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
+
                     sb.Append(this.BuildKey(
                         modulePermission.AllowAccess,
                         modulePermission.PermissionID,
@@ -508,6 +518,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         modulePermission.DisplayName));
                 }
             }
+
             allStates[4] = sb.ToString();
             return allStates;
         }

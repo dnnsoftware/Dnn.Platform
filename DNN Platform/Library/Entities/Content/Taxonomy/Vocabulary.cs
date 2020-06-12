@@ -160,6 +160,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 {
                     this._Terms = this.GetTerms(this._VocabularyId);
                 }
+
                 return this._Terms;
             }
         }
@@ -212,6 +213,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                     this.Type = VocabularyType.Hierarchy;
                     break;
             }
+
             this.IsSystem = Null.SetNullBoolean(dr["IsSystem"]);
             this.Name = Null.SetNullString(dr["Name"]);
             this.Description = Null.SetNullString(dr["Description"]);

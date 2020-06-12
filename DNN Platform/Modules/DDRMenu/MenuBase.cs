@@ -78,22 +78,27 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 this.LoadNodeXml();
             }
+
             if (!string.IsNullOrEmpty(this.menuSettings.NodeSelector))
             {
                 this.ApplyNodeSelector();
             }
+
             if (!string.IsNullOrEmpty(this.menuSettings.IncludeNodes))
             {
                 this.FilterNodes(this.menuSettings.IncludeNodes, false);
             }
+
             if (!string.IsNullOrEmpty(this.menuSettings.ExcludeNodes))
             {
                 this.FilterNodes(this.menuSettings.ExcludeNodes, true);
             }
+
             if (string.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
             {
                 new Localiser(this.HostPortalSettings.PortalId).LocaliseNode(this.RootNode);
             }
+
             if (!string.IsNullOrEmpty(this.menuSettings.NodeManipulator))
             {
                 this.ApplyNodeManipulator();
@@ -155,6 +160,7 @@ namespace DotNetNuke.Web.DDRMenu
                 reader.ReadToFollowing("root");
                 this.RootNode = (MenuNode) new XmlSerializer(typeof(MenuNode), string.Empty).Deserialize(reader);
             }
+
             cache.Insert(this.menuSettings.NodeXmlPath, this.RootNode, new CacheDependency(this.menuSettings.NodeXmlPath));
         }
 
@@ -183,6 +189,7 @@ namespace DotNetNuke.Web.DDRMenu
                                         return true;
                                     }
                                 }
+
                                 return false;
                             }));
                 }
@@ -319,6 +326,7 @@ namespace DotNetNuke.Web.DDRMenu
                     {
                         newChildren.AddRange(child.Children);
                     }
+
                     this.RootNode = new MenuNode(newChildren);
                 }
             }
@@ -333,8 +341,10 @@ namespace DotNetNuke.Web.DDRMenu
                     {
                         nextChildren.AddRange(child.Children);
                     }
+
                     newChildren = nextChildren;
                 }
+
                 foreach (var node in newChildren)
                 {
                     node.Children = null;

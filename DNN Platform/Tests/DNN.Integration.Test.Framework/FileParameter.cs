@@ -13,10 +13,12 @@ namespace DNN.Integration.Test.Framework
             : this(file, null)
         {
         }
+
         public FileParameter(byte[] file, string filename)
             : this(file, filename, null)
         {
         }
+
         public FileParameter(byte[] file, string filename, string contenttype)
         {
             this.File = file;

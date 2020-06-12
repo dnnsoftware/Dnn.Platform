@@ -222,6 +222,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 File.SetAttributes(destFileName, FileAttributes.Normal);
             }
+
             File.Copy(sourceFileName, destFileName, true);
         }
 
@@ -244,6 +245,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 return true;
             }
+
             bool fileDeleted = false;
             int i = 0;
             while (fileDeleted != true)
@@ -252,6 +254,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     break;
                 }
+
                 i = i + 1;
                 try
                 {
@@ -259,6 +262,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         File.Delete(fileName);
                     }
+
                     fileDeleted = true; // we don't care if it didn't exist...the operation didn't fail, that's what we care about
                 }
                 catch (Exception exc)
@@ -266,11 +270,13 @@ namespace DotNetNuke.Common.Utilities
                     Logger.Error(exc);
                     fileDeleted = false;
                 }
+
                 if (fileDeleted == false)
                 {
                     Thread.Sleep(waitInMilliseconds);
                 }
             }
+
             return fileDeleted;
         }
 
@@ -307,6 +313,7 @@ namespace DotNetNuke.Common.Utilities
                     reader.Dispose();
                 }
             }
+
             return fileContent;
         }
 
@@ -325,6 +332,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         Directory.Create(Path.Combine(destPath, relativeDir), true);
                     }
+
                     if (!zipEntry.IsDirectory && (!string.IsNullOrEmpty(localFileName)))
                     {
                         var fileNamePath = FixPath(Path.Combine(destPath, localFileName));
@@ -335,6 +343,7 @@ namespace DotNetNuke.Common.Utilities
                                 File.SetAttributes(fileNamePath, FileAttributes.Normal);
                                 File.Delete(fileNamePath);
                             }
+
                             FileStream objFileStream = null;
                             try
                             {
@@ -363,6 +372,7 @@ namespace DotNetNuke.Common.Utilities
                             Logger.Error(ex);
                         }
                     }
+
                     zipEntry = zipStream.GetNextEntry();
                 }
             }
@@ -429,6 +439,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
             }
+
             return strExceptions;
         }
 
@@ -447,6 +458,7 @@ namespace DotNetNuke.Common.Utilities
                             DeleteFilesRecursive(strFolder, filter);
                         }
                     }
+
                     foreach (string strFile in Directory.EnumerateFilePaths(strRoot).Where(f => f.Contains(filter)))
                     {
                         try

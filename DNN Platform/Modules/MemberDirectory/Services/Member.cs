@@ -113,6 +113,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
                     properties[property.PropertyName] = string.IsNullOrEmpty(value) ? string.Empty : Common.Utilities.HtmlUtils.Clean(HttpUtility.HtmlDecode(value), false);
                 }
+
                 return properties;
             }
         }

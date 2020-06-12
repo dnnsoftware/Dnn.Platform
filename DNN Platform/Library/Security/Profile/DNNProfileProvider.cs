@@ -50,6 +50,7 @@ namespace DotNetNuke.Security.Profile
                     newTimeZone.PropertyValue = timeZoneInfo.Id;
                     this.UpdateUserProfile(user);
                 }
+
                 // It's also possible that the new value is set but not the old value. We need to make them backwards compatible
                 else if (!string.IsNullOrEmpty(newTimeZone.PropertyValue) && string.IsNullOrEmpty(oldTimeZone.PropertyValue))
                 {
@@ -111,6 +112,7 @@ namespace DotNetNuke.Security.Profile
                             {
                                 break;
                             }
+
                             int definitionId = Convert.ToInt32(dr["PropertyDefinitionId"]);
                             profProperty = properties.GetById(definitionId);
                             if (profProperty != null)
@@ -122,6 +124,7 @@ namespace DotNetNuke.Security.Profile
                                 {
                                     extendedVisibility = Convert.ToString(dr["ExtendedVisibility"]);
                                 }
+
                                 profProperty.ProfileVisibility = new ProfileVisibility(portalId, extendedVisibility)
                                 {
                                     VisibilityMode = (UserVisibilityMode)dr["Visibility"],
@@ -148,6 +151,7 @@ namespace DotNetNuke.Security.Profile
                 {
                     profProperty.PropertyValue = profProperty.DefaultValue;
                 }
+
                 user.Profile.ProfileProperties.Add(profProperty);
             }
 
@@ -186,6 +190,7 @@ namespace DotNetNuke.Security.Profile
                         oldTimeZone.PropertyValue = timeZoneInfo.BaseUtcOffset.TotalMinutes.ToString(CultureInfo.InvariantCulture);
                     }
                 }
+
                 // however if old is changed, we need to update new as well
                 else if (oldTimeZone.IsDirty)
                 {

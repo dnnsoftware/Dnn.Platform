@@ -63,10 +63,12 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
                 }
+
                 if (!this.IsMod())
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
                 }
+
                 this._roleInfo.Status = RoleStatus.Approved;
                 RoleController.Instance.UpdateRole(this._roleInfo);
                 var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
@@ -106,10 +108,12 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
                 }
+
                 if (!this.IsMod())
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Not Authorized!");
                 }
+
                 var notifications = new Notifications();
                 var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
                 var siteAdmin = UserController.GetUserById(this.PortalSettings.PortalId, this.PortalSettings.AdministratorId);
@@ -155,6 +159,7 @@ namespace DotNetNuke.Modules.Groups
                             var url = this.NavigationManager.NavigateURL(postData.GroupViewTabId, string.Empty, new[] { "groupid=" + this._roleInfo.RoleID });
                             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success", URL = url });
                         }
+
                         if (this._roleInfo.IsPublic && requireApproval)
                         {
                             RoleController.Instance.AddUserRole(this.PortalSettings.PortalId, this.UserInfo.UserID, this._roleInfo.RoleID, RoleStatus.Pending, false, Null.NullDate, Null.NullDate);
@@ -200,6 +205,7 @@ namespace DotNetNuke.Modules.Groups
                         {
                             RoleController.DeleteUserRole(this.UserInfo, this._roleInfo, this.PortalSettings, false);
                         }
+
                         success = true;
                     }
                 }
@@ -266,6 +272,7 @@ namespace DotNetNuke.Modules.Groups
 
             return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unknown Error");
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public HttpResponseMessage RejectMember(NotificationDTO postData)
@@ -284,6 +291,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Member");
                 }
+
                 if (this._roleInfo == null)
                 {
                     return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate Role");
@@ -329,6 +337,7 @@ namespace DotNetNuke.Modules.Groups
                     this._memberId = Convert.ToInt32(keys[3]);
                 }
             }
+
             if (this._roleId > 0)
             {
                 this._roleInfo = RoleController.Instance.GetRoleById(this.PortalSettings.PortalId, this._roleId);

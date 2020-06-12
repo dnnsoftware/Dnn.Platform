@@ -48,6 +48,7 @@ namespace DotNetNuke.Services.FileSystem.Internal
             {
                 return false;
             }
+
             return this.IsFileOutOfPublishPeriod(file);
         }
 

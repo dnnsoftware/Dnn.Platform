@@ -39,6 +39,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ModuleActions = this.ModuleControl.ModuleContext.Actions.GetActionsByCommandName(this.CommandName);
                 }
+
                 return this._ModuleActions;
             }
         }
@@ -128,6 +129,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionManager = new ActionManager(this);
                 }
+
                 return this._ActionManager;
             }
         }
@@ -187,6 +189,7 @@ namespace DotNetNuke.UI.Containers
                     this.Controls.Add(new LiteralControl(this.ButtonSeparator));
                 }
             }
+
             this.Visible = this.Controls.Count > 0;
         }
 

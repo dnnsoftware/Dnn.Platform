@@ -111,6 +111,7 @@ namespace DotNetNuke.Entities.Users.Social
                 return this.UserId > 0 && this.PortalId >= 0;
             }
         }
+
         /// <summary>
         /// IHydratable.KeyID.
         /// </summary>

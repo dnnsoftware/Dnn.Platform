@@ -34,10 +34,12 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (!Directory.Exists(value))
                 {
                     Directory.CreateDirectory(value);
                 }
+
                 _cachePath = value;
             }
         }
@@ -54,10 +56,12 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     throw new ArgumentNullException(nameof(value));
                 }
+
                 if (value.Ticks < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value));
                 }
+
                 _purgeInterval = value;
             }
         }
@@ -78,6 +82,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 {
                     File.WriteAllText(CachePath + "_lastpurge", string.Empty);
                 }
+
                 return lastPurge;
             }
             set
@@ -121,6 +126,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                 }
                             }
                         }
+
                         Thread.Sleep(0);
                         foreach (var fileinfo in toTryDeleteAgain)
                         {
@@ -133,6 +139,7 @@ namespace DotNetNuke.Services.GeneratedImage
                                 // do nothing at this point, try to delete file during next purge
                             }
                         }
+
                         LastPurge = DateTime.Now;
 
                         _purgeQueued = false;
@@ -157,6 +164,7 @@ namespace DotNetNuke.Services.GeneratedImage
                         count++;
                     }
                 }
+
                 File.WriteAllText(path, count.ToString());
                 return true;
             }

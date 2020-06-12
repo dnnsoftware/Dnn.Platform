@@ -329,6 +329,7 @@ namespace DotNetNuke.Services.Search
                     searchModuleIds.Add(module.ModuleID);
                 }
             }
+
             return searchModules;
         }
     }

@@ -142,6 +142,7 @@ namespace DotNetNuke.Services.GeneratedImage
             {
                 throw new ArgumentNullException(nameof(context));
             }
+
             HttpContextBase contextWrapper = new HttpContextWrapper(context);
             this.ProcessRequest(contextWrapper);
         }

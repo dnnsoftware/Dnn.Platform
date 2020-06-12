@@ -68,6 +68,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             {
                 permissionController.DeletePermission(permission.PermissionID);
             }
+
             dataProvider.DeleteModuleDefinition(moduleDefinitionId);
             DataCache.ClearHostCache(true);
 
@@ -201,6 +202,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 // Upgrade Module Definition
                 dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
             }
+
             if (saveChildren)
             {
                 foreach (KeyValuePair<string, PermissionInfo> kvp in moduleDefinition.Permissions)
@@ -221,6 +223,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                         permissionController.AddPermission(kvp.Value);
                     }
                 }
+
                 foreach (KeyValuePair<string, ModuleControlInfo> kvp in moduleDefinition.ModuleControls)
                 {
                     kvp.Value.ModuleDefID = moduleDefinitionID;
@@ -231,13 +234,16 @@ namespace DotNetNuke.Entities.Modules.Definitions
                     {
                         kvp.Value.ModuleControlID = moduleControl.ModuleControlID;
                     }
+
                     ModuleControlController.SaveModuleControl(kvp.Value, clearCache);
                 }
             }
+
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
             }
+
             return moduleDefinitionID;
         }
     }

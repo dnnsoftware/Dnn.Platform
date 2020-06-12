@@ -97,6 +97,7 @@ namespace DotNetNuke.Services.Social.Notifications
                 {
                     this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
+
                 return this._displayDate;
             }
         }

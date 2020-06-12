@@ -105,6 +105,7 @@ namespace log4net.Core
             {
                 throw new ArgumentNullException("levelName");
             }
+
             if (displayName == null)
             {
                 throw new ArgumentNullException("displayName");
@@ -288,6 +289,7 @@ namespace log4net.Core
             {
                 return Compare(this, target);
             }
+
             throw new ArgumentException("Parameter: r, Value: [" + r + "] is not an instance of Level");
         }
 
@@ -462,10 +464,12 @@ namespace log4net.Core
             {
                 return 0;
             }
+
             if (l == null)
             {
                 return -1;
             }
+
             if (r == null)
             {
                 return 1;

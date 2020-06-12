@@ -66,6 +66,7 @@ namespace DotNetNuke.Framework
                     key.Append("_");
                     key.Append(this.Page.Request.RawUrl);
                 }
+
                 return this.CacheDirectory + "\\" + Globals.CleanFileName(key.ToString()) + ".txt";
             }
         }
@@ -114,6 +115,7 @@ namespace DotNetNuke.Framework
             {
                 return;
             }
+
             if (this.Page.Session != null)
             {
                 if (!Directory.Exists(this.CacheDirectory))

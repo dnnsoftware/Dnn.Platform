@@ -49,6 +49,7 @@ namespace DotNetNuke.Services.Cache
             {
                 _IsWebFarm = bool.Parse(Config.GetSetting("IsWebFarm"));
             }
+
             return _IsWebFarm;
         }
 
@@ -80,6 +81,7 @@ namespace DotNetNuke.Services.Cache
             {
                 sOutput.Append(arrInput[i].ToString("X2"));
             }
+
             return sOutput.ToString();
         }
 

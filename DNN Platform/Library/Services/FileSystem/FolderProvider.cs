@@ -146,6 +146,7 @@ namespace DotNetNuke.Services.FileSystem
                         folderProvider.AddFile(newFolder, file, fileContent);
                     }
                 }
+
                 folderProvider.DeleteFile(new FileInfo { FileName = file, Folder = folder.FolderPath, FolderMappingID = folderMapping.FolderMappingID, PortalId = folderMapping.PortalID });
             }
         }
@@ -290,6 +291,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 currentHashCode = this.GetHashCode(file, fileContent);
             }
+
             return currentHashCode;
         }
 

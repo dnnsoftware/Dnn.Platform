@@ -170,6 +170,7 @@ namespace DotNetNuke.Collections.Internal
                 this._lockStrategy.Dispose();
                 this._lockStrategy = null;
             }
+
             this._isDisposed = true;
         }
 

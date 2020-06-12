@@ -47,6 +47,7 @@ namespace DotNetNuke.Common.Lists
                     canContinue = true;
                 }
             }
+
             if (canContinue)
             {
                 list = new ListInfo(Convert.ToString(dr["ListName"]));
@@ -63,6 +64,7 @@ namespace DotNetNuke.Common.Lists
                     list.SystemList = Convert.ToInt32(dr["SystemList"]) > 0;
                 }
             }
+
             return list;
         }
 
@@ -90,6 +92,7 @@ namespace DotNetNuke.Common.Lists
                 // close datareader
                 CBO.CloseDataReader(dr, true);
             }
+
             return dic;
         }
 
@@ -142,6 +145,7 @@ namespace DotNetNuke.Common.Lists
             {
                 EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_CREATED);
             }
+
             if (Thread.CurrentThread.CurrentCulture.Name != Localization.SystemLocale && !this.NonLocalizedLists.Contains(listEntry.ListName))
             {
                 if (string.IsNullOrEmpty(listEntry.ParentKey))
@@ -153,6 +157,7 @@ namespace DotNetNuke.Common.Lists
                     LocalizationProvider.Instance.SaveString(listEntry.ParentKey + "." + listEntry.Value + ".Text", listEntry.TextNonLocalized, listEntry.ResourceFileRoot, Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
                 }
             }
+
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
             return entryId;
         }
@@ -194,6 +199,7 @@ namespace DotNetNuke.Common.Lists
                     }
                 }
             }
+
             // Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
@@ -288,6 +294,7 @@ namespace DotNetNuke.Common.Lists
             {
                 key = parentKey + ":";
             }
+
             key += listName;
             Dictionary<string, ListInfo> dicLists = this.GetListInfoDictionary(portalId);
             if (!dicLists.TryGetValue(key, out list))
@@ -302,6 +309,7 @@ namespace DotNetNuke.Common.Lists
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return list;
         }
 
@@ -332,6 +340,7 @@ namespace DotNetNuke.Common.Lists
                     lists.Add(list);
                 }
             }
+
             return (ListInfoCollection)lists;
         }
 
@@ -359,6 +368,7 @@ namespace DotNetNuke.Common.Lists
                 LocalizationProvider.Instance.SaveString(key, listEntry.TextNonLocalized, listEntry.ResourceFileRoot,
                     Thread.CurrentThread.CurrentCulture.Name, PortalController.Instance.GetCurrentPortalSettings(), LocalizationProvider.CustomizedLocale.None, true, true);
             }
+
             EventLogController.Instance.AddLog(listEntry, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.LISTENTRY_UPDATED);
             this.ClearListCache(listEntry.PortalID);
             this.ClearEntriesCache(listEntry.ListName, listEntry.PortalID);
@@ -397,6 +407,7 @@ namespace DotNetNuke.Common.Lists
             {
                 items.ToList().ForEach(x => collection.Add(x.Key, x));
             }
+
             return collection;
         }
     }

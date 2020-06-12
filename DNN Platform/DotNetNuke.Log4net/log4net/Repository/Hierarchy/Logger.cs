@@ -149,6 +149,7 @@ namespace log4net.Repository.Hierarchy
                         return level;
                     }
                 }
+
                 return null; // If reached will cause an NullPointerException.
             }
         }
@@ -215,6 +216,7 @@ namespace log4net.Repository.Hierarchy
                 {
                     this.m_appenderAttachedImpl = new log4net.Util.AppenderAttachedImpl();
                 }
+
                 this.m_appenderAttachedImpl.AddAppender(newAppender);
             }
             finally
@@ -341,6 +343,7 @@ namespace log4net.Repository.Hierarchy
             {
                 this.m_appenderLock.ReleaseWriterLock();
             }
+
             return null;
         }
 
@@ -371,6 +374,7 @@ namespace log4net.Repository.Hierarchy
             {
                 this.m_appenderLock.ReleaseWriterLock();
             }
+
             return null;
         }
 
@@ -490,6 +494,7 @@ namespace log4net.Repository.Hierarchy
                     {
                         return false;
                     }
+
                     return level >= this.EffectiveLevel;
                 }
             }

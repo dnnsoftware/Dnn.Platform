@@ -59,6 +59,7 @@ namespace Dnn.ExportImport.Components.Entities
                     this.CreatedOnDate.Hour, this.CreatedOnDate.Minute, this.CreatedOnDate.Second,
                     this.CreatedOnDate.Millisecond, DateTimeKind.Utc);
             }
+
             if (this.LastModifiedOnDate.Kind != DateTimeKind.Utc)
             {
                 this.LastModifiedOnDate = new DateTime(

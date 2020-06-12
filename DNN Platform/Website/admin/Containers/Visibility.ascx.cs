@@ -72,6 +72,7 @@ namespace DotNetNuke.UI.Containers
                         this._pnlModuleContent = (Panel)objCtl;
                     }
                 }
+
                 return this._pnlModuleContent;
             }
         }
@@ -155,6 +156,7 @@ namespace DotNetNuke.UI.Containers
                     {
                         this.cmdVisibility.BorderWidth = Unit.Parse(this.BorderWidth);
                     }
+
                     if (this.ModuleControl.ModuleContext.Configuration != null)
                     {
                         // check if Personalization is allowed
@@ -163,12 +165,14 @@ namespace DotNetNuke.UI.Containers
                             this.cmdVisibility.Enabled = false;
                             this.cmdVisibility.Visible = false;
                         }
+
                         if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized)
                         {
                             // if visibility is set to minimized, then the client needs to set the cookie for maximized only and delete the cookie for minimized,
                             // instead of the opposite.  We need to notify the client of this
                             ClientAPI.RegisterClientVariable(this.Page, "__dnn_" + this.ModuleControl.ModuleContext.ModuleId + ":defminimized", "true", true);
                         }
+
                         if (!Globals.IsAdminControl())
                         {
                             if (this.cmdVisibility.Enabled)

@@ -92,6 +92,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             // Add to localized tabs
             if (tab.PortalID == Null.NullInteger || IsLocalizationEnabled(tab.PortalID))
             {
@@ -172,9 +173,11 @@ namespace DotNetNuke.Entities.Tabs
                             break;
                         }
                     }
+
                     break;
                 }
             }
+
             return descendantTabs;
         }
 
@@ -235,6 +238,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             return this.WithCulture(cultureCode, includeNeutral, IsLocalizationEnabled());
         }
+
         public TabCollection WithCulture(string cultureCode, bool includeNeutral, bool localizationEnabled)
         {
             TabCollection collection;
@@ -268,6 +272,7 @@ namespace DotNetNuke.Entities.Tabs
                 // Return all tabs
                 collection = this;
             }
+
             return collection;
         }
 
@@ -278,6 +283,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 tabs = new List<TabInfo>();
             }
+
             return tabs;
         }
 
@@ -288,6 +294,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 t = this[tabId];
             }
+
             return t;
         }
 

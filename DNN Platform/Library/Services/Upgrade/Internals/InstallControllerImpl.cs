@@ -205,6 +205,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 {
                     settingsNode = AppendNewXmlNode(ref installTemplate, ref dotnetnukeNode, "settings", null);
                 }
+
                 // DNN-8833: for this node specifically we should append/overwrite existing but not clear all
                 // else
                 // {
@@ -256,6 +257,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 return;
             }
+
             var installTemplate = new XmlDocument { XmlResolver = null };
             Upgrade.GetInstallTemplate(installTemplate);
             XmlNodeList nodes = installTemplate.SelectNodes(xmlNodePath);
@@ -263,6 +265,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 nodes[0].ParentNode.RemoveChild(nodes[0]);
             }
+
             Upgrade.SetInstallTemplate(installTemplate);
         }
 
@@ -376,10 +379,12 @@ namespace DotNetNuke.Services.Upgrade.Internals
                                 }
                             }
                         }
+
                         installConfig.Settings.Add(new HostSettingConfig { Name = settingNode.Name, Value = settingNode.InnerText, IsSecure = settingIsSecure });
                     }
                 }
             }
+
             var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
             installConfig.FolderMappingsSettings = (folderMappingsNode != null) ? folderMappingsNode.InnerXml : string.Empty;
 
@@ -403,6 +408,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                             portalConfig.AdminPassword = XmlUtils.GetNodeValue(adminNode.CreateNavigator(), "password");
                             portalConfig.AdminEmail = XmlUtils.GetNodeValue(adminNode.CreateNavigator(), "email");
                         }
+
                         portalConfig.Description = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "description");
                         portalConfig.Keywords = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "keywords");
                         portalConfig.TemplateFileName = XmlUtils.GetNodeValue(portalNode.CreateNavigator(), "templatefile");
@@ -421,6 +427,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                                 }
                             }
                         }
+
                         installConfig.Portals.Add(portalConfig);
                     }
                 }
@@ -477,6 +484,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 sqlConnection.Close();
             }
+
             return isValidVersion;
         }
 
@@ -523,6 +531,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                     this.GetLanguagePack(downloadUrl, installFolder);
                     return true;
                 }
+
                 return false;
             }
             catch (Exception)
@@ -603,6 +612,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 string language = userLang.Split(';')[0];
                 culture = new CultureInfo(language);
             }
+
             return culture;
         }
 
@@ -648,6 +658,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             {
                 newNode.InnerText = elementValue;
             }
+
             parentNode.AppendChild(newNode);
             return newNode;
         }

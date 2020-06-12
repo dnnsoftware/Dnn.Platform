@@ -53,6 +53,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 label.CssClass += " dnnFormRequired";
             }
+
             outerLabel.Controls.Add(label);
 
             var link = new LinkButton { ID = "Link", CssClass = "dnnFormHelp", TabIndex = -1 };

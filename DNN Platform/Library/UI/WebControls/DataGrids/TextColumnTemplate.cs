@@ -143,6 +143,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             return itemValue;
         }
 

@@ -225,6 +225,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     log.LogProperties.Add(new LogDetailInfo("Info:", objLogEntry.Description));
                 }
+
                 LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
@@ -250,6 +251,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     order = int.Parse(installOrder);
                 }
+
                 this.Packages.Add(order, new PackageInstaller(nav.OuterXml, this.InstallerInfo));
             }
         }
@@ -275,6 +277,7 @@ namespace DotNetNuke.Services.Installer
             {
                 this.InstallerInfo.Log.AddFailure(Util.PACKAGE_UnRecognizable);
             }
+
             switch (packageType.ToLowerInvariant())
             {
                 case "package":
@@ -367,6 +370,7 @@ namespace DotNetNuke.Services.Installer
                         // Parse the package nodes
                         nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
                     }
+
                     break;
                 case "skinobject":
                     // Legacy Skin Object
@@ -400,6 +404,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         stream.Seek(0, SeekOrigin.Begin);
                     }
+
                     stream.CopyTo(fileStream);
                 }
             }
@@ -456,8 +461,10 @@ namespace DotNetNuke.Services.Installer
                 {
                     Globals.DeleteFolderRecursive(this.TempInstallFolder);
                 }
+
                 this.InstallerInfo.Log.AddInfo(Util.FOLDER_DeletedBackup);
             }
+
             if (this.InstallerInfo.Log.Valid)
             {
                 this.InstallerInfo.Log.EndJob(Util.INSTALL_Success);
@@ -504,6 +511,7 @@ namespace DotNetNuke.Services.Installer
             {
                 this.ReadManifest(new FileStream(this.InstallerInfo.ManifestFile.TempFileName, FileMode.Open, FileAccess.Read));
             }
+
             if (this.InstallerInfo.Log.Valid)
             {
                 this.InstallerInfo.Log.EndJob(Util.DNN_Success);
@@ -534,6 +542,7 @@ namespace DotNetNuke.Services.Installer
                 this.InstallerInfo.Log.AddFailure(ex);
                 return false;
             }
+
             if (this.InstallerInfo.Log.HasWarnings)
             {
                 this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Warnings);
@@ -542,6 +551,7 @@ namespace DotNetNuke.Services.Installer
             {
                 this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Success);
             }
+
             // log installation event
             this.LogInstallEvent("Package", "UnInstall");
             return true;

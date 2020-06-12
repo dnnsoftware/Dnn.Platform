@@ -56,6 +56,7 @@ namespace log4net.Util
             {
                 throw new ArgumentNullException("errorHandler");
             }
+
             this.ErrorHandler = errorHandler;
         }
 
@@ -80,6 +81,7 @@ namespace log4net.Util
                     // This is a programming error on the part of the enclosing appender.
                     throw new ArgumentNullException("value");
                 }
+
                 this.m_errorHandler = value;
             }
         }

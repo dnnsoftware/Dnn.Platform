@@ -96,10 +96,12 @@ namespace DotNetNuke.Tests.Urls
                     {
                         key = vals[0];
                     }
+
                     if (vals.GetUpperBound(0) >= 1)
                     {
                         val = vals[1];
                     }
+
                     if (key != null && val != null)
                     {
                         replaceCharacterDictionary.Add(key, val);

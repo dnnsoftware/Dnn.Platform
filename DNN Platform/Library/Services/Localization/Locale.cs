@@ -44,6 +44,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.EnglishName);
                 }
+
                 return _Name;
             }
         }
@@ -59,6 +60,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     _FallbackLocale = LocaleController.Instance.GetLocale(this.PortalId, this.Fallback);
                 }
+
                 return _FallbackLocale;
             }
         }
@@ -76,6 +78,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     _Name = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(this.Culture.NativeName);
                 }
+
                 return _Name;
             }
         }

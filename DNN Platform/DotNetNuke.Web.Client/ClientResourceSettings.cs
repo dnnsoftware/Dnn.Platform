@@ -132,6 +132,7 @@ namespace DotNetNuke.Web.Client
             {
                 return result;
             }
+
             return null;
         }
 
@@ -146,6 +147,7 @@ namespace DotNetNuke.Web.Client
                     return version;
                 }
             }
+
             return null;
         }
 
@@ -194,6 +196,7 @@ namespace DotNetNuke.Web.Client
             {
                 // ignore
             }
+
             return null;
         }
 
@@ -213,6 +216,7 @@ namespace DotNetNuke.Web.Client
             {
                 // ignore
             }
+
             return null;
         }
 
@@ -234,6 +238,7 @@ namespace DotNetNuke.Web.Client
             {
                 // ignore
             }
+
             return null;
         }
 

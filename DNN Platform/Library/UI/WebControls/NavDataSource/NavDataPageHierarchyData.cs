@@ -110,6 +110,7 @@ namespace DotNetNuke.UI.WebControls
                     objNodes.Add(new NavDataPageHierarchyData(objNode));
                 }
             }
+
             return objNodes;
         }
 
@@ -226,6 +227,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     break;
                 }
+
                 strPath = this.GetSafeValue(objParent.Key, string.Empty) + "\\" + strPath;
                 objParent = objParent.ParentNode;
             }

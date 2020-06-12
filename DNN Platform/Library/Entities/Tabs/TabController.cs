@@ -71,6 +71,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     tab = PortalController.Instance.GetCurrentPortalSettings().ActiveTab;
                 }
+
                 return tab;
             }
         }
@@ -383,6 +384,7 @@ namespace DotNetNuke.Entities.Tabs
                     var permission = (PermissionInfo)arrPermissions[i];
                     permissionID = permission.PermissionID;
                 }
+
                 int roleID = int.MinValue;
                 switch (roleName)
                 {
@@ -408,8 +410,10 @@ namespace DotNetNuke.Entities.Tabs
                                 roleID = portal.AdministratorRoleId;
                             }
                         }
+
                         break;
                 }
+
                 if (roleID != int.MinValue)
                 {
                     var tabPermission = new TabPermissionInfo
@@ -498,6 +502,7 @@ namespace DotNetNuke.Entities.Tabs
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return dic;
         }
 
@@ -555,6 +560,7 @@ namespace DotNetNuke.Entities.Tabs
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return dic;
         }
 
@@ -573,6 +579,7 @@ namespace DotNetNuke.Entities.Tabs
                     portalId = portalDic[tabId];
                 }
             }
+
             return portalId;
         }
 
@@ -602,6 +609,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return tabpathDic;
         }
 
@@ -638,6 +646,7 @@ namespace DotNetNuke.Entities.Tabs
                                     }
                                 }
                             }
+
                             return tabSettings;
                         });
         }
@@ -695,6 +704,7 @@ namespace DotNetNuke.Entities.Tabs
                     CBO.CloseDataReader(dr, true);
                 }
             }
+
             return dic;
         }
 
@@ -748,6 +758,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 }
             }
+
             return bDeleted;
         }
 
@@ -821,6 +832,7 @@ namespace DotNetNuke.Entities.Tabs
                         "TabId", tabId, settingName, settingValue,
                         UserController.Instance.GetCurrentUserInfo().UserID);
                 }
+
                 dr.Close();
             }
 
@@ -908,6 +920,7 @@ namespace DotNetNuke.Entities.Tabs
                         {
                             missing = false;
                         }
+
                         if (missing)
                         {
                             this.CreateLocalizedCopyInternal(workingTab, locale, false, true, insertAfterOriginal: true);
@@ -1047,6 +1060,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 tab.ContentTypeId = contentType.ContentTypeId;
             }
+
             tab.Indexed = false;
             contentController.AddContentItem(tab);
         }
@@ -1084,6 +1098,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, true);
             }
+
             if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID))
             {
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, true);
@@ -1096,6 +1111,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 TabVersionSettings.Instance.SetEnabledVersioningForTab(tab.TabID, false);
             }
+
             if (TabWorkflowSettings.Instance.IsWorkflowEnabled(tab.PortalID))
             {
                 TabWorkflowSettings.Instance.SetWorkflowEnabled(tab.PortalID, tab.TabID, false);
@@ -1117,6 +1133,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 this.HardDeleteTabInternal(tabId, portalId);
             }
+
             this.ClearCache(portalId);
         }
 
@@ -1137,6 +1154,7 @@ namespace DotNetNuke.Entities.Tabs
                     this.HardDeleteTabInternal(descendantList[i].TabID, portalId);
                 }
             }
+
             this.DeleteTab(tabId, portalId);
         }
 
@@ -1218,6 +1236,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             return true;
         }
 
@@ -1256,6 +1275,7 @@ namespace DotNetNuke.Entities.Tabs
                 // Return empty collection
                 tabAliases = new List<TabAliasSkinInfo>();
             }
+
             return tabAliases;
         }
 
@@ -1278,6 +1298,7 @@ namespace DotNetNuke.Entities.Tabs
                 // Return empty collection
                 customAliases = new Dictionary<string, string>();
             }
+
             return customAliases;
         }
 
@@ -1394,6 +1415,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             return localizedTab;
         }
 
@@ -1508,6 +1530,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 settings = new Hashtable();
             }
+
             return settings;
         }
 
@@ -1530,6 +1553,7 @@ namespace DotNetNuke.Entities.Tabs
                 // Return empty collection
                 tabRedirects = new List<TabUrlInfo>();
             }
+
             return tabRedirects;
         }
 
@@ -1635,6 +1659,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
+
             return returnValue;
         }
 
@@ -1773,6 +1798,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 found = hostTabs.TryGetValue(tabID, out tab);
             }
+
             // if tab was found
             if (found)
             {
@@ -1953,6 +1979,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 deleted = false;
             }
+
             return deleted;
         }
 
@@ -2081,6 +2108,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 localizedTab.LocalizedVersionGuid = Guid.NewGuid();
             }
+
             DataProvider.Instance()
                         .UpdateTabTranslationStatus(localizedTab.TabID, localizedTab.LocalizedVersionGuid,
                                                     UserController.Instance.GetCurrentUserInfo().UserID);
@@ -2175,6 +2203,7 @@ namespace DotNetNuke.Entities.Tabs
                     clearCache = true;
                 }
             }
+
             if (clearCache)
             {
                 DataCache.ClearTabsCache(childTabs[0].PortalID);
@@ -2201,6 +2230,7 @@ namespace DotNetNuke.Entities.Tabs
                     clearCache = true;
                 }
             }
+
             if (clearCache)
             {
                 DataCache.ClearTabsCache(childTabs[0].PortalID);
@@ -2302,6 +2332,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     tab = new TabInfo { TabID = Null.NullInteger, ParentId = Null.NullInteger, TabName = tabName };
                 }
+
                 tab.PortalID = portalId;
                 if (string.IsNullOrEmpty(tab.Title))
                 {
@@ -2342,6 +2373,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", string.Empty);
                 }
+
                 if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", string.Empty)))
                 {
                     tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", string.Empty);
@@ -2577,6 +2609,7 @@ namespace DotNetNuke.Entities.Tabs
                 var tab = new TabInfo { TabID = -1, TabName = noneSpecifiedText, TabOrder = 0, ParentId = -2 };
                 listTabs.Add(tab);
             }
+
             foreach (TabInfo tab in tabs)
             {
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
@@ -2611,6 +2644,7 @@ namespace DotNetNuke.Entities.Tabs
                     tab.HasChildren = tab.HasChildren && (includeDeletedChildren || GetTabsByParent(tab.TabID, tab.PortalID).Any(a => !a.IsDeleted));
                 }
             }
+
             return listTabs;
         }
 
@@ -2628,6 +2662,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return tabpathDic[tabPath];
             }
+
             return -1;
         }
 
@@ -2805,11 +2840,13 @@ namespace DotNetNuke.Entities.Tabs
                             permissionsNode.AppendChild(newNode);
                         }
                     }
+
                     tabNode.AppendChild(permissionsNode);
 
                     // re-select the permissions node
                     xmlNodeList = tabNode.SelectNodes("tabpermissions/permission");
                 }
+
                 if (xmlNodeList != null)
                 {
                     foreach (XmlNode nodePermission in xmlNodeList)
@@ -2823,6 +2860,7 @@ namespace DotNetNuke.Entities.Tabs
                         nodePermission.RemoveChild(nodePermission.SelectSingleNode("displayname"));
                     }
                 }
+
                 // ReSharper restore AssignNullToNotNullAttribute
             }
 
@@ -2841,6 +2879,7 @@ namespace DotNetNuke.Entities.Tabs
                     {
                         urlNode.InnerXml = tempTab.TabPath;
                     }
+
                     break;
                 case TabType.File:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
@@ -2911,6 +2950,7 @@ namespace DotNetNuke.Entities.Tabs
                     tabNode.AppendChild(newnode);
                 }
             }
+
             if (tabs != null)
             {
                 // Manage Parent Tab
@@ -2971,6 +3011,7 @@ namespace DotNetNuke.Entities.Tabs
                         paneNode.AppendChild(moduleXml.CreateElement("modules"));
                         panesNode.AppendChild(tabXml.ImportNode(paneNode, true));
                     }
+
                     modulesNode = panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']/modules");
                     modulesNode.AppendChild(tabXml.ImportNode(moduleNode, true));
                 }

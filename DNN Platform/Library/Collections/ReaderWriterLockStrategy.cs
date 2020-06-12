@@ -149,6 +149,7 @@ namespace DotNetNuke.Collections.Internal
                     this._lock = null;
                 }
             }
+
             this._isDisposed = true;
         }
 

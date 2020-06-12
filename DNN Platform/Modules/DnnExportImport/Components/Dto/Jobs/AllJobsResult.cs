@@ -50,6 +50,7 @@ namespace Dnn.ExportImport.Components.Dto.Jobs
                 job.ConvertToLocal(userInfo);
                 tempJobs.Add(job);
             }
+
             this.Jobs = tempJobs;
         }
     }

@@ -18,6 +18,7 @@ namespace Dnn.PersonaBar.UI.Services.DTO
         {
             this.Id = -2;
         }
+
         [DataMember(Name = "id")]
         public int Id { get; set; }
 

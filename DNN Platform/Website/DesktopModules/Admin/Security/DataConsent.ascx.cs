@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     case PortalSettings.UserDeleteAction.HardDelete:
                         return this.LocalizeString("HardDelete.Confirm");
                 }
+
                 return string.Empty;
             }
         }
@@ -52,9 +53,11 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.cmdSubmit.Enabled = false;
                 this.pnlNoAgreement.Visible = false;
             }
+
             this.chkAgree.Attributes.Add("onclick", string.Format("document.getElementById('{0}').disabled = !this.checked;", this.cmdSubmit.ClientID));
             this.cmdDeleteMe.Attributes.Add("onclick", string.Format("if (!confirm('{0}')) this.preventDefault();", this.DeleteMeConfirmString));
         }
+
         private void cmdCancel_Click(object sender, EventArgs e)
         {
             this.OnDataConsentComplete(new DataConsentEventArgs(DataConsentStatus.Cancelled));
@@ -90,6 +93,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     success = UserController.RemoveUser(this.User);
                     break;
             }
+
             if (success)
             {
                 PortalSecurity.Instance.SignOut();

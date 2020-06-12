@@ -83,10 +83,12 @@ namespace DotNetNuke.Data.PetaPoco
                         Logger.Error("[2] Error executing SQL: " + cmd.CommandText + Environment.NewLine + ex.Message);
                         throw;
                     }
+
                     con.Close();
                 }
             }
         }
+
         public static void BulkInsert(string connectionString, string procedureName, string tableParameterName, DataTable dataTable, Dictionary<string, object> args)
         {
             BulkInsert(connectionString, procedureName, tableParameterName, dataTable, Null.NullInteger, args);
@@ -115,6 +117,7 @@ namespace DotNetNuke.Data.PetaPoco
                     {
                         cmd.Parameters.AddWithValue(arg.Key, arg.Value);
                     }
+
                     con.Open();
                     try
                     {
@@ -125,6 +128,7 @@ namespace DotNetNuke.Data.PetaPoco
                         Logger.Error("[2] Error executing SQL: " + cmd.CommandText);
                         throw;
                     }
+
                     con.Close();
                 }
             }
@@ -160,6 +164,7 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     Logger.Error("[3] Error executing SQL: " + sql + Environment.NewLine + ex.Message);
                 }
+
                 throw;
             }
         }

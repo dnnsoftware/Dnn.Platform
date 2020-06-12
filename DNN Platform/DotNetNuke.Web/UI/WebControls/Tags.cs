@@ -51,6 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     _IsEditMode = Convert.ToBoolean(this.ViewState["IsEditMode"]);
                 }
+
                 return _IsEditMode;
             }
             set
@@ -103,6 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 localizedString = Null.NullString;
             }
+
             return localizedString;
         }
 
@@ -245,6 +247,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         // Last Category
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "last_tag");
                     }
+
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
                     this.RenderTerm(writer, categories.ToList()[i], i < categories.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");
@@ -277,6 +280,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         // Last Tag
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "last_tag");
                     }
+
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
                     this.RenderTerm(writer, tags.ToList()[i], i < tags.Count() - 1 && this.RepeatDirection.ToLowerInvariant() == "horizontal");

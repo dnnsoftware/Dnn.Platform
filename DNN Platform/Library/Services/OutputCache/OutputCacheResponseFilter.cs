@@ -95,6 +95,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 return;
             }
+
             if ( this._captureStream != null)
             {
                 this._captureStream.Flush();
@@ -108,6 +109,7 @@ namespace DotNetNuke.Services.OutputCache
             {
                 return;
             }
+
             if ( this._captureStream != null)
             {
                 this._captureStream.Write(buffer, offset, count);
@@ -152,13 +154,16 @@ namespace DotNetNuke.Services.OutputCache
                     string output = reader.ReadToEnd();
                     this.AddItemToCache(itemId, output);
                 }
+
                 this.CaptureStream.Close();
                 this.CaptureStream = null;
             }
+
             if (deleteData)
             {
                 this.RemoveItemFromCache(itemId);
             }
+
             return null;
         }
     }

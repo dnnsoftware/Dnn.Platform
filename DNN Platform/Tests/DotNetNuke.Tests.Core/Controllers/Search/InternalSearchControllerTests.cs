@@ -137,6 +137,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 LuceneController.ClearInstance();
                 this._luceneController.Dispose();
             }
+
             this._luceneController = new LuceneControllerImpl();
             LuceneController.SetTestableInstance(this._luceneController);
         }

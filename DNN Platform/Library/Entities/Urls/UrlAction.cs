@@ -64,6 +64,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 this.Scheme = scheme;
             }
+
             this.ApplicationPath = applicationPath;
             string domainPath = applicationPath.Replace(scheme, string.Empty);
             this.DomainName = domainPath.Contains("/") ? domainPath.Substring(0, domainPath.IndexOf('/')) : domainPath;
@@ -136,9 +137,11 @@ namespace DotNetNuke.Entities.Urls
                     this.PortalId = value.PortalID;
                     this.HttpAlias = value.HTTPAlias;
                 }
+
                 this._portalAlias = value;
             }
         }
+
         // the primary alias, if different to the current alias
         public PortalAliasInfo PrimaryAlias { get; set; }
         public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping { get; set; }
@@ -170,6 +173,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         this.Action = newAction;
                     }
+
                     break;
                 default:
                     this.Action = newAction;
@@ -183,6 +187,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 this._licensedProviders = new List<string>();
             }
+
             foreach (string lp in licensedProviders)
             {
                 if (this._licensedProviders.Contains(lp.ToLowerInvariant()) == false)
@@ -198,6 +203,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 this._licensedProviders = new List<string>();
             }
+
             if (this._licensedProviders.Contains(providerName.ToLowerInvariant()) == false)
             {
                 this._licensedProviders.Add(providerName.ToLowerInvariant());
@@ -210,6 +216,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return false;
             }
+
             return this._licensedProviders.Contains(providerName.ToLowerInvariant());
         }
 

@@ -78,6 +78,7 @@ namespace log4net.Util.TypeConverters
             {
                 return Encoding.GetEncoding(str);
             }
+
             throw ConversionNotSupportedException.Create(typeof(Encoding), source);
         }
     }

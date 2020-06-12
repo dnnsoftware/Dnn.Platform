@@ -39,6 +39,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                     alias = alias.Remove(i, appPath.Length);
                 }
             }
+
             return this.GetRouteName(moduleFolderName, routeName, CalcAliasPrefixCount(alias));
         }
 
@@ -99,6 +100,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             {
                 return this._prefixCounts;
             }
+
             // prefixCounts are required for each route that is mapped but they only change
             // when a new portal is added so cache them until that time
             var portals = PortalController.Instance.GetPortals();
@@ -118,6 +120,7 @@ namespace DotNetNuke.Web.Mvc.Routing
             {
                 segmentCounts1.Add(count);
             }
+
             IEnumerable<int> segmentCounts = segmentCounts1;
             this._prefixCounts = segmentCounts.OrderByDescending(x => x).ToList();
 

@@ -20,6 +20,7 @@ namespace DotNetNuke.Web.ConfigSection
                 {
                     this.BaseRemoveAt(index);
                 }
+
                 this.BaseAdd(index, value);
             }
         }

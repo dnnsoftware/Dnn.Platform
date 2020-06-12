@@ -58,6 +58,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         skinpath = ((Skin)this.Parent).SkinPath;
                     }
+
                     var objLink = new HtmlLink();
                     objLink.ID = Globals.CreateValidID(this.Name);
                     objLink.Attributes["rel"] = "stylesheet";
@@ -67,6 +68,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         objLink.Attributes["media"] = this.Media; // NWS: add support for "media" attribute
                     }
+
                     if (this.IsFirst)
                     {
                         // Find the first HtmlLink
@@ -78,6 +80,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 break;
                             }
                         }
+
                         this.AddLink(objCSS, iLink, objLink);
                     }
                     else

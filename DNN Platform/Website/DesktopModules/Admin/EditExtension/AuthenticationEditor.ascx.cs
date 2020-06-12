@@ -41,6 +41,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this._AuthSystem = AuthenticationController.GetAuthenticationServiceByPackageID(this.PackageID);
                 }
+
                 return this._AuthSystem;
             }
         }
@@ -61,6 +62,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this._SettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + this.AuthSystem.SettingsControlSrc);
                 }
+
                 return this._SettingsControl;
             }
         }
@@ -84,6 +86,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     this.authenticationForm.DataSource = this.AuthSystem;
                     this.authenticationForm.DataBind();
                 }
+
                 this.authenticationFormReadOnly.Visible = this.IsSuperTab && (this.AuthSystem.AuthenticationType == "DNN");
                 this.authenticationForm.Visible = this.IsSuperTab && this.AuthSystem.AuthenticationType != "DNN";
 
@@ -121,6 +124,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                     this.lblHelp.Text = Localization.GetString("AdminHelp", this.LocalResourceFile);
                 }
             }
+
             this.BindAuthentication();
         }
 

@@ -353,6 +353,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.CssClass = "CommandButton";
             }
+
             this.icon = new ImageButton();
             this.icon.Visible = true;
             this.icon.CausesValidation = true;
@@ -372,6 +373,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.icon.EnableViewState = this.EnableViewState;
             }
+
             if (this.DisplayLink)
             {
                 this.link.CssClass = this.CssClass;

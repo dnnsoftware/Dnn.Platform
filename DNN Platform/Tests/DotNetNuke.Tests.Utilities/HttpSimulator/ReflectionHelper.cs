@@ -24,6 +24,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 return (T)field.GetValue(type);
             }
+
             return default(T);
         }
 
@@ -40,6 +41,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 return (T)field.GetValue(type);
             }
+
             return default(T);
         }
 
@@ -90,6 +92,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 return (T)field.GetValue(source);
             }
+
             return default(T);
         }
 

@@ -182,6 +182,7 @@ namespace Dnn.ExportImport.Components.Services
                         WorkflowStateManager.Instance.AddWorkflowState(workflowState);
                         this.Result.AddLogEntry("Added workflow state", workflowState.StateID.ToString());
                     }
+
                     importState.LocalId = workflowState.StateID;
                     if (!workflowState.IsSystem)
                     {
@@ -215,6 +216,7 @@ namespace Dnn.ExportImport.Components.Services
                                             $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
                                         continue;
                                     }
+
                                     permission.UserID = userId.Value;
                                 }
 
@@ -227,6 +229,7 @@ namespace Dnn.ExportImport.Components.Services
                                             $"{importPermission.PermissionKey} - {importPermission.PermissionID}", ReportLevel.Warn);
                                         continue;
                                     }
+
                                     permission.RoleID = roleId.Value;
                                 }
 

@@ -49,6 +49,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), tabId));
                 return null;
             }
+
             if (!TabPermissionController.CanManagePage(page))
             {
                 message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, Localization.GetString("Prompt_InsufficientPermissions", Constants.LocalResourcesFile));
@@ -101,6 +102,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 {
                     objModule.CultureCode = Null.NullString;
                 }
+
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
@@ -110,6 +112,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 // Set position so future additions to page can operate correctly
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
+
             return moduleList;
         }
 
@@ -121,6 +124,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 return null;
             }
+
             var targetPage = TabController.Instance.GetTab(targetPageId, portalSettings.PortalId);
 
             message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.NotFound, string.Format(Localization.GetString("Prompt_PageNotFound", Constants.LocalResourcesFile), targetPageId));
@@ -152,6 +156,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                     Logger.Error(ex);
                     message = new KeyValuePair<HttpStatusCode, string>(HttpStatusCode.InternalServerError, Localization.GetString(moveBahaviour ? "Prompt_ErrorWhileMoving" : "Prompt_ErrorWhileCopying"));
                 }
+
                 // get the new module
                 return ModuleController.Instance.GetModule(sourceModule.ModuleID, targetPageId, true);
             }
@@ -239,6 +244,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             {
                 modules = modules.Where(x => x.TabID == pageId.Value);
             }
+
             if (deleted.HasValue)
             {
                 modules = modules.Where(module => module.IsDeleted == deleted);

@@ -42,6 +42,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ModuleAction = this.ModuleControl.ModuleContext.Actions.GetActionByCommandName(this.CommandName);
                 }
+
                 return this._ModuleAction;
             }
             set
@@ -66,6 +67,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionManager = new ActionManager(this);
                 }
+
                 return this._ActionManager;
             }
         }
@@ -152,6 +154,7 @@ namespace DotNetNuke.UI.Containers
                         }
                     }
                 }
+
                 this.ActionManager.GetClientScriptURL(this.ModuleAction, this);
             }
             else

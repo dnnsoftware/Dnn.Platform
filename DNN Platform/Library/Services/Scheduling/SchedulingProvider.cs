@@ -49,6 +49,7 @@ namespace DotNetNuke.Services.Scheduling
         TIMER_METHOD = 1,
         REQUEST_METHOD = 2,
     }
+
     // ReSharper restore InconsistentNaming
 
     // set up our delegates so we can track and react to events of the scheduler clients
@@ -84,6 +85,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     value = 1;
                 }
+
                 MaxThreads = value;
 
                 // if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
@@ -234,10 +236,12 @@ namespace DotNetNuke.Services.Scheduling
         {
             // Do Nothing
         }
+
         public virtual void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
             // Do Nothing
         }
+
         public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
     }
 }

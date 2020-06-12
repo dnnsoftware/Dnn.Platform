@@ -277,6 +277,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         this.ResourceKey = Convert.ToString(dataRow[this.DataField]);
                     }
+
                     if (this.DesignMode)
                     {
                         this.label.InnerText = Convert.ToString(dataRow[this.DataField]);
@@ -319,6 +320,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", this.pnlHelp.ControlStyle.CssClass);
             }
+
             if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
             {
                 this.pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", this.pnlHelp.ControlStyle.CssClass);

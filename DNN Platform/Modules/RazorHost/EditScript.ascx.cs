@@ -40,6 +40,7 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
+
                 return m_RazorScriptFile;
             }
         }
@@ -57,6 +58,7 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     item.Selected = true;
                 }
+
                 this.scriptList.Items.Add(item);
             }
         }

@@ -93,6 +93,7 @@ namespace DotNetNuke.Application
                 {
                     _current = new DotNetNukeContext();
                 }
+
                 return _current;
             }
             set

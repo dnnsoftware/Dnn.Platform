@@ -99,6 +99,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             return _IsDirty;
         }
 

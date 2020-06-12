@@ -321,6 +321,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             {
                                 blnAddUpNode = true;
                             }
+
                             break;
                     }
                 }
@@ -339,10 +340,12 @@ namespace DotNetNuke.UI.Skins.Controls
                 objParentNode.ClickAction = eClickAction.PostBack;
                 objNodes.InsertBefore(0, objParentNode);
             }
+
             foreach (DNNNode objPNode in objNodes) // clean up to do in processnodes???
             {
                 this.ProcessNodes(objPNode);
             }
+
             this.Bind(objNodes);
 
             // technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
@@ -373,6 +376,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 objParent.Image = this.ResolveUrl(this.NodeLeafImage);
             }
+
             foreach (DNNNode objNode in objParent.DNNNodes)
             {
                 this.ProcessNodes(objNode);
@@ -392,46 +396,57 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.PathImage = this.PortalSettings.HomeDirectory;
             }
+
             if (string.IsNullOrEmpty(this.PathSystemImage))
             {
                 this.PathSystemImage = this.ResolveUrl("~/images/");
             }
+
             if (string.IsNullOrEmpty(this.IndicateChildImageRoot))
             {
                 this.IndicateChildImageRoot = this.ResolveUrl(this.NodeExpandImage);
             }
+
             if (string.IsNullOrEmpty(this.IndicateChildImageSub))
             {
                 this.IndicateChildImageSub = this.ResolveUrl(this.NodeExpandImage);
             }
+
             if (string.IsNullOrEmpty(this.IndicateChildImageExpandedRoot))
             {
                 this.IndicateChildImageExpandedRoot = this.ResolveUrl(this.NodeCollapseImage);
             }
+
             if (string.IsNullOrEmpty(this.IndicateChildImageExpandedSub))
             {
                 this.IndicateChildImageExpandedSub = this.ResolveUrl(this.NodeCollapseImage);
             }
+
             if (string.IsNullOrEmpty(this.CSSNode))
             {
                 this.CSSNode = this.NodeChildCssClass;
             }
+
             if (string.IsNullOrEmpty(this.CSSNodeRoot))
             {
                 this.CSSNodeRoot = this.NodeCssClass;
             }
+
             if (string.IsNullOrEmpty(this.CSSNodeHover))
             {
                 this.CSSNodeHover = this.NodeOverCssClass;
             }
+
             if (string.IsNullOrEmpty(this.CSSNodeSelectedRoot))
             {
                 this.CSSNodeSelectedRoot = this.NodeSelectedCssClass;
             }
+
             if (string.IsNullOrEmpty(this.CSSNodeSelectedSub))
             {
                 this.CSSNodeSelectedSub = this.NodeSelectedCssClass;
             }
+
             if (string.IsNullOrEmpty(this.CSSControl))
             {
                 this.CSSControl = this.TreeCssClass;
@@ -507,6 +522,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.lblHeader.Text = "Site Navigation";
                         }
                     }
+
                     this.tblHeader.Visible = this.IncludeHeader;
 
                     // Main Panel Properties
@@ -514,6 +530,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         this.cellBody.Attributes.Add("class", this.BodyCssClass);
                     }
+
                     this.cellBody.NoWrap = this.NoWrap;
                 }
             }
@@ -538,6 +555,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
+
             this.Response.Redirect(Globals.ApplicationURL(int.Parse(args.Node.Key)), true);
         }
 
@@ -547,6 +565,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 args.Node = Navigation.GetNavigationNode(args.ID, this.Control.ID);
             }
+
             this.BuildTree(args.Node, true);
         }
 

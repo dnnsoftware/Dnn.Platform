@@ -75,6 +75,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                     {
                         fileIcon = Entities.Icons.IconController.IconURL("File", "32x32");
                     }
+
                     statuses.Add(new FilesStatus
                     {
                         success = true,

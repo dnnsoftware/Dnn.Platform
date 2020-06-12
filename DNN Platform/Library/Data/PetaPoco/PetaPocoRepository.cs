@@ -45,6 +45,7 @@ namespace DotNetNuke.Data.PetaPoco
             {
                 sqlCondition = string.Format("{0} ORDER BY {1}", sqlCondition, this._mapper.GetTableInfo(typeof(T)).PrimaryKey);
             }
+
             Page<T> petaPocoPage = this._database.Page<T>(pageIndex + 1, pageSize, DataUtil.ReplaceTokens(sqlCondition), args);
 
             return new PagedList<T>(petaPocoPage.Items, (int)petaPocoPage.TotalItems, pageIndex, pageSize);

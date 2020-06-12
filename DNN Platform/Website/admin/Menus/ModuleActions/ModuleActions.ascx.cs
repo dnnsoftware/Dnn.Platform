@@ -139,6 +139,7 @@ namespace DotNetNuke.Admin.Containers
                                     {
                                         action.Icon = "~/images/" + action.Icon;
                                     }
+
                                     if (action.Icon.StartsWith("~/"))
                                     {
                                         action.Icon = Globals.ResolveUrl(action.Icon);
@@ -172,6 +173,7 @@ namespace DotNetNuke.Admin.Containers
                             }
                         }
                     }
+
                     this.IsShared = this.ModuleContext.Configuration.AllTabs
                         || PortalGroupController.Instance.IsModuleShared(this.ModuleContext.ModuleId, PortalController.Instance.GetPortal(this.PortalSettings.PortalId))
                         || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;

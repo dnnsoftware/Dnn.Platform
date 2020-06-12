@@ -130,9 +130,11 @@ namespace DotNetNuke.UI.Skins.Controls
                                     {
                                         returnValue += "&";
                                     }
+
                                     returnValue += ModuleIdKey + "=" + localizedModule.ModuleID;
                                 }
                             }
+
                             break;
                         default:
                             if ((arrKeys[i].ToLowerInvariant() == "portalid") && this.objPortal.ActiveTab.IsSuperTab)
@@ -153,9 +155,11 @@ namespace DotNetNuke.UI.Skins.Controls
                                         {
                                             returnValue += "&";
                                         }
+
                                         returnValue += arrKeys[i] + "=" + HttpUtility.UrlEncode(rawQueryStringCollection.Get(arrKeys[i]));
                                     }
                                 }
+
                                 // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content
                                 // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
                                 else // if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
@@ -169,6 +173,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                             {
                                                 returnValue += "&";
                                             }
+
                                             var qsv = arrKeys[i];
                                             qsv = qsv.Replace("\"", string.Empty);
                                             qsv = qsv.Replace("'", string.Empty);
@@ -177,6 +182,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                     }
                                 }
                             }
+
                             break;
                     }
                 }
@@ -189,6 +195,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     returnValue += "&";
                 }
+
                 returnValue += "language=" + newLanguage.ToLowerInvariant();
             }
 
@@ -240,6 +247,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             fullurl = localizedTab.Url;
                             break;
                     }
+
                     if (!string.IsNullOrEmpty(fullurl))
                     {
                         return this.GetCleanUrl(fullurl);

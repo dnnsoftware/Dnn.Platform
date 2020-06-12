@@ -25,6 +25,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 this.HasErrored = true;
                 return;
             }
+
             this.CaptureStream = new MemoryStream();
         }
 
@@ -37,6 +38,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                 {
                     runtimeCache = HttpRuntime.Cache;
                 }
+
                 return runtimeCache;
             }
         }

@@ -40,6 +40,7 @@ namespace DotNetNuke.Services.Scheduling
                 FriendlyName,
                 DateTime.Now);
         }
+
         public static int AddSchedule(string TypeFullName, int TimeLapse, string TimeLapseMeasurement, int RetryTimeLapse, string RetryTimeLapseMeasurement, int RetainHistoryNum, string AttachToEvent,
                                       bool CatchUpEnabled, bool Enabled, string ObjectDependencies, string Servers, string FriendlyName, DateTime ScheduleStartDate)
         {
@@ -142,6 +143,7 @@ namespace DotNetNuke.Services.Scheduling
                     h.Add(r["SettingName"], r["SettingValue"]);
                 }
             }
+
             return h;
         }
 
@@ -253,6 +255,7 @@ namespace DotNetNuke.Services.Scheduling
             {
                 lwrServers = servers.ToLowerInvariant();
             }
+
             if (string.IsNullOrEmpty(lwrServers) || lwrServers.Contains(Globals.ServerName.ToLowerInvariant()))
             {
                 return true;

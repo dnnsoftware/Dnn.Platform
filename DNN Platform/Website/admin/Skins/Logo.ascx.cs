@@ -40,10 +40,12 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.imgLogo.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
+
                 if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.imgLogo.CssClass = this.CssClass;
                 }
+
                 bool logoVisible = false;
                 if (!string.IsNullOrEmpty(this.PortalSettings.LogoFile))
                 {
@@ -58,6 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
                 }
+
                 this.imgLogo.Visible = logoVisible;
                 this.imgLogo.AlternateText = this.PortalSettings.PortalName;
                 this.hypLogo.ToolTip = this.PortalSettings.PortalName;
@@ -66,6 +69,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.hypLogo.Attributes.Add("aria-label", this.PortalSettings.PortalName);
                 }
+
                 if (this.PortalSettings.HomeTabId != -1)
                 {
                     this.hypLogo.NavigateUrl = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);

@@ -50,6 +50,7 @@ namespace DotNetNuke.Framework
             {
                 throw new ApplicationException("Missing valid " + VIEW_STATE_CACHEKEY);
             }
+
             var state = DataCache.GetCache<Pair>(key);
             if (state != null)
             {
@@ -57,6 +58,7 @@ namespace DotNetNuke.Framework
                 this.ViewState = state.First;
                 this.ControlState = state.Second;
             }
+
             // Remove this ViewState from the cache as it has served its purpose
             if (!this.Page.IsCallback)
             {

@@ -55,6 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     skins.Add(skin.Key, skin.Value);
                 }
             }
+
             return skins;
         }
 

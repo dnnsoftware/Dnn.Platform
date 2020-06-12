@@ -18,6 +18,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             {
                 return string.CompareOrdinal(x.Value, y.Value);
             }
+
             return string.CompareOrdinal(x.Name, y.Name);
         }
     }

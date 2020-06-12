@@ -112,6 +112,7 @@ namespace DotNetNuke.Entities.Modules
                 // Ensure DataReader is closed
                 CBO.CloseDataReader(dr, true);
             }
+
             return settings;
         }
 
@@ -158,6 +159,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 CBO.CloseDataReader(dr, true);
             }
+
             return settings;
         }
     }

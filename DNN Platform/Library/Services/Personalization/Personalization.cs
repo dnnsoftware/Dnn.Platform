@@ -35,6 +35,7 @@ namespace DotNetNuke.Services.Personalization
                 // store it in the context
                 context.Items.Add("Personalization", personalization);
             }
+
             return personalization;
         }
 
@@ -87,6 +88,7 @@ namespace DotNetNuke.Services.Personalization
                 var ps = PortalSecurity.Instance;
                 return ps.DecryptString(personalization.Profile[namingContainer + ":" + key].ToString(), Config.GetDecryptionkey());
             }
+
             return string.Empty;
         }
 

@@ -167,6 +167,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.AddOrUpdateBindingRedirect(file);
                 }
             }
+
             return bSuccess;
         }
 

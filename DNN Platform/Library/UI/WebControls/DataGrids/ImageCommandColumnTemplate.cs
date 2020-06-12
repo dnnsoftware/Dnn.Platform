@@ -215,6 +215,7 @@ namespace DotNetNuke.UI.WebControls
                             {
                                 img.ImageUrl = this.ImageURL;
                             }
+
                             hypLink.Controls.Add(img);
                             img.ToolTip = this.Text;
                         }
@@ -222,6 +223,7 @@ namespace DotNetNuke.UI.WebControls
                         {
                             hypLink.Text = this.Text;
                         }
+
                         hypLink.DataBinding += this.Item_DataBinding;
                         container.Controls.Add(hypLink);
                     }
@@ -238,15 +240,18 @@ namespace DotNetNuke.UI.WebControls
                             {
                                 colIcon.ImageUrl = this.ImageURL;
                             }
+
                             colIcon.ToolTip = this.Text;
                             if (!string.IsNullOrEmpty(this.OnClickJS))
                             {
                                 ClientAPI.AddButtonConfirm(colIcon, this.OnClickJS);
                             }
+
                             colIcon.CommandName = this.CommandName;
                             colIcon.DataBinding += this.Item_DataBinding;
                             container.Controls.Add(colIcon);
                         }
+
                         if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
                             var colLink = new LinkButton();
@@ -255,12 +260,14 @@ namespace DotNetNuke.UI.WebControls
                             {
                                 ClientAPI.AddButtonConfirm(colLink, this.OnClickJS);
                             }
+
                             colLink.CommandName = this.CommandName;
                             colLink.Text = this.Text;
                             colLink.DataBinding += this.Item_DataBinding;
                             container.Controls.Add(colLink);
                         }
                     }
+
                     break;
                 case ListItemType.Footer:
                 case ListItemType.Header:
@@ -286,6 +293,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 isVisible = this.Visible;
             }
+
             return isVisible;
         }
 
@@ -302,6 +310,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
             }
+
             return keyValue;
         }
 
@@ -343,6 +352,7 @@ namespace DotNetNuke.UI.WebControls
                     colIcon.CommandArgument = keyValue.ToString();
                     colIcon.Visible = this.GetIsVisible(container);
                 }
+
                 if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
                     // Bind Link Button

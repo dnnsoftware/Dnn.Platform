@@ -83,6 +83,7 @@ namespace DotNetNuke.ComponentModel
             {
                 component = builder.BuildComponent();
             }
+
             return component;
         }
 
@@ -181,6 +182,7 @@ namespace DotNetNuke.ComponentModel
 
                 component = this.GetComponent(builder);
             }
+
             return component;
         }
 
@@ -198,6 +200,7 @@ namespace DotNetNuke.ComponentModel
                     }
                 }
             }
+
             return components.ToArray();
         }
 
@@ -208,6 +211,7 @@ namespace DotNetNuke.ComponentModel
             {
                 settings = this._componentDependencies[name];
             }
+
             return settings;
         }
 
@@ -225,6 +229,7 @@ namespace DotNetNuke.ComponentModel
                     builder = new SingletonComponentBuilder(name, type);
                     break;
             }
+
             this.AddBuilder(contractType, builder);
 
             this.RegisterComponent(name, type);

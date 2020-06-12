@@ -145,6 +145,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                     }
                 }
             }
+
             return dbUser;
         }
     }

@@ -787,6 +787,7 @@ namespace log4net
             {
                 results[i] = WrapLogger(loggers[i]);
             }
+
             return results;
         }
 

@@ -39,10 +39,12 @@ namespace DotNetNuke.Services.Tokens
             {
                 throw new ArgumentException("The Css token must specify a path or property.");
             }
+
             if (model.Priority == 0)
             {
                 model.Priority = (int)FileOrder.Css.DefaultPriority;
             }
+
             if (string.IsNullOrEmpty(model.Provider))
             {
                 ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority);

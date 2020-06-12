@@ -213,6 +213,7 @@ method="run" file="Generator.java" line="94"/>
 
                     writer.WriteEndElement();
                 }
+
                 writer.WriteEndElement();
             }
 

@@ -87,6 +87,7 @@ namespace DotNetNuke.Services.Connections
                             {
                                 sb.Append(",");
                             }
+
                             firstInArray = false;
 
                             if (arrayValue is IDictionary<string, object>)
@@ -102,6 +103,7 @@ namespace DotNetNuke.Services.Connections
                                 sb.AppendFormat("{0}", arrayValue);
                             }
                         }
+
                         sb.Append("]");
                     }
                     else
@@ -109,6 +111,7 @@ namespace DotNetNuke.Services.Connections
                         sb.AppendFormat("{0}:{1}", name, value);
                     }
                 }
+
                 sb.Append("}");
             }
 

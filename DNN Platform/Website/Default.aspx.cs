@@ -86,6 +86,7 @@ namespace DotNetNuke.Framework
                 {
                     pageScrollTop = Null.NullInteger;
                 }
+
                 return pageScrollTop;
             }
             set { this.ScrollTop.Value = value.ToString(); }
@@ -119,8 +120,10 @@ namespace DotNetNuke.Framework
                             }
                         }
                     }
+
                     return attr.ToString();
                 }
+
                 return string.Empty;
             }
         }
@@ -142,6 +145,7 @@ namespace DotNetNuke.Framework
                 {
                     throw new Exception(string.Format("This personalization key has not been enabled ({0}:{1}).  Make sure you enable it with DNNClientAPI.EnableClientPersonalization", dict["namingcontainer"], dict["key"]));
                 }
+
                 switch ((DNNClientAPI.PageCallBackType)Enum.Parse(typeof(DNNClientAPI.PageCallBackType), dict["type"]))
                 {
                     case DNNClientAPI.PageCallBackType.GetPersonalization:
@@ -153,6 +157,7 @@ namespace DotNetNuke.Framework
                         throw new Exception("Unknown Callback Type");
                 }
             }
+
             return string.Empty;
         }
 
@@ -201,6 +206,7 @@ namespace DotNetNuke.Framework
                                 break;
                         }
                     }
+
                     this.Response.Redirect(this.NavigationManager.NavigateURL(tab.TabID, Null.NullString, parameters.ToArray()), true);
                 }
                 else
@@ -209,6 +215,7 @@ namespace DotNetNuke.Framework
                     Exceptions.ProcessHttpException(this.Request);
                 }
             }
+
             string cacheability = this.Request.IsAuthenticated ? Host.AuthenticatedCacheability : Host.UnauthenticatedCacheability;
 
             switch (cacheability)
@@ -279,6 +286,7 @@ namespace DotNetNuke.Framework
                                 Path.GetFileName(slaveModule.ModuleControl.ControlSrc));
                             break;
                     }
+
                     var title = Localization.LocalizeControlTitle(control);
 
                     strTitle.Append(string.Concat(" > ", this.PortalSettings.ActiveTab.LocalizedTabName));
@@ -307,6 +315,7 @@ namespace DotNetNuke.Framework
                     {
                         strTitle.Append(string.Concat(" > ", tab.TabName));
                     }
+
                     this.Title = strTitle.ToString();
                 }
             }
@@ -448,6 +457,7 @@ namespace DotNetNuke.Framework
                 // other
                 this.HtmlAttributes.Add("lang", strLang);
             }
+
             // Find the placeholder control and render the doctype
             this.skinDocType.Text = this.PortalSettings.ActiveTab.SkinDoctype;
             this.attributeList.Text = this.HtmlAttributeList;
@@ -487,6 +497,7 @@ namespace DotNetNuke.Framework
                         break;
                 }
             }
+
             return objDict;
         }
 
@@ -511,6 +522,7 @@ namespace DotNetNuke.Framework
                     warningMessage = Localization.GetString("InsecureDefaults.Text", Localization.SharedResourceFile);
                     break;
             }
+
             return warningMessage;
         }
 
@@ -602,6 +614,7 @@ namespace DotNetNuke.Framework
                     }
                 }
             }
+
             // Manage canonical urls
             if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
             {
@@ -623,6 +636,7 @@ namespace DotNetNuke.Framework
                         primaryHttpAlias = this.PortalSettings.DefaultPortalAlias;
                     }
                 }
+
                 if (primaryHttpAlias != null && string.IsNullOrEmpty(this.CanonicalLinkUrl)) // a primary http alias was identified
                 {
                     var originalurl = this.Context.Items["UrlRewrite:OriginalUrl"].ToString();
@@ -723,6 +737,7 @@ namespace DotNetNuke.Framework
                 this.MetaDescription.Content = this.Description;
                 this.MetaDescription.Visible = !string.IsNullOrEmpty(this.Description);
             }
+
             this.Page.Header.Title = this.Title;
             if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)
             {

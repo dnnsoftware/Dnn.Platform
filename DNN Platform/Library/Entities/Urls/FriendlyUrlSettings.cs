@@ -160,6 +160,7 @@ namespace DotNetNuke.Entities.Urls
                     // urls to be modified in the output html stream
                     this._autoAsciiConvert = this.GetBooleanSetting(AutoAsciiConvertSetting, false);
                 }
+
                 return this._autoAsciiConvert.Value;
             }
             internal set { this._autoAsciiConvert = value; }
@@ -173,6 +174,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._cacheTime = new TimeSpan(0, this.GetIntegerSetting(CacheTimeSetting, 1440), 0);
                 }
+
                 return this._cacheTime.Value;
             }
         }
@@ -186,6 +188,7 @@ namespace DotNetNuke.Entities.Urls
                     // 793 : checkforDupUrls not being read
                     this._checkForDuplicateUrls = this.GetBooleanSetting(CheckForDuplicatedUrlsSetting, true);
                 }
+
                 return this._checkForDuplicateUrls.Value;
             }
         }
@@ -267,6 +270,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._forceLowerCase = this.GetBooleanSetting(ForceLowerCaseSetting, false);
                 }
+
                 return this._forceLowerCase.Value;
             }
             internal set { this._forceLowerCase = value; }
@@ -287,6 +291,7 @@ namespace DotNetNuke.Entities.Urls
                     // 810 : allow forcing of default language in rewrites
                     this._forcePortalDefaultLanguage = this.GetBooleanSetting(UsePortalDefaultLanguageSetting, true);
                 }
+
                 return this._forcePortalDefaultLanguage.Value;
             }
             internal set { this._forcePortalDefaultLanguage = value; }
@@ -308,6 +313,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._friendlyAdminHostUrls = this.GetBooleanSetting(FriendlyAdminHostUrlsSetting, true);
                 }
+
                 return this._friendlyAdminHostUrls.Value;
             }
             internal set { this._friendlyAdminHostUrls = value; }
@@ -322,6 +328,7 @@ namespace DotNetNuke.Entities.Urls
                     // 894 : new switch to disable custom providers if necessary
                     this._enableCustomProviders = this.GetBooleanSetting(EnableCustomProvidersSetting, true);
                 }
+
                 return this._enableCustomProviders.Value;
             }
         }
@@ -370,6 +377,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._logCacheMessages = this.GetBooleanSetting(LogCacheMessagesSetting, false);
                 }
+
                 return this._logCacheMessages.Value;
             }
         }
@@ -416,6 +424,7 @@ namespace DotNetNuke.Entities.Urls
                         val = PageExtensionUsageType.Never;
                         break;
                 }
+
                 return val;
             }
             internal set
@@ -433,6 +442,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._redirectDefaultPage = this.GetBooleanSetting(RedirectDefaultPageSetting, false);
                 }
+
                 return this._redirectDefaultPage.Value;
             }
             internal set { this._redirectUnfriendly = value; }
@@ -446,6 +456,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._redirectOldProfileUrl = PortalController.GetPortalSettingAsBoolean(RedirectOldProfileUrlSetting, this.PortalId, true);
                 }
+
                 return this._redirectOldProfileUrl.Value;
             }
             internal set { this._redirectOldProfileUrl = value; }
@@ -459,6 +470,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._redirectUnfriendly = this.GetBooleanSetting(RedirectUnfriendlySetting, true);
                 }
+
                 return this._redirectUnfriendly.Value;
             }
             internal set { this._redirectUnfriendly = value; }
@@ -472,6 +484,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._redirectWrongCase = this.GetBooleanSetting(RedirectMixedCaseSetting, false);
                 }
+
                 return this._redirectWrongCase.Value;
             }
             internal set { this._redirectWrongCase = value; }
@@ -497,6 +510,7 @@ namespace DotNetNuke.Entities.Urls
                     var replaceCharwithChar = this.GetStringSetting(ReplaceCharWithCharSetting, string.Empty);
                     this._replaceCharacterDictionary = CollectionExtensions.CreateDictionaryFromString(replaceCharwithChar == "[]" ? string.Empty : replaceCharwithChar, ';', ',');
                 }
+
                 return this._replaceCharacterDictionary;
             }
         }
@@ -519,6 +533,7 @@ namespace DotNetNuke.Entities.Urls
                     // 922 : new options for allowing user-configured replacement of characters
                     this._replaceDoubleChars = this.GetBooleanSetting(ReplaceDoubleCharsSetting, true);
                 }
+
                 return this._replaceDoubleChars.Value;
             }
         }
@@ -547,6 +562,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     this._sslClientRedirect = this.GetBooleanSetting(SslClientRedirectSetting, false);
                 }
+
                 return this._sslClientRedirect.Value;
             }
             internal set { this._sslClientRedirect = value; }
@@ -587,6 +603,7 @@ namespace DotNetNuke.Entities.Urls
                         this._useBaseFriendlyUrls += ";";
                     }
                 }
+
                 return this._useBaseFriendlyUrls;
             }
             internal set { this._useBaseFriendlyUrls = value; }
@@ -625,6 +642,7 @@ namespace DotNetNuke.Entities.Urls
                     // allow for a list of internal aliases
                     this.InternalAliases = this.GetStringSetting(InternalAliasesSetting, string.Empty); // calls the setter
                 }
+
                 return this._internalAliases;
             }
 

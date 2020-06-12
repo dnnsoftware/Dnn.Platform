@@ -94,6 +94,7 @@ namespace DotNetNuke.Entities.Users
                         }
                     }
                 }
+
                 if (bContinue)
                 {
                     objUserInfo = new UserInfo
@@ -119,6 +120,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             objUserInfo.PasswordResetExpiration = Null.SetNullDateTime(dr["PasswordResetExpiration"]);
                         }
+
                         if (schema.Select("ColumnName = 'PasswordResetToken'").Length > 0)
                         {
                             objUserInfo.PasswordResetToken = Null.SetNullGuid(dr["PasswordResetToken"]);
@@ -135,6 +137,7 @@ namespace DotNetNuke.Entities.Users
             {
                 CBO.CloseDataReader(dr, closeDataReader);
             }
+
             return objUserInfo;
         }
     }

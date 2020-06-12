@@ -60,6 +60,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     _CacheKey += this.CacheByProperty + "_";
                 }
+
                 return _CacheKey;
             }
         }

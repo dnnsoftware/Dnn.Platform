@@ -40,6 +40,7 @@ namespace DotNetNuke.Entities.Urls
                         parameters.Add(parameter);
                     }
                 }
+
                 queryString = string.Join("&", parameters);
             }
 
@@ -69,6 +70,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return appPath;
             }
+
             var seperatorChar = url.ToCharArray()[1];
             if (seperatorChar == '/' || seperatorChar == '\\')
             {
@@ -77,13 +79,16 @@ namespace DotNetNuke.Entities.Urls
                 {
                     return appPath + "/" + url.Substring(2);
                 }
+
                 return "/" + url.Substring(2);
             }
+
             // Url look like ~something
             if (appPath.Length > 1)
             {
                 return appPath + "/" + url.Substring(1);
             }
+
             return appPath + url.Substring(1);
         }
 
@@ -99,6 +104,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 omitSettings = "scriptresource.axd|webresource.axd|gif|ico|jpg|jpeg|png|css|js";
             }
+
             omitSettings = omitSettings.ToLowerInvariant();
             localPath = localPath.ToLowerInvariant();
 

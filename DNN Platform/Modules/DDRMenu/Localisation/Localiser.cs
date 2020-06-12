@@ -28,8 +28,10 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                             break;
                         }
                     }
+
                     apiChecked = true;
                 }
+
                 return _LocalisationApi;
             }
         }

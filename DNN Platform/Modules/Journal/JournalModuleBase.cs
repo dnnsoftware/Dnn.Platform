@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.Journal
             Profile = 1,
             Group = 2,
         }
+
         public JournalMode FilterMode
         {
             get
@@ -49,6 +50,7 @@ namespace DotNetNuke.Modules.Journal
                 }
             }
         }
+
         public int GroupId
         {
             get
@@ -71,6 +73,7 @@ namespace DotNetNuke.Modules.Journal
                 }
             }
         }
+
         public bool EditorEnabled
         {
             get

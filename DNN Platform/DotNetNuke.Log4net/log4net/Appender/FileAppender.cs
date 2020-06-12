@@ -160,6 +160,7 @@ namespace log4net.Appender
                 {
                     throw new ArgumentException("Locking model may not be null", "locking");
                 }
+
                 this.m_lockingModel = locking;
             }
 
@@ -203,6 +204,7 @@ namespace log4net.Appender
                 this.AssertLocked();
                 return this.m_readTotal;
             }
+
             public override void EndWrite(IAsyncResult asyncResult)
             {
                 // No-op, it has already been handled
@@ -228,24 +230,29 @@ namespace log4net.Appender
                 this.AssertLocked();
                 this.m_realStream.Flush();
             }
+
             public override int Read(byte[] buffer, int offset, int count)
             {
                 return this.m_realStream.Read(buffer, offset, count);
             }
+
             public override int ReadByte()
             {
                 return this.m_realStream.ReadByte();
             }
+
             public override long Seek(long offset, SeekOrigin origin)
             {
                 this.AssertLocked();
                 return this.m_realStream.Seek(offset, origin);
             }
+
             public override void SetLength(long value)
             {
                 this.AssertLocked();
                 this.m_realStream.SetLength(value);
             }
+
             void IDisposable.Dispose()
             {
 #if NETSTANDARD1_3
@@ -254,11 +261,13 @@ namespace log4net.Appender
                 this.Close();
 #endif
             }
+
             public override void Write(byte[] buffer, int offset, int count)
             {
                 this.AssertLocked();
                 this.m_realStream.Write(buffer, offset, count);
             }
+
             public override void WriteByte(byte value)
             {
                 this.AssertLocked();
@@ -270,6 +279,7 @@ namespace log4net.Appender
             {
                 get { return false; }
             }
+
             public override bool CanSeek
             {
                 get
@@ -278,6 +288,7 @@ namespace log4net.Appender
                     return this.m_realStream.CanSeek;
                 }
             }
+
             public override bool CanWrite
             {
                 get
@@ -286,6 +297,7 @@ namespace log4net.Appender
                     return this.m_realStream.CanWrite;
                 }
             }
+
             public override long Length
             {
                 get
@@ -294,6 +306,7 @@ namespace log4net.Appender
                     return this.m_realStream.Length;
                 }
             }
+
             public override long Position
             {
                 get
@@ -326,12 +339,14 @@ namespace log4net.Appender
                         // If lock is already acquired, nop
                         this.m_realStream = this.m_lockingModel.AcquireLock();
                     }
+
                     if (this.m_realStream != null)
                     {
                         this.m_lockLevel++;
                         ret = true;
                     }
                 }
+
                 return ret;
             }
 
@@ -670,6 +685,7 @@ namespace log4net.Appender
                         this.CurrentAppender.ErrorHandler.Error("Unable to acquire lock on file " + this.m_filename + ". " + e1.Message);
                     }
                 }
+
                 return this.m_stream;
             }
 
@@ -803,6 +819,7 @@ namespace log4net.Appender
                 {
                     this.CurrentAppender.ErrorHandler.Error("Programming error, no mutex available to acquire lock! From here on things will be dangerous!");
                 }
+
                 return this.m_stream;
             }
 
@@ -1083,6 +1100,7 @@ namespace log4net.Appender
                 {
                     this.m_fileName = ConvertToFullPath(this.m_fileName.Trim());
                 }
+
                 this.SafeOpenFile(this.m_fileName, this.m_appendToFile);
             }
             else
@@ -1321,6 +1339,7 @@ namespace log4net.Appender
                 {
                     isPathRooted = Path.IsPathRooted(fileName);
                 }
+
                 if (!isPathRooted)
                 {
                     LogLog.Error(declaringType, "INTERNAL ERROR. OpenFile(" + fileName + "): File name is not fully qualified.");

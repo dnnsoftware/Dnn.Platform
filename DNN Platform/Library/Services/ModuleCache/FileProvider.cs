@@ -140,6 +140,7 @@ namespace DotNetNuke.Services.ModuleCache
                     i += 1;
                 }
             }
+
             if (filesNotDeleted.Length > 0)
             {
                 throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
@@ -163,6 +164,7 @@ namespace DotNetNuke.Services.ModuleCache
                     cacheKey.Append(string.Concat(key, "=", varyByParms.Current.Value, "|"));
                 }
             }
+
             return this.GenerateCacheKeyHash(tabModuleId, cacheKey.ToString());
         }
 
@@ -178,6 +180,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 return null;
             }
+
             var fInfo = new FileInfo(cachedModule);
             long numBytes = fInfo.Length;
             using (var fStream = new FileStream(cachedModule, FileMode.Open, FileAccess.Read))
@@ -217,6 +220,7 @@ namespace DotNetNuke.Services.ModuleCache
                         }
                     }
                 }
+
                 if (filesNotDeleted.Length > 0)
                 {
                     throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
@@ -276,6 +280,7 @@ namespace DotNetNuke.Services.ModuleCache
                         i += 1;
                     }
                 }
+
                 if (filesNotDeleted.Length > 0)
                 {
                     throw new IOException("Deleted " + i + " files, however, some files are locked.  Could not delete the following files: " + filesNotDeleted);

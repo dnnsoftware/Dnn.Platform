@@ -74,6 +74,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
             {
                 this.liRegister.Visible = false;
             }
+
             this.lblLogin.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_LOGIN_INSTRUCTIONS");
             if (string.IsNullOrEmpty(this.lblLogin.Text))
             {
@@ -93,6 +94,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 {
                     returnUrl = this.Request.QueryString["returnurl"];
                 }
+
                 returnUrl = HttpUtility.UrlEncode(returnUrl);
 
                 url = Globals.RegisterURL(returnUrl, Null.NullString);
@@ -195,6 +197,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                         Logger.Error(ex);
                     }
                 }
+
                 try
                 {
                     Globals.SetFormFocus(string.IsNullOrEmpty(this.txtUsername.Text) ? this.txtUsername : this.txtPassword);
@@ -310,6 +313,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                         redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                     }
                 }
+
                 if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page

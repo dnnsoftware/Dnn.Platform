@@ -42,6 +42,7 @@ namespace DotNetNuke.Services.OutputCache
                         Logger.Debug(exc);
                     }
                 }
+
                 this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
             }
             catch (Exception exc) // REQUIRED

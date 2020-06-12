@@ -32,6 +32,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 return;
             }
+
             this.Channel["title"] = this.Settings.PortalName;
             this.Channel["link"] = Globals.AddHTTP(Globals.GetDomainName(this.Request));
             if (!string.IsNullOrEmpty(this.Settings.Description))
@@ -42,6 +43,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 this.Channel["description"] = this.Settings.PortalName;
             }
+
             this.Channel["language"] = this.Settings.DefaultLanguage;
             this.Channel["copyright"] = !string.IsNullOrEmpty(this.Settings.FooterText) ? this.Settings.FooterText.Replace("[year]", DateTime.Now.Year.ToString()) : string.Empty;
             this.Channel["webMaster"] = this.Settings.Email;
@@ -61,6 +63,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 Exceptions.Exceptions.LogException(ex);
             }
+
             if (searchResults != null)
             {
                 foreach (var result in searchResults)

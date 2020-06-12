@@ -160,6 +160,7 @@ namespace DotNetNuke.Security.Roles
                     this.GetRoleType();
                     this._RoleTypeSet = true;
                 }
+
                 return this._RoleType;
             }
         }
@@ -273,6 +274,7 @@ namespace DotNetNuke.Security.Roles
                         }
                     }
                 }
+
                 return photoURL;
             }
         }
@@ -352,6 +354,7 @@ namespace DotNetNuke.Security.Roles
                         this.Status = RoleStatus.Approved;
                         break;
                 }
+
                 // check for values only relevant to UserRoles
                 var schema = dr.GetSchemaTable();
                 if (schema != null)
@@ -360,6 +363,7 @@ namespace DotNetNuke.Security.Roles
                     {
                         this.UserCount = Null.SetNullInteger(dr["UserCount"]);
                     }
+
                     if (schema.Select("ColumnName = 'IsSystemRole'").Length > 0)
                     {
                         this.IsSystemRole = Null.SetNullBoolean(dr["IsSystemRole"]);
@@ -404,6 +408,7 @@ namespace DotNetNuke.Security.Roles
             {
                 OutputFormat = format;
             }
+
             string propName = propertyName.ToLowerInvariant();
             switch (propName)
             {
@@ -491,10 +496,12 @@ namespace DotNetNuke.Security.Roles
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
                 }
+
                 if (reader.NodeType == XmlNodeType.Element)
                 {
                     switch (reader.Name.ToLowerInvariant())
@@ -513,6 +520,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.BillingFrequency = "N";
                             }
+
                             break;
                         case "billingperiod":
                             this.BillingPeriod = reader.ReadElementContentAsInt();
@@ -523,6 +531,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.ServiceFee = 0;
                             }
+
                             break;
                         case "trialfrequency":
                             this.TrialFrequency = reader.ReadElementContentAsString();
@@ -530,6 +539,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.TrialFrequency = "N";
                             }
+
                             break;
                         case "trialperiod":
                             this.TrialPeriod = reader.ReadElementContentAsInt();
@@ -540,6 +550,7 @@ namespace DotNetNuke.Security.Roles
                             {
                                 this.TrialFee = 0;
                             }
+
                             break;
                         case "ispublic":
                             this.IsPublic = reader.ReadElementContentAsBoolean();
@@ -575,6 +586,7 @@ namespace DotNetNuke.Security.Roles
                                     this._RoleType = RoleType.None;
                                     break;
                             }
+
                             this._RoleTypeSet = true;
                             break;
                         case "securitymode":
@@ -590,6 +602,7 @@ namespace DotNetNuke.Security.Roles
                                     this.SecurityMode = SecurityMode.Both;
                                     break;
                             }
+
                             break;
                         case "status":
                             switch (reader.ReadElementContentAsString())
@@ -604,12 +617,14 @@ namespace DotNetNuke.Security.Roles
                                     this.Status = RoleStatus.Approved;
                                     break;
                             }
+
                             break;
                         default:
                             if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }
@@ -672,6 +687,7 @@ namespace DotNetNuke.Security.Roles
                     writer.WriteElementString("securitymode", "both");
                     break;
             }
+
             switch (this.Status)
             {
                 case RoleStatus.Pending:
@@ -695,6 +711,7 @@ namespace DotNetNuke.Security.Roles
             {
                 return defaultValue;
             }
+
             if (this.Settings.ContainsKey(keyName))
             {
                 return this.Settings[keyName];
@@ -710,6 +727,7 @@ namespace DotNetNuke.Security.Roles
                 // server absolute path
                 return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
             }
+
             return url;
         }
     }

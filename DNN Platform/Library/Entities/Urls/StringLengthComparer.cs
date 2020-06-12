@@ -19,26 +19,32 @@ namespace DotNetNuke.Entities.Urls
             {
                 return 0;
             }
+
             if (x == null)
             {
                 return -1;
             }
+
             if (y == null)
             {
                 return 1;
             }
+
             if (x.Length < y.Length)
             {
                 return -1;
             }
+
             if (x.Length > y.Length)
             {
                 return 1;
             }
+
             if (x.Length == y.Length)
             {
                 return 0;
             }
+
             return -1; // should never reach here
         }
     }

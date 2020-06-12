@@ -29,6 +29,7 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     item.Selected = true;
                 }
+
                 this.scriptList.Items.Add(item);
             }
 

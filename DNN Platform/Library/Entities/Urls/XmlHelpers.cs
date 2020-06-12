@@ -28,6 +28,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             var tabIds = new List<int>();
             if (!string.IsNullOrEmpty(tabIdsRaw))
             {
@@ -41,6 +42,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             if (tabNames != null)
             {
                 // get the portal by name
@@ -83,6 +85,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return tabIds;
         }
     }

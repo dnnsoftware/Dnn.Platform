@@ -32,8 +32,10 @@ namespace DotNetNuke.Services.Upgrade
                         frameDepth++;
                         reflectedType = stack[frameDepth].GetMethod().ReflectedType;
                     }
+
                     frame = stack[frameDepth];
                 }
+
                 return frame;
             }
         }

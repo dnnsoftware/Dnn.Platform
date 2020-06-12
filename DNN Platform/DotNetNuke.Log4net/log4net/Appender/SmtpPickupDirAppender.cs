@@ -154,6 +154,7 @@ namespace log4net.Appender
                 {
                     this.m_fileExtension = string.Empty;
                 }
+
                 // Make sure any non empty extension starts with a dot
 #if NET_2_0 || MONO_2_0
                 if (!string.IsNullOrEmpty(this.m_fileExtension) && !this.m_fileExtension.StartsWith("."))

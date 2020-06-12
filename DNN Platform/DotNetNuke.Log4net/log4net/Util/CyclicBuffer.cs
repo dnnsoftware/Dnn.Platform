@@ -140,6 +140,7 @@ namespace log4net.Util
                         this.m_first = 0;
                     }
                 }
+
                 return ret;
             }
         }

@@ -78,10 +78,12 @@ namespace DotNetNuke.UI.WebControls
                         {
                             objProperty.SetValue(this.DataSource, newValue, null);
                         }
+
                         _IsDirty = true;
                     }
                 }
             }
+
             return _IsDirty;
         }
 
@@ -109,6 +111,7 @@ namespace DotNetNuke.UI.WebControls
                     dirty = true;
                 }
             }
+
             return dirty;
         }
 

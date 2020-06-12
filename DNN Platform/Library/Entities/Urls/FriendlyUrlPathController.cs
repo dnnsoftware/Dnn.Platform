@@ -41,6 +41,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     otherParametersPath = otherParametersPath.Substring(0, otherParametersPath.Length - 1);
                 }
+
                 const string patternFormatWithParameters = @"/?(?<rem1>.*)(?=_parm_)(?<parm1>(?<=/|^)(?:_parm_)/(?<p1v>[\d\w]+)){0,1}/?(?<op>_otherparm_){0,1}/?(?<parm2>(?<=/)(?:_parm_)/(?<p2v>[\d\w]+)){0,1}(?<rem2>.*)";
                 regexPattern = patternFormatWithParameters.Replace("_parm_", parmName);
                 regexPattern = regexPattern.Replace("_otherparm_", otherParametersPath);
@@ -50,6 +51,7 @@ namespace DotNetNuke.Entities.Urls
                 const string patternNoParameters = @"/?(?<rem1>.*)(?<parm1>(?<=/|^)(?:_parm_)/(?<p1v>[\d\w]+)/?)+(?<rem2>.*)";
                 regexPattern = patternNoParameters.Replace("_parm_", parmName);
             }
+
             // check the regex match
             Match parmMatch = Regex.Match(urlPath, regexPattern, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
             if (parmMatch.Success)
@@ -74,19 +76,23 @@ namespace DotNetNuke.Entities.Urls
                         rawUserId = parm1ValueGp.Value;
                     }
                 }
+
                 // add back the remainders
                 if (rem1ParmsGp != null && rem1ParmsGp.Success)
                 {
                     remainingPath = rem1ParmsGp.Value;
                 }
+
                 if (rem2ParmsGp != null && rem2ParmsGp.Success)
                 {
                     remainingPath += rem2ParmsGp.Value;
                 }
+
                 if (remainingPath.EndsWith("/"))
                 {
                     remainingPath = remainingPath.Substring(0, remainingPath.Length - 1);
                 }
+
                 // 722: drop out the parts of the remaining path that are in the 'otherParameters' path.
                 // the other parameters path will be automatically provided upon rewrite
                 if (otherParametersPath != null)
@@ -104,6 +110,7 @@ namespace DotNetNuke.Entities.Urls
                         remainingPath = Regex.Replace(remainingPath, find, string.Empty, RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                     }
                 }
+
                 if (remainingPath.Length > 0 && remainingPath.StartsWith("/") == false)
                 {
                     remainingPath = "/" + remainingPath;
@@ -161,10 +168,12 @@ namespace DotNetNuke.Entities.Urls
                     {
                         parmReplaces = new List<ParameterReplaceAction>();
                     }
+
                     // add in the all replaces
                     List<ParameterReplaceAction> allReplaces = replaceActions[-1];
                     parmReplaces.AddRange(allReplaces); // add the 'all' range to the tab range
                 }
+
                 if (parmReplaces != null)
                 {
                     // OK what we have now is a list of replaces for the currently requested tab (either because it was specified by tab id,
@@ -187,6 +196,7 @@ namespace DotNetNuke.Entities.Urls
                                 changeToSiteRoot = parmReplace.ChangeToSiteRoot;
                                 break;
                             }
+
                             messages.Add(parmReplace.Name + " replace rule not matched {" + parameterPath + "}");
                         }
                     }
@@ -199,6 +209,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return replaced;
         }
 
@@ -218,6 +229,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 meessages = new List<string>();
             }
+
             bool urlWasChanged = false;
 
             // initialise defaults to always return valid items
@@ -289,6 +301,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+
                         changedPath = "/" + urlName;
                         // append any extra remaining path value to the end
                         if (!string.IsNullOrEmpty(remainingPath))
@@ -302,6 +315,7 @@ namespace DotNetNuke.Entities.Urls
                                 changedPath += remainingPath;
                             }
                         }
+
                         urlWasChanged = true;
                         changeToSiteRoot = true; // we will be doing domain.com/urlname
                         allowOtherParameters = false;
@@ -313,6 +327,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return urlWasChanged;
         }
     }

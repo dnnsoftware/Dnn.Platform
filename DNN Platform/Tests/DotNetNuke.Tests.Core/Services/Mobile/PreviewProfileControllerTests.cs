@@ -122,6 +122,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             {
                 affectedCount++;
             }
+
             Assert.AreEqual(1, affectedCount);
         }
 

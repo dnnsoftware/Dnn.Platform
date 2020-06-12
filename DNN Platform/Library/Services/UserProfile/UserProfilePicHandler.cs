@@ -46,6 +46,7 @@ namespace DotNetNuke.Services.UserProfile
                 {
                     height = Convert.ToInt32(context.Request.QueryString["h"]);
                 }
+
                 if (!string.IsNullOrEmpty(context.Request.QueryString["size"]))
                 {
                     size = context.Request.QueryString["size"];
@@ -60,6 +61,7 @@ namespace DotNetNuke.Services.UserProfile
             {
                 height = 128;
             }
+
             if (width > 128)
             {
                 width = 128;
@@ -198,6 +200,7 @@ namespace DotNetNuke.Services.UserProfile
                 width = 128;
                 size = "xl";
             }
+
             // set a default if unprocessed
             if (string.IsNullOrEmpty(size))
             {

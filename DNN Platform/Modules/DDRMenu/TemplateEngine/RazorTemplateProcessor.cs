@@ -97,6 +97,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         result.AppendFormat("{0}:{1},", option.Name, option.Value);
                     }
                 }
+
                 if (options.Count > 0)
                 {
                     result.Remove(result.Length - 1, 1);

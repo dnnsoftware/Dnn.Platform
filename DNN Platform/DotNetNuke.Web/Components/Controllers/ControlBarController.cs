@@ -27,6 +27,7 @@ namespace DotNetNuke.Web.Components.Controllers
         {
             this._mef = new ExtensionPointManager();
         }
+
         public IEnumerable<KeyValuePair<string, PortalDesktopModuleInfo>> GetCategoryDesktopModules(int portalId, string category, string searchTerm = "")
         {
             var formattedSearchTerm = string.IsNullOrEmpty(searchTerm) ? string.Empty : searchTerm.ToLower(CultureInfo.InvariantCulture);
@@ -72,6 +73,7 @@ namespace DotNetNuke.Web.Components.Controllers
                 PortalController.UpdatePortalSetting(portalId, BookmarkCategoryProperty, "Common");
                 return "Common";
             }
+
             return bookmarkCategory;
         }
 
@@ -136,6 +138,7 @@ namespace DotNetNuke.Web.Components.Controllers
             {
                 return new List<KeyValuePair<string, PortalDesktopModuleInfo>>();
             }
+
             var bookmarkItemsKeys = bookmarkItems.ToString().Split(',').ToList();
             var bookmarkedModules = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
                                         .Where(dm => bookmarkItemsKeys.Contains(dm.Value.DesktopModuleID.ToString(CultureInfo.InvariantCulture)));

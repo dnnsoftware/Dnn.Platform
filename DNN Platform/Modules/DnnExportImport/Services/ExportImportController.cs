@@ -38,6 +38,7 @@ namespace Dnn.ExportImport.Services
                 var jobId = controller.QueueOperation(this.PortalSettings.UserId, importDto);
                 return this.Request.CreateResponse(HttpStatusCode.OK, new { jobId });
             }
+
             return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, message);
         }
 
@@ -125,6 +126,7 @@ namespace Dnn.ExportImport.Services
                 var error = Localization.GetString("NotPortalAdmin", Constants.SharedResources);
                 return this.Request.CreateErrorResponse(HttpStatusCode.BadRequest, error);
             }
+
             var controller = new BaseController();
             var jobs = controller.GetAllJobs(portal, this.PortalSettings.PortalId, pageSize, pageIndex, jobType, keywords);
             jobs?.ConvertToLocal(this.UserInfo);

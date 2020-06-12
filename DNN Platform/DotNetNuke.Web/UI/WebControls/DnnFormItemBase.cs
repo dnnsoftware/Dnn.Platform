@@ -151,6 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
                     this.IsValid = regexValidator.IsValid;
                 }
+
                 this.Validators.Add(regexValidator);
             }
 
@@ -266,6 +267,7 @@ namespace DotNetNuke.Web.UI.WebControls
                             {
                                 value = this.ChildProperty.GetValue(parentValue, null);
                             }
+
                             // ReSharper restore PossibleNullReferenceException
                         }
                     }

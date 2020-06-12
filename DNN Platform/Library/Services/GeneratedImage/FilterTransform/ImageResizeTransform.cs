@@ -164,6 +164,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
                     Debug.Fail("Should not reach this");
                     return null;
             }
+
             return procImage;
         }
 

@@ -58,6 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     displayMode = "NATIVE";
                 }
+
                 return displayMode;
             }
         }
@@ -91,6 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     selectedValue = Null.NullString;
                 }
+
                 return selectedValue;
             }
         }
@@ -220,6 +222,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 item.ImageUrl = string.Format(this.FlagImageUrlFormatString, item.Value);
             }
+
             foreach (RadComboBoxItem item in this._nativeCombo.Items)
             {
                 item.ImageUrl = string.Format(this.FlagImageUrlFormatString, item.Value);

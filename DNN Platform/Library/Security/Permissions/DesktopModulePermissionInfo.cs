@@ -141,10 +141,12 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             if (ReferenceEquals(this, other))
             {
                 return true;
             }
+
             return (this.AllowAccess == other.AllowAccess) && (this.PortalDesktopModuleID == other.PortalDesktopModuleID) && (this.RoleID == other.RoleID) && (this.PermissionID == other.PermissionID);
         }
 
@@ -168,14 +170,17 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             if (ReferenceEquals(this, obj))
             {
                 return true;
             }
+
             if (obj.GetType() != typeof(DesktopModulePermissionInfo))
             {
                 return false;
             }
+
             return this.Equals((DesktopModulePermissionInfo)obj);
         }
 

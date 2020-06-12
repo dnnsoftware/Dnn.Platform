@@ -34,6 +34,7 @@ namespace DotNetNuke.UI.Containers
             {
                 canEdit = (this.PortalSettings.UserMode == PortalSettings.Mode.Edit) && TabPermissionController.CanAdminPage() && !Globals.IsAdminControl();
             }
+
             return canEdit;
         }
 
@@ -53,11 +54,13 @@ namespace DotNetNuke.UI.Containers
             {
                 this.titleLabel.CssClass = this.CssClass;
             }
+
             string moduleTitle = Null.NullString;
             if (this.ModuleControl != null)
             {
                 moduleTitle = Localization.LocalizeControlTitle(this.ModuleControl);
             }
+
             if (moduleTitle == Null.NullString)
             {
                 moduleTitle = " ";

@@ -80,6 +80,7 @@ namespace DotNetNuke.Modules.Journal.Controls
                 {
                     this.CurrentIndex = 0;
                 }
+
                 JournalParser jp = new JournalParser(this.portalSettings, this.ModuleId, this.ProfileId, this.SocialGroupId, this.userInfo) { JournalId = this.JournalId };
                 output.Write(jp.GetList(this.CurrentIndex, this.PageSize));
             }

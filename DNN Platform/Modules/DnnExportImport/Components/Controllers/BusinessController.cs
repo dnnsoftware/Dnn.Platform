@@ -27,6 +27,7 @@ namespace Dnn.ExportImport.Components.Controllers
                         // AddNewLogTypes(); // moved to SQL migration script
                         break;
                 }
+
                 return "Success";
             }
             catch (Exception)

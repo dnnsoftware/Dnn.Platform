@@ -307,6 +307,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this._CaptchaText = this.GetNextCaptcha();
             }
+
             return false;
         }
 
@@ -380,6 +381,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 DistortImage(ref bmp, -_Rand.Next(5, 20));
             }
+
             return bmp;
         }
 
@@ -408,9 +410,11 @@ namespace DotNetNuke.UI.WebControls
                     {
                         break;
                     }
+
                     f.Dispose();
                     emSize -= 2;
                 }
+
                 emSize += 8;
                 f = new Font(ff, emSize);
 
@@ -429,6 +433,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 f.Dispose();
             }
+
             return textPath;
         }
 
@@ -453,6 +458,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 Logger.Debug(exc);
             }
+
             return decryptedText;
         }
 
@@ -479,10 +485,12 @@ namespace DotNetNuke.UI.WebControls
                     {
                         newX = 0;
                     }
+
                     if (newY < 0 || newY >= height)
                     {
                         newY = 0;
                     }
+
                     b.SetPixel(x, y, copy.GetPixel(newX, newY));
                 }
             }
@@ -532,6 +540,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         bmp = (Bitmap)System.Drawing.Image.FromFile(HttpContext.Current.Request.MapPath(backgroundImage));
                     }
+
                     g = Graphics.FromImage(bmp);
 
                     // Create Text
@@ -550,6 +559,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 Exceptions.LogException(exc);
             }
+
             return bmp;
         }
 
@@ -574,6 +584,7 @@ namespace DotNetNuke.UI.WebControls
                     _font = null;
                 }
             }
+
             return _font;
         }
 
@@ -630,6 +641,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 throw new InvalidOperationException("Must specify size of control in pixels.");
             }
+
             this._image = new Image { BorderColor = this.BorderColor, BorderStyle = this.BorderStyle, BorderWidth = this.BorderWidth, ToolTip = this.ToolTip, EnableViewState = false };
             this.Controls.Add(this._image);
         }
@@ -648,6 +660,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 sb.Append(this.CaptchaChars.Substring(rand.Next(intMaxLength), 1));
             }
+
             var challenge = sb.ToString();
 
             // NOTE: this could be a problem in a web farm using in-memory caching where
@@ -683,6 +696,7 @@ namespace DotNetNuke.UI.WebControls
                     this._CaptchaText = Convert.ToString(myState[1]);
                 }
             }
+
             // var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
             // _CaptchaText
         }
@@ -734,6 +748,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Alt, Localization.GetString("CaptchaAlt.Text", Localization.SharedResourceFile));
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Img);
             writer.RenderEndTag();
 
@@ -755,14 +770,17 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, this.AccessKey);
             }
+
             if (!this.Enabled)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Disabled, "disabled");
             }
+
             if (this.TabIndex > 0)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Tabindex, this.TabIndex.ToString());
             }
+
             if (this._UserText == this._CaptchaText)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, this._UserText);
@@ -771,6 +789,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, string.Empty);
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Input);
             writer.RenderEndTag();
 
@@ -799,6 +818,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this._CaptchaText = this.GetNextCaptcha();
             }
+
             allStates[1] = this._CaptchaText;
 
             return allStates;

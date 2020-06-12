@@ -65,6 +65,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     folderName = folderName.Substring(folderName.LastIndexOf("/", StringComparison.Ordinal) + 1);
                 }
+
                 return folderName;
             }
         }
@@ -90,6 +91,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     this._displayName = this.FolderName;
                 }
+
                 return this._displayName;
             }
             set
@@ -110,6 +112,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     this._displayPath = this.FolderPath;
                 }
+
                 return this._displayPath;
             }
             set

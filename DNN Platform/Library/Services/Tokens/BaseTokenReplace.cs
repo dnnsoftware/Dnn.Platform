@@ -79,6 +79,7 @@ namespace DotNetNuke.Services.Tokens
                     tokenizer = RegexUtils.GetCachedRegex(this.UseObjectLessExpression ? ExpressionObjectLess : ExpressionDefault);
                     DataCache.SetCache(cacheKey, tokenizer);
                 }
+
                 return tokenizer;
             }
         }
@@ -92,6 +93,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 return string.Empty;
             }
+
             var result = new StringBuilder();
             foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
             {
@@ -102,6 +104,7 @@ namespace DotNetNuke.Services.Tokens
                     {
                         objectName = ObjectLessToken;
                     }
+
                     string propertyName = currentMatch.Result("${property}");
                     string format = currentMatch.Result("${format}");
                     string ifEmptyReplacment = currentMatch.Result("${ifEmpty}");
@@ -110,6 +113,7 @@ namespace DotNetNuke.Services.Tokens
                     {
                         conversion = ifEmptyReplacment;
                     }
+
                     result.Append(conversion);
                 }
                 else
@@ -117,6 +121,7 @@ namespace DotNetNuke.Services.Tokens
                     result.Append(currentMatch.Result("${text}"));
                 }
             }
+
             return result.ToString();
         }
     }

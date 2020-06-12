@@ -38,6 +38,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 sOutput.Append(arrInput[i].ToString("X2"));
             }
+
             return sOutput.ToString();
         }
 

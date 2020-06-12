@@ -47,6 +47,7 @@ namespace DotNetNuke.Services.Analytics
                         {
                             trackForAdmin = true;
                         }
+
                         break;
                 }
             }
@@ -97,6 +98,7 @@ namespace DotNetNuke.Services.Analytics
                             bool.TryParse(setting.SettingValue, out anonymize);
                             break;
                         }
+
                         case "trackinguser":
                         {
                             bool.TryParse(setting.SettingValue, out trackingUserId);

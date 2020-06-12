@@ -59,12 +59,14 @@ namespace DotNetNuke.Modules.DigitalAssets
                             obj = new List<FolderMappingInfo>();
                         }
                     }
+
                     return (List<FolderMappingInfo>)obj;
                 }
                 catch
                 {
                     this.Session["FolderMappingsList"] = null;
                 }
+
                 return new List<FolderMappingInfo>();
             }
             set { this.Session["FolderMappingsList"] = value; }

@@ -256,6 +256,7 @@ namespace DotNetNuke.Services.Assets
             {
                 return folder;
             }
+
             if (folder.FolderName.Equals(newFolderName, StringComparison.InvariantCultureIgnoreCase))
             {
                 folder.FolderPath = this.ReplaceFolderName(folder.FolderPath, folder.FolderName, newFolderName);
@@ -439,6 +440,7 @@ namespace DotNetNuke.Services.Assets
             {
                 throw new AssetManagerException(Localization.Localization.GetExceptionMessage("FolderDoesNotExists", DefaultMessageDefaultMessage));
             }
+
             return folder;
         }
 
@@ -449,6 +451,7 @@ namespace DotNetNuke.Services.Assets
             {
                 return path;
             }
+
             var nameIndex = newPath.LastIndexOf(folderName, StringComparison.Ordinal);
             if (nameIndex == -1)
             {

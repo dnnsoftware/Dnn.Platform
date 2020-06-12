@@ -197,6 +197,7 @@ namespace log4net.Appender
                 {
                     Console.BackgroundColor = levelColors.BackColor;
                 }
+
                 // if the foreColor has been explicitly set
                 if (levelColors.HasForeColor)
                 {
@@ -306,6 +307,7 @@ namespace log4net.Appender
                     this.hasForeColor = true;
                 }
             }
+
             private ConsoleColor foreColor;
             private bool hasForeColor;
             internal bool HasForeColor
@@ -336,6 +338,7 @@ namespace log4net.Appender
                     this.hasBackColor = true;
                 }
             }
+
             private ConsoleColor backColor;
             private bool hasBackColor;
             internal bool HasBackColor

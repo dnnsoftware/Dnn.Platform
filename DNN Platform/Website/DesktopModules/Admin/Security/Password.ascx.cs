@@ -63,6 +63,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     _Membership = this.User.Membership;
                 }
+
                 return _Membership;
             }
         }
@@ -80,6 +81,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.PasswordUpdated != null)
             {
                 this.PasswordUpdated(this, e);
@@ -96,6 +98,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.PasswordQuestionAnswerUpdated != null)
             {
                 this.PasswordQuestionAnswerUpdated(this, e);
@@ -180,6 +183,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         this.lblResetHelp.Text = Localization.GetString("AdminResetHelp", this.LocalResourceFile);
                     }
+
                     this.questionRow.Visible = false;
                     this.answerRow.Visible = false;
                 }
@@ -298,6 +302,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             string answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && !this.IsAdmin)
             {
@@ -306,8 +311,10 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     return;
                 }
+
                 answer = this.txtAnswer.Text;
             }
+
             try
             {
                 // create resettoken
@@ -420,6 +427,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     return;
                 }
+
                 // 1. Check New Password and Confirm are the same
                 if (this.txtNewPassword.Text != this.txtNewConfirm.Text)
                 {
@@ -447,6 +455,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordNotDifferent));
                     return;
                 }
+
                 // 5. Check New Password is not same as username or banned
                 var membershipPasswordController = new MembershipPasswordController();
                 var settings = new MembershipPasswordSettings(this.User.PortalID);
@@ -542,16 +551,19 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (string.IsNullOrEmpty(this.txtQAPassword.Text))
             {
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordInvalid));
                 return;
             }
+
             if (string.IsNullOrEmpty(this.txtEditQuestion.Text))
             {
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordQuestion));
                 return;
             }
+
             if (string.IsNullOrEmpty(this.txtEditAnswer.Text))
             {
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));

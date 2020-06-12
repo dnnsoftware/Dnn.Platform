@@ -87,11 +87,13 @@ namespace DotNetNuke.Common.Internal
             {
                 uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), string.Empty);
             }
+
             int queryIndex = uri.IndexOf("?", StringComparison.Ordinal);
             if (queryIndex > -1)
             {
                 uri = uri.Substring(0, queryIndex);
             }
+
             string[] url = uri.Split('/');
             for (queryIndex = 2; queryIndex <= url.GetUpperBound(0); queryIndex++)
             {
@@ -123,15 +125,18 @@ namespace DotNetNuke.Common.Internal
                                 break;
                             }
                         }
+
                         // non of the exclusionary names found
                         domainName.Append((!string.IsNullOrEmpty(domainName.ToString()) ? "/" : string.Empty) + url[queryIndex]);
                         break;
                 }
+
                 if (needExit)
                 {
                     break;
                 }
             }
+
             if (parsePortNumber)
             {
                 if (domainName.ToString().IndexOf(":", StringComparison.Ordinal) != -1)
@@ -142,6 +147,7 @@ namespace DotNetNuke.Common.Internal
                     }
                 }
             }
+
             return domainName.ToString();
         }
 

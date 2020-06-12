@@ -58,6 +58,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionRoot = new ModuleAction(this.ModuleContext.GetNextActionID(), Localization.GetString("Manage.Text", Localization.GlobalResourceFile), string.Empty, string.Empty, "manage-icn.png");
                 }
+
                 return this._ActionRoot;
             }
         }
@@ -119,6 +120,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     this._ActionManager = new ActionManager(this);
                 }
+
                 return this._ActionManager;
             }
         }

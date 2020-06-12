@@ -179,6 +179,7 @@ namespace DotNetNuke.UI.Containers
                     ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, (this.ModuleContext.Configuration.PaneModuleCount * 2) + 1, Command.CommandArgument);
                     break;
             }
+
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
             // Redirect to the same page to pick up changes
@@ -214,6 +215,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
+
             return false;
         }
 
@@ -257,6 +259,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     Script = Script.Substring(JSPos + 11);
                 }
+
                 string FormatScript = "javascript: return {0};";
                 control.Attributes.Add("onClick", string.Format(FormatScript, Script));
             }
@@ -286,6 +289,7 @@ namespace DotNetNuke.UI.Containers
             {
                 _IsVisible = false;
             }
+
             return _IsVisible;
         }
 
@@ -303,6 +307,7 @@ namespace DotNetNuke.UI.Containers
             {
                 bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
             }
+
             return bProcessed;
         }
 
@@ -366,8 +371,10 @@ namespace DotNetNuke.UI.Containers
                     {
                         bProcessed = false;
                     }
+
                     break;
             }
+
             return bProcessed;
         }
     }

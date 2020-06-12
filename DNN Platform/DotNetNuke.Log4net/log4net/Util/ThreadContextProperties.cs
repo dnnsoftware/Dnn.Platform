@@ -85,6 +85,7 @@ namespace log4net.Util
                 {
                     return _dictionary[key];
                 }
+
                 return null;
             }
             set
@@ -129,6 +130,7 @@ namespace log4net.Util
             {
                 return _dictionary.GetKeys();
             }
+
             return null;
         }
 
@@ -175,6 +177,7 @@ namespace log4net.Util
 				System.Threading.Thread.SetData(s_threadLocalSlot, _dictionary);
 #endif
             }
+
             return _dictionary;
         }
     }

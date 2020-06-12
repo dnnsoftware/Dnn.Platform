@@ -53,12 +53,14 @@ namespace DotNetNuke.Tests.Utilities
                     {
                         throw;
                     }
+
                     tex = tiex.InnerException as TException;
                     if (tex == null)
                     {
                         throw;
                     }
                 }
+
                 thrown = true;
                 matched = checker(tex);
                 if (!matched)

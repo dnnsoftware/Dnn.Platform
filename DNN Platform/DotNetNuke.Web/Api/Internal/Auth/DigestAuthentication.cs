@@ -67,10 +67,12 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 user = UserController.GetUserByName(this._portalId, request.RawUsername);
             }
+
             if (user == null)
             {
                 return null;
             }
+
             var password = UserController.GetPassword(ref user, string.Empty);
 
             // Try to validate user
@@ -98,6 +100,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 unhashedDigest = string.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
             }
+
             // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return unhashedDigest;
         }
@@ -112,6 +115,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 ha1 += string.Format("{0:x02}", bha1[i]);
             }
+
             return ha1;
         }
 
@@ -125,6 +129,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 numPadChars = 4 - numPadChars;
             }
+
             string newNonce = nonce.PadRight(nonce.Length + numPadChars, '=');
 
             try

@@ -88,6 +88,7 @@ namespace DotNetNuke.Services.Journal
                     this.Body = xNode.InnerText;
                 }
             }
+
             this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
             this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
             this.ObjectKey = Null.SetNullString(dr["ObjectKey"]);
@@ -100,6 +101,7 @@ namespace DotNetNuke.Services.Journal
             {
                 this.ItemData = itemd.FromJson<ItemData>();
             }
+
             this.ContentItemId = Null.SetNullInteger(dr["ContentItemId"]);
             this.JournalAuthor = new JournalEntity(dr["JournalAuthor"].ToString());
             this.JournalOwner = new JournalEntity(dr["JournalOwner"].ToString());
@@ -110,6 +112,7 @@ namespace DotNetNuke.Services.Journal
             this.CommentsHidden = Null.SetNullBoolean(dr["CommentsHidden"]);
             this.SimilarCount = Null.SetNullInteger(dr["SimilarCount"]);
         }
+
         public CacheLevel Cacheability
         {
             get
@@ -129,6 +132,7 @@ namespace DotNetNuke.Services.Journal
             {
                 OutputFormat = format;
             }
+
             propertyName = propertyName.ToLowerInvariant();
             switch (propertyName)
             {

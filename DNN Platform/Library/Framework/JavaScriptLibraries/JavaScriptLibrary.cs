@@ -65,6 +65,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 {
                     break;
                 }
+
                 if (reader.NodeType == XmlNodeType.Whitespace)
                 {
                     continue;
@@ -98,6 +99,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                                     this.PreferredScriptLocation = ScriptLocation.PageHead;
                                     break;
                             }
+
                             break;
                         case "CDNPath":
                             this.CDNPath = reader.ReadElementContentAsString();
@@ -107,6 +109,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             {
                                 reader.ReadElementContentAsString();
                             }
+
                             break;
                     }
                 }

@@ -86,6 +86,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                     }
                 }
             }
+
             if (!string.IsNullOrEmpty(routeNamespace))
             {
                 routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });

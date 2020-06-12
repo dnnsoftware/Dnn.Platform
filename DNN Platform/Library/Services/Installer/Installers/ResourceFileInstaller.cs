@@ -115,6 +115,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     Directory.CreateDirectory(this.PhysicalBasePath);
                 }
+
                 using (var unzip = new ZipInputStream(new FileStream(insFile.TempFileName, FileMode.Open)))
                 using (var manifestStream = new FileStream(Path.Combine(this.PhysicalBasePath, this.Manifest), FileMode.Create, FileAccess.Write))
                 {
@@ -185,6 +186,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 retValue = false;
             }
+
             return retValue;
         }
 
@@ -251,6 +253,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             Util.DeleteFile(entry.Name, this.PhysicalBasePath, this.Log);
                         }
                     }
+
                     entry = unzip.GetNextEntry();
                 }
             }
@@ -278,6 +281,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.Log.AddFailure(ex);
                 }
             }
+
             if (this.DeleteFiles)
             {
                 Util.DeleteFile(this.Manifest, this.PhysicalBasePath, this.Log);

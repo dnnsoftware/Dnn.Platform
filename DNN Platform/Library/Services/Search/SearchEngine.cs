@@ -105,6 +105,7 @@ namespace DotNetNuke.Services.Search
                     scheduleItem.AddLogNote(string.Format("<br/><b>Compacted Index, total time {0}</b>", stopWatch.Elapsed));
                 }
             }
+
             return false;
         }
 
@@ -141,8 +142,10 @@ namespace DotNetNuke.Services.Search
                     searchController.DeleteSearchDocument(document);
                     deletedCount += 1;
                 }
+
                 reader.Close();
             }
+
             this.AddIdexingResults("Deleted Objects", deletedCount);
             dataProvider.DeleteProcessedSearchDeletedItems(cutoffTime);
         }
@@ -201,6 +204,7 @@ namespace DotNetNuke.Services.Search
                 StoreSearchDocuments(searchDocs);
                 indexedCount += searchDocs.Count();
             }
+
             return indexedCount;
         }
 
@@ -265,6 +269,7 @@ namespace DotNetNuke.Services.Search
             {
                 return SqlDateTime.MinValue.Value.AddDays(1);
             }
+
             return startDate;
         }
 
@@ -289,6 +294,7 @@ namespace DotNetNuke.Services.Search
                 var portal = (PortalInfo)portals[index];
                 searchItems.AddRange(indexer.GetSearchIndexItems(portal.PortalID));
             }
+
             return searchItems;
         }
 

@@ -58,6 +58,7 @@ namespace Dnn.PersonaBar.Library.Prompt.Common
             {
                 this._invalid = true;
             }
+
             return match.Groups[1].Value + domainName;
         }
     }

@@ -84,6 +84,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
+
                     if (string.IsNullOrEmpty(_RedirectURL))
                     {
                         // redirect to current page
@@ -271,10 +272,12 @@ namespace DotNetNuke.Modules.Admin.Security
                                 Mail.SendMail(this._user, MessageType.PasswordReminderUserIsNotApproved, this.PortalSettings);
                                 canSend = false;
                             }
+
                             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
                             {
                                 UserController.ResetPasswordToken(this._user);
                             }
+
                             if (canSend)
                             {
                                 if (Mail.SendMail(this._user, MessageType.PasswordReminder, this.PortalSettings) != string.Empty)

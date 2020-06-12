@@ -122,6 +122,7 @@ namespace DotNetNuke.Services.Search.Internals
                         }
                     }
                 }
+
                 return this._writer;
             }
         }
@@ -229,6 +230,7 @@ namespace DotNetNuke.Services.Search.Internals
                         new[] { HighlightPreTag }, new[] { HighlightPostTag });
                     this._fastHighlighter = new FastVectorHighlighter(true, true, fragListBuilder, fragmentBuilder);
                 }
+
                 return this._fastHighlighter;
             }
         }
@@ -322,6 +324,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 s = HttpUtility.HtmlEncode(s).Replace(HighlightPreTag, HtmlPreTag).Replace(HighlightPostTag, HtmlPostTag);
             }
+
             return s;
         }
 
@@ -337,6 +340,7 @@ namespace DotNetNuke.Services.Search.Internals
                 sb.AppendLine(doc.Get(Constants.TitleTag));
                 sb.AppendLine(explanation.ToString());
             }
+
             return sb;
         }
 
@@ -543,6 +547,7 @@ namespace DotNetNuke.Services.Search.Internals
                 {
                     rdr.Dispose();
                 }
+
                 this._oldReaders.Clear();
                 this._reader = null;
             }

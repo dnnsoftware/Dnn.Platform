@@ -577,6 +577,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
                 var urlReplaceWith = $"https://{portalSettings.DefaultPortalAlias}";
                 stringContainingHttp = stringContainingHttp.Replace(urlToReplace, urlReplaceWith);
             }
+
             return stringContainingHttp;
         }
 

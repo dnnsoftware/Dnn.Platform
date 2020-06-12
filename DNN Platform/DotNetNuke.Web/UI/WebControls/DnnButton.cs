@@ -67,6 +67,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     msg = Utilities.GetLocalizedStringFromParent(this.ConfirmMessage, this);
                 }
+
                 // must be done before render
                 this.OnClientClick = Utilities.GetOnClientClickConfirm(this, msg);
             }
@@ -86,6 +87,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return false;
                 }
+
                 return this._Localize;
             }
             set

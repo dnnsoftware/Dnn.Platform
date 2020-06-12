@@ -131,6 +131,7 @@ namespace DotNetNuke.Services.Sitemap
                         {
                             url.Priority = providerPriorityValue;
                         }
+
                         if (url.Priority > 0 && url.Priority >= excludePriority) // #RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
                         {
                             allUrls.Add(url);
@@ -225,6 +226,7 @@ namespace DotNetNuke.Services.Sitemap
                     {
                         Directory.CreateDirectory(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap");
                     }
+
                     var cachedFile = (index > 0) ? string.Format(this.CacheIndexFileNameFormat, index) : this.CacheFileName;
                     sitemapOutput = new StreamWriter(this.PortalSettings.HomeSystemDirectoryMapPath + "Sitemap\\" + cachedFile, false, Encoding.UTF8);
                 }
@@ -306,6 +308,7 @@ namespace DotNetNuke.Services.Sitemap
                         writer.WriteElementString("lastmod", DateTime.Now.ToString("yyyy-MM-dd"));
                         writer.WriteEndElement();
                     }
+
                     writer.WriteEndElement();
                     writer.Close();
                 }
@@ -356,6 +359,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 return isValid;
             }
+
             DateTime lastmod = File.GetLastWriteTime(this.PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + this.CacheFileName);
             if (lastmod.AddDays(cacheDays) < DateTime.Now)
             {
@@ -376,6 +380,7 @@ namespace DotNetNuke.Services.Sitemap
             {
                 return;
             }
+
             // write the cached file to output
             using (var reader = new StreamReader(this.PortalSettings.HomeSystemDirectoryMapPath + "/Sitemap/" + file, Encoding.UTF8))
             {
@@ -400,11 +405,13 @@ namespace DotNetNuke.Services.Sitemap
                 {
                     portalName = PortalController.GetPortalFolder(portalAlias.HTTPAlias);
                 }
+
                 if (!string.IsNullOrEmpty(portalName) && Directory.Exists(serverPath + portalName))
                 {
                     isChild = true;
                 }
             }
+
             return isChild;
         }
 

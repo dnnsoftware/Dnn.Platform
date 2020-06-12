@@ -136,6 +136,7 @@ namespace log4net.Core
                 {
                     throw new LogException("Repository [" + repositoryName + "] is NOT defined.");
                 }
+
                 return rep;
             }
         }

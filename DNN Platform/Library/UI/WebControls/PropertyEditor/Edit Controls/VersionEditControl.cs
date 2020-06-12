@@ -149,6 +149,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.Write(this.Version.ToString(3));
             }
+
             writer.RenderEndTag();
         }
 
@@ -165,6 +166,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
     }

@@ -185,6 +185,7 @@ namespace DotNetNuke.Services.Install
             {
                 strErrorMessage = "InValidEmail";
             }
+
             return strErrorMessage;
         }
 

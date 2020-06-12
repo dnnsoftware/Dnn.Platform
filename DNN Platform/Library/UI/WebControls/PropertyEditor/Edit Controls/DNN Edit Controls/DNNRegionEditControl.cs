@@ -41,6 +41,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._Regions = new DropDownList();
                 }
+
                 return this._Regions;
             }
         }
@@ -54,6 +55,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._Region = new TextBox();
                 }
+
                 return this._Region;
             }
         }
@@ -67,6 +69,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._InitialValue = new HtmlInputHidden();
                 }
+
                 return this._InitialValue;
             }
         }
@@ -80,6 +83,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     strValue = Convert.ToString(this.Value);
                 }
+
                 return strValue;
             }
             set { this.Value = value; }
@@ -125,6 +129,7 @@ namespace DotNetNuke.UI.WebControls
         {
             this.Init += this.DnnRegionControl_Init;
         }
+
         public DNNRegionEditControl(string type)
         {
             this.Init += this.DnnRegionControl_Init;
@@ -194,6 +199,7 @@ namespace DotNetNuke.UI.WebControls
                 this.Value = postedValue;
                 dataChanged = true;
             }
+
             return dataChanged;
         }
 
@@ -219,6 +225,7 @@ namespace DotNetNuke.UI.WebControls
                     this.Regions.Items.Add(new ListItem() { Text = item.Text, Value = item.EntryID.ToString() });
                 }
             }
+
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute("data-name", this.Name);
             writer.AddAttribute("data-list", "Region");

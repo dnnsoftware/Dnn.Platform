@@ -39,6 +39,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                                 {
                                     this.locApi = null;
                                 }
+
                                 break;
                             }
 
@@ -49,16 +50,20 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                                 {
                                     this.locApi = null;
                                 }
+
                                 break;
                             }
                         }
+
 // ReSharper disable EmptyGeneralCatchClause
                         catch
                         {
                         }
+
 // ReSharper restore EmptyGeneralCatchClause
                     }
                 }
+
                 this.haveChecked = true;
             }
 

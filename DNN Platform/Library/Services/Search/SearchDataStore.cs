@@ -65,8 +65,10 @@ namespace DotNetNuke.Services.Search
                     drWords.Close();
                     drWords.Dispose();
                 }
+
                 DataCache.SetCache(strCacheKey, objWords);
             }
+
             return objWords;
         }
 
@@ -127,6 +129,7 @@ namespace DotNetNuke.Services.Search
                     {
                         searchResults.Add(criterion.Criteria, SearchDataStoreController.GetSearchResults(portalId, criterion.Criteria));
                     }
+
                     if (searchResults.ContainsKey(criterion.Criteria))
                     {
                         foreach (SearchResultsInfo result in searchResults[criterion.Criteria])
@@ -164,6 +167,7 @@ namespace DotNetNuke.Services.Search
                     }
                 }
             }
+
             foreach (SearchCriteria criterion in searchWords)
             {
                 var mandatoryResults = new Dictionary<int, bool>();
@@ -186,6 +190,7 @@ namespace DotNetNuke.Services.Search
                         }
                     }
                 }
+
                 foreach (KeyValuePair<int, Dictionary<int, SearchResultsInfo>> kvpResults in dicResults)
                 {
                     // The key of this collection is the SearchItemID,  Check if the value of this collection should be processed

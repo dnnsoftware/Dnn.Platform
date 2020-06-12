@@ -29,6 +29,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     this._portalId = this.PortalSettings.ActiveTab.IsSuperTab ? -1 : this.PortalSettings.PortalId;
                 }
+
                 return this._portalId.Value;
             }
         }

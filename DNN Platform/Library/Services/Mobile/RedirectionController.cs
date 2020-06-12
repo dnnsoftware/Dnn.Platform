@@ -165,6 +165,7 @@ namespace DotNetNuke.Services.Mobile
                         {
                             checkFurther = true;
                         }
+
                             // is child tabs to be included as well
                         else if (redirection.IncludeChildTabs)
                         {
@@ -179,6 +180,7 @@ namespace DotNetNuke.Services.Mobile
                             }
                         }
                     }
+
                         // redirection is based on portal
                     else if (redirection.SourceTabId == Null.NullInteger)
                     {
@@ -191,6 +193,7 @@ namespace DotNetNuke.Services.Mobile
                         {
                             clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
                         }
+
                         // check if client capability matches with this rule
                         if (this.DoesCapabilityMatchWithRule(clientCapability, redirection))
                         {
@@ -292,6 +295,7 @@ namespace DotNetNuke.Services.Mobile
                                 fullSiteUrl = this.GetPortalHomePageUrl(portalSettings);
                             }
                         }
+
                         break;
                     }
                 }
@@ -459,6 +463,7 @@ namespace DotNetNuke.Services.Mobile
                         break;
                     }
                 }
+
                 if (!found)
                 {
                     this.Delete(portalId, r.Id);
@@ -641,6 +646,7 @@ namespace DotNetNuke.Services.Mobile
             {
                 cachedUrls = new SharedDictionary<string, string>();
             }
+
             using (cachedUrls.GetWriteLock())
             {
                 cachedUrls[cacheKey] = url;
@@ -683,6 +689,7 @@ namespace DotNetNuke.Services.Mobile
                         }
                     }
                 }
+
                 if (matchCount > 0 && matchCount == redirection.MatchRules.Count)
                 {
                     match = true;

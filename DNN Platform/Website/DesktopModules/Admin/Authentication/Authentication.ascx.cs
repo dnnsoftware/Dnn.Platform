@@ -92,6 +92,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                     break;
                 }
             }
+
             if (!enabled)
             {
                 // Display warning

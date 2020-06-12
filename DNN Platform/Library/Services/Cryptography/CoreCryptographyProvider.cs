@@ -56,6 +56,7 @@ namespace DotNetNuke.Services.Cryptography
             {
                 value = message;
             }
+
             return value;
         }
 
@@ -107,6 +108,7 @@ namespace DotNetNuke.Services.Cryptography
                     strValue = string.Empty;
                 }
             }
+
             return strValue;
         }
 

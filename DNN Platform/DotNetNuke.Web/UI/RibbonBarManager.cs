@@ -406,16 +406,20 @@ namespace DotNetNuke.Web.UI
                 {
                     return false;
                 }
+
                 if (objtab.Level == 0)
                 {
                     return false;
                 }
+
                 if (tabID == objtab.ParentId)
                 {
                     return true;
                 }
+
                 return Validate_IsCircularReference(portalID, objtab.ParentId);
             }
+
             return false;
         }
 
@@ -447,8 +451,10 @@ namespace DotNetNuke.Web.UI
                         {
                             roleId = role.RoleID;
                         }
+
                         break;
                 }
+
                 if (roleId != int.MinValue &&
                         !tab.TabPermissions.Cast<TabPermissionInfo>().Any(p =>
                                                                             p.RoleID == roleId

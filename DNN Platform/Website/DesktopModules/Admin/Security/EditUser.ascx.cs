@@ -87,6 +87,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
+
                     if (string.IsNullOrEmpty(_RedirectURL))
                     {
                         // redirect to current page
@@ -97,6 +98,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     _RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
+
                 return _RedirectURL;
             }
         }
@@ -129,14 +131,17 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     filterString += "&";
                 }
+
                 if (!string.IsNullOrEmpty(filterProperty))
                 {
                     filterString += filterProperty + "&";
                 }
+
                 if (!string.IsNullOrEmpty(page))
                 {
                     filterString += page;
                 }
+
                 return filterString;
             }
         }
@@ -154,6 +159,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     _PageNo = Convert.ToInt32(this.ViewState["PageNo"]);
                 }
+
                 return _PageNo;
             }
             set
@@ -185,6 +191,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         this.PageNo = 0;
                     }
                 }
+
                 this.userForm.DataSource = this.User;
 
                 // hide username field in UseEmailAsUserName mode
@@ -273,6 +280,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.DisableForm();
                 return false;
             }
+
             if (this.IsEdit)
             {
                 // Check if user has admin rights
@@ -306,6 +314,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                 }
             }
+
             return true;
         }
 
@@ -441,6 +450,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 success = UserController.DeleteUser(ref user, true, false);
             }
+
             if (!success)
             {
                 this.AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
@@ -460,6 +470,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     // Clear the Portal Cache
                     DataCache.ClearPortalCache(this.UserPortalID, true);
                 }
+
                 try
                 {
                     // Update DisplayName to conform to Format
@@ -521,6 +532,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             PasswordUpdateStatus status = e.UpdateStatus;
             if (status == PasswordUpdateStatus.Success)
             {
@@ -544,6 +556,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             PasswordUpdateStatus status = e.UpdateStatus;
 
             if (status == PasswordUpdateStatus.Success)
@@ -563,6 +576,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         Mail.SendMail(this.User, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
                         PortalSecurity.Instance.SignIn(this.User, false);
                     }
+
                     this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 }
                 catch (Exception ex)
@@ -589,6 +603,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             if (this.IsUser)
             {
                 // Notify the user that his/her profile was updated
@@ -625,6 +640,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 message = string.Format(Localization.GetString("UserSubscribed", this.LocalResourceFile), e.RoleName);
             }
+
             this.AddLocalizedModuleMessage(message, ModuleMessage.ModuleMessageType.GreenSuccess, true);
         }
     }

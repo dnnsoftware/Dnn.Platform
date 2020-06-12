@@ -37,6 +37,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
                 var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);
                 expiry = new TimeSpan(0, 0, Convert.ToInt32(dictionary["expires_in"]));
             }
+
             return expiry;
         }
 
@@ -48,6 +49,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
                 var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);
                 authToken = Convert.ToString(dictionary["access_token"]);
             }
+
             return authToken;
         }
     }

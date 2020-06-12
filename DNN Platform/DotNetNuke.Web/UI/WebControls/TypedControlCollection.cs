@@ -25,6 +25,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 throw new InvalidOperationException("Not supported");
             }
+
             base.Add(child);
         }
 
@@ -34,6 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 throw new InvalidOperationException("Not supported");
             }
+
             base.AddAt(index, child);
         }
     }

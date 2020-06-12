@@ -256,6 +256,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 File.Delete(sFile);
             }
+
             try
             {
                 img.Save(sFile, myImageCodecInfo, myEncoderParameters);
@@ -341,6 +342,7 @@ namespace DotNetNuke.Common.Utilities
                         return encoders[i];
                     }
                 }
+
                 return null;
             }
             catch

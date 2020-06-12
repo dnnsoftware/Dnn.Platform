@@ -73,6 +73,7 @@ namespace DotNetNuke.Web.Razor
                     return webpageType.BaseType.GetGenericArguments()[0];
                 }
             }
+
             return null;
         }
 
@@ -123,6 +124,7 @@ namespace DotNetNuke.Web.Razor
             {
                 objectValue = RuntimeHelpers.GetObjectValue(Activator.CreateInstance(compiledType));
             }
+
             return objectValue;
         }
 
@@ -142,11 +144,13 @@ namespace DotNetNuke.Web.Razor
                 {
                     throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage found at '{0}' was not created.", new object[] { this.RazorScriptFile }));
                 }
+
                 this.Webpage = objectValue as DotNetNukeWebPage;
                 if (this.Webpage == null)
                 {
                     throw new InvalidOperationException(string.Format(CultureInfo.CurrentCulture, "The webpage at '{0}' must derive from DotNetNukeWebPage.", new object[] { this.RazorScriptFile }));
                 }
+
                 this.Webpage.Context = this.HttpContext;
                 this.Webpage.VirtualPath = VirtualPathUtility.GetDirectory(this.RazorScriptFile);
                 this.InitHelpers(this.Webpage);

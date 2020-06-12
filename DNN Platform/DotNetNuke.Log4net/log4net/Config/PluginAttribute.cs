@@ -169,6 +169,7 @@ namespace log4net.Config
             {
                 return "PluginAttribute[Type=" + this.m_type.FullName + "]";
             }
+
             return "PluginAttribute[Type=" + this.m_typeName + "]";
         }
 

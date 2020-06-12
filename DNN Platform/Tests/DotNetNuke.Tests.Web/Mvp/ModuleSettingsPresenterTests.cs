@@ -153,6 +153,7 @@ namespace DotNetNuke.Tests.Web.Mvp
             {
                 context.Configuration.ModuleSettings.Add(string.Format(_moduleSettingName, i), string.Format(_moduleSettingValue, i));
             }
+
             for (int i = 1; i <= _tabModuleSettingCount; i++)
             {
                 context.Configuration.TabModuleSettings.Add(string.Format(_tabModuleSettingName, i), string.Format(_tabModuleSettingValue, i));

@@ -110,6 +110,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 {
                     this._displayDate = DateUtils.CalculateDateForDisplay(this.CreatedOnDate);
                 }
+
                 return this._displayDate;
             }
         }

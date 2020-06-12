@@ -83,6 +83,7 @@ namespace DotNetNuke.Security.Permissions
                         break;
                     }
                 }
+
                 if (!isMatch)
                 {
                     id = this.Add(value);
@@ -114,6 +115,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return false;
             }
+
             this.InnerList.Sort(new CompareDesktopModulePermissions());
             objDesktopModulePermissionCollection.InnerList.Sort(new CompareDesktopModulePermissions());
             for (int i = 0; i <= this.Count - 1; i++)
@@ -123,6 +125,7 @@ namespace DotNetNuke.Security.Permissions
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -165,6 +168,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 list.Add(permission);
             }
+
             return list;
         }
 

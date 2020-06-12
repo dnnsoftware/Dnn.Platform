@@ -154,10 +154,12 @@ namespace DotNetNuke.Services.Installer.Installers
                         order = int.Parse(unInstallOrder);
                     }
                 }
+
                 if (this.Package.InstallerInfo != null)
                 {
                     this.Log.AddInfo(Util.DNN_ReadingComponent + " - " + type);
                 }
+
                 ComponentInstallerBase installer = InstallerFactory.GetInstaller(componentNav, this.Package);
                 if (installer == null)
                 {
@@ -179,6 +181,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 // Load from file
                 strText = FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
             }
+
             return strText;
         }
 
@@ -213,6 +216,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddFailure(Util.INSTALL_Aborted);
             }
+
             this.Package.InstallerInfo.PackageID = this.Package.PackageID;
         }
 
@@ -267,6 +271,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Log.AddFailure(Util.INSTALL_Aborted + " - " + this.Package.Name + ":" + ex.Message);
             }
+
             if (isCompleted)
             {
                 // All components successfully installed so Commit any pending changes
@@ -297,6 +302,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Package.PortalID = this.Package.InstallerInfo.PortalID;
             }
+
             this.CheckSecurity();
             if (!this.IsValid)
             {
@@ -312,6 +318,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.IsValid = false;
             }
+
             if (this.IsValid)
             {
                 this.Package.Version = new Version(strVersion);
@@ -429,6 +436,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
             }
+
             // Get Author
             XPathNavigator authorNav = manifestNav.SelectSingleNode("owner");
             if (authorNav != null)
@@ -454,6 +462,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.Package.License = this.ReadTextFromFile(licenseSrc);
                 }
             }
+
             if (string.IsNullOrEmpty(this.Package.License))
             {
                 // Legacy Packages have no license
@@ -475,6 +484,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.Package.ReleaseNotes = this.ReadTextFromFile(relNotesSrc);
                 }
             }
+
             if (string.IsNullOrEmpty(this.Package.ReleaseNotes))
             {
                 // Legacy Packages have no Release Notes
@@ -551,6 +561,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     fileInstaller.DeleteFiles = this.DeleteFiles;
                 }
+
                 this.Log.ResetFlags();
                 this.Log.AddInfo(Util.UNINSTALL_StartComp + " - " + compInstaller.Type);
                 compInstaller.UnInstall();

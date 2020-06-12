@@ -60,6 +60,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             {
                 DotNetNuke.Services.Exceptions.Exceptions.ProcessHttpException(request);
             }
+
             try
             {
                 // fix for ASP.NET canonicalization issues http://support.microsoft.com/?kbid=887459
@@ -178,10 +179,12 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 {
                                     strURL = "http://" + portalAliasInfo.HTTPAlias.Replace("*.", string.Empty);
                                 }
+
                                 if (strURL.IndexOf(domainName, StringComparison.InvariantCultureIgnoreCase) == -1)
                                 {
                                     strURL += app.Request.Url.PathAndQuery;
                                 }
+
                                 response.Redirect(strURL, true);
                             }
                         }
@@ -193,6 +196,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 {
                     portalAlias = domainName;
                 }
+
                 // using the DomainName above will find that alias that is the domainname portion of the Url
                 // ie. dotnetnuke.com will be found even if zzz.dotnetnuke.com was entered on the Url
                 portalAliasInfo = PortalAliasController.Instance.GetPortalAlias(portalAlias);
@@ -232,6 +236,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 HttpContext.Current.Response.Clear();
                 HttpContext.Current.Server.Transfer(strURL);
             }
+
             if (portalId != -1)
             {
                 // load the PortalSettings into current context
@@ -298,6 +303,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             strURL = this.FormatDomain(strURL, portalSettings.STDURL, portalSettings.SSLURL);
                         }
                     }
+
                     // if SSL is enforced
                     if (portalSettings.SSLEnforced)
                     {
@@ -368,6 +374,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     url = url.Replace(replaceDomain, withDomain);
                 }
             }
+
             return url;
         }
 
@@ -480,6 +487,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                                 parameterValue = splitParameters[parameterIndex].Trim();
                                             }
                                         }
+
                                         // add the parameter value
                                         if (parameterValue.Length > 0)
                                         {
@@ -490,10 +498,12 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             }
                         }
                     }
+
                     matchIndex = ruleIndex;
                     break; // exit as soon as it processes the first match
                 }
             }
+
             if (!string.IsNullOrEmpty(strQueryString))
             {
                 // add querystring parameters back to SendTo
@@ -507,6 +517,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     {
                         parameterName = parameterName.Substring(0, parameterName.IndexOf("=", StringComparison.Ordinal));
                     }
+
                     // check if parameter already exists
                     if (sendTo.IndexOf("?" + parameterName + "=", StringComparison.InvariantCultureIgnoreCase) == -1 &&
                         sendTo.IndexOf("&" + parameterName + "=", StringComparison.InvariantCultureIgnoreCase) == -1)
@@ -559,6 +570,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             tabPath = url.Remove(0, myAlias.Length);
                         }
+
                         // Default Page has been Requested
                         if (tabPath == "/" + Globals.glbDefaultPage.ToLowerInvariant())
                         {
@@ -603,6 +615,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                 portalID,
                                 tabPath.Replace("/", "//").Replace(".aspx", string.Empty), string.Empty);
                         }
+
                         // End of patch
                         if (tabID != Null.NullInteger)
                         {
@@ -611,13 +624,16 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 sendToUrl = sendToUrl + "&language=" + cultureCode;
                             }
+
                             if (!string.IsNullOrEmpty(app.Request.Url.Query))
                             {
                                 sendToUrl = sendToUrl + "&" + app.Request.Url.Query.TrimStart('?');
                             }
+
                             RewriterUtils.RewriteUrl(app.Context, sendToUrl);
                             return;
                         }
+
                         tabPath = tabPath.ToLowerInvariant();
                         if (tabPath.IndexOf('?') != -1)
                         {
@@ -633,6 +649,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             requestQuery = PortalIdRegex.Replace(requestQuery, string.Empty);
                             requestQuery = requestQuery.TrimStart('?', '&');
                         }
+
                         if (tabPath == "/login.aspx")
                         {
                             if (portal.LoginTabId > Null.NullInteger && Globals.ValidateLoginTabID(portal.LoginTabId))
@@ -670,8 +687,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                                              portal.HomeTabId + "&portalid=" + portalID + "&ctl=login");
                                 }
                             }
+
                             return;
                         }
+
                         if (tabPath == "/register.aspx")
                         {
                             if (portal.RegisterTabId > Null.NullInteger)
@@ -711,8 +730,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                                              "&ctl=Register");
                                 }
                             }
+
                             return;
                         }
+
                         if (tabPath == "/terms.aspx")
                         {
                             if (!string.IsNullOrEmpty(requestQuery))
@@ -729,8 +750,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                     "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
                                                          "&portalid=" + portalID + "&ctl=Terms");
                             }
+
                             return;
                         }
+
                         if (tabPath == "/privacy.aspx")
                         {
                             if (!string.IsNullOrEmpty(requestQuery))
@@ -747,8 +770,10 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                     "~/" + Globals.glbDefaultPage + "?TabID=" + portal.HomeTabId +
                                                          "&portalid=" + portalID + "&ctl=Privacy");
                             }
+
                             return;
                         }
+
                         tabPath = tabPath.Replace("/", "//");
                         tabPath = tabPath.Replace(".aspx", string.Empty);
                         TabCollection objTabs = TabController.Instance.GetTabsByPortal(tabPath.StartsWith("//host") ? Null.NullInteger : portalID);
@@ -769,6 +794,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                         app.Context,
                                         "~/" + Globals.glbDefaultPage + "?TabID=" + kvp.Value.TabID);
                                 }
+
                                 return;
                             }
                         }

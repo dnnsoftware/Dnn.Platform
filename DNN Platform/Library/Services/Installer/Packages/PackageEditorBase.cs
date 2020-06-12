@@ -46,6 +46,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 {
                     this._Package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.PackageID == this.PackageID);
                 }
+
                 return this._Package;
             }
         }

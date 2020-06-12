@@ -83,6 +83,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 cultureCode = Thread.CurrentThread.CurrentCulture.Name;
             }
+
             var synonyms = SearchHelper.Instance.GetSynonyms(portalId, cultureCode, this._termAtt.Term).ToArray();
             if (!synonyms.Any())
             {
@@ -94,6 +95,7 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 this._synonymStack.Push(synonym.ToLower(cultureInfo));
             }
+
             return true;
         }
     }

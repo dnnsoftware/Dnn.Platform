@@ -417,6 +417,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             Constants.USER_ValidId,
                                             RelationshipStatus.None);
             }
+
             mockDataService.Setup(md => md.GetRelationshipsByUserId(Constants.USER_ValidId)).Returns(this.dtRelationships.CreateDataReader());
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
@@ -459,6 +460,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             Constants.USER_Null,
                                             RelationshipStatus.None);
             }
+
             mockDataService.Setup(md => md.GetRelationshipsByPortalId(Constants.PORTAL_Zero)).Returns(this.dtRelationships.CreateDataReader());
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
@@ -487,6 +489,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                                             Constants.USER_Null,
                                             RelationshipStatus.None);
             }
+
             mockDataService.Setup(md => md.GetRelationshipsByPortalId(Constants.PORTAL_Zero)).Returns(this.dtRelationships.CreateDataReader());
             var relationshipController = this.CreateRelationshipController(mockDataService);
 
@@ -693,6 +696,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Social
                 this.dtUserRelationships.Rows.Add(i, Constants.USER_ValidId, Constants.USER_TenId,
                                                 Constants.SOCIAL_FriendRelationshipID, RelationshipStatus.None);
             }
+
             mockDataService.Setup(md => md.GetUserRelationships(Constants.USER_ValidId)).Returns(this.dtUserRelationships.CreateDataReader());
             var relationshipController = this.CreateRelationshipController(mockDataService);
 

@@ -65,12 +65,14 @@ namespace DotNetNuke.Entities.Urls
                 key = "DNN_" + key; // add on the DNN_ prefix
                 keys.Add(key);
             }
+
             // get the portals list dependency
             var portalKeys = new List<string>();
             if (portalKeys.Count > 0)
             {
                 keys.AddRange(portalKeys);
             }
+
             var tabsDependency = new CacheDependency(null, keys.ToArray());
             return tabsDependency;
         }
@@ -100,6 +102,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 absoluteExpiration = DateTime.Now.Add(settings.CacheTime);
             }
+
             // 857 : use cache dependency for portal alias cache
             if (settings != null)
             {
@@ -145,6 +148,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 filePath = rootPath + fileName; // just the pathname
             }
+
             if (File.Exists(filePath))
             {
                 result = filePath;
@@ -171,6 +175,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
+
                 if (string.IsNullOrEmpty(result))
                 {
                     // nothing matching found : now just looking for the root path
@@ -182,6 +187,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return result;
         }
 
@@ -194,6 +200,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 result = new List<int>(tabIdsToAlwaysCall);
             }
+
             return result;
         }
 
@@ -234,10 +241,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 urlDict = (SharedDictionary<int, SharedDictionary<string, string>>)rawDict;
             }
+
             if (rawPortals != null)
             {
                 urlPortals = (ConcurrentBag<int>)rawPortals;
             }
+
             if (rawCustomAliasTabs != null)
             {
                 customAliasTabs = (SharedDictionary<string, string>)rawCustomAliasTabs;
@@ -260,6 +269,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 result = new List<int>(tabIdsForPortal);
             }
+
             return result;
         }
 
@@ -289,6 +299,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             var redirectActions = (Dictionary<int, List<ParameterRedirectAction>>)DataCache.GetCache(redirectActionKey);
             if (redirectActions == null)
             {
@@ -302,6 +313,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         redirectActions.LoadFromXmlFile(fileName, portalId, portalSpecific, ref messages);
                     }
+
                     CacheDependency fileDependency = null;
                     if (File.Exists(fileName))
                     {
@@ -325,6 +337,7 @@ namespace DotNetNuke.Entities.Urls
                     messages.Add("Exception: " + ex.Message + "\n" + ex.StackTrace);
                 }
             }
+
             return redirectActions;
         }
 
@@ -336,6 +349,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             if (replaceActions == null)
             {
                 replaceActions = new Dictionary<int, List<ParameterReplaceAction>>();
@@ -347,6 +361,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         replaceActions.LoadFromXmlFile(fileName, portalId, portalSpecific, ref messages);
                     }
+
                     CacheDependency cacheDependency = null;
                     if (replaceActions.Count > 0)
                     {
@@ -363,6 +378,7 @@ namespace DotNetNuke.Entities.Urls
                     messages.Add("Exception: " + ex.Message + "\n" + ex.StackTrace);
                 }
             }
+
             return replaceActions;
         }
 
@@ -373,6 +389,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 messages = new List<string>();
             }
+
             var rewriteActions = (Dictionary<int, SharedList<ParameterRewriteAction>>)DataCache.GetCache(rewriteActionKey);
             if (rewriteActions == null)
             {
@@ -386,6 +403,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         rewriteActions.LoadFromXmlFile(filename, portalId, portalSpecific, ref messages);
                     }
+
                     CacheDependency fileDependency = null;
                     if (File.Exists(filename))
                     {
@@ -400,6 +418,7 @@ namespace DotNetNuke.Entities.Urls
                     messages.Add("Exception: " + ex.Message + "\n" + ex.StackTrace);
                 }
             }
+
             return rewriteActions;
         }
 
@@ -457,9 +476,11 @@ namespace DotNetNuke.Entities.Urls
                     {
                         allCachedProviders = new List<ExtensionUrlProvider>();
                     }
+
                     allCachedProviders.AddRange(cachedTabProviders);
                 }
             }
+
             return allCachedProviders;
         }
 
@@ -529,12 +550,14 @@ namespace DotNetNuke.Entities.Urls
                 {
                     log.AddProperty("Item Count", urlDict.Values.Count.ToString());
                 }
+
                 log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 log.AddProperty("Item added to cache", "Url Portals object added to cache.  Key:" + UrlPortalsKey + "  Items: " + urlPortals.Count.ToString());
                 using (customAliasTabs.GetReadLock())
                 {
                     log.AddProperty("Item added to cache", "Custom Alias Tabs added to cache.  Key:" + CustomAliasTabsKey + " Items: " + customAliasTabs.Count.ToString());
                 }
+
                 LogController.Instance.AddLog(log);
             }
         }
@@ -572,6 +595,7 @@ namespace DotNetNuke.Entities.Urls
                         providersWithTabsStr.Add("AllTabs");
                     }
                 }
+
                 if (provider.AlwaysUsesDnnPagePath(portalId) == false)
                 {
                     if (providersWithTabs.Contains(RewriteController.SiteRootRewrite) == false)
@@ -580,6 +604,7 @@ namespace DotNetNuke.Entities.Urls
                         providersWithTabsStr.Add("NoPath");
                     }
                 }
+
                 foreach (int providerTabId in provider.ProviderConfig.TabIds)
                 {
                     if (providersWithTabs.Contains(providerTabId) == false)
@@ -639,8 +664,10 @@ namespace DotNetNuke.Entities.Urls
                             tabIdStr.Add(tabId.ToString());
                         }
                     }
+
                     providerCount++;
                 }
+
                 // store the list of providers where the provider might be called with no valid TabId, because
                 // the provider allows for Urls with no DNN Page path, which means the TabId can't be identified
                 // by the Url Rewriter.  This identifies the Provider as using a 'siteRootRewrite'
@@ -663,11 +690,13 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             // now add the two collections to the cache
             if (allTabsProviders.Count > 0)
             {
                 SetPageCache(allTabsKey, allTabsProviders, settings);
             }
+
             if (tabsProviders.Count > 0)
             {
                 foreach (int tabId in tabsProviders.Keys)
@@ -721,6 +750,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     log.AddProperty("Item Count", tabDictionary.Count.ToString());
                 }
+
                 log.AddProperty("Thread Id", Thread.CurrentThread.ManagedThreadId.ToString());
                 LogController.Instance.AddLog(log);
             }
@@ -798,6 +828,7 @@ namespace DotNetNuke.Entities.Urls
                             string cultureCode = PortalController.GetActivePortalLanguage(portalId);
                             pi = PortalController.Instance.GetPortal(portalId, cultureCode);
                         }
+
                         if (pi != null)
                         {
                             // Home page redirect loop when using default language not en-US and first request with secondary language
@@ -816,6 +847,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                             }
                         }
+
                         if (pi != null)
                         {
                             // add to dictionary and re-store in cache
@@ -823,6 +855,7 @@ namespace DotNetNuke.Entities.Urls
                             DataCache.SetCache(PortalsKey, portals); // store back in dictionary
                         }
                     }
+
 // ReSharper disable EmptyGeneralCatchClause
                     catch
 // ReSharper restore EmptyGeneralCatchClause
@@ -838,6 +871,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 throw new NullReferenceException("No Portal Found for portalid : " + portalId.ToString());
             }
+
             return pi;
         }
 
@@ -866,6 +900,7 @@ namespace DotNetNuke.Entities.Urls
                             // do nothing, this means the web.config file was overwritten, and thus the cache
                             // was cleared.
                         }
+
                         if (v != null && v.GetType() == typeof(SharedDictionary<string, string>))
                         {
                             count = "Item Count: " + ((SharedDictionary<string, string>)v).Values.Count.ToString();
@@ -900,12 +935,14 @@ namespace DotNetNuke.Entities.Urls
                         {
                             count = "N/a";
                         }
+
                         break;
                     default:
                         itemName = "Url Rewriter Cache Item";
                         count = string.Empty;
                         break;
                 }
+
                 // add log values
                 log.AddProperty("Url Rewriting Caching Message", itemName + " Cache item Removed.");
                 log.AddProperty("Reason", cacheItemRemovedReason.ToString());
@@ -920,6 +957,7 @@ namespace DotNetNuke.Entities.Urls
                         i++;
                     }
                 }
+
                 // System.Diagnostics.Trace.Assert(k != null, "k == " + k);
                 LogController.Instance.AddLog(log);
             }

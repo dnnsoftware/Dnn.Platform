@@ -97,6 +97,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 {
                     filePath = filePath.Substring(1);
                 }
+
                 if (!file.Extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(this._SubFolder))
@@ -123,6 +124,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 skinFileWriter = new ContainerComponentWriter(this.SkinPackage.SkinName, this.BasePath, this.Files, this.Package);
             }
+
             skinFileWriter.WriteManifest(writer);
         }
     }

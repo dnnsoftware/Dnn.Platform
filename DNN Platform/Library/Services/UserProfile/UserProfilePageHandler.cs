@@ -114,6 +114,7 @@ namespace DotNetNuke.Services.UserProfile
                 // The user cannot be found (potential DOS)
                 Exceptions.Exceptions.ProcessHttpException();
             }
+
             return _UserId;
         }
     }

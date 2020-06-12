@@ -48,11 +48,13 @@ namespace DotNetNuke.Tests.Urls
                                 {
                                     name += testPrefix + "_";
                                 }
+
                                 name += fields[0];
 
                                 testData.Add(new TestCaseData(fieldList).SetName(name));
                             });
                         }
+
             // ReSharper disable RedundantCatchClause
             #pragma warning disable 168
             catch (Exception exc)
@@ -60,6 +62,7 @@ namespace DotNetNuke.Tests.Urls
             {
                 throw;
             }
+
             // ReSharper restore RedundantCatchClause
         }
 

@@ -35,6 +35,7 @@ namespace DotNetNuke.Tests.Web.Mvc
 
             DictionaryAssert.ContainsEntries(expectedViewData, viewResult.ViewData);
         }
+
         private static TCast AssertCast<TCast>(this ActionResult result)
             where TCast : class
         {

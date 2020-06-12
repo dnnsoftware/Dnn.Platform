@@ -21,6 +21,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 this.MaxAliasDepth = aliasPathDepth;
             }
+
             if (aliasPathDepth < this.MinAliasDepth)
             {
                 this.MinAliasDepth = aliasPathDepth;
@@ -33,6 +34,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 this.MaxTabPathDepth = tabPathDepth;
             }
+
             if (tabPathDepth < this.MinTabPathDepth)
             {
                 this.MinTabPathDepth = tabPathDepth;

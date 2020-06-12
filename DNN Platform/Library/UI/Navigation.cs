@@ -109,6 +109,7 @@ namespace DotNetNuke.UI
                                     node.ClickAction = eClickAction.PostBack;
                                 }
                             }
+
                             node.Image = action.Icon;
                             if (action.HasChildren()) // if action has children then call function recursively
                             {
@@ -152,10 +153,12 @@ namespace DotNetNuke.UI
                         objNode.Selected = true;
                     }
                 }
+
                 if (objTab.DisableLink)
                 {
                     objNode.Enabled = false;
                 }
+
                 objNode.ID = objTab.TabID.ToString();
                 objNode.Key = objNode.ID;
                 objNode.Text = objTab.LocalizedTabName;
@@ -175,6 +178,7 @@ namespace DotNetNuke.UI
                         objNode.ToolTip = objTab.Description;
                         break;
                 }
+
                 bool newWindow = false;
                 if (objTab.TabSettings["LinkNewWindow"] != null && bool.TryParse((string)objTab.TabSettings["LinkNewWindow"], out newWindow) && newWindow)
                 {
@@ -203,6 +207,7 @@ namespace DotNetNuke.UI
             {
                 return false;
             }
+
             return true;
         }
 
@@ -273,6 +278,7 @@ namespace DotNetNuke.UI
                     return false;
                 }
             }
+
             return true;
         }
 
@@ -301,6 +307,7 @@ namespace DotNetNuke.UI
                 {
                     objParentNode = objRootNode;
                 }
+
                 objParentNodes = objParentNode.DNNNodes;
                 if (objTab.TabID == intStartTabId)
                 {
@@ -317,6 +324,7 @@ namespace DotNetNuke.UI
                             }
                         }
                     }
+
                     if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) != 0)
                     {
                         // if we are including our self (starting tab) then add
@@ -445,6 +453,7 @@ namespace DotNetNuke.UI
                     AddChildActions(objActionRoot, objRoot, objRoot.ParentNode, objActionControl, intDepth);
                 }
             }
+
             return objCol;
         }
 
@@ -469,6 +478,7 @@ namespace DotNetNuke.UI
             {
                 AddChildActions(objActionRoot, objRootNode, objRootNode, objActionControl, intDepth);
             }
+
             return objCol;
         }
 
@@ -559,6 +569,7 @@ namespace DotNetNuke.UI
                 objBreadCrumbs.Add(tabInfo.TabID, 1);
                 intLastBreadCrumbId = tabInfo.TabID;
             }
+
             var portalTabs = TabController.GetTabsBySortOrder(objPortalSettings.PortalId, objPortalSettings.CultureCode, true);
             var hostTabs = TabController.GetTabsBySortOrder(Null.NullInteger, Localization.SystemLocale, true);
 

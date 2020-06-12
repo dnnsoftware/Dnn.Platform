@@ -82,6 +82,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessNodes(objNode);
             }
+
             this.Control.Bind(objNodes);
 
             this.Visible = this.DisplayControl(objNodes);
@@ -93,6 +94,7 @@ namespace DotNetNuke.UI.Containers
             {
                 ClientAPI.RegisterClientVariable(this.Page, "__dnn_CSAction_" + this.Control.NavigationControl.ClientID + "_" + objParent.ID, objParent.JSFunction, true);
             }
+
             objParent.ClickAction = eClickAction.None; // since GO button is handling actions dont allow selected index change fire postback
 
             foreach (DNNNode objNode in objParent.DNNNodes)

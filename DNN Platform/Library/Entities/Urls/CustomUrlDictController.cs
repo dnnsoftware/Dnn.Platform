@@ -41,6 +41,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 existingTabs = new SharedDictionary<int, SharedDictionary<string, string>>();
             }
+
             if (customAliasTabs == null)
             {
                 customAliasTabs = new SharedDictionary<string, string>();
@@ -78,6 +79,7 @@ namespace DotNetNuke.Entities.Urls
                                 url = customHttpAlias + "::" + url;
                             }
                         }
+
                         string cultureKey = redirect.CultureCode.ToLowerInvariant();
                         var locales = LocaleController.Instance.GetLocales(portalId).Values;
                         if (string.IsNullOrEmpty(cultureKey))
@@ -95,6 +97,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
             }
+
             return existingTabs;
         }
 
@@ -110,6 +113,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         entry.Add(cultureKey, url);
                     }
+
                     // 871 : use lower case culture code as key
                     existingTabs.Add(tab.TabID, entry);
                 }
@@ -195,6 +199,7 @@ namespace DotNetNuke.Entities.Urls
                     cc.StoreFriendlyUrlIndexInCache(urlDict, urlPortals, customAliasForTabs, settings, reason);
                 }
             }
+
             return urlDict;
         }
 

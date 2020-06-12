@@ -21,6 +21,7 @@ namespace Dnn.ExportImport.Components.Dto
         {
             this.SummaryItems = new SummaryList();
         }
+
         /// <summary>
         /// Does this import/export includes the properties definitions or not.
         /// </summary>
@@ -103,6 +104,7 @@ namespace Dnn.ExportImport.Components.Dto
                 summaryItem.ConvertToLocal(userInfo);
                 tempSummaryItems.Add(summaryItem);
             }
+
             this.SummaryItems = tempSummaryItems;
         }
     }

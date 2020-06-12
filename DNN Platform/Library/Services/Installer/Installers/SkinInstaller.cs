@@ -72,6 +72,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     _PhysicalBasePath += "\\";
                 }
+
                 return _PhysicalBasePath.Replace("/", "\\");
             }
         }
@@ -95,6 +96,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     _RootPath = PortalController.Instance.GetCurrentPortalSettings().HomeSystemDirectoryMapPath;
                 }
+
                 return _RootPath;
             }
         }
@@ -185,6 +187,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     SkinController.DeleteSkinPackage(skinPackage);
                 }
+
                 this.Log.AddInfo(string.Format(Util.SKIN_UnRegistered, skinPackage.SkinName));
             }
             catch (Exception ex)
@@ -212,6 +215,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     {
                         this.SkinFiles.Add(this.PhysicalBasePath + file.FullName);
                     }
+
                     break;
             }
 
@@ -287,6 +291,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         this.SkinPackage.PackageID = this.TempSkinPackage.PackageID;
                     }
                 }
+
                 this.SkinPackage.SkinType = this.SkinType;
                 if (bAdd)
                 {
@@ -298,6 +303,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     // Update skin package
                     SkinController.UpdateSkinPackage(this.SkinPackage);
                 }
+
                 this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.SkinPackage.SkinName));
 
                 // install (copy the files) by calling the base class
@@ -326,13 +332,16 @@ namespace DotNetNuke.Services.Installer.Installers
                                 break;
                         }
                     }
+
                     Array arrMessage = strMessage.Split(new[] { "<br />" }, StringSplitOptions.None);
                     foreach (string strRow in arrMessage)
                     {
                         this.Log.AddInfo(HtmlUtils.StripTags(strRow, true));
                     }
+
                     this.Log.EndJob(Util.SKIN_EndProcessing);
                 }
+
                 this.Completed = true;
             }
             catch (Exception ex)

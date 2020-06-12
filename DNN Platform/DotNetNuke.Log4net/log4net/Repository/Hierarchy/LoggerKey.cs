@@ -118,6 +118,7 @@ namespace log4net.Repository.Hierarchy
                 return ((object)this.m_name) == ((object)objKey.m_name);
 #endif
             }
+
             return false;
         }
 

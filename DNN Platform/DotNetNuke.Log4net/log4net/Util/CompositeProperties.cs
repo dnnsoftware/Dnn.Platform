@@ -88,6 +88,7 @@ namespace log4net.Util
                         return cur[key];
                     }
                 }
+
                 return null;
             }
         }
@@ -134,6 +135,7 @@ namespace log4net.Util
                     }
                 }
             }
+
             return this.m_flattened;
         }
     }

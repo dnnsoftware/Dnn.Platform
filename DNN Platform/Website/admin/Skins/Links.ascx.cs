@@ -90,6 +90,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 strCssClass = "SkinObject";
             }
+
             string strSeparator = string.Empty;
             if (!string.IsNullOrEmpty(this.Separator))
             {
@@ -117,6 +118,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 strLinks = this.BuildLinks(string.Empty, strSeparator, strCssClass);
             }
+
             this.lblLinks.Text = strLinks;
         }
 
@@ -131,10 +133,12 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 sbLinks.Append(this.ProcessLink(this.ProcessTab(objTab, strLevel, strCssClass), sbLinks.ToString().Length));
             }
+
             foreach (TabInfo objTab in hostTabs)
             {
                 sbLinks.Append(this.ProcessLink(this.ProcessTab(objTab, strLevel, strCssClass), sbLinks.ToString().Length));
             }
+
             return sbLinks.ToString();
         }
 
@@ -153,27 +157,32 @@ namespace DotNetNuke.UI.Skins.Controls
                                 return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                             }
                         }
+
                         break;
                     case "child": // Render the current tabs child tabs
                         if (objTab.ParentId == this.PortalSettings.ActiveTab.TabID)
                         {
                             return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
+
                         break;
                     case "parent": // Render the current tabs parenttab
                         if (objTab.TabID == this.PortalSettings.ActiveTab.ParentId)
                         {
                             return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
+
                         break;
                     case "root": // Render Root tabs
                         if (objTab.Level == 0)
                         {
                             return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
+
                         break;
                 }
             }
+
             return string.Empty;
         }
 
@@ -184,6 +193,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 return string.Empty;
             }
+
             if (this.Alignment == "vertical")
             {
                 sLink = string.Concat("<div>", this.Separator, sLink, "</div>");
@@ -193,6 +203,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 // If not vertical, then render the separator
                 sLink = string.Concat(this.Separator, sLink);
             }
+
             return sLink;
         }
 

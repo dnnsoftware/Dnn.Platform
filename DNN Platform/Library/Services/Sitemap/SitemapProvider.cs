@@ -49,6 +49,7 @@ namespace DotNetNuke.Services.Sitemap
                     // stored as an integer (pr * 100) to prevent from translating errors with the decimal point
                     value = float.Parse(PortalController.GetPortalSetting(this.Name + "Value", PortalController.Instance.GetCurrentPortalSettings().PortalId, "0.5"), NumberFormatInfo.InvariantInfo);
                 }
+
                 return value;
             }
 

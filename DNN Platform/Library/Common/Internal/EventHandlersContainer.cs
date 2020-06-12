@@ -27,6 +27,7 @@ namespace DotNetNuke.Common.Internal
                 {
                     return;
                 }
+
                 ExtensionPointManager.ComposeParts(this);
             }
             catch (Exception ex)

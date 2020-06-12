@@ -42,6 +42,7 @@ namespace DotNetNuke.Web.Mvc
                 {
                     this._controllerBuilder = ControllerBuilder.Current;
                 }
+
                 return this._controllerBuilder;
             }
             set { this._controllerBuilder = value; }
@@ -98,6 +99,7 @@ namespace DotNetNuke.Web.Mvc
                 moduleExecutionEngine = new ModuleExecutionEngine();
                 ComponentFactory.RegisterComponentInstance<IModuleExecutionEngine>(moduleExecutionEngine);
             }
+
             return moduleExecutionEngine;
         }
 

@@ -70,6 +70,7 @@ namespace DotNetNuke.Services.Analytics
                             }
                         }
                     }
+
                     break;
             }
         }
@@ -107,6 +108,7 @@ namespace DotNetNuke.Services.Analytics
                 {
                     fileReader.Close();
                 }
+
                 Logger.Error(ex);
             }
 

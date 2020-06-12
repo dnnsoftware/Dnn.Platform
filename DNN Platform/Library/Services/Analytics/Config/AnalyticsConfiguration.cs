@@ -86,6 +86,7 @@ namespace DotNetNuke.Services.Analytics.Config
                         setting.SettingValue = nav.SelectSingleNode("SettingValue").Value;
                         Config.Settings.Add(setting);
                     }
+
                     foreach (XPathNavigator nav in doc.CreateNavigator().Select("AnalyticsConfig/Rules/AnalyticsRule"))
                     {
                         var rule = new AnalyticsRule();
@@ -97,8 +98,10 @@ namespace DotNetNuke.Services.Analytics.Config
                         {
                             rule.Value = valueNode.Value;
                         }
+
                         Config.Rules.Add(rule);
                     }
+
                     if (File.Exists(filePath))
                     {
                         // Set back into Cache
@@ -124,6 +127,7 @@ namespace DotNetNuke.Services.Analytics.Config
                     fileReader.Close();
                 }
             }
+
             return Config;
         }
 
@@ -142,6 +146,7 @@ namespace DotNetNuke.Services.Analytics.Config
                 {
                     File.SetAttributes(filePath, FileAttributes.Normal);
                 }
+
                 using (var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
                 using (var writer = new StreamWriter(fileWriter))
                 {
@@ -152,6 +157,7 @@ namespace DotNetNuke.Services.Analytics.Config
                     writer.Close();
                     fileWriter.Close();
                 }
+
                 DataCache.SetCache(cacheKey, config, new DNNCacheDependency(filePath));
             }
         }

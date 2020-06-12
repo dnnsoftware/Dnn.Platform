@@ -99,6 +99,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 return value;
             }
+
             return defaultValue;
         }
 
@@ -281,6 +282,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
+
             return item.Size;
         }
 
@@ -326,6 +328,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
+
             return item.LastModified;
         }
 
@@ -477,6 +480,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
+
             return (item.Size == file.Size) ? item.HashCode : string.Empty;
         }
 
@@ -486,6 +490,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 return this.GetHashCode(file);
             }
+
             return string.Empty;
         }
     }

@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.DDRMenu
             {
                 returnUrl = returnUrl.Substring(0, returnUrl.IndexOf("?returnurl="));
             }
+
             returnUrl = HttpUtility.UrlEncode(returnUrl);
 
             return Globals.LoginURL(returnUrl, !string.IsNullOrEmpty(request.QueryString["override"]));
@@ -59,6 +60,7 @@ namespace DotNetNuke.Web.DDRMenu
                     return Globals.UserProfileURL(objUserInfo.UserID);
                 }
             }
+
             return string.Empty;
         }
 

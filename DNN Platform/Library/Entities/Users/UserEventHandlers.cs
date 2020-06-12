@@ -41,6 +41,7 @@ namespace DotNetNuke.Entities.Users
             {
                 UserRegistrationEmailNotifier.NotifyUser(args.User, MessageType.UserRegistrationPublic);
             }
+
             DeleteAllNewUnauthorizedUserRegistrationNotifications(args.User.UserID);
         }
 

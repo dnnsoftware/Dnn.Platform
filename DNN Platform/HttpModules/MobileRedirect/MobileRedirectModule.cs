@@ -66,6 +66,7 @@ namespace DotNetNuke.HttpModules
                     {
                         redirectUrl = string.Concat(redirectUrl, redirectUrl.Contains("?") ? "&" : "?", queryString);
                     }
+
                     app.Response.Redirect(redirectUrl);
                 }
             }
@@ -99,6 +100,7 @@ namespace DotNetNuke.HttpModules
             {
                 tabPath = tabPath.Replace(alias.Substring(idx), string.Empty);
             }
+
             return this._specialPages.Contains(tabPath);
         }
     }

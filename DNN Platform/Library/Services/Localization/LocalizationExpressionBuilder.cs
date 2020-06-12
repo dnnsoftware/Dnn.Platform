@@ -54,6 +54,7 @@ namespace DotNetNuke.Services.Localization
                     localResourceFile = virtualPath.Replace(filename, Localization.LocalResourceDirectory + "/" + filename);
                 }
             }
+
             string value = Localization.GetString(key, localResourceFile);
 
             if (value == null)
@@ -74,6 +75,7 @@ namespace DotNetNuke.Services.Localization
                         {
                             throw new InvalidOperationException(string.Format("Localized value '{0}' cannot be converted to type {1}.", key, propDesc.PropertyType));
                         }
+
                         return propDesc.Converter.ConvertFrom(value);
                     }
                 }

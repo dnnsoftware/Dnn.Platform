@@ -186,6 +186,7 @@ namespace log4net.Appender
                     return false;
                 }
             }
+
             if (this.m_qtw.Closed)
             {
                 this.ErrorHandler.Error("Output stream for appender named [" + this.Name + "] has been closed.");

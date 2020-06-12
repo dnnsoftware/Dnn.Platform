@@ -25,6 +25,7 @@ namespace DNN.Integration.Test.Framework.Helpers
                     var id = DatabaseHelper.ExecuteScalar<int>(query);
                     _portalId = id;
                 }
+
                 return _portalId.Value;
             }
         }

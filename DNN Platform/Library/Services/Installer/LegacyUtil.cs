@@ -162,6 +162,7 @@ namespace DotNetNuke.Services.Installer
                         // Add Skin Package Fragment
                         CreateSkinManifest(writer, skinFolder, "Skin", tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), "Skins");
                     }
+
                     if (Directory.Exists(Path.Combine(tempInstallFolder, "Containers")))
                     {
                         // Add Container PAckage Fragment
@@ -173,6 +174,7 @@ namespace DotNetNuke.Services.Installer
                     // Add Package Fragment
                     CreateSkinManifest(writer, skinFolder, skinType, tempInstallFolder.Replace(Globals.ApplicationMapPath + "\\", string.Empty), string.Empty);
                 }
+
                 PackageWriterBase.WriteManifestEndElement(writer);
 
                 // Close XmlWriter
@@ -190,10 +192,12 @@ namespace DotNetNuke.Services.Installer
             {
                 ParsePackageName(package, "\\");
             }
+
             if (string.IsNullOrEmpty(package.Owner))
             {
                 ParsePackageName(package, "_");
             }
+
             if ((package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && AdminModules.Contains(package.Name + ",")) || (package.PackageType.Equals("Module", StringComparison.OrdinalIgnoreCase) && CoreModules.Contains(package.Name + ",")) || ((package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase) || package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase)) && KnownSkins.Contains(package.Name + ",")) || (package.PackageType.Equals("SkinObject", StringComparison.OrdinalIgnoreCase) && KnownSkinObjects.Contains(package.Name + ",")))
             {
                 if (string.IsNullOrEmpty(package.Owner))
@@ -217,6 +221,7 @@ namespace DotNetNuke.Services.Installer
                     }
                 }
             }
+
             if (package.Owner == "DotNetNuke" || package.Owner == "DNN")
             {
                 package.License = Localization.Localization.GetString("License", Localization.Localization.GlobalResourceFile);
@@ -247,6 +252,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     HostController.Instance.Update("EnableBrowserLanguage", Util.ReadAttribute(browserNav, "enabled", false, null, Null.NullString, "true"));
                 }
+
                 XPathNavigator urlNav = doc.CreateNavigator().SelectSingleNode("root/languageInUrl");
                 if (urlNav != null)
                 {
@@ -314,11 +320,13 @@ namespace DotNetNuke.Services.Installer
                     {
                         PortalController.UpdatePortalSetting(portalID, "EnableBrowserLanguage", Util.ReadAttribute(browserNav, "enabled", false, null, Null.NullString, "true"));
                     }
+
                     XPathNavigator urlNav = doc.CreateNavigator().SelectSingleNode("locales/languageInUrl");
                     if (urlNav != null)
                     {
                         PortalController.UpdatePortalSetting(portalID, "EnableUrlLanguage", Util.ReadAttribute(urlNav, "enabled", false, null, Null.NullString, "true"));
                     }
+
                     foreach (Locale installedLanguage in LocaleController.Instance.GetLocales(Null.NullInteger).Values)
                     {
                         string code = installedLanguage.Code;
@@ -333,6 +341,7 @@ namespace DotNetNuke.Services.Installer
                                 break;
                             }
                         }
+
                         if (!bFound)
                         {
                             // Language is enabled - add to portal
@@ -384,6 +393,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     package.Version = new Version(desktopModule.Version);
                 }
+
                 if (hostModules.Contains(desktopModule.ModuleName))
                 {
                     // Host Module so make this a system package
@@ -394,6 +404,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     desktopModule.IsAdmin = false;
                 }
+
                 package.PackageType = "Module";
 
                 // See if the Module is using a "Namespace" for its name

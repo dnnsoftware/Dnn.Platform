@@ -187,6 +187,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 container.Controls.Add(new LiteralControl(this.Text + "<br/>"));
             }
+
             if (this.ItemType != ListItemType.Header || (this.ItemType == ListItemType.Header && this.HeaderCheckBox))
             {
                 var box = new CheckBox();
@@ -223,6 +224,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 box.Checked = this.Checked;
             }
+
             if (!string.IsNullOrEmpty(this.EnabledField))
             {
                 if (this.DesignMode)
@@ -258,6 +260,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 evntArgs = new DNNDataGridCheckChangedEventArgs(container, box.Checked, this.DataField, false);
             }
+
             if (this.CheckedChanged != null)
             {
                 this.CheckedChanged(sender, evntArgs);

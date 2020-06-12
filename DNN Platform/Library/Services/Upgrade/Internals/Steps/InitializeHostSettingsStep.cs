@@ -58,6 +58,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                         {
                             settingValue = domainName;
                         }
+
                         break;
                     case "HostEmail":
                         if (string.IsNullOrEmpty(settingValue))
@@ -67,6 +68,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
                         break;
                 }
+
                 HostController.Instance.Update(settingName, settingValue, setting.IsSecure);
             }
 

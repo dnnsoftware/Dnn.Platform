@@ -104,6 +104,7 @@ namespace DotNetNuke.Entities.Users.Membership
                     isPreviouslyUsed = true;
                 }
             }
+
             return isPreviouslyUsed;
         }
 
@@ -153,6 +154,7 @@ namespace DotNetNuke.Entities.Users.Membership
             {
                 return true;
             }
+
             return false;
         }
 

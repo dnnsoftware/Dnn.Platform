@@ -28,6 +28,7 @@ namespace DotNetNuke.Modules.RazorHost
                 {
                     m_RazorScriptFile = string.Format(this.razorScriptFileFormatString, scriptFileSetting);
                 }
+
                 return m_RazorScriptFile;
             }
         }

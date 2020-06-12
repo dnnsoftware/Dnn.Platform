@@ -141,6 +141,7 @@ namespace DotNetNuke.Entities.Portals
                     log.LogProperties.Add(new LogDetailInfo("Portal:", portal.PortalName));
                     log.LogProperties.Add(new LogDetailInfo("PortalID:", portal.PortalID.ToString()));
                 }
+
                 LogController.Instance.AddLog(log);
             }
             catch (Exception exc)
@@ -192,6 +193,7 @@ namespace DotNetNuke.Entities.Portals
                     {
                         RoleController.Instance.AddUserRole(portalGroup.MasterPortalId, user.UserID, autoAssignRole.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
                     }
+
                     this.OnUserAddedToSiteGroup(callback, portal, user, totalUsers, userNo);
                 }
             }
@@ -278,6 +280,7 @@ namespace DotNetNuke.Entities.Portals
                 portal.PortalGroupID = portalGroup.PortalGroupId;
                 this._portalController.UpdatePortalInfo(portal);
             }
+
             this.LogEvent(EventLogController.EventLogType.PORTALGROUP_CREATED, portalGroup, null);
 
             ClearCache();
@@ -397,6 +400,7 @@ namespace DotNetNuke.Entities.Portals
                     callback(args);
                 }
             }
+
             // Callback to update progress bar
             args = new UserCopiedEventArgs
             {

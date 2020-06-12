@@ -55,9 +55,11 @@ namespace DotNetNuke.Services.Tokens
                     {
                         message = "Error accessing [{0}:{1}], {0} is an unknown datasource";
                     }
+
                     result = string.Format(message, objectName, propertyName);
                 }
             }
+
             if (this.DebugMessages && propertyNotFound)
             {
                 string message;
@@ -69,10 +71,12 @@ namespace DotNetNuke.Services.Tokens
                 {
                     message = Localization.Localization.GetString("TokenReplaceUnknownProperty", Localization.Localization.GlobalResourceFile, this.FormatProvider.ToString());
                 }
+
                 if (message == string.Empty)
                 {
                     message = "Error accessing [{0}:{1}], {1} is unknown for datasource {0}";
                 }
+
                 result = string.Format(message, objectName, propertyName);
             }
 
@@ -116,6 +120,7 @@ namespace DotNetNuke.Services.Tokens
                     }
                 }
             }
+
             return isSafe;
         }
 
@@ -130,6 +135,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 return this.TokenizerRegex.Matches(strSourceText).Cast<Match>().Any(currentMatch => currentMatch.Result("${object}").Length > 0);
             }
+
             return false;
         }
     }

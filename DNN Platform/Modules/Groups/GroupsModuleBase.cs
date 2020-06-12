@@ -46,9 +46,11 @@ namespace DotNetNuke.Modules.Groups
                             break;
                     }
                 }
+
                 return mode;
             }
         }
+
         public int GroupId
         {
             get
@@ -58,13 +60,16 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return groupId;
                 }
+
                 if (int.TryParse(this.Request.QueryString["GroupId"], out groupId))
                 {
                     return groupId;
                 }
+
                 return -1;
             }
         }
+
         public int DefaultRoleGroupId
         {
             get
@@ -82,6 +87,7 @@ namespace DotNetNuke.Modules.Groups
                 return roleGroupId; // -2 is for "< All Roles >"
             }
         }
+
         public int GroupListTabId
         {
             get
@@ -90,9 +96,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Convert.ToInt32(this.Settings[Constants.GroupListPage].ToString());
                 }
+
                 return this.TabId;
             }
         }
+
         public int GroupViewTabId
         {
             get
@@ -101,9 +109,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Convert.ToInt32(this.Settings[Constants.GroupViewPage].ToString());
                 }
+
                 return this.TabId;
             }
         }
+
         public string GroupViewTemplate
         {
             get
@@ -116,9 +126,11 @@ namespace DotNetNuke.Modules.Groups
                         template = this.Settings[Constants.GroupViewTemplate].ToString();
                     }
                 }
+
                 return template;
             }
         }
+
         public string GroupListTemplate
         {
             get
@@ -131,9 +143,11 @@ namespace DotNetNuke.Modules.Groups
                         template = this.Settings[Constants.GroupListTemplate].ToString();
                     }
                 }
+
                 return template;
             }
         }
+
         public string DefaultGroupMode
         {
             get
@@ -142,9 +156,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return this.Settings[Constants.DefautlGroupViewMode].ToString();
                 }
+
                 return string.Empty;
             }
         }
+
         public bool GroupModerationEnabled
         {
             get
@@ -153,9 +169,11 @@ namespace DotNetNuke.Modules.Groups
                 {
                     return Convert.ToBoolean(this.Settings[Constants.GroupModerationEnabled].ToString());
                 }
+
                 return false;
             }
         }
+
         public bool CanCreate
         {
             get
@@ -166,8 +184,10 @@ namespace DotNetNuke.Modules.Groups
                     {
                         return true;
                     }
+
                     return ModulePermissionController.HasModulePermission(this.ModuleConfiguration.ModulePermissions, "CREATEGROUP");
                 }
+
                 return false;
             }
         }
@@ -191,9 +211,11 @@ namespace DotNetNuke.Modules.Groups
                         return Convert.ToInt32(this.Settings[Constants.GroupListPageSize].ToString());
                     }
                 }
+
                 return 20;
             }
         }
+
         public bool GroupListSearchEnabled
         {
             get
@@ -211,6 +233,7 @@ namespace DotNetNuke.Modules.Groups
                 return enableSearch;
             }
         }
+
         public string GroupListSortField
         {
             get
@@ -218,6 +241,7 @@ namespace DotNetNuke.Modules.Groups
                 return this.Settings.ContainsKey(Constants.GroupListSortField) ? this.Settings[Constants.GroupListSortField].ToString() : string.Empty;
             }
         }
+
         public string GroupListSortDirection
         {
             get
@@ -225,6 +249,7 @@ namespace DotNetNuke.Modules.Groups
                 return this.Settings.ContainsKey(Constants.GroupListSortDirection) ? this.Settings[Constants.GroupListSortDirection].ToString() : string.Empty;
             }
         }
+
         public bool GroupListUserGroupsOnly
         {
             get

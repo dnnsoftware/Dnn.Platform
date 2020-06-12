@@ -42,6 +42,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     _ModuleTitle = this.Module.ModuleTitle;
                 }
+
                 return _ModuleTitle;
             }
         }
@@ -54,6 +55,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     this._Module = ModuleController.Instance.GetModule(this.ModuleID, this.TabID, false);
                 }
+
                 return this._Module;
             }
         }

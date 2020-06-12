@@ -350,6 +350,7 @@ namespace DotNetNuke.Entities.Modules
 
                 EventLogController.Instance.AddLog(desktopModule, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, string.Empty, EventLogController.EventLogType.DESKTOPMODULE_UPDATED);
             }
+
             if (saveChildren)
             {
                 foreach (var definition in desktopModule.ModuleDefinitions.Values)
@@ -360,13 +361,16 @@ namespace DotNetNuke.Entities.Modules
                     {
                         definition.ModuleDefID = moduleDefinition.ModuleDefID;
                     }
+
                     ModuleDefinitionController.SaveModuleDefinition(definition, true, clearCache);
                 }
             }
+
             if (clearCache)
             {
                 DataCache.ClearHostCache(true);
             }
+
             return desktopModuleID;
         }
 
@@ -421,6 +425,7 @@ namespace DotNetNuke.Entities.Modules
                     DesktopModulePermissionController.AddDesktopModulePermission(permission);
                 }
             }
+
             return portalDesktopModuleID;
         }
 
@@ -456,10 +461,12 @@ namespace DotNetNuke.Entities.Modules
             {
                 portalDesktopModuleID = portalDesktopModule.PortalDesktopModuleID;
             }
+
             if (clearCache)
             {
                 DataCache.ClearPortalCache(portalId, true);
             }
+
             return portalDesktopModuleID;
         }
 
@@ -469,6 +476,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 AddDesktopModuleToPortal(portal.PortalID, desktopModuleId, true, false);
             }
+
             DataCache.ClearHostCache(true);
         }
 
@@ -489,6 +497,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                 }
             }
+
             DataCache.ClearPortalCache(portalId, true);
         }
 
@@ -521,6 +530,7 @@ namespace DotNetNuke.Entities.Modules
                     lstModules.Add(desktopModule.FriendlyName, desktopModule);
                 }
             }
+
             return lstModules;
         }
 
@@ -580,9 +590,11 @@ namespace DotNetNuke.Entities.Modules
                     writer.WriteElementString("rolename", permission.RoleName);
                     writer.WriteEndElement();
                 }
+
                 writer.WriteEndElement();
                 writer.WriteEndElement();
             }
+
             writer.WriteEndElement();
         }
 

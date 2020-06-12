@@ -123,6 +123,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             {
                 return null;
             }
+
             var headersArray = new string[this.Headers.Count][];
             for (var i = 0; i < this.Headers.Count; i++)
             {
@@ -130,6 +131,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 headersArray[i][0] = this.Headers.Keys[i];
                 headersArray[i][1] = this.Headers[i];
             }
+
             return headersArray;
         }
 

@@ -56,6 +56,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                         this.SaveMenuPermissions(menuItem);
                     }
                 }
+
                 this.Completed = true;
             }
             catch (Exception ex)
@@ -139,6 +140,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 {
                     menu = PersonaBarRepository.Instance.GetMenuItem(identifier);
                 }
+
                 if (menu != null)
                 {
                     MenuPermissionController.SavePersonaBarPermission(menu.MenuId, definition.Key, definition.Name);
@@ -176,6 +178,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             {
                 this._menuRoles.Add(menuItem.Identifier, defaultPermissions);
             }
+
             this._menuItems.Add(menuItem);
         }
 
@@ -231,6 +234,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
                 {
                     menuItem = PersonaBarRepository.Instance.GetMenuItem(menuItem.Identifier);
                 }
+
                 PersonaBarRepository.Instance.GetMenuDefaultPermissions(menuItem.MenuId);
                 PersonaBarRepository.Instance.SaveMenuDefaultPermissions(menuItem, this._menuRoles[menuItem.Identifier]);
 

@@ -68,6 +68,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.LoginTabId) + this.Request.Url.Query);
             }
+
             this.cmdChangePassword.Click += this.cmdChangePassword_Click;
 
             this.hlCancel.NavigateUrl = this._navigationManager.NavigateURL();
@@ -224,6 +225,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     username = testUser.Username; // we need the username of the account in order to change the password in the next step
                 }
             }
+
             string errorMessage;
             string answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
@@ -285,6 +287,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
+
                 if (string.IsNullOrEmpty(redirectURL))
                 {
                     if (this.PortalSettings.RegisterTabId != -1 && this.PortalSettings.HomeTabId != -1)
@@ -349,6 +352,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 log.LogTypeKey = "PASSWORD_SENT_FAILURE";
                 log.LogProperties.Add(new LogDetailInfo("Cause", message));
             }
+
             log.AddProperty("IP", this._ipAddress);
 
             LogController.Instance.AddLog(log);

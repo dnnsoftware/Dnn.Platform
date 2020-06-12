@@ -94,6 +94,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             {
                 throw new WorkflowDoesNotExistException();
             }
+
             this._workflowStateRepository.UpdateWorkflowState(state);
         }
 
@@ -250,11 +251,13 @@ namespace DotNetNuke.Entities.Content.Workflow
                 {
                     return i;
                 }
+
                 i++;
             }
 
             return i;
         }
+
         private void MoveState(WorkflowState state, int targetIndex, int currentIndex)
         {
             if (currentIndex == targetIndex)

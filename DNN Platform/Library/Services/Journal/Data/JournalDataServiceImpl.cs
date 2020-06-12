@@ -78,22 +78,27 @@ namespace DotNetNuke.Services.Journal
         {
             this._provider.ExecuteNonQuery("Journal_UpdateContentItemId", journalId, contentItemId);
         }
+
         public IDataReader Journal_Get(int portalId, int currentUserId, int journalId)
         {
             return this.Journal_Get(portalId, currentUserId, journalId, false, false, false);
         }
+
         public IDataReader Journal_Get(int portalId, int currentUserId, int journalId, bool includeAllItems, bool isDeleted, bool securityCheck)
         {
             return this._provider.ExecuteReader("Journal_Get", portalId, currentUserId, journalId, includeAllItems, isDeleted, securityCheck);
         }
+
         public IDataReader Journal_GetByKey(int portalId, string objectKey)
         {
             return this.Journal_GetByKey(portalId, objectKey, false, false);
         }
+
         public IDataReader Journal_GetByKey(int portalId, string objectKey, bool includeAllItems, bool isDeleted)
         {
             return this._provider.ExecuteReader("Journal_GetByKey", portalId, objectKey, includeAllItems, isDeleted);
         }
+
         public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
                                 string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
         {
@@ -101,6 +106,7 @@ namespace DotNetNuke.Services.Journal
                                                     groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, false, false);
             return journalId;
          }
+
         public int Journal_Save(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
                         string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)
         {
@@ -108,6 +114,7 @@ namespace DotNetNuke.Services.Journal
                                                     groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, commentsDisabled, commentsHidden);
             return journalId;
         }
+
         public int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
                         string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet)
         {
@@ -116,6 +123,7 @@ namespace DotNetNuke.Services.Journal
 
             return journalId;
         }
+
         public int Journal_Update(int portalId, int currentUserId, int profileId, int groupId, int journalId, int journalTypeId, string title,
                         string summary, string body, string itemData, string xml, string objectKey, Guid accessKey, string securitySet, bool commentsDisabled, bool commentsHidden)
         {
@@ -123,6 +131,7 @@ namespace DotNetNuke.Services.Journal
                                                     groupId, title, summary, itemData, xml, objectKey, accessKey, securitySet, commentsDisabled, commentsHidden);
             return journalId;
         }
+
         public void Journal_Comment_Delete(int journalId, int commentId)
         {
             this._provider.ExecuteNonQuery("Journal_Comment_Delete", journalId, commentId);
@@ -153,10 +162,12 @@ namespace DotNetNuke.Services.Journal
         {
             this._provider.ExecuteNonQuery("Journal_Comment_Like", journalId, commentId, userId, displayName);
         }
+
         public IDataReader Journal_Comment_LikeList(int portalId, int journalId, int commentId)
         {
             return this._provider.ExecuteReader("Journal_Comment_LikeList", portalId, journalId, commentId);
         }
+
         public void Journal_Comments_ToggleDisable(int portalId, int journalId, bool disable)
         {
             this._provider.ExecuteNonQuery("Journal_Comments_ToggleDisable", portalId, journalId, disable);
@@ -166,6 +177,7 @@ namespace DotNetNuke.Services.Journal
         {
             this._provider.ExecuteNonQuery("Journal_Comments_ToggleHidden", portalId, journalId, hidden);
         }
+
         public IDataReader Journal_Types_List(int portalId)
         {
             return this._provider.ExecuteReader("Journal_Types_List", portalId);

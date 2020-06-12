@@ -133,6 +133,7 @@ namespace DotNetNuke.Entities.Tabs
                     this.MoveTabToParent(tab, siblingTabs.ElementAt(tabIndex - 1).TabID);
                     break;
             }
+
             this.ClearCache(tab.PortalID);
         }
     }

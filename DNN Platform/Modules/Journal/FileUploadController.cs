@@ -83,6 +83,7 @@ namespace DotNetNuke.Modules.Journal
                     {
                         fileIcon = Entities.Icons.IconController.IconURL("File", "32x32");
                     }
+
                     statuses.Add(new FilesStatus
                     {
                         success = true,

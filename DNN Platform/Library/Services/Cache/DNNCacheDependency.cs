@@ -207,6 +207,7 @@ namespace DotNetNuke.Services.Cache
                         this._systemCacheDependency = new CacheDependency(this._fileNames, this._cacheKeys, this._cacheDependency.SystemCacheDependency, this._utcStart);
                     }
                 }
+
                 return this._systemCacheDependency;
             }
         }
@@ -240,10 +241,12 @@ namespace DotNetNuke.Services.Cache
                 {
                     this._cacheDependency.Dispose(disposing);
                 }
+
                 if (this._systemCacheDependency != null)
                 {
                     this._systemCacheDependency.Dispose();
                 }
+
                 this._fileNames = null;
                 this._cacheKeys = null;
                 this._cacheDependency = null;

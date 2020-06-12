@@ -83,6 +83,7 @@ namespace DotNetNuke.Services.Exceptions
                     this.headerImage.ImageUrl = FileManager.Instance.GetUrl(fileInfo);
                 }
             }
+
             this.headerImage.Visible = !string.IsNullOrEmpty(this.headerImage.ImageUrl);
 
             string localizedMessage;
@@ -123,6 +124,7 @@ namespace DotNetNuke.Services.Exceptions
 
                 this.Response.StatusCode = 500;
             }
+
             localizedMessage = Localization.Localization.GetString("Return.Text", Localization.Localization.GlobalResourceFile);
 
             this.hypReturn.Text = localizedMessage;

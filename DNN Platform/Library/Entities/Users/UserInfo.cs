@@ -117,6 +117,7 @@ namespace DotNetNuke.Entities.Users
                 {
                     return true;
                 }
+
                 PortalInfo ps = PortalController.Instance.GetPortal(this.PortalID);
                 return ps != null && this.IsInRole(ps.AdministratorRoleName);
             }
@@ -161,6 +162,7 @@ namespace DotNetNuke.Entities.Users
                         UserController.GetUserMembership(this);
                     }
                 }
+
                 return this._membership;
             }
             set { this._membership = value; }
@@ -226,6 +228,7 @@ namespace DotNetNuke.Entities.Users
                     UserInfo userInfo = this;
                     ProfileController.GetUserProfile(ref userInfo);
                 }
+
                 return this._profile;
             }
             set { this._profile = value; }
@@ -313,6 +316,7 @@ namespace DotNetNuke.Entities.Users
             {
                 internScope = currentScope; // admins and user himself can access all data
             }
+
             string outputFormat = format == string.Empty ? "g" : format;
             switch (propertyName.ToLowerInvariant())
             {
@@ -322,6 +326,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     var ps = PortalSecurity.Instance;
                     var code = ps.Encrypt(Config.GetDecryptionkey(), this.PortalID + "-" + this.GetMembershipUserId());
                     return code.Replace("+", ".").Replace("/", "-").Replace("=", "_");
@@ -331,6 +336,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return this.AffiliateID.ToString(outputFormat, formatProvider);
                 case "displayname":
                     if (internScope < Scope.Configuration)
@@ -338,6 +344,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(this.DisplayName, format);
                 case "email":
                     if (internScope < Scope.DefaultSettings)
@@ -345,6 +352,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(this.Email, format);
                 case "firstname": // using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
@@ -352,6 +360,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(this.FirstName, format);
                 case "issuperuser":
                     if (internScope < Scope.Debug)
@@ -359,6 +368,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return this.IsSuperUser.ToString(formatProvider);
                 case "lastname": // using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
@@ -366,6 +376,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(this.LastName, format);
                 case "portalid":
                     if (internScope < Scope.Configuration)
@@ -373,6 +384,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return this.PortalID.ToString(outputFormat, formatProvider);
                 case "userid":
                     if (internScope < Scope.DefaultSettings)
@@ -380,6 +392,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return this.UserID.ToString(outputFormat, formatProvider);
                 case "username":
                     if (internScope < Scope.DefaultSettings)
@@ -387,6 +400,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(this.Username, format);
                 case "fullname": // fullname is obsolete, it will return DisplayName
                     if (internScope < Scope.Configuration)
@@ -394,6 +408,7 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(this.DisplayName, format);
                 case "roles":
                     if (currentScope < Scope.SystemMessages)
@@ -401,8 +416,10 @@ namespace DotNetNuke.Entities.Users
                         propertyNotFound = true;
                         return PropertyAccess.ContentLocked;
                     }
+
                     return PropertyAccess.FormatString(string.Join(", ", this.Roles), format);
             }
+
             propertyNotFound = true;
             return string.Empty;
         }
@@ -427,11 +444,13 @@ namespace DotNetNuke.Entities.Users
             {
                 return false;
             }
+
             if (string.IsNullOrEmpty(this._administratorRoleName))
             {
                 PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
                 this._administratorRoleName = ps.AdministratorRoleName;
             }
+
             return accessingUser.IsInRole(this._administratorRoleName) || accessingUser.IsSuperUser;
         }
 
@@ -459,10 +478,12 @@ namespace DotNetNuke.Entities.Users
             {
                 return true;
             }
+
             if (this.UserID == Null.NullInteger && role == Globals.glbRoleUnauthUserName)
             {
                 return true;
             }
+
             if ("[" + this.UserID + "]" == role)
             {
                 return true;
@@ -473,6 +494,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return roles.Any(s => s == role);
             }
+
             return false;
         }
 
@@ -498,6 +520,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, this.Profile.PreferredTimeZone);
             }
+
             return TimeZoneInfo.ConvertTime(utcTime, TimeZoneInfo.Utc, PortalController.Instance.GetCurrentPortalSettings().TimeZone);
         }
 

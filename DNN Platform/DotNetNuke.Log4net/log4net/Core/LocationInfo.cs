@@ -99,6 +99,7 @@ namespace log4net.Core
                         {
                             break;
                         }
+
                         frameIndex++;
                     }
 
@@ -110,6 +111,7 @@ namespace log4net.Core
                         {
                             break;
                         }
+
                         frameIndex++;
                     }
 
@@ -141,6 +143,7 @@ namespace log4net.Core
                                     this.m_className = method.DeclaringType.FullName;
                                 }
                             }
+
                             this.m_fileName = locationFrame.GetFileName();
                             this.m_lineNumber = locationFrame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
 

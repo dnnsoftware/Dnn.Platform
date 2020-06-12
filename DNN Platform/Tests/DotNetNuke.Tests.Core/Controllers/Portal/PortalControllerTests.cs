@@ -263,6 +263,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
             {
                 description = string.Format("<data name=\"PortalDescription.Text\" xml:space=\"preserve\"><value>{0}</value></data>", description);
             }
+
             var xml = string.Format("<root><data name=\"LocalizedTemplateName.Text\" xml:space=\"preserve\"><value>{0}</value></data>{1}</root>", name, description);
             return new StringReader(xml);
         }

@@ -92,6 +92,7 @@ namespace log4net.Util
                     LogLog.Error(declaringType, "Failed to append to appender [" + appender.Name + "]", ex);
                 }
             }
+
             return this.m_appenderList.Count;
         }
 
@@ -112,10 +113,12 @@ namespace log4net.Util
             {
                 throw new ArgumentNullException("loggingEvents");
             }
+
             if (loggingEvents.Length == 0)
             {
                 throw new ArgumentException("loggingEvents array must not be empty", "loggingEvents");
             }
+
             if (loggingEvents.Length == 1)
             {
                 // Fall back to single event path
@@ -144,6 +147,7 @@ namespace log4net.Util
                     LogLog.Error(declaringType, "Failed to append to appender [" + appender.Name + "]", ex);
                 }
             }
+
             return this.m_appenderList.Count;
         }
 
@@ -199,6 +203,7 @@ namespace log4net.Util
             {
                 this.m_appenderList = new AppenderCollection(1);
             }
+
             if (!this.m_appenderList.Contains(newAppender))
             {
                 this.m_appenderList.Add(newAppender);
@@ -258,6 +263,7 @@ namespace log4net.Util
                     }
                 }
             }
+
             return null;
         }
 
@@ -284,6 +290,7 @@ namespace log4net.Util
                         LogLog.Error(declaringType, "Failed to Close appender [" + appender.Name + "]", ex);
                     }
                 }
+
                 this.m_appenderList = null;
                 this.m_appenderArray = null;
             }
@@ -310,8 +317,10 @@ namespace log4net.Util
                 {
                     this.m_appenderList = null;
                 }
+
                 this.m_appenderArray = null;
             }
+
             return appender;
         }
 

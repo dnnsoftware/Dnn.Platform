@@ -34,6 +34,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 monthBuilder.AppendFormat("{0},", Month);
             }
+
             var MonthNameString = monthBuilder.ToString().TrimEnd(TrimChars);
             // Get culture array of day names and convert to string for
             // passing to the popup calendar
@@ -42,6 +43,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 dayBuilder.AppendFormat("{0},", Day);
             }
+
             var DayNameString = dayBuilder.ToString().TrimEnd(TrimChars);
             // Get the short date pattern for the culture
             string FormatString = DateTimeFormatInfo.CurrentInfo.ShortDatePattern;
@@ -49,6 +51,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 ScriptManager.RegisterClientScriptInclude(Field.Page, Field.Page.GetType(), "PopupCalendar.js", ClientAPI.ScriptPath + "PopupCalendar.js");
             }
+
             string strToday = ClientAPI.GetSafeJSString(Localization.GetString("Today"));
             string strClose = ClientAPI.GetSafeJSString(Localization.GetString("Close"));
             string strCalendar = ClientAPI.GetSafeJSString(Localization.GetString("Calendar"));

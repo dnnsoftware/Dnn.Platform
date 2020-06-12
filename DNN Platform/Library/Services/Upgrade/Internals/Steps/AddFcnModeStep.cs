@@ -30,6 +30,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
                 this.Errors.Add(Localization.Localization.GetString("FcnMode", this.LocalInstallResourceFile) + ": " + strError);
                 Logger.TraceFormat("Adding FcnMode : {0}", strError);
             }
+
             this.Status = this.Errors.Count > 0 ? StepStatus.Retry : StepStatus.Done;
         }
     }

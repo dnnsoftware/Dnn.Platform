@@ -72,12 +72,14 @@ namespace DotNetNuke.Modules.Admin.Sales
                                     blnValid = false;
                                     break;
                             }
+
                             break;
                         case "payment_status": // verify the status
                             if (strValue != "Completed")
                             {
                                 blnValid = false;
                             }
+
                             break;
                         case "txn_id": // verify the transaction id for duplicates
 //                            strTransactionID = strValue;
@@ -122,6 +124,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     {
                         strPayPalURL = "https://www.paypal.com/cgi-bin/webscr?";
                     }
+
                     var objRequest = Globals.GetExternalRequest(strPayPalURL);
                     objRequest.Method = "POST";
                     objRequest.ContentLength = strPost.Length;
@@ -139,6 +142,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             strResponse = sr.ReadToEnd();
                         }
                     }
+
                     switch (strResponse)
                     {
                         case "VERIFIED":
@@ -149,6 +153,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             break;
                     }
                 }
+
                 if (blnValid)
                 {
                     int intAdministratorRoleId = 0;

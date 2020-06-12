@@ -153,6 +153,7 @@ namespace DotNetNuke.UI.ControlPanel
                             {
                                 this.hlMoreExtensions.Enabled = false;
                             }
+
                             this.hlMoreExtensions.Text = this.GetString("hlMoreExtensions");
                             this.hlMoreExtensions.Visible = true;
                         }
@@ -227,6 +228,7 @@ namespace DotNetNuke.UI.ControlPanel
                         {
                             position = 0;
                         }
+
                         break;
                     case "BELOW":
                         if (!string.IsNullOrEmpty(this.PaneModulesLst.SelectedValue))
@@ -246,6 +248,7 @@ namespace DotNetNuke.UI.ControlPanel
                         {
                             position = -1;
                         }
+
                         break;
                     case "BOTTOM":
                         position = -1;
@@ -296,6 +299,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, "EDIT");
                 }
+
                 this.Response.Redirect(this.Request.RawUrl, true);
             }
         }
@@ -600,6 +604,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     objModule.CultureCode = Null.NullString;
                 }
+
                 objModule.AllTabs = false;
                 objModule.Alignment = align;
 
@@ -695,6 +700,7 @@ namespace DotNetNuke.UI.ControlPanel
                     {
                         this.ModuleLst.BindTabModulesByTabID(tabId);
                     }
+
                     if (this.ModuleLst.ItemCount > 0)
                     {
                         this.chkCopyModule.Visible = true;
@@ -740,6 +746,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     this.PageLst.DataSource = TabController.GetPortalTabs(portalSettings.PortalId, Null.NullInteger, true, string.Empty, true, false, false, false, true);
                 }
+
                 this.PageLst.DataBind();
             }
         }
@@ -775,6 +782,7 @@ namespace DotNetNuke.UI.ControlPanel
                             {
                                 moduleOrder++;
                             }
+
                             items.Add(moduleOrder.ToString(), m.ModuleTitle);
                         }
                     }
@@ -795,11 +803,13 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }
+
                 listItem = this.PositionLst.FindItemByValue("BELOW");
                 if (listItem != null)
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }
+
                 this.PaneModulesLst.Enabled = false;
             }
 
@@ -890,6 +900,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return false;
             }
+
             // If we are not in an edit page
             return string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"]) && string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]);
         }

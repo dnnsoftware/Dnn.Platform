@@ -167,12 +167,14 @@ namespace DotNetNuke.Tests.Core.Collections
                     // assert that write thread is still waiting
                     Assert.IsTrue(t.IsAlive);
                 }
+
                 // release read lock
 
                 // sleep and let write thread finish up
                 Thread.Sleep(100);
                 Assert.IsFalse(t.IsAlive);
             }
+
             // release controller
         }
 
@@ -194,6 +196,7 @@ namespace DotNetNuke.Tests.Core.Collections
                     // assert that write thread is still waiting
                     Assert.IsTrue(t.IsAlive);
                 }
+
                 // release write lock
                 // sleep and let write thread finish up
                 Thread.Sleep(100);

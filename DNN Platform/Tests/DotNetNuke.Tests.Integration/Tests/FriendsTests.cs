@@ -117,6 +117,7 @@ namespace DotNetNuke.Tests.Integration.Tests
                     Roles = "Administrators",
                 });
             }
+
             return false;
         }
 

@@ -35,6 +35,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     return false;
                 }
+
                 return this._Localize;
             }
             set

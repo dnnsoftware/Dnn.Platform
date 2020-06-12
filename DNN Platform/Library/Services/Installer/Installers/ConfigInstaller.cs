@@ -187,6 +187,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     this._TargetFile = new InstallFile(targetFileName, string.Empty, this.Package.InstallerInfo);
                 }
+
                 // Get the Install config changes
                 nodeNav = nav.SelectSingleNode("install");
                 this._InstallConfig = nodeNav.InnerXml;

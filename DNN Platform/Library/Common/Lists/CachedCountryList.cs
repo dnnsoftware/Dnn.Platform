@@ -52,11 +52,13 @@ namespace DotNetNuke.Common.Lists
             {
                 // do nothing here.
             }
+
             if (res == null)
             {
                 res = new CachedCountryList(locale);
                 DotNetNuke.Common.Utilities.DataCache.SetCache(CacheKey(locale), res);
             }
+
             return res;
         }
 

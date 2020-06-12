@@ -68,6 +68,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 friendlyPath = friendlyPath + "/" + pageName;
             }
+
             return friendlyPath;
         }
 
@@ -77,6 +78,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return Globals.ResolveUrl(originalpath);
             }
+
             return friendlyPath;
         }
 
@@ -106,6 +108,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         matchString = httpAlias;
                     }
+
                     if (string.IsNullOrEmpty(matchString))
                     {
                         // Manage the special case where original url contains the alias as
@@ -144,6 +147,7 @@ namespace DotNetNuke.Entities.Urls
                     matchString = httpAlias;
                 }
             }
+
             if (!string.IsNullOrEmpty(matchString))
             {
                 if (path.IndexOf("~", StringComparison.Ordinal) != -1)
@@ -159,10 +163,12 @@ namespace DotNetNuke.Entities.Urls
             {
                 friendlyPath = Globals.ResolveUrl(friendlyPath);
             }
+
             if (friendlyPath.StartsWith("//") && isPagePath)
             {
                 friendlyPath = friendlyPath.Substring(1);
             }
+
             return friendlyPath;
         }
 
@@ -190,6 +196,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     queryString = queryString.TrimStart(Convert.ToChar("?"));
                 }
+
                 string[] nameValuePairs = queryString.Split(Convert.ToChar("&"));
                 for (int i = 0; i <= nameValuePairs.Length - 1; i++)
                 {
@@ -205,6 +212,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         pathToAppend = pathToAppend + "/" + pair[0];
                     }
+
                     if (pair.Length > 1)
                     {
                         if (!string.IsNullOrEmpty(pair[1]))
@@ -229,6 +237,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
+
                                 pathToAppend = pathToAppend + "/" + HttpUtility.UrlPathEncode(pair[1]);
                             }
                             else
@@ -242,6 +251,7 @@ namespace DotNetNuke.Entities.Urls
                                 {
                                     queryStringSpecialChars = queryStringSpecialChars + "&" + pair[0] + "=" + pair[1];
                                 }
+
                                 pathToAppend = string.Empty;
                             }
                         }
@@ -250,13 +260,16 @@ namespace DotNetNuke.Entities.Urls
                             pathToAppend = pathToAppend + "/" + HttpUtility.UrlPathEncode(' '.ToString());
                         }
                     }
+
                     friendlyPath = friendlyPath + pathToAppend;
                 }
             }
+
             if (!string.IsNullOrEmpty(queryStringSpecialChars))
             {
                 return this.AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
             }
+
             return this.AddPage(friendlyPath, pageName);
         }
 

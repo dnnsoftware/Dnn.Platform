@@ -30,8 +30,10 @@ namespace DotNetNuke.Data.PetaPoco
                 {
                     throw;
                 }
+
                 reader = null;
             }
+
             return reader;
         }
     }

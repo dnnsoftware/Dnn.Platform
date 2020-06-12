@@ -30,6 +30,7 @@ namespace DotNetNuke.Web.Api.Internal
                         break;
                     }
                 }
+
                 var cookieValue = GetAntiForgeryCookieValue(actionContext);
 
                 AntiForgery.Instance.Validate(cookieValue, token);

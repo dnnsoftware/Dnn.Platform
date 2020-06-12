@@ -217,6 +217,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 log.LogPortalID = portalSettings.PortalId;
                 log.LogPortalName = portalSettings.PortalName;
             }
+
             LogController.Instance.AddLog(log);
         }
 

@@ -137,6 +137,7 @@ namespace DotNetNuke.Tests.Urls
                 Localization.RemoveLanguageFromPortals(this._customLocale.LanguageId, true);
                 Localization.DeleteLanguage(this._customLocale, true);
             }
+
             if (this._primaryAlias != null)
             {
                 PortalAliasController.Instance.DeletePortalAlias(this._primaryAlias);
@@ -164,6 +165,7 @@ namespace DotNetNuke.Tests.Urls
                 this.CreateTab(_aboutUsPageName);
                 tab = TabController.Instance.GetTabByName(_aboutUsPageName, this.PortalId);
             }
+
             this._tabId = tab.TabID;
 
             // Add Portal Aliases
@@ -264,6 +266,7 @@ namespace DotNetNuke.Tests.Urls
                     {
                         Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
                     }
+
                     break;
                 case 301:
                 case 302:
@@ -338,6 +341,7 @@ namespace DotNetNuke.Tests.Urls
                 {
                     tab.EndDate = DateTime.Now - TimeSpan.FromDays(1);
                 }
+
                 this.UpdateTab(tab);
                 CacheController.FlushPageIndexFromCache();
             }
@@ -560,8 +564,10 @@ namespace DotNetNuke.Tests.Urls
                     alias.CultureCode = language;
                     alias.Skin = skin;
                 }
+
                 PortalAliasController.Instance.AddPortalAlias(alias);
             }
+
             this.SetDefaultAlias(defaultAlias);
             this.ExecuteTest(settings, testFields, false);
 
@@ -597,6 +603,7 @@ namespace DotNetNuke.Tests.Urls
             {
                 settings.RedirectOldProfileUrl = Convert.ToBoolean(redirectOld);
             }
+
             this.ExecuteTest(settings, testFields, true);
         }
 

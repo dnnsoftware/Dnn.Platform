@@ -42,6 +42,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 editInfo = this.GetEditorInfo(this.DataSource, objProperty);
             }
+
             return editInfo;
         }
 
@@ -63,6 +64,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             return _IsDirty;
         }
 
@@ -133,6 +135,7 @@ namespace DotNetNuke.UI.WebControls
                         break;
                     }
                 }
+
                 if (editor != null)
                 {
                     editInfo.Editor = editor.EditorTypeName;

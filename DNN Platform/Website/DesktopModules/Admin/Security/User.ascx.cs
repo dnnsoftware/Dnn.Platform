@@ -137,6 +137,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     return false;
                 }
+
                 if (PortalController.GetPortalsByUser(this.User.UserID).Count == 1)
                 {
                     return true;
@@ -175,6 +176,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         this.CreateStatus = UserCreateStatus.InvalidPassword;
                     }
+
                     if (this.CreateStatus == UserCreateStatus.AddUser)
                     {
                         this.User.Membership.Password = this.txtPassword.Text;
@@ -198,6 +200,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         this.User.Membership.PasswordQuestion = this.txtQuestion.Text;
                     }
+
                     if (this.CreateStatus == UserCreateStatus.AddUser)
                     {
                         if (string.IsNullOrEmpty(this.txtAnswer.Text))
@@ -211,11 +214,13 @@ namespace DotNetNuke.Modules.Admin.Users
                         }
                     }
                 }
+
                 if (this.CreateStatus != UserCreateStatus.AddUser)
                 {
                     _IsValid = false;
                 }
             }
+
             return _IsValid;
         }
 
@@ -237,6 +242,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Set the Approved status from the value in the Authorized checkbox
                 this.User.Membership.Approved = this.chkAuthorize.Checked;
             }
+
             var user = this.User;
 
             // make sure username is set in UseEmailAsUserName" mode
@@ -269,6 +275,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     confirmString = Localization.GetString("ConfirmUnRegister", this.LocalResourceFile);
                 }
+
                 ClientAPI.AddButtonConfirm(this.cmdDelete, confirmString);
                 this.chkRandom.Checked = false;
             }
@@ -313,6 +320,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.lblPasswordHelp.Text = Localization.GetString("PasswordHelpAdmin", this.LocalResourceFile);
                 }
+
                 this.txtConfirm.Attributes.Add("value", this.txtConfirm.Text);
                 this.txtPassword.Attributes.Add("value", this.txtPassword.Text);
             }
@@ -373,6 +381,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.displayNameReadOnly.Visible = true;
                     this.displayName.Visible = false;
                 }
+
                 this.firstName.Visible = true;
                 this.lastName.Visible = true;
             }
@@ -476,6 +485,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             string name = this.User.Username;
             int id = this.UserId;
             UserInfo user = this.User;
@@ -495,6 +505,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             var name = this.User.Username;
             var id = this.UserId;
 
@@ -515,6 +526,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
+
             var name = this.User.Username;
             var id = this.UserId;
 
@@ -556,6 +568,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         // Clear the Portal Cache
                         DataCache.ClearPortalUserCountCache(this.UserPortalID);
                     }
+
                     try
                     {
                         // Update DisplayName to conform to Format

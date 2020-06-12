@@ -254,6 +254,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     portalID = portalSettings.PortalId;
                 }
+
                 return portalID;
             }
         }
@@ -301,6 +302,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Add Permission Column
                 this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName));
             }
+
             this.GetRoles();
 
             this.UpdateRolePermissions();
@@ -332,8 +334,10 @@ namespace DotNetNuke.Security.Permissions.Controls
                         }
                     }
                 }
+
                 this.dtRolePermissions.Rows.Add(row);
             }
+
             this.rolePermissionsGrid.DataSource = this.dtRolePermissions;
             this.rolePermissionsGrid.DataBind();
         }
@@ -364,6 +368,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 col = new DataColumn(objPerm.PermissionName);
                 this.dtUserPermissions.Columns.Add(col);
             }
+
             if (this.userPermissionsGrid != null)
             {
                 this._users = this.GetUsers();
@@ -400,8 +405,10 @@ namespace DotNetNuke.Security.Permissions.Controls
                                 }
                             }
                         }
+
                         this.dtUserPermissions.Rows.Add(row);
                     }
+
                     this.userPermissionsGrid.DataSource = this.dtUserPermissions;
                     this.userPermissionsGrid.DataBind();
                 }
@@ -433,6 +440,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 this.Roles.Add(new RoleInfo { RoleID = this.UnAuthUsersRoleId, RoleName = Globals.glbRoleUnauthUserName });
             }
+
             if (checkedRoles.Contains(this.AllUsersRoleId))
             {
                 this.Roles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
@@ -455,6 +463,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return new List<int>();
             }
+
             return this.PermissionsList.Select(r => r.RoleID).Distinct();
         }
 
@@ -496,6 +505,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 templateCol.HeaderStyle.Wrap = true;
                 grid.Columns.Add(templateCol);
             }
+
             var actionsColumn = new ImageCommandColumn
             {
                 CommandName = "Delete/" + nameColumnDataField,
@@ -525,6 +535,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         this.DeleteUserPermissions(entityID);
                     }
+
                     this.BindData();
                     break;
             }
@@ -539,6 +550,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this.RemovePermission(permission.PermissionID, entityID, permission.UserID);
             }
         }
+
         private void DeleteUserPermissions(int entityID)
         {
             var permissionToDelete = this.PermissionsList.Where(p => p.UserID == entityID);
@@ -555,10 +567,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 return "ROLE";
             }
+
             if (command.Contains("displayname"))
             {
                 return "USER";
             }
+
             return Null.NullString;
         }
 
@@ -580,6 +594,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this.SetUpGrid(this.userPermissionsGrid, "DisplayName", "userid", Localization.GetString("PermissionUserHeader.Text", PermissionProvider.Instance().LocalResourceFile));
             }
         }
+
         private void FillSelectRoleComboBox(int selectedRoleGroupId)
         {
             this.cboSelectRole.Items.Clear();
@@ -597,6 +612,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 this.cboSelectRole.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString(CultureInfo.InvariantCulture)));
             }
+
             int[] defaultRoleIds = { this.AllUsersRoleId, portalSettings.RegisteredRoleId, portalSettings.AdministratorRoleId };
             var itemToSelect = this.cboSelectRole.Items.Cast<ListItem>().FirstOrDefault(i => !defaultRoleIds.Contains(int.Parse(i.Value)));
             if (itemToSelect != null)
@@ -672,12 +688,14 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 key = "False";
             }
+
             key += "|" + Convert.ToString(permissionId);
             key += "|";
             if (objectPermissionId > -1)
             {
                 key += Convert.ToString(objectPermissionId);
             }
+
             key += "|" + roleName;
             key += "|" + roleId;
             key += "|" + userID;
@@ -750,6 +768,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
                 this.pnlPermissions.Controls.Add(divAddUser);
             }
+
             this.Controls.Add(this.pnlPermissions);
         }
 
@@ -793,6 +812,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 this.cboRoleGroups.Items.Add(new ListItem(roleGroup.RoleGroupName, roleGroup.RoleGroupID.ToString(CultureInfo.InvariantCulture)));
             }
+
             divRoleGroups.Controls.Add(this.cboRoleGroups);
             addRoleControls.Controls.Add(divRoleGroups);
 
@@ -872,10 +892,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                         {
                             stateKey = PermissionTypeDeny;
                         }
+
                         break;
                     }
                 }
             }
+
             return stateKey;
         }
 
@@ -914,10 +936,12 @@ namespace DotNetNuke.Security.Permissions.Controls
                         {
                             stateKey = PermissionTypeDeny;
                         }
+
                         break;
                     }
                 }
             }
+
             return stateKey;
         }
 
@@ -950,6 +974,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                                 blnExists = true;
                             }
                         }
+
                         if (!blnExists)
                         {
                             objUser = new UserInfo();
@@ -961,6 +986,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                 }
             }
+
             return arrUsers;
         }
 
@@ -1090,6 +1116,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     break;
             }
         }
+
         /// <summary>
         /// Updates the permissions
         /// </summary>
@@ -1117,6 +1144,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         continue;
                     }
+
                     for (int i = 2; i <= dgi.Cells.Count - 2; i++)
                     {
                         // all except first two cells which is role names and role ids and last column is Actions
@@ -1153,6 +1181,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         continue;
                     }
+
                     for (int i = 2; i <= dgi.Cells.Count - 2; i++)
                     {
                         // all except first two cells which is displayname and userid and Last column is Actions
@@ -1256,6 +1285,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 role = RoleController.Instance.GetRoleById(this.PortalId, selectedRoleId);
             }
+
             return role;
         }
     }

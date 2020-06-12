@@ -221,10 +221,12 @@ namespace log4net.Layout
             {
                 writer.WriteAttributeString(ATTR_DOMAIN, loggingEvent.Domain);
             }
+
             if (loggingEvent.Identity != null && loggingEvent.Identity.Length > 0)
             {
                 writer.WriteAttributeString(ATTR_IDENTITY, loggingEvent.Identity);
             }
+
             if (loggingEvent.UserName != null && loggingEvent.UserName.Length > 0)
             {
                 writer.WriteAttributeString(ATTR_USERNAME, loggingEvent.UserName);
@@ -242,6 +244,7 @@ namespace log4net.Layout
                 string base64Message = Convert.ToBase64String(messageBytes, 0, messageBytes.Length);
                 Transform.WriteEscapedXmlString(writer, base64Message, this.InvalidCharReplacement);
             }
+
             writer.WriteEndElement();
 
             PropertiesDictionary properties = loggingEvent.GetProperties();
@@ -266,10 +269,12 @@ namespace log4net.Layout
                         byte[] propertyValueBytes = Encoding.UTF8.GetBytes(loggingEvent.Repository.RendererMap.FindAndRender(entry.Value));
                         valueStr = Convert.ToBase64String(propertyValueBytes, 0, propertyValueBytes.Length);
                     }
+
                     writer.WriteAttributeString(ATTR_VALUE, valueStr);
 
                     writer.WriteEndElement();
                 }
+
                 writer.WriteEndElement();
             }
 

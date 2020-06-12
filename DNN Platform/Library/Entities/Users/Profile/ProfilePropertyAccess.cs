@@ -97,6 +97,7 @@ namespace DotNetNuke.Entities.Users
                 return property != null && property.PropertyName.Equals("photo", StringComparison.InvariantCultureIgnoreCase)
                     ? Globals.ApplicationPath + "/images/no_avatar.gif" : PropertyAccess.ContentLocked;
             }
+
             propertyNotFound = true;
             return string.Empty;
         }
@@ -145,12 +146,14 @@ namespace DotNetNuke.Entities.Users
                                     break;
                                 }
                             }
+
                             // Groups/Roles
                             if (property.ProfileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
                             {
                                 isVisible = true;
                             }
                         }
+
                         break;
                     case UserVisibilityMode.AllUsers:
                         // property is visible to everyone so do nothing
@@ -185,6 +188,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             formatString = "g";
                         }
+
                         result = DateTime.Parse(property.PropertyValue, CultureInfo.InvariantCulture).ToString(formatString, formatProvider);
                         break;
                     case "integer":
@@ -192,6 +196,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             formatString = "g";
                         }
+
                         result = int.Parse(property.PropertyValue).ToString(formatString, formatProvider);
                         break;
                     case "page":
@@ -204,6 +209,7 @@ namespace DotNetNuke.Entities.Users
                                 result = string.Format("<a href='{0}'>{1}</a>", TestableGlobals.Instance.NavigateURL(tabid), tab.LocalizedTabName);
                             }
                         }
+
                         break;
                     case "image":
                         // File is stored as a FileID
@@ -216,6 +222,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             result = IconController.IconURL("Spacer", "1X1");
                         }
+
                         break;
                     case "richtext":
                         var objSecurity = PortalSecurity.Instance;
@@ -226,6 +233,7 @@ namespace DotNetNuke.Entities.Users
                         break;
                 }
             }
+
             return result;
         }
 
@@ -239,6 +247,7 @@ namespace DotNetNuke.Entities.Users
                 strDataType = objListController.GetListEntryInfo("DataType", definition.DataType).Value;
                 DataCache.SetCache(cacheKey, strDataType);
             }
+
             return strDataType;
         }
     }

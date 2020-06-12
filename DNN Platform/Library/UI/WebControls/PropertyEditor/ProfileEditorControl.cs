@@ -94,6 +94,7 @@ namespace DotNetNuke.UI.WebControls
                             countryKey = item.Value;
                         }
                     }
+
                     countryKey = "Country." + countryKey;
                     var attributes = new object[1];
                     attributes[0] = new ListAttribute("Region", countryKey, ListBoundField.Id, ListBoundField.Text);

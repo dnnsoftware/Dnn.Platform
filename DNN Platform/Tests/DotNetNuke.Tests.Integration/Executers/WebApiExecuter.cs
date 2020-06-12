@@ -79,6 +79,7 @@ namespace DotNetNuke.Tests.Integration.Executers
                             break;
                     }
                 }
+
                 return this._connector;
             }
             set
@@ -135,6 +136,7 @@ namespace DotNetNuke.Tests.Integration.Executers
             {
                 throw new InvalidOperationException("GetLastDeserializeResponseMessage cannot be called when the Executer does not have any Responses");
             }
+
             var data = this.Responses.Last().Content.ReadAsStringAsync().Result;
             return JsonConvert.DeserializeObject<JContainer>(data);
         }
@@ -155,6 +157,7 @@ namespace DotNetNuke.Tests.Integration.Executers
             {
                 throw new InvalidOperationException("GetDeserializeResponseMessages cannot be called when the Executer does not have any Responses");
             }
+
             return this.GetResponseMessages().Select(r => JsonConvert.DeserializeObject<JContainer>(r.Content.ReadAsStringAsync().Result));
         }
     }

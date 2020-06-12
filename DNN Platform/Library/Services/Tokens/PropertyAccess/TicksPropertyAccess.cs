@@ -24,6 +24,7 @@ namespace DotNetNuke.Services.Tokens
                 case "ticksperday":
                     return TimeSpan.TicksPerDay.ToString(formatProvider);
             }
+
             PropertyNotFound = true;
             return string.Empty;
         }

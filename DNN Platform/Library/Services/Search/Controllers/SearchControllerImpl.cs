@@ -83,6 +83,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         var parsedQueryContent = parserContent.Parse(keywords);
                         keywordQuery.Add(parsedQueryContent, Occur.SHOULD);
                     }
+
                     query.Add(keywordQuery, Occur.MUST);
                 }
                 catch (Exception)
@@ -99,6 +100,7 @@ namespace DotNetNuke.Services.Search.Controllers
             {
                 portalIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.PortalIdTag, portalId, portalId, true, true), Occur.SHOULD);
             }
+
             if (searchQuery.PortalIds.Any())
             {
                 query.Add(portalIdQuery, Occur.MUST);
@@ -123,6 +125,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 {
                     text = System.Net.WebUtility.HtmlDecode(text);
                 }
+
                 query.Add(new TermQuery(new Term(Constants.Tag, text)), Occur.MUST);
             }
 
@@ -218,6 +221,7 @@ namespace DotNetNuke.Services.Search.Controllers
                     {
                         modDefQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                     }
+
                     if (searchQuery.ModuleDefIds.Any())
                     {
                         query.Add(modDefQuery, Occur.MUST); // Note the MUST
@@ -237,6 +241,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                         }
+
             if (!searchQuery.ModuleDefIds.Any())
                         {
                             searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
@@ -247,6 +252,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         searchTypeIdQuery.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, searchTypeId, searchTypeId, true, true), Occur.SHOULD);
                     }
                 }
+
                 query.Add(searchTypeIdQuery, Occur.MUST);
             }
         }
@@ -393,6 +399,7 @@ namespace DotNetNuke.Services.Search.Controllers
                                 result.Keywords.Add(key, field.StringValue);
                             }
                         }
+
                         break;
                 }
             }

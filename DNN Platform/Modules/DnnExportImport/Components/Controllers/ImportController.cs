@@ -34,6 +34,7 @@ namespace Dnn.ExportImport.Components.Controllers
             {
                 EntitiesController.Instance.RunSchedule();
             }
+
             this.AddEventLog(importDto.PortalId, userId, jobId, Constants.LogTypeSiteImport);
             return jobId;
         }
@@ -98,6 +99,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 isValid = false;
                 errorMessage = "Package is not valid. Technical Details:" + ex.Message;
             }
+
             return isValid;
         }
 
@@ -155,6 +157,7 @@ namespace Dnn.ExportImport.Components.Controllers
                     sortFunc = packageInfo => packageInfo.ExporTime;
                     break;
             }
+
             return sortFunc;
         }
     }

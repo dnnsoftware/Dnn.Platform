@@ -58,10 +58,12 @@ namespace DotNetNuke.UI.WebControls
             {
                 objNodes = objNodes.FindNodeByKey(this.m_sKey).DNNNodes;
             }
+
             foreach (DNNNode objNode in objNodes)
             {
                 objPages.Add(new NavDataPageHierarchyData(objNode));
             }
+
             return objPages;
         }
     }

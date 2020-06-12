@@ -71,22 +71,26 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                         {
                             UpdateRadCfgFiles();
                         }
+
                         if (this.TelerikAssemblyExists())
                         {
                             UpdateWebConfigFile();
                         }
+
                         break;
                     case "09.02.00":
                         if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Web.UI.DialogParametersEncryptionKey");
                         }
+
                         break;
                     case "09.02.01":
                         if (this.TelerikAssemblyExists())
                         {
                             UpdateTelerikEncryptionKey("Telerik.Upload.ConfigurationHashKey");
                         }
+
                         break;
                 }
             }
@@ -231,6 +235,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
                     strError += ex.Message;
                 }
             }
+
             return strError;
         }
     }

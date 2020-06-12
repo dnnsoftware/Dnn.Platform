@@ -71,6 +71,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     return intValue;
                 }
+
                 try
                 {
                     intValue = Convert.ToInt32(this.Value);
@@ -79,6 +80,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return intValue;
             }
         }
@@ -134,6 +136,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     this._listName = this.DataField;
                 }
+
                 return this._listName;
             }
             set
@@ -157,6 +160,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     return intValue;
                 }
+
                 try
                 {
                     // Try and cast the value to an Integer
@@ -166,6 +170,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     Logger.Error(exc);
                 }
+
                 return intValue;
             }
         }
@@ -259,6 +264,7 @@ namespace DotNetNuke.UI.WebControls
                 args.Value = this.StringValue;
                 args.OldValue = this.OldStringValue;
             }
+
             args.StringValue = this.StringValue;
             return args;
         }
@@ -335,6 +341,7 @@ namespace DotNetNuke.UI.WebControls
                     entry = objListController.GetListEntryInfo(this.ListName, this.StringValue);
                     break;
             }
+
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
             if (entry != null)
@@ -381,6 +388,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Onchange, this.Page.ClientScript.GetPostBackEventReference(this, this.ID));
             }
+
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
             // Add the Not Specified Option
@@ -392,6 +400,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
             }
+
             if (this.StringValue == Null.NullString)
             {
                 // Add the Selected Attribute
@@ -420,6 +429,7 @@ namespace DotNetNuke.UI.WebControls
                         itemValue = item.Value;
                         break;
                 }
+
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, itemValue);
                 if (this.StringValue == itemValue)
                 {
@@ -441,6 +451,7 @@ namespace DotNetNuke.UI.WebControls
                         writer.Write(item.Value.Trim());
                         break;
                 }
+
                 writer.RenderEndTag();
             }
 

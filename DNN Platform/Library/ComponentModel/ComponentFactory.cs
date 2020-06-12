@@ -18,6 +18,7 @@ namespace DotNetNuke.ComponentModel
             {
                 throw new ArgumentNullException("installers");
             }
+
             VerifyContainer();
             foreach (IComponentInstaller installer in installers)
             {
@@ -25,6 +26,7 @@ namespace DotNetNuke.ComponentModel
                 {
                     throw new ArgumentNullException("installers");
                 }
+
                 installer.InstallComponents(Container);
             }
         }
@@ -87,6 +89,7 @@ namespace DotNetNuke.ComponentModel
             {
                 components[componentName] = GetComponent<TContract>(componentName);
             }
+
             return components;
         }
 

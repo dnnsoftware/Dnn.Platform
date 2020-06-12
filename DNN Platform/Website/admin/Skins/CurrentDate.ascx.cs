@@ -37,6 +37,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 this.lblDate.CssClass = this.CssClass;
             }
+
             var user = UserController.Instance.GetCurrentUserInfo();
             this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
         }

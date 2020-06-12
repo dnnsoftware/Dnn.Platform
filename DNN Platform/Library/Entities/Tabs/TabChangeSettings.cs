@@ -18,6 +18,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 return false;
             }
+
             var isVersioningEnabled = TabVersionSettings.Instance.IsVersioningEnabled(portalId, tabId);
             var isWorkflowEnable = TabWorkflowSettings.Instance.IsWorkflowEnabled(portalId, tabId);
             return isVersioningEnabled || isWorkflowEnable;

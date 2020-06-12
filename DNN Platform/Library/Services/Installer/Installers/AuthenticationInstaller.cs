@@ -51,6 +51,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 {
                     AuthenticationController.DeleteAuthentication(authSystem);
                 }
+
                 this.Log.AddInfo(string.Format(Util.AUTHENTICATION_UnRegistered, authSystem.AuthenticationType));
             }
             catch (Exception ex)
@@ -93,6 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.AuthSystem.AuthenticationID = this.TempAuthSystem.AuthenticationID;
                     this.AuthSystem.IsEnabled = this.TempAuthSystem.IsEnabled;
                 }
+
                 this.AuthSystem.PackageID = this.Package.PackageID;
                 if (bAdd)
                 {
@@ -104,6 +106,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     // Update service
                     AuthenticationController.UpdateAuthentication(this.AuthSystem);
                 }
+
                 this.Completed = true;
                 this.Log.AddInfo(string.Format(Util.AUTHENTICATION_Registered, this.AuthSystem.AuthenticationType));
             }

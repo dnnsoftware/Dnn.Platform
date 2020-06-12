@@ -207,6 +207,7 @@ namespace DotNetNuke.UI.WebControls
                         }
                     }
                 }
+
                 return a.ToArray(typeof(string)) as string[];
             }
             set
@@ -216,6 +217,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     throw new ArgumentException("Selection mode 'single' cannot have more than one selected item.");
                 }
+
                 foreach (CultureInfo c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
                 {
                     if (this.SelectionMode == LanguageSelectionMode.Single)
@@ -227,6 +229,7 @@ namespace DotNetNuke.UI.WebControls
                         ((CheckBox)this.pnlControl.FindControl("chk" + c.Name)).Checked = false;
                     }
                 }
+
                 foreach (string strLocale in value)
                 {
                     if (this.SelectionMode == LanguageSelectionMode.Single)
@@ -275,6 +278,7 @@ namespace DotNetNuke.UI.WebControls
                     {
                         optLocale.Checked = true;
                     }
+
                     this.pnlControl.Controls.Add(optLocale);
                     lblLocale.Attributes["for"] = optLocale.ClientID;
                 }
@@ -295,12 +299,15 @@ namespace DotNetNuke.UI.WebControls
                     imgLocale.Style["vertical-align"] = "middle";
                     lblLocale.Controls.Add(imgLocale);
                 }
+
                 if (this.ItemStyle != LanguageItemStyle.FlagOnly)
                 {
                     lblLocale.Controls.Add(new LiteralControl("&nbsp;" + c.DisplayName));
                 }
+
                 this.pnlControl.Controls.Add(new LiteralControl("</li>"));
             }
+
             this.pnlControl.Controls.Add(new LiteralControl("</ul>"));
 
             // Hide if not more than one language
@@ -335,6 +342,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
             }
+
             return (CultureInfo[])a.ToArray(typeof(CultureInfo));
         }
     }

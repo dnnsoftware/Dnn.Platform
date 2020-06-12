@@ -57,6 +57,7 @@ namespace DotNetNuke.Services.Exceptions
             {
                 m = UI.Skins.Skin.GetModuleMessageControl(Localization.Localization.GetString("ErrorOccurred"), strError, ModuleMessage.ModuleMessageType.RedError);
             }
+
             return m;
         }
     }

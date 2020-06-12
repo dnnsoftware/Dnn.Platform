@@ -34,6 +34,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._permissionsList = this.FolderPermissions.ToList();
                 }
+
                 return this._permissionsList;
             }
         }
@@ -113,6 +114,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             {
                 objFolderPermission.FolderPermissionID = Convert.ToInt32(settings[2]);
             }
+
             objFolderPermission.FolderPath = this.FolderPath;
             return objFolderPermission;
         }
@@ -250,6 +252,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 // Call base class method to handle standard permissions
                 permission = base.GetPermission(objPerm, role, column, defaultState);
             }
+
             return permission;
         }
 
@@ -371,6 +374,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     {
                         addDelimiter = true;
                     }
+
                     sb.Append(this.BuildKey(
                         objFolderPermission.AllowAccess,
                         objFolderPermission.PermissionID,
@@ -381,6 +385,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                         objFolderPermission.DisplayName));
                 }
             }
+
             allStates[2] = sb.ToString();
             return allStates;
         }
