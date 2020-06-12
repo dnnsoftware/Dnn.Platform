@@ -13,7 +13,7 @@ namespace DotNetNuke.UI.Modules
     /// Class    : IModuleControl
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// IModuleControl provides a common Interface for Module Controls
+    /// IModuleControl provides a common Interface for Module Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public interface IModuleControl

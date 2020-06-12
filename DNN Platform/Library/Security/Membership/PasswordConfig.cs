@@ -17,7 +17,7 @@ namespace DotNetNuke.Security.Membership
     /// Class:      PasswordConfig
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PasswordConfig class provides a wrapper any Portal wide Password Settings
+    /// The PasswordConfig class provides a wrapper any Portal wide Password Settings.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,7 +26,7 @@ namespace DotNetNuke.Security.Membership
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Password Expiry time in days
+        /// Gets or sets and sets the Password Expiry time in days.
         /// </summary>
         /// <returns>An integer.</returns>
         /// -----------------------------------------------------------------------------
@@ -48,7 +48,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets the a Reminder time in days (to remind the user that theire password
-        /// is about to expire
+        /// is about to expire.
         /// </summary>
         /// <returns>An integer.</returns>
         /// -----------------------------------------------------------------------------

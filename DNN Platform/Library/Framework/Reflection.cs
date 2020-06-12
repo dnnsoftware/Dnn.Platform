@@ -20,7 +20,7 @@ namespace DotNetNuke.Framework
     /// Class    : Reflection
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Library responsible for reflection
+    /// Library responsible for reflection.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,11 +31,11 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
-        /// <returns>The created Object</returns>
-        /// <remarks>Overload for creating an object from a Provider configured in web.config</remarks>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
+        /// <returns>The created Object.</returns>
+        /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType)
         {
@@ -44,12 +44,12 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
-        /// <param name="UseCache">Caching switch</param>
-        /// <returns>The created Object</returns>
-        /// <remarks>Overload for creating an object from a Provider configured in web.config</remarks>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="UseCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
+        /// <remarks>Overload for creating an object from a Provider configured in web.config.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, bool UseCache)
         {
@@ -58,14 +58,14 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="ObjectNamespace">The namespace of the object to create.</param>
         /// <param name="ObjectAssemblyName">The assembly of the object to create.</param>
-        /// <returns>The created Object</returns>
+        /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and
-        /// AssemblyName ( this allows derived providers to share the same config )</remarks>
+        /// AssemblyName ( this allows derived providers to share the same config ).</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectNamespace, string ObjectAssemblyName)
         {
@@ -74,15 +74,15 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
         /// <param name="ObjectNamespace">The namespace of the object to create.</param>
         /// <param name="ObjectAssemblyName">The assembly of the object to create.</param>
-        /// <param name="UseCache">Caching switch</param>
-        /// <returns>The created Object</returns>
+        /// <param name="UseCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace and
-        /// AssemblyName ( this allows derived providers to share the same config )</remarks>
+        /// AssemblyName ( this allows derived providers to share the same config ).</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectNamespace, string ObjectAssemblyName, bool UseCache)
         {
@@ -91,15 +91,15 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
-        /// <param name="ObjectProviderName">The name of the Provider</param>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="ObjectProviderName">The name of the Provider.</param>
         /// <param name="ObjectNamespace">The namespace of the object to create.</param>
         /// <param name="ObjectAssemblyName">The assembly of the object to create.</param>
-        /// <returns>The created Object</returns>
+        /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace,
-        /// AssemblyName and ProviderName</remarks>
+        /// AssemblyName and ProviderName.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName)
         {
@@ -108,16 +108,16 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
-        /// <param name="ObjectProviderName">The name of the Provider</param>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="ObjectProviderName">The name of the Provider.</param>
         /// <param name="ObjectNamespace">The namespace of the object to create.</param>
         /// <param name="ObjectAssemblyName">The assembly of the object to create.</param>
-        /// <param name="UseCache">Caching switch</param>
-        /// <returns>The created Object</returns>
+        /// <param name="UseCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace,
-        /// AssemblyName and ProviderName</remarks>
+        /// AssemblyName and ProviderName.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName, bool UseCache)
         {
@@ -126,17 +126,17 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="ObjectProviderType">The type of Object to create (data/navigation)</param>
-        /// <param name="ObjectProviderName">The name of the Provider</param>
+        /// <param name="ObjectProviderType">The type of Object to create (data/navigation).</param>
+        /// <param name="ObjectProviderName">The name of the Provider.</param>
         /// <param name="ObjectNamespace">The namespace of the object to create.</param>
         /// <param name="ObjectAssemblyName">The assembly of the object to create.</param>
-        /// <param name="UseCache">Caching switch</param>
+        /// <param name="UseCache">Caching switch.</param>
         /// <param name="fixAssemblyName">Whether append provider name as part of the assembly name.</param>
-        /// <returns>The created Object</returns>
+        /// <returns>The created Object.</returns>
         /// <remarks>Overload for creating an object from a Provider including NameSpace,
-        /// AssemblyName and ProviderName</remarks>
+        /// AssemblyName and ProviderName.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string ObjectProviderType, string ObjectProviderName, string ObjectNamespace, string ObjectAssemblyName, bool UseCache, bool fixAssemblyName)
         {
@@ -195,12 +195,12 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="TypeName">The fully qualified TypeName</param>
-        /// <param name="CacheKey">The Cache Key</param>
-        /// <returns>The created Object</returns>
-        /// <remarks>Overload that takes a fully-qualified typename and a Cache Key</remarks>
+        /// <param name="TypeName">The fully qualified TypeName.</param>
+        /// <param name="CacheKey">The Cache Key.</param>
+        /// <returns>The created Object.</returns>
+        /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string TypeName, string CacheKey)
         {
@@ -209,13 +209,13 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="TypeName">The fully qualified TypeName</param>
-        /// <param name="CacheKey">The Cache Key</param>
-        /// <param name="UseCache">Caching switch</param>
-        /// <returns>The created Object</returns>
-        /// <remarks>Overload that takes a fully-qualified typename and a Cache Key</remarks>
+        /// <param name="TypeName">The fully qualified TypeName.</param>
+        /// <param name="CacheKey">The Cache Key.</param>
+        /// <param name="UseCache">Caching switch.</param>
+        /// <returns>The created Object.</returns>
+        /// <remarks>Overload that takes a fully-qualified typename and a Cache Key.</remarks>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(string TypeName, string CacheKey, bool UseCache)
         {
@@ -224,11 +224,11 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <typeparam name="T">The type of object to create</typeparam>
+        /// <typeparam name="T">The type of object to create.</typeparam>
         /// <returns></returns>
-        /// <remarks>Generic version</remarks>
+        /// <remarks>Generic version.</remarks>
         /// -----------------------------------------------------------------------------
         public static T CreateObject<T>()
         {
@@ -238,9 +238,9 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates an object
+        /// Creates an object.
         /// </summary>
-        /// <param name="type">The type of object to create</param>
+        /// <param name="type">The type of object to create.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static object CreateObject(Type type)

@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Library.Model
     /// Class    : MenuPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// MenuPermissionInfo provides the Entity Layer for Module Permissions
+    /// MenuPermissionInfo provides the Entity Layer for Module Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -39,9 +39,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader
+        /// Fills a MenuPermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -55,9 +55,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID

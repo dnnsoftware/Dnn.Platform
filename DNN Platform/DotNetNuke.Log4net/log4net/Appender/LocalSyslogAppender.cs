@@ -39,7 +39,7 @@ namespace log4net.Appender
     /// <remarks>
     /// <note>
     /// This appender uses the POSIX libc library functions <c>openlog</c>, <c>syslog</c>, and <c>closelog</c>.
-    /// If these functions are not available on the local system then this appender will not work!
+    /// If these functions are not available on the local system then this appender will not work!.
     /// </note>
     /// <para>
     /// The functions <c>openlog</c>, <c>syslog</c>, and <c>closelog</c> are specified in SUSv2 and
@@ -64,12 +64,12 @@ namespace log4net.Appender
     /// identity is the application name (from <see cref="SystemInfo.ApplicationFriendlyName"/>).
     /// </para>
     /// </remarks>
-    /// <author>Rob Lyon</author>
-    /// <author>Nicko Cadell</author>
+    /// <author>Rob Lyon.</author>
+    /// <author>Nicko Cadell.</author>
     public class LocalSyslogAppender : AppenderSkeleton
     {
         /// <summary>
-        /// syslog severities
+        /// syslog severities.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -122,7 +122,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// syslog facilities
+        /// syslog facilities.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -265,7 +265,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets message identity
+        /// Gets or sets message identity.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -282,7 +282,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets syslog facility
+        /// Gets or sets syslog facility.
         /// </summary>
         /// <remarks>
         /// Set to one of the <see cref="SyslogFacility"/> values. The list of
@@ -296,9 +296,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Add a mapping of level to severity
+        /// Add a mapping of level to severity.
         /// </summary>
-        /// <param name="mapping">The mapping to add</param>
+        /// <param name="mapping">The mapping to add.</param>
         /// <remarks>
         /// <para>
         /// Adds a <see cref="LevelSeverity"/> to this appender.
@@ -379,11 +379,11 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Close the syslog when the appender is closed
+        /// Close the syslog when the appender is closed.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Close the syslog when the appender is closed
+        /// Close the syslog when the appender is closed.
         /// </para>
         /// </remarks>
 #if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
@@ -413,7 +413,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="AppenderSkeleton.Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="AppenderSkeleton.Layout"/> to be set.
@@ -489,7 +489,7 @@ namespace log4net.Appender
         private SyslogFacility m_facility = SyslogFacility.User;
 
         /// <summary>
-        /// The message identity
+        /// The message identity.
         /// </summary>
         private string m_identity;
 
@@ -501,7 +501,7 @@ namespace log4net.Appender
         private IntPtr m_handleToIdentity = IntPtr.Zero;
 
         /// <summary>
-        /// Mapping from level object to syslog severity
+        /// Mapping from level object to syslog severity.
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
@@ -547,12 +547,12 @@ namespace log4net.Appender
             private SyslogSeverity m_severity;
 
             /// <summary>
-            /// Gets or sets the mapped syslog severity for the specified level
+            /// Gets or sets the mapped syslog severity for the specified level.
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped syslog severity for the specified level
+            /// The mapped syslog severity for the specified level.
             /// </para>
             /// </remarks>
             public SyslogSeverity Severity

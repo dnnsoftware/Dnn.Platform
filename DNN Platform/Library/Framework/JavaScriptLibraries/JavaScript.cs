@@ -35,9 +35,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         private const string LegacyPrefix = "LEGACY.";
 
         /// <summary>
-        ///     checks whether the script file is a known javascript library
+        ///     checks whether the script file is a known javascript library.
         /// </summary>
-        /// <param name="jsname">script identifier</param>
+        /// <param name="jsname">script identifier.</param>
         /// <returns></returns>
         public static bool IsInstalled(string jsname)
         {
@@ -46,9 +46,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         }
 
         /// <summary>
-        ///     determine whether to use the debug script for a file
+        ///     determine whether to use the debug script for a file.
         /// </summary>
-        /// <returns>whether to use the debug script</returns>
+        /// <returns>whether to use the debug script.</returns>
         public static bool UseDebugScript()
         {
             if (Globals.Status != Globals.UpgradeStatus.None)
@@ -60,9 +60,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         }
 
         /// <summary>
-        ///     returns the version of a javascript library from the database
+        ///     returns the version of a javascript library from the database.
         /// </summary>
-        /// <param name="jsname">the library name</param>
+        /// <param name="jsname">the library name.</param>
         /// <returns></returns>
         public static string Version(string jsname)
         {
@@ -70,8 +70,8 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return library != null ? Convert.ToString(library.Version) : string.Empty;
         }
 
-        /// <summary>Requests a script to be added to the page</summary>
-        /// <param name="jsname">the library name</param>
+        /// <summary>Requests a script to be added to the page.</summary>
+        /// <param name="jsname">the library name.</param>
         public static void RequestRegistration(string jsname)
         {
             // handle case where script has no javascript library
@@ -94,17 +94,17 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             RequestRegistration(jsname, null, SpecificVersion.Latest);
         }
 
-        /// <summary>Requests a script to be added to the page</summary>
-        /// <param name="jsname">the library name</param>
-        /// <param name="version">the library's version</param>
+        /// <summary>Requests a script to be added to the page.</summary>
+        /// <param name="jsname">the library name.</param>
+        /// <param name="version">the library's version.</param>
         public static void RequestRegistration(string jsname, Version version)
         {
             RequestRegistration(jsname, version, SpecificVersion.Exact);
         }
 
-        /// <summary>Requests a script to be added to the page</summary>
-        /// <param name="jsname">the library name</param>
-        /// <param name="version">the library's version</param>
+        /// <summary>Requests a script to be added to the page.</summary>
+        /// <param name="jsname">the library name.</param>
+        /// <param name="version">the library's version.</param>
         /// <param name="specific">
         /// how much of the <paramref name="version"/> to pay attention to.
         /// When <see cref="SpecificVersion.Latest"/> is passed, ignore the <paramref name="version"/>.
@@ -138,9 +138,9 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         /// <summary>
         ///     method is called once per page event cycle and will
-        ///     load all scripts requested during that page processing cycle
+        ///     load all scripts requested during that page processing cycle.
         /// </summary>
-        /// <param name="page">reference to the current page</param>
+        /// <param name="page">reference to the current page.</param>
         public static void Register(Page page)
         {
             HandlePreInstallorLegacyItemRequests(page);

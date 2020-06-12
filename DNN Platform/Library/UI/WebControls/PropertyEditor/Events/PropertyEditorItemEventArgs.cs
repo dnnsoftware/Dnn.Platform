@@ -14,7 +14,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PropertyEditorItemEventArgs class is a cusom EventArgs class for
-    /// handling Event Args
+    /// handling Event Args.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -23,9 +23,9 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new PropertyEditorItemEventArgs
+        /// Constructs a new PropertyEditorItemEventArgs.
         /// </summary>
-        /// <param name="editor">The editor created</param>
+        /// <param name="editor">The editor created.</param>
         /// -----------------------------------------------------------------------------
         public PropertyEditorItemEventArgs(EditorInfo editor)
         {
@@ -34,9 +34,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets whether the proeprty has changed
+        /// Gets or sets and sets whether the proeprty has changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public EditorInfo Editor { get; set; }
     }

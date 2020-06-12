@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Social.Notifications
     /// Class:      Notification
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Notification class describes the a notification received by a user as a consecuence of an action
+    /// The Notification class describes the a notification received by a user as a consecuence of an action.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Notifications
         private string _displayDate;
 
         /// <summary>
-        /// Gets or sets notificationID - The primary key
+        /// Gets or sets notificationID - The primary key.
         /// </summary>
         [XmlAttribute]
         public int NotificationID
@@ -51,43 +51,43 @@ namespace DotNetNuke.Services.Social.Notifications
         public int NotificationTypeID { get; set; }
 
         /// <summary>
-        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message
+        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message.
         /// </summary>
         [XmlAttribute]
         public string To { get; set; }
 
         /// <summary>
-        /// Gets or sets message From
+        /// Gets or sets message From.
         /// </summary>
         [XmlAttribute]
         public string From { get; set; }
 
         /// <summary>
-        /// Gets or sets message Subject
+        /// Gets or sets message Subject.
         /// </summary>
         [XmlAttribute]
         public string Subject { get; set; }
 
         /// <summary>
-        /// Gets or sets message body
+        /// Gets or sets message body.
         /// </summary>
         [XmlAttribute]
         public string Body { get; set; }
 
         /// <summary>
-        /// Gets or sets context set by creator of the notification
+        /// Gets or sets context set by creator of the notification.
         /// </summary>
         [XmlAttribute]
         public string Context { get; set; }
 
         /// <summary>
-        /// Gets or sets the UserID of the sender of the message
+        /// Gets or sets the UserID of the sender of the message.
         /// </summary>
         [XmlAttribute]
         public int SenderUserID { get; set; }
 
         /// <summary>
-        /// Gets a pretty printed string with the time since the message was created
+        /// Gets a pretty printed string with the time since the message was created.
         /// </summary>
         [XmlAttribute]
         public string DisplayDate
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// Gets or sets for notifications, this field indicates when it has to be removed (or not displayed)
+        /// Gets or sets for notifications, this field indicates when it has to be removed (or not displayed).
         /// </summary>
         [XmlAttribute]
         public DateTime ExpirationDate { get; set; }
@@ -127,19 +127,19 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether should this notification support a dismiss action
+        /// Gets or sets a value indicating whether should this notification support a dismiss action.
         /// </summary>
         [XmlAttribute]
         public bool IncludeDismissAction { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether the notification is displayed on the UI as a toast notification
+        /// Gets or sets a value indicating whether the notification is displayed on the UI as a toast notification.
         /// </summary>
         [XmlAttribute]
         public bool SendToast { get; set; }
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public Notification()
         {

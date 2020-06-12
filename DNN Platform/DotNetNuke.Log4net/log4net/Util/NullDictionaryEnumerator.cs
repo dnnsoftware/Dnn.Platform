@@ -34,8 +34,8 @@ namespace log4net.Util
     /// that is empty and not modifiable.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class NullDictionaryEnumerator : IDictionaryEnumerator
     {
         /// <summary>

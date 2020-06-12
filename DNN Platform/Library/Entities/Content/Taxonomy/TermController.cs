@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// <summary>
         /// Retrieve usage data for the specified term ID.
         /// </summary>
-        /// <param name="termId">Term ID in question</param>
+        /// <param name="termId">Term ID in question.</param>
         /// <returns></returns>
         public TermUsage GetTermUsage(int termId)
         {
@@ -154,7 +154,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// Gets the content of the terms by content item id.
         /// </summary>
         /// <param name="contentItemId">The content item id.</param>
-        /// <returns>term collection</returns>
+        /// <returns>term collection.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">ContentItemId is less than 0.</exception>
         public IQueryable<Term> GetTermsByContent(int contentItemId)
         {
@@ -168,7 +168,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// Gets the terms by vocabulary id.
         /// </summary>
         /// <param name="vocabularyId">The vocabulary id.</param>
-        /// <returns>term collection</returns>
+        /// <returns>term collection.</returns>
         /// <exception cref="System.ArgumentOutOfRangeException">vocabularyId is less than 0.</exception>
         public IQueryable<Term> GetTermsByVocabulary(int vocabularyId)
         {
@@ -182,7 +182,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         /// Gets the terms by vocabulary name.
         /// </summary>
         /// <param name="vocabularyName">Name of the vocabulary.</param>
-        /// <returns>term collection</returns>
+        /// <returns>term collection.</returns>
         /// <exception cref="System.ArgumentException">vocabularyName is empty.</exception>
         public IQueryable<Term> GetTermsByVocabulary(string vocabularyName)
         {

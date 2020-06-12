@@ -28,7 +28,7 @@ using Constants = DotNetNuke.Services.Search.Internals.Constants;
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     /// <summary>
-    ///  Testing various aspects of SearchController
+    ///  Testing various aspects of SearchController.
     /// </summary>
     [TestFixture]
     public class SearchControllerTests
@@ -394,7 +394,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         /// <summary>
-        /// Returns few SearchDocs
+        /// Returns few SearchDocs.
         /// </summary>
         private IEnumerable<SearchDocument> GetStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
@@ -448,9 +448,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         /// <summary>
-        /// Adds standarad SearchDocs in Lucene Index
+        /// Adds standarad SearchDocs in Lucene Index.
         /// </summary>
-        /// <returns>Number of dcuments added</returns>
+        /// <returns>Number of dcuments added.</returns>
         private int AddStandardSearchDocs(int searchTypeId = ModuleSearchTypeId)
         {
             var docs = this.GetStandardSearchDocs(searchTypeId).ToArray();
@@ -662,8 +662,8 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         /// <typeparam name="R"></typeparam>
         /// <param name="proc">The function to execute.</param>
         /// <param name="timeout">The timeout duration.</param>
-        /// <returns>R</returns>
-        /// <remarks>From: http://stackoverflow.com/questions/9460661/implementing-regex-timeout-in-net-4</remarks>
+        /// <returns>R.</returns>
+        /// <remarks>From: http://stackoverflow.com/questions/9460661/implementing-regex-timeout-in-net-4.</remarks>
         private static R ExecuteWithTimeout<R>(Func<R> proc, TimeSpan timeout)
         {
             var r = default(R); // init default return value
@@ -938,7 +938,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         /// Sets up some data for testing security trimming.
         /// In the tests below, the users will have access to the follwoing documents
         /// { 6, 7, 8, 9, 16, 17, 18, 19, 26, 27, 28, 29, ..., etc. }
-        /// The tests check that pagination qith various page sizes returns the proper groupings
+        /// The tests check that pagination qith various page sizes returns the proper groupings.
         /// </summary>
         private void SetupSecurityTrimmingDocs(int totalDocs, int searchType = DocumentSearchTypeId)
         {

@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a Module Host control using the ModuleConfiguration for the Module
+        /// Creates a Module Host control using the ModuleConfiguration for the Module.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -78,9 +78,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the attached ModuleControl
+        /// Gets the attached ModuleControl.
         /// </summary>
-        /// <returns>An IModuleControl</returns>
+        /// <returns>An IModuleControl.</returns>
         public IModuleControl ModuleControl
         {
             get
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the current POrtal Settings
+        /// Gets the current POrtal Settings.
         /// </summary>
         public PortalSettings PortalSettings
         {
@@ -177,9 +177,9 @@ namespace DotNetNuke.UI.Modules
 
         /// ----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that indicates whether the Module Content should be displayed
+        /// Gets a flag that indicates whether the Module Content should be displayed.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         private bool DisplayContent()
         {
             // module content visibility options
@@ -216,9 +216,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that indicates whether the Module is in View Mode
+        /// Gets a flag that indicates whether the Module is in View Mode.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         internal static bool IsViewMode(ModuleInfo moduleInfo, PortalSettings settings)
         {
             bool viewMode;
@@ -239,7 +239,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadModuleControl loads the ModuleControl (PortalModuelBase)
+        /// LoadModuleControl loads the ModuleControl (PortalModuelBase).
         /// </summary>
         private void LoadModuleControl()
         {
@@ -304,7 +304,7 @@ namespace DotNetNuke.UI.Modules
         }
 
         /// <summary>
-        /// LoadUpdatePanel optionally loads an AJAX Update Panel
+        /// LoadUpdatePanel optionally loads an AJAX Update Panel.
         /// </summary>
         private void LoadUpdatePanel()
         {
@@ -353,9 +353,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that indicates whether the Module Instance supports Caching
+        /// Gets a flag that indicates whether the Module Instance supports Caching.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         private bool SupportsCaching()
         {
             return this._moduleConfiguration.CacheTime > 0;
@@ -363,9 +363,9 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Trys to load previously cached Module Content
+        /// Trys to load previously cached Module Content.
         /// </summary>
-        /// <returns>A Boolean that indicates whether the cahed content was loaded</returns>
+        /// <returns>A Boolean that indicates whether the cahed content was loaded.</returns>
         private bool TryLoadCached()
         {
             bool success = false;
@@ -483,7 +483,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateChildControls builds the control tree
+        /// CreateChildControls builds the control tree.
         /// </summary>
         protected override void CreateChildControls()
         {
@@ -531,7 +531,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderContents renders the contents of the control to the output stream
+        /// RenderContents renders the contents of the control to the output stream.
         /// </summary>
         protected override void RenderContents(HtmlTextWriter writer)
         {

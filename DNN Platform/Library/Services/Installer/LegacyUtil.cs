@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LegacyUtil class is a Utility class that provides helper methods to transfer
-    /// legacy packages to Cambrian's Universal Installer based system
+    /// legacy packages to Cambrian's Universal Installer based system.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -238,7 +238,7 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>
-        /// Process legacy language package (that is based on manifest xml file)
+        /// Process legacy language package (that is based on manifest xml file).
         /// </summary>
         public static void ProcessLegacyLanguages()
         {
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>
-        /// Process legacy module version 3 .dnn install file
+        /// Process legacy module version 3 .dnn install file.
         /// </summary>
         /// <param name="desktopModule"></param>
         public static void ProcessLegacyModule(DesktopModuleInfo desktopModule)
@@ -449,7 +449,7 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>
-        /// Process legacy skinobject version 3 .dnn install package
+        /// Process legacy skinobject version 3 .dnn install package.
         /// </summary>
         public static void ProcessLegacySkinControls()
         {

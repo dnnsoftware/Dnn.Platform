@@ -112,8 +112,8 @@ namespace DotNetNuke.Web.InternalServices
         /// Web method that deletes a tab module.
         /// </summary>
         /// <remarks>This has been introduced for integration testing purpuses.</remarks>
-        /// <param name="deleteModuleDto">delete module dto</param>
-        /// <returns>Http response message</returns>
+        /// <param name="deleteModuleDto">delete module dto.</param>
+        /// <returns>Http response message.</returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [DnnAuthorize(StaticRoles = "Administrators")]

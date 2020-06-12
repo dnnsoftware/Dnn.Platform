@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ModulePackageWriter class
+    /// The ModulePackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -105,9 +105,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Desktop Module
+        /// Gets or sets the associated Desktop Module.
         /// </summary>
-        /// <value>A DesktopModuleInfo object</value>
+        /// <value>A DesktopModuleInfo object.</value>
         /// -----------------------------------------------------------------------------
         public DesktopModuleInfo DesktopModule { get; set; }
 

@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      EditorInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The EditorInfo class provides a helper class for the Property Editor
+    /// The EditorInfo class provides a helper class for the Property Editor.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -64,9 +64,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetEditor gets the appropriate Editor based on ID
-        /// properties
+        /// properties.
         /// </summary>
-        /// <param name="editorType">The Id of the Editor</param>
+        /// <param name="editorType">The Id of the Editor.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetEditor(int editorType)

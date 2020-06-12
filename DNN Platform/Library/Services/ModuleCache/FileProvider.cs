@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.ModuleCache
         }
 
         /// <summary>
-        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added
+        /// [jmarino]  2011-06-16 Check for ContainsKey for a write added.
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>

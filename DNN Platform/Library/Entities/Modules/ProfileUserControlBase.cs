@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the OnProfileUpdateCompleted Event
+        /// Raises the OnProfileUpdateCompleted Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdateCompleted(EventArgs e)
@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the ProfileUpdated Event
+        /// Raises the ProfileUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnProfileUpdated(EventArgs e)

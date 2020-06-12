@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// InstallExtensionsStep - Step that installs all the Extensions
+    /// InstallExtensionsStep - Step that installs all the Extensions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class InstallExtensionsStep : BaseInstallationStep
@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(InstallExtensionsStep));
 
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         public override void Execute()
         {

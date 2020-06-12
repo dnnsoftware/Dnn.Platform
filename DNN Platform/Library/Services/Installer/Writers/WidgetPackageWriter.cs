@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The WidgetPackageWriter class
+    /// The WidgetPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>

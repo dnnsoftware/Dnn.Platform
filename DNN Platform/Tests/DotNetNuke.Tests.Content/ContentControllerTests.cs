@@ -23,7 +23,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Content
 {
     /// <summary>
-    ///   Summary description for ContentItemTests
+    ///   Summary description for ContentItemTests.
     /// </summary>
     [TestFixture]
     public class ContentControllerTests

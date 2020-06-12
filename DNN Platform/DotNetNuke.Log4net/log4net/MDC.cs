@@ -48,8 +48,8 @@ namespace log4net
     /// </para>
     /// </remarks>
     /// <threadsafety static="true" instance="true" />
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
     public sealed class MDC
     {
@@ -93,7 +93,7 @@ namespace log4net
         }
 
         /// <summary>
-        /// Add an entry to the MDC
+        /// Add an entry to the MDC.
         /// </summary>
         /// <param name="key">The key to store the value under.</param>
         /// <param name="value">The value to store.</param>
@@ -133,7 +133,7 @@ namespace log4net
         /// </para>
         /// </note>
         /// <para>
-        /// Remove the specified entry from this thread's MDC
+        /// Remove the specified entry from this thread's MDC.
         /// </para>
         /// </remarks>
         [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]
@@ -143,7 +143,7 @@ namespace log4net
         }
 
         /// <summary>
-        /// Clear all entries in the MDC
+        /// Clear all entries in the MDC.
         /// </summary>
         /// <remarks>
         /// <note>
@@ -153,7 +153,7 @@ namespace log4net
         /// </para>
         /// </note>
         /// <para>
-        /// Remove all the entries from this thread's MDC
+        /// Remove all the entries from this thread's MDC.
         /// </para>
         /// </remarks>
         [Obsolete("MDC has been replaced by ThreadContext.Properties. Scheduled removal in v10.0.0.")]

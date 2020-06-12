@@ -45,15 +45,15 @@ namespace log4net.Config
     /// methods.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     [Serializable]
     public sealed class SecurityContextProviderAttribute : ConfiguratorAttribute
     {
         /// <summary>
-        /// Construct provider attribute with type specified
+        /// Construct provider attribute with type specified.
         /// </summary>
-        /// <param name="providerType">the type of the provider to use</param>
+        /// <param name="providerType">the type of the provider to use.</param>
         /// <remarks>
         /// <para>
         /// The provider specified must subclass the <see cref="SecurityContextProvider"/>
@@ -85,7 +85,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Configures the SecurityContextProvider
+        /// Configures the SecurityContextProvider.
         /// </summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>

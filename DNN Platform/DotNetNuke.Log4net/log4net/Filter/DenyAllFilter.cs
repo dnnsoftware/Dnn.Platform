@@ -37,29 +37,29 @@ namespace log4net.Filter
     /// behavior.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class DenyAllFilter : FilterSkeleton
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public DenyAllFilter()
         {
         }
 
         /// <summary>
-        /// Always returns the integer constant <see cref="FilterDecision.Deny"/>
+        /// Always returns the integer constant <see cref="FilterDecision.Deny"/>.
         /// </summary>
-        /// <param name="loggingEvent">the LoggingEvent to filter</param>
-        /// <returns>Always returns <see cref="FilterDecision.Deny"/></returns>
+        /// <param name="loggingEvent">the LoggingEvent to filter.</param>
+        /// <returns>Always returns <see cref="FilterDecision.Deny"/>.</returns>
         /// <remarks>
         /// <para>
         /// Ignores the event being logged and just returns
         /// <see cref="FilterDecision.Deny"/>. This can be used to change the default filter
         /// chain behavior from <see cref="FilterDecision.Accept"/> to <see cref="FilterDecision.Deny"/>. This filter
         /// should only be used as the last filter in the chain
-        /// as any further filters will be ignored!
+        /// as any further filters will be ignored!.
         /// </para>
         /// </remarks>
         public override FilterDecision Decide(LoggingEvent loggingEvent)

@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Admin.Security
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MemberServices UserModuleBase is used to manage a User's services
+    /// The MemberServices UserModuleBase is used to manage a User's services.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -34,12 +34,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatPrice formats the Fee amount and filters out null-values
+        /// FormatPrice formats the Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="price">The price to format</param>
-        ///     <returns>The correctly formatted price</returns>
+        ///     <param name="price">The price to format.</param>
+        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
         private string FormatPrice(float price)
         {
@@ -106,12 +106,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatExpiryDate formats the expiry date and filters out null-values
+        /// FormatExpiryDate formats the expiry date and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="expiryDate">The date to format</param>
-        ///     <returns>The correctly formatted date</returns>
+        ///     <param name="expiryDate">The date to format.</param>
+        ///     <returns>The correctly formatted date.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatExpiryDate(DateTime expiryDate)
         {
@@ -140,14 +140,14 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatPrice formats the Fee amount and filters out null-values
+        /// FormatPrice formats the Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="price">The price to format</param>
+        ///     <param name="price">The price to format.</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        ///     <returns>The correctly formatted price</returns>
+        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatPrice(float price, int period, string frequency)
         {
@@ -178,14 +178,14 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatTrial formats the Trial Fee amount and filters out null-values
+        /// FormatTrial formats the Trial Fee amount and filters out null-values.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="price">The price to format</param>
+        ///     <param name="price">The price to format.</param>
         /// <param name="period">Period of price.</param>
         /// <param name="frequency">Frenquency of price.</param>
-        ///     <returns>The correctly formatted price</returns>
+        ///     <returns>The correctly formatted price.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatTrial(float price, int period, string frequency)
         {
@@ -220,11 +220,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatURL correctly formats a URL
+        /// FormatURL correctly formats a URL.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <returns>The correctly formatted url</returns>
+        ///     <returns>The correctly formatted url.</returns>
         /// -----------------------------------------------------------------------------
         protected string FormatURL()
         {
@@ -249,13 +249,13 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ServiceText gets the Service Text (Cancel or Subscribe)
+        /// ServiceText gets the Service Text (Cancel or Subscribe).
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="subscribed">The service state</param>
+        ///     <param name="subscribed">The service state.</param>
         ///     <param name="expiryDate">The service expiry date.</param>
-        ///     <returns>The correctly formatted text</returns>
+        ///     <returns>The correctly formatted text.</returns>
         /// -----------------------------------------------------------------------------
         protected string ServiceText(bool subscribed, DateTime expiryDate)
         {
@@ -329,7 +329,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
@@ -347,7 +347,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the SubscriptionUpdated Event
+        /// Raises the SubscriptionUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnSubscriptionUpdated(SubscriptionUpdatedEventArgs e)
@@ -365,7 +365,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -381,7 +381,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdRSVP_Click runs when the Subscribe to RSVP Code Roles Button is clicked
+        /// cmdRSVP_Click runs when the Subscribe to RSVP Code Roles Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -454,16 +454,16 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The SubscriptionUpdatedEventArgs class provides a customised EventArgs class for
-        /// the SubscriptionUpdated Event
+        /// the SubscriptionUpdated Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public class SubscriptionUpdatedEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new SubscriptionUpdatedEventArgs
+            /// Constructs a new SubscriptionUpdatedEventArgs.
             /// </summary>
-            /// <param name="cancel">Whether this is a subscription cancellation</param>
+            /// <param name="cancel">Whether this is a subscription cancellation.</param>
             /// <param name="roleName">The role name of subscription role.</param>
             /// -----------------------------------------------------------------------------
             public SubscriptionUpdatedEventArgs(bool cancel, string roleName)
@@ -474,14 +474,14 @@ namespace DotNetNuke.Modules.Admin.Security
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets or sets a value indicating whether gets and sets whether this was a cancelation
+            /// Gets or sets a value indicating whether gets and sets whether this was a cancelation.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public bool Cancel { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets or sets and sets the RoleName that was (un)subscribed to
+            /// Gets or sets and sets the RoleName that was (un)subscribed to.
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string RoleName { get; set; }

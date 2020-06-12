@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ConnectionConfig - A class that represents Install/DotNetNuke.Install.Config/Connection
+    /// ConnectionConfig - A class that represents Install/DotNetNuke.Install.Config/Connection.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class ConnectionConfig

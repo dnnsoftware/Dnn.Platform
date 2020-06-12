@@ -9,10 +9,10 @@ using System.Web.UI.HtmlControls;
 namespace DotNetNuke.UI.Skins.Controls
 {
     /// -----------------------------------------------------------------------------
-    /// <summary>A skin object which enables adding a <c>meta</c> element to the <c>head</c></summary>
+    /// <summary>A skin object which enables adding a <c>meta</c> element to the <c>head</c>.</summary>
     public partial class Meta : SkinObjectBase
     {
-        /// <summary>Backing field for <see cref="Http" /></summary>
+        /// <summary>Backing field for <see cref="Http" />.</summary>
         private readonly HttpPlaceholder http = new HttpPlaceholder();
 
         /// <summary>
@@ -22,10 +22,10 @@ namespace DotNetNuke.UI.Skins.Controls
         /// </summary>
         public string Name { get; set; }
 
-        /// <summary>Gets or sets the content of the <c>meta</c> element</summary>
+        /// <summary>Gets or sets the content of the <c>meta</c> element.</summary>
         public string Content { get; set; }
 
-        /// <summary>Gets an object to set the <see cref="HttpEquiv" /> property</summary>
+        /// <summary>Gets an object to set the <see cref="HttpEquiv" /> property.</summary>
         public HttpPlaceholder Http
         {
             get { return this.http; }
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             /// <summary>
             /// Gets or sets the <see cref="Meta.HttpEquiv"/> of the parent
-            /// <c>meta</c> element
+            /// <c>meta</c> element.
             /// </summary>
             public string Equiv { get; set; }
         }

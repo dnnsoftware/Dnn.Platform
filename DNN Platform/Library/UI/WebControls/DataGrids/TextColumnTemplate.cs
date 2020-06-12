@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      TextColumnTemplate
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The TextColumnTemplate provides a Template for the TextColumn
+    /// The TextColumnTemplate provides a Template for the TextColumn.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class TextColumnTemplate : ITemplate
@@ -36,25 +36,25 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Data Field is the field that binds to the Text Column
+        /// Gets or sets the Data Field is the field that binds to the Text Column.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string DataField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DesignMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the type of Template to Create
+        /// Gets or sets the type of Template to Create.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public ListItemType ItemType
         {
@@ -71,27 +71,27 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Text (for Header/Footer Templates)
+        /// Gets or sets the Text (for Header/Footer Templates).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Text { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Width of the Column
+        /// Gets or sets the Width of the Column.
         /// </summary>
-        /// <value>A Unit</value>
+        /// <value>A Unit.</value>
         /// -----------------------------------------------------------------------------
         public Unit Width { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InstantiateIn instantiates the template (implementation of ITemplate)
+        /// InstantiateIn instantiates the template (implementation of ITemplate).
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
@@ -120,9 +120,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Data Field
+        /// Gets the value of the Data Field.
         /// </summary>
-        ///     <param name="container">The parent container (DataGridItem)</param>
+        ///     <param name="container">The parent container (DataGridItem).</param>
         /// -----------------------------------------------------------------------------
         private string GetValue(DataGridItem container)
         {
@@ -151,12 +151,12 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Item_DataBinding runs when an Item of type ListItemType.Item is being data-bound
+        /// Item_DataBinding runs when an Item of type ListItemType.Item is being data-bound.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="sender"> The object that triggers the event</param>
-        /// <param name="e">An EventArgs object</param>
+        /// <param name="sender"> The object that triggers the event.</param>
+        /// <param name="e">An EventArgs object.</param>
         /// -----------------------------------------------------------------------------
         private void Item_DataBinding(object sender, EventArgs e)
         {

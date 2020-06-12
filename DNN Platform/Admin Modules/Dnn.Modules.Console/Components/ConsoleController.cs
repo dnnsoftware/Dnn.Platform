@@ -18,14 +18,14 @@ using DotNetNuke.Services.Exceptions;
 namespace Dnn.Modules.Console.Components
 {
     /// <summary>
-    /// Controls the Console
+    /// Controls the Console.
     /// </summary>
     public class ConsoleController
     {
         /// <summary>
         /// Gets the size values.
         /// </summary>
-        /// <returns>A list with different icon types</returns>
+        /// <returns>A list with different icon types.</returns>
         public static IList<string> GetSizeValues()
         {
             IList<string> returnValue = new List<string>();
@@ -38,7 +38,7 @@ namespace Dnn.Modules.Console.Components
         /// <summary>
         /// Gets the view values.
         /// </summary>
-        /// <returns>Show or Hide</returns>
+        /// <returns>Show or Hide.</returns>
         public static IList<string> GetViewValues()
         {
             IList<string> returnValue = new List<string>();

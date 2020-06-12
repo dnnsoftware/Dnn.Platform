@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties
+    /// The AuthenticationEditor.ascx control is used to edit the Authentication Properties.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine Binds the Authentication System
+        /// This routine Binds the Authentication System.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void BindAuthentication()

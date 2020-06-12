@@ -29,7 +29,7 @@ using DotNetNuke.Services.Search.Entities;
 namespace DotNetNuke.Security.Roles
 {
     /// <summary>
-    /// The RoleController class provides Business Layer methods for Roles
+    /// The RoleController class provides Business Layer methods for Roles.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class RoleController : ServiceLocator<IRoleController, RoleController>, IRoleController
@@ -321,23 +321,23 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>
-        /// Gets a User/Role
+        /// Gets a User/Role.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="userId">The Id of the user</param>
-        /// <param name="roleId">The Id of the Role</param>
-        /// <returns>A UserRoleInfo object</returns>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="userId">The Id of the user.</param>
+        /// <param name="roleId">The Id of the Role.</param>
+        /// <returns>A UserRoleInfo object.</returns>
         public UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {
             return provider.GetUserRole(portalId, userId, roleId);
         }
 
         /// <summary>
-        /// Gets a list of UserRoles for the user
+        /// Gets a list of UserRoles for the user.
         /// </summary>
-        /// <param name="user">A UserInfo object representaing the user</param>
+        /// <param name="user">A UserInfo object representaing the user.</param>
         /// <param name="includePrivate">Include private roles.</param>
-        /// <returns>A list of UserRoleInfo objects</returns>
+        /// <returns>A list of UserRoleInfo objects.</returns>
         public IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
         {
             return provider.GetUserRoles(user, includePrivate);
@@ -501,10 +501,10 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a Role Group
+        /// Adds a Role Group.
         /// </summary>
-        /// <param name="objRoleGroupInfo">The RoleGroup to Add</param>
-        /// <returns>The Id of the new role</returns>
+        /// <param name="objRoleGroupInfo">The RoleGroup to Add.</param>
+        /// <returns>The Id of the new role.</returns>
         /// -----------------------------------------------------------------------------
         public static int AddRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
@@ -515,16 +515,16 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>
-        /// Adds a User to a Role
+        /// Adds a User to a Role.
         /// </summary>
-        /// <param name="user">The user to assign</param>
-        /// <param name="role">The role to add</param>
-        /// <param name="portalSettings">The PortalSettings of the Portal</param>
-        /// <param name="status">RoleStatus</param>
-        /// <param name="effectiveDate">The expiry Date of the Role membership</param>
-        /// <param name="expiryDate">The expiry Date of the Role membership</param>
-        /// <param name="notifyUser">A flag that indicates whether the user should be notified</param>
-        /// <param name="isOwner">A flag that indicates whether this user should be one of the group owners</param>
+        /// <param name="user">The user to assign.</param>
+        /// <param name="role">The role to add.</param>
+        /// <param name="portalSettings">The PortalSettings of the Portal.</param>
+        /// <param name="status">RoleStatus.</param>
+        /// <param name="effectiveDate">The expiry Date of the Role membership.</param>
+        /// <param name="expiryDate">The expiry Date of the Role membership.</param>
+        /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
+        /// <param name="isOwner">A flag that indicates whether this user should be one of the group owners.</param>
         public static void AddUserRole(UserInfo user, RoleInfo role, PortalSettings portalSettings, RoleStatus status, DateTime effectiveDate, DateTime expiryDate, bool notifyUser, bool isOwner)
         {
             var userRole = Instance.GetUserRole(portalSettings.PortalId, user.UserID, role.RoleID);
@@ -559,15 +559,15 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Determines if the specified user can be removed from a role
+        /// Determines if the specified user can be removed from a role.
         /// </summary>
         /// <remarks>
         /// Roles such as "Registered Users" and "Administrators" can only
-        /// be removed in certain circumstances
+        /// be removed in certain circumstances.
         /// </remarks>
-        /// <param name="PortalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings</param>
-        /// <param name="UserId">The Id of the User that should be checked for role removability</param>
-        /// <param name="RoleId">The Id of the Role that should be checked for removability</param>
+        /// <param name="PortalSettings">A <see cref="PortalSettings">PortalSettings</see> structure representing the current portal settings.</param>
+        /// <param name="UserId">The Id of the User that should be checked for role removability.</param>
+        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool CanRemoveUserFromRole(PortalSettings PortalSettings, int UserId, int RoleId)
@@ -580,15 +580,15 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Determines if the specified user can be removed from a role
+        /// Determines if the specified user can be removed from a role.
         /// </summary>
         /// <remarks>
         /// Roles such as "Registered Users" and "Administrators" can only
-        /// be removed in certain circumstances
+        /// be removed in certain circumstances.
         /// </remarks>
-        /// <param name="PortalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal</param>
-        /// <param name="UserId">The Id of the User</param>
-        /// <param name="RoleId">The Id of the Role that should be checked for removability</param>
+        /// <param name="PortalInfo">A <see cref="PortalInfo">PortalInfo</see> structure representing the current portal.</param>
+        /// <param name="UserId">The Id of the User.</param>
+        /// <param name="RoleId">The Id of the Role that should be checked for removability.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool CanRemoveUserFromRole(PortalInfo PortalInfo, int UserId, int RoleId)
@@ -601,7 +601,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes a Role Group
+        /// Deletes a Role Group.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void DeleteRoleGroup(int PortalID, int RoleGroupId)
@@ -611,9 +611,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes a Role Group
+        /// Deletes a Role Group.
         /// </summary>
-        /// <param name="objRoleGroupInfo">The RoleGroup to Delete</param>
+        /// <param name="objRoleGroupInfo">The RoleGroup to Delete.</param>
         /// -----------------------------------------------------------------------------
         public static void DeleteRoleGroup(RoleGroupInfo objRoleGroupInfo)
         {
@@ -622,12 +622,12 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>
-        /// Removes a User from a Role
+        /// Removes a User from a Role.
         /// </summary>
-        /// <param name="objUser">The user to remove</param>
-        /// <param name="role">The role to remove the use from</param>
-        /// <param name="portalSettings">The PortalSettings of the Portal</param>
-        /// <param name="notifyUser">A flag that indicates whether the user should be notified</param>
+        /// <param name="objUser">The user to remove.</param>
+        /// <param name="role">The role to remove the use from.</param>
+        /// <param name="portalSettings">The PortalSettings of the Portal.</param>
+        /// <param name="notifyUser">A flag that indicates whether the user should be notified.</param>
         /// <returns></returns>
         public static bool DeleteUserRole(UserInfo objUser, RoleInfo role, PortalSettings portalSettings, bool notifyUser)
         {
@@ -645,7 +645,7 @@ namespace DotNetNuke.Security.Roles
 
         /// <summary>
         /// Completely remove all a user's roles for a specific portal. This method is used when
-        /// anonymizing a user
+        /// anonymizing a user.
         /// </summary>
         /// <param name="user">User for which all roles must be deleted. The PortalId property
         /// is used to determine for which portal roles must be removed.</param>
@@ -661,10 +661,10 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fetch a single RoleGroup
+        /// Fetch a single RoleGroup.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="roleGroupId">Role Group ID</param>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="roleGroupId">Role Group ID.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -675,10 +675,10 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fetch a single RoleGroup by Name
+        /// Fetch a single RoleGroup by Name.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="roleGroupName">Role Group Name</param>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="roleGroupName">Role Group Name.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -689,10 +689,10 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an ArrayList of RoleGroups
+        /// Gets an ArrayList of RoleGroups.
         /// </summary>
-        /// <param name="PortalID">The Id of the Portal</param>
-        /// <returns>An ArrayList of RoleGroups</returns>
+        /// <param name="PortalID">The Id of the Portal.</param>
+        /// <returns>An ArrayList of RoleGroups.</returns>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetRoleGroups(int PortalID)
         {
@@ -701,10 +701,10 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Serializes the role groups
+        /// Serializes the role groups.
         /// </summary>
-        /// <param name="writer">An XmlWriter</param>
-        /// <param name="portalID">The Id of the Portal</param>
+        /// <param name="writer">An XmlWriter.</param>
+        /// <param name="portalID">The Id of the Portal.</param>
         /// -----------------------------------------------------------------------------
         public static void SerializeRoleGroups(XmlWriter writer, int portalID)
         {
@@ -727,9 +727,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Role Group
+        /// Updates a Role Group.
         /// </summary>
-        /// <param name="roleGroup">The RoleGroup to Update</param>
+        /// <param name="roleGroup">The RoleGroup to Update.</param>
         /// -----------------------------------------------------------------------------
         public static void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {

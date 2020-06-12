@@ -5,10 +5,10 @@
 namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
-    /// CacheLevel is used to specify the cachability of a string, determined as minimum of the used token cachability
+    /// CacheLevel is used to specify the cachability of a string, determined as minimum of the used token cachability.
     /// </summary>
     /// <remarks>
-    /// CacheLevel is determined as minimum of the used tokens' cachability
+    /// CacheLevel is determined as minimum of the used tokens' cachability.
     /// </remarks>
     public enum CacheLevel : byte
     {

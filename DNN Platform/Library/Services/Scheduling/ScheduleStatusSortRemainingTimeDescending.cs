@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Scheduling
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ScheduleStatusSortRemainingTimeDescending Class is a custom IComparer Implementation
-    /// used to sort the Schedule Items
+    /// used to sort the Schedule Items.
     /// </summary>
     /// <remarks>
     /// </remarks>

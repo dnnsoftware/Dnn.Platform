@@ -39,12 +39,12 @@ namespace log4net.Repository.Hierarchy
     /// the reference equality of the interned strings is compared.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     internal sealed class LoggerKey
     {
         /// <summary>
-        /// Construct key with string name
+        /// Construct key with string name.
         /// </summary>
         /// <remarks>
         /// <para>

@@ -18,8 +18,8 @@ namespace DotNetNuke.ComponentModel
         /// <summary>
         /// Initializes a new instance of the SingletonComponentBuilder class.
         /// </summary>
-        /// <param name="name">The name of the component</param>
-        /// <param name="type">The type of the component</param>
+        /// <param name="name">The name of the component.</param>
+        /// <param name="type">The type of the component.</param>
         public SingletonComponentBuilder(string name, Type type)
         {
             this._Name = name;

@@ -25,7 +25,7 @@ using log4net.Core;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Writes a newline to the output
+    /// Writes a newline to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -47,11 +47,11 @@ namespace log4net.Util.PatternStringConverters
     ///   </item>
     /// </list>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class NewLinePatternConverter : LiteralPatternConverter, IOptionHandler
     {
         /// <summary>
-        /// Initialize the converter
+        /// Initialize the converter.
         /// </summary>
         /// <remarks>
         /// <para>

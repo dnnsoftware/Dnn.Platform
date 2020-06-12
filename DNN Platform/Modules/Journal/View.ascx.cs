@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Journal
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ViewJournal class displays the content
+    /// The ViewJournal class displays the content.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class View : JournalModuleBase
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.Journal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, EventArgs e)

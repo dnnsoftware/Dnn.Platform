@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Urls
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UrlRewriterUtils));
 
         /// <summary>
-        /// Return a FriendlyUrlOptions object from the provider settings
+        /// Return a FriendlyUrlOptions object from the provider settings.
         /// </summary>
         /// <param name="settings"></param>
         /// <returns></returns>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Return an extended FriendlyUrlOptions object for Custom URLs checkings
+        /// Return an extended FriendlyUrlOptions object for Custom URLs checkings.
         /// </summary>
         /// <param name="options"></param>
         /// <returns></returns>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Logs the 404 error to a table for later checking
+        /// Logs the 404 error to a table for later checking.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="settings"></param>
@@ -112,7 +112,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// logs an exception once per cache-lifetime
+        /// logs an exception once per cache-lifetime.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="status"></param>

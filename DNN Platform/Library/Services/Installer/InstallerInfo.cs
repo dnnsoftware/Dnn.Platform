@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Installer
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallerInfo instance
+        /// This Constructor creates a new InstallerInfo instance.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public InstallerInfo()
@@ -43,9 +43,9 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new InstallerInfo instance from a
-        /// string representing the physical path to the root of the site
+        /// string representing the physical path to the root of the site.
         /// </summary>
-        /// <param name="sitePath">The physical path to the root of the site</param>
+        /// <param name="sitePath">The physical path to the root of the site.</param>
         /// <param name="mode">Install Mode.</param>
         /// -----------------------------------------------------------------------------
         public InstallerInfo(string sitePath, InstallMode mode)
@@ -59,10 +59,10 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new InstallerInfo instance from a Stream and a
-        /// string representing the physical path to the root of the site
+        /// string representing the physical path to the root of the site.
         /// </summary>
-        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance</param>
-        /// <param name="sitePath">The physical path to the root of the site</param>
+        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
+        /// <param name="sitePath">The physical path to the root of the site.</param>
         /// -----------------------------------------------------------------------------
         public InstallerInfo(Stream inputStream, string sitePath)
         {
@@ -78,11 +78,11 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// This Constructor creates a new InstallerInfo instance from a string representing
         /// the physical path to the temporary install folder and a string representing
-        /// the physical path to the root of the site
+        /// the physical path to the root of the site.
         /// </summary>
-        /// <param name="tempFolder">The physical path to the zip file containg the package</param>
-        /// <param name="manifest">The manifest filename</param>
-        /// <param name="sitePath">The physical path to the root of the site</param>
+        /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
+        /// <param name="manifest">The manifest filename.</param>
+        /// <param name="sitePath">The physical path to the root of the site.</param>
         /// -----------------------------------------------------------------------------
         public InstallerInfo(string tempFolder, string manifest, string sitePath)
         {
@@ -97,10 +97,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallerInfo instance from a PackageInfo object
+        /// This Constructor creates a new InstallerInfo instance from a PackageInfo object.
         /// </summary>
-        /// <param name="package">The PackageInfo instance</param>
-        /// <param name="sitePath">The physical path to the root of the site</param>
+        /// <param name="package">The PackageInfo instance.</param>
+        /// <param name="sitePath">The physical path to the root of the site.</param>
         /// -----------------------------------------------------------------------------
         public InstallerInfo(PackageInfo package, string sitePath)
         {
@@ -114,25 +114,25 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string AllowableFiles { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package
+        /// Gets a Dictionary of Files that are included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Files { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the package contains Valid Files
+        /// Gets a value indicating whether gets whether the package contains Valid Files.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool HasValidFiles
         {
@@ -150,33 +150,33 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the File Extension WhiteList is ignored
+        /// Gets or sets a value indicating whether gets and sets whether the File Extension WhiteList is ignored.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool IgnoreWhiteList { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets whether the Package is already installed with the same version
+        /// Gets or sets a value indicating whether gets whether the Package is already installed with the same version.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool Installed { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the InstallMode
+        /// Gets the InstallMode.
         /// </summary>
-        /// <value>A InstallMode value</value>
+        /// <value>A InstallMode value.</value>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Invalid File Extensions
+        /// Gets the Invalid File Extensions.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string InvalidFileExtensions
         {
@@ -195,16 +195,16 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets whether the Installer is in legacy mode
+        /// Gets or sets a value indicating whether gets whether the Installer is in legacy mode.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsLegacyMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid
+        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool IsValid
         {
@@ -216,74 +216,74 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Logger
+        /// Gets or sets the associated Logger.
         /// </summary>
-        /// <value>A Logger</value>
+        /// <value>A Logger.</value>
         /// -----------------------------------------------------------------------------
         public string LegacyError { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Logger
+        /// Gets the associated Logger.
         /// </summary>
-        /// <value>A Logger</value>
+        /// <value>A Logger.</value>
         /// -----------------------------------------------------------------------------
         public Logger Log { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Manifest File for the Package
+        /// Gets and Sets the Manifest File for the Package.
         /// </summary>
-        /// <value>An InstallFile</value>
+        /// <value>An InstallFile.</value>
         /// -----------------------------------------------------------------------------
         public InstallFile ManifestFile { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Id of the package after installation (-1 if fail)
+        /// Gets or sets the Id of the package after installation (-1 if fail).
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke")
+        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string PhysicalSitePath { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Id of the current portal (-1 if Host)
+        /// Gets or sets the Id of the current portal (-1 if Host).
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int PortalID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Package Install is being repaird
+        /// Gets or sets a value indicating whether gets and sets whether the Package Install is being repaird.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool RepairInstall { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the security Access Level of the user that is calling the INstaller
+        /// Gets or sets and sets the security Access Level of the user that is calling the INstaller.
         /// </summary>
-        /// <value>A SecurityAccessLevel enumeration</value>
+        /// <value>A SecurityAccessLevel enumeration.</value>
         /// -----------------------------------------------------------------------------
         public SecurityAccessLevel SecurityAccessLevel { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the Temporary Install Folder used to unzip the archive (and to place the
-        /// backups of existing files) during InstallMode
+        /// backups of existing files) during InstallMode.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string TempInstallFolder { get; private set; }
 

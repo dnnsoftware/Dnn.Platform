@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
     ///   The base class for all RSS elements (item, image, channel)
-    ///   has collection of attributes
+    ///   has collection of attributes.
     /// </summary>
     public abstract class RssElementBase
     {

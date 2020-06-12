@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Returns the chosen portal alias for a specific portal Id and culture Code
+        /// Returns the chosen portal alias for a specific portal Id and culture Code.
         /// </summary>
         /// <param name="aliases"></param>
         /// <param name="portalId"></param>
@@ -91,15 +91,15 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches
+        /// Returns a ChosenPortalAlias object where the portalId, culture code and isMobile matches.
         /// </summary>
         /// <param name="aliases"></param>
         /// <param name="portalId"></param>
         /// <param name="result"></param>
         /// <param name="cultureCode"></param>
         /// <param name="browserType"></param>
-        /// <returns>A ChosenPOrtalAlias</returns>
-        /// <remarks>Note will return a best-match by portal if no specific culture Code match found</remarks>
+        /// <returns>A ChosenPOrtalAlias.</returns>
+        /// <remarks>Note will return a best-match by portal if no specific culture Code match found.</remarks>
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, BrowserTypes browserType)
         {
             var aliasList = aliases.ToList();

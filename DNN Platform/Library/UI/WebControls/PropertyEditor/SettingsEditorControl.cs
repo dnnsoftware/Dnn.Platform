@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SettingsEditorControl control provides an Editor to edit DotNetNuke
-    /// Settings
+    /// Settings.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -29,9 +29,9 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Underlying DataSource
+        /// Gets the Underlying DataSource.
         /// </summary>
-        /// <value>An IEnumerable</value>
+        /// <value>An IEnumerable.</value>
         /// -----------------------------------------------------------------------------
         protected override IEnumerable UnderlyingDataSource
         {
@@ -43,24 +43,24 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the CustomEditors that are used by this control
+        /// Gets or sets and sets the CustomEditors that are used by this control.
         /// </summary>
-        /// <value>The CustomEditors object</value>
+        /// <value>The CustomEditors object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public Hashtable CustomEditors { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Visibility values that are used by this control
+        /// Gets or sets and sets the Visibility values that are used by this control.
         /// </summary>
-        /// <value>The CustomEditors object</value>
+        /// <value>The CustomEditors object.</value>
         /// -----------------------------------------------------------------------------
         public Hashtable Visibility { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSettings converts the DataSource into an ArrayList (IEnumerable)
+        /// GetSettings converts the DataSource into an ArrayList (IEnumerable).
         /// </summary>
         /// -----------------------------------------------------------------------------
         private ArrayList GetSettings()
@@ -103,9 +103,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetRowVisibility determines the Visibility of a row in the table
+        /// GetRowVisibility determines the Visibility of a row in the table.
         /// </summary>
-        /// <param name="obj">The property</param>
+        /// <param name="obj">The property.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool GetRowVisibility(object obj)

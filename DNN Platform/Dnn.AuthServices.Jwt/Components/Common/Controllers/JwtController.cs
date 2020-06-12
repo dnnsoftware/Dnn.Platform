@@ -94,7 +94,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         }
 
         /// <summary>
-        /// Validates user login credentials and returns result when successful
+        /// Validates user login credentials and returns result when successful.
         /// </summary>
         /// <returns></returns>
         public LoginResultData LoginUser(HttpRequestMessage request, LoginData loginData)

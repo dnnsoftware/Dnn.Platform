@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Search
     /// Class:      SearchDataStoreController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchDataStoreController is the Business Controller class for SearchDataStore
+    /// The SearchDataStoreController is the Business Controller class for SearchDataStore.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -66,12 +66,12 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSearchResults gets the search results for a single word
+        /// GetSearchResults gets the search results for a single word.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="PortalID">A Id of the Portal</param>
-        /// <param name="Word">The word</param>
+        /// <param name="PortalID">A Id of the Portal.</param>
+        /// <param name="Word">The word.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in DNN 7.1.2  Implementation changed to return empty result set. Scheduled removal in v10.0.0.")]
@@ -90,11 +90,11 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSearchSettings gets the search settings for a single module
+        /// GetSearchSettings gets the search settings for a single module.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="ModuleId">The Id of the Module</param>
+        /// <param name="ModuleId">The Id of the Module.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, string> GetSearchSettings(int ModuleId)

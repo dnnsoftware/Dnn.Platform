@@ -13,7 +13,7 @@ namespace DotNetNuke.Web.InternalServices
     /// <summary>
     ///     Taken from http://stackoverflow.com/questions/111345/getting-image-dimensions-without-reading-the-entire-file/111349
     ///     Minor improvements including supporting unsigned 16-bit integers when decoding Jfif and added logic
-    ///     to load the image using new Bitmap if reading the headers fails
+    ///     to load the image using new Bitmap if reading the headers fails.
     /// </summary>
     public static class ImageHeader
     {

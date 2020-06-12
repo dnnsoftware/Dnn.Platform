@@ -13,7 +13,7 @@ using DotNetNuke.Entities.Users;
 namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
-    /// Property Access to Objects using Relection
+    /// Property Access to Objects using Relection.
     /// </summary>
     /// <remarks></remarks>
     public class PropertyAccess : IPropertyAccess
@@ -67,9 +67,9 @@ namespace DotNetNuke.Services.Tokens
         /// <summary>
         /// Returns a formatted String if a format is given, otherwise it returns the unchanged value.
         /// </summary>
-        /// <param name="value">string to be formatted</param>
-        /// <param name="format">format specification</param>
-        /// <returns>formatted string</returns>
+        /// <param name="value">string to be formatted.</param>
+        /// <param name="format">format specification.</param>
+        /// <returns>formatted string.</returns>
         /// <remarks></remarks>
         public static string FormatString(string value, string format)
         {
@@ -88,14 +88,14 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        ///     Returns the localized property of any object as string using reflection
+        ///     Returns the localized property of any object as string using reflection.
         /// </summary>
-        /// <param name="objObject">Object to access</param>
-        /// <param name="strPropertyName">Name of property</param>
-        /// <param name="strFormat">Format String</param>
-        /// <param name="formatProvider">specify formatting</param>
-        /// <param name="PropertyNotFound">out: specifies, whether property was found</param>
-        /// <returns>Localized Property</returns>
+        /// <param name="objObject">Object to access.</param>
+        /// <param name="strPropertyName">Name of property.</param>
+        /// <param name="strFormat">Format String.</param>
+        /// <param name="formatProvider">specify formatting.</param>
+        /// <param name="PropertyNotFound">out: specifies, whether property was found.</param>
+        /// <returns>Localized Property.</returns>
         /// <remarks></remarks>
         public static string GetObjectProperty(object objObject, string strPropertyName, string strFormat, CultureInfo formatProvider, ref bool PropertyNotFound)
         {

@@ -27,11 +27,11 @@ using log4net.Core;
 namespace log4net.Filter
 {
     /// <summary>
-    /// The return result from <see cref="IFilter.Decide"/>
+    /// The return result from <see cref="IFilter.Decide"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// The return result from <see cref="IFilter.Decide"/>
+    /// The return result from <see cref="IFilter.Decide"/>.
     /// </para>
     /// </remarks>
     public enum FilterDecision : int

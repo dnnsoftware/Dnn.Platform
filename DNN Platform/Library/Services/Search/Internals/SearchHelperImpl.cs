@@ -313,7 +313,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Determines whether there was a request to re-index the site since a specific date/time
+        /// Determines whether there was a request to re-index the site since a specific date/time.
         /// </summary>
         /// <returns></returns>
         public bool IsReindexRequested(int portalId, DateTime startDate)
@@ -323,7 +323,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Returns a collection of portal ID's to reindex if it was requested since last indexing
+        /// Returns a collection of portal ID's to reindex if it was requested since last indexing.
         /// </summary>
         /// <param name="startDate"></param>
         /// <returns></returns>
@@ -463,12 +463,12 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Processes and re-phrases the search text by looking into exact-match and wildcard option
+        /// Processes and re-phrases the search text by looking into exact-match and wildcard option.
         /// </summary>
         /// <param name="searchPhrase"></param>
         /// <param name="useWildCard"></param>
         /// <param name="allowLeadingWildcard"></param>
-        /// <returns>cleaned and pre-processed search phrase</returns>
+        /// <returns>cleaned and pre-processed search phrase.</returns>
         public string RephraseSearchText(string searchPhrase, bool useWildCard, bool allowLeadingWildcard = false)
         {
             searchPhrase = this.CleanSearchPhrase(HttpUtility.HtmlDecode(searchPhrase));

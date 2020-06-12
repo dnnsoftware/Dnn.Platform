@@ -84,7 +84,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Standard method to use on method entry
+        ///   Standard method to use on method entry.
         /// </summary>
         public static void MethodEntry()
         {
@@ -97,7 +97,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Standard method to use on method exit
+        ///   Standard method to use on method exit.
         /// </summary>
         public static void MethodExit(object returnObject)
         {
@@ -115,7 +115,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Standard method to use on method exit
+        ///   Standard method to use on method exit.
         /// </summary>
         public static void MethodExit()
         {

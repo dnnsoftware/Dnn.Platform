@@ -8,17 +8,17 @@ using System.Drawing.Drawing2D;
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
     /// <summary>
-    /// Rotation ImageTransform class
+    /// Rotation ImageTransform class.
     /// </summary>
     public class ImageRotateFlipTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone
+        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone.
         /// </summary>
         public RotateFlipType RotateFlip { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for this transformation
+        /// Gets provides an Unique String for this transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
 
@@ -32,10 +32,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Processes an input image applying a rotation image transformation
+        /// Processes an input image applying a rotation image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             var temp = (Bitmap)image;

@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them
+        /// LoadSettings loads the settings from the Database and displays them.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void LoadSettings()
@@ -80,7 +80,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// UpdateSettings saves the modified settings to the Database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()

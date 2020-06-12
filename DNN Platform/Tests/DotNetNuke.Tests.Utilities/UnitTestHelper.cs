@@ -11,7 +11,7 @@ namespace DotNetNuke.Tests.Instance.Utilities
     public static class UnitTestHelper
     {
         /// <summary>
-        /// Sets the HTTP context with a valid simulated request
+        /// Sets the HTTP context with a valid simulated request.
         /// </summary>
         /// <param name="host">Host.</param>
         /// <param name="application">Application.</param>

@@ -16,22 +16,22 @@ using DotNetNuke.Services.FileSystem;
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
     /// <summary>
-    /// User Profile Picture ImageTransform class
+    /// User Profile Picture ImageTransform class.
     /// </summary>
     public class UserProfilePicTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets the UserID of the profile pic
+        /// Gets or sets the UserID of the profile pic.
         /// </summary>
         public int UserID { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + this.UserID;
 
         /// <summary>
-        /// Gets a value indicating whether is reusable
+        /// Gets a value indicating whether is reusable.
         /// </summary>
         public bool IsReusable => false;
 
@@ -44,10 +44,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
-        /// Processes an input image returning the user profile picture
+        /// Processes an input image returning the user profile picture.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             IFileInfo photoFile;
@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
-        /// Get the Bitmap of the No Avatar Image
+        /// Get the Bitmap of the No Avatar Image.
         /// </summary>
         /// <returns></returns>
         public Bitmap GetNoAvatarImage()

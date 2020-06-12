@@ -29,7 +29,7 @@ using log4net.Repository;
 namespace log4net.Core
 {
     /// <summary>
-    /// Base interface for all wrappers
+    /// Base interface for all wrappers.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -39,7 +39,7 @@ namespace log4net.Core
     /// All wrappers must implement this interface.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public interface ILoggerWrapper
     {
         /// <summary>

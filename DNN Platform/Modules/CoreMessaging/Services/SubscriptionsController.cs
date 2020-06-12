@@ -42,10 +42,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
         /// <summary>
         /// Perform a search on Scoring Activities registered in the system.
         /// </summary>
-        /// <param name="pageIndex">Page index to begin from (0, 1, 2)</param>
-        /// <param name="pageSize">Number of records to return per page</param>
-        /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc]</param>
-        /// <returns>The sorted and paged list of subscriptions</returns>
+        /// <param name="pageIndex">Page index to begin from (0, 1, 2).</param>
+        /// <param name="pageSize">Number of records to return per page.</param>
+        /// <param name="sortExpression">The sort expression in the form [Description|SubscriptionType] [Asc|Desc].</param>
+        /// <returns>The sorted and paged list of subscriptions.</returns>
         [HttpGet]
         public HttpResponseMessage GetSubscriptions(int pageIndex, int pageSize, string sortExpression)
         {

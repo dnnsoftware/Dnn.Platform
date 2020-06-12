@@ -50,8 +50,8 @@ namespace log4net.Config
     /// be called after the appenders properties have been configured.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class BasicConfigurator
     {
         /// <summary>

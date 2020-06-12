@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initializes a new instance of the LabelModeAttribute class.
         /// </summary>
-        /// <param name="mode">The label mode to apply to the associated property</param>
+        /// <param name="mode">The label mode to apply to the associated property.</param>
         public LabelModeAttribute(LabelMode mode)
         {
             this._Mode = mode;

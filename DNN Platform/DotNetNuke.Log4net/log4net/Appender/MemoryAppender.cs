@@ -54,9 +54,9 @@ namespace log4net.Appender
     /// mref="M:PopAllEvents()"/> in that case.
     /// </para>
     /// </remarks>
-    /// <author>Julian Biddle</author>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Julian Biddle.</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class MemoryAppender : AppenderSkeleton
     {
         /// <summary>
@@ -76,7 +76,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets the events that have been logged.
         /// </summary>
-        /// <returns>The events that have been logged</returns>
+        /// <returns>The events that have been logged.</returns>
         /// <remarks>
         /// <para>
         /// Gets the events that have been logged.
@@ -126,7 +126,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets the fields that will be fixed in the event
+        /// Gets or sets the fields that will be fixed in the event.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -144,7 +144,7 @@ namespace log4net.Appender
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
         /// </summary>
-        /// <param name="loggingEvent">the event to log</param>
+        /// <param name="loggingEvent">the event to log.</param>
         /// <remarks>
         /// <para>Stores the <paramref name="loggingEvent"/> in the events list.</para>
         /// </remarks>
@@ -162,10 +162,10 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Clear the list of events
+        /// Clear the list of events.
         /// </summary>
         /// <remarks>
-        /// Clear the list of events
+        /// Clear the list of events.
         /// </remarks>
         public virtual void Clear()
         {
@@ -178,7 +178,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets the events that have been logged and clears the list of events.
         /// </summary>
-        /// <returns>The events that have been logged</returns>
+        /// <returns>The events that have been logged.</returns>
         /// <remarks>
         /// <para>
         /// Gets the events that have been logged and clears the list of events.
@@ -200,10 +200,10 @@ namespace log4net.Appender
         protected ArrayList m_eventsList;
 
         /// <summary>
-        /// Value indicating which fields in the event should be fixed
+        /// Value indicating which fields in the event should be fixed.
         /// </summary>
         /// <remarks>
-        /// By default all fields are fixed
+        /// By default all fields are fixed.
         /// </remarks>
         protected FixFlags m_fixFlags = FixFlags.All;
     }

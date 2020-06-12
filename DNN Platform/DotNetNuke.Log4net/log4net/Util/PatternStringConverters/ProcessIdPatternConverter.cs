@@ -29,21 +29,21 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Write the current process ID to the output
+    /// Write the current process ID to the output.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Write the current process ID to the output writer
+    /// Write the current process ID to the output writer.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class ProcessIdPatternConverter : PatternConverter
     {
         /// <summary>
-        /// Write the current process ID to the output
+        /// Write the current process ID to the output.
         /// </summary>
-        /// <param name="writer">the writer to write to</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="writer">the writer to write to.</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Write the current process ID to the output <paramref name="writer"/>.

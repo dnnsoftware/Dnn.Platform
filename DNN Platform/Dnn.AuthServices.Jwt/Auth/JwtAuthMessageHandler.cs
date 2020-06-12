@@ -17,8 +17,8 @@ namespace Dnn.AuthServices.Jwt.Auth
     /// <summary>
     /// This class implements Json Web Token (JWT) authentication scheme.
     /// For detailed description of JWT refer to:
-    /// <para>- JTW standard https://tools.ietf.org/html/rfc7519 </para>
-    /// <para>- Introduction to JSON Web Tokens http://jwt.io/introduction/ </para>
+    /// <para>- JTW standard https://tools.ietf.org/html/rfc7519. </para>
+    /// <para>- Introduction to JSON Web Tokens http://jwt.io/introduction/. </para>
     /// </summary>
     public class JwtAuthMessageHandler : AuthMessageHandlerBase
     {

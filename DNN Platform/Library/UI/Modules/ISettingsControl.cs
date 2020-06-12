@@ -10,7 +10,7 @@ namespace DotNetNuke.UI.Modules
     /// Class    : ISettingsControl
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ISettingsControl provides a common Interface for Module Settings Controls
+    /// ISettingsControl provides a common Interface for Module Settings Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public interface ISettingsControl : IModuleControl

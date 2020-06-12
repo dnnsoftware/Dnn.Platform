@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 namespace DotNetNuke.Web.Client.ClientResourceManagement
 {
     /// <summary>
-    ///     Emit a fallback block for a script in the same part of the page
+    ///     Emit a fallback block for a script in the same part of the page.
     /// </summary>
     public class DnnJsIncludeFallback : WebControl
     {

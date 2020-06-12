@@ -36,12 +36,12 @@ namespace log4net.Util
     /// This writer counts the number of bytes written.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class CountingQuietTextWriter : QuietTextWriter
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="writer">The <see cref="TextWriter" /> to actually write to.</param>
         /// <param name="errorHandler">The <see cref="IErrorHandler" /> to report errors to.</param>
@@ -60,7 +60,7 @@ namespace log4net.Util
         /// <summary>
         /// Writes a character to the underlying writer and counts the number of bytes written.
         /// </summary>
-        /// <param name="value">the char to write</param>
+        /// <param name="value">the char to write.</param>
         /// <remarks>
         /// <para>
         /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts
@@ -86,9 +86,9 @@ namespace log4net.Util
         /// <summary>
         /// Writes a buffer to the underlying writer and counts the number of bytes written.
         /// </summary>
-        /// <param name="buffer">the buffer to write</param>
-        /// <param name="index">the start index to write from</param>
-        /// <param name="count">the number of characters to write</param>
+        /// <param name="buffer">the buffer to write.</param>
+        /// <param name="index">the start index to write from.</param>
+        /// <param name="count">the number of characters to write.</param>
         /// <remarks>
         /// <para>
         /// Overrides implementation of <see cref="QuietTextWriter"/>. Counts

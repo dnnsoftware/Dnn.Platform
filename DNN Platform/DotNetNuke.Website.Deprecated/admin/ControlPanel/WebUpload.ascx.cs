@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
     /// Class    : WebUpload
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Supplies the functionality for uploading files to the Portal
+    /// Supplies the functionality for uploading files to the Portal.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine checks the Access Security
+        /// This routine checks the Access Security.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This routine determines the Return Url
+        /// This routine determines the Return Url.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Page_Load runs when the page loads
+        /// The Page_Load runs when the page loads.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -290,7 +290,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The cmdAdd_Click runs when the Add Button is clicked
+        /// The cmdAdd_Click runs when the Add Button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -374,7 +374,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The cmdReturn_Click runs when the Return Button is clicked
+        /// The cmdReturn_Click runs when the Return Button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

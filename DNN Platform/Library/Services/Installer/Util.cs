@@ -176,10 +176,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The StreamToStream method reads a source stream and wrtites it to a destination stream
+        /// The StreamToStream method reads a source stream and wrtites it to a destination stream.
         /// </summary>
-        /// <param name="sourceStream">The Source Stream</param>
-        /// <param name="destStream">The Destination Stream</param>
+        /// <param name="sourceStream">The Source Stream.</param>
+        /// <param name="destStream">The Destination Stream.</param>
         private static void StreamToStream(Stream sourceStream, Stream destStream)
         {
             var buf = new byte[1024];
@@ -227,11 +227,11 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The BackupFile method backs up a file to the backup folder
+        /// The BackupFile method backs up a file to the backup folder.
         /// </summary>
-        /// <param name="installFile">The file to backup</param>
-        /// <param name="basePath">The basePath to the file</param>
-        /// <param name="log">A Logger to log the result</param>
+        /// <param name="installFile">The file to backup.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
         public static void BackupFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
@@ -252,9 +252,9 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// The CopyFile method copies a file from the temporary extract location.
         /// </summary>
-        /// <param name="installFile">The file to copy</param>
-        /// <param name="basePath">The basePath to the file</param>
-        /// <param name="log">A Logger to log the result</param>
+        /// <param name="installFile">The file to copy.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
         public static void CopyFile(InstallFile installFile, string basePath, Logger log)
         {
             string filePath = Path.Combine(basePath, installFile.Path);
@@ -277,9 +277,9 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// The DeleteFile method deletes a file.
         /// </summary>
-        /// <param name="installFile">The file to delete</param>
-        /// <param name="basePath">The basePath to the file</param>
-        /// <param name="log">A Logger to log the result</param>
+        /// <param name="installFile">The file to delete.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
         public static void DeleteFile(InstallFile installFile, string basePath, Logger log)
         {
             DeleteFile(installFile.FullName, basePath, log);
@@ -289,9 +289,9 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// The DeleteFile method deletes a file.
         /// </summary>
-        /// <param name="fileName">The file to delete</param>
-        /// <param name="basePath">The basePath to the file</param>
-        /// <param name="log">A Logger to log the result</param>
+        /// <param name="fileName">The file to delete.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
         public static void DeleteFile(string fileName, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, fileName);
@@ -311,10 +311,10 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The GetLocalizedString method provides a conveniencewrapper around the
-        /// Localization of Strings
+        /// Localization of Strings.
         /// </summary>
-        /// <param name="key">The localization key</param>
-        /// <returns>The localized string</returns>
+        /// <param name="key">The localization key.</param>
+        /// <returns>The localized string.</returns>
         public static string GetLocalizedString(string key)
         {
             return Localization.Localization.GetString(key, Localization.Localization.SharedResourceFile);
@@ -340,11 +340,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The InstallURL method provides a utility method to build the correct url
-        /// to install a package (and return to where you came from)
+        /// to install a package (and return to where you came from).
         /// </summary>
-        /// <param name="tabId">The id of the tab you are on</param>
-        /// <param name="type">The type of package you are installing</param>
-        /// <returns>The localized string</returns>
+        /// <param name="tabId">The id of the tab you are on.</param>
+        /// <param name="type">The type of package you are installing.</param>
+        /// <returns>The localized string.</returns>
         public static string InstallURL(int tabId, string type)
         {
             var parameters = new string[2];
@@ -412,11 +412,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The PackageWriterURL method provides a utility method to build the correct url
-        /// to create a package (and return to where you came from)
+        /// to create a package (and return to where you came from).
         /// </summary>
-        /// <param name="context">The ModuleContext of the module</param>
-        /// <param name="packageId">The id of the package you are packaging</param>
-        /// <returns>The localized string</returns>
+        /// <param name="context">The ModuleContext of the module.</param>
+        /// <param name="packageId">The id of the package you are packaging.</param>
+        /// <returns>The localized string.</returns>
         public static string PackageWriterURL(ModuleInstanceContext context, int packageId)
         {
             var parameters = new string[3];
@@ -514,11 +514,11 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The RestoreFile method restores a file from the backup folder
+        /// The RestoreFile method restores a file from the backup folder.
         /// </summary>
-        /// <param name="installFile">The file to restore</param>
-        /// <param name="basePath">The basePath to the file</param>
-        /// <param name="log">A Logger to log the result</param>
+        /// <param name="installFile">The file to restore.</param>
+        /// <param name="basePath">The basePath to the file.</param>
+        /// <param name="log">A Logger to log the result.</param>
         public static void RestoreFile(InstallFile installFile, string basePath, Logger log)
         {
             string fullFileName = Path.Combine(basePath, installFile.FullName);
@@ -533,11 +533,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UnInstallURL method provides a utility method to build the correct url
-        /// to uninstall a package (and return to where you came from)
+        /// to uninstall a package (and return to where you came from).
         /// </summary>
-        /// <param name="tabId">The id of the tab you are on</param>
-        /// <param name="packageId">The id of the package you are uninstalling</param>
-        /// <returns>The localized string</returns>
+        /// <param name="tabId">The id of the tab you are on.</param>
+        /// <param name="packageId">The id of the package you are uninstalling.</param>
+        /// <returns>The localized string.</returns>
         public static string UnInstallURL(int tabId, int packageId)
         {
             var parameters = new string[2];
@@ -549,10 +549,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The WriteStream reads a source stream and writes it to a destination file
+        /// The WriteStream reads a source stream and writes it to a destination file.
         /// </summary>
-        /// <param name="sourceStream">The Source Stream</param>
-        /// <param name="destFileName">The Destination file</param>
+        /// <param name="sourceStream">The Source Stream.</param>
+        /// <param name="destFileName">The Destination file.</param>
         public static void WriteStream(Stream sourceStream, string destFileName)
         {
             var file = new FileInfo(destFileName);
@@ -566,12 +566,12 @@ namespace DotNetNuke.Services.Installer
         }
 
         /// <summary>
-        /// Try to create file and perform an action on a file until a specific amount of time
+        /// Try to create file and perform an action on a file until a specific amount of time.
         /// </summary>
-        /// <param name="path">Path of the file</param>
-        /// <param name="action">Action to execute on file</param>
-        /// <param name="milliSecondMax">Maimum amount of time to try to do the action</param>
-        /// <returns>true if action occur and false otherwise</returns>
+        /// <param name="path">Path of the file.</param>
+        /// <param name="action">Action to execute on file.</param>
+        /// <param name="milliSecondMax">Maimum amount of time to try to do the action.</param>
+        /// <returns>true if action occur and false otherwise.</returns>
         public static bool TryToCreateAndExecute(string path, Action<FileStream> action, int milliSecondMax = Timeout.Infinite)
         {
             var result = false;

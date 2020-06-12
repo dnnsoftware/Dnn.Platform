@@ -7,10 +7,10 @@ using System;
 namespace DotNetNuke.Framework
 {
     /// <summary>
-    /// Provides a readily testable way to manage a Singleton
+    /// Provides a readily testable way to manage a Singleton.
     /// </summary>
-    /// <typeparam name="TContract">The interface that the controller provides</typeparam>
-    /// <typeparam name="TSelf">The type of the controller itself, used to call the GetFactory override</typeparam>
+    /// <typeparam name="TContract">The interface that the controller provides.</typeparam>
+    /// <typeparam name="TSelf">The type of the controller itself, used to call the GetFactory override.</typeparam>
     public abstract class ServiceLocator<TContract, TSelf>
         where TSelf : ServiceLocator<TContract, TSelf>, new()
     {
@@ -37,7 +37,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets a singleton of T
+        /// Gets a singleton of T.
         /// </summary>
         public static TContract Instance
         {
@@ -53,9 +53,9 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Registers an instance to use for the Singleton
+        /// Registers an instance to use for the Singleton.
         /// </summary>
-        /// <remarks>Intended for unit testing purposes, not thread safe</remarks>
+        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         /// <param name="instance"></param>
         public static void SetTestableInstance(TContract instance)
         {
@@ -64,9 +64,9 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Clears the current instance, a new instance will be initialized when next requested
+        /// Clears the current instance, a new instance will be initialized when next requested.
         /// </summary>
-        /// <remarks>Intended for unit testing purposes, not thread safe</remarks>
+        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         public static void ClearInstance()
         {
             _useTestable = false;

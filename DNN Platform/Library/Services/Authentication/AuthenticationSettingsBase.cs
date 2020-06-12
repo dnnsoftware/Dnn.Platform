@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationSettingsBase class provides a base class for Authentiication
-    /// Settings controls
+    /// Settings controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationSettingsBase : PortalModuleBase
@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control
+        /// Gets or sets and Sets the Type of Authentication associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType
@@ -38,9 +38,9 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings updates the settings in the Data Store
+        /// UpdateSettings updates the settings in the Data Store.
         /// </summary>
-        /// <remarks>This method must be overriden in the inherited class</remarks>
+        /// <remarks>This method must be overriden in the inherited class.</remarks>
         /// -----------------------------------------------------------------------------
         public abstract void UpdateSettings();
     }

@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a SkinsEditControl
+        /// Constructs a SkinsEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public SkinsEditControl()
@@ -44,9 +44,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a SkinsEditControl
+        /// Constructs a SkinsEditControl.
         /// </summary>
-        /// <param name="type">The type of the property</param>
+        /// <param name="type">The type of the property.</param>
         /// -----------------------------------------------------------------------------
         public SkinsEditControl(string type)
         {
@@ -55,9 +55,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value
+        /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value.
         /// </summary>
-        /// <value>A Dictionary(Of Integer, String) representing the Value</value>
+        /// <value>A Dictionary(Of Integer, String) representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected Dictionary<int, string> DictionaryValue
         {
@@ -74,9 +74,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue
+        /// Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue.
         /// </summary>
-        /// <value>A Dictionary(Of Integer, String) representing the OldValue</value>
+        /// <value>A Dictionary(Of Integer, String) representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected Dictionary<int, string> OldDictionaryValue
         {
@@ -93,9 +93,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets oldStringValue returns the String representation of the OldValue
+        /// Gets oldStringValue returns the String representation of the OldValue.
         /// </summary>
-        /// <value>A String representing the OldValue</value>
+        /// <value>A String representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
@@ -116,9 +116,9 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -181,7 +181,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
@@ -196,7 +196,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs just before the control is due to be rendered
+        /// OnPreRender runs just before the control is due to be rendered.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
@@ -301,7 +301,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

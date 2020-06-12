@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Controllers
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(HostController));
 
         /// <summary>
-        /// Initializes a new instance of the HostController class
+        /// Initializes a new instance of the HostController class.
         /// </summary>
         internal HostController()
         {
@@ -186,11 +186,11 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <summary>
-        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
+        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.
         /// </summary>
-        /// <param name="key">the host setting to read</param>
-        /// <param name="passPhrase">the pass phrase used for encryption/decryption</param>
-        /// <returns>The setting value as a <see cref="string"/></returns>
+        /// <param name="key">the host setting to read.</param>
+        /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
+        /// <returns>The setting value as a <see cref="string"/>.</returns>
         public string GetEncryptedString(string key, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -326,9 +326,9 @@ namespace DotNetNuke.Entities.Controllers
         /// <summary>
         /// Takes in a <see cref="string"/> value, encrypts it with a FIPS compliant algorithm and stores it.
         /// </summary>
-        /// <param name="key">host settings key</param>
-        /// <param name="value">host settings value</param>
-        /// <param name="passPhrase">pass phrase to allow encryption/decryption</param>
+        /// <param name="key">host settings key.</param>
+        /// <param name="value">host settings value.</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
         public void UpdateEncryptedString(string key, string value, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", key);
@@ -339,9 +339,9 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <summary>
-        /// Increments the Client Resource Manager (CRM) version to bust local cache
+        /// Increments the Client Resource Manager (CRM) version to bust local cache.
         /// </summary>
-        /// <param name="includeOverridingPortals">If true also forces a CRM version increment on portals that have non-default settings for CRM</param>
+        /// <param name="includeOverridingPortals">If true also forces a CRM version increment on portals that have non-default settings for CRM.</param>
         public void IncrementCrmVersion(bool includeOverridingPortals)
         {
             var currentVersion = Host.Host.CrmVersion;
@@ -355,9 +355,9 @@ namespace DotNetNuke.Entities.Controllers
         }
 
         /// <summary>
-        /// Gets all settings from the databse
+        /// Gets all settings from the databse.
         /// </summary>
-        /// <returns><see cref="Dictionary"/>&lt;<see cref="string"/>, <see cref="ConfigurationSetting"/>&gt;</returns>
+        /// <returns><see cref="Dictionary"/>&lt;<see cref="string"/>, <see cref="ConfigurationSetting"/>&gt.</returns>
         private static Dictionary<string, ConfigurationSetting> GetSettingsFromDatabase()
         {
             var dicSettings = new Dictionary<string, ConfigurationSetting>();

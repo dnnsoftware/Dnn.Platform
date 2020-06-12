@@ -37,12 +37,12 @@ namespace log4net.Util
     /// should aggregate an instance of this type.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class AppenderAttachedImpl : IAppenderAttachable
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -156,8 +156,8 @@ namespace log4net.Util
         /// Calls the DoAppende method on the <see cref="IAppender"/> with
         /// the <see cref="LoggingEvent"/> objects supplied.
         /// </summary>
-        /// <param name="appender">The appender</param>
-        /// <param name="loggingEvents">The events</param>
+        /// <param name="appender">The appender.</param>
+        /// <param name="loggingEvents">The events.</param>
         /// <remarks>
         /// <para>
         /// If the <paramref name="appender" /> supports the <see cref="IBulkAppender"/>
@@ -273,7 +273,7 @@ namespace log4net.Util
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Removes and closes all attached appenders
+        /// Removes and closes all attached appenders.
         /// </para>
         /// </remarks>
         public void RemoveAllAppenders()
@@ -301,7 +301,7 @@ namespace log4net.Util
         /// Removes the specified appender from the list of attached appenders.
         /// </summary>
         /// <param name="appender">The appender to remove.</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// <para>
         /// The appender removed is not closed.
@@ -329,7 +329,7 @@ namespace log4net.Util
         /// Removes the appender with the specified name from the list of appenders.
         /// </summary>
         /// <param name="name">The name of the appender to remove.</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// <para>
         /// The appender removed is not closed.
@@ -343,12 +343,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// List of appenders
+        /// List of appenders.
         /// </summary>
         private AppenderCollection m_appenderList;
 
         /// <summary>
-        /// Array of appenders, used to cache the m_appenderList
+        /// Array of appenders, used to cache the m_appenderList.
         /// </summary>
         private IAppender[] m_appenderArray;
 

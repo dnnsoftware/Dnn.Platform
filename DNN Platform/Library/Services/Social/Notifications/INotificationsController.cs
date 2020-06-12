@@ -70,17 +70,17 @@ namespace DotNetNuke.Services.Social.Notifications
         IList<NotificationTypeAction> GetNotificationTypeActions(int notificationTypeId);
 
         /// <summary>
-        /// Set the actions for a NotificationType
+        /// Set the actions for a NotificationType.
         /// </summary>
-        /// <param name="actions">The actions</param>
-        /// <param name="notificationTypeId">Id of the notification type</param>
+        /// <param name="actions">The actions.</param>
+        /// <param name="notificationTypeId">Id of the notification type.</param>
         void SetNotificationTypeActions(IList<NotificationTypeAction> actions, int notificationTypeId);
 
         /// <summary>
         /// Creates a new notification and sets is sender as the portal administrator.
         /// </summary>
-        /// <param name="notification">The notification</param>
-        /// <param name="portalId">The portalId</param>
+        /// <param name="notification">The notification.</param>
+        /// <param name="portalId">The portalId.</param>
         /// <param name="roles">The list of roles to send the notification to. Leave it as null to send only to individual users.</param>
         /// <param name="users">The list of users to send the notification to. Leave it as null to send only to roles.</param>
         void SendNotification(Notification notification, int portalId, IList<RoleInfo> roles, IList<UserInfo> users);
@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Social.Notifications
         /// Deletes all user notifications in a specific portal.
         /// </summary>
         /// <param name="user">The user to delete notifications for.</param>
-        /// <returns>Number of deleted notifications</returns>
+        /// <returns>Number of deleted notifications.</returns>
         int DeleteUserNotifications(UserInfo user);
 
         /// <summary>
@@ -137,52 +137,52 @@ namespace DotNetNuke.Services.Social.Notifications
         /// Deletes an individual notification recipient based on NotificationTypeId, Context and UserId.
         /// </summary>
         /// <remarks>It also deletes the notification if there are no more recipients.</remarks>
-        /// <param name="notificationTypeId">Id of the notification type</param>
+        /// <param name="notificationTypeId">Id of the notification type.</param>
         /// <param name="context">Context set by creator of the notification.</param>
         /// <param name="userId">The user identifier.</param>
         void DeleteNotificationRecipient(int notificationTypeId, string context, int userId);
 
         /// <summary>
-        /// Get a Notification
+        /// Get a Notification.
         /// </summary>
-        /// <param name="notificationId">The notificationId</param>
-        /// <returns>A notification</returns>
+        /// <param name="notificationId">The notificationId.</param>
+        /// <returns>A notification.</returns>
         Notification GetNotification(int notificationId);
 
         /// <summary>
-        /// Get a Notification by NotificationTypeId and Context
+        /// Get a Notification by NotificationTypeId and Context.
         /// </summary>
-        /// <param name="notificationTypeId">Id of the notification type</param>
+        /// <param name="notificationTypeId">Id of the notification type.</param>
         /// <param name="context">Context set by creator of the notification.</param>
         /// <returns>The filtered list of notifications sent to the provided user in the specified portal.</returns>
         IList<Notification> GetNotificationByContext(int notificationTypeId, string context);
 
         /// <summary>
-        /// Is there a Toast that needs to be sent for a Notification
+        /// Is there a Toast that needs to be sent for a Notification.
         /// </summary>
-        /// <param name="notificationId">The Notification Id </param>
+        /// <param name="notificationId">The Notification Id. </param>
         /// <returns>True if Toast needs to be sent. False otherwise.</returns>
         bool IsToastPending(int notificationId);
 
         /// <summary>
-        /// Mark a Toast ready for sending
+        /// Mark a Toast ready for sending.
         /// </summary>
-        /// <param name="notification">The notification Object </param>
-        /// <param name="userInfo">The Recipient User Info Object</param>
+        /// <param name="notification">The notification Object. </param>
+        /// <param name="userInfo">The Recipient User Info Object.</param>
         void MarkReadyForToast(Notification notification, UserInfo userInfo);
 
         /// <summary>
-        /// Mark Toast being already sent
+        /// Mark Toast being already sent.
         /// </summary>
-        /// <param name="notificationId">The notification Id </param>
-        /// <param name="userId">The Recipient User Id </param>
+        /// <param name="notificationId">The notification Id. </param>
+        /// <param name="userId">The Recipient User Id. </param>
         void MarkToastSent(int notificationId, int userId);
 
         /// <summary>
         /// Get a list of Toasts that have not been delivered yet.
         /// </summary>
-        /// <param name="userInfo">UserInfo object</param>
-        /// <returns>List of Undelivered Toasts for the user specific to the portal</returns>
+        /// <param name="userInfo">UserInfo object.</param>
+        /// <returns>List of Undelivered Toasts for the user specific to the portal.</returns>
         IList<Notification> GetToasts(UserInfo userInfo);
     }
 }

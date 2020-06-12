@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.UserControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   LocaleSelectorControl is a user control that provides all the server code to manage
-    ///   localisation selection
+    ///   localisation selection.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class LocaleSelectorControl : UserControlBase

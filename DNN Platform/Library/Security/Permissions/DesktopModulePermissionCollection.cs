@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionCollection provides the a custom collection for DesktopModulePermissionInfo
-    /// objects
+    /// objects.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]

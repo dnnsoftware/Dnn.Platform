@@ -21,9 +21,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FollowUser - Current User initiates a Follow Request to the Target User
+        /// FollowUser - Current User initiates a Follow Request to the Target User.
         /// </summary>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Follow Relationship is setup for auto-acceptance (default) at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -35,10 +35,10 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FollowUser - Initiating User initiates a Follow Request to the Target User
+        /// FollowUser - Initiating User initiates a Follow Request to the Target User.
         /// </summary>
-        /// <param name="initiatingUser">UserInfo for Initiating User</param>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="initiatingUser">UserInfo for Initiating User.</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Follow Relationship is setup for auto-acceptance (default) at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -57,9 +57,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UnFollowUser - Current User initiates an UnFollow Request to the Target User
+        /// UnFollowUser - Current User initiates an UnFollow Request to the Target User.
         /// </summary>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void UnFollowUser(UserInfo targetUser)
         {

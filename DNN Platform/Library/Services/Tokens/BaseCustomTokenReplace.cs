@@ -12,7 +12,7 @@ using DotNetNuke.Entities.Users;
 namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
-    /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>
+    /// BaseCustomTokenReplace  allows to add multiple sources implementing <see cref="IPropertyAccess">IPropertyAccess</see>.
     /// </summary>
     /// <remarks></remarks>
     public abstract class BaseCustomTokenReplace : BaseTokenReplace
@@ -20,19 +20,19 @@ namespace DotNetNuke.Services.Tokens
         protected Dictionary<string, IPropertyAccess> PropertySource = new Dictionary<string, IPropertyAccess>();
 
         /// <summary>
-        /// Gets or sets /sets the user object representing the currently accessing user (permission)
+        /// Gets or sets /sets the user object representing the currently accessing user (permission).
         /// </summary>
-        /// <value>UserInfo oject</value>
+        /// <value>UserInfo oject.</value>
         public UserInfo AccessingUser { get; set; }
 
         /// <summary>
-        /// Gets or sets /sets the current Access Level controlling access to critical user settings
+        /// Gets or sets /sets the current Access Level controlling access to critical user settings.
         /// </summary>
-        /// <value>A TokenAccessLevel as defined above</value>
+        /// <value>A TokenAccessLevel as defined above.</value>
         protected Scope CurrentAccessLevel { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages
+        /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages.
         /// </summary>
         /// <value>
         /// <placeholder>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages</placeholder>
@@ -87,11 +87,11 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// returns cacheability of the passed text regarding all contained tokens
+        /// returns cacheability of the passed text regarding all contained tokens.
         /// </summary>
-        /// <param name="sourceText">the text to parse for tokens to replace</param>
-        /// <returns>cacheability level (not - safe - fully)</returns>
-        /// <remarks>always check cacheability before caching a module!</remarks>
+        /// <param name="sourceText">the text to parse for tokens to replace.</param>
+        /// <returns>cacheability level (not - safe - fully).</returns>
+        /// <remarks>always check cacheability before caching a module!.</remarks>
         public CacheLevel Cacheability(string sourceText)
         {
             CacheLevel isSafe = CacheLevel.fullyCacheable;
@@ -128,9 +128,9 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Checks for present [Object:Property] tokens
+        /// Checks for present [Object:Property] tokens.
         /// </summary>
-        /// <param name="strSourceText">String with [Object:Property] tokens</param>
+        /// <param name="strSourceText">String with [Object:Property] tokens.</param>
         /// <returns></returns>
         public bool ContainsTokens(string strSourceText)
         {

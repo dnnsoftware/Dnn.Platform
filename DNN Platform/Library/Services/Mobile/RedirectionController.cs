@@ -38,8 +38,8 @@ namespace DotNetNuke.Services.Mobile
         /// Is Redirection Allowed for the session. Method analyzes the query string for special parameters to enable / disable redirects.
         /// Cookie is created to temporarily store those parameters so that they remain available till the interactions are active.
         /// </summary>
-        /// <returns>boolean - True if redirection </returns>
-        /// <param name="app">app - HttpApplication. Request and Response properties are used</param>
+        /// <returns>boolean - True if redirection. </returns>
+        /// <param name="app">app - HttpApplication. Request and Response properties are used.</param>
         public bool IsRedirectAllowedForTheSession(HttpApplication app)
         {
             bool allowed = true;
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Mobile
         /// <summary>
         /// Get Redirection Url based on UserAgent.
         /// </summary>
-        /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
+        /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         public string GetRedirectUrl(string userAgent)
         {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Mobile
         /// <summary>
         /// Get Redirection Url based on Http Context and Portal Id.
         /// </summary>
-        /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
+        /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="userAgent">User Agent - used for client capability detection.</param>
         /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
@@ -216,9 +216,9 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Get Url for the equivalent full site based on the current page of the mobile site
+        /// Get Url for the equivalent full site based on the current page of the mobile site.
         /// </summary>
-        /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
+        /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetFullSiteUrl()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -235,9 +235,9 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Get Url for the equivalent full site based on the current page of the mobile site
+        /// Get Url for the equivalent full site based on the current page of the mobile site.
         /// </summary>
-        /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
+        /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
         public string GetFullSiteUrl(int portalId, int currentTabId)
@@ -319,9 +319,9 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Get Url for the equivalent mobile site based on the current page of the full site
+        /// Get Url for the equivalent mobile site based on the current page of the full site.
         /// </summary>
-        /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
+        /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         public string GetMobileSiteUrl()
         {
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -338,9 +338,9 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Get Url for the equivalent mobile site based on the current page of the full site
+        /// Get Url for the equivalent mobile site based on the current page of the full site.
         /// </summary>
-        /// <returns>string - Empty if redirection rules are not defined or no match found</returns>
+        /// <returns>string - Empty if redirection rules are not defined or no match found.</returns>
         /// <param name="portalId">Portal Id from which Redirection Rules should be applied.</param>
         /// <param name="currentTabId">Current Tab Id that needs to be evaluated.</param>
         public string GetMobileSiteUrl(int portalId, int currentTabId)
@@ -552,7 +552,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// returns a target URL for the specific redirection
+        /// returns a target URL for the specific redirection.
         /// </summary>
         /// <param name="redirection"></param>
         /// <param name="portalId"></param>

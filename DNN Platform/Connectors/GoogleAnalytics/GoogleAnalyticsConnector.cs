@@ -136,7 +136,7 @@ namespace DNN.Connectors.GoogleAnalytics
 
         /// <summary>
         /// Handles custom conversion from "true" => "true"
-        /// Anything else to "" to support the strange knockout handling of string as booleans
+        /// Anything else to "" to support the strange knockout handling of string as booleans.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

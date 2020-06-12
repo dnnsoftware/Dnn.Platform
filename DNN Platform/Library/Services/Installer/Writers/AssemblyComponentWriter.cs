@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AssemblyComponentWriter class handles creating the manifest for Assembly
-    /// Component(s)
+    /// Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,9 +26,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("assemblies")
+        /// Gets the name of the Collection Node ("assemblies").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -40,9 +40,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("Assembly")
+        /// Gets the name of the Component Type ("Assembly").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
@@ -54,9 +54,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("assembly")
+        /// Gets the name of the Item Node ("assembly").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {

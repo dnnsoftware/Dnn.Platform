@@ -9,38 +9,38 @@ using System.Collections.Generic;
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     /// <summary>
-    /// This event gets fired when any activity gets recorded
+    /// This event gets fired when any activity gets recorded.
     /// </summary>
     public delegate void ActivityEventHandler(string status);
 
     /// <summary>
-    /// Interface for an Installation Step
+    /// Interface for an Installation Step.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public interface IInstallationStep
     {
         /// <summary>
-        /// Gets any details of the task while it's executing
+        /// Gets any details of the task while it's executing.
         /// </summary>
         string Details { get; }
 
         /// <summary>
-        /// Gets percentage done
+        /// Gets percentage done.
         /// </summary>
         int Percentage { get; }
 
         /// <summary>
-        /// Gets step Status
+        /// Gets step Status.
         /// </summary>
         StepStatus Status { get; }
 
         /// <summary>
-        /// Gets list of Errors
+        /// Gets list of Errors.
         /// </summary>
         IList<string> Errors { get; }
 
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         void Execute();
 

@@ -52,9 +52,9 @@ namespace log4net.Appender
     /// The event's logger name is the default value for the category parameter of the Write/Warn method.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Ron Grabowski</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Ron Grabowski.</author>
     public class AspNetTraceAppender : AppenderSkeleton
     {
         /// <summary>
@@ -70,9 +70,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Write the logging event to the ASP.NET trace
+        /// Write the logging event to the ASP.NET trace.
         /// </summary>
-        /// <param name="loggingEvent">the event to log</param>
+        /// <param name="loggingEvent">the event to log.</param>
         /// <remarks>
         /// <para>
         /// Write the logging event to the ASP.NET trace
@@ -103,7 +103,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -132,7 +132,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Defaults to %logger
+        /// Defaults to %logger.
         /// </summary>
         private PatternLayout m_category = new PatternLayout("%logger");
     }

@@ -17,13 +17,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// InstallDatabaseStep - Step that installs Database
+    /// InstallDatabaseStep - Step that installs Database.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class InstallDatabaseStep : BaseInstallationStep
     {
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         public override void Execute()
         {

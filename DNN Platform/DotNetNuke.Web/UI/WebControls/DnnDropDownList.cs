@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>
         /// Gets or sets selectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
-        /// Always displayed as first option in the list
+        /// Always displayed as first option in the list.
         /// </summary>
         public ListItem UndefinedItem
         {
@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets item to be displayed as first item
+        /// Gets or sets item to be displayed as first item.
         /// </summary>
         public ListItem FirstItem
         {

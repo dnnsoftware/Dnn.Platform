@@ -29,21 +29,21 @@ using log4net.Util;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Write the caller stack frames to the output
+    /// Write the caller stack frames to the output.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer, using format:
-    /// type3.MethodCall3 > type2.MethodCall2 > type1.MethodCall1
+    /// type3.MethodCall3 > type2.MethodCall2 > type1.MethodCall1.
     /// </para>
     /// </remarks>
-    /// <author>Michael Cromwell</author>
+    /// <author>Michael Cromwell.</author>
     internal class StackTracePatternConverter : PatternLayoutConverter, IOptionHandler
     {
         private int m_stackFrameLevel = 1;
 
         /// <summary>
-        /// Initialize the converter
+        /// Initialize the converter.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -88,10 +88,10 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Write the strack frames to the output
+        /// Write the strack frames to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// Writes the <see cref="LocationInfo.StackFrames"/> to the output writer.
@@ -128,11 +128,11 @@ namespace log4net.Layout.Pattern
         }
 
                 /// <summary>
-        /// Returns the Name of the method
+        /// Returns the Name of the method.
         /// </summary>
         /// <param name="method"></param>
-        /// <remarks>This method was created, so this class could be used as a base class for StackTraceDetailPatternConverter</remarks>
-        /// <returns>string</returns>
+        /// <remarks>This method was created, so this class could be used as a base class for StackTraceDetailPatternConverter.</remarks>
+        /// <returns>string.</returns>
         internal virtual string GetMethodInformation(MethodItem method)
         {
             return method.Name;

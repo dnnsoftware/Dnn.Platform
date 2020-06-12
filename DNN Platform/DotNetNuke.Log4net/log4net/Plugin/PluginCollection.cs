@@ -28,7 +28,7 @@ namespace log4net.Plugin
     /// <summary>
     ///     A strongly-typed collection of <see cref="IPlugin"/> objects.
     /// </summary>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class PluginCollection : ICollection, IList, IEnumerable
 #if !NETSTANDARD1_3
         , ICloneable
@@ -71,7 +71,7 @@ namespace log4net.Plugin
         /// <summary>
         ///     Creates a read-only wrapper for a <c>PluginCollection</c> instance.
         /// </summary>
-        /// <param name="list">list to create a readonly wrapper arround</param>
+        /// <param name="list">list to create a readonly wrapper arround.</param>
         /// <returns>
         /// A <c>PluginCollection</c> wrapper that is read-only.
         /// </returns>
@@ -141,7 +141,7 @@ namespace log4net.Plugin
 
         /// <summary>
         /// Type visible only to our subclasses
-        /// Used to access protected constructor
+        /// Used to access protected constructor.
         /// </summary>
         /// <exclude/>
         protected internal enum Tag
@@ -153,7 +153,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
-        /// Allow subclasses to avoid our default constructors
+        /// Allow subclasses to avoid our default constructors.
         /// </summary>
         /// <param name="tag"></param>
         /// <exclude/>
@@ -332,7 +332,7 @@ namespace log4net.Plugin
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="IPlugin"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para><paramref name="index"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="PluginCollection.Count"/>.</para>
         /// </exception>

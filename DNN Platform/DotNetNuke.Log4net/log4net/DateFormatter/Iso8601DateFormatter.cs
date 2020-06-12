@@ -33,12 +33,12 @@ namespace log4net.DateFormatter
     /// Formats the <see cref="DateTime"/> specified as a string: <c>"yyyy-MM-dd HH:mm:ss,fff"</c>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class Iso8601DateFormatter : AbsoluteTimeDateFormatter
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -50,7 +50,7 @@ namespace log4net.DateFormatter
         }
 
         /// <summary>
-        /// Formats the date without the milliseconds part
+        /// Formats the date without the milliseconds part.
         /// </summary>
         /// <param name="dateToFormat">The date to format.</param>
         /// <param name="buffer">The string builder to write to.</param>

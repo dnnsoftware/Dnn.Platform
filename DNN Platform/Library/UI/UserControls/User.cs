@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.UserControls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The User UserControl is used to manage User Details
+    /// The User UserControl is used to manage User Details.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -234,7 +234,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>

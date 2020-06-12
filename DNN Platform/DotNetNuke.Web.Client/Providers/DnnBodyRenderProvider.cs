@@ -18,17 +18,17 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.FileRegistration.Providers;
 
     /// <summary>
-    /// Registers resources at the top of the body on default.aspx
+    /// Registers resources at the top of the body on default.aspx.
     /// </summary>
     public class DnnBodyProvider : DnnFileRegistrationProvider
     {
         /// <summary>
-        /// The name of the provider
+        /// The name of the provider.
         /// </summary>
         public const string DefaultName = "DnnBodyProvider";
 
         /// <summary>
-        /// The name of the placeholder in which the controls will be rendered
+        /// The name of the placeholder in which the controls will be rendered.
         /// </summary>
         public const string DnnBodyPlaceHolderName = "BodySCRIPTS";
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Web.Client.Providers
         }
 
         /// <summary>
-        /// Registers the dependencies in the body of default.aspx
+        /// Registers the dependencies in the body of default.aspx.
         /// </summary>
         /// <param name="http"></param>
         /// <param name="js"></param>

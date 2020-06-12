@@ -51,8 +51,8 @@ namespace log4net.Util
     /// stream.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class LogLog
     {
         /// <summary>
@@ -96,7 +96,7 @@ namespace log4net.Util
         /// <remarks>
         /// "log4net: ",
         /// "log4net:ERROR ",
-        /// "log4net:WARN "
+        /// "log4net:WARN ".
         /// </remarks>
         public string Prefix
         {
@@ -296,7 +296,7 @@ namespace log4net.Util
         /// Gets a value indicating whether test if LogLog.Debug is enabled for output.
         /// </summary>
         /// <value>
-        /// <c>true</c> if Debug is enabled
+        /// <c>true</c> if Debug is enabled.
         /// </value>
         /// <remarks>
         /// <para>
@@ -367,7 +367,7 @@ namespace log4net.Util
         /// Gets a value indicating whether test if LogLog.Warn is enabled for output.
         /// </summary>
         /// <value>
-        /// <c>true</c> if Warn is enabled
+        /// <c>true</c> if Warn is enabled.
         /// </value>
         /// <remarks>
         /// <para>
@@ -438,7 +438,7 @@ namespace log4net.Util
         /// Gets a value indicating whether test if LogLog.Error is enabled for output.
         /// </summary>
         /// <value>
-        /// <c>true</c> if Error is enabled
+        /// <c>true</c> if Error is enabled.
         /// </value>
         /// <remarks>
         /// <para>
@@ -574,7 +574,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        ///  Default debug level
+        ///  Default debug level.
         /// </summary>
         private static bool s_debugEnabled = false;
 

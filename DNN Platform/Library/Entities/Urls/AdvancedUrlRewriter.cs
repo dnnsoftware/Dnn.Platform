@@ -1848,7 +1848,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Redirects an alias if that is allowed by the settings
+        /// Redirects an alias if that is allowed by the settings.
         /// </summary>
         /// <param name="httpAlias"></param>
         /// <param name="result"></param>
@@ -1894,7 +1894,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Checks to see whether the specified alias is a customTabAlias
+        /// Checks to see whether the specified alias is a customTabAlias.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="httpAlias"></param>
@@ -1923,7 +1923,7 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>
         /// Configures the result object to set the correct Alias redirect
-        /// parameters and destination URL
+        /// parameters and destination URL.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="wrongAlias"></param>
@@ -2438,7 +2438,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Determines if this is a request from an install / upgrade url
+        /// Determines if this is a request from an install / upgrade url.
         /// </summary>
         /// <param name="physicalPath"></param>
         /// <param name="refererPath"></param>
@@ -2446,7 +2446,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="refererDomain"></param>
         /// <returns></returns>
         /// <remarks>
-        /// //875 : cater for the upgradewizard.aspx Url that is new to DNN 6.1
+        /// //875 : cater for the upgradewizard.aspx Url that is new to DNN 6.1.
         /// </remarks>
         private static bool IgnoreRequestForInstall(string physicalPath, string refererPath, string requestedDomain, string refererDomain)
         {
@@ -3033,7 +3033,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Make sure any redirect to the site root doesn't append the nasty /default.aspx on the end
+        /// Make sure any redirect to the site root doesn't append the nasty /default.aspx on the end.
         /// </summary>
         /// <param name="alias"></param>
         /// <param name="destUrl"></param>

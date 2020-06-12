@@ -17,12 +17,12 @@ namespace DotNetNuke.Entities.Urls
     internal class FriendlyUrlPathController
     {
         /// <summary>
-        /// Splits out the userid value from the supplied Friendly Url Path
+        /// Splits out the userid value from the supplied Friendly Url Path.
         /// </summary>
         /// <param name="parmName"></param>
-        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied)</param>
+        /// <param name="otherParametersPath">The 'other' parameters which form the total UserProfile Url (if supplied).</param>
         /// <param name="rawUserId"></param>
-        /// <param name="remainingPath">The remaining path not associated with the user id</param>
+        /// <param name="remainingPath">The remaining path not associated with the user id.</param>
         /// <param name="urlPath"></param>
         private static void SplitUserIdFromFriendlyUrlPath(
             string urlPath,
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// This method checks the list of rules for parameter replacement and modifies the parameter path accordingly
+        /// This method checks the list of rules for parameter replacement and modifies the parameter path accordingly.
         /// </summary>
         /// <param name="parameterPath"></param>
         /// <param name="tab"></param>

@@ -47,7 +47,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         }
 
         /// <summary>
-        /// Get the current settings from the xml config file
+        /// Get the current settings from the xml config file.
         /// </summary>
         /// <returns></returns>
         public static RequestFilterSettings GetSettings()

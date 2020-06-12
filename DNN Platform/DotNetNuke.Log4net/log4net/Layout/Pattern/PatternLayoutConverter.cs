@@ -40,7 +40,7 @@ namespace log4net.Layout.Pattern
     /// individual PatternConverters. Each of which is responsible for
     /// converting a logging event in a converter specific manner.
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public abstract class PatternLayoutConverter : PatternConverter
     {
         /// <summary>
@@ -51,9 +51,9 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether flag indicating if this converter handles the logging event exception
+        /// Gets or sets a value indicating whether flag indicating if this converter handles the logging event exception.
         /// </summary>
-        /// <value><c>false</c> if this converter handles the logging event exception</value>
+        /// <value><c>false</c> if this converter handles the logging event exception.</value>
         /// <remarks>
         /// <para>
         /// If this converter handles the exception object contained within
@@ -100,10 +100,10 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Flag indicating if this converter handles exceptions
+        /// Flag indicating if this converter handles exceptions.
         /// </summary>
         /// <remarks>
-        /// <c>false</c> if this converter handles exceptions
+        /// <c>false</c> if this converter handles exceptions.
         /// </remarks>
         private bool m_ignoresException = true;
     }

@@ -39,7 +39,7 @@ namespace log4net.Layout.Pattern
     /// This class handles the case when HttpContext.Current is null by writing
     /// <see cref="SystemInfo.NotAvailableText" /> to the writer.
     /// </remarks>
-    /// <author>Ron Grabowski</author>
+    /// <author>Ron Grabowski.</author>
     internal abstract class AspNetPatternLayoutConverter : PatternLayoutConverter
     {
         protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)

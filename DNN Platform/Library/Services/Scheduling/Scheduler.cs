@@ -90,8 +90,8 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// adds an item to the collection of schedule items in progress.
             /// </summary>
-            /// <param name="scheduleHistoryItem">Item to add</param>
-            /// <remarks>Thread Safe</remarks>
+            /// <param name="scheduleHistoryItem">Item to add.</param>
+            /// <remarks>Thread Safe.</remarks>
             private static void AddToScheduleInProgress(ScheduleHistoryItem scheduleHistoryItem)
             {
                 if (! ScheduleInProgressContains(scheduleHistoryItem))
@@ -148,7 +148,7 @@ namespace DotNetNuke.Services.Scheduling
             /// Removes an item from the collection of schedule items in progress.
             /// </summary>
             /// <param name="scheduleItem"></param>
-            /// <remarks>Thread Safe</remarks>
+            /// <remarks>Thread Safe.</remarks>
             private static void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
             {
                 try
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Scheduling
             /// Gets a schedulehistory item from the collection of schedule items in progress.
             /// </summary>
             /// <param name="scheduleItem"></param>
-            /// <remarks>Thread Safe</remarks>
+            /// <remarks>Thread Safe.</remarks>
             private static ScheduleHistoryItem GetScheduleItemFromScheduleInProgress(ScheduleItem scheduleItem)
             {
                 try
@@ -279,7 +279,7 @@ namespace DotNetNuke.Services.Scheduling
             /// Adds an item to the collection of schedule items in queue.
             /// </summary>
             /// <param name="scheduleHistoryItem"></param>
-            /// <remarks>Thread Safe</remarks>
+            /// <remarks>Thread Safe.</remarks>
             public static void AddToScheduleQueue(ScheduleHistoryItem scheduleHistoryItem)
             {
                 if (!ScheduleQueueContains(scheduleHistoryItem))
@@ -466,8 +466,8 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// Gets a copy of the collection of schedule items in progress.
             /// </summary>
-            /// <returns>Copy of the schedule items currently in progress</returns>
-            /// <remarks>This is a snapshot of the collection scheduled items could start or complete at any time</remarks>
+            /// <returns>Copy of the schedule items currently in progress.</returns>
+            /// <remarks>This is a snapshot of the collection scheduled items could start or complete at any time.</remarks>
             public static Collection GetScheduleInProgress()
             {
                 var c = new Collection();
@@ -494,9 +494,9 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// Gets the number of items in the collection of schedule items in progress.
             /// </summary>
-            /// <returns>Number of items in progress</returns>
+            /// <returns>Number of items in progress.</returns>
             /// <remarks>Thread Safe
-            /// This count is a snapshot and may change at any time
+            /// This count is a snapshot and may change at any time.
             /// </remarks>
             public static int GetScheduleInProgressCount()
             {
@@ -523,7 +523,7 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// Gets a copy of collection of all schedule items in queue.
             /// </summary>
-            /// <returns>A copy of the ScheduleQueue</returns>
+            /// <returns>A copy of the ScheduleQueue.</returns>
             /// <remarks>Thread Safe
             /// The returned collection is a snapshot in time the real ScheduleQueue may change at any time.
             /// </remarks>
@@ -554,9 +554,9 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// Gets the number of items in the collection of schedule items in progress.
             /// </summary>
-            /// <returns>Number of items in progress</returns>
+            /// <returns>Number of items in progress.</returns>
             /// <remarks>Thread Safe
-            /// This count is a snapshot and may change at any time
+            /// This count is a snapshot and may change at any time.
             /// </remarks>
             public static int GetScheduleQueueCount()
             {
@@ -602,9 +602,9 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>
-            /// Halt the Scheduler
+            /// Halt the Scheduler.
             /// </summary>
-            /// <param name="sourceOfHalt">Initiator of Halt</param>
+            /// <param name="sourceOfHalt">Initiator of Halt.</param>
             public static void Halt(string sourceOfHalt)
             {
                 // should do nothing if the scheduler havn't start yet.
@@ -776,7 +776,7 @@ namespace DotNetNuke.Services.Scheduling
             /// <summary>
             /// Removes an item from the collection of schedule items in queue.
             /// </summary>
-            /// <param name="scheduleItem">Item to remove</param>
+            /// <param name="scheduleItem">Item to remove.</param>
             public static void RemoveFromScheduleQueue(ScheduleItem scheduleItem)
             {
                 try

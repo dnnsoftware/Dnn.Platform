@@ -34,14 +34,14 @@ namespace log4net.Util
     /// <see cref="PropertiesDictionary"/> collections.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class CompositeProperties
     {
         private PropertiesDictionary m_flattened = null;
         private ArrayList m_nestedProperties = new ArrayList();
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -53,10 +53,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the value of a property
+        /// Gets the value of a property.
         /// </summary>
         /// <value>
-        /// The value for the property with the specified key
+        /// The value for the property with the specified key.
         /// </value>
         /// <remarks>
         /// <para>
@@ -95,9 +95,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Add a Properties Dictionary to this composite collection
+        /// Add a Properties Dictionary to this composite collection.
         /// </summary>
-        /// <param name="properties">the properties to add</param>
+        /// <param name="properties">the properties to add.</param>
         /// <remarks>
         /// <para>
         /// Properties dictionaries added first take precedence over dictionaries added
@@ -111,9 +111,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Flatten this composite collection into a single properties dictionary
+        /// Flatten this composite collection into a single properties dictionary.
         /// </summary>
-        /// <returns>the flattened dictionary</returns>
+        /// <returns>the flattened dictionary.</returns>
         /// <remarks>
         /// <para>
         /// Reduces the collection of ordered dictionaries to a single dictionary

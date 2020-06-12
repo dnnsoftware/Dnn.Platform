@@ -17,9 +17,9 @@ using Lucene.Net.Analysis.Tokenattributes;
 namespace DotNetNuke.Services.Search.Internals
 {
     /// <summary>
-    /// SynonymFilter
+    /// SynonymFilter.
     /// </summary>
-    /// <remarks>Implementation is inspired by sample code in Manning Lucene In Action 2nd Edition, pg. 133</remarks>
+    /// <remarks>Implementation is inspired by sample code in Manning Lucene In Action 2nd Edition, pg. 133.</remarks>
     internal sealed class SynonymFilter : TokenFilter
     {
         private readonly Stack<string> _synonymStack = new Stack<string>();

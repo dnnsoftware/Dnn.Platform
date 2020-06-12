@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CleanupComponentWriter class handles creating the manifest for Cleanup
-    /// Component(s)
+    /// Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -24,10 +24,10 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the ContainerComponentWriter
+        /// Constructs the ContainerComponentWriter.
         /// </summary>
         /// <param name="basePath">Base Path.</param>
-        /// <param name="files">A Dictionary of files</param>
+        /// <param name="files">A Dictionary of files.</param>
         /// -----------------------------------------------------------------------------
         public CleanupComponentWriter(string basePath, SortedList<string, InstallFile> files)
         {

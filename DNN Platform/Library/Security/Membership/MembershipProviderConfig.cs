@@ -16,7 +16,7 @@ namespace DotNetNuke.Security.Membership
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The MembershipProviderConfig class provides a wrapper to the Membership providers
-    /// configuration
+    /// configuration.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -27,9 +27,9 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Provider Properties can be edited
+        /// Gets a value indicating whether gets whether the Provider Properties can be edited.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public static bool CanEditProviderProperties
@@ -42,7 +42,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the maximum number of invlaid attempts to login are allowed
+        /// Gets or sets and sets the maximum number of invlaid attempts to login are allowed.
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Mimimum no of Non AlphNumeric characters required
+        /// Gets or sets and sets the Mimimum no of Non AlphNumeric characters required.
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Mimimum Password Length
+        /// Gets or sets and sets the Mimimum Password Length.
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the window in minutes that the maxium attempts are tracked for
+        /// Gets or sets and sets the window in minutes that the maxium attempts are tracked for.
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Password Format
+        /// Gets or sets and sets the Password Format.
         /// </summary>
         /// <returns>A PasswordFormat enumeration.</returns>
         /// -----------------------------------------------------------------------------
@@ -147,7 +147,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Users's Password can be reset
+        /// Gets or sets a value indicating whether gets and sets whether the Users's Password can be reset.
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Users's Password can be retrieved
+        /// Gets or sets a value indicating whether gets and sets whether the Users's Password can be retrieved.
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
@@ -197,7 +197,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets a Regular Expression that determines the strength of the password
+        /// Gets or sets and sets a Regular Expression that determines the strength of the password.
         /// </summary>
         /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether a Question/Answer is required for Password retrieval
+        /// Gets or sets a value indicating whether gets and sets whether a Question/Answer is required for Password retrieval.
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
@@ -239,7 +239,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether a Unique Email is required
+        /// Gets or sets a value indicating whether gets and sets whether a Unique Email is required.
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------

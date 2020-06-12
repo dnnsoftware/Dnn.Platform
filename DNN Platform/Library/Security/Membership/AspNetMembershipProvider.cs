@@ -38,7 +38,7 @@ namespace DotNetNuke.Security.Membership
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AspNetMembershipProvider overrides the default MembershipProvider to provide
-    /// an AspNet Membership Component (MemberRole) implementation
+    /// an AspNet Membership Component (MemberRole) implementation.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -727,10 +727,10 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>
-        /// add new userportal record (used for creating sites with existing user)
+        /// add new userportal record (used for creating sites with existing user).
         /// </summary>
-        /// <param name="portalId">portalid</param>
-        /// <param name="userId">userid</param>
+        /// <param name="portalId">portalid.</param>
+        /// <param name="userId">userid.</param>
         public override void AddUserPortal(int portalId, int userId)
         {
             Requires.NotNullOrEmpty("portalId", portalId.ToString());
@@ -739,10 +739,10 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>
-        /// function supports the ability change username
+        /// function supports the ability change username.
         /// </summary>
-        /// <param name="userId">user id</param>
-        /// <param name="newUsername">updated username</param>
+        /// <param name="userId">user id.</param>
+        /// <param name="newUsername">updated username.</param>
         public override void ChangeUsername(int userId, string newUsername)
         {
             Requires.NotNull("userId", userId);
@@ -799,7 +799,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ChangePassword attempts to change the users password
+        /// ChangePassword attempts to change the users password.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -844,7 +844,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ChangePasswordQuestionAndAnswer attempts to change the users password Question
-        /// and PasswordAnswer
+        /// and PasswordAnswer.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -911,7 +911,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateUser persists a User to the Data Store
+        /// CreateUser persists a User to the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1002,7 +1002,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteUser deletes a single User from the Data Store
+        /// DeleteUser deletes a single User from the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1028,11 +1028,11 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Deletes all UserOnline inof from the database that has activity outside of the
-        /// time window
+        /// time window.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="timeWindow">Time Window in Minutes</param>
+        /// <param name="timeWindow">Time Window in Minutes.</param>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void DeleteUsersOnline(int timeWindow)
@@ -1042,9 +1042,9 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates a new random password (Length = Minimum Length + 4)
+        /// Generates a new random password (Length = Minimum Length + 4).
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public override string GeneratePassword()
         {
@@ -1053,10 +1053,10 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates a new random password
+        /// Generates a new random password.
         /// </summary>
         /// <param name="length">The length of password to generate.</param>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public override string GeneratePassword(int length)
         {
@@ -1070,10 +1070,10 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Online Users
+        /// Gets a collection of Online Users.
         /// </summary>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <returns>An ArrayList of UserInfo objects</returns>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override ArrayList GetOnlineUsers(int portalId)
@@ -1084,14 +1084,14 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Current Password Information for the User
+        /// Gets the Current Password Information for the User.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="user">The user to delete from the Data Store.</param>
         /// <param name="passwordAnswer">The answer to the Password Question, ues to confirm the user
         /// has the right to obtain the password.</param>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public override string GetPassword(UserInfo user, string passwordAnswer)
         {
@@ -1118,13 +1118,13 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByUserName retrieves a User from the DataStore
+        /// GetUserByUserName retrieves a User from the DataStore.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="userId">The id of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUser(int portalId, int userId)
         {
@@ -1135,13 +1135,13 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByDisplayName retrieves a User from the DataStore
+        /// GetUserByDisplayName retrieves a User from the DataStore.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="displayName">The displayName of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByDisplayName(int portalId, string displayName)
         {
@@ -1156,9 +1156,9 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByUserName(int portalId, string username)
         {
@@ -1175,13 +1175,13 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByVanityUrl retrieves a User from the DataStore
+        /// GetUserByVanityUrl retrieves a User from the DataStore.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="vanityUrl">The vanityUrl of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
@@ -1197,13 +1197,13 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserByPasswordResetToken retrieves a User from the DataStore
+        /// GetUserByPasswordResetToken retrieves a User from the DataStore.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="resetToken">The password reset token.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
         {
@@ -1235,12 +1235,12 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserCountByPortal gets the number of users in the portal
+        /// GetUserCountByPortal gets the number of users in the portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <returns>The no of users</returns>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <returns>The no of users.</returns>
         /// -----------------------------------------------------------------------------
         public override int GetUserCountByPortal(int portalId)
         {
@@ -1249,7 +1249,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserMembership retrieves the UserMembership information from the Data Store
+        /// GetUserMembership retrieves the UserMembership information from the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1269,12 +1269,12 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsers gets all the users of the portal
+        /// GetUsers gets all the users of the portal.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
@@ -1285,12 +1285,12 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUsers gets all the users of the portal
+        /// GetUsers gets all the users of the portal.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
         /// <param name="superUsersOnly">Only select super users.</param>
@@ -1363,13 +1363,13 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByEmail gets all the users of the portal whose email matches a provided
-        /// filter expression
+        /// filter expression.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
@@ -1382,13 +1382,13 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByEmail gets all the users of the portal whose email matches a provided
-        /// filter expression
+        /// filter expression.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="emailToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
         /// <param name="superUsersOnly">Only select super users.</param>
@@ -1412,13 +1412,13 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByUserName gets all the users of the portal whose username matches a provided
-        /// filter expression
+        /// filter expression.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="userNameToMatch">The username to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
@@ -1431,13 +1431,13 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByUserName gets all the users of the portal whose username matches a provided
-        /// filter expression
+        /// filter expression.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="userNameToMatch">The username to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
         /// <param name="superUsersOnly">Only select super users.</param>
@@ -1461,13 +1461,13 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByDisplayName gets all the users of the portal whose display name matches a provided
-        /// filter expression
+        /// filter expression.
         /// </summary>
-        /// <remarks>If all records are required, (ie no paging) set pageSize = -1</remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <remarks>If all records are required, (ie no paging) set pageSize = -1.</remarks>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="nameToMatch">The display name to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
         /// <param name="superUsersOnly">Only select super users.</param>
@@ -1491,15 +1491,15 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByProfileProperty gets all the users of the portal whose profile matches
-        /// the profile property pased as a parameter
+        /// the profile property pased as a parameter.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="propertyName">The name of the property being matched.</param>
         /// <param name="propertyValue">The value of the property being matched.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
@@ -1513,15 +1513,15 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetUsersByProfileProperty gets all the users of the portal whose profile matches
-        /// the profile property pased as a parameter
+        /// the profile property pased as a parameter.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="propertyName">The name of the property being matched.</param>
         /// <param name="propertyValue">The value of the property being matched.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <param name="includeDeleted">Include deleted users.</param>
         /// <param name="superUsersOnly">Only select super users.</param>
@@ -1546,7 +1546,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the user in question is online
+        /// Gets whether the user in question is online.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1611,7 +1611,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ResetPassword resets a user's password and returns the newly created password
+        /// ResetPassword resets a user's password and returns the newly created password.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1631,7 +1631,7 @@ namespace DotNetNuke.Security.Membership
         /// function sets user specific password reset token and timeout
         /// works for all PasswordFormats as it resets and then changes the password
         /// so old password is not required
-        /// method does not support RequiresQuestionAndAnswer
+        /// method does not support RequiresQuestionAndAnswer.
         /// </summary>
         /// <param name="user"></param>
         /// <returns></returns>
@@ -1677,7 +1677,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Unlocks the User's Account
+        /// Unlocks the User's Account.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1699,7 +1699,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// User has agreed to terms and conditions for the portal
+        /// User has agreed to terms and conditions for the portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1712,7 +1712,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reset all agreements on portal so all users need to agree again at next login
+        /// Reset all agreements on portal so all users need to agree again at next login.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1733,9 +1733,9 @@ namespace DotNetNuke.Security.Membership
         }
 
         /// <summary>
-        /// Sets a boolean on the user portal to indicate this user has requested that their account be deleted
+        /// Sets a boolean on the user portal to indicate this user has requested that their account be deleted.
         /// </summary>
-        /// <param name="user">User requesting removal</param>
+        /// <param name="user">User requesting removal.</param>
         /// <param name="remove">True if user requests removal, false if the value needs to be reset.</param>
         public override void UserRequestsRemoval(UserInfo user, bool remove)
         {
@@ -1744,7 +1744,7 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateUser persists a user to the Data Store
+        /// UpdateUser persists a user to the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1824,9 +1824,9 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Updates UserOnline info
-        /// time window
+        /// time window.
         /// </summary>
-        /// <param name="userList">List of users to update</param>
+        /// <param name="userList">List of users to update.</param>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public override void UpdateUsersOnline(Hashtable userList)
@@ -1836,16 +1836,16 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UserLogin attempts to log the user in, and returns the User if successful
+        /// UserLogin attempts to log the user in, and returns the User if successful.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal the user belongs to</param>
-        /// <param name="username">The user name of the User attempting to log in</param>
-        /// <param name="password">The password of the User attempting to log in</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in</param>
+        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
+        /// <param name="username">The user name of the User attempting to log in.</param>
+        /// <param name="password">The password of the User attempting to log in.</param>
+        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
         /// <param name="loginStatus">An enumerated value indicating the login status.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo UserLogin(int portalId, string username, string password, string verificationCode,
                                            ref UserLoginStatus loginStatus)
@@ -1855,17 +1855,17 @@ namespace DotNetNuke.Security.Membership
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UserLogin attempts to log the user in, and returns the User if successful
+        /// UserLogin attempts to log the user in, and returns the User if successful.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal the user belongs to</param>
-        /// <param name="username">The user name of the User attempting to log in</param>
-        /// <param name="password">The password of the User attempting to log in (may not be used by all Auth types)</param>
-        /// <param name="authType">The type of Authentication Used</param>
-        /// <param name="verificationCode">The verification code of the User attempting to log in</param>
+        /// <param name="portalId">The Id of the Portal the user belongs to.</param>
+        /// <param name="username">The user name of the User attempting to log in.</param>
+        /// <param name="password">The password of the User attempting to log in (may not be used by all Auth types).</param>
+        /// <param name="authType">The type of Authentication Used.</param>
+        /// <param name="verificationCode">The verification code of the User attempting to log in.</param>
         /// <param name="loginStatus">An enumerated value indicating the login status.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserInfo UserLogin(int portalId, string username, string password, string authType,
                                            string verificationCode, ref UserLoginStatus loginStatus)
@@ -2004,9 +2004,9 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
         /// <param name="username">The username of the user being retrieved from the Data Store.</param>
-        /// <returns>The User as a UserInfo object</returns>
+        /// <returns>The User as a UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         private UserInfo GetUserByUserNameFromDataStore(int portalId, string username)
         {

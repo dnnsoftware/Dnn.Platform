@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Modules
         private UserInfo _User;
 
         /// <summary>
-        /// Gets a value indicating whether gets whether we are in Add User mode
+        /// Gets a value indicating whether gets whether we are in Add User mode.
         /// </summary>
         protected virtual bool AddUser
         {
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the current user is an Administrator (or SuperUser)
+        /// Gets a value indicating whether gets whether the current user is an Administrator (or SuperUser).
         /// </summary>
         protected bool IsAdmin
         {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether this is the current user or admin
+        /// Gets a value indicating whether gets whether this is the current user or admin.
         /// </summary>
         /// <value>
         /// <placeholder>gets whether this is the current user or admin</placeholder>
@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether this control is in the Host menu
+        /// Gets a value indicating whether gets whether this control is in the Host menu.
         /// </summary>
         protected bool IsHostTab
         {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the control is being called form the User Accounts module
+        /// Gets a value indicating whether gets whether the control is being called form the User Accounts module.
         /// </summary>
         protected bool IsEdit
         {
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the current user is modifying their profile
+        /// Gets a value indicating whether gets whether the current user is modifying their profile.
         /// </summary>
         protected bool IsProfile
         {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether an anonymous user is trying to register
+        /// Gets a value indicating whether gets whether an anonymous user is trying to register.
         /// </summary>
         protected bool IsRegister
         {
@@ -169,7 +169,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the User is editing their own information
+        /// Gets a value indicating whether gets whether the User is editing their own information.
         /// </summary>
         protected bool IsUser
         {
@@ -180,7 +180,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets the PortalId to use for this control
+        /// Gets the PortalId to use for this control.
         /// </summary>
         protected int UserPortalID
         {
@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets or sets and sets the User associated with this control
+        /// Gets or sets and sets the User associated with this control.
         /// </summary>
         public UserInfo User
         {
@@ -211,7 +211,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets or sets and sets the UserId associated with this control
+        /// Gets or sets and sets the UserId associated with this control.
         /// </summary>
         public new int UserId
         {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets a Setting for the Module
+        /// Gets a Setting for the Module.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Updates the Settings for the Module
+        /// Updates the Settings for the Module.
         /// </summary>
         public static void UpdateSettings(int portalId, Hashtable settings)
         {
@@ -289,7 +289,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// InitialiseUser initialises a "new" user
+        /// InitialiseUser initialises a "new" user.
         /// </summary>
         private UserInfo InitialiseUser()
         {
@@ -404,11 +404,11 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// AddLocalizedModuleMessage adds a localized module message
+        /// AddLocalizedModuleMessage adds a localized module message.
         /// </summary>
-        /// <param name="message">The localized message</param>
-        /// <param name="type">The type of message</param>
-        /// <param name="display">A flag that determines whether the message should be displayed</param>
+        /// <param name="message">The localized message.</param>
+        /// <param name="type">The type of message.</param>
+        /// <param name="display">A flag that determines whether the message should be displayed.</param>
         protected void AddLocalizedModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             if (display)
@@ -418,11 +418,11 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// AddModuleMessage adds a module message
+        /// AddModuleMessage adds a module message.
         /// </summary>
-        /// <param name="message">The message</param>
-        /// <param name="type">The type of message</param>
-        /// <param name="display">A flag that determines whether the message should be displayed</param>
+        /// <param name="message">The message.</param>
+        /// <param name="type">The type of message.</param>
+        /// <param name="display">A flag that determines whether the message should be displayed.</param>
         protected void AddModuleMessage(string message, ModuleMessage.ModuleMessageType type, bool display)
         {
             this.AddLocalizedModuleMessage(Localization.GetString(message, this.LocalResourceFile), type, display);

@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Gets the Friend Relationship (if it exists with the current User)
+        /// Gets the Friend Relationship (if it exists with the current User).
         /// </summary>
         public UserRelationship Friend
         {
@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Gets the Follower Relationship. Does the user in object Follow the current User (with any status)
+        /// Gets the Follower Relationship. Does the user in object Follow the current User (with any status).
         /// </summary>
         public UserRelationship Follower
         {
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Gets the Following Relationship (if it exists with the current User)
+        /// Gets the Following Relationship (if it exists with the current User).
         /// </summary>
         public UserRelationship Following
         {
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Gets list of Relationships for the User
+        /// Gets list of Relationships for the User.
         /// </summary>
         [XmlAttribute]
         public IList<Relationship> Relationships
@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Gets list of Roles/Groups for the User
+        /// Gets list of Roles/Groups for the User.
         /// </summary>
         [XmlAttribute]
         public IList<UserRoleInfo> Roles

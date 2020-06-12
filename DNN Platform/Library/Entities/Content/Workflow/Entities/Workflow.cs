@@ -12,7 +12,7 @@ using DotNetNuke.ComponentModel.DataAnnotations;
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
     /// <summary>
-    /// This entity represents a Workflow
+    /// This entity represents a Workflow.
     /// </summary>
     [PrimaryKey("WorkflowID")]
     [TableName("ContentWorkflows")]
@@ -20,47 +20,47 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     public class Workflow
     {
         /// <summary>
-        /// Gets or sets workflow Id
+        /// Gets or sets workflow Id.
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// Gets or sets portal Id
+        /// Gets or sets portal Id.
         /// </summary>
         public int PortalID { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow Name
+        /// Gets or sets workflow Name.
         /// </summary>
         [Required]
         [StringLength(40)]
         public string WorkflowName { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow Key. This property can be used to
+        /// Gets or sets workflow Key. This property can be used to.
         /// </summary>
         [StringLength(40)]
         public string WorkflowKey { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow Description
+        /// Gets or sets workflow Description.
         /// </summary>
         [StringLength(256)]
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether system workflow have a special behavior. It cannot be deleted and new states cannot be added
+        /// Gets a value indicating whether system workflow have a special behavior. It cannot be deleted and new states cannot be added.
         /// </summary>
         public bool IsSystem { get; internal set; }
 
         /// <summary>
-        /// Gets workflow states
+        /// Gets workflow states.
         /// </summary>
         [IgnoreColumn]
         public IEnumerable<WorkflowState> States { get; internal set; }
 
         /// <summary>
-        /// Gets first workflow state
+        /// Gets first workflow state.
         /// </summary>
         [IgnoreColumn]
         public WorkflowState FirstState
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
         }
 
         /// <summary>
-        /// Gets last workflow state
+        /// Gets last workflow state.
         /// </summary>
         [IgnoreColumn]
         public WorkflowState LastState

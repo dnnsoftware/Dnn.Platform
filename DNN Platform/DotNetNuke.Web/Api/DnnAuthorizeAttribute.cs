@@ -34,7 +34,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets or sets the authorized roles (separated by comma)
+        /// Gets or sets the authorized roles (separated by comma).
         /// </summary>
         public string StaticRoles
         {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets or sets the denied roles (separated by comma)
+        /// Gets or sets the denied roles (separated by comma).
         /// </summary>
         public string DenyRoles
         {
@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets or sets the allowed authentication types (separated by comma)
+        /// Gets or sets the allowed authentication types (separated by comma).
         /// </summary>
         public string AuthTypes
         {

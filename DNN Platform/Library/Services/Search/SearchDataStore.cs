@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SearchDataStore is an implementation of the abstract SearchDataStoreProvider
-    /// class
+    /// class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -39,12 +39,12 @@ namespace DotNetNuke.Services.Search
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetCommonWords gets a list of the Common Words for the locale
+        /// GetCommonWords gets a list of the Common Words for the locale.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="locale">The locale string</param>
-        /// <returns>A hashtable of common words</returns>
+        /// <param name="locale">The locale string.</param>
+        /// <returns>A hashtable of common words.</returns>
         /// -----------------------------------------------------------------------------
         private Hashtable GetCommonWords(string locale)
         {
@@ -75,13 +75,13 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSearchItems gets a collection of Search Items for a Module/Tab/Portal
+        /// GetSearchItems gets a collection of Search Items for a Module/Tab/Portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">A Id of the Portal</param>
-        /// <param name="tabId">A Id of the Tab</param>
-        /// <param name="moduleId">A Id of the Module</param>
+        /// <param name="portalId">A Id of the Portal.</param>
+        /// <param name="tabId">A Id of the Tab.</param>
+        /// <param name="moduleId">A Id of the Module.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchItems(int portalId, int tabId, int moduleId)
@@ -91,12 +91,12 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSearchResults gets the search results for a passed in criteria string
+        /// GetSearchResults gets the search results for a passed in criteria string.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">A Id of the Portal</param>
-        /// <param name="criteria">The criteria string</param>
+        /// <param name="portalId">A Id of the Portal.</param>
+        /// <param name="criteria">The criteria string.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public override SearchResultsInfoCollection GetSearchResults(int portalId, string criteria)
@@ -245,11 +245,11 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StoreSearchItems adds the Search Item to the Data Store
+        /// StoreSearchItems adds the Search Item to the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="searchItems">A Collection of SearchItems</param>
+        /// <param name="searchItems">A Collection of SearchItems.</param>
         public override void StoreSearchItems(SearchItemInfoCollection searchItems)
         {
             var indexer = new ModuleIndexer();

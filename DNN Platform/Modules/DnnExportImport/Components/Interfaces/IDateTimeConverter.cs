@@ -7,7 +7,7 @@ using DotNetNuke.Entities.Users;
 namespace Dnn.ExportImport.Components.Interfaces
 {
     /// <summary>
-    /// Contract to convert all the datetiem properties in the class to User's local time
+    /// Contract to convert all the datetiem properties in the class to User's local time.
     /// </summary>
     internal interface IDateTimeConverter
     {

@@ -17,7 +17,7 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The CacheItemArgs class provides an EventArgs implementation for the
-    /// CacheItemExpiredCallback delegate
+    /// CacheItemExpiredCallback delegate.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class CacheItemArgs
@@ -26,7 +26,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new CacheItemArgs Object
+        /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
         /// -----------------------------------------------------------------------------
@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new CacheItemArgs Object
+        /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="timeout"></param>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new CacheItemArgs Object
+        /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="priority"></param>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new CacheItemArgs Object
+        /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="timeout"></param>
@@ -74,7 +74,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new CacheItemArgs Object
+        /// Constructs a new CacheItemArgs Object.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="timeout"></param>
@@ -91,28 +91,28 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Cache Item's CacheItemRemovedCallback delegate
+        /// Gets or sets and sets the Cache Item's CacheItemRemovedCallback delegate.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public CacheItemRemovedCallback CacheCallback { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Cache Item's CacheDependency
+        /// Gets or sets and sets the Cache Item's CacheDependency.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DNNCacheDependency CacheDependency { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Cache Item's Key
+        /// Gets or sets the Cache Item's Key.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string CacheKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Cache Item's priority (defaults to Default)
+        /// Gets or sets the Cache Item's priority (defaults to Default).
         /// </summary>
         /// <remarks>Note: DotNetNuke currently doesn't support the ASP.NET Cache's
         /// ItemPriority, but this is included for possible future use. </remarks>
@@ -121,14 +121,14 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Cache Item's Timeout
+        /// Gets or sets the Cache Item's Timeout.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int CacheTimeOut { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Cache Item's Parameter List
+        /// Gets the Cache Item's Parameter List.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ArrayList ParamList
@@ -155,7 +155,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Cache Item's Parameter Array
+        /// Gets the Cache Item's Parameter Array.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public object[] Params { get; private set; }

@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Library.Helper
         // TODO: ? HttpResponseMessage GetPermissionsData();
 
         /// <summary>
-        /// Returns all roles/role groups info
+        /// Returns all roles/role groups info.
         /// </summary>
         /// <returns></returns>
         HttpResponseMessage GetRoles();

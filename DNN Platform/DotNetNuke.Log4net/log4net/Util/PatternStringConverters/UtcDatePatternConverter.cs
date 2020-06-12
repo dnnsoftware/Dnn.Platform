@@ -31,7 +31,7 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Write the UTC date time to the output
+    /// Write the UTC date time to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -43,14 +43,14 @@ namespace log4net.Util.PatternStringConverters
     /// </para>
     /// </remarks>
     /// <seealso cref="DatePatternConverter"/>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal class UtcDatePatternConverter : DatePatternConverter
     {
         /// <summary>
-        /// Write the current date and time to the output
+        /// Write the current date and time to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Pass the current date and time to the <see cref="IDateFormatter"/>

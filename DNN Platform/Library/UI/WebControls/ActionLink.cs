@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.WebControls
     /// ActionLink provides a button for a single action.
     /// </summary>
     /// <remarks>
-    /// ActionBase inherits from HyperLink
+    /// ActionBase inherits from HyperLink.
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public class ActionLink : HyperLink
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateChildControls builds the control tree
+        /// CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs when just before the Render phase of the Page Lifecycle
+        /// OnPreRender runs when just before the Render phase of the Page Lifecycle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)

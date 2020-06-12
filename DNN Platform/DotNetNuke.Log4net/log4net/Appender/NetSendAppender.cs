@@ -139,8 +139,8 @@ namespace log4net.Appender
     /// </appender>
     /// </code>
     /// </example>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class NetSendAppender : AppenderSkeleton
     {
         /// <summary>
@@ -159,7 +159,7 @@ namespace log4net.Appender
         private string m_recipient;
 
         /// <summary>
-        /// The security context to use for privileged calls
+        /// The security context to use for privileged calls.
         /// </summary>
         private SecurityContext m_securityContext;
 
@@ -323,7 +323,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -338,7 +338,7 @@ namespace log4net.Appender
         /// Sends a buffer of information to a registered message alias.
         /// </summary>
         /// <param name="serverName">The DNS or NetBIOS name of the server on which the function is to execute.</param>
-        /// <param name="msgName">The message alias to which the message buffer should be sent</param>
+        /// <param name="msgName">The message alias to which the message buffer should be sent.</param>
         /// <param name="fromName">The originator of the message.</param>
         /// <param name="buffer">The message text.</param>
         /// <param name="bufferSize">The length, in bytes, of the message text.</param>

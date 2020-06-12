@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.Skins
         ///     SkinFileProcessor class constructor.
         /// </summary>
         /// <remarks>
-        ///     This constructor parses a memory based skin
+        ///     This constructor parses a memory based skin.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public SkinFileProcessor(string ControlKey, string ControlSrc)
@@ -81,8 +81,8 @@ namespace DotNetNuke.UI.Skins
         ///     SkinFileProcessor class constructor.
         /// </summary>
         /// <param name="SkinPath">File path to the portals upload directory.</param>
-        /// <param name="SkinRoot">Specifies type of skin (Skins or Containers)</param>
-        /// <param name="SkinName">Name of folder in which skin will reside (Zip file name)</param>
+        /// <param name="SkinRoot">Specifies type of skin (Skins or Containers).</param>
+        /// <param name="SkinName">Name of folder in which skin will reside (Zip file name).</param>
         /// <remarks>
         ///     The constructor primes the file processor with path information and
         ///     control data that should only be retrieved once.  It checks for the

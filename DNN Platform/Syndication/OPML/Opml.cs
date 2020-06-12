@@ -11,7 +11,7 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Class for managing an OPML feed
+    ///   Class for managing an OPML feed.
     /// </summary>
     public class Opml
     {

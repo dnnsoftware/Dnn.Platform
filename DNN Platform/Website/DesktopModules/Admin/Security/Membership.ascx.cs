@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The Membership UserModuleBase is used to manage the membership aspects of a
-    /// User
+    /// User.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Membership : UserModuleBase
@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserMembership associated with this control
+        /// Gets the UserMembership associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public UserMembership UserMembership
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the MembershipPromoteToSuperuser Event
+        /// Raises the MembershipPromoteToSuperuser Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnMembershipPromoteToSuperuser(EventArgs e)
@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the MembershipPromoteToSuperuser Event
+        /// Raises the MembershipPromoteToSuperuser Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnMembershipDemoteFromSuperuser(EventArgs e)
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the MembershipAuthorized Event
+        /// Raises the MembershipAuthorized Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnMembershipAuthorized(EventArgs e)
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the MembershipPasswordUpdateChanged Event
+        /// Raises the MembershipPasswordUpdateChanged Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnMembershipPasswordUpdateChanged(EventArgs e)
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the MembershipUnAuthorized Event
+        /// Raises the MembershipUnAuthorized Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnMembershipUnAuthorized(EventArgs e)
@@ -170,7 +170,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the MembershipUnLocked Event
+        /// Raises the MembershipUnLocked Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void OnMembershipUnLocked(EventArgs e)
@@ -188,7 +188,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdAuthorize_Click runs when the Authorize User Button is clicked
+        /// cmdAuthorize_Click runs when the Authorize User Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void cmdAuthorize_Click(object sender, EventArgs e)
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdPassword_Click runs when the ChangePassword Button is clicked
+        /// cmdPassword_Click runs when the ChangePassword Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void cmdPassword_Click(object sender, EventArgs e)
@@ -345,7 +345,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked
+        /// cmdUnAuthorize_Click runs when the UnAuthorize User Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void cmdUnAuthorize_Click(object sender, EventArgs e)
@@ -372,7 +372,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>
-        /// cmdToggleSuperuser_Click runs when the toggle superuser button is clicked
+        /// cmdToggleSuperuser_Click runs when the toggle superuser button is clicked.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -412,7 +412,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdUnlock_Click runs when the Unlock Account Button is clicked
+        /// cmdUnlock_Click runs when the Unlock Account Button is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void cmdUnLock_Click(object sender, EventArgs e)

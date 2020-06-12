@@ -13,7 +13,7 @@ using DotNetNuke.Entities.Profile;
 namespace DotNetNuke.Services.GeneratedImage
 {
     /// <summary>
-    /// this class handles profile changes
+    /// this class handles profile changes.
     /// </summary>
     [Export(typeof(IProfileEventHandlers))]
     [ExportMetadata("MessageType", "ProfileEventHandler")]

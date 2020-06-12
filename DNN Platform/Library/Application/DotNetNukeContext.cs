@@ -12,7 +12,7 @@ using DotNetNuke.UI.Skins.EventListeners;
 namespace DotNetNuke.Application
 {
     /// <summary>
-    /// Defines the context for the environment of the DotNetNuke application
+    /// Defines the context for the environment of the DotNetNuke application.
     /// </summary>
     public class DotNetNukeContext
     {

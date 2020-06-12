@@ -18,7 +18,7 @@ using DotNetNuke.Services.Search.Entities;
 namespace DotNetNuke.Services.Search.Controllers
 {
     /// <summary>
-    /// Search Result Controller for Tab Indexer
+    /// Search Result Controller for Tab Indexer.
     /// </summary>
     /// <remarks></remarks>
     [Serializable]

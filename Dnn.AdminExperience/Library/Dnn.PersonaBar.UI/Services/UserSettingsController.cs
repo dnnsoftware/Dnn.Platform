@@ -23,7 +23,7 @@ namespace Dnn.PersonaBar.UI.Services
     public class UserSettingsController : PersonaBarApiController
     {
         /// <summary>
-        /// Update Person Bar's User Settings
+        /// Update Person Bar's User Settings.
         /// </summary>
         /// <returns></returns>
         [HttpPost]

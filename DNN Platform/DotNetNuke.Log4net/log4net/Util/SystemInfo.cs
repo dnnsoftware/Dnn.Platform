@@ -44,9 +44,9 @@ namespace log4net.Util
     /// Utility class of static methods for system specific information.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Alexey Solofnenko</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Alexey Solofnenko.</author>
     public sealed class SystemInfo
     {
         private const string DEFAULT_NULL_TEXT = "(null)";
@@ -233,14 +233,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets get the host name or machine name for the current machine
+        /// Gets get the host name or machine name for the current machine.
         /// </summary>
         /// <value>
-        /// The hostname or machine name
+        /// The hostname or machine name.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Get the host name or machine name for the current machine
+        /// Get the host name or machine name for the current machine.
         /// </para>
         /// <para>
         /// The host name (<see cref="System.Net.Dns.GetHostName"/>) or
@@ -310,10 +310,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets get this application's friendly name
+        /// Gets get this application's friendly name.
         /// </summary>
         /// <value>
-        /// The friendly name of this application as a string
+        /// The friendly name of this application as a string.
         /// </value>
         /// <remarks>
         /// <para>
@@ -631,7 +631,7 @@ namespace log4net.Util
         /// <param name="relativeType">A sibling type to use to load the type.</param>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
-        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
+        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c>.</param>
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
@@ -660,7 +660,7 @@ namespace log4net.Util
         /// </summary>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
-        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
+        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c>.</param>
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
@@ -686,7 +686,7 @@ namespace log4net.Util
         /// <param name="relativeAssembly">An assembly to load the type from.</param>
         /// <param name="typeName">The name of the type to load.</param>
         /// <param name="throwOnError">Flag set to <c>true</c> to throw an exception if the type cannot be loaded.</param>
-        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c></param>
+        /// <param name="ignoreCase"><c>true</c> to ignore the case of the type name; otherwise, <c>false</c>.</param>
         /// <returns>The type loaded or <c>null</c> if it could not be loaded.</returns>
         /// <remarks>
         /// <para>
@@ -783,12 +783,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Generate a new guid
+        /// Generate a new guid.
         /// </summary>
-        /// <returns>A new Guid</returns>
+        /// <returns>A new Guid.</returns>
         /// <remarks>
         /// <para>
-        /// Generate a new guid
+        /// Generate a new guid.
         /// </para>
         /// </remarks>
         public static Guid NewGuid()
@@ -801,12 +801,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Create an <see cref="ArgumentOutOfRangeException"/>
+        /// Create an <see cref="ArgumentOutOfRangeException"/>.
         /// </summary>
-        /// <param name="parameterName">The name of the parameter that caused the exception</param>
-        /// <param name="actualValue">The value of the argument that causes this exception</param>
-        /// <param name="message">The message that describes the error</param>
-        /// <returns>the ArgumentOutOfRangeException object</returns>
+        /// <param name="parameterName">The name of the parameter that caused the exception.</param>
+        /// <param name="actualValue">The value of the argument that causes this exception.</param>
+        /// <param name="message">The message that describes the error.</param>
+        /// <returns>the ArgumentOutOfRangeException object.</returns>
         /// <remarks>
         /// <para>
         /// Create a new instance of the <see cref="ArgumentOutOfRangeException"/> class
@@ -831,11 +831,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Parse a string into an <see cref="int"/> value
+        /// Parse a string into an <see cref="int"/> value.
         /// </summary>
-        /// <param name="s">the string to parse</param>
-        /// <param name="val">out param where the parsed value is placed</param>
-        /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
+        /// <param name="s">the string to parse.</param>
+        /// <param name="val">out param where the parsed value is placed.</param>
+        /// <returns><c>true</c> if the string was able to be parsed into an integer.</returns>
         /// <remarks>
         /// <para>
         /// Attempts to parse the string into an integer. If the string cannot
@@ -879,11 +879,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Parse a string into an <see cref="long"/> value
+        /// Parse a string into an <see cref="long"/> value.
         /// </summary>
-        /// <param name="s">the string to parse</param>
-        /// <param name="val">out param where the parsed value is placed</param>
-        /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
+        /// <param name="s">the string to parse.</param>
+        /// <param name="val">out param where the parsed value is placed.</param>
+        /// <returns><c>true</c> if the string was able to be parsed into an integer.</returns>
         /// <remarks>
         /// <para>
         /// Attempts to parse the string into an integer. If the string cannot
@@ -927,11 +927,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Parse a string into an <see cref="short"/> value
+        /// Parse a string into an <see cref="short"/> value.
         /// </summary>
-        /// <param name="s">the string to parse</param>
-        /// <param name="val">out param where the parsed value is placed</param>
-        /// <returns><c>true</c> if the string was able to be parsed into an integer</returns>
+        /// <param name="s">the string to parse.</param>
+        /// <param name="val">out param where the parsed value is placed.</param>
+        /// <returns><c>true</c> if the string was able to be parsed into an integer.</returns>
         /// <remarks>
         /// <para>
         /// Attempts to parse the string into an integer. If the string cannot
@@ -975,13 +975,13 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Lookup an application setting
+        /// Lookup an application setting.
         /// </summary>
-        /// <param name="key">the application settings key to lookup</param>
-        /// <returns>the value for the key, or <c>null</c></returns>
+        /// <param name="key">the application settings key to lookup.</param>
+        /// <returns>the value for the key, or <c>null</c>.</returns>
         /// <remarks>
         /// <para>
-        /// Configuration APIs are not supported under the Compact Framework
+        /// Configuration APIs are not supported under the Compact Framework.
         /// </para>
         /// </remarks>
         public static string GetAppSetting(string key)
@@ -1059,7 +1059,7 @@ namespace log4net.Util
         /// <summary>
         /// Creates a new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity.
         /// </summary>
-        /// <returns>A new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity</returns>
+        /// <returns>A new case-insensitive instance of the <see cref="Hashtable"/> class with the default initial capacity.</returns>
         /// <remarks>
         /// <para>
         /// The new Hashtable instance uses the default load factor, the CaseInsensitiveHashCodeProvider, and the CaseInsensitiveComparer.
@@ -1157,12 +1157,12 @@ namespace log4net.Util
         private static readonly Type declaringType = typeof(SystemInfo);
 
         /// <summary>
-        /// Cache the host name for the current machine
+        /// Cache the host name for the current machine.
         /// </summary>
         private static string s_hostName;
 
         /// <summary>
-        /// Cache the application friendly name
+        /// Cache the application friendly name.
         /// </summary>
         private static string s_appFriendlyName;
 

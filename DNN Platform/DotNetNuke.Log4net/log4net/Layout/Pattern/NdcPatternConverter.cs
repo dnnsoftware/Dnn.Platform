@@ -29,7 +29,7 @@ using log4net.Core;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Converter to include event NDC
+    /// Converter to include event NDC.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -39,14 +39,14 @@ namespace log4net.Layout.Pattern
     /// The <see cref="PropertyPatternConverter"/> should be used instead.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class NdcPatternConverter : PatternLayoutConverter
     {
         /// <summary>
-        /// Write the event NDC to the output
+        /// Write the event NDC to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// As the thread context stacks are now stored in named event properties

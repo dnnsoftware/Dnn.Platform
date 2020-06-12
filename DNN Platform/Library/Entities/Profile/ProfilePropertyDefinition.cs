@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfilePropertyDefinition class provides a Business Layer entity for
-    /// property Definitions
+    /// property Definitions.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Data Type of the Profile Property
+        /// Gets or sets and sets the Data Type of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Editor("DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke", typeof(EditControl))]
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Default Value of the Profile Property
+        /// Gets or sets and sets the Default Value of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(4)]
@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets and sets the Default Visibility of the Profile Property
+        ///   Gets or sets and sets the Default Visibility of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(10)]
@@ -146,7 +146,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets the Deleted
+        /// Gets or sets a value indicating whether gets and sets the Deleted.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -166,7 +166,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Definition has been modified since it has been retrieved
+        /// Gets a value indicating whether gets whether the Definition has been modified since it has been retrieved.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Length of the Profile Property
+        /// Gets or sets and sets the Length of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(3)]
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ModuleDefId
+        /// Gets or sets and sets the ModuleDefId.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -220,7 +220,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the PortalId
+        /// Gets or sets and sets the PortalId.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -240,7 +240,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Category of the Profile Property
+        /// Gets or sets and sets the Category of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Required(true)]
@@ -266,7 +266,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Id of the ProfilePropertyDefinition
+        /// Gets or sets and sets the Id of the ProfilePropertyDefinition.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -275,7 +275,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Name of the Profile Property
+        /// Gets or sets and sets the Name of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Required(true)]
@@ -303,7 +303,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Value of the Profile Property
+        /// Gets or sets and sets the Value of the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -328,7 +328,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the property is read only
+        /// Gets or sets a value indicating whether gets and sets whether the property is read only.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(7)]
@@ -353,7 +353,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the property is required
+        /// Gets or sets a value indicating whether gets and sets whether the property is required.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(6)]
@@ -378,7 +378,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets a Validation Expression (RegEx) for the Profile Property
+        /// Gets or sets and sets a Validation Expression (RegEx) for the Profile Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(5)]
@@ -403,7 +403,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the View Order of the Property
+        /// Gets or sets and sets the View Order of the Property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [IsReadOnly(true)]
@@ -429,7 +429,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the property is visible
+        /// Gets or sets a value indicating whether gets and sets whether the property is visible.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(8)]
@@ -454,7 +454,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets whether the property is visible
+        /// Gets or sets and sets whether the property is visible.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -479,7 +479,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears the IsDirty Flag
+        /// Clears the IsDirty Flag.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
@@ -488,9 +488,9 @@ namespace DotNetNuke.Entities.Profile
         }
 
         /// <summary>
-        /// Clone a ProfilePropertyDefinition
+        /// Clone a ProfilePropertyDefinition.
         /// </summary>
-        /// <returns>A ProfilePropertyDefinition</returns>
+        /// <returns>A ProfilePropertyDefinition.</returns>
         public ProfilePropertyDefinition Clone()
         {
             var clone = new ProfilePropertyDefinition(this.PortalId)

@@ -17,7 +17,7 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The UserMembership class provides Business Layer model for the Users Membership
-    /// related properties
+    /// related properties.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the User is Approved
+        /// Gets or sets a value indicating whether gets and sets whether the User is Approved.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool Approved
@@ -71,7 +71,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User's Creation Date
+        /// Gets or sets and sets the User's Creation Date.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DateTime CreatedDate { get; set; }
@@ -85,7 +85,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the User Is Online
+        /// Gets or sets a value indicating whether gets and sets whether the User Is Online.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -93,70 +93,70 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last Activity Date of the User
+        /// Gets or sets and sets the Last Activity Date of the User.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DateTime LastActivityDate { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last Lock Out Date of the User
+        /// Gets or sets and sets the Last Lock Out Date of the User.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DateTime LastLockoutDate { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last Login Date of the User
+        /// Gets or sets and sets the Last Login Date of the User.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DateTime LastLoginDate { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last Password Change Date of the User
+        /// Gets or sets and sets the Last Password Change Date of the User.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DateTime LastPasswordChangeDate { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the user is locked out
+        /// Gets or sets a value indicating whether gets and sets whether the user is locked out.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool LockedOut { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User's Password
+        /// Gets or sets and sets the User's Password.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Password { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User's Password Answer
+        /// Gets or sets and sets the User's Password Answer.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PasswordAnswer { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User's Password Confirm value
+        /// Gets or sets and sets the User's Password Confirm value.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PasswordConfirm { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User's Password Question
+        /// Gets or sets and sets the User's Password Question.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PasswordQuestion { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the password should be updated
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the password should be updated.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool UpdatePassword { get; set; }

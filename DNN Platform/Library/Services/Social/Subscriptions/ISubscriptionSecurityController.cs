@@ -14,8 +14,8 @@ namespace DotNetNuke.Services.Social.Subscriptions
         /// <summary>
         /// Check if the User has permission on the Subscription based on the Subscription ModuleId and TabId.
         /// </summary>
-        /// <param name="subscription">Subscription</param>
-        /// <returns>True if user has permission, false otherwise</returns>
+        /// <param name="subscription">Subscription.</param>
+        /// <returns>True if user has permission, false otherwise.</returns>
         bool HasPermission(Subscription subscription);
     }
 }

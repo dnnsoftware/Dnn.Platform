@@ -14,7 +14,7 @@ using Lucene.Net.Analysis.Standard;
 namespace DotNetNuke.Services.Search.Internals
 {
     /// <summary>
-    /// This is responsible for the filters chain that analyzes search documents/queries
+    /// This is responsible for the filters chain that analyzes search documents/queries.
     /// </summary>
     internal class SearchQueryAnalyzer : Analyzer
     {

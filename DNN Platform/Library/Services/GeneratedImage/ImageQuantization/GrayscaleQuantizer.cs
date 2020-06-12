@@ -15,10 +15,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class GrayscaleQuantizer : PaletteQuantizer
     {
         /// <summary>
-        /// Construct the palette quantizer
+        /// Construct the palette quantizer.
         /// </summary>
         /// <remarks>
-        /// Palette quantization only requires a single quantization step
+        /// Palette quantization only requires a single quantization step.
         /// </remarks>
         public GrayscaleQuantizer()
             : base(new ArrayList())
@@ -52,10 +52,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm
+        /// Override this to process the pixel in the second pass of the algorithm.
         /// </summary>
-        /// <param name="pixel">The pixel to quantize</param>
-        /// <returns>The quantized value</returns>
+        /// <param name="pixel">The pixel to quantize.</param>
+        /// <returns>The quantized value.</returns>
         protected override byte QuantizePixel(Color32 pixel)
         {
             double luminance = (pixel.Red * 0.299) + (pixel.Green * 0.587) + (pixel.Blue * 0.114);

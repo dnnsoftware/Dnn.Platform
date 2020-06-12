@@ -32,7 +32,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Controllers.Messaging
 {
     /// <summary>
-    ///  Testing various aspects of MessagingController
+    ///  Testing various aspects of MessagingController.
     /// </summary>
     [TestFixture]
     public class MessagingControllerTests

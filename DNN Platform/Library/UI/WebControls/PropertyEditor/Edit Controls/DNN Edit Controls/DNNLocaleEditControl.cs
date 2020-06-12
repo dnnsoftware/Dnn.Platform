@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.WebControls
 {
     /// <summary>
     /// The DNNLocaleEditControl control provides a standard UI component for selecting
-    /// a Locale
+    /// a Locale.
     /// </summary>
     [ToolboxData("<{0}:DNNLocaleEditControl runat=server></{0}:DNNLocaleEditControl>")]
     public class DNNLocaleEditControl : TextEditControl, IPostBackEventHandler
@@ -142,7 +142,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderViewMode(HtmlTextWriter writer)
@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void RenderEditMode(HtmlTextWriter writer)

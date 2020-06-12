@@ -25,7 +25,7 @@ namespace Dnn.ExportImport.Components.Dto
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets package file name. It is just fake name for UI representation
+        /// Gets package file name. It is just fake name for UI representation.
         /// </summary>
         public string FileName => this.PackageId;
 
@@ -40,12 +40,12 @@ namespace Dnn.ExportImport.Components.Dto
         public string ExporTimeString => Util.GetDateTimeString(this.ExporTime);
 
         /// <summary>
-        /// Gets or sets the portal from which the exported package was created
+        /// Gets or sets the portal from which the exported package was created.
         /// </summary>
         public string PortalName { get; set; }
 
         /// <summary>
-        /// Gets or sets package description
+        /// Gets or sets package description.
         /// </summary>
         public string Description { get; set; }
 
@@ -55,7 +55,7 @@ namespace Dnn.ExportImport.Components.Dto
         public string Thumb => this.PackageId + ".jpg";
 
         /// <summary>
-        /// Gets or sets complete summary of import package
+        /// Gets or sets complete summary of import package.
         /// </summary>
         public ImportExportSummary Summary { get; set; }
 

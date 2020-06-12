@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The LanguagePackWriter class
+    /// The LanguagePackWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -102,9 +102,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Language
+        /// Gets or sets the associated Language.
         /// </summary>
-        /// <value>An Locale object</value>
+        /// <value>An Locale object.</value>
         /// -----------------------------------------------------------------------------
         public Locale Language
         {
@@ -121,9 +121,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Language Pack
+        /// Gets or sets the associated Language Pack.
         /// </summary>
-        /// <value>An LanguagePackInfo object</value>
+        /// <value>An LanguagePackInfo object.</value>
         /// -----------------------------------------------------------------------------
         public LanguagePackInfo LanguagePack
         {

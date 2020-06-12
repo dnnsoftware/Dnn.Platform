@@ -89,7 +89,7 @@ namespace DotNetNuke.Entities.Content
         /// Gets or sets the key ID.
         /// </summary>
         /// <value>
-        /// ContentTypeID
+        /// ContentTypeID.
         /// </value>
         public int KeyID
         {
@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
-        /// override ToString to return content type
+        /// override ToString to return content type.
         /// </summary>
         /// <returns>
         /// property ContentType's value.

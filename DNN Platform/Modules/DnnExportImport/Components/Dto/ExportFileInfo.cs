@@ -20,7 +20,7 @@ namespace Dnn.ExportImport.Components.Dto
         public string ExportPath { get; set; }
 
         /// <summary>
-        /// Gets or sets formatted size of export file
+        /// Gets or sets formatted size of export file.
         /// </summary>
         public string ExportSize { get; set; }
 

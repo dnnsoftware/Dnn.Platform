@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     /// <summary>
-    /// Comparer class used to perform the sorting of the query parameters
+    /// Comparer class used to perform the sorting of the query parameters.
     /// </summary>
     internal class QueryParameterComparer : IComparer<QueryParameter>
     {

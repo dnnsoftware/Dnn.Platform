@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNDataGrid control provides an Enhanced Data Grid, that supports other
-    /// column types
+    /// column types.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Called when the grid is Data Bound
+        /// Called when the grid is Data Bound.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataBinding(EventArgs e)

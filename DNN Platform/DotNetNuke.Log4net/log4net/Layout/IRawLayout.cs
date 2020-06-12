@@ -29,7 +29,7 @@ using log4net.Util.TypeConverters;
 namespace log4net.Layout
 {
     /// <summary>
-    /// Interface for raw layout objects
+    /// Interface for raw layout objects.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -44,16 +44,16 @@ namespace log4net.Layout
     /// is not generally useful than this interface.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [TypeConverter(typeof(RawLayoutConverter))]
     public interface IRawLayout
     {
         /// <summary>
         /// Implement this method to create your own layout format.
         /// </summary>
-        /// <param name="loggingEvent">The event to format</param>
-        /// <returns>returns the formatted event</returns>
+        /// <param name="loggingEvent">The event to format.</param>
+        /// <returns>returns the formatted event.</returns>
         /// <remarks>
         /// <para>
         /// Implement this method to create your own layout format.

@@ -53,7 +53,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Get RoleId for role "Registered Users"
+        /// Get RoleId for role "Registered Users".
         /// </summary>
         /// <returns></returns>
         public static int GetRegisteredUsersRoleId(int portalId = 0)
@@ -62,7 +62,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Get RoleId for role "Administrators"
+        /// Get RoleId for role "Administrators".
         /// </summary>
         /// <returns></returns>
         public static int GetAdministratorsRoleId(int portalId = 0)

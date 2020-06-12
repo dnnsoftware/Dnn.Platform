@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdCancel_Click runs when the cancel Button is clicked
+        /// cmdCancel_Click runs when the cancel Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>

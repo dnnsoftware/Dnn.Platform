@@ -13,7 +13,7 @@ using DotNetNuke.Services.FileSystem.Internal;
 namespace DotNetNuke.Services.FileSystem
 {
     /// <summary>
-    ///   Represents the FolderMapping object and holds the Properties of that object
+    ///   Represents the FolderMapping object and holds the Properties of that object.
     /// </summary>
     [Serializable]
     public class FolderMappingInfo : IHydratable
@@ -106,9 +106,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        ///   Fills a FolderInfo from a Data Reader
+        ///   Fills a FolderInfo from a Data Reader.
         /// </summary>
-        /// <param name = "dr">The Data Reader to use</param>
+        /// <param name = "dr">The Data Reader to use.</param>
         public void Fill(IDataReader dr)
         {
             this.FolderMappingID = Null.SetNullInteger(dr["FolderMappingID"]);
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        ///   Gets or sets and sets the Key ID
+        ///   Gets or sets and sets the Key ID.
         /// </summary>
         public int KeyID
         {

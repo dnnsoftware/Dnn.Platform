@@ -25,13 +25,13 @@ namespace DotNetNuke.Web.Mvc
         }
 
         /// <summary>
-        /// Returns the specified service from the scope
+        /// Returns the specified service from the scope.
         /// </summary>
         /// <param name="serviceType">
-        /// The service to be retrieved
+        /// The service to be retrieved.
         /// </param>
         /// <returns>
-        /// The retrieved service
+        /// The retrieved service.
         /// </returns>
         public object GetService(Type serviceType)
         {
@@ -46,13 +46,13 @@ namespace DotNetNuke.Web.Mvc
         }
 
         /// <summary>
-        /// Returns the specified services from the scope
+        /// Returns the specified services from the scope.
         /// </summary>
         /// <param name="serviceType">
-        /// The service to be retrieved
+        /// The service to be retrieved.
         /// </param>
         /// <returns>
-        /// The retrieved service
+        /// The retrieved service.
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {

@@ -45,9 +45,9 @@ namespace Dnn.ExportImport.Components.Dto
         public string ExportDescription { get; set; }
 
         /// <summary>
-        /// Gets or sets names of items to export
+        /// Gets or sets names of items to export.
         /// </summary>
-        /// <example>["Content", "Assets", "Users"]</example>
+        /// <example>["Content", "Assets", "Users"].</example>
         public string[] ItemsToExport { get; set; }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace Dnn.ExportImport.Components.Dto
 
         /// <summary>
         /// Gets or sets date when job was created.
-        /// NOTE: This will be set internally only by the engine and not by the UI
+        /// NOTE: This will be set internally only by the engine and not by the UI.
         /// </summary>
         [JsonProperty("ToDate")]
         public DateTime ToDateUtc { get; set; }

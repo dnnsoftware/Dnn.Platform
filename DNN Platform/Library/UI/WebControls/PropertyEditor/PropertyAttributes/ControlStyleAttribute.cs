@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initializes a new instance of the StyleAttribute class.
         /// </summary>
-        /// <param name="cssClass">The css class to apply to the associated property</param>
+        /// <param name="cssClass">The css class to apply to the associated property.</param>
         public ControlStyleAttribute(string cssClass)
         {
             this._CssClass = cssClass;
@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initializes a new instance of the StyleAttribute class.
         /// </summary>
-        /// <param name="cssClass">The css class to apply to the associated property</param>
+        /// <param name="cssClass">The css class to apply to the associated property.</param>
         /// <param name="width">control width.</param>
         public ControlStyleAttribute(string cssClass, string width)
         {
@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initializes a new instance of the StyleAttribute class.
         /// </summary>
-        /// <param name="cssClass">The css class to apply to the associated property</param>
+        /// <param name="cssClass">The css class to apply to the associated property.</param>
         /// <param name="width">control width.</param>
         /// <param name="height">control height.</param>
         public ControlStyleAttribute(string cssClass, string width, string height)

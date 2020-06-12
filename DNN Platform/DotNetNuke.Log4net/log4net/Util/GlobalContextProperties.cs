@@ -26,7 +26,7 @@ using System.Collections;
 namespace log4net.Util
 {
     /// <summary>
-    /// Implementation of Properties collection for the <see cref="log4net.GlobalContext"/>
+    /// Implementation of Properties collection for the <see cref="log4net.GlobalContext"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -38,7 +38,7 @@ namespace log4net.Util
     /// and are modified infrequently.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class GlobalContextProperties : ContextPropertiesBase
     {
         /// <summary>
@@ -57,12 +57,12 @@ namespace log4net.Util
 #endif
 
         /// <summary>
-        /// Lock object used to synchronize updates within this instance
+        /// Lock object used to synchronize updates within this instance.
         /// </summary>
         private readonly object m_syncRoot = new object();
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -74,10 +74,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets the value of a property
+        /// Gets or sets the value of a property.
         /// </summary>
         /// <value>
-        /// The value for the property with the specified key
+        /// The value for the property with the specified key.
         /// </value>
         /// <remarks>
         /// <para>
@@ -107,9 +107,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Remove a property from the global context
+        /// Remove a property from the global context.
         /// </summary>
-        /// <param name="key">the key for the entry to remove</param>
+        /// <param name="key">the key for the entry to remove.</param>
         /// <remarks>
         /// <para>
         /// Removing an entry from the global context properties is relatively expensive compared
@@ -132,7 +132,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Clear the global context properties
+        /// Clear the global context properties.
         /// </summary>
         public void Clear()
         {
@@ -143,9 +143,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get a readonly immutable copy of the properties
+        /// Get a readonly immutable copy of the properties.
         /// </summary>
-        /// <returns>the current global context properties</returns>
+        /// <returns>the current global context properties.</returns>
         /// <remarks>
         /// <para>
         /// This implementation is fast because the GlobalContextProperties class

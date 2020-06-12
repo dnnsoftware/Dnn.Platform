@@ -14,13 +14,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// InstallSuperUserStep - Step that installs SuperUser Account
+    /// InstallSuperUserStep - Step that installs SuperUser Account.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class InstallSuperUserStep : BaseInstallationStep
     {
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         public override void Execute()
         {

@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      SettingInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SettingInfo class provides a helper class for the Settings Editor
+    /// The SettingInfo class provides a helper class for the Settings Editor.
     /// </summary>
     /// <remarks>
     /// </remarks>

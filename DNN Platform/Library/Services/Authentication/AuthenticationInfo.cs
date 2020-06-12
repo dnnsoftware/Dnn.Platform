@@ -32,58 +32,58 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the ID of the Authentication System
+        /// Gets or sets and Sets the ID of the Authentication System.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int AuthenticationID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the PackageID for the Authentication System
+        /// Gets or sets and Sets the PackageID for the Authentication System.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and Sets a flag that determines whether the Authentication System is enabled
+        /// Gets or sets a value indicating whether gets and Sets a flag that determines whether the Authentication System is enabled.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsEnabled { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID)
+        /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID).
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the url for the Settings Control
+        /// Gets or sets and Sets the url for the Settings Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string SettingsControlSrc { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the url for the Login Control
+        /// Gets or sets and Sets the url for the Login Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string LoginControlSrc { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the url for the Logoff Control
+        /// Gets or sets and Sets the url for the Logoff Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string LogoffControlSrc { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a RoleInfo from a Data Reader
+        /// Fills a RoleInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
@@ -101,9 +101,9 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {

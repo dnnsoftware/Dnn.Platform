@@ -9,7 +9,7 @@ namespace DotNetNuke.Entities.Tabs
     /// Class       : TabMoveType
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Identifies common tab move types
+    /// Identifies common tab move types.
     /// </summary>
     /// <remarks>
     /// </remarks>

@@ -37,7 +37,7 @@ namespace log4net.Util
     /// configuration.
     /// </para>
     /// </remarks>
-    /// <example>Simple example of logging messages
+    /// <example>Simple example of logging messages.
     /// <code lang="C#">
     /// using log4net.Util;
     ///
@@ -207,8 +207,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -244,8 +244,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -280,10 +280,10 @@ namespace log4net.Util
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
         /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -319,9 +319,9 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -357,10 +357,10 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Debug"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
-        /// <param name="arg2">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
+        /// <param name="arg2">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -545,8 +545,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -582,8 +582,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -618,10 +618,10 @@ namespace log4net.Util
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
         /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -657,9 +657,9 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -695,10 +695,10 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Info"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
-        /// <param name="arg2">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
+        /// <param name="arg2">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -883,8 +883,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -920,8 +920,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -956,10 +956,10 @@ namespace log4net.Util
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
         /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -995,9 +995,9 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1033,10 +1033,10 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Warn"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
-        /// <param name="arg2">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
+        /// <param name="arg2">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1221,8 +1221,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1258,8 +1258,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1294,10 +1294,10 @@ namespace log4net.Util
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
         /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1333,9 +1333,9 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1371,10 +1371,10 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Error"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
-        /// <param name="arg2">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
+        /// <param name="arg2">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1559,8 +1559,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1596,8 +1596,8 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1632,10 +1632,10 @@ namespace log4net.Util
         /// <summary>
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.
         /// </summary>
-        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information</param>
+        /// <param name="provider">An <see cref="IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="args">An Object array containing zero or more objects to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1671,9 +1671,9 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
@@ -1709,10 +1709,10 @@ namespace log4net.Util
         /// Logs a formatted message string with the <see cref="Level.Fatal"/> level.
         /// </summary>
         /// <param name="logger">The logger on which the message is logged.</param>
-        /// <param name="format">A String containing zero or more format items</param>
-        /// <param name="arg0">An Object to format</param>
-        /// <param name="arg1">An Object to format</param>
-        /// <param name="arg2">An Object to format</param>
+        /// <param name="format">A String containing zero or more format items.</param>
+        /// <param name="arg0">An Object to format.</param>
+        /// <param name="arg1">An Object to format.</param>
+        /// <param name="arg2">An Object to format.</param>
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See

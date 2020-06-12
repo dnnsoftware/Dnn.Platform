@@ -23,7 +23,7 @@ namespace DotNetNuke.Modules.CoreMessaging
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The View class displays the content
+    /// The View class displays the content.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class View : PortalModuleBase

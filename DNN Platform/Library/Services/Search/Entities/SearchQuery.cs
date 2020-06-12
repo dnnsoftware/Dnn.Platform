@@ -12,12 +12,12 @@ namespace DotNetNuke.Services.Search.Entities
     /// <summary>
     /// Criteria to search for.
     /// </summary>
-    /// <remarks>This object should be passed to SearchController to search for Content. KeyWords and PortalId must be specified</remarks>
+    /// <remarks>This object should be passed to SearchController to search for Content. KeyWords and PortalId must be specified.</remarks>
     [Serializable]
     public class SearchQuery
     {
         /// <summary>
-        /// Gets or sets a key to uniquely identify a document in the Index
+        /// Gets or sets a key to uniquely identify a document in the Index.
         /// </summary>
         public string UniqueKey { get; set; }
 
@@ -29,16 +29,16 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Gets or sets a collection of Portal Ids of the Site to perform Search upon. This field must be specified or else Portal 0 will be searched by default.
         /// </summary>
-        /// <remarks>Search cannot be executed across Sites</remarks>
+        /// <remarks>Search cannot be executed across Sites.</remarks>
         public IEnumerable<int> PortalIds { get; set; }
 
         /// <summary>
-        /// Gets or sets a collection of Search Type Ids that should be searched upon [Optional]
+        /// Gets or sets a collection of Search Type Ids that should be searched upon [Optional].
         /// </summary>
         public IEnumerable<int> SearchTypeIds { get; set; }
 
         /// <summary>
-        /// Gets or sets a collection of Module Def Ids that should be searched upon [Optional]. Match is performed only when a SearchTypeId for Module Search Crawler Id
+        /// Gets or sets a collection of Module Def Ids that should be searched upon [Optional]. Match is performed only when a SearchTypeId for Module Search Crawler Id.
         /// </summary>
         public IEnumerable<int> ModuleDefIds { get; set; }
 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Search.Entities
         public int TabId { get; set; }
 
         /// <summary>
-        /// Gets or sets locale to restrict Search to. This field can be left empty for single language site
+        /// Gets or sets locale to restrict Search to. This field can be left empty for single language site.
         /// </summary>
         /// <remarks>E.g. A value en-US or nl-NL can specified to restrict search to a single locale .</remarks>
         public string Locale { get; set; }
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Search.Entities
         public IEnumerable<string> Tags { get; set; }
 
         /// <summary>
-        /// Gets or sets page Index for the result, e.g. pageIndex=1 and pageSize=10 indicates first 10 hits. Default value is 1
+        /// Gets or sets page Index for the result, e.g. pageIndex=1 and pageSize=10 indicates first 10 hits. Default value is 1.
         /// </summary>
         public int PageIndex { get; set; }
 
@@ -89,19 +89,19 @@ namespace DotNetNuke.Services.Search.Entities
         public int PageSize { get; set; }
 
         /// <summary>
-        /// Gets or sets maximum length of highlighted title field in the results
+        /// Gets or sets maximum length of highlighted title field in the results.
         /// </summary>
         public int TitleSnippetLength { get; set; }
 
         /// <summary>
-        /// Gets or sets maximum length of highlighted title field in the results
+        /// Gets or sets maximum length of highlighted title field in the results.
         /// </summary>
         public int BodySnippetLength { get; set; }
 
         /// <summary>
         /// Gets or sets culture Code associated with the content.
         /// </summary>
-        /// <remarks>Culture-Neutral content is always returned even though this value is specfied</remarks>
+        /// <remarks>Culture-Neutral content is always returned even though this value is specfied.</remarks>
         public string CultureCode { get; set; }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// SearchDocument.Keywords, SearchDocument.NumericKeys or Tags can be specified.
         /// can be specified by using CustomSortField property. One needs to ensure that the field name is a valid one.
         /// </remarks>
-        /// <example>authorid or authorname</example>
+        /// <example>authorid or authorname.</example>
         public string CustomSortField { get; set; }
 
         /// <summary>
@@ -141,14 +141,14 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Gets or sets restrict search to specific Keywords. This field is optional. Lookup is done in the SearchDocument.Keywords collection.
         /// </summary>
-        /// <remarks>This is key-value pair, e.g. "AliasName","something"</remarks>
+        /// <remarks>This is key-value pair, e.g. "AliasName","something".</remarks>
         /// <remarks>An empty dictionary means this is property is not used.</remarks>
         public IDictionary<string, string> CustomKeywords { get; set; }
 
         /// <summary>
         /// Gets or sets restrict search to specific NumericKeys. This field is optional.
         /// </summary>
-        /// <remarks>This is key-value pair, e.g. "ItemId","888"</remarks>
+        /// <remarks>This is key-value pair, e.g. "ItemId","888".</remarks>
         /// <remarks>An empty dictionary means this is property is not used.</remarks>
         public IDictionary<string, int> NumericKeys { get; set; }
 

@@ -23,9 +23,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Builds a new PackageCreatedEventArgs
+        /// Builds a new PackageCreatedEventArgs.
         /// </summary>
-        /// <param name="package">The package associated with this event</param>
+        /// <param name="package">The package associated with this event.</param>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public PackageCreatedEventArgs(PackageInfo package)
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Package associated with this event
+        /// Gets the Package associated with this event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package

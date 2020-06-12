@@ -58,7 +58,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// Sets up the HttpContext objects to simulate a GET request.
         /// </summary>
         /// <remarks>
-        /// Simulates a request to http://localhost/
+        /// Simulates a request to http://localhost/.
         /// </remarks>
         /// <returns></returns>
         public HttpSimulator SimulateRequest()
@@ -770,7 +770,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
+        /// <filterpriority>2.</filterpriority>
         public void Dispose()
         {
             HttpContext.Current = null;

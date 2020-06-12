@@ -39,8 +39,8 @@ namespace log4net.Util
     /// Utility functions for converting types and parsing values.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class OptionConverter
     {
         /// <summary>
@@ -518,7 +518,7 @@ namespace log4net.Util
         /// The variable substitution delimiters are <b>${</b> and <b>}</b>.
         /// </para>
         /// <para>
-        /// For example, if props contains <c>key=value</c>, then the call
+        /// For example, if props contains <c>key=value</c>, then the call.
         /// </para>
         /// <para>
         /// <code lang="C#">
@@ -534,7 +534,7 @@ namespace log4net.Util
         /// </para>
         /// <para>
         /// For example, if system properties contains no value for the key
-        /// "nonExistentKey", then the call
+        /// "nonExistentKey", then the call.
         /// </para>
         /// <para>
         /// <code lang="C#">

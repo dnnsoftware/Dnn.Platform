@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationLoginBase class provides a bas class for Authentiication
-    /// Login controls
+    /// Login controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class AuthenticationLoginBase : UserModuleBase
@@ -31,22 +31,22 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Type of Authentication associated with this control
+        /// Gets or sets and Sets the Type of Authentication associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the control is Enabled
+        /// Gets a value indicating whether gets whether the control is Enabled.
         /// </summary>
-        /// <remarks>This property must be overriden in the inherited class</remarks>
+        /// <remarks>This property must be overriden in the inherited class.</remarks>
         /// -----------------------------------------------------------------------------
         public abstract bool Enabled { get; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the IP address associated with the request
+        /// Gets the IP address associated with the request.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string IPAddress
@@ -61,24 +61,24 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Authentication mode of the control (Login or Register)
+        /// Gets or sets the Authentication mode of the control (Login or Register).
         /// </summary>
-        /// <remarks>This property may be overriden in the inherited class</remarks>
+        /// <remarks>This property may be overriden in the inherited class.</remarks>
         /// -----------------------------------------------------------------------------
         public virtual AuthMode Mode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Redirect Url for this control
+        /// Gets or sets and Sets the Redirect Url for this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string RedirectURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the control supports Registration
+        /// Gets a value indicating whether gets whether the control supports Registration.
         /// </summary>
-        /// <remarks>This property may be overriden in the inherited class</remarks>
+        /// <remarks>This property may be overriden in the inherited class.</remarks>
         /// -----------------------------------------------------------------------------
         public virtual bool SupportsRegistration
         {

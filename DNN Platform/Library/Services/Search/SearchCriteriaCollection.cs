@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Initializes a new instance of the <see cref="SearchCriteriaCollection">SearchCriteriaCollection</see> class containing the elements of the specified source collection.
         /// </summary>
-        /// <param name="value">A criteria string with which to initialize the collection</param>
+        /// <param name="value">A criteria string with which to initialize the collection.</param>
         public SearchCriteriaCollection(string value)
         {
             // split search criteria into words
@@ -201,7 +201,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.
         /// </summary>
-        /// <returns>Array of type SearchCriteria</returns>
+        /// <returns>Array of type SearchCriteria.</returns>
         public SearchCriteria[] ToArray()
         {
             var arr = new SearchCriteria[this.Count];

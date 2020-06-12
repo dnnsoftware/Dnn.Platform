@@ -10,7 +10,7 @@ using System.Web.UI;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   RSS data source control implementation, including the designer
+    ///   RSS data source control implementation, including the designer.
     /// </summary>
     [DefaultProperty("Url")]
     public class RssDataSource : DataSourceControl

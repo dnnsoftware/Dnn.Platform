@@ -18,7 +18,7 @@ using DotNetNuke.Services.OutputCache;
 namespace DotNetNuke.HttpModules.OutputCaching
 {
     /// <summary>
-    /// Manages the output cache for a request
+    /// Manages the output cache for a request.
     /// </summary>
     public class OutputCacheModule : IHttpModule
     {

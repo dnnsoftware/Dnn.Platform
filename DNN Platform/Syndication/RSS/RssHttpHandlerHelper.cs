@@ -10,7 +10,7 @@ using System.Web.Security;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string
+    ///   Helper class (for RssHtppHandler) to pack and unpack user name and channel to from/to query string.
     /// </summary>
     public class RssHttpHandlerHelper
     {

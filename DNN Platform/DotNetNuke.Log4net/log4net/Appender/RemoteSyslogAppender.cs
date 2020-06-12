@@ -68,17 +68,17 @@ namespace log4net.Appender
     /// identity is the application name (from <see cref="LoggingEvent.Domain"/>).
     /// </para>
     /// </remarks>
-    /// <author>Rob Lyon</author>
-    /// <author>Nicko Cadell</author>
+    /// <author>Rob Lyon.</author>
+    /// <author>Nicko Cadell.</author>
     public class RemoteSyslogAppender : UdpAppender
     {
         /// <summary>
-        /// Syslog port 514
+        /// Syslog port 514.
         /// </summary>
         private const int DefaultSyslogPort = 514;
 
         /// <summary>
-        /// syslog severities
+        /// syslog severities.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -129,11 +129,11 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// syslog facilities
+        /// syslog facilities.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The syslog facilities
+        /// The syslog facilities.
         /// </para>
         /// </remarks>
         public enum SyslogFacility
@@ -275,7 +275,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets message identity
+        /// Gets or sets message identity.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -292,7 +292,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets syslog facility
+        /// Gets or sets syslog facility.
         /// </summary>
         /// <remarks>
         /// Set to one of the <see cref="SyslogFacility"/> values. The list of
@@ -306,9 +306,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Add a mapping of level to severity
+        /// Add a mapping of level to severity.
         /// </summary>
-        /// <param name="mapping">The mapping to add</param>
+        /// <param name="mapping">The mapping to add.</param>
         /// <remarks>
         /// <para>
         /// Add a <see cref="LevelSeverity"/> mapping to this appender.
@@ -420,7 +420,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the options for this appender
+        /// Initialize the options for this appender.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -516,22 +516,22 @@ namespace log4net.Appender
         private SyslogFacility m_facility = SyslogFacility.User;
 
         /// <summary>
-        /// The message identity
+        /// The message identity.
         /// </summary>
         private PatternLayout m_identity;
 
         /// <summary>
-        /// Mapping from level object to syslog severity
+        /// Mapping from level object to syslog severity.
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
         /// <summary>
-        /// Initial buffer size
+        /// Initial buffer size.
         /// </summary>
         private const int c_renderBufferSize = 256;
 
         /// <summary>
-        /// Maximum buffer size before it is recycled
+        /// Maximum buffer size before it is recycled.
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
 
@@ -550,12 +550,12 @@ namespace log4net.Appender
             private SyslogSeverity m_severity;
 
             /// <summary>
-            /// Gets or sets the mapped syslog severity for the specified level
+            /// Gets or sets the mapped syslog severity for the specified level.
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped syslog severity for the specified level
+            /// The mapped syslog severity for the specified level.
             /// </para>
             /// </remarks>
             public SyslogSeverity Severity

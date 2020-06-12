@@ -14,18 +14,18 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     /// Class:      MessageThreadView
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MessageThreadView class contains MessageConversationView and collection of MessageAttachmentView
+    /// The MessageThreadView class contains MessageConversationView and collection of MessageAttachmentView.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class MessageThreadView
     {
         /// <summary>
-        /// Gets or sets messageItemView containing consolidated information about the message
+        /// Gets or sets messageItemView containing consolidated information about the message.
         /// </summary>
         public MessageConversationView Conversation { get; set; }
 
         /// <summary>
-        /// Gets or sets list of attachments
+        /// Gets or sets list of attachments.
         /// </summary>
         public IList<MessageFileView> Attachments { get; set; }
     }

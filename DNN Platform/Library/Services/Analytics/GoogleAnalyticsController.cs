@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Analytics
     /// Module:     GoogleAnalytics
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Controller class definition for GoogleAnalytics which handles upgrades
+    ///   Controller class definition for GoogleAnalytics which handles upgrades.
     /// </summary>
     /// <remarks>
     /// </remarks>

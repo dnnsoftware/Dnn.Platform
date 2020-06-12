@@ -117,13 +117,13 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         }
 
         /// <summary>
-        /// This method responds to an incoming request to process synchronization from an additional server
+        /// This method responds to an incoming request to process synchronization from an additional server.
         /// </summary>
         /// <remarks>
-        /// This is internal as it should only be called from <see cref="SimpleWebFarmSynchronizationHandler"/>
+        /// This is internal as it should only be called from <see cref="SimpleWebFarmSynchronizationHandler"/>.
         /// </remarks>
-        /// <param name="command">The command to process, currently supported Remove and Clear~{Type}</param>
-        /// <param name="detail">Additional detail to pass to the caching sub-system</param>
+        /// <param name="command">The command to process, currently supported Remove and Clear~{Type}.</param>
+        /// <param name="detail">Additional detail to pass to the caching sub-system.</param>
         internal void ProcessSynchronizationRequest(string command, string detail)
         {
             // Handle basic removal

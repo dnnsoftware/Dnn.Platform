@@ -109,7 +109,7 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// Determines the configuration source for the remove and replace functions
+        /// Determines the configuration source for the remove and replace functions.
         /// </summary>
         public enum ConfigType
         {
@@ -119,7 +119,7 @@ namespace DotNetNuke.Security
 
         /// <summary>
         /// determines whether to use system (host) list, portal specific list, or combine both
-        /// At present only supported by ConfigType.ListController
+        /// At present only supported by ConfigType.ListController.
         /// </summary>
         public enum FilterScope
         {
@@ -267,10 +267,10 @@ namespace DotNetNuke.Security
         /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
         /// to provide more robust checking as additional holes are found.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the FormatDisableScripting function
+        /// This is a private function that is used internally by the FormatDisableScripting function.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static string FilterStrings(string strInput)
@@ -317,10 +317,10 @@ namespace DotNetNuke.Security
         /// targeted in Cross-site scripting (XSS) attacks.  This function will evolve
         /// to provide more robust checking as additional holes are found.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
@@ -334,10 +334,10 @@ namespace DotNetNuke.Security
         /// <summary>
         /// This filter removes angle brackets i.e.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static string FormatAngleBrackets(string strInput)
@@ -348,12 +348,12 @@ namespace DotNetNuke.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This filter removes CrLf characters and inserts br
+        /// This filter removes CrLf characters and inserts br.
         /// </summary>
-        /// <param name="strInput">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strInput">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static string FormatMultiLine(string strInput)
@@ -366,12 +366,12 @@ namespace DotNetNuke.Security
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function verifies raw SQL statements to prevent SQL injection attacks
-        /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module
+        /// and replaces a similar function (PreventSQLInjection) from the Common.Globals.vb module.
         /// </summary>
-        /// <param name="strSQL">This is the string to be filtered</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="strSQL">This is the string to be filtered.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static string FormatRemoveSQL(string strSQL)
@@ -384,10 +384,10 @@ namespace DotNetNuke.Security
         /// <summary>
         /// This function determines if the Input string contains any markup.
         /// </summary>
-        /// <param name="strInput">This is the string to be checked</param>
-        /// <returns>True if string contains Markup tag(s)</returns>
+        /// <param name="strInput">This is the string to be checked.</param>
+        /// <returns>True if string contains Markup tag(s).</returns>
         /// <remarks>
-        /// This is a private function that is used internally by the InputFilter function
+        /// This is a private function that is used internally by the InputFilter function.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static bool IncludesMarkup(string strInput)
@@ -397,12 +397,12 @@ namespace DotNetNuke.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This function creates a random key
+        /// This function creates a random key.
         /// </summary>
-        /// <param name="numBytes">This is the number of bytes for the key</param>
-        /// <returns>A random string</returns>
+        /// <param name="numBytes">This is the number of bytes for the key.</param>
+        /// <returns>A random string.</returns>
         /// <remarks>
-        /// This is a public function used for generating SHA1 keys
+        /// This is a public function used for generating SHA1 keys.
         /// </remarks>
         public string CreateKey(int numBytes)
         {
@@ -438,9 +438,9 @@ namespace DotNetNuke.Security
         /// <summary>
         /// This function applies security filtering to the UserInput string.
         /// </summary>
-        /// <param name="userInput">This is the string to be filtered</param>
-        /// <param name="filterType">Flags which designate the filters to be applied</param>
-        /// <returns>Filtered UserInput</returns>
+        /// <param name="userInput">This is the string to be filtered.</param>
+        /// <param name="filterType">Flags which designate the filters to be applied.</param>
+        /// <returns>Filtered UserInput.</returns>
         /// -----------------------------------------------------------------------------
         public string InputFilter(string userInput, FilterFlag filterType)
         {
@@ -802,8 +802,8 @@ namespace DotNetNuke.Security
         /// This function applies security filtering to the UserInput string, and reports
         /// whether the input string is valid.
         /// </summary>
-        /// <param name="userInput">This is the string to be filtered</param>
-        /// <param name="filterType">Flags which designate the filters to be applied</param>
+        /// <param name="userInput">This is the string to be filtered.</param>
+        /// <param name="filterType">Flags which designate the filters to be applied.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ValidateInput(string userInput, FilterFlag filterType)
@@ -817,9 +817,9 @@ namespace DotNetNuke.Security
         /// This function loops through every portal that has set its own AllowedExtensionWhitelist
         /// and checks that there are no extensions there that are restriced by the host
         ///
-        /// The only time we should call this is if the host allowed extensions list has changed
+        /// The only time we should call this is if the host allowed extensions list has changed.
         /// </summary>
-        /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation</param>
+        /// <param name="newMasterList">Comma separated list of extensions that govern all users on this installation.</param>
         public void CheckAllPortalFileExtensionWhitelists(string newMasterList)
         {
             var masterList = new FileExtensionWhitelist(newMasterList);

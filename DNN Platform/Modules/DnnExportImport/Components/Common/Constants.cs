@@ -11,7 +11,7 @@ namespace Dnn.ExportImport.Components.Common
     {
         /// <summary>
         /// This is the currently supported schema version support as of this release.
-        /// In future releases thi must be updated to be compatible wiht th e
+        /// In future releases thi must be updated to be compatible wiht th e.
         /// </summary>
         public const string CurrentSchemaVersion = "1.0.2";
 

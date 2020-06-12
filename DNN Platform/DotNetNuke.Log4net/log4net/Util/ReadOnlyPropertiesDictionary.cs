@@ -43,8 +43,8 @@ namespace log4net.Util
     /// be serialized along with this collection.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
 #if NETCF
 	public class ReadOnlyPropertiesDictionary : IDictionary
 #else
@@ -53,12 +53,12 @@ namespace log4net.Util
 #endif
     {
         /// <summary>
-        /// The Hashtable used to store the properties data
+        /// The Hashtable used to store the properties data.
         /// </summary>
         private readonly Hashtable m_hashtable = new Hashtable();
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -70,9 +70,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Copy Constructor
+        /// Copy Constructor.
         /// </summary>
-        /// <param name="propertiesDictionary">properties to copy</param>
+        /// <param name="propertiesDictionary">properties to copy.</param>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="ReadOnlyPropertiesDictionary" /> class.
@@ -88,7 +88,7 @@ namespace log4net.Util
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
-        /// Deserialization constructor
+        /// Deserialization constructor.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
@@ -145,13 +145,13 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Test if the dictionary contains a specified key
+        /// Test if the dictionary contains a specified key.
         /// </summary>
-        /// <param name="key">the key to look for</param>
-        /// <returns>true if the dictionary contains the specified key</returns>
+        /// <param name="key">the key to look for.</param>
+        /// <returns>true if the dictionary contains the specified key.</returns>
         /// <remarks>
         /// <para>
-        /// Test if the dictionary contains a specified key
+        /// Test if the dictionary contains a specified key.
         /// </para>
         /// </remarks>
         public bool Contains(string key)
@@ -160,14 +160,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the hashtable used to store the properties
+        /// Gets the hashtable used to store the properties.
         /// </summary>
         /// <value>
-        /// The internal collection used to store the properties
+        /// The internal collection used to store the properties.
         /// </value>
         /// <remarks>
         /// <para>
-        /// The hashtable used to store the properties
+        /// The hashtable used to store the properties.
         /// </para>
         /// </remarks>
         protected Hashtable InnerHashtable
@@ -217,7 +217,7 @@ namespace log4net.Util
 #endif
 
         /// <summary>
-        /// See <see cref="IDictionary.GetEnumerator"/>
+        /// See <see cref="IDictionary.GetEnumerator"/>.
         /// </summary>
         /// <returns></returns>
         IDictionaryEnumerator IDictionary.GetEnumerator()
@@ -226,7 +226,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.Remove"/>
+        /// See <see cref="IDictionary.Remove"/>.
         /// </summary>
         /// <param name="key"></param>
         void IDictionary.Remove(object key)
@@ -235,7 +235,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.Contains"/>
+        /// See <see cref="IDictionary.Contains"/>.
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
@@ -245,7 +245,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Remove all properties from the properties collection
+        /// Remove all properties from the properties collection.
         /// </summary>
         public virtual void Clear()
         {
@@ -253,7 +253,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.Add"/>
+        /// See <see cref="IDictionary.Add"/>.
         /// </summary>
         /// <param name="key"></param>
         /// <param name="value"></param>
@@ -263,7 +263,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a value indicating whether see <see cref="IDictionary.IsReadOnly"/>
+        /// Gets a value indicating whether see <see cref="IDictionary.IsReadOnly"/>.
         /// </summary>
         bool IDictionary.IsReadOnly
         {
@@ -271,7 +271,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.this[object]"/>
+        /// See <see cref="IDictionary.this[object]"/>.
         /// </summary>
         object IDictionary.this[object key]
         {
@@ -292,7 +292,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets see <see cref="IDictionary.Values"/>
+        /// Gets see <see cref="IDictionary.Values"/>.
         /// </summary>
         ICollection IDictionary.Values
         {
@@ -300,7 +300,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets see <see cref="IDictionary.Keys"/>
+        /// Gets see <see cref="IDictionary.Keys"/>.
         /// </summary>
         ICollection IDictionary.Keys
         {
@@ -308,7 +308,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a value indicating whether see <see cref="IDictionary.IsFixedSize"/>
+        /// Gets a value indicating whether see <see cref="IDictionary.IsFixedSize"/>.
         /// </summary>
         bool IDictionary.IsFixedSize
         {
@@ -316,7 +316,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="ICollection.CopyTo"/>
+        /// See <see cref="ICollection.CopyTo"/>.
         /// </summary>
         /// <param name="array"></param>
         /// <param name="index"></param>
@@ -326,7 +326,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a value indicating whether see <see cref="ICollection.IsSynchronized"/>
+        /// Gets a value indicating whether see <see cref="ICollection.IsSynchronized"/>.
         /// </summary>
         bool ICollection.IsSynchronized
         {
@@ -334,7 +334,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the number of properties in this collection
+        /// Gets the number of properties in this collection.
         /// </summary>
         public int Count
         {
@@ -342,7 +342,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets see <see cref="ICollection.SyncRoot"/>
+        /// Gets see <see cref="ICollection.SyncRoot"/>.
         /// </summary>
         object ICollection.SyncRoot
         {
@@ -350,7 +350,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IEnumerable.GetEnumerator"/>
+        /// See <see cref="IEnumerable.GetEnumerator"/>.
         /// </summary>
         /// <returns></returns>
         IEnumerator IEnumerable.GetEnumerator()

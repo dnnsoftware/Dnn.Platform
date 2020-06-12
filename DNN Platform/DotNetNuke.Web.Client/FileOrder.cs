@@ -10,7 +10,7 @@ namespace DotNetNuke.Web.Client
     public class FileOrder
     {
         /// <summary>
-        /// Defines load order of key JavaScript files within the framework
+        /// Defines load order of key JavaScript files within the framework.
         /// </summary>
         public enum Js
         {
@@ -90,7 +90,7 @@ namespace DotNetNuke.Web.Client
         }
 
         /// <summary>
-        /// Defines load order of key CSS files within the framework
+        /// Defines load order of key CSS files within the framework.
         /// </summary>
         public enum Css
         {

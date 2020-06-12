@@ -106,7 +106,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Checks to see if any providers are marked as 'always call for rewrites'
+        /// Checks to see if any providers are marked as 'always call for rewrites'.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
@@ -218,7 +218,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Returns boolean value is any loaded providers require checking of rewrite / redirect values from the site root (ie, not dnn tab path)
+        /// Returns boolean value is any loaded providers require checking of rewrite / redirect values from the site root (ie, not dnn tab path).
         /// </summary>
         /// <returns></returns>
         internal static bool CheckForSiteRootRewrite(int portalId, FriendlyUrlSettings settings, Guid parentTraceId)
@@ -490,11 +490,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Loads the module providers
+        /// Loads the module providers.
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>
-        /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs</remarks>
+        /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs.</remarks>
         public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
         {
             var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
@@ -597,7 +597,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// logs an exception related to a module provider once per cache-lifetime
+        /// logs an exception related to a module provider once per cache-lifetime.
         /// </summary>
         /// <param name="ex"></param>
         /// <param name="status"></param>

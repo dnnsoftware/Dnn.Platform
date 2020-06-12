@@ -20,7 +20,7 @@ namespace DotNetNuke.Security.Permissions
     /// Class    : WorkflowStatePermissionController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   WorkflowStatePermissionController provides the Business Layer for DesktopModule Permissions
+    ///   WorkflowStatePermissionController provides the Business Layer for DesktopModule Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class WorkflowStatePermissionController
@@ -49,7 +49,7 @@ namespace DotNetNuke.Security.Permissions
         ///   GetWorkflowStatePermissionsCallBack gets a Dictionary of WorkflowStatePermissionCollections by
         ///   WorkflowState from the the Database.
         /// </summary>
-        /// <param name = "cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call</param>
+        /// <param name = "cacheItemArgs">The CacheItemArgs object that contains the parameters needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private static object GetWorkflowStatePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -59,9 +59,9 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   FillWorkflowStatePermissionDictionary fills a Dictionary of WorkflowStatePermissions from a
-        ///   dataReader
+        ///   dataReader.
         /// </summary>
-        /// <param name = "dr">The IDataReader</param>
+        /// <param name = "dr">The IDataReader.</param>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, WorkflowStatePermissionCollection> FillWorkflowStatePermissionDictionary(IDataReader dr)
         {
@@ -111,9 +111,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection
+        ///   GetWorkflowStatePermissions gets a WorkflowStatePermissionCollection.
         /// </summary>
-        /// <param name = "StateID">The ID of the State</param>
+        /// <param name = "StateID">The ID of the State.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static WorkflowStatePermissionCollection GetWorkflowStatePermissions(int StateID)
@@ -140,10 +140,10 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   HasWorkflowStatePermission checks whether the current user has a specific WorkflowState Permission
+        ///   HasWorkflowStatePermission checks whether the current user has a specific WorkflowState Permission.
         /// </summary>
-        /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState</param>
-        /// <param name = "permissionKey">The Permission to check</param>
+        /// <param name = "objWorkflowStatePermissions">The Permissions for the WorkflowState.</param>
+        /// <param name = "permissionKey">The Permission to check.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static bool HasWorkflowStatePermission(WorkflowStatePermissionCollection objWorkflowStatePermissions, string permissionKey)

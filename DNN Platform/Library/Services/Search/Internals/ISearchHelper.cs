@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Search.Internals
         // void Commit();
 
         /// <summary>
-        /// Returns a list of SearchTypes defined in the system
+        /// Returns a list of SearchTypes defined in the system.
         /// </summary>
         /// <returns></returns>
         IEnumerable<SearchType> GetSearchTypes();
@@ -34,50 +34,50 @@ namespace DotNetNuke.Services.Search.Internals
         SearchType GetSearchTypeByName(string searchTypeName);
 
         /// <summary>
-        /// Returns a list of Synonyms for a given word. E.g. leap, hop for jump
+        /// Returns a list of Synonyms for a given word. E.g. leap, hop for jump.
         /// </summary>
-        /// <param name="term">word for which to obtain synonyms</param>
-        /// <param name="portalId">portal id</param>
-        /// <param name="cultureCode">culture code</param>
-        /// <returns>List of synonyms</returns>
-        /// <remarks>Synonyms must be defined in system first</remarks>
+        /// <param name="term">word for which to obtain synonyms.</param>
+        /// <param name="portalId">portal id.</param>
+        /// <param name="cultureCode">culture code.</param>
+        /// <returns>List of synonyms.</returns>
+        /// <remarks>Synonyms must be defined in system first.</remarks>
         IEnumerable<string> GetSynonyms(int portalId, string cultureCode, string term);
 
         /// <summary>
-        /// Returns a list of SynonymsGroup defined in the system
+        /// Returns a list of SynonymsGroup defined in the system.
         /// </summary>
         /// <returns></returns>
         IEnumerable<SynonymsGroup> GetSynonymsGroups(int portalId, string cultureCode);
 
         /// <summary>
-        /// Adds a synonymsgroup to system
+        /// Adds a synonymsgroup to system.
         /// </summary>
-        /// <param name="synonymsTags">synonyms tags seperated by comma, like this: dnn,dotnetnuke</param>
+        /// <param name="synonymsTags">synonyms tags seperated by comma, like this: dnn,dotnetnuke.</param>
         /// <param name="portalId"></param>
-        /// <param name="cultureCode">culture code</param>
+        /// <param name="cultureCode">culture code.</param>
         /// <returns></returns>
         int AddSynonymsGroup(string synonymsTags, int portalId, string cultureCode, out string duplicateWord);
 
         /// <summary>
-        /// Updates a sysnonymsGroup
+        /// Updates a sysnonymsGroup.
         /// </summary>
         /// <param name="synonymsGroupId"></param>
-        /// <param name="synonymsTags">synonyms tags seperated by comma, like this: dnn,dotnetnuke</param>
+        /// <param name="synonymsTags">synonyms tags seperated by comma, like this: dnn,dotnetnuke.</param>
         /// <param name="portalId"></param>
-        /// <param name="cultureCode">culture code</param>
+        /// <param name="cultureCode">culture code.</param>
         /// <returns></returns>
         int UpdateSynonymsGroup(int synonymsGroupId, string synonymsTags, int portalId, string cultureCode, out string duplicateWord);
 
         /// <summary>
-        /// Deletes a synonyms group
+        /// Deletes a synonyms group.
         /// </summary>
         /// <param name="synonymsGroupId"></param>
         /// <param name="portalId"></param>
-        /// <param name="cultureCode">culture code</param>
+        /// <param name="cultureCode">culture code.</param>
         void DeleteSynonymsGroup(int synonymsGroupId, int portalId, string cultureCode);
 
         /// <summary>
-        /// Gets a search stop words
+        /// Gets a search stop words.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Search.Internals
         SearchStopWords GetSearchStopWords(int portalId, string cultureCode);
 
         /// <summary>
-        /// Adds a search stop words
+        /// Adds a search stop words.
         /// </summary>
         /// <param name="stopWords"></param>
         /// <param name="portalId"></param>
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Search.Internals
         int AddSearchStopWords(string stopWords, int portalId, string cultureCode);
 
         /// <summary>
-        /// Updates a search stop words
+        /// Updates a search stop words.
         /// </summary>
         /// <param name="stopWordsId"></param>
         /// <param name="stopWords"></param>
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Search.Internals
         int UpdateSearchStopWords(int stopWordsId, string stopWords, int portalId, string cultureCode);
 
         /// <summary>
-        /// Deletes a search stop words
+        /// Deletes a search stop words.
         /// </summary>
         /// <param name="stopWordsId"></param>
         /// <param name="portalId"></param>

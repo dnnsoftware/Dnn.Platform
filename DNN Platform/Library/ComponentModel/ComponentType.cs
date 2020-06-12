@@ -15,7 +15,7 @@ namespace DotNetNuke.ComponentModel
         /// <summary>
         /// Initializes a new instance of the ComponentType class.
         /// </summary>
-        /// <param name="baseType">The base type of Components of this ComponentType</param>
+        /// <param name="baseType">The base type of Components of this ComponentType.</param>
         public ComponentType(Type baseType)
         {
             this._BaseType = baseType;

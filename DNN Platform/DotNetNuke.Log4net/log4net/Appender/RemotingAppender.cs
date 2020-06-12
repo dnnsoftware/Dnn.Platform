@@ -76,9 +76,9 @@ namespace log4net.Appender
     /// log4net programmatically.</para>
     /// </remarks>
     /// <seealso cref="IRemoteLoggingSink" />
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Daniel Cazzulino</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Daniel Cazzulino.</author>
     public class RemotingAppender : BufferingAppenderSkeleton
     {
         /// <summary>
@@ -114,7 +114,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the appender based on the options set
+        /// Initialize the appender based on the options set.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -217,7 +217,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// A work item is being queued into the thread pool
+        /// A work item is being queued into the thread pool.
         /// </summary>
         private void BeginAsyncSend()
         {
@@ -229,7 +229,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// A work item from the thread pool has completed
+        /// A work item from the thread pool has completed.
         /// </summary>
         private void EndAsyncSend()
         {
@@ -249,7 +249,7 @@ namespace log4net.Appender
         /// This method expects to be passed an array of <see cref="LoggingEvent"/>
         /// objects in the state param.
         /// </remarks>
-        /// <param name="state">the logging events to send</param>
+        /// <param name="state">the logging events to send.</param>
         private void SendBufferCallback(object state)
         {
             try
@@ -280,12 +280,12 @@ namespace log4net.Appender
         private IRemoteLoggingSink m_sinkObj;
 
         /// <summary>
-        /// The number of queued callbacks currently waiting or executing
+        /// The number of queued callbacks currently waiting or executing.
         /// </summary>
         private int m_queuedCallbackCount = 0;
 
         /// <summary>
-        /// Event used to signal when there are no queued work items
+        /// Event used to signal when there are no queued work items.
         /// </summary>
         /// <remarks>
         /// This event is set when there are no queued work items. In this
@@ -304,12 +304,12 @@ namespace log4net.Appender
         public interface IRemoteLoggingSink
         {
             /// <summary>
-            /// Delivers logging events to the remote sink
+            /// Delivers logging events to the remote sink.
             /// </summary>
             /// <param name="events">Array of events to log.</param>
             /// <remarks>
             /// <para>
-            /// Delivers logging events to the remote sink
+            /// Delivers logging events to the remote sink.
             /// </para>
             /// </remarks>
             void LogEvents(LoggingEvent[] events);

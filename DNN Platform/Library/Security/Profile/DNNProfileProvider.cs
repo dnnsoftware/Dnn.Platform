@@ -28,7 +28,7 @@ namespace DotNetNuke.Security.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNProfileProvider overrides the default ProfileProvider to provide
-    /// a purely DotNetNuke implementation
+    /// a purely DotNetNuke implementation.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -67,9 +67,9 @@ namespace DotNetNuke.Security.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Provider Properties can be edited
+        /// Gets a value indicating whether gets whether the Provider Properties can be edited.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public override bool CanEditProviderProperties
         {
@@ -81,7 +81,7 @@ namespace DotNetNuke.Security.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserProfile retrieves the UserProfile information from the Data Store
+        /// GetUserProfile retrieves the UserProfile information from the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -166,7 +166,7 @@ namespace DotNetNuke.Security.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateUserProfile persists a user's Profile to the Data Store
+        /// UpdateUserProfile persists a user's Profile to the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>

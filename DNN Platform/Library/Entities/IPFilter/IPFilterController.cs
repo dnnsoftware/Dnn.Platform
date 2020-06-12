@@ -36,10 +36,10 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// add a new IP filter
+        /// add a new IP filter.
         /// </summary>
-        /// <param name="ipFilter">filter details</param>
-        /// <returns>filter id</returns>
+        /// <param name="ipFilter">filter details.</param>
+        /// <returns>filter id.</returns>
         public int AddIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
@@ -50,9 +50,9 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// update an existing IP filter
+        /// update an existing IP filter.
         /// </summary>
-        /// <param name="ipFilter">filter details</param>
+        /// <param name="ipFilter">filter details.</param>
         public void UpdateIPFilter(IPFilterInfo ipFilter)
         {
             Requires.NotNull("ipFilter", ipFilter);
@@ -68,19 +68,19 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// get an IP filter
+        /// get an IP filter.
         /// </summary>
-        /// <param name="ipFilter">filter details</param>
-        /// <returns>the selected IP filter</returns>
+        /// <param name="ipFilter">filter details.</param>
+        /// <returns>the selected IP filter.</returns>
         public IPFilterInfo GetIPFilter(int ipFilter)
         {
             return CBO.FillObject<IPFilterInfo>(DataProvider.Instance().GetIPFilter(ipFilter));
         }
 
         /// <summary>
-        /// get the list of IP filters
+        /// get the list of IP filters.
         /// </summary>
-        /// <returns>list of IP filters</returns>
+        /// <returns>list of IP filters.</returns>
         IList<IPFilterInfo> IIPFilterController.GetIPFilters()
         {
             return CBO.FillCollection<IPFilterInfo>(DataProvider.Instance().GetIPFilters());
@@ -96,10 +96,10 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Check the set of rules to see if an IP address is banned (used on login)
+        /// Check the set of rules to see if an IP address is banned (used on login).
         /// </summary>
-        /// <param name="ipAddress">IP address</param>
-        /// <returns>true if banned</returns>
+        /// <param name="ipAddress">IP address.</param>
+        /// <returns>true if banned.</returns>
         public bool IsIPBanned(string ipAddress)
         {
             return this.CheckIfBannedIPAddress(ipAddress);
@@ -147,11 +147,11 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>
         /// Check if an IP address range can still access based on a set of rules
-        /// note: this set is typically the list of IP filter rules minus a proposed delete
+        /// note: this set is typically the list of IP filter rules minus a proposed delete.
         /// </summary>
-        /// <param name="myip">IP address</param>
-        /// <param name="filterList">list of IP filters</param>
-        /// <returns>true if IP can access, false otherwise</returns>
+        /// <param name="myip">IP address.</param>
+        /// <param name="filterList">list of IP filters.</param>
+        /// <returns>true if IP can access, false otherwise.</returns>
         public bool CanIPStillAccess(string myip, IList<IPFilterInfo> filterList)
         {
             var allowAllIPs = false;
@@ -209,11 +209,11 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Check if a new rule would block the existing IP address
+        /// Check if a new rule would block the existing IP address.
         /// </summary>
-        /// <param name="currentIP">current IP address</param>
-        /// <param name="ipFilter">new propose rule</param>
-        /// <returns>true if rule would not block current IP, false otherwise</returns>
+        /// <param name="currentIP">current IP address.</param>
+        /// <param name="ipFilter">new propose rule.</param>
+        /// <returns>true if rule would not block current IP, false otherwise.</returns>
         public bool IsAllowableDeny(string currentIP, IPFilterInfo ipFilter)
         {
             if (ipFilter.RuleType == (int)FilterType.Allow)

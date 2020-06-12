@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
     using DotNetNuke.Entities.Users;
     using DotNetNuke.Services.Social.Messaging.Internal.Views;
 
-    /// <summary>Interface used for Message Controller behaviors</summary>
+    /// <summary>Interface used for Message Controller behaviors.</summary>
     public interface IInternalMessagingController
     {
         int ReplyMessage(int conversationId, string body, IList<int> fileIDs);
@@ -35,24 +35,24 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         void MarkUnArchived(int conversationId, int userId);
 
-        /// <summary>How long a user needs to wait before user is allowed sending the next message</summary>
-        /// <returns>Time in seconds. Returns zero if user has never sent a message</returns>
-        /// <param name="sender">Sender's UserInfo</param>
+        /// <summary>How long a user needs to wait before user is allowed sending the next message.</summary>
+        /// <returns>Time in seconds. Returns zero if user has never sent a message.</returns>
+        /// <param name="sender">Sender's UserInfo.</param>
         int WaitTimeForNextMessage(UserInfo sender);
 
-        /// <summary>Last message sent by the User</summary>
-        /// <returns>Message. Null when no message was sent</returns>
-        /// <param name="sender">Sender's UserInfo</param>
+        /// <summary>Last message sent by the User.</summary>
+        /// <returns>Message. Null when no message was sent.</returns>
+        /// <param name="sender">Sender's UserInfo.</param>
         Message GetLastSentMessage(UserInfo sender);
 
-        /// <summary>Maximum number of Recipients allowed</summary>
+        /// <summary>Maximum number of Recipients allowed.</summary>
         /// <returns>Count. Message to a Role is considered a single Recipient. Each User in the To list is counted as one User each.</returns>
-        /// <param name="portalId">Portal Id</param>
+        /// <param name="portalId">Portal Id.</param>
         int RecipientLimit(int portalId);
 
-        /// <summary>Are attachments allowed</summary>
-        /// <returns>True or False</returns>
-        /// <param name="portalId">Portal Id</param>
+        /// <summary>Are attachments allowed.</summary>
+        /// <returns>True or False.</returns>
+        /// <param name="portalId">Portal Id.</param>
         bool AttachmentsAllowed(int portalId);
 
         /// <summary>Whether or not to includes the attachment in the email message.</summary>
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         bool IncludeAttachments(int portalId);
 
         /// <summary>Whether disable regular users to send message to user/group, default is false.</summary>
-        /// <param name="portalId">Portal Id</param>
+        /// <param name="portalId">Portal Id.</param>
         /// <returns></returns>
         bool DisablePrivateMessage(int portalId);
 
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         void ConvertLegacyMessages(int pageIndex, int pageSize);
 
         /// <summary>Counts the legacy messages.</summary>
-        /// <returns>A count of messages</returns>
+        /// <returns>A count of messages.</returns>
         int CountLegacyMessages();
 
         /// <summary>Gets the inbox.</summary>
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <param name="readStatus">The read status.</param>
         /// <param name="archivedStatus">The archived status.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool @ascending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus);
 
         /// <summary>Gets the inbox.</summary>
@@ -91,19 +91,19 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
         /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetInbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
         /// <summary>Gets the recent inbox.</summary>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetRecentInbox(int userId);
 
         /// <summary>Gets the recent inbox.</summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetRecentInbox(int userId, int afterMessageId, int numberOfRecords);
 
         /// <summary>Gets the sent box.</summary>
@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <param name="readStatus">The read status.</param>
         /// <param name="archivedStatus">The archived status.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool ascending, MessageReadStatus readStatus, MessageArchivedStatus archivedStatus);
 
         /// <summary>Gets the sent box.</summary>
@@ -123,26 +123,26 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="sortColumn">The sort column.</param>
         /// <param name="sortAscending">if set to <c>true</c> [sort ascending].</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetSentbox(int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool sortAscending);
 
         /// <summary>Gets the recent sent box.</summary>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetRecentSentbox(int userId);
 
         /// <summary>Gets the recent sent box.</summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetRecentSentbox(int userId, int afterMessageId, int numberOfRecords);
 
         /// <summary>Gets the archived messages.</summary>
         /// <param name="userId">The user identifier.</param>
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
-        /// <returns>A <see cref="MessageBoxView"/></returns>
+        /// <returns>A <see cref="MessageBoxView"/>.</returns>
         MessageBoxView GetArchivedMessages(int userId, int afterMessageId, int numberOfRecords);
 
         /// <summary>Gets the message thread.</summary>
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="sortColumn">The sort column.</param>
         /// <param name="ascending">if set to <c>true</c> [ascending].</param>
         /// <param name="totalRecords">The total records.</param>
-        /// <returns>A <see cref="MessageThreadsView"/></returns>
+        /// <returns>A <see cref="MessageThreadsView"/>.</returns>
         MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, string sortColumn, bool ascending, ref int totalRecords);
 
         /// <summary>Gets the message thread.</summary>
@@ -162,12 +162,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         /// <param name="afterMessageId">The after message identifier.</param>
         /// <param name="numberOfRecords">The number of records.</param>
         /// <param name="totalRecords">The total records.</param>
-        /// <returns>A <see cref="MessageThreadsView"/></returns>
+        /// <returns>A <see cref="MessageThreadsView"/>.</returns>
         MessageThreadsView GetMessageThread(int conversationId, int userId, int afterMessageId, int numberOfRecords, ref int totalRecords);
 
         /// <summary>Gets the attachments for the specified message.</summary>
         /// <param name="messageId">The message identifier.</param>
-        /// <returns>A list of <see cref="MessageFileView"/></returns>
+        /// <returns>A list of <see cref="MessageFileView"/>.</returns>
         IEnumerable<MessageFileView> GetAttachments(int messageId);
 
         IList<MessageRecipient> GetNextMessagesForInstantDispatch(Guid schedulerInstance, int batchSize);

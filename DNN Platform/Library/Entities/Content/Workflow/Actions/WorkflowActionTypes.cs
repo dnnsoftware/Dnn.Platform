@@ -5,7 +5,7 @@
 namespace DotNetNuke.Entities.Content.Workflow.Actions
 {
     /// <summary>
-    /// This enum represents the workflow action types
+    /// This enum represents the workflow action types.
     /// </summary>
     public enum WorkflowActionTypes
     {

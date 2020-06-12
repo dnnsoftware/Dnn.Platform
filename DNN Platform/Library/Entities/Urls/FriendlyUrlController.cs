@@ -649,9 +649,9 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>
-        /// Returns a list of http alias values where that alias is associated with a tab as a custom alias
+        /// Returns a list of http alias values where that alias is associated with a tab as a custom alias.
         /// </summary>
-        /// <remarks>Aliases returned are all in lower case only</remarks>
+        /// <remarks>Aliases returned are all in lower case only.</remarks>
         /// <returns></returns>
         public static List<string> GetCustomAliasesForTabs()
         {
@@ -796,11 +796,11 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>
-        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0
+        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.
         /// </summary>
-        /// <param name="tabPath">The path of the tab //admin//someothername</param>
+        /// <param name="tabPath">The path of the tab //admin//someothername.</param>
         /// <param name="settings"></param>
-        /// <remarks>Duplicated in RewriteController.cs</remarks>
+        /// <remarks>Duplicated in RewriteController.cs.</remarks>
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
@@ -920,7 +920,7 @@ private static object CallFriendlyUrlProviderDllMethod(string methodName, string
         }
 
         /// <summary>
-        /// Ensures that the path starts with the leading character
+        /// Ensures that the path starts with the leading character.
         /// </summary>
         /// <param name="leading"></param>
         /// <param name="path"></param>

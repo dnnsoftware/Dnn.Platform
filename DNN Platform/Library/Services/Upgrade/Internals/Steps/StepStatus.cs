@@ -8,7 +8,7 @@ using System;
 namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     /// <summary>
-    /// Status of an Installation Step
+    /// Status of an Installation Step.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public enum StepStatus

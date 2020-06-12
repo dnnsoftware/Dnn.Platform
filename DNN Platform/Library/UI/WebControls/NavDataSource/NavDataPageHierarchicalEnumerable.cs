@@ -8,11 +8,11 @@ using System.Web.UI;
 
 namespace DotNetNuke.UI.WebControls
 {
-    /// <summary>A collection of PageHierarchyData objects</summary>
+    /// <summary>A collection of PageHierarchyData objects.</summary>
     public class NavDataPageHierarchicalEnumerable : ArrayList, IHierarchicalEnumerable
     {
         /// <summary>
-        /// Handles enumeration
+        /// Handles enumeration.
         /// </summary>
         /// <param name="enumeratedItem"></param>
         /// <returns></returns>

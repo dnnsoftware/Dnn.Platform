@@ -34,7 +34,7 @@ using log4net.Util;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Write the caller stack frames to the output
+    /// Write the caller stack frames to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -42,7 +42,7 @@ namespace log4net.Layout.Pattern
     /// type3.MethodCall3(type param,...) > type2.MethodCall2(type param,...) > type1.MethodCall1(type param,...)
     /// </para>
     /// </remarks>
-    /// <author>Adam Davies</author>
+    /// <author>Adam Davies.</author>
     internal class StackTraceDetailPatternConverter : StackTracePatternConverter
     {
         internal override string GetMethodInformation(MethodItem method)

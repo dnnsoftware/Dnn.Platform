@@ -28,7 +28,7 @@ using log4net.Util;
 namespace log4net.Repository
 {
     /// <summary>
-    /// Configure repository using XML
+    /// Configure repository using XML.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -39,14 +39,14 @@ namespace log4net.Repository
     /// configuration by the <see cref="log4net.Config.XmlConfigurator"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IXmlRepositoryConfigurator
     {
         /// <summary>
-        /// Initialize the repository using the specified config
+        /// Initialize the repository using the specified config.
         /// </summary>
-        /// <param name="element">the element containing the root of the config</param>
+        /// <param name="element">the element containing the root of the config.</param>
         /// <remarks>
         /// <para>
         /// The schema for the XML configuration data is defined by

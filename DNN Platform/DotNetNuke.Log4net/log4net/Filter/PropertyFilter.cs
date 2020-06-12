@@ -30,24 +30,24 @@ using log4net.Util;
 namespace log4net.Filter
 {
     /// <summary>
-    /// Simple filter to match a string an event property
+    /// Simple filter to match a string an event property.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Simple filter to match a string in the value for a
-    /// specific event property
+    /// specific event property.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class PropertyFilter : StringMatchFilter
     {
         /// <summary>
-        /// The key to use to lookup the string from the event properties
+        /// The key to use to lookup the string from the event properties.
         /// </summary>
         private string m_key;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public PropertyFilter()
         {
@@ -70,10 +70,10 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Check if this filter should allow the event to be logged
+        /// Check if this filter should allow the event to be logged.
         /// </summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <returns>see remarks</returns>
+        /// <param name="loggingEvent">the event being logged.</param>
+        /// <returns>see remarks.</returns>
         /// <remarks>
         /// <para>
         /// The event property for the <see cref="Key"/> is matched against

@@ -8,17 +8,17 @@ using System.Drawing.Drawing2D;
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
     /// <summary>
-    /// Constrast ImageTransform class
+    /// Constrast ImageTransform class.
     /// </summary>
     public class ImageContrastTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets the contrast value. Defaultvalue is 0. Range is -100 .. 100
+        /// Gets or sets the contrast value. Defaultvalue is 0. Range is -100 .. 100.
         /// </summary>
         public double Contrast { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for this class
+        /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Contrast;
 
@@ -32,10 +32,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Processes an input image applying a contrast image transformation
+        /// Processes an input image applying a contrast image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             var temp = (Bitmap)image;

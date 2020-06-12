@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AssemblyInstaller installs Assembly Components to a DotNetNuke site
+    /// The AssemblyInstaller installs Assembly Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -30,9 +30,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("assemblies")
+        /// Gets the name of the Collection Node ("assemblies").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string CollectionNodeName
         {
             get
@@ -43,9 +43,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the default Path for the file - if not present in the manifest
+        /// Gets the default Path for the file - if not present in the manifest.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string DefaultPath
         {
             get
@@ -56,9 +56,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("assembly")
+        /// Gets the name of the Item Node ("assembly").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string ItemNodeName
         {
             get
@@ -69,9 +69,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PhysicalBasePath for the assemblies
+        /// Gets the PhysicalBasePath for the assemblies.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected override string PhysicalBasePath
         {
             get
@@ -82,9 +82,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public override string AllowableFiles
         {
             get
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The DeleteFile method deletes a single assembly.
         /// </summary>
-        /// <param name="file">The InstallFile to delete</param>
+        /// <param name="file">The InstallFile to delete.</param>
         protected override void DeleteFile(InstallFile file)
         {
             // Attempt to unregister assembly this will return False if the assembly is used by another package and
@@ -119,9 +119,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that determines what type of file this installer supports
+        /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
-        /// <param name="type">The type of file being processed</param>
+        /// <param name="type">The type of file being processed.</param>
         /// <returns></returns>
         protected override bool IsCorrectType(InstallFileType type)
         {
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The InstallFile method installs a single assembly.
         /// </summary>
-        /// <param name="file">The InstallFile to install</param>
+        /// <param name="file">The InstallFile to install.</param>
         /// <returns></returns>
         protected override bool InstallFile(InstallFile file)
         {
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// <summary>Reads the file's <see cref="AssemblyName"/>.</summary>
         /// <param name="assemblyFile">The path for the assembly whose <see cref="AssemblyName"/> is to be returned.</param>
-        /// <returns>An <see cref="AssemblyName"/> or <c>null</c></returns>
+        /// <returns>An <see cref="AssemblyName"/> or <c>null</c>.</returns>
         private static AssemblyName ReadAssemblyName(string assemblyFile)
         {
             try

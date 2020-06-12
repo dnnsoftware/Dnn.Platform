@@ -237,7 +237,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser
+        /// Requests that a JavaScript file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
@@ -247,7 +247,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser
+        /// Requests that a JavaScript file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
@@ -258,7 +258,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser
+        /// Requests that a JavaScript file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
@@ -269,7 +269,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser
+        /// Requests that a JavaScript file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
@@ -281,7 +281,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser
+        /// Requests that a JavaScript file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
@@ -293,14 +293,14 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a JavaScript file be registered on the client browser
+        /// Requests that a JavaScript file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the JavaScript resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The name of the provider responsible for rendering the script output.</param>
-        /// <param name="name">Name of framework like Bootstrap, Angular, etc</param>
-        /// <param name="version">Version nr of framework</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
+        /// <param name="version">Version nr of framework.</param>
         public static void RegisterScript(Page page, string filePath, int priority, string provider, string name, string version)
         {
             var include = new DnnJsInclude { ForceProvider = provider, Priority = priority, FilePath = filePath, Name = name, Version = version };
@@ -312,7 +312,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         }
 
         /// <summary>
-        /// Requests that a CSS file be registered on the client browser
+        /// Requests that a CSS file be registered on the client browser.
         /// </summary>
         /// <param name="page">The current page. Used to get a reference to the client resource loader.</param>
         /// <param name="filePath">The relative file path to the CSS resource.</param>
@@ -362,8 +362,8 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         /// <param name="filePath">The relative file path to the CSS resource.</param>
         /// <param name="priority">The relative priority in which the file should be loaded.</param>
         /// <param name="provider">The provider name to be used to render the css file on the page.</param>
-        /// <param name="name">Name of framework like Bootstrap, Angular, etc</param>
-        /// <param name="version">Version nr of framework</param>
+        /// <param name="name">Name of framework like Bootstrap, Angular, etc.</param>
+        /// <param name="version">Version nr of framework.</param>
         public static void RegisterStyleSheet(Page page, string filePath, int priority, string provider, string name, string version)
         {
             var fileExists = false;

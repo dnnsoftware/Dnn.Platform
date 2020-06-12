@@ -25,7 +25,7 @@ using log4net.Repository;
 namespace log4net.Plugin
 {
     /// <summary>
-    /// Base implementation of <see cref="IPlugin"/>
+    /// Base implementation of <see cref="IPlugin"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -34,14 +34,14 @@ namespace log4net.Plugin
     /// of the <see cref="IPlugin"/> interface.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class PluginSkeleton : IPlugin
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
-        /// <param name="name">the name of the plugin</param>
+        /// <param name="name">the name of the plugin.</param>
         /// <remarks>
         /// Initializes a new Plugin with the specified name.
         /// </remarks>
@@ -105,7 +105,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
-        /// Gets or sets the repository for this plugin
+        /// Gets or sets the repository for this plugin.
         /// </summary>
         /// <value>
         /// The <see cref="ILoggerRepository" /> that this plugin is attached to.

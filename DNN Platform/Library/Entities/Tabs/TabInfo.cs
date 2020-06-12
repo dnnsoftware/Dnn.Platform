@@ -929,9 +929,9 @@ namespace DotNetNuke.Entities.Tabs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a TabInfo from a Data Reader
+        /// Fills a TabInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {

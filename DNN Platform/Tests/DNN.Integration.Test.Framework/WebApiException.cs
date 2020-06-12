@@ -17,10 +17,10 @@ namespace DNN.Integration.Test.Framework
     {
         /// <summary>
         /// Initializes a new instance of the WebApiException class, with the specified inner exception and response
-        /// message that caused the exception
+        /// message that caused the exception.
         /// </summary>
-        /// <param name="innerException">The original exception</param>
-        /// <param name="result">The result of the request</param>
+        /// <param name="innerException">The original exception.</param>
+        /// <param name="result">The result of the request.</param>
         public WebApiException(Exception innerException, HttpResponseMessage result)
             : base(innerException.Message, innerException)
         {
@@ -34,7 +34,7 @@ namespace DNN.Integration.Test.Framework
         }
 
         /// <summary>
-        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code
+        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code.
         /// </summary>
         public HttpResponseMessage Result { get; private set; }
 

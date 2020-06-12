@@ -124,7 +124,7 @@ namespace log4net.Core
         /// </summary>
         /// <value>
         /// The method parameters of the caller making
-        /// the logging request
+        /// the logging request.
         /// </value>
         /// <remarks>
         /// <para>

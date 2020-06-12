@@ -43,8 +43,8 @@ namespace log4net.Config
     /// <see cref="IPlugin"/> interface.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple=true)]
     [Serializable]
     public sealed class PluginAttribute : Attribute, IPluginFactory
@@ -163,7 +163,7 @@ namespace log4net.Config
         /// return a representation of the properties of this object.
         /// </para>
         /// </remarks>
-        /// <returns>A representation of the properties of this object</returns>
+        /// <returns>A representation of the properties of this object.</returns>
         public override string ToString()
         {
             if (this.m_type != null)

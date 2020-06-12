@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Mobile
         bool Enabled { get; set; }
 
         /// <summary>
-        /// Gets or sets redirection's Order
+        /// Gets or sets redirection's Order.
         /// </summary>
         int SortOrder { get; set; }
     }

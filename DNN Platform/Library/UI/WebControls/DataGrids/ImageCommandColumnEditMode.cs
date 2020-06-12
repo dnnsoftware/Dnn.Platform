@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ImageCommandColumnEditMode Enum provides an enumeration of the types
-    /// for how the Grid responds to an Edit Command
+    /// for how the Grid responds to an Edit Command.
     /// </summary>
     /// <remarks>
     /// </remarks>

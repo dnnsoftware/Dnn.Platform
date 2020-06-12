@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Connections
     public interface IConnectionsController
     {
         /// <summary>
-        /// Get Connection Settings for a Site
+        /// Get Connection Settings for a Site.
         /// </summary>
         /// <returns></returns>
         IList<IConnector> GetConnections(int portalId);

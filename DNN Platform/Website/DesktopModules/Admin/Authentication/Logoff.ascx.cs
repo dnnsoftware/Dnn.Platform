@@ -17,7 +17,7 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.Modules.Admin.Authentication
 {
     /// <summary>
-    /// The Logoff UserModuleBase is used to log off a registered user
+    /// The Logoff UserModuleBase is used to log off a registered user.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>

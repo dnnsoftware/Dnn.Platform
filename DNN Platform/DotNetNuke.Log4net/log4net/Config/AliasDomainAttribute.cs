@@ -46,8 +46,8 @@ namespace log4net.Config
     /// as many times as necessary to alias all the required domains.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple=true)]
     [Serializable]
     [Obsolete("Use AliasRepositoryAttribute instead of AliasDomainAttribute. Scheduled removal in v10.0.0.")]

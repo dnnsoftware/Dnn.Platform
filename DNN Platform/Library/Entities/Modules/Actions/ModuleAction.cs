@@ -73,20 +73,20 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Initializes a new instance of the <see cref="T:DotNetNuke.ModuleAction"/> class
-        /// using the specified parameters
+        /// using the specified parameters.
         /// </summary>
         /// <param name="id">This is the identifier to use for this action.</param>
-        /// <param name="title">This is the title that will be displayed for this action</param>
+        /// <param name="title">This is the title that will be displayed for this action.</param>
         /// <param name="cmdName">The command name passed to the client when this action is
         /// clicked.</param>
         /// <param name="cmdArg">The command argument passed to the client when this action is
         /// clicked.</param>
-        /// <param name="icon">The URL of the Icon to place next to this action</param>
+        /// <param name="icon">The URL of the Icon to place next to this action.</param>
         /// <param name="url">The destination URL to redirect the client browser when this action is clicked.</param>
         /// <param name="clientScript"></param>
-        /// <param name="useActionEvent">Determines whether client will receive an event notification</param>
-        /// <param name="secure">The security access level required for access to this action</param>
-        /// <param name="visible">Whether this action will be displayed</param>
+        /// <param name="useActionEvent">Determines whether client will receive an event notification.</param>
+        /// <param name="secure">The security access level required for access to this action.</param>
+        /// <param name="visible">Whether this action will be displayed.</param>
         /// <param name="newWindow"></param>
         /// <remarks>The moduleaction constructor is used to set the various properties of
         /// the <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> class at the time the instance is created.
@@ -137,7 +137,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// <summary>
         /// Gets or sets a value indicating whether gets or sets whether the current action should be displayed.
         /// </summary>
-        /// <value>A boolean value that determines if the current action should be displayed</value>
+        /// <value>A boolean value that determines if the current action should be displayed.</value>
         /// <remarks>If Visible is false, then the action is always hidden.  If Visible
         /// is true then the action may be visible depending on the security access rights
         /// specified by the <see cref="P:DotNetNuke.ModuleAction.Secure"/> property.  By
@@ -152,7 +152,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// to access this <see cref="T:DotNetNuke.ModuleAction" />.
         /// </summary>
         /// <value>The value indicating the <see cref="T:DotnetNuke.SecurityAccessLevel" /> that is required
-        /// to access this <see cref="T:DotNetNuke.ModuleAction" /></value>
+        /// to access this <see cref="T:DotNetNuke.ModuleAction" />.</value>
         /// <remarks>The security access level determines the roles required by the current user in
         /// order to access this module action.</remarks>
         /// -----------------------------------------------------------------------------
@@ -262,7 +262,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// Gets or sets javascript which will be run in the clients browser
         /// when the associated Module menu Action is selected. prior to a postback.
         /// </summary>
-        /// <value>The Javascript which will be run during the menuClick event</value>
+        /// <value>The Javascript which will be run during the menuClick event.</value>
         /// <remarks>If the ClientScript property is present then it is called prior
         /// to the postback occuring. If the ClientScript returns false then the postback
         /// is canceled.  If the ClientScript is empty then the Action Event is fired and

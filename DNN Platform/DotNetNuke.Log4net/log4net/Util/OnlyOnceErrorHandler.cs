@@ -40,13 +40,13 @@ namespace log4net.Util
     /// from being flooded with error messages when logging fails.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Ron Grabowski</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Ron Grabowski.</author>
     public class OnlyOnceErrorHandler : IErrorHandler
     {
         /// <summary>
-        /// Default Constructor
+        /// Default Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -59,7 +59,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="prefix">The prefix to use for each message.</param>
         /// <remarks>
@@ -86,7 +86,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Log an Error
+        /// Log an Error.
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
@@ -105,7 +105,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Log the very first error
+        /// Log the very first error.
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
@@ -130,7 +130,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Log an Error
+        /// Log an Error.
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <param name="e">The exception.</param>
@@ -145,7 +145,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Log an error
+        /// Log an error.
         /// </summary>
         /// <param name="message">The error message.</param>
         /// <remarks>
@@ -159,7 +159,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a value indicating whether is error logging enabled
+        /// Gets a value indicating whether is error logging enabled.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -219,7 +219,7 @@ namespace log4net.Util
         /// Gets the error code from the first error that trigged this error handler.
         /// </summary>
         /// <remarks>
-        /// Defaults to <see cref="log4net.Core.ErrorCode.GenericFailure"/>
+        /// Defaults to <see cref="log4net.Core.ErrorCode.GenericFailure"/>.
         /// </remarks>
         public ErrorCode ErrorCode
         {
@@ -232,7 +232,7 @@ namespace log4net.Util
         private DateTime m_enabledDateUtc;
 
         /// <summary>
-        /// Flag to indicate if it is the first error
+        /// Flag to indicate if it is the first error.
         /// </summary>
         private bool m_firstTime = true;
 
@@ -252,7 +252,7 @@ namespace log4net.Util
         private ErrorCode m_errorCode = ErrorCode.GenericFailure;
 
         /// <summary>
-        /// String to prefix each message with
+        /// String to prefix each message with.
         /// </summary>
         private readonly string m_prefix;
 

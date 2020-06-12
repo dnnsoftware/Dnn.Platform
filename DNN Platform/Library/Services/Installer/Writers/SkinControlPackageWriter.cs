@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinControlPackageWriter class
+    /// The SkinControlPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -59,9 +59,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated SkinControl
+        /// Gets or sets the associated SkinControl.
         /// </summary>
-        /// <value>A SkinControlInfo object</value>
+        /// <value>A SkinControlInfo object.</value>
         /// -----------------------------------------------------------------------------
         public SkinControlInfo SkinControl { get; set; }
 

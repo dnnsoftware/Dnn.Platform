@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     /// <summary>
     /// This class allows PackageType to have a memeber named PackageType
-    /// to remain compatible with the original VB implementation
+    /// to remain compatible with the original VB implementation.
     /// </summary>
     [Serializable]
     public class PackageTypeMemberNameFixer
@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageType class represents a single Installer Package Type
+    /// The PackageType class represents a single Installer Package Type.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]

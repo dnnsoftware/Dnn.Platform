@@ -10,12 +10,12 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchType
     {
         /// <summary>
-        /// Gets or sets search Type Id
+        /// Gets or sets search Type Id.
         /// </summary>
         public int SearchTypeId { get; set; }
 
         /// <summary>
-        /// Gets or sets search Type Name
+        /// Gets or sets search Type Name.
         /// </summary>
         public string SearchTypeName { get; set; }
 
@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search.Entities
         public string SearchResultClass { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether content from this SearchType will normally be not searched while performing site or module search
+        /// Gets or sets a value indicating whether content from this SearchType will normally be not searched while performing site or module search.
         /// </summary>
         public bool IsPrivate { get; set; }
     }

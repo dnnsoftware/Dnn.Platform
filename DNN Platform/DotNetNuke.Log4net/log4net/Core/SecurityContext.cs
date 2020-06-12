@@ -25,7 +25,7 @@ using System;
 namespace log4net.Core
 {
     /// <summary>
-    /// A SecurityContext used by log4net when interacting with protected resources
+    /// A SecurityContext used by log4net when interacting with protected resources.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -34,15 +34,15 @@ namespace log4net.Core
     /// a principal that has been granted privileges on the system resources.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public abstract class SecurityContext
     {
         /// <summary>
-        /// Impersonate this SecurityContext
+        /// Impersonate this SecurityContext.
         /// </summary>
-        /// <param name="state">State supplied by the caller</param>
+        /// <param name="state">State supplied by the caller.</param>
         /// <returns>An <see cref="IDisposable"/> instance that will
-        /// revoke the impersonation of this SecurityContext, or <c>null</c></returns>
+        /// revoke the impersonation of this SecurityContext, or <c>null</c>.</returns>
         /// <remarks>
         /// <para>
         /// Impersonate this security context. Further calls on the current

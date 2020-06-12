@@ -61,7 +61,7 @@ namespace DotNetNuke.Common.Lists
         /// "App_GlobalResources/List_[ListName]". If not found the original (database) value is used.
         /// </summary>
         /// <value>
-        /// Localized text value
+        /// Localized text value.
         /// </value>
         public string Text
         {

@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Exceptions
     /// 'get the last server error
     /// 'process this error using the Exception Management Application Block
     /// 'add to a placeholder and place on page
-    /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly
+    /// 'catch direct access - No exception was found...you shouldn't end up here unless you go to this aspx page URL directly.
     /// </remarks>
     /// -----------------------------------------------------------------------------
     public partial class ErrorPage : Page

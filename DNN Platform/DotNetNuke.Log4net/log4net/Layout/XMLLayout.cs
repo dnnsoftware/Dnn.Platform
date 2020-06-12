@@ -70,12 +70,12 @@ namespace log4net.Layout
     /// will become invalid XML.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class XmlLayout : XmlLayoutBase
     {
         /// <summary>
-        /// Constructs an XmlLayout
+        /// Constructs an XmlLayout.
         /// </summary>
         public XmlLayout()
             : base()
@@ -105,7 +105,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets or sets the prefix to use for all element names
+        /// Gets or sets the prefix to use for all element names.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -159,7 +159,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Initialize layout options
+        /// Initialize layout options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -174,7 +174,7 @@ namespace log4net.Layout
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
-        /// Builds a cache of the element names
+        /// Builds a cache of the element names.
         /// </para>
         /// </remarks>
         public override void ActivateOptions()
@@ -304,7 +304,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The prefix to use for all generated element names
+        /// The prefix to use for all generated element names.
         /// </summary>
         private string m_prefix = PREFIX;
 

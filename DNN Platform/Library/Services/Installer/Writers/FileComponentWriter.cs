@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The FileComponentWriter class handles creating the manifest for File Component(s)
+    /// The FileComponentWriter class handles creating the manifest for File Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -29,10 +29,10 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the FileComponentWriter
+        /// Constructs the FileComponentWriter.
         /// </summary>
-        /// <param name="basePath">The Base Path for the files</param>
-        /// <param name="files">A Dictionary of files</param>
+        /// <param name="basePath">The Base Path for the files.</param>
+        /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
         public FileComponentWriter(string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("files")
+        /// Gets the name of the Collection Node ("files").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string CollectionNodeName
         {
@@ -58,9 +58,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("File")
+        /// Gets the name of the Component Type ("File").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string ComponentType
         {
@@ -72,9 +72,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("file")
+        /// Gets the name of the Item Node ("file").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string ItemNodeName
         {
@@ -86,9 +86,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Logger
+        /// Gets the Logger.
         /// </summary>
-        /// <value>A Logger</value>
+        /// <value>A Logger.</value>
         /// -----------------------------------------------------------------------------
         protected virtual Logger Log
         {
@@ -100,9 +100,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Package
+        /// Gets the Package.
         /// </summary>
-        /// <value>A PackageInfo</value>
+        /// <value>A PackageInfo.</value>
         /// -----------------------------------------------------------------------------
         protected virtual PackageInfo Package
         {
@@ -141,9 +141,9 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The WriteCustomManifest method writes the custom manifest items (that subclasses
-        /// of FileComponentWriter may need)
+        /// of FileComponentWriter may need).
         /// </summary>
-        /// <param name="writer">The Xmlwriter to use</param>
+        /// <param name="writer">The Xmlwriter to use.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void WriteCustomManifest(XmlWriter writer)
         {

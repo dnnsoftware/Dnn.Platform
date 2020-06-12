@@ -78,8 +78,8 @@ namespace log4net.Config
     /// </para>
     /// </note>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     [Serializable]
     public /*sealed*/ class XmlConfiguratorAttribute : ConfiguratorAttribute
@@ -88,11 +88,11 @@ namespace log4net.Config
         //
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor
+        /// Default constructor.
         /// </para>
         /// </remarks>
         public XmlConfiguratorAttribute()
@@ -223,7 +223,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Attempt to load configuration from the local file system
+        /// Attempt to load configuration from the local file system.
         /// </summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>
@@ -301,10 +301,10 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Configure the specified repository using a <see cref="FileInfo"/>
+        /// Configure the specified repository using a <see cref="FileInfo"/>.
         /// </summary>
         /// <param name="targetRepository">The repository to configure.</param>
-        /// <param name="configFile">the FileInfo pointing to the config file</param>
+        /// <param name="configFile">the FileInfo pointing to the config file.</param>
         private void ConfigureFromFile(ILoggerRepository targetRepository, FileInfo configFile)
         {
 #if SSCLI
@@ -327,7 +327,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Attempt to load configuration from a URI
+        /// Attempt to load configuration from a URI.
         /// </summary>
         /// <param name="sourceAssembly">The assembly that this attribute was defined on.</param>
         /// <param name="targetRepository">The repository to configure.</param>

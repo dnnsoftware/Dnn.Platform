@@ -57,19 +57,19 @@ namespace log4net.Core
     /// the type to use as the <see cref="SecurityContextProvider"/> as an argument.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class SecurityContextProvider
     {
         /// <summary>
-        /// The default provider
+        /// The default provider.
         /// </summary>
         private static SecurityContextProvider s_defaultProvider = new SecurityContextProvider();
 
         /// <summary>
-        /// Gets or sets the default SecurityContextProvider
+        /// Gets or sets the default SecurityContextProvider.
         /// </summary>
         /// <value>
-        /// The default SecurityContextProvider
+        /// The default SecurityContextProvider.
         /// </value>
         /// <remarks>
         /// <para>
@@ -94,11 +94,11 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Protected default constructor to allow subclassing
+        /// Protected default constructor to allow subclassing.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Protected default constructor to allow subclassing
+        /// Protected default constructor to allow subclassing.
         /// </para>
         /// </remarks>
         protected SecurityContextProvider()
@@ -106,10 +106,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Create a SecurityContext for a consumer
+        /// Create a SecurityContext for a consumer.
         /// </summary>
-        /// <param name="consumer">The consumer requesting the SecurityContext</param>
-        /// <returns>An impersonation context</returns>
+        /// <param name="consumer">The consumer requesting the SecurityContext.</param>
+        /// <returns>An impersonation context.</returns>
         /// <remarks>
         /// <para>
         /// The default implementation is to return a <see cref="NullSecurityContext"/>.

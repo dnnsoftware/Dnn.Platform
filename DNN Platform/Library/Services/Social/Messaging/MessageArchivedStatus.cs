@@ -14,7 +14,7 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Services.Social.Messaging
 {
     /// <summary>
-    /// Archived Status of a Message
+    /// Archived Status of a Message.
     /// </summary>
     public enum MessageArchivedStatus
     {

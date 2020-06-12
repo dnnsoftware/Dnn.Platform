@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ScriptComponentWriter class handles creating the manifest for Script
-    /// Component(s)
+    /// Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -30,9 +30,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("scripts")
+        /// Gets the name of the Collection Node ("scripts").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("Script")
+        /// Gets the name of the Component Type ("Script").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
@@ -58,9 +58,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("script")
+        /// Gets the name of the Item Node ("script").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {

@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ObjectMappingInfo Object
+        /// Constructs a new ObjectMappingInfo Object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ObjectMappingInfo()
@@ -110,7 +110,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets columnNames gets a dictionary of Database Column Names for the Object
+        /// Gets columnNames gets a dictionary of Database Column Names for the Object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, string> ColumnNames
@@ -123,7 +123,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets objectType gets and sets the type of the object
+        /// Gets or sets objectType gets and sets the type of the object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string ObjectType
@@ -142,7 +142,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets primaryKey gets and sets the property of the object that corresponds to the
-        /// primary key in the database
+        /// primary key in the database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PrimaryKey
@@ -160,7 +160,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets properties gets a dictionary of Properties for the Object
+        /// Gets properties gets a dictionary of Properties for the Object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PropertyInfo> Properties

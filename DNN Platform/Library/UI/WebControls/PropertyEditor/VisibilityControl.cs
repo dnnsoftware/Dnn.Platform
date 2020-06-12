@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.WebControls
 {
     /// <summary>
     /// The VisibilityControl control provides a base control for defining visibility
-    /// options
+    /// options.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -41,33 +41,33 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets caption
+        /// Gets or sets caption.
         /// </summary>
-        /// <value>A string representing the Name of the property</value>
+        /// <value>A string representing the Name of the property.</value>
         public string Caption { get; set; }
 
         /// <summary>
-        /// Gets or sets name is the name of the field as a string
+        /// Gets or sets name is the name of the field as a string.
         /// </summary>
-        /// <value>A string representing the Name of the property</value>
+        /// <value>A string representing the Name of the property.</value>
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the UserInfo object that represents the User whose profile is being displayed
+        /// Gets or sets the UserInfo object that represents the User whose profile is being displayed.
         /// </summary>
         public UserInfo User { get; set; }
 
         /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         public object Value { get; set; }
 
         /// <summary>
-        /// LoadPostData loads the Post Back Data and determines whether the value has change
+        /// LoadPostData loads the Post Back Data and determines whether the value has change.
         /// </summary>
-        /// <param name="postDataKey">A key to the PostBack Data to load</param>
-        /// <param name="postCollection">A name value collection of postback data</param>
+        /// <param name="postDataKey">A key to the PostBack Data to load.</param>
+        /// <param name="postCollection">A name value collection of postback data.</param>
         /// <returns></returns>
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>
         /// RaisePostDataChangedEvent runs when the PostBackData has changed.  It triggers
-        /// a ValueChanged Event
+        /// a ValueChanged Event.
         /// </summary>
         public void RaisePostDataChangedEvent()
         {
@@ -213,7 +213,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>
         /// OnVisibilityChanged runs when the Visibility has changed.  It raises the VisibilityChanged
-        /// Event
+        /// Event.
         /// </summary>
         protected virtual void OnVisibilityChanged(PropertyEditorEventArgs e)
         {
@@ -224,7 +224,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Render renders the control
+        /// Render renders the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         protected override void Render(HtmlTextWriter writer)

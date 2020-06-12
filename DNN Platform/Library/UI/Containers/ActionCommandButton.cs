@@ -31,9 +31,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ModuleAction for this Action control
+        /// Gets or sets and sets the ModuleAction for this Action control.
         /// </summary>
-        /// <returns>A ModuleAction object</returns>
+        /// <returns>A ModuleAction object.</returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction ModuleAction
         {
@@ -57,9 +57,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
@@ -76,15 +76,15 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An IModuleControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateChildControls builds the control tree
+        /// CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event
+        /// OnAction raises the Action Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
@@ -112,7 +112,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnButtonClick runs when the underlying CommandButton is clicked
+        /// OnButtonClick runs when the underlying CommandButton is clicked.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnButtonClick(EventArgs e)
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs when just before the Render phase of the Page Lifecycle
+        /// OnPreRender runs when just before the Render phase of the Page Lifecycle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)

@@ -139,10 +139,10 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         }
 
         /// <summary>
-        /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string
+        /// This method returns the value of the ProfileProperty if is defined, otherwise it returns an Empty string.
         /// </summary>
-        /// <param name="propertyName">property name</param>
-        /// <returns>property value</returns>
+        /// <param name="propertyName">property name.</param>
+        /// <returns>property value.</returns>
         private string GetProfileProperty(string propertyName)
         {
             var profileProperties = this.ProfileProperties;

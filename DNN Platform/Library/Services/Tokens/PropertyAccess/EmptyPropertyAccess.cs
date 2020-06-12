@@ -10,7 +10,7 @@ using DotNetNuke.Entities.Users;
 namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
-    /// Returns an Empty String for all Properties
+    /// Returns an Empty String for all Properties.
     /// </summary>
     /// <remarks></remarks>
     public class EmptyPropertyAccess : IPropertyAccess

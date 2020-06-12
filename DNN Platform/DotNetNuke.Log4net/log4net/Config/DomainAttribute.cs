@@ -47,8 +47,8 @@ namespace log4net.Config
     /// once per assembly.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     [Serializable]
     [Obsolete("Use RepositoryAttribute instead of DomainAttribute. Scheduled removal in v10.0.0.")]

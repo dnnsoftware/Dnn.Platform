@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Gets or sets redirection's target type, should be: Portal, Tab, Url
+        /// Gets or sets redirection's target type, should be: Portal, Tab, Url.
         /// </summary>
         [XmlAttribute]
         public TargetType TargetType { get; set; }

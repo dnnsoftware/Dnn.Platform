@@ -35,7 +35,7 @@ namespace log4net.Util
     /// Utility class that represents a format string.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class SystemStringFormat
     {
         private readonly IFormatProvider m_provider;
@@ -43,7 +43,7 @@ namespace log4net.Util
         private readonly object[] m_args;
 
         /// <summary>
-        /// Initialise the <see cref="SystemStringFormat"/>
+        /// Initialise the <see cref="SystemStringFormat"/>.
         /// </summary>
         /// <param name="provider">An <see cref="System.IFormatProvider"/> that supplies culture-specific formatting information.</param>
         /// <param name="format">A <see cref="string"/> containing zero or more format items.</param>
@@ -56,9 +56,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Format the string and arguments
+        /// Format the string and arguments.
         /// </summary>
-        /// <returns>the formatted string</returns>
+        /// <returns>the formatted string.</returns>
         public override string ToString()
         {
             return StringFormat(this.m_provider, this.m_format, this.m_args);
@@ -116,7 +116,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Process an error during StringFormat
+        /// Process an error during StringFormat.
         /// </summary>
         private static string StringFormatError(Exception formatException, string format, object[] args)
         {
@@ -156,7 +156,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Dump the contents of an array into a string builder
+        /// Dump the contents of an array into a string builder.
         /// </summary>
         private static void RenderArray(Array array, StringBuilder buffer)
         {
@@ -191,7 +191,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Dump an object to a string
+        /// Dump an object to a string.
         /// </summary>
         private static void RenderObject(object obj, StringBuilder buffer)
         {

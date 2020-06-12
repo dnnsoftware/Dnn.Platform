@@ -20,7 +20,7 @@ namespace DotNetNuke.Common.Utilities
     /// Class:      HtmlUtils
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// HtmlUtils is a Utility class that provides Html Utility methods
+    /// HtmlUtils is a Utility class that provides Html Utility methods.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -46,14 +46,14 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Clean removes any HTML Tags, Entities (and optionally any punctuation) from
-        /// a string
+        /// a string.
         /// </summary>
         /// <remarks>
-        /// Encoded Tags are getting decoded, as they are part of the content!
+        /// Encoded Tags are getting decoded, as they are part of the content!.
         /// </remarks>
-        /// <param name="HTML">The Html to clean</param>
-        /// <param name="RemovePunctuation">A flag indicating whether to remove punctuation</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The Html to clean.</param>
+        /// <param name="RemovePunctuation">A flag indicating whether to remove punctuation.</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         public static string Clean(string HTML, bool RemovePunctuation)
         {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name = "html"></param>
         /// <param name="tagsFilter"></param>
         /// <param name = "removePunctuation"></param>
-        /// <returns>The cleaned up string</returns>
+        /// <returns>The cleaned up string.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -125,10 +125,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Formats an Email address
+        /// Formats an Email address.
         /// </summary>
-        /// <param name="Email">The email address to format</param>
-        /// <returns>The formatted email address</returns>
+        /// <param name="Email">The email address to format.</param>
+        /// <returns>The formatted email address.</returns>
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email)
         {
@@ -137,11 +137,11 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Formats an Email address
+        /// Formats an Email address.
         /// </summary>
-        /// <param name="Email">The email address to format</param>
-        /// <param name="cloak">A flag that indicates whether the text should be cloaked</param>
-        /// <returns>The formatted email address</returns>
+        /// <param name="Email">The email address to format.</param>
+        /// <param name="cloak">A flag that indicates whether the text should be cloaked.</param>
+        /// <returns>The formatted email address.</returns>
         /// -----------------------------------------------------------------------------
         public static string FormatEmail(string Email, bool cloak)
         {
@@ -168,13 +168,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatText replaces <br/> tags by LineFeed characters
+        /// FormatText replaces <br/> tags by LineFeed characters.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <param name="RetainSpace">Whether ratain Space</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <param name="RetainSpace">Whether ratain Space.</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         public static string FormatText(string HTML, bool RetainSpace)
         {
@@ -183,12 +183,12 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Formats String as Html by replacing linefeeds by <br />
+        ///   Formats String as Html by replacing linefeeds by. <br />
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "strText">Text to format</param>
-        /// <returns>The formatted html</returns>
+        /// <param name = "strText">Text to format.</param>
+        /// <returns>The formatted html.</returns>
         /// -----------------------------------------------------------------------------
         public static string ConvertToHtml(string strText)
         {
@@ -206,12 +206,12 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Formats Html as text by removing <br /> tags and replacing by linefeeds
+        ///   Formats Html as text by removing <br /> tags and replacing by linefeeds.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "strHtml">Html to format</param>
-        /// <returns>The formatted text</returns>
+        /// <param name = "strHtml">Html to format.</param>
+        /// <returns>The formatted text.</returns>
         /// -----------------------------------------------------------------------------
         public static string ConvertToText(string strHtml)
         {
@@ -232,10 +232,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Format a domain name including link
+        /// Format a domain name including link.
         /// </summary>
-        /// <param name="Website">The domain name to format</param>
-        /// <returns>The formatted domain name</returns>
+        /// <param name="Website">The domain name to format.</param>
+        /// <returns>The formatted domain name.</returns>
         /// -----------------------------------------------------------------------------
         public static string FormatWebsite(object Website)
         {
@@ -261,14 +261,14 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Shorten returns the first (x) characters of a string
+        /// Shorten returns the first (x) characters of a string.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="txt">The text to reduces</param>
-        /// <param name="length">The max number of characters to return</param>
-        /// <param name="suffix">An optional suffic to append to the shortened string</param>
-        /// <returns>The shortened string</returns>
+        /// <param name="txt">The text to reduces.</param>
+        /// <param name="length">The max number of characters to return.</param>
+        /// <param name="suffix">An optional suffic to append to the shortened string.</param>
+        /// <returns>The shortened string.</returns>
         /// -----------------------------------------------------------------------------
         public static string Shorten(string txt, int length, string suffix)
         {
@@ -282,13 +282,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StripEntities removes the HTML Entities from the content
+        /// StripEntities removes the HTML Entities from the content.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <param name="RetainSpace">Indicates whether to replace the Entity by a space (true) or nothing (false)</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <param name="RetainSpace">Indicates whether to replace the Entity by a space (true) or nothing (false).</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("This method has been deprecated. Please use System.Web.HtmlUtility.HtmlDecode. Scheduled removal in v11.0.0.")]
         public static string StripEntities(string HTML, bool RetainSpace)
@@ -301,12 +301,12 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Checks whether the string contains any HTML Entity or not
+        /// Checks whether the string contains any HTML Entity or not.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="html">The HTML content to clean up</param>
-        /// <returns>True if the string contains any entity</returns>
+        /// <param name="html">The HTML content to clean up.</param>
+        /// <returns>True if the string contains any entity.</returns>
         /// -----------------------------------------------------------------------------
         public static bool ContainsEntity(string html)
         {
@@ -315,10 +315,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Checks whether the string contains any URL encoded entity or not
+        /// Checks whether the string contains any URL encoded entity or not.
         /// </summary>
-        /// <param name="text">The string check</param>
-        /// <returns>True if the string contains any URL encoded entity</returns>
+        /// <param name="text">The string check.</param>
+        /// <returns>True if the string contains any URL encoded entity.</returns>
         /// -----------------------------------------------------------------------------
         public static bool IsUrlEncoded(string text)
         {
@@ -326,10 +326,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Removes Inline CSS Styles
+        /// Removes Inline CSS Styles.
         /// </summary>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <returns>The cleaned up string.</returns>
         public static string RemoveInlineStyle(string HTML)
         {
             return RemoveInlineStylesRegEx.Replace(HTML, string.Empty);
@@ -337,13 +337,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StripTags removes the HTML Tags from the content
+        /// StripTags removes the HTML Tags from the content.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <param name="RetainSpace">Indicates whether to replace the Tag by a space (true) or nothing (false)</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <param name="RetainSpace">Indicates whether to replace the Tag by a space (true) or nothing (false).</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         public static string StripTags(string HTML, bool RetainSpace)
         {
@@ -358,7 +358,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name = "html"></param>
         /// <param name="specifiedTags"></param>
         /// <param name = "retainSpace"></param>
-        /// <returns>The cleaned up string</returns>
+        /// <returns>The cleaned up string.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -391,13 +391,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StripPunctuation removes the Punctuation from the content
+        /// StripPunctuation removes the Punctuation from the content.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <param name="RetainSpace">Indicates whether to replace the Punctuation by a space (true) or nothing (false)</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <param name="RetainSpace">Indicates whether to replace the Punctuation by a space (true) or nothing (false).</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         public static string StripPunctuation(string HTML, bool RetainSpace)
         {
@@ -427,13 +427,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StripWhiteSpace removes the WhiteSpace from the content
+        /// StripWhiteSpace removes the WhiteSpace from the content.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <param name="RetainSpace">Indicates whether to replace the WhiteSpace by a space (true) or nothing (false)</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <param name="RetainSpace">Indicates whether to replace the WhiteSpace by a space (true) or nothing (false).</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         public static string StripWhiteSpace(string HTML, bool RetainSpace)
         {
@@ -447,13 +447,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StripNonWord removes any Non-Word Character from the content
+        /// StripNonWord removes any Non-Word Character from the content.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="HTML">The HTML content to clean up</param>
-        /// <param name="RetainSpace">Indicates whether to replace the Non-Word Character by a space (true) or nothing (false)</param>
-        /// <returns>The cleaned up string</returns>
+        /// <param name="HTML">The HTML content to clean up.</param>
+        /// <param name="RetainSpace">Indicates whether to replace the Non-Word Character by a space (true) or nothing (false).</param>
+        /// <returns>The cleaned up string.</returns>
         /// -----------------------------------------------------------------------------
         public static string StripNonWord(string HTML, bool RetainSpace)
         {
@@ -467,10 +467,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Determines wether or not the passed in string contains any HTML tags
+        ///   Determines wether or not the passed in string contains any HTML tags.
         /// </summary>
-        /// <param name = "text">Text to be inspected</param>
-        /// <returns>True for HTML and False for plain text</returns>
+        /// <param name = "text">Text to be inspected.</param>
+        /// <returns>True for HTML and False for plain text.</returns>
         /// <remarks>
         /// </remarks>
         public static bool IsHtml(string text)
@@ -485,13 +485,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// WriteError outputs an Error Message during Install/Upgrade etc
+        /// WriteError outputs an Error Message during Install/Upgrade etc.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="response">The ASP.Net Response object</param>
-        /// <param name="file">The filename where the Error Occurred</param>
-        /// <param name="message">The error message</param>
+        /// <param name="response">The ASP.Net Response object.</param>
+        /// <param name="file">The filename where the Error Occurred.</param>
+        /// <param name="message">The error message.</param>
         /// -----------------------------------------------------------------------------
         public static void WriteError(HttpResponse response, string file, string message)
         {
@@ -506,13 +506,13 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// WriteFeedback outputs a Feedback Line during Install/Upgrade etc
+        /// WriteFeedback outputs a Feedback Line during Install/Upgrade etc.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="response">The ASP.Net Response object</param>
-        /// <param name="indent">The indent for this feedback message</param>
-        /// <param name="message">The feedback message</param>
+        /// <param name="response">The ASP.Net Response object.</param>
+        /// <param name="indent">The indent for this feedback message.</param>
+        /// <param name="message">The feedback message.</param>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, int indent, string message)
         {
@@ -521,14 +521,14 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// WriteFeedback outputs a Feedback Line during Install/Upgrade etc
+        /// WriteFeedback outputs a Feedback Line during Install/Upgrade etc.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="response">The ASP.Net Response object</param>
-        /// <param name="indent">The indent for this feedback message</param>
-        /// <param name="message">The feedback message</param>
-        /// <param name="showtime">Show the timespan before the message</param>
+        /// <param name="response">The ASP.Net Response object.</param>
+        /// <param name="indent">The indent for this feedback message.</param>
+        /// <param name="message">The feedback message.</param>
+        /// <param name="showtime">Show the timespan before the message.</param>
         /// -----------------------------------------------------------------------------
         public static void WriteFeedback(HttpResponse response, int indent, string message, bool showtime)
         {
@@ -564,7 +564,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// This method adds an empty char to the response stream to avoid closing http connection on long running tasks
+        /// This method adds an empty char to the response stream to avoid closing http connection on long running tasks.
         /// </summary>
         public static void WriteKeepAlive()
         {
@@ -581,11 +581,11 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// WriteFooter outputs the Footer during Install/Upgrade etc
+        /// WriteFooter outputs the Footer during Install/Upgrade etc.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="response">The ASP.Net Response object</param>
+        /// <param name="response">The ASP.Net Response object.</param>
         /// -----------------------------------------------------------------------------
         public static void WriteFooter(HttpResponse response)
         {
@@ -596,12 +596,12 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// WriteHeader outputs the Header during Install/Upgrade etc
+        /// WriteHeader outputs the Header during Install/Upgrade etc.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="response">The ASP.Net Response object</param>
-        /// <param name="mode">The mode Install/Upgrade etc</param>
+        /// <param name="response">The ASP.Net Response object.</param>
+        /// <param name="mode">The mode Install/Upgrade etc.</param>
         /// -----------------------------------------------------------------------------
         public static void WriteHeader(HttpResponse response, string mode)
         {
@@ -675,11 +675,11 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Searches the provided html for absolute hrefs that match the provided aliases and converts them to relative urls
+        /// Searches the provided html for absolute hrefs that match the provided aliases and converts them to relative urls.
         /// </summary>
-        /// <param name="html">The input html</param>
-        /// <param name="aliases">a list of aliases that should be made into relative urls</param>
-        /// <returns>html string</returns>
+        /// <param name="html">The input html.</param>
+        /// <param name="aliases">a list of aliases that should be made into relative urls.</param>
+        /// <returns>html string.</returns>
         public static string AbsoluteToRelativeUrls(string html, IEnumerable<string> aliases)
         {
             if (string.IsNullOrWhiteSpace(html))

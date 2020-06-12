@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileController class provides Business Layer methods for profiles and
-    /// for profile property Definitions
+    /// for profile property Definitions.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -194,9 +194,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds the default property definitions for a portal
+        /// Adds the default property definitions for a portal.
         /// </summary>
-        /// <param name="portalId">Id of the Portal</param>
+        /// <param name="portalId">Id of the Portal.</param>
         /// -----------------------------------------------------------------------------
         public static void AddDefaultDefinitions(int portalId)
         {
@@ -238,10 +238,10 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a Property Defintion to the Data Store
+        /// Adds a Property Defintion to the Data Store.
         /// </summary>
-        /// <param name="definition">An ProfilePropertyDefinition object</param>
-        /// <returns>The Id of the definition (or if negative the errorcode of the error)</returns>
+        /// <param name="definition">An ProfilePropertyDefinition object.</param>
+        /// <returns>The Id of the definition (or if negative the errorcode of the error).</returns>
         /// -----------------------------------------------------------------------------
         public static int AddPropertyDefinition(ProfilePropertyDefinition definition)
         {
@@ -274,9 +274,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears the Profile Definitions Cache
+        /// Clears the Profile Definitions Cache.
         /// </summary>
-        /// <param name="portalId">Id of the Portal</param>
+        /// <param name="portalId">Id of the Portal.</param>
         /// -----------------------------------------------------------------------------
         public static void ClearProfileDefinitionCache(int portalId)
         {
@@ -285,9 +285,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes a Property Defintion from the Data Store
+        /// Deletes a Property Defintion from the Data Store.
         /// </summary>
-        /// <param name="definition">The ProfilePropertyDefinition object to delete</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to delete.</param>
         /// -----------------------------------------------------------------------------
         public static void DeletePropertyDefinition(ProfilePropertyDefinition definition)
         {
@@ -299,7 +299,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clear profiles of all users by portal Id
+        /// Clear profiles of all users by portal Id.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void ClearAllUsersInfoProfileCacheByPortal(int portalId)
@@ -310,11 +310,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Property Defintion from the Data Store by id
+        /// Gets a Property Defintion from the Data Store by id.
         /// </summary>
-        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve</param>
+        /// <param name="definitionId">The id of the ProfilePropertyDefinition object to retrieve.</param>
         /// <param name="portalId">Portal Id.</param>
-        /// <returns>The ProfilePropertyDefinition object</returns>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinition GetPropertyDefinition(int definitionId, int portalId)
         {
@@ -341,11 +341,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Property Defintion from the Data Store by name
+        /// Gets a Property Defintion from the Data Store by name.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve</param>
-        /// <returns>The ProfilePropertyDefinition object</returns>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="name">The name of the ProfilePropertyDefinition object to retrieve.</param>
+        /// <returns>The ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinition GetPropertyDefinitionByName(int portalId, string name)
         {
@@ -374,11 +374,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by category
+        /// Gets a collection of Property Defintions from the Data Store by category.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <param name="category">The category of the Property Defintions to retrieve</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <param name="category">The category of the Property Defintions to retrieve.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByCategory(int portalId, string category)
         {
@@ -398,10 +398,10 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by portal
+        /// Gets a collection of Property Defintions from the Data Store by portal.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <param name="portalId">The id of the Portal.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId)
         {
@@ -410,11 +410,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by portal
+        /// Gets a collection of Property Defintions from the Data Store by portal.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
+        /// <param name="portalId">The id of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone)
         {
@@ -423,12 +423,12 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a collection of Property Defintions from the Data Store by portal
+        /// Gets a collection of Property Defintions from the Data Store by portal.
         /// </summary>
-        /// <param name="portalId">The id of the Portal</param>
+        /// <param name="portalId">The id of the Portal.</param>
         /// <param name="clone">Whether to use a clone object.</param>
         /// <param name="includeDeleted">Whether to include deleted profile properties.</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public static ProfilePropertyDefinitionCollection GetPropertyDefinitionsByPortal(int portalId, bool clone, bool includeDeleted)
         {
@@ -448,7 +448,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Profile Information for the User
+        /// Gets the Profile Information for the User.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="user">The user whose Profile information we are retrieving.</param>
@@ -464,9 +464,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Property Defintion in the Data Store
+        /// Updates a Property Defintion in the Data Store.
         /// </summary>
-        /// <param name="definition">The ProfilePropertyDefinition object to update</param>
+        /// <param name="definition">The ProfilePropertyDefinition object to update.</param>
         /// -----------------------------------------------------------------------------
         public static void UpdatePropertyDefinition(ProfilePropertyDefinition definition)
         {
@@ -496,9 +496,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a User's Profile
+        /// Updates a User's Profile.
         /// </summary>
-        /// <param name="user">The use to update</param>
+        /// <param name="user">The use to update.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -526,11 +526,11 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a User's Profile
+        /// Updates a User's Profile.
         /// </summary>
-        /// <param name="user">The use to update</param>
-        /// <param name="profileProperties">The collection of profile properties</param>
-        /// <returns>The updated User</returns>
+        /// <param name="user">The use to update.</param>
+        /// <param name="profileProperties">The collection of profile properties.</param>
+        /// <returns>The updated User.</returns>
         /// -----------------------------------------------------------------------------
         public static UserInfo UpdateUserProfile(UserInfo user, ProfilePropertyDefinitionCollection profileProperties)
         {
@@ -609,7 +609,7 @@ namespace DotNetNuke.Entities.Profile
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Validates the Profile properties for the User (determines if all required properties
-        /// have been set)
+        /// have been set).
         /// </summary>
         /// <param name="portalId">The Id of the portal.</param>
         /// <param name="objProfile">The profile.</param>
@@ -637,7 +637,7 @@ namespace DotNetNuke.Entities.Profile
         /// <param name="portalId">The portal identifier.</param>
         /// <param name="propertyName">Name of the property.</param>
         /// <param name="searchString">The search string.</param>
-        /// <returns>List of matching values</returns>
+        /// <returns>List of matching values.</returns>
         public static List<string> SearchProfilePropertyValues(int portalId, string propertyName, string searchString)
         {
             var res = new List<string> { };

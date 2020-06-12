@@ -11,7 +11,7 @@ using System.Drawing.Drawing2D;
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
     /// <summary>
-    /// Resize ImageTransform class
+    /// Resize ImageTransform class.
     /// </summary>
     public class ImageResizeTransform : ImageTransform
     {
@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         public ImageResizeMode Mode { get; set; }
 
         /// <summary>
-        /// Gets or sets the width of the resulting image
+        /// Gets or sets the width of the resulting image.
         /// </summary>
         public int Width
         {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the Max width of the resulting image
+        /// Gets or sets the Max width of the resulting image.
         /// </summary>
         public int MaxWidth
         {
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the height of the resulting image
+        /// Gets or sets the height of the resulting image.
         /// </summary>
         public int Height
         {
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the max height of the resulting image
+        /// Gets or sets the max height of the resulting image.
         /// </summary>
         public int MaxHeight
         {
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the border width of the resulting image
+        /// Gets or sets the border width of the resulting image.
         /// </summary>
         public int Border
         {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets or sets the Backcolor
+        /// Gets or sets the Backcolor.
         /// </summary>
         public Color BackColor { get; set; } = Color.White;
 
@@ -126,10 +126,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Processes an input image applying a resize image transformation
+        /// Processes an input image applying a resize image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             if (image == null)
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Gets provides an Unique String for this transformation
+        /// Gets provides an Unique String for this transformation.
         /// </summary>
         [Browsable(false)]
         public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;

@@ -30,7 +30,7 @@ using log4net.Util;
 namespace log4net.Repository.Hierarchy
 {
     /// <summary>
-    /// Implementation of <see cref="ILogger"/> used by <see cref="Hierarchy"/>
+    /// Implementation of <see cref="ILogger"/> used by <see cref="Hierarchy"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -50,10 +50,10 @@ namespace log4net.Repository.Hierarchy
     /// is used to create instances of this type for the <see cref="Hierarchy"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Aspi Havewala</author>
-    /// <author>Douglas de la Torre</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Aspi Havewala.</author>
+    /// <author>Douglas de la Torre.</author>
     public abstract class Logger : IAppenderAttachable, ILogger
     {
         /// <summary>
@@ -192,7 +192,7 @@ namespace log4net.Repository.Hierarchy
         /// Add <paramref name="newAppender"/> to the list of appenders of this
         /// Logger instance.
         /// </summary>
-        /// <param name="newAppender">An appender to add to this logger</param>
+        /// <param name="newAppender">An appender to add to this logger.</param>
         /// <remarks>
         /// <para>
         /// Add <paramref name="newAppender"/> to the list of appenders of this
@@ -230,7 +230,7 @@ namespace log4net.Repository.Hierarchy
         /// Gets get the appenders contained in this logger as an
         /// <see cref="System.Collections.ICollection"/>.
         /// </summary>
-        /// <returns>A collection of the appenders in this logger</returns>
+        /// <returns>A collection of the appenders in this logger.</returns>
         /// <remarks>
         /// <para>
         /// Get the appenders contained in this logger as an
@@ -262,9 +262,9 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Look for the appender named as <c>name</c>
+        /// Look for the appender named as <c>name</c>.
         /// </summary>
-        /// <param name="name">The name of the appender to lookup</param>
+        /// <param name="name">The name of the appender to lookup.</param>
         /// <returns>The appender with the name specified, or <c>null</c>.</returns>
         /// <remarks>
         /// <para>
@@ -320,8 +320,8 @@ namespace log4net.Repository.Hierarchy
         /// <summary>
         /// Remove the appender passed as parameter form the list of appenders.
         /// </summary>
-        /// <param name="appender">The appender to remove</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <param name="appender">The appender to remove.</param>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// <para>
         /// Remove the appender passed as parameter form the list of appenders.
@@ -351,8 +351,8 @@ namespace log4net.Repository.Hierarchy
         /// <summary>
         /// Remove the appender passed as parameter form the list of appenders.
         /// </summary>
-        /// <param name="name">The name of the appender to remove</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <param name="name">The name of the appender to remove.</param>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// <para>
         /// Remove the named appender passed as parameter form the list of appenders.
@@ -387,7 +387,7 @@ namespace log4net.Repository.Hierarchy
         /// </value>
         /// <remarks>
         /// <para>
-        /// The name of this logger
+        /// The name of this logger.
         /// </para>
         /// </remarks>
         public virtual string Name
@@ -641,7 +641,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// This is the most generic printing method. This generic form is intended to be used by wrappers
+        /// This is the most generic printing method. This generic form is intended to be used by wrappers.
         /// </summary>
         /// <param name="level">The level of the message to be logged.</param>
         /// <param name="message">The message object to log.</param>
@@ -744,12 +744,12 @@ namespace log4net.Repository.Hierarchy
         private Hierarchy m_hierarchy;
 
         /// <summary>
-        /// Helper implementation of the <see cref="IAppenderAttachable"/> interface
+        /// Helper implementation of the <see cref="IAppenderAttachable"/> interface.
         /// </summary>
         private log4net.Util.AppenderAttachedImpl m_appenderAttachedImpl;
 
         /// <summary>
-        /// Flag indicating if child loggers inherit their parents appenders
+        /// Flag indicating if child loggers inherit their parents appenders.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -765,7 +765,7 @@ namespace log4net.Repository.Hierarchy
         private bool m_additive = true;
 
         /// <summary>
-        /// Lock to protect AppenderAttachedImpl variable m_appenderAttachedImpl
+        /// Lock to protect AppenderAttachedImpl variable m_appenderAttachedImpl.
         /// </summary>
         private readonly ReaderWriterLock m_appenderLock = new ReaderWriterLock();
     }

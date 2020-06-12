@@ -30,7 +30,7 @@ using log4net.Util;
 namespace log4net.Layout
 {
     /// <summary>
-    /// A Layout that renders only the Exception text from the logging event
+    /// A Layout that renders only the Exception text from the logging event.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -41,16 +41,16 @@ namespace log4net.Layout
     /// layouts (e.g. <see cref="log4net.Appender.AdoNetAppender"/>).
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class ExceptionLayout : LayoutSkeleton
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Constructs a ExceptionLayout
+        /// Constructs a ExceptionLayout.
         /// </para>
         /// </remarks>
         public ExceptionLayout()
@@ -59,7 +59,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Activate component options
+        /// Activate component options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -76,10 +76,10 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets the exception text from the logging event
+        /// Gets the exception text from the logging event.
         /// </summary>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="writer">The TextWriter to write the formatted event to.</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// Write the exception string to the <see cref="TextWriter"/>.

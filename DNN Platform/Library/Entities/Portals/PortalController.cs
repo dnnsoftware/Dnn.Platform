@@ -2183,10 +2183,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Creates a new portal alias
+        /// Creates a new portal alias.
         /// </summary>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="portalAlias">Portal Alias to be created</param>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="portalAlias">Portal Alias to be created.</param>
         public void AddPortalAlias(int portalId, string portalAlias)
         {
             // Check if the Alias exists
@@ -2386,9 +2386,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Get all the available portal templates grouped by culture
+        /// Get all the available portal templates grouped by culture.
         /// </summary>
-        /// <returns>List of PortalTemplateInfo objects</returns>
+        /// <returns>List of PortalTemplateInfo objects.</returns>
         public IList<PortalTemplateInfo> GetAvailablePortalTemplates()
         {
             var list = new List<PortalTemplateInfo>();
@@ -2432,10 +2432,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        ///   Gets information of a portal
+        ///   Gets information of a portal.
         /// </summary>
-        /// <param name = "portalId">Id of the portal</param>
-        /// <returns>PortalInfo object with portal definition</returns>
+        /// <param name = "portalId">Id of the portal.</param>
+        /// <returns>PortalInfo object with portal definition.</returns>
         public PortalInfo GetPortal(int portalId)
         {
             if (portalId == -1)
@@ -2456,9 +2456,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        ///   Gets information of a portal
+        ///   Gets information of a portal.
         /// </summary>
-        /// <param name = "portalId">Id of the portal</param>
+        /// <param name = "portalId">Id of the portal.</param>
         /// <param name="cultureCode">The culture code.</param>
         /// <returns></returns>
         public PortalInfo GetPortal(int portalId, string cultureCode)
@@ -2519,9 +2519,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets information from all portals
+        /// Gets information from all portals.
         /// </summary>
-        /// <returns>ArrayList of PortalInfo objects</returns>
+        /// <returns>ArrayList of PortalInfo objects.</returns>
         public ArrayList GetPortals()
         {
             return new ArrayList(this.GetPortalList(Null.NullString));
@@ -2554,7 +2554,7 @@ namespace DotNetNuke.Entities.Portals
         /// Gets the portal settings dictionary.
         /// </summary>
         /// <param name="portalId">The portal ID.</param>
-        /// <param name="cultureCode">The culture code</param>
+        /// <param name="cultureCode">The culture code.</param>
         /// <returns>portal settings.</returns>
         public Dictionary<string, string> GetPortalSettings(int portalId, string cultureCode)
         {
@@ -2562,11 +2562,11 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Load info for a portal template
+        /// Load info for a portal template.
         /// </summary>
-        /// <param name="templatePath">Full path to the portal template</param>
-        /// <param name="cultureCode">the culture code if any for the localization of the portal template</param>
-        /// <returns>A portal template</returns>
+        /// <param name="templatePath">Full path to the portal template.</param>
+        /// <param name="cultureCode">the culture code if any for the localization of the portal template.</param>
+        /// <returns>A portal template.</returns>
         public PortalTemplateInfo GetPortalTemplate(string templatePath, string cultureCode)
         {
             var template = new PortalTemplateInfo(templatePath, cultureCode);
@@ -2583,7 +2583,7 @@ namespace DotNetNuke.Entities.Portals
         /// Gets the portal space used bytes.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
-        /// <returns>Space used in bytes</returns>
+        /// <returns>Space used in bytes.</returns>
         public long GetPortalSpaceUsedBytes(int portalId)
         {
             long size = 0;
@@ -2611,11 +2611,11 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Verifies if there's enough space to upload a new file on the given portal
+        /// Verifies if there's enough space to upload a new file on the given portal.
         /// </summary>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="fileSizeBytes">Size of the file being uploaded</param>
-        /// <returns>True if there's enough space available to upload the file</returns>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="fileSizeBytes">Size of the file being uploaded.</param>
+        /// <returns>True if there's enough space available to upload the file.</returns>
         public bool HasSpaceAvailable(int portalId, long fileSizeBytes)
         {
             int hostSpace;
@@ -2642,7 +2642,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>
         ///   Remaps the Special Pages such as Home, Profile, Search
-        ///   to their localized versions
+        ///   to their localized versions.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -2750,7 +2750,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Removes the related PortalLocalization record from the database, adds optional clear cache
+        /// Removes the related PortalLocalization record from the database, adds optional clear cache.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -2767,9 +2767,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Processess a template file for the new portal.
         /// </summary>
-        /// <param name="portalId">PortalId of the new portal</param>
-        /// <param name="template">The template</param>
-        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user</param>
+        /// <param name="portalId">PortalId of the new portal.</param>
+        /// <param name="template">The template.</param>
+        /// <param name="administratorId">UserId for the portal administrator. This is used to assign roles to this user.</param>
         /// <param name="mergeTabs">Flag to determine whether Module content is merged.</param>
         /// <param name="isNewPortal">Flag to determine is the template is applied to an existing portal or a new one.</param>
         /// <remarks>
@@ -2784,10 +2784,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Processes the resource file for the template file selected
+        /// Processes the resource file for the template file selected.
         /// </summary>
-        /// <param name="portalPath">New portal's folder</param>
-        /// <param name="resoureceFile">full path to the resource file</param>
+        /// <param name="portalPath">New portal's folder.</param>
+        /// <param name="resoureceFile">full path to the resource file.</param>
         /// <remarks>
         /// The resource file is a zip file with the same name as the selected template file and with
         /// an extension of .resources (to disable this file being downloaded).
@@ -2825,7 +2825,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Updates basic portal information
+        /// Updates basic portal information.
         /// </summary>
         /// <param name="portal"></param>
         public void UpdatePortalInfo(PortalInfo portal)
@@ -2864,7 +2864,7 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>
         /// If call this method, it will create the specific folder if the folder doesn't exist;
-        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx';
+        /// and will copy subhost.aspx to the folder if there is no 'Default.aspx'.
         /// </remarks>
         /// <param name="ChildPath">The child path.</param>
         /// <returns>
@@ -3037,13 +3037,13 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetPortalsByName gets all the portals whose name matches a provided filter expression
+        /// GetPortalsByName gets all the portals whose name matches a provided filter expression.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="nameToMatch">The email address to use to find a match.</param>
         /// <param name="pageIndex">The page of records to return.</param>
-        /// <param name="pageSize">The size of the page</param>
+        /// <param name="pageSize">The size of the page.</param>
         /// <param name="totalRecords">The total no of records that satisfy the criteria.</param>
         /// <returns>An ArrayList of PortalInfo objects.</returns>
         /// -----------------------------------------------------------------------------
@@ -3174,10 +3174,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value
+        /// takes in a text value, decrypts it with a FIPS compliant algorithm and returns the value.
         /// </summary>
-        /// <param name="settingName">the setting to read</param>
-        /// <param name="passPhrase">the pass phrase used for encryption/decryption</param>
+        /// <param name="settingName">the setting to read.</param>
+        /// <param name="passPhrase">the pass phrase used for encryption/decryption.</param>
         /// <returns></returns>
         public static string GetEncryptedString(string settingName, int portalID, string passPhrase)
         {
@@ -3219,7 +3219,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingName">Name of the setting.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
-        /// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
         public static string GetPortalSetting(string settingName, int portalID, string defaultValue, string cultureCode)
         {
@@ -3275,7 +3275,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="key">The key.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">default value.</param>
-        /// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting in specified language or neutral, otherwise return defaultValue.</returns>
         public static bool GetPortalSettingAsBoolean(string key, int portalID, bool defaultValue, string cultureCode)
         {
@@ -3369,7 +3369,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="key">The key.</param>
         /// <param name="portalID">The portal ID.</param>
         /// <param name="defaultValue">The default value.</param>
-        /// <param name="cultureCode">culture code of the language to retrieve (not empty)</param>
+        /// <param name="cultureCode">culture code of the language to retrieve (not empty).</param>
         /// <returns>Returns setting's value if portal contains the specific setting (for specified lang, otherwise return defaultValue.</returns>
         public static int GetPortalSettingAsInteger(string key, int portalID, int defaultValue, string cultureCode)
         {
@@ -3396,12 +3396,12 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores
+        /// takes in a text value, encrypts it with a FIPS compliant algorithm and stores.
         /// </summary>
         /// <param name="portalID">The portal ID.</param>
-        /// <param name="settingName">host settings key</param>
-        /// <param name="settingValue">host settings value</param>
-        /// <param name="passPhrase">pass phrase to allow encryption/decryption</param>
+        /// <param name="settingName">host settings key.</param>
+        /// <param name="settingValue">host settings value.</param>
+        /// <param name="passPhrase">pass phrase to allow encryption/decryption.</param>
         public static void UpdateEncryptedString(int portalID, string settingName, string settingValue, string passPhrase)
         {
             Requires.NotNullOrEmpty("key", settingName);
@@ -3472,7 +3472,7 @@ namespace DotNetNuke.Entities.Portals
         /// <param name="settingValue">The setting value.</param>
         /// <param name="clearCache">if set to <c>true</c> [clear cache].</param>
         /// <param name="cultureCode">culture code for language specific settings, null string ontherwise.</param>
-        /// <param name="isSecure">When true it encrypt the value before storing it in the database</param>
+        /// <param name="isSecure">When true it encrypt the value before storing it in the database.</param>
         public static void UpdatePortalSetting(int portalID, string settingName, string settingValue, bool clearCache, string cultureCode, bool isSecure)
         {
             Instance.UpdatePortalSetting(portalID, settingName, settingValue, clearCache, cultureCode, isSecure);
@@ -3523,7 +3523,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>
         ///   function provides the language for portalinfo requests
-        ///   in case where language has not been installed yet, will return the core install default of en-us
+        ///   in case where language has not been installed yet, will return the core install default of en-us.
         /// </summary>
         /// <param name = "portalID"></param>
         /// <returns></returns>
@@ -3588,7 +3588,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        ///   return the current DefaultLanguage value from the Portals table for the requested Portalid
+        ///   return the current DefaultLanguage value from the Portals table for the requested Portalid.
         /// </summary>
         /// <param name = "portalID"></param>
         /// <returns></returns>
@@ -3602,7 +3602,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>
         ///   set the required DefaultLanguage in the Portals table for a particular portal
-        ///   saves having to update an entire PortalInfo object
+        ///   saves having to update an entire PortalInfo object.
         /// </summary>
         /// <param name = "portalID"></param>
         /// <param name = "CultureCode"></param>

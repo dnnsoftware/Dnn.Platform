@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : ModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleInfo provides the Entity Layer for Modules
+    /// ModuleInfo provides the Entity Layer for Modules.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [XmlRoot("module", IsNullable = false)]
@@ -120,9 +120,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Associated Desktop Module
+        /// Gets the Associated Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public DesktopModuleInfo DesktopModule
@@ -138,9 +138,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ID of the Associated Desktop Module
+        /// Gets or sets and sets the ID of the Associated Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int DesktopModuleID { get; set; }
@@ -226,18 +226,18 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ID of the Associated Module Definition
+        /// Gets or sets and sets the ID of the Associated Module Definition.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Associated Module Definition
+        /// Gets the Associated Module Definition.
         /// </summary>
-        /// <returns>A ModuleDefinitionInfo</returns>
+        /// <returns>A ModuleDefinitionInfo.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public ModuleDefinitionInfo ModuleDefinition
@@ -255,7 +255,7 @@ namespace DotNetNuke.Entities.Modules
         public int ModuleOrder { get; set; }
 
         /// <summary>
-        /// Gets or sets get the ModulePermissions for the Module DO NOT USE THE SETTTER
+        /// Gets or sets get the ModulePermissions for the Module DO NOT USE THE SETTTER.
         /// <remarks>
         /// Since 5.0 the setter has been obsolete, directly setting the ModulePermissionCollection is likely an error, change the contenst of the collection instead.
         /// The setter still exists to preserve binary compatibility without the obsolete attribute since c# will not allow only a setter to be obsolete.
@@ -519,9 +519,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModuleInfo from a Data Reader
+        /// Fills a ModuleInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -616,9 +616,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public override int KeyID

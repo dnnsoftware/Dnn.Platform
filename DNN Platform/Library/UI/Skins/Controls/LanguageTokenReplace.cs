@@ -89,9 +89,9 @@ namespace DotNetNuke.UI.Skins.Controls
         /// in order to prep for navigateUrl.
         /// we don't ever want a tabid, a ctl and a language parameter in the qs
         /// also, the portalid param is not allowed when the tab is a supertab
-        /// (because NavigateUrl adds the portalId param to the qs)
+        /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
-        /// <param name="newLanguage">Language to switch into</param>
+        /// <param name="newLanguage">Language to switch into.</param>
         /// <param name="isLocalized"></param>
         /// <returns></returns>
         private string[] GetQsParams(string newLanguage, bool isLocalized)
@@ -206,7 +206,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// <summary>
         /// newUrl returns the new URL based on the new language.
-        /// Basically it is just a call to NavigateUrl, with stripped qs parameters
+        /// Basically it is just a call to NavigateUrl, with stripped qs parameters.
         /// </summary>
         /// <param name="newLanguage"></param>
         private string NewUrl(string newLanguage)

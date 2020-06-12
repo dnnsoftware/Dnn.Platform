@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SettingsEditorInfoAdapter control provides a factory for creating the
-    /// appropriate EditInfo object
+    /// appropriate EditInfo object.
     /// </summary>
     /// <remarks>
     /// </remarks>

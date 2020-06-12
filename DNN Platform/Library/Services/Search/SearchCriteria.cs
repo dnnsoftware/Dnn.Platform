@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Search
     /// Class:      SearchCriteria
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchCriteria represents a search criterion
+    /// The SearchCriteria represents a search criterion.
     /// </summary>
     /// <remarks>
     /// </remarks>

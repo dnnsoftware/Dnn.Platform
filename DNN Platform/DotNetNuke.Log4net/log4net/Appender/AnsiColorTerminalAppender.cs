@@ -102,12 +102,12 @@ namespace log4net.Appender
     /// no sense.
     /// </para>
     /// </remarks>
-    /// <author>Patrick Wagstrom</author>
-    /// <author>Nicko Cadell</author>
+    /// <author>Patrick Wagstrom.</author>
+    /// <author>Nicko Cadell.</author>
     public class AnsiColorTerminalAppender : AppenderSkeleton
     {
         /// <summary>
-        /// The enum of possible display attributes
+        /// The enum of possible display attributes.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -165,7 +165,7 @@ namespace log4net.Appender
 
         /// <summary>
         /// The enum of possible foreground or background color values for
-        /// use with the color mapping method
+        /// use with the color mapping method.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -260,9 +260,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Add a mapping of level to color
+        /// Add a mapping of level to color.
         /// </summary>
-        /// <param name="mapping">The mapping to add</param>
+        /// <param name="mapping">The mapping to add.</param>
         /// <remarks>
         /// <para>
         /// Add a <see cref="LevelColors"/> mapping to this appender.
@@ -351,7 +351,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -363,7 +363,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the options for this appender
+        /// Initialize the options for this appender.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -401,17 +401,17 @@ namespace log4net.Appender
         public const string ConsoleError = "Console.Error";
 
         /// <summary>
-        /// Flag to write output to the error stream rather than the standard output stream
+        /// Flag to write output to the error stream rather than the standard output stream.
         /// </summary>
         private bool m_writeToErrorStream = false;
 
         /// <summary>
-        /// Mapping from level object to color value
+        /// Mapping from level object to color value.
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
         /// <summary>
-        /// Ansi code to reset terminal
+        /// Ansi code to reset terminal.
         /// </summary>
         private const string PostEventCodes = "\x1b[0m";
 
@@ -432,12 +432,12 @@ namespace log4net.Appender
             private string m_combinedColor = string.Empty;
 
             /// <summary>
-            /// Gets or sets the mapped foreground color for the specified level
+            /// Gets or sets the mapped foreground color for the specified level.
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped foreground color for the specified level
+            /// The mapped foreground color for the specified level.
             /// </para>
             /// </remarks>
             public AnsiColor ForeColor
@@ -447,12 +447,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Gets or sets the mapped background color for the specified level
+            /// Gets or sets the mapped background color for the specified level.
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The mapped background color for the specified level
+            /// The mapped background color for the specified level.
             /// </para>
             /// </remarks>
             public AnsiColor BackColor
@@ -462,12 +462,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Gets or sets the color attributes for the specified level
+            /// Gets or sets the color attributes for the specified level.
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The color attributes for the specified level
+            /// The color attributes for the specified level.
             /// </para>
             /// </remarks>
             public AnsiAttributes Attributes
@@ -477,7 +477,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Initialize the options for the object
+            /// Initialize the options for the object.
             /// </summary>
             /// <remarks>
             /// <para>

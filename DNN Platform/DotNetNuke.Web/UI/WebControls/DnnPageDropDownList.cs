@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>
         /// Gets or sets a value indicating whether whether disabled pages are not selectable
-        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages
+        /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages.
         /// </summary>
         public bool DisabledNotSelectable { get; set; }
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public bool IncludeAllTabTypes { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether whether include Host Pages
+        /// Gets or sets a value indicating whether whether include Host Pages.
         /// </summary>
         public bool IncludeHostPages { get; set; }
 

@@ -16,7 +16,7 @@ using DotNetNuke.Providers.AspNetClientCapabilityProvider.Properties;
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 {
     /// <summary>
-    /// AspNet Browser Implementation of IClientCapability
+    /// AspNet Browser Implementation of IClientCapability.
     /// </summary>
     public class AspNetClientCapability : Services.ClientCapability.ClientCapability
     {

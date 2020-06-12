@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageController class provides the business class for the packages
+    /// The PackageController class provides the business class for the packages.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class PackageController : ServiceLocator<IPackageController, PackageController>, IPackageController
@@ -230,7 +230,7 @@ namespace DotNetNuke.Services.Installer.Packages
         }
 
         /// <summary>
-        /// Save or update the package
+        /// Save or update the package.
         /// </summary>
         /// <param name="package"></param>
         public void SaveExtensionPackage(PackageInfo package)

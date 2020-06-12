@@ -29,7 +29,7 @@ using log4net.Core;
 namespace log4net.Layout
 {
     /// <summary>
-    /// Adapts any <see cref="ILayout"/> to a <see cref="IRawLayout"/>
+    /// Adapts any <see cref="ILayout"/> to a <see cref="IRawLayout"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -37,19 +37,19 @@ namespace log4net.Layout
     /// allows a <see cref="ILayout"/> to be specified.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class Layout2RawLayoutAdapter : IRawLayout
     {
         /// <summary>
-        /// The layout to adapt
+        /// The layout to adapt.
         /// </summary>
         private ILayout m_layout;
 
         /// <summary>
-        /// Construct a new adapter
+        /// Construct a new adapter.
         /// </summary>
-        /// <param name="layout">the layout to adapt</param>
+        /// <param name="layout">the layout to adapt.</param>
         /// <remarks>
         /// <para>
         /// Create the adapter for the specified <paramref name="layout"/>.
@@ -63,8 +63,8 @@ namespace log4net.Layout
         /// <summary>
         /// Format the logging event as an object.
         /// </summary>
-        /// <param name="loggingEvent">The event to format</param>
-        /// <returns>returns the formatted event</returns>
+        /// <param name="loggingEvent">The event to format.</param>
+        /// <returns>returns the formatted event.</returns>
         /// <remarks>
         /// <para>
         /// Format the logging event as an object.

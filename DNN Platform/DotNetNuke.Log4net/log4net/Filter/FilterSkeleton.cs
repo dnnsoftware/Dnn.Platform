@@ -27,7 +27,7 @@ using log4net.Core;
 namespace log4net.Filter
 {
     /// <summary>
-    /// Subclass this type to implement customized logging event filtering
+    /// Subclass this type to implement customized logging event filtering.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -68,8 +68,8 @@ namespace log4net.Filter
     /// Linux ipchains.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class FilterSkeleton : IFilter
     {
         /// <summary>
@@ -83,7 +83,7 @@ namespace log4net.Filter
         private IFilter m_next;
 
         /// <summary>
-        /// Initialize the filter with the options set
+        /// Initialize the filter with the options set.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -109,8 +109,8 @@ namespace log4net.Filter
         /// <summary>
         /// Decide if the <see cref="LoggingEvent"/> should be logged through an appender.
         /// </summary>
-        /// <param name="loggingEvent">The <see cref="LoggingEvent"/> to decide upon</param>
-        /// <returns>The decision of the filter</returns>
+        /// <param name="loggingEvent">The <see cref="LoggingEvent"/> to decide upon.</param>
+        /// <returns>The decision of the filter.</returns>
         /// <remarks>
         /// <para>
         /// If the decision is <see cref="FilterDecision.Deny"/>, then the event will be
@@ -127,10 +127,10 @@ namespace log4net.Filter
         public abstract FilterDecision Decide(LoggingEvent loggingEvent);
 
         /// <summary>
-        /// Gets or sets property to get and set the next filter
+        /// Gets or sets property to get and set the next filter.
         /// </summary>
         /// <value>
-        /// The next filter in the chain
+        /// The next filter in the chain.
         /// </value>
         /// <remarks>
         /// <para>

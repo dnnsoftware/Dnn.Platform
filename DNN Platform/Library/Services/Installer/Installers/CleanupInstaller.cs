@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CleanupInstaller cleans up (removes) files from previous versions
+    /// The CleanupInstaller cleans up (removes) files from previous versions.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,9 +31,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles => "*";
 
@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The CleanupFile method cleansup a single file.
         /// </summary>
-        /// <param name="insFile">The InstallFile to clean up</param>
+        /// <param name="insFile">The InstallFile to clean up.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected bool CleanupFile(InstallFile insFile)
@@ -117,10 +117,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node
+        /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
-        /// <param name="file">The file represented by the node</param>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The RollbackFile method rolls back the cleanup of a single file.
         /// </summary>
-        /// <param name="installFile">The InstallFile to commit</param>
+        /// <param name="installFile">The InstallFile to commit.</param>
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile installFile)
         {
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Clenup this is not neccessary</remarks>
+        /// <remarks>In the case of Clenup this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method cleansup the files
+        /// The Install method cleansup the files.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -208,9 +208,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the file component
+        /// The UnInstall method uninstalls the file component.
         /// </summary>
-        /// <remarks>There is no uninstall for this component</remarks>
+        /// <remarks>There is no uninstall for this component.</remarks>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {

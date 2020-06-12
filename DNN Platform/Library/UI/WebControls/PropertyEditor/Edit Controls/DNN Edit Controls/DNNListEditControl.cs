@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNListEditControl control provides a standard UI component for selecting
-    /// from Lists
+    /// from Lists.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
@@ -45,23 +45,23 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether determines whether the List Auto Posts Back
+        /// Gets or sets a value indicating whether determines whether the List Auto Posts Back.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool AutoPostBack { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering
+        /// Gets or sets a value indicating whether if true the list will be sorted on the value of Text before rendering.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool SortAlphabetically { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets integerValue returns the Integer representation of the Value
+        /// Gets integerValue returns the Integer representation of the Value.
         /// </summary>
-        /// <value>An integer representing the Value</value>
+        /// <value>An integer representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected int IntegerValue
         {
@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets list gets the List associated with the control
+        /// Gets list gets the List associated with the control.
         /// </summary>
         [Obsolete("Obsoleted in 6.0.1 use ListEntries instead. Scheduled removal in v10.0.0.")]
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the ListEntryInfo objects associated witht the control
+        /// Gets the ListEntryInfo objects associated witht the control.
         /// </summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets listName is the name of the List to display
+        /// Gets or sets listName is the name of the List to display.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual string ListName
@@ -149,9 +149,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets oldIntegerValue returns the Integer representation of the OldValue
+        /// Gets oldIntegerValue returns the Integer representation of the OldValue.
         /// </summary>
-        /// <value>An integer representing the OldValue</value>
+        /// <value>An integer representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected int OldIntegerValue
         {
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the parent key of the List to display
+        /// Gets or sets the parent key of the List to display.
         /// </summary>
         protected virtual string ParentKey { get; set; }
 
@@ -191,20 +191,20 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the field to display in the combo
+        /// Gets or sets the field to display in the combo.
         /// </summary>
         protected virtual ListBoundField TextField { get; set; }
 
         /// <summary>
-        /// Gets or sets the field to use as the combo item values
+        /// Gets or sets the field to use as the combo item values.
         /// </summary>
         protected virtual ListBoundField ValueField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets oldStringValue returns the Boolean representation of the OldValue
+        /// Gets oldStringValue returns the Boolean representation of the OldValue.
         /// </summary>
-        /// <value>A String representing the OldValue</value>
+        /// <value>A String representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
@@ -216,9 +216,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -300,7 +300,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
@@ -310,7 +310,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnItemChanged runs when the Item has changed
+        /// OnItemChanged runs when the Item has changed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemChanged(PropertyEditorEventArgs e)
@@ -323,7 +323,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
@@ -373,7 +373,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

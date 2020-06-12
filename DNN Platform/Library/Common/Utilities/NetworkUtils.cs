@@ -12,7 +12,7 @@ using System.Web;
 namespace DotNetNuke.Common.Utils
 {
     /// <summary>
-    /// Utility functions for network information
+    /// Utility functions for network information.
     /// </summary>
     public class NetworkUtils
     {
@@ -21,7 +21,7 @@ namespace DotNetNuke.Common.Utils
         /// </summary>
         /// <param name="Host">The host.</param>
         /// <param name="AddressFormat">The address format.</param>
-        /// <returns>Returns IP address</returns>
+        /// <returns>Returns IP address.</returns>
         /// <remarks><seealso cref="AddressType"></seealso></remarks>
         public static string GetAddress(string Host, AddressType AddressFormat)
         {
@@ -54,10 +54,10 @@ namespace DotNetNuke.Common.Utils
         }
 
         /// <summary>
-        /// Convert IP address to long integer
+        /// Convert IP address to long integer.
         /// </summary>
-        /// <param name="ip">The ip address</param>
-        /// <returns>IP Address in long</returns>
+        /// <param name="ip">The ip address.</param>
+        /// <returns>IP Address in long.</returns>
         public static long IPtoLong(IPAddress ip)
         {
             // convert IP to number
@@ -78,8 +78,8 @@ namespace DotNetNuke.Common.Utils
         /// <summary>
         /// Longs to ip address.
         /// </summary>
-        /// <param name="ip">The ip address</param>
-        /// <returns>IP Number as formatted string</returns>
+        /// <param name="ip">The ip address.</param>
+        /// <returns>IP Number as formatted string.</returns>
         public static string LongToIp(long ip)
         {
             // convert number back to IP
@@ -109,7 +109,7 @@ namespace DotNetNuke.Common.Utils
         /// <summary>
         /// Masks from cidr.
         /// </summary>
-        /// <param name="cidr">The Classless Inter-Domain Routing (cidr)</param>
+        /// <param name="cidr">The Classless Inter-Domain Routing (cidr).</param>
         /// <returns></returns>
         private static long MaskFromCidr(int cidr)
         {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Common.Utils
         /// </summary>
         /// <param name="startIP">The start ip.</param>
         /// <param name="subnetMask">The subnet mask.</param>
-        /// <returns>Classless Inter-Domain Routing</returns>
+        /// <returns>Classless Inter-Domain Routing.</returns>
         public static string FormatAsCidr(string startIP, string subnetMask)
         {
             if (string.IsNullOrEmpty(subnetMask))
@@ -198,10 +198,10 @@ namespace DotNetNuke.Common.Utils
         }
 
         /// <summary>
-        /// Convert IP to Integer
+        /// Convert IP to Integer.
         /// </summary>
         /// <param name="ipNumber">The ip number.</param>
-        /// <returns>IP number as integer</returns>
+        /// <returns>IP number as integer.</returns>
         public static uint IP2Int(string ipNumber)
         {
             uint ip = 0;
@@ -223,7 +223,7 @@ namespace DotNetNuke.Common.Utils
         /// <param name="currentIP">The current ip.</param>
         /// <param name="startIP">The start ip.</param>
         /// <param name="subnetmask">The subnetmask.</param>
-        /// <returns>True or False</returns>
+        /// <returns>True or False.</returns>
         public static bool IsIPInRange(string currentIP, string startIP, string subnetmask)
         {
             try
@@ -283,7 +283,7 @@ namespace DotNetNuke.Common.Utils
     }
 
     /// <summary>
-    /// Enumration of IP AddressTyes
+    /// Enumration of IP AddressTyes.
     /// </summary>
     public enum AddressType
     {

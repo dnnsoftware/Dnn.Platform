@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Cache
         /// <summary>
         /// Gets the default cache provider.
         /// </summary>
-        /// <value>HttpRuntime.Cache</value>
+        /// <value>HttpRuntime.Cache.</value>
         protected static System.Web.Caching.Cache Cache
         {
             get
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Cache
         /// Gets the cache key with key prefix.
         /// </summary>
         /// <param name="CacheKey">The cache key.</param>
-        /// <returns>CachePrefix + CacheKey</returns>
+        /// <returns>CachePrefix + CacheKey.</returns>
         /// <exception cref="ArgumentException">Cache key is empty.</exception>
         public static string GetCacheKey(string CacheKey)
         {
@@ -428,7 +428,7 @@ namespace DotNetNuke.Services.Cache
         /// Gets the item.
         /// </summary>
         /// <param name="cacheKey">The cache key.</param>
-        /// <returns>cache content</returns>
+        /// <returns>cache content.</returns>
         public virtual object GetItem(string cacheKey)
         {
             return Cache[cacheKey];

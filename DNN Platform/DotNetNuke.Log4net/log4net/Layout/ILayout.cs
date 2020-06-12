@@ -29,7 +29,7 @@ using log4net.Core;
 namespace log4net.Layout
 {
     /// <summary>
-    /// Interface implemented by layout objects
+    /// Interface implemented by layout objects.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -42,15 +42,15 @@ namespace log4net.Layout
     /// text that is appender before any events and after all the events respectively.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface ILayout
     {
         /// <summary>
         /// Implement this method to create your own layout format.
         /// </summary>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
-        /// <param name="loggingEvent">The event to format</param>
+        /// <param name="writer">The TextWriter to write the formatted event to.</param>
+        /// <param name="loggingEvent">The event to format.</param>
         /// <remarks>
         /// <para>
         /// This method is called by an appender to format
@@ -72,7 +72,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets the content type output by this layout.
         /// </summary>
-        /// <value>The content type</value>
+        /// <value>The content type.</value>
         /// <remarks>
         /// <para>
         /// The content type output by this layout.
@@ -86,7 +86,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets the header for the layout format.
         /// </summary>
-        /// <value>the layout header</value>
+        /// <value>the layout header.</value>
         /// <remarks>
         /// <para>
         /// The Header text will be appended before any logging events
@@ -98,7 +98,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets the footer for the layout format.
         /// </summary>
-        /// <value>the layout footer</value>
+        /// <value>the layout footer.</value>
         /// <remarks>
         /// <para>
         /// The Footer text will be appended after all the logging events
@@ -108,9 +108,9 @@ namespace log4net.Layout
         string Footer { get; }
 
         /// <summary>
-        /// Gets a value indicating whether flag indicating if this layout handle exceptions
+        /// Gets a value indicating whether flag indicating if this layout handle exceptions.
         /// </summary>
-        /// <value><c>false</c> if this layout handles exceptions</value>
+        /// <value><c>false</c> if this layout handles exceptions.</value>
         /// <remarks>
         /// <para>
         /// If this layout handles the exception object contained within

@@ -38,11 +38,11 @@ namespace log4net.Layout.Pattern
     /// Outputs an item from the <see cref="HttpContext" />.
     /// </para>
     /// </remarks>
-    /// <author>Ron Grabowski</author>
+    /// <author>Ron Grabowski.</author>
     internal sealed class AspNetContextPatternConverter : AspNetPatternLayoutConverter
     {
         /// <summary>
-        /// Write the ASP.Net HttpContext item to the output
+        /// Write the ASP.Net HttpContext item to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
         /// <param name="loggingEvent">The <see cref="LoggingEvent" /> on which the pattern converter should be executed.</param>

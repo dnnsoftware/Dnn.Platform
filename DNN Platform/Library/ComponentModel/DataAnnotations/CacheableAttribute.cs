@@ -11,7 +11,7 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
     public class CacheableAttribute : Attribute
     {
         /// <summary>
-        /// Construct a new CacheableAttribute
+        /// Construct a new CacheableAttribute.
         /// </summary>
         public CacheableAttribute()
         {
@@ -20,30 +20,30 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         }
 
         /// <summary>
-        /// Construct a new CacheableAttribute
+        /// Construct a new CacheableAttribute.
         /// </summary>
-        /// <param name="cacheKey">The cacheKey to use</param>
+        /// <param name="cacheKey">The cacheKey to use.</param>
         public CacheableAttribute(string cacheKey)
             : this(cacheKey, CacheItemPriority.Default, 20)
         {
         }
 
         /// <summary>
-        /// Construct a new CacheableAttribute
+        /// Construct a new CacheableAttribute.
         /// </summary>
-        /// <param name="cacheKey">The cacheKey to use</param>
-        /// <param name="priority">The priority of the cached item</param>
+        /// <param name="cacheKey">The cacheKey to use.</param>
+        /// <param name="priority">The priority of the cached item.</param>
         public CacheableAttribute(string cacheKey, CacheItemPriority priority)
             : this(cacheKey, priority, 20)
         {
         }
 
         /// <summary>
-        /// Construct a new CacheableAttribute
+        /// Construct a new CacheableAttribute.
         /// </summary>
-        /// <param name="cacheKey">The cacheKey to use</param>
-        /// <param name="priority">The priority of the cached item</param>
-        /// <param name="timeOut">The timeout multiplier used to cache the item</param>
+        /// <param name="cacheKey">The cacheKey to use.</param>
+        /// <param name="priority">The priority of the cached item.</param>
+        /// <param name="timeOut">The timeout multiplier used to cache the item.</param>
         public CacheableAttribute(string cacheKey, CacheItemPriority priority, int timeOut)
         {
             this.CacheKey = cacheKey;
@@ -52,12 +52,12 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         }
 
         /// <summary>
-        /// Gets or sets the root key to use for the cache
+        /// Gets or sets the root key to use for the cache.
         /// </summary>
         public string CacheKey { get; set; }
 
         /// <summary>
-        /// Gets or sets the priority of the cached item.  The default value is CacheItemPriority.Default
+        /// Gets or sets the priority of the cached item.  The default value is CacheItemPriority.Default.
         /// </summary>
         public CacheItemPriority CachePriority { get; set; }
 

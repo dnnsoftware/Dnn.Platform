@@ -25,7 +25,7 @@ using log4net.Core;
 namespace log4net.Repository.Hierarchy
 {
     /// <summary>
-    /// Default implementation of <see cref="ILoggerFactory"/>
+    /// Default implementation of <see cref="ILoggerFactory"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -34,12 +34,12 @@ namespace log4net.Repository.Hierarchy
     /// of the <see cref="Logger"/> object.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     internal class DefaultLoggerFactory : ILoggerFactory
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -51,7 +51,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Create a new <see cref="Logger" /> instance
+        /// Create a new <see cref="Logger" /> instance.
         /// </summary>
         /// <param name="repository">The <see cref="ILoggerRepository" /> that will own the <see cref="Logger" />.</param>
         /// <param name="name">The name of the <see cref="Logger" />.</param>
@@ -81,7 +81,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Default internal subclass of <see cref="Logger"/>
+        /// Default internal subclass of <see cref="Logger"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -93,9 +93,9 @@ namespace log4net.Repository.Hierarchy
         internal sealed class LoggerImpl : Logger
         {
             /// <summary>
-            /// Construct a new Logger
+            /// Construct a new Logger.
             /// </summary>
-            /// <param name="name">the name of the logger</param>
+            /// <param name="name">the name of the logger.</param>
             /// <remarks>
             /// <para>
             /// Initializes a new instance of the <see cref="LoggerImpl" /> class

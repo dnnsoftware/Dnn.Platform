@@ -39,18 +39,18 @@ namespace DotNetNuke.Services.Tokens
         protected bool UseObjectLessExpression { get; set; }
 
         /// <summary>
-        /// Gets the Format provider as Culture info from stored language or current culture
+        /// Gets the Format provider as Culture info from stored language or current culture.
         /// </summary>
-        /// <value>An CultureInfo</value>
+        /// <value>An CultureInfo.</value>
         protected CultureInfo FormatProvider
         {
             get { return this._formatProvider ?? (this._formatProvider = Thread.CurrentThread.CurrentUICulture); }
         }
 
         /// <summary>
-        /// Gets or sets /sets the language to be used, e.g. for date format
+        /// Gets or sets /sets the language to be used, e.g. for date format.
         /// </summary>
-        /// <value>A string, representing the locale</value>
+        /// <value>A string, representing the locale.</value>
         public string Language
         {
             get
@@ -66,9 +66,9 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets the Regular expression for the token to be replaced
+        /// Gets the Regular expression for the token to be replaced.
         /// </summary>
-        /// <value>A regular Expression</value>
+        /// <value>A regular Expression.</value>
         protected Regex TokenizerRegex
         {
             get

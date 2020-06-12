@@ -16,17 +16,17 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.FileRegistration.Providers;
 
     /// <summary>
-    /// Registers resources at the top of the body on default.aspx
+    /// Registers resources at the top of the body on default.aspx.
     /// </summary>
     public class DnnPageHeaderProvider : DnnFileRegistrationProvider
     {
         /// <summary>
-        /// The default name of the provider
+        /// The default name of the provider.
         /// </summary>
         public const string DefaultName = "DnnPageHeaderProvider";
 
         /// <summary>
-        /// The name of the placeholder in which the controls will be rendered
+        /// The name of the placeholder in which the controls will be rendered.
         /// </summary>
         public const string CssPlaceHolderName = "ClientDependencyHeadCss";
         public const string JsPlaceHolderName = "ClientDependencyHeadJs";
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.Client.Providers
         }
 
         /// <summary>
-        /// Registers the dependencies in the body of default.aspx
+        /// Registers the dependencies in the body of default.aspx.
         /// </summary>
         /// <param name="http"></param>
         /// <param name="js"></param>

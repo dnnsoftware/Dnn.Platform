@@ -36,14 +36,14 @@ namespace log4net.Util
     #endif
 
         /// <summary>
-    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>
+    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>
+    /// Implementation of Stack for the <see cref="log4net.LogicalThreadContext"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class LogicalThreadContextStack : IFixingRequired
     {
         /// <summary>
@@ -68,7 +68,7 @@ namespace log4net.Util
 #endif
 
         /// <summary>
-        /// Internal constructor
+        /// Internal constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -86,10 +86,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the number of messages in the stack
+        /// Gets the number of messages in the stack.
         /// </summary>
         /// <value>
-        /// The current number of messages in the stack
+        /// The current number of messages in the stack.
         /// </value>
         /// <remarks>
         /// <para>
@@ -201,9 +201,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets and sets the internal stack used by this <see cref="LogicalThreadContextStack"/>
+        /// Gets or sets and sets the internal stack used by this <see cref="LogicalThreadContextStack"/>.
         /// </summary>
-        /// <value>The internal storage stack</value>
+        /// <value>The internal storage stack.</value>
         /// <remarks>
         /// <para>
         /// This property is provided only to support backward compatability
@@ -220,7 +220,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets the current context information for this stack.
         /// </summary>
-        /// <returns>Gets the current context information</returns>
+        /// <returns>Gets the current context information.</returns>
         /// <remarks>
         /// <para>
         /// Gets the current context information for this stack.
@@ -232,12 +232,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get a portable version of this object
+        /// Get a portable version of this object.
         /// </summary>
-        /// <returns>the portable instance of this object</returns>
+        /// <returns>the portable instance of this object.</returns>
         /// <remarks>
         /// <para>
-        /// Get a cross thread portable version of this object
+        /// Get a cross thread portable version of this object.
         /// </para>
         /// </remarks>
         object IFixingRequired.GetFixedObject()
@@ -260,7 +260,7 @@ namespace log4net.Util
             private string m_fullMessage = null;
 
             /// <summary>
-            /// Constructor
+            /// Constructor.
             /// </summary>
             /// <param name="message">The message for this context.</param>
             /// <param name="parent">The parent context in the chain.</param>
@@ -332,7 +332,7 @@ namespace log4net.Util
         private struct AutoPopStackFrame : IDisposable
         {
             /// <summary>
-            /// The depth to trim the stack to when this instance is disposed
+            /// The depth to trim the stack to when this instance is disposed.
             /// </summary>
             private int m_frameDepth;
 
@@ -342,7 +342,7 @@ namespace log4net.Util
             private LogicalThreadContextStack m_logicalThreadContextStack;
 
             /// <summary>
-            /// Constructor
+            /// Constructor.
             /// </summary>
             /// <param name="logicalThreadContextStack">The internal stack used by the ThreadContextStack.</param>
             /// <param name="frameDepth">The depth to return the stack to when this object is disposed.</param>

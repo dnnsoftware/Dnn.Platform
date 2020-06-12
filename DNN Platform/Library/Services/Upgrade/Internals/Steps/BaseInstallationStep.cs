@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// BaseInstallationStep - Abstract class to perform common tasks for the various installation steps
+    /// BaseInstallationStep - Abstract class to perform common tasks for the various installation steps.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class BaseInstallationStep : IInstallationStep
@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         }
 
         /// <summary>
-        /// Gets or sets any details of the task while it's executing
+        /// Gets or sets any details of the task while it's executing.
         /// </summary>
         public string Details
         {
@@ -47,22 +47,22 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         }
 
         /// <summary>
-        /// Gets or sets percentage done
+        /// Gets or sets percentage done.
         /// </summary>
         public int Percentage { get; set; }
 
         /// <summary>
-        /// Gets or sets step Status
+        /// Gets or sets step Status.
         /// </summary>
         public StepStatus Status { get; set; }
 
         /// <summary>
-        /// Gets or sets list of Errors
+        /// Gets or sets list of Errors.
         /// </summary>
         public IList<string> Errors { get; set; }
 
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         public abstract void Execute();
 

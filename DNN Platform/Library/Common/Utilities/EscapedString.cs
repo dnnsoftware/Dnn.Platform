@@ -15,22 +15,22 @@ namespace DotNetNuke.Common.Utilities
         private const char DefaultSeperator = ',';
 
         /// <summary>
-        /// Combine the string values of the enumerable into an escaped string
+        /// Combine the string values of the enumerable into an escaped string.
         /// </summary>
-        /// <param name="enumerable">An IEnumerable of values to combine</param>
+        /// <param name="enumerable">An IEnumerable of values to combine.</param>
         /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
         /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
-        /// <remarks>The seperator char is ','</remarks>
+        /// <remarks>The seperator char is ','.</remarks>
         public static string Combine(IEnumerable enumerable)
         {
             return Combine(enumerable, DefaultSeperator);
         }
 
         /// <summary>
-        /// Combine the string values of the enumerable into an escaped string
+        /// Combine the string values of the enumerable into an escaped string.
         /// </summary>
-        /// <param name="enumerable">An IEnumerable of values to combine</param>
-        /// <param name="seperator">The character to use as a seperator</param>
+        /// <param name="enumerable">An IEnumerable of values to combine.</param>
+        /// <param name="seperator">The character to use as a seperator.</param>
         /// <returns>An escaped string that is seperated using the specified characeter.  The escape character is '\'.
         /// The string returned by .ToString() is used as the value of each item in the IEnumerable.</returns>
         public static string Combine(IEnumerable enumerable, char seperator)
@@ -49,23 +49,23 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Takes an escaped string and splits it into an IEnumerable of seperate strings
+        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
         /// </summary>
-        /// <param name="combinedString">The string to seperate</param>
-        /// <returns>IEnumerable of all the seperated strings</returns>
-        /// <remarks>The escape character is '\', the seperator char is ','</remarks>
+        /// <param name="combinedString">The string to seperate.</param>
+        /// <returns>IEnumerable of all the seperated strings.</returns>
+        /// <remarks>The escape character is '\', the seperator char is ','.</remarks>
         public static IEnumerable<string> Seperate(string combinedString)
         {
             return Seperate(combinedString, DefaultSeperator);
         }
 
         /// <summary>
-        /// Takes an escaped string and splits it into an IEnumerable of seperate strings
+        /// Takes an escaped string and splits it into an IEnumerable of seperate strings.
         /// </summary>
-        /// <param name="combinedString">The string to seperate</param>
-        /// <param name="seperator">The character on which to split</param>
-        /// <returns>IEnumerable of all the seperated strings</returns>
-        /// <remarks>The escape character is '\'</remarks>
+        /// <param name="combinedString">The string to seperate.</param>
+        /// <param name="seperator">The character on which to split.</param>
+        /// <returns>IEnumerable of all the seperated strings.</returns>
+        /// <remarks>The escape character is '\'.</remarks>
         public static IEnumerable<string> Seperate(string combinedString, char seperator)
         {
             var result = new List<string>();

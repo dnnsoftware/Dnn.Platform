@@ -288,7 +288,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LogStart logs the Application Start Event
+        /// LogStart logs the Application Start Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void LogStart()
@@ -303,7 +303,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LogEnd logs the Application Start Event
+        /// LogEnd logs the Application Start Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void LogEnd()
@@ -410,7 +410,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tests whether this request should be processed in an HttpModule
+        /// Tests whether this request should be processed in an HttpModule.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -464,7 +464,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StartScheduler starts the Scheduler
+        /// StartScheduler starts the Scheduler.
         /// </summary>
         /// <param name="resetAppStartElapseTime">Whether reset app start elapse time before running schedule tasks.</param>
         /// <remarks>
@@ -495,7 +495,7 @@ namespace DotNetNuke.Common
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StopScheduler stops the Scheduler
+        /// StopScheduler stops the Scheduler.
         /// </summary>
         /// <remarks>
         /// </remarks>

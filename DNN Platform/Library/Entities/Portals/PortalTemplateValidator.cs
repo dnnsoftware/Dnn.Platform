@@ -9,7 +9,7 @@ namespace DotNetNuke.Entities.Portals
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PortalTemplateValidator Class is used to validate the Portal Template
+    /// The PortalTemplateValidator Class is used to validate the Portal Template.
     /// </summary>
     /// <remarks>
     /// </remarks>

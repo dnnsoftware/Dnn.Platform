@@ -11,7 +11,7 @@ using System.Net.Http.Headers;
 namespace Dnn.PersonaBar.Library
 {
     /// <summary>
-    /// Extends the HttpRequestMessage collection
+    /// Extends the HttpRequestMessage collection.
     /// </summary>
     public static class HttpRequestMessageExtensions
     {
@@ -30,7 +30,7 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>
-        /// Returns an individual querystring value
+        /// Returns an individual querystring value.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="key"></param>
@@ -73,7 +73,7 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>
-        /// Returns an individual HTTP Header value
+        /// Returns an individual HTTP Header value.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="key"></param>
@@ -90,7 +90,7 @@ namespace Dnn.PersonaBar.Library
         }
 
         /// <summary>
-        /// Retrieves an individual cookie from the cookies collection
+        /// Retrieves an individual cookie from the cookies collection.
         /// </summary>
         /// <param name="request"></param>
         /// <param name="cookieName"></param>

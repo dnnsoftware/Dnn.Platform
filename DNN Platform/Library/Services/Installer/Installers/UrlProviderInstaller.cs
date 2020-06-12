@@ -20,9 +20,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public override string AllowableFiles
         {
             get
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the UrlProvider component
+        /// The Install method installs the UrlProvider component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
-        /// that one of the other components fails
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the component
+        /// The UnInstall method uninstalls the component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

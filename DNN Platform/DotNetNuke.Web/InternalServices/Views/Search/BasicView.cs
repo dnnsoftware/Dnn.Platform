@@ -11,32 +11,32 @@ using DotNetNuke.Services.Search.Internals;
 namespace DotNetNuke.Web.InternalServices.Views.Search
 {
     /// <summary>
-    /// Detailed Search Result View
+    /// Detailed Search Result View.
     /// </summary>
     public class BasicView
     {
         /// <summary>
-        /// Gets or sets document's Title
+        /// Gets or sets document's Title.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets highlighted snippet from document
+        /// Gets or sets highlighted snippet from document.
         /// </summary>
         public string Snippet { get; set; }
 
         /// <summary>
-        /// Gets or sets description from document
+        /// Gets or sets description from document.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets link to the Document
+        /// Gets or sets link to the Document.
         /// </summary>
         public string DocumentUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets display Name of the Document Type
+        /// Gets or sets display Name of the Document Type.
         /// </summary>
         public string DocumentTypeName { get; set; }
 

@@ -27,7 +27,7 @@ using log4net;
 namespace log4net.Core
 {
     /// <summary>
-    /// An evaluator that triggers at a threshold level
+    /// An evaluator that triggers at a threshold level.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -37,11 +37,11 @@ namespace log4net.Core
     /// level.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class LevelEvaluator : ITriggeringEventEvaluator
     {
         /// <summary>
-        /// The threshold for triggering
+        /// The threshold for triggering.
         /// </summary>
         private Level m_threshold;
 
@@ -67,7 +67,7 @@ namespace log4net.Core
         /// <summary>
         /// Create a new evaluator using the specified <see cref="Level"/> threshold.
         /// </summary>
-        /// <param name="threshold">the threshold to trigger at</param>
+        /// <param name="threshold">the threshold to trigger at.</param>
         /// <remarks>
         /// <para>
         /// Create a new evaluator using the specified <see cref="Level"/> threshold.
@@ -90,10 +90,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets or sets the threshold to trigger at
+        /// Gets or sets the threshold to trigger at.
         /// </summary>
         /// <value>
-        /// The <see cref="Level"/> that will cause this evaluator to trigger
+        /// The <see cref="Level"/> that will cause this evaluator to trigger.
         /// </value>
         /// <remarks>
         /// <para>
@@ -110,12 +110,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Is this <paramref name="loggingEvent"/> the triggering event?
+        /// Is this <paramref name="loggingEvent"/> the triggering event?.
         /// </summary>
-        /// <param name="loggingEvent">The event to check</param>
+        /// <param name="loggingEvent">The event to check.</param>
         /// <returns>This method returns <c>true</c>, if the event level
         /// is equal or higher than the <see cref="Threshold"/>.
-        /// Otherwise it returns <c>false</c></returns>
+        /// Otherwise it returns <c>false</c>.</returns>
         /// <remarks>
         /// <para>
         /// This evaluator will trigger if the level of the event

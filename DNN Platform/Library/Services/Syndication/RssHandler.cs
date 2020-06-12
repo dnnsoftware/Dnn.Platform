@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Syndication
     public class RssHandler : SyndicationHandlerBase
     {
         /// <summary>
-        /// This method
+        /// This method.
         /// </summary>
         /// <param name="channelName"></param>
         /// <param name="userName"></param>
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Syndication
         }
 
         /// <summary>
-        /// Creates an RSS Item
+        /// Creates an RSS Item.
         /// </summary>
         /// <param name="searchResult"></param>
         /// <returns></returns>
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Syndication
 
         /// <summary>
         /// The PreRender event is used to set the Caching Policy for the Feed.  This mimics the behavior from the
-        /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid"
+        /// OutputCache directive in the old Rss.aspx file.  @OutputCache Duration="60" VaryByParam="moduleid".
         /// </summary>
         /// <param name="ea">Event Args.</param>
         /// <remarks></remarks>

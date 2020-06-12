@@ -16,7 +16,7 @@ namespace Dnn.EditBar.Library.Items
     public abstract class BaseMenuItem
     {
         /// <summary>
-        /// Gets the menu item name
+        /// Gets the menu item name.
         /// </summary>
         [DataMember(Name = "name")]
         public abstract string Name { get; }

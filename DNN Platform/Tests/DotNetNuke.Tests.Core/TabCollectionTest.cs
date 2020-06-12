@@ -13,7 +13,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Providers.Caching
 {
     /// <summary>
-    ///   Summary description for DataCacheTests
+    ///   Summary description for DataCacheTests.
     /// </summary>
     [TestFixture]
     public class TabCollectionsTest

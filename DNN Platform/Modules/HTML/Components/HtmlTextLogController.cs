@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.Html
     /// Class:      HtmlTextLogController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The HtmlTextLogController is the Controller class for managing Log History information the HtmlText module
+    ///   The HtmlTextLogController is the Controller class for managing Log History information the HtmlText module.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -25,11 +25,11 @@ namespace DotNetNuke.Modules.Html
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetHtmlTextLog retrieves a collection of HtmlTextLogInfo objects for an Item
+        ///   GetHtmlTextLog retrieves a collection of HtmlTextLogInfo objects for an Item.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "ItemID">The Id of the Item</param>
+        /// <param name = "ItemID">The Id of the Item.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextLog(int ItemID)
@@ -39,11 +39,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   AddHtmlTextLog creates a new HtmlTextLog for an Item
+        ///   AddHtmlTextLog creates a new HtmlTextLog for an Item.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "objHtmlTextLog">An HtmlTextLogInfo object</param>
+        /// <param name = "objHtmlTextLog">An HtmlTextLogInfo object.</param>
         /// -----------------------------------------------------------------------------
         public void AddHtmlTextLog(HtmlTextLogInfo objHtmlTextLog)
         {

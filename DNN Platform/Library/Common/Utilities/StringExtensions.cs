@@ -37,10 +37,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Takes a string and removes any diacritics
+        /// Takes a string and removes any diacritics.
         /// </summary>
-        /// <param name="input">String to normalize</param>
-        /// <returns>String without diacritics</returns>
+        /// <param name="input">String to normalize.</param>
+        /// <returns>String without diacritics.</returns>
         public static string NormalizeString(this string input)
         {
             return string.IsNullOrEmpty(input)
@@ -49,7 +49,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Alternative to <see cref="string.Replace(string, string)"/> that supports case insensitive replacement
+        /// Alternative to <see cref="string.Replace(string, string)"/> that supports case insensitive replacement.
         /// </summary>
         /// <param name="source">The source.</param>
         /// <param name="oldValue">The old value.</param>

@@ -10,7 +10,7 @@ using DotNetNuke.Entities.Portals;
 namespace DotNetNuke.Framework
 {
     /// <summary>
-    /// Enables modules to support Services Framework features
+    /// Enables modules to support Services Framework features.
     /// </summary>
     public class ServicesFramework : ServiceLocator<IServicesFramework, ServicesFramework>
     {

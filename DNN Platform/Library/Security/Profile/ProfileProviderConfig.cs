@@ -14,7 +14,7 @@ namespace DotNetNuke.Security.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileProviderConfig class provides a wrapper to the Profile providers
-    /// configuration
+    /// configuration.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -25,9 +25,9 @@ namespace DotNetNuke.Security.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Provider Properties can be edited
+        /// Gets a value indicating whether gets whether the Provider Properties can be edited.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public static bool CanEditProviderProperties

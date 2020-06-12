@@ -17,7 +17,7 @@ namespace Dnn.ExportImport.Components.Dto
     public class SummaryItem : IDateTimeConverter
     {
         /// <summary>
-        /// Gets or sets category of the import/export. Also identifier for localization
+        /// Gets or sets category of the import/export. Also identifier for localization.
         /// </summary>
         public string Category { get; set; }
 

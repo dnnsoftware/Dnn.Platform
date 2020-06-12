@@ -133,7 +133,7 @@ namespace DotNetNuke.Web.InternalServices
         }
 
         /// <summary>
-        /// This class stores a single search result needed by jQuery Tokeninput
+        /// This class stores a single search result needed by jQuery Tokeninput.
         /// </summary>
         private class SearchResult
         {

@@ -32,7 +32,7 @@ using DotNetNuke.UI.Skins.EventListeners;
 namespace DotNetNuke.HttpModules.Membership
 {
     /// <summary>
-    /// Information about membership
+    /// Information about membership.
     /// </summary>
     public class MembershipModule : IHttpModule
     {
@@ -46,7 +46,7 @@ namespace DotNetNuke.HttpModules.Membership
         /// Gets the name of the module.
         /// </summary>
         /// <value>
-        /// The name of the module: "DNNMembershipModule"
+        /// The name of the module: "DNNMembershipModule".
         /// </value>
         public string ModuleName
         {

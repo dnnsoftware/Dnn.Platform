@@ -21,13 +21,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// InstallSiteStep - Step that installs Website
+    /// InstallSiteStep - Step that installs Website.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class InstallSiteStep : BaseInstallationStep
     {
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         public override void Execute()
         {

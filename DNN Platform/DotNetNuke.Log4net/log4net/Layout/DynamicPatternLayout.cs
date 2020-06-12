@@ -55,17 +55,17 @@ namespace log4net.Layout
     public class DynamicPatternLayout : PatternLayout
     {
         /// <summary>
-        /// The header PatternString
+        /// The header PatternString.
         /// </summary>
         private PatternString m_headerPatternString = new PatternString(string.Empty);
 
         /// <summary>
-        /// The footer PatternString
+        /// The footer PatternString.
         /// </summary>
         private PatternString m_footerPatternString = new PatternString(string.Empty);
 
         /// <summary>
-        /// Constructs a DynamicPatternLayout using the DefaultConversionPattern
+        /// Constructs a DynamicPatternLayout using the DefaultConversionPattern.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -78,9 +78,9 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Constructs a DynamicPatternLayout using the supplied conversion pattern
+        /// Constructs a DynamicPatternLayout using the supplied conversion pattern.
         /// </summary>
-        /// <param name="pattern">the pattern to use</param>
+        /// <param name="pattern">the pattern to use.</param>
         /// <remarks>
         /// </remarks>
         public DynamicPatternLayout(string pattern)
@@ -91,7 +91,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets or sets the header for the layout format.
         /// </summary>
-        /// <value>the layout header</value>
+        /// <value>the layout header.</value>
         /// <remarks>
         /// <para>
         /// The Header text will be appended before any logging events
@@ -116,7 +116,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets or sets the footer for the layout format.
         /// </summary>
-        /// <value>the layout footer</value>
+        /// <value>the layout footer.</value>
         /// <remarks>
         /// <para>
         /// The Footer text will be appended after all the logging events

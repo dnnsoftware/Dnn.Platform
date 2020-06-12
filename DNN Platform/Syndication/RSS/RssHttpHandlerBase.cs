@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Syndication
     public delegate void PreRenderEventHandler(object source, EventArgs e);
 
     /// <summary>
-    ///   Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it
+    ///   Base class for RssHttpHandler - Generic handler and strongly typed ones are derived from it.
     /// </summary>
     /// <typeparam name = "RssChannelType"></typeparam>
     /// <typeparam name = "RssItemType"></typeparam>

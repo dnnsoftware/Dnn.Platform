@@ -34,8 +34,8 @@ namespace log4net.Util
     /// interface that always represents an empty collection.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
 #if !NETCF
     [Serializable]
 #endif
@@ -104,7 +104,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the number of elements contained in the <see cref="ICollection"/>
+        /// Gets the number of elements contained in the <see cref="ICollection"/>.
         /// </summary>
         /// <value>
         /// The number of elements contained in the <see cref="ICollection"/>.
@@ -191,7 +191,7 @@ namespace log4net.Util
         /// with the specified key.
         /// </summary>
         /// <param name="key">The key to locate in the <see cref="EmptyDictionary" />.</param>
-        /// <returns><c>false</c></returns>
+        /// <returns><c>false</c>.</returns>
         /// <remarks>
         /// <para>
         /// As the collection is empty the <see cref="Contains"/> method always returns <c>false</c>.
@@ -238,7 +238,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets a value indicating whether the <see cref="EmptyDictionary" /> has a fixed size.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// As the collection is empty <see cref="IsFixedSize"/> always returns <c>true</c>.
@@ -252,7 +252,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets a value indicating whether the <see cref="EmptyDictionary" /> is read-only.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// As the collection is empty <see cref="IsReadOnly"/> always returns <c>true</c>.
@@ -295,7 +295,7 @@ namespace log4net.Util
         /// Gets or sets the element with the specified key.
         /// </summary>
         /// <param name="key">The key of the element to get or set.</param>
-        /// <value><c>null</c></value>
+        /// <value><c>null</c>.</value>
         /// <remarks>
         /// <para>
         /// As the collection is empty no values can be looked up or stored.

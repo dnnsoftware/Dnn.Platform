@@ -35,8 +35,8 @@ namespace log4net.DateFormatter
     /// Formats a <see cref="DateTime"/> in the format <c>"HH:mm:ss,fff"</c> for example, <c>"15:49:37,459"</c>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class AbsoluteTimeDateFormatter : IDateFormatter
     {
         /// <summary>

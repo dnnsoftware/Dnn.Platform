@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchResult : SearchDocument
     {
         /// <summary>
-        /// Gets time when Content was last modified (in friendly format)
+        /// Gets time when Content was last modified (in friendly format).
         /// </summary>
         public string DisplayModifiedTime
         {
@@ -28,12 +28,12 @@ namespace DotNetNuke.Services.Search.Entities
         }
 
         /// <summary>
-        /// Gets or sets highlighted snippet from document
+        /// Gets or sets highlighted snippet from document.
         /// </summary>
         public string Snippet { get; set; }
 
         /// <summary>
-        /// Gets or sets optional: Display Name of the Author
+        /// Gets or sets optional: Display Name of the Author.
         /// </summary>
         /// <remarks>This may be different form current Display Name when Index was run prior to change in Display Name.</remarks>
         public string AuthorName { get; set; }
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Search.Entities
         /// <summary>
         /// Gets or sets lucene's original Score. The score of this document for the query.
         /// </summary>
-        /// <remarks>This field may not be reliable as most of the time it contains Nan. Use DisplayScore instead</remarks>
+        /// <remarks>This field may not be reliable as most of the time it contains Nan. Use DisplayScore instead.</remarks>
         public float Score { get; set; }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Search.Entities
         public IDictionary<string, string> SearchContext { get; set; }
 
         /// <summary>
-        /// Empty Constructor
+        /// Empty Constructor.
         /// </summary>
         public SearchResult()
         {

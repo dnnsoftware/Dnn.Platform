@@ -14,7 +14,7 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Services.Social.Messaging
 {
     /// <summary>
-    /// Sent Status of a Message - Is this a Sent Message or a Received Message
+    /// Sent Status of a Message - Is this a Sent Message or a Received Message.
     /// </summary>
     public enum MessageSentStatus
     {

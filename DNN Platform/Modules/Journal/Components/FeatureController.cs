@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Journal.Components
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Controller class for Journal
+    /// The Controller class for Journal.
     /// </summary>
     /// -----------------------------------------------------------------------------
     // uncomment the interfaces to add the support.
@@ -53,9 +53,9 @@ namespace DotNetNuke.Modules.Journal.Components
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ExportModule implements the IPortable ExportModule Interface
+        /// ExportModule implements the IPortable ExportModule Interface.
         /// </summary>
-        /// <param name="moduleID">The Id of the module to be exported</param>
+        /// <param name="moduleID">The Id of the module to be exported.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string ExportModule(int moduleID)
@@ -82,12 +82,12 @@ namespace DotNetNuke.Modules.Journal.Components
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ImportModule implements the IPortable ImportModule Interface
+        /// ImportModule implements the IPortable ImportModule Interface.
         /// </summary>
-        /// <param name="moduleID">The Id of the module to be imported</param>
-        /// <param name="content">The content to be imported</param>
-        /// <param name="version">The version of the module to be imported</param>
-        /// <param name="userId">The Id of the user performing the import</param>
+        /// <param name="moduleID">The Id of the module to be imported.</param>
+        /// <param name="content">The content to be imported.</param>
+        /// <param name="version">The version of the module to be imported.</param>
+        /// <param name="userId">The Id of the user performing the import.</param>
         /// -----------------------------------------------------------------------------
         public void ImportModule(int moduleID, string content, string version, int userId)
         {
@@ -105,9 +105,9 @@ namespace DotNetNuke.Modules.Journal.Components
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpgradeModule implements the IUpgradeable Interface
+        /// UpgradeModule implements the IUpgradeable Interface.
         /// </summary>
-        /// <param name="version">The current version of the module</param>
+        /// <param name="version">The current version of the module.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string UpgradeModule(string version)

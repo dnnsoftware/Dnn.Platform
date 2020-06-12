@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Search
     /// Class:      SearchItemInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchItemInfo represents a Search Item
+    /// The SearchItemInfo represents a Search Item.
     /// </summary>
     /// <remarks>
     /// </remarks>

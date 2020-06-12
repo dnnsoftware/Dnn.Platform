@@ -9,7 +9,7 @@ using System.Web.Script.Serialization;
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
-    ///   Json Extensions based on the JavaScript Serializer in System.web
+    ///   Json Extensions based on the JavaScript Serializer in System.web.
     /// </summary>
     public static class JsonExtensionsWeb
     {

@@ -42,12 +42,12 @@ namespace log4net.Layout
     /// Deriving classes must implement the <see cref="FormatXml"/> method.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class XmlLayoutBase : LayoutSkeleton
     {
         /// <summary>
-        /// Protected constructor to support subclasses
+        /// Protected constructor to support subclasses.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -62,7 +62,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Protected constructor to support subclasses
+        /// Protected constructor to support subclasses.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -130,7 +130,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Initialize layout options
+        /// Initialize layout options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -170,7 +170,7 @@ namespace log4net.Layout
         /// Produces a formatted string.
         /// </summary>
         /// <param name="loggingEvent">The event being logged.</param>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
+        /// <param name="writer">The TextWriter to write the formatted event to.</param>
         /// <remarks>
         /// <para>
         /// Format the <see cref="LoggingEvent"/> and write it to the <see cref="TextWriter"/>.
@@ -231,7 +231,7 @@ namespace log4net.Layout
         private bool m_locationInfo = false;
 
         /// <summary>
-        /// The string to replace invalid chars with
+        /// The string to replace invalid chars with.
         /// </summary>
         private string m_invalidCharReplacement = "?";
     }

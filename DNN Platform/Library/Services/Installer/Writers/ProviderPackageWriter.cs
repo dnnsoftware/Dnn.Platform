@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ProviderPackageWriter class
+    /// The ProviderPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>

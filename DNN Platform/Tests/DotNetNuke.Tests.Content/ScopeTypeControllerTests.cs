@@ -20,7 +20,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Content
 {
     /// <summary>
-    ///   Summary description for ScopeTypeTests
+    ///   Summary description for ScopeTypeTests.
     /// </summary>
     [TestFixture]
     public class ScopeTypeControllerTests

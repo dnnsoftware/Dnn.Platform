@@ -20,7 +20,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ModulePermissionCollection provides the a custom collection for ModulePermissionInfo
-    /// objects
+    /// objects.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]

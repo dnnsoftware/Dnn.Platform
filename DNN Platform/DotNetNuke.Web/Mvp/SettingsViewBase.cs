@@ -37,14 +37,14 @@ namespace DotNetNuke.Web.Mvp
         public event EventHandler OnSaveSettings;
 
         /// <summary>
-        /// The OnSettingsLoaded method is called when the Settings have been Loaded
+        /// The OnSettingsLoaded method is called when the Settings have been Loaded.
         /// </summary>
         protected virtual void OnSettingsLoaded()
         {
         }
 
         /// <summary>
-        /// OnSavingSettings method is called just before the Settings are saved
+        /// OnSavingSettings method is called just before the Settings are saved.
         /// </summary>
         protected virtual void OnSavingSettings()
         {

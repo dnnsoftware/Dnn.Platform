@@ -13,7 +13,7 @@ using Newtonsoft.Json;
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
-    /// Serialize or Deserialize Json
+    /// Serialize or Deserialize Json.
     /// </summary>
     public static class Json
     {

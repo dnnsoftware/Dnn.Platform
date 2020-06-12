@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageInstaller class is an Installer for Packages
+    /// The PackageInstaller class is an Installer for Packages.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class PackageInstaller : ComponentInstallerBase
@@ -29,9 +29,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new PackageInstaller instance
+        /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
-        /// <param name="package">A PackageInfo instance</param>
+        /// <param name="package">A PackageInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public PackageInstaller(PackageInfo package)
         {
@@ -62,10 +62,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new PackageInstaller instance
+        /// This Constructor creates a new PackageInstaller instance.
         /// </summary>
-        /// <param name="info">An InstallerInfo instance</param>
-        /// <param name="packageManifest">The manifest as a string</param>
+        /// <param name="info">An InstallerInfo instance.</param>
+        /// <param name="packageManifest">The manifest as a string.</param>
         /// -----------------------------------------------------------------------------
         public PackageInstaller(string packageManifest, InstallerInfo info)
         {
@@ -86,23 +86,23 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
-        /// package
+        /// package.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool DeleteFiles { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Package is Valid
+        /// Gets a value indicating whether gets whether the Package is Valid.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool IsValid { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The CheckSecurity method checks whether the user has the appropriate security
+        /// The CheckSecurity method checks whether the user has the appropriate security.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void CheckSecurity()
@@ -188,7 +188,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Commit method commits the package installation
+        /// The Commit method commits the package installation.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Commit()
@@ -223,7 +223,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the components of the package
+        /// The Install method installs the components of the package.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -517,7 +517,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Rollback method rolls back the package installation
+        /// The Rollback method rolls back the package installation.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -548,7 +548,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Uninstall method uninstalls the components of the package
+        /// The Uninstall method uninstalls the components of the package.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

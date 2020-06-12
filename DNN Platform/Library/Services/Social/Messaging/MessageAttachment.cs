@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Social.Messaging
     /// Class:      MessageAttachment
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MessageAttachment class describes the content attachments associated with a message
+    /// The MessageAttachment class describes the content attachments associated with a message.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Messaging
         private int _messageattachmentID = -1;
 
         /// <summary>
-        /// Gets or sets messageAttachmentID - The primary key
+        /// Gets or sets messageAttachmentID - The primary key.
         /// </summary>
         [XmlAttribute]
         public int MessageAttachmentID
@@ -45,13 +45,13 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>
-        /// Gets or sets messageID of the message that contains this attachment
+        /// Gets or sets messageID of the message that contains this attachment.
         /// </summary>
         [XmlAttribute]
         public int MessageID { get; set; }
 
         /// <summary>
-        /// Gets or sets the FileID of the attachment (what will be used against the Files table to provide the attachment)
+        /// Gets or sets the FileID of the attachment (what will be used against the Files table to provide the attachment).
         /// </summary>
         [XmlAttribute]
         public int FileID { get; set; }

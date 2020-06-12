@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a TextEditControl
+        /// Constructs a TextEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public TextEditControl()
@@ -36,9 +36,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a TextEditControl
+        /// Constructs a TextEditControl.
         /// </summary>
-        /// <param name="type">The type of the property</param>
+        /// <param name="type">The type of the property.</param>
         /// -----------------------------------------------------------------------------
         public TextEditControl(string type)
         {
@@ -47,9 +47,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets oldStringValue returns the Boolean representation of the OldValue
+        /// Gets oldStringValue returns the Boolean representation of the OldValue.
         /// </summary>
-        /// <value>A String representing the OldValue</value>
+        /// <value>A String representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected string OldStringValue
         {
@@ -61,9 +61,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

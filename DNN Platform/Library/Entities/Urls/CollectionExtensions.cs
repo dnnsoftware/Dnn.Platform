@@ -102,14 +102,14 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Returns all the redirect rules for the specified portal
+        /// Returns all the redirect rules for the specified portal.
         /// </summary>
         /// <param name="actions"></param>
         /// <param name="fileName"></param>
         /// <param name="portalId"></param>
         /// <param name="portalSpecific">If true, all rules belong to supplied portalId, even if not specified.</param>
         /// <param name="messages"></param>
-        /// <remarks>807 : change to allow specificatoin of assumption that all rules belong to the supplied portal</remarks>
+        /// <remarks>807 : change to allow specificatoin of assumption that all rules belong to the supplied portal.</remarks>
         public static void LoadFromXmlFile(this Dictionary<int, List<ParameterRedirectAction>> actions, string fileName, int portalId, bool portalSpecific, ref List<string> messages)
         {
             if (messages == null)

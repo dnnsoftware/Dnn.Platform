@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         }
 
         /// <summary>
-        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required
+        /// Skips this authorization step if anonymous attribute is applied, override if auth should never be skipped, or other conditions are required.
         /// </summary>
         /// <param name="actionContext"></param>
         /// <returns></returns>

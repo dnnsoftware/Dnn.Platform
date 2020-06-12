@@ -34,12 +34,12 @@ namespace log4net.Util
     /// An array backed fixed size leaky bucket.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class CyclicBuffer
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="maxSize">The maximum number of logging events in the buffer.</param>
         /// <remarks>
@@ -119,7 +119,7 @@ namespace log4net.Util
         /// <summary>
         /// Get and remove the oldest event in the buffer.
         /// </summary>
-        /// <returns>The oldest logging event in the buffer</returns>
+        /// <returns>The oldest logging event in the buffer.</returns>
         /// <remarks>
         /// <para>
         /// Gets the oldest (first) logging event in the buffer and removes it
@@ -181,7 +181,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Clear the buffer
+        /// Clear the buffer.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -292,7 +292,7 @@ namespace log4net.Util
         /// <value>The maximum size of the buffer.</value>
         /// <remarks>
         /// <para>
-        /// Gets the maximum size of the buffer
+        /// Gets the maximum size of the buffer.
         /// </para>
         /// </remarks>
         public int MaxSize

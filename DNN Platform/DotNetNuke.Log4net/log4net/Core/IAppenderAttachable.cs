@@ -34,8 +34,8 @@ namespace log4net.Core
     /// Interface for attaching, removing and retrieving appenders.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IAppenderAttachable
     {
         /// <summary>
@@ -88,7 +88,7 @@ namespace log4net.Core
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Removes and closes all attached appenders
+        /// Removes and closes all attached appenders.
         /// </para>
         /// </remarks>
         void RemoveAllAppenders();
@@ -97,7 +97,7 @@ namespace log4net.Core
         /// Removes the specified appender from the list of attached appenders.
         /// </summary>
         /// <param name="appender">The appender to remove.</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// <para>
         /// The appender removed is not closed.
@@ -111,7 +111,7 @@ namespace log4net.Core
         /// Removes the appender with the specified name from the list of appenders.
         /// </summary>
         /// <param name="name">The name of the appender to remove.</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// <para>
         /// The appender removed is not closed.

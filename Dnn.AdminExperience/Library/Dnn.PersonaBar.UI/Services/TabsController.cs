@@ -25,7 +25,7 @@ namespace Dnn.PersonaBar.UI.Services
 
         /// GET: api/Tabs/GetPortalTabs
         /// <summary>
-        /// Gets list of portal tabs
+        /// Gets list of portal tabs.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -34,13 +34,13 @@ namespace Dnn.PersonaBar.UI.Services
         /// <param name="roles"></param>
         /// <param name="disabledNotSelectable"></param>
         /// <param name="sortOrder"></param>
-        /// <param name="selectedTabId">Currently Selected tab id</param>
+        /// <param name="selectedTabId">Currently Selected tab id.</param>
         /// <param name="validateTab"></param>
         /// <param name="includeHostPages"></param>
         /// <param name="includeDisabled"></param>
         /// <param name="includeDeleted"></param>
         /// <param name="includeDeletedChildren"></param>
-        /// <returns>List of portal tabs</returns>
+        /// <returns>List of portal tabs.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalTabs(int portalId, string cultureCode, bool isMultiLanguage = false,
             bool excludeAdminTabs = true, string roles = "", bool disabledNotSelectable = false, int sortOrder = 0, int selectedTabId = -1, string validateTab = "", bool includeHostPages = false, bool includeDisabled = false, bool includeDeleted = false, bool includeDeletedChildren = true)
@@ -106,12 +106,12 @@ namespace Dnn.PersonaBar.UI.Services
 
         /// GET: api/Tabs/GetPortalTab
         /// <summary>
-        /// Gets list of portal tabs
+        /// Gets list of portal tabs.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
         /// <param name="cultureCode"></param>
-        /// <returns>List of portal tabs</returns>
+        /// <returns>List of portal tabs.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortalTab(int portalId, int tabId, string cultureCode)
         {

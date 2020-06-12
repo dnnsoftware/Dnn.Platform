@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version
+        /// Return a FriendlyUrl for the supplied Tab, but don't improve it past the standard DNN Friendly Url version.
         /// </summary>
         /// <returns></returns>
         internal static string BaseFriendlyUrl(TabInfo tab, string path, string pageName, string httpAlias, FriendlyUrlSettings settings)
@@ -84,14 +84,14 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Return a full-improved Friendly Url for the supplied tab
+        /// Return a full-improved Friendly Url for the supplied tab.
         /// </summary>
-        /// <param name="tab">The current page</param>
-        /// <param name="path">The non-friendly path to the page</param>
-        /// <param name="pageName">The name of the page</param>
-        /// <param name="httpAlias">The current portal alias to use</param>
-        /// <param name="ignoreCustomRedirects">If true, then the Friendly Url will be constructed without using any custom redirects</param>
-        /// <param name="settings">The current Friendly Url Settings to use</param>
+        /// <param name="tab">The current page.</param>
+        /// <param name="path">The non-friendly path to the page.</param>
+        /// <param name="pageName">The name of the page.</param>
+        /// <param name="httpAlias">The current portal alias to use.</param>
+        /// <param name="ignoreCustomRedirects">If true, then the Friendly Url will be constructed without using any custom redirects.</param>
+        /// <param name="settings">The current Friendly Url Settings to use.</param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
         public static string ImprovedFriendlyUrl(

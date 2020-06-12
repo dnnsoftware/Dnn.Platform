@@ -39,9 +39,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionRoot
+        /// Gets the ActionRoot.
         /// </summary>
-        /// <returns>A ModuleActionCollection</returns>
+        /// <returns>A ModuleActionCollection.</returns>
         /// -----------------------------------------------------------------------------
         protected ModuleAction ActionRoot
         {
@@ -58,9 +58,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Provider Control
+        /// Gets the Provider Control.
         /// </summary>
-        /// <returns>A NavigationProvider</returns>
+        /// <returns>A NavigationProvider.</returns>
         /// -----------------------------------------------------------------------------
         protected NavigationProvider ProviderControl
         {
@@ -72,9 +72,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Expansion Depth for the Control
+        /// Gets or sets and Sets the Expansion Depth for the Control.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ExpandDepth
         {
@@ -96,25 +96,25 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Path to the Script Library for the provider
+        /// Gets or sets and Sets the Path to the Script Library for the provider.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string PathSystemScript { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client
+        /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool PopulateNodesFromClient { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Name of the provider to use
+        /// Gets or sets and Sets the Name of the provider to use.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ProviderName
         {
@@ -133,9 +133,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         /// -----------------------------------------------------------------------------
         public ActionManager ActionManager
         {
@@ -152,17 +152,17 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An IModuleControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BindMenu binds the Navigation Provider to the Node Collection
+        /// BindMenu binds the Navigation Provider to the Node Collection.
         /// </summary>
-        /// <param name="objNodes">The Nodes collection to bind</param>
+        /// <param name="objNodes">The Nodes collection to bind.</param>
         /// -----------------------------------------------------------------------------
         private void BindMenu(DNNNodeCollection objNodes)
         {
@@ -182,9 +182,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessNodes proceses a single node and its children
+        /// ProcessNodes proceses a single node and its children.
         /// </summary>
-        /// <param name="objParent">The Node to process</param>
+        /// <param name="objParent">The Node to process.</param>
         /// -----------------------------------------------------------------------------
         private void ProcessNodes(DNNNode objParent)
         {
@@ -201,7 +201,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SetMenuDefaults sets up the default values
+        /// SetMenuDefaults sets up the default values.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void SetMenuDefaults()
@@ -240,7 +240,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BindMenu binds the Navigation Provider to the Node Collection
+        /// BindMenu binds the Navigation Provider to the Node Collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected void BindMenu()
@@ -250,7 +250,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event
+        /// OnAction raises the Action Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnAction(ActionEventArgs e)
@@ -263,7 +263,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnInit runs during the controls initialisation phase
+        /// OnInit runs during the controls initialisation phase.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnInit(EventArgs e)
@@ -278,7 +278,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnLoad runs during the controls load phase
+        /// OnLoad runs during the controls load phase.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnLoad(EventArgs e)
@@ -294,7 +294,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnPreRender runs during the controls pre-render phase
+        /// OnPreRender runs during the controls pre-render phase.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -305,7 +305,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// MenuItem_Click handles the Menu Click event
+        /// MenuItem_Click handles the Menu Click event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void MenuItem_Click(NavigationEventArgs args)
@@ -322,7 +322,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProviderControl_PopulateOnDemand handles the Populate On Demand Event
+        /// ProviderControl_PopulateOnDemand handles the Populate On Demand Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void ProviderControl_PopulateOnDemand(NavigationEventArgs args)

@@ -133,7 +133,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         }
 
         /// <summary>
-        /// Adds a new folder
+        /// Adds a new folder.
         /// </summary>
         public override void AddFolder(string folderPath, FolderMappingInfo folderMapping)
         {

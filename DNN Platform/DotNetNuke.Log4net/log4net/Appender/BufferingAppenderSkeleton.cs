@@ -69,8 +69,8 @@ namespace log4net.Appender
     /// the ERROR event.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class BufferingAppenderSkeleton : AppenderSkeleton
     {
         /// <summary>
@@ -238,10 +238,10 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a the fields that will be fixed in the event
+        /// Gets or sets a the fields that will be fixed in the event.
         /// </summary>
         /// <value>
-        /// The event fields that will be fixed before the event is buffered
+        /// The event fields that will be fixed before the event is buffered.
         /// </value>
         /// <remarks>
         /// <para>
@@ -269,7 +269,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Flush the currently buffered events
+        /// Flush the currently buffered events.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -286,9 +286,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Flush the currently buffered events
+        /// Flush the currently buffered events.
         /// </summary>
-        /// <param name="flushLossyBuffer">set to <c>true</c> to flush the buffer of lossy events</param>
+        /// <param name="flushLossyBuffer">set to <c>true</c> to flush the buffer of lossy events.</param>
         /// <remarks>
         /// <para>
         /// Flushes events that have been buffered. If <paramref name="flushLossyBuffer" /> is
@@ -357,7 +357,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the appender based on the options set
+        /// Initialize the appender based on the options set.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -413,7 +413,7 @@ namespace log4net.Appender
         /// <summary>
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/> method.
         /// </summary>
-        /// <param name="loggingEvent">the event to log</param>
+        /// <param name="loggingEvent">the event to log.</param>
         /// <remarks>
         /// <para>
         /// Stores the <paramref name="loggingEvent"/> in the cyclic buffer.
@@ -617,10 +617,10 @@ namespace log4net.Appender
         private ITriggeringEventEvaluator m_lossyEvaluator;
 
         /// <summary>
-        /// Value indicating which fields in the event should be fixed
+        /// Value indicating which fields in the event should be fixed.
         /// </summary>
         /// <remarks>
-        /// By default all fields are fixed
+        /// By default all fields are fixed.
         /// </remarks>
         private FixFlags m_fixFlags = FixFlags.All;
 

@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinPackageWriter class
+    /// The SkinPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>

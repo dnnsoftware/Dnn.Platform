@@ -9,7 +9,7 @@ namespace DotNetNuke.Entities.Modules.Communications
 {
     /// <summary>
     /// Specifies communications between modules.
-    /// There are listeners and communicators
+    /// There are listeners and communicators.
     /// </summary>
     public class ModuleCommunicate
     {

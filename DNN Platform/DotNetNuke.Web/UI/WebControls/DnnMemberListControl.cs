@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public string SortBy { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets the sort direction
+        /// Gets or sets a value indicating whether gets or sets the sort direction.
         /// </summary>
         [DefaultValue(true)]
         public bool SortAscending { get; set; }

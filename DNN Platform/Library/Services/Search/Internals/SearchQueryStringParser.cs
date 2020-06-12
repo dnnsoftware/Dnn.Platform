@@ -13,7 +13,7 @@ using DotNetNuke.Framework;
 namespace DotNetNuke.Services.Search.Internals
 {
     /// <summary>
-    /// Class responsible to parse the Search Query String parameter
+    /// Class responsible to parse the Search Query String parameter.
     /// </summary>
     public class SearchQueryStringParser
                             : ServiceLocator<ISearchQueryStringParser, SearchQueryStringParser>,
@@ -31,11 +31,11 @@ namespace DotNetNuke.Services.Search.Internals
         private static readonly Regex TypeRegex = new Regex(@"type:([^,]+(,[^,]+)*)", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         /// <summary>
-        /// Gets the list of tags parsing the search keywords
+        /// Gets the list of tags parsing the search keywords.
         /// </summary>
-        /// <param name="keywords">search keywords</param>
-        /// <param name="outputKeywords">output keywords removing the tags</param>
-        /// <returns>List of tags</returns>
+        /// <param name="keywords">search keywords.</param>
+        /// <param name="outputKeywords">output keywords removing the tags.</param>
+        /// <returns>List of tags.</returns>
         public IList<string> GetTags(string keywords, out string outputKeywords)
         {
             var tags = new List<string>();
@@ -64,11 +64,11 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Gets the Last Modified Date parsing the search keywords
+        /// Gets the Last Modified Date parsing the search keywords.
         /// </summary>
-        /// <param name="keywords">search keywords</param>
-        /// <param name="outputKeywords">output keywords removing the last modified date</param>
-        /// <returns>Last Modified Date</returns>
+        /// <param name="keywords">search keywords.</param>
+        /// <param name="outputKeywords">output keywords removing the last modified date.</param>
+        /// <returns>Last Modified Date.</returns>
         public DateTime GetLastModifiedDate(string keywords, out string outputKeywords)
         {
             var m = DateRegex.Match(keywords);
@@ -106,11 +106,11 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Gets the list of Search Types parsing the search keywords
+        /// Gets the list of Search Types parsing the search keywords.
         /// </summary>
-        /// <param name="keywords">search keywords</param>
-        /// <param name="outputKeywords">output keywords removing the Search Type</param>
-        /// <returns>List of Search Types</returns>
+        /// <param name="keywords">search keywords.</param>
+        /// <param name="outputKeywords">output keywords removing the Search Type.</param>
+        /// <returns>List of Search Types.</returns>
         public IList<string> GetSearchTypeList(string keywords, out string outputKeywords)
         {
             var m = TypeRegex.Match(keywords);

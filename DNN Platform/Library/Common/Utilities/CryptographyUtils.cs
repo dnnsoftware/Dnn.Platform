@@ -14,7 +14,7 @@ namespace DotNetNuke.Common.Utilities
     /// Class:      CryptographyUtils
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// CryptographyUtils is a Utility class that provides Cryptography Utility constants
+    /// CryptographyUtils is a Utility class that provides Cryptography Utility constants.
     /// </summary>
     /// <remarks>
     /// </remarks>

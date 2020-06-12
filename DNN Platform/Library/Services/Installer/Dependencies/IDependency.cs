@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The IDependency Interface defines the contract for a Package Dependency
+    /// The IDependency Interface defines the contract for a Package Dependency.
     /// </summary>
     /// <remarks>
     /// </remarks>

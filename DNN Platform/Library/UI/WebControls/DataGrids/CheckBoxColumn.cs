@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      CheckBoxColumn
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CheckBoxColumn control provides a Check Box column for a Data Grid
+    /// The CheckBoxColumn control provides a Check Box column for a Data Grid.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class CheckBoxColumn : TemplateColumn
@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the CheckBoxColumn
+        /// Constructs the CheckBoxColumn.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public CheckBoxColumn()
@@ -40,9 +40,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs the CheckBoxColumn, with an optional AutoPostBack (where each change
-        /// of state of a check box causes a Post Back)
+        /// of state of a check box causes a Post Back).
         /// </summary>
-        /// <param name="autoPostBack">Optional set the checkboxes to postback</param>
+        /// <param name="autoPostBack">Optional set the checkboxes to postback.</param>
         /// -----------------------------------------------------------------------------
         public CheckBoxColumn(bool autoPostBack)
         {
@@ -52,9 +52,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool AutoPostBack
         {
@@ -71,18 +71,18 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound)
+        /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound).
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool Checked { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Data Field that the column should bind to
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public string DataField
         {
@@ -101,9 +101,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets or sets a value indicating whether an flag that indicates whether the checkboxes are enabled (this is overridden if
         /// the EnabledField is set)
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool Enabled
         {
@@ -121,9 +121,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Data Field that determines whether the checkbox is Enabled
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string EnabledField
         {
@@ -141,9 +141,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether a flag that indicates whether there is a checkbox in the Header that sets all
-        /// the checkboxes
+        /// the checkboxes.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool HeaderCheckBox
         {
@@ -162,9 +162,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a CheckBoxColumnTemplate
+        /// Creates a CheckBoxColumnTemplate.
         /// </summary>
-        /// <returns>A CheckBoxColumnTemplate</returns>
+        /// <returns>A CheckBoxColumnTemplate.</returns>
         /// -----------------------------------------------------------------------------
         private CheckBoxColumnTemplate CreateTemplate(ListItemType type)
         {
@@ -213,7 +213,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialises the Column
+        /// Initialises the Column.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Initialize()

@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Syndication
     internal class RssXmlHelper
     {
         /// <summary>
-        ///   Internal helper class for XML to RSS conversion (and for generating XML from RSS)
+        ///   Internal helper class for XML to RSS conversion (and for generating XML from RSS).
         /// </summary>
         /// <param name = "doc"></param>
         /// <returns></returns>

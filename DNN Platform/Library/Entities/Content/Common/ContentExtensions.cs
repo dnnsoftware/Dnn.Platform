@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Content.Common
         /// </summary>
         /// <param name="term">The term.</param>
         /// <param name="vocabularyId">The vocabulary id.</param>
-        /// <returns>Vocabulary</returns>
+        /// <returns>Vocabulary.</returns>
         internal static Vocabulary GetVocabulary(this Term term, int vocabularyId)
         {
             IVocabularyController ctl = Util.GetVocabularyController();
@@ -152,7 +152,7 @@ namespace DotNetNuke.Entities.Content.Common
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="contentItemId">The content item id.</param>
-        /// <returns>meta data collection</returns>
+        /// <returns>meta data collection.</returns>
         internal static NameValueCollection GetMetaData(this ContentItem item, int contentItemId)
         {
             IContentController ctl = Util.GetContentController();
@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Content.Common
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="contentItemId">The content item id.</param>
-        /// <returns>term collection</returns>
+        /// <returns>term collection.</returns>
         internal static List<Term> GetTerms(this ContentItem item, int contentItemId)
         {
             ITermController ctl = Util.GetTermController();

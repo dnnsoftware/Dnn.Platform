@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
         /// <param name="value">An object of type <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to add to the collection.</param>
-        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /></returns>
+        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// -----------------------------------------------------------------------------
         public int Add(ModuleAction value)
         {
@@ -104,10 +104,10 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
         /// <param name="ID">This is the identifier to use for this action.</param>
-        /// <param name="Title">This is the title that will be displayed for this action</param>
+        /// <param name="Title">This is the title that will be displayed for this action.</param>
         /// <param name="CmdName">The command name passed to the client when this action is
         /// clicked.</param>
-        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /></returns>
+        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// <remarks>This method creates a new <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> with the specified
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         /// -----------------------------------------------------------------------------
@@ -121,20 +121,20 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
         /// <param name="ID">This is the identifier to use for this action.</param>
-        /// <param name="Title">This is the title that will be displayed for this action</param>
+        /// <param name="Title">This is the title that will be displayed for this action.</param>
         /// <param name="CmdName">The command name passed to the client when this action is
         /// clicked.</param>
         /// <param name="CmdArg">The command argument passed to the client when this action is
         /// clicked.</param>
-        /// <param name="Icon">The URL of the Icon to place next to this action</param>
+        /// <param name="Icon">The URL of the Icon to place next to this action.</param>
         /// <param name="Url">The destination URL to redirect the client browser when this
         /// action is clicked.</param>
         /// <param name="UseActionEvent">Determines whether client will receive an event
-        /// notification</param>
-        /// <param name="Secure">The security access level required for access to this action</param>
-        /// <param name="Visible">Whether this action will be displayed</param>
+        /// notification.</param>
+        /// <param name="Secure">The security access level required for access to this action.</param>
+        /// <param name="Visible">Whether this action will be displayed.</param>
         /// <param name="NewWindow">Whether open in new window.</param>
-        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /></returns>
+        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// <remarks>This method creates a new <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> with the specified
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         /// -----------------------------------------------------------------------------
@@ -148,22 +148,22 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// Add an element of the specified <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> to the end of the collection.
         /// </summary>
         /// <param name="ID">This is the identifier to use for this action.</param>
-        /// <param name="Title">This is the title that will be displayed for this action</param>
+        /// <param name="Title">This is the title that will be displayed for this action.</param>
         /// <param name="CmdName">The command name passed to the client when this action is
         /// clicked.</param>
         /// <param name="CmdArg">The command argument passed to the client when this action is
         /// clicked.</param>
-        /// <param name="Icon">The URL of the Icon to place next to this action</param>
+        /// <param name="Icon">The URL of the Icon to place next to this action.</param>
         /// <param name="Url">The destination URL to redirect the client browser when this
         /// action is clicked.</param>
         /// <param name="ClientScript">Client side script to be run when the this action is
         /// clicked.</param>
         /// <param name="UseActionEvent">Determines whether client will receive an event
-        /// notification</param>
-        /// <param name="Secure">The security access level required for access to this action</param>
-        /// <param name="Visible">Whether this action will be displayed</param>
+        /// notification.</param>
+        /// <param name="Secure">The security access level required for access to this action.</param>
+        /// <param name="Visible">Whether this action will be displayed.</param>
         /// <param name="NewWindow">Whether open in new window.</param>
-        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /></returns>
+        /// <returns>The index of the newly added <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" />.</returns>
         /// <remarks>This method creates a new <see cref="T:DotNetNuke.Entities.Modules.Actions.ModuleAction" /> with the specified
         /// values, adds it to the collection and returns the index of the newly created ModuleAction.</remarks>
         ///

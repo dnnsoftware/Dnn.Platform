@@ -13,7 +13,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   CompareWorkflowStatePermissions provides the a custom IComparer implementation for
-    ///   WorkflowStatePermissionInfo objects
+    ///   WorkflowStatePermissionInfo objects.
     /// </summary>
     internal class CompareWorkflowStatePermissions : IComparer
     {

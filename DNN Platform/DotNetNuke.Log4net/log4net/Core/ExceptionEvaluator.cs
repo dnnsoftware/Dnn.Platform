@@ -28,16 +28,16 @@ using System.Reflection;
 namespace log4net.Core
 {
     /// <summary>
-    /// An evaluator that triggers on an Exception type
+    /// An evaluator that triggers on an Exception type.
     /// </summary>
     /// <remarks>
     /// <para>
     /// This evaluator will trigger if the type of the Exception
     /// passed to <see cref="M:IsTriggeringEvent(LoggingEvent)"/>
-    /// is equal to a Type in <see cref="ExceptionType"/>.    ///
+    /// is equal to a Type in <see cref="ExceptionType"/>.    ///.
     /// </para>
     /// </remarks>
-    /// <author>Drew Schaeffer</author>
+    /// <author>Drew Schaeffer.</author>
     public class ExceptionEvaluator : ITriggeringEventEvaluator
     {
         /// <summary>
@@ -59,7 +59,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Constructs an evaluator and initializes to trigger on <paramref name="exType"/>
+        /// Constructs an evaluator and initializes to trigger on <paramref name="exType"/>.
         /// </summary>
         /// <param name="exType">the type that triggers this evaluator.</param>
         /// <param name="triggerOnSubClass">If true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.</param>
@@ -93,12 +93,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Is this <paramref name="loggingEvent"/> the triggering event?
+        /// Is this <paramref name="loggingEvent"/> the triggering event?.
         /// </summary>
-        /// <param name="loggingEvent">The event to check</param>
+        /// <param name="loggingEvent">The event to check.</param>
         /// <returns>This method returns <c>true</c>, if the logging event Exception
         /// Type is <see cref="ExceptionType"/>.
-        /// Otherwise it returns <c>false</c></returns>
+        /// Otherwise it returns <c>false</c>.</returns>
         /// <remarks>
         /// <para>
         /// This evaluator will trigger if the Exception Type of the event

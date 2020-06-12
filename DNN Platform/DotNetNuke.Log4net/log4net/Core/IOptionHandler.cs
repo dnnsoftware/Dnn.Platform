@@ -39,7 +39,7 @@ namespace log4net.Core
     /// and before the component can be used.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public interface IOptionHandler
     {
         /// <summary>

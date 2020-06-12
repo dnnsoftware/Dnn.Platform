@@ -100,11 +100,11 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Runs a specific scheduler and returns the resul depending on the passed flags
+        /// Runs a specific scheduler and returns the resul depending on the passed flags.
         /// </summary>
-        /// <param name="schedulerName">Name of the scheduler in the database</param>
+        /// <param name="schedulerName">Name of the scheduler in the database.</param>
         /// <param name="maxWaitSeconds">Maimum amount of time to wait for the task to finish.</param>
-        /// <returns>Result of running the taske (depends on the flags)</returns>
+        /// <returns>Result of running the taske (depends on the flags).</returns>
         /// <remarks>
         /// If maxWaitSeconds is less than or equals 0: the return result is only the result of the call
         /// to the "Run Now" button of the Edit Scheduler UI page.
@@ -229,10 +229,10 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Finds the last time a specific scheduler was run and the ID of the last run
+        /// Finds the last time a specific scheduler was run and the ID of the last run.
         /// </summary>
-        /// <param name="scheduleId">Scheduler ID to inquire</param>
-        /// <remarks>If no previous run exists, it returns ID as -1</remarks>
+        /// <param name="scheduleId">Scheduler ID to inquire.</param>
+        /// <remarks>If no previous run exists, it returns ID as -1.</remarks>
         private static ScheduleHistoryInfo LastRunningScheduleItem(int scheduleId)
         {
             const string script = @"IF EXISTS (SELECT 1 FROM {{objectQualifier}}ScheduleHistory WHERE ScheduleId = {0})

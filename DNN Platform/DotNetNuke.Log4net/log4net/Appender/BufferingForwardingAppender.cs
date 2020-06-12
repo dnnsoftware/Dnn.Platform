@@ -43,8 +43,8 @@ namespace log4net.Appender
     /// within the hierarchy.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class BufferingForwardingAppender : BufferingAppenderSkeleton, IAppenderAttachable
     {
         /// <summary>
@@ -211,7 +211,7 @@ namespace log4net.Appender
         /// Removes the specified appender from the list of appenders.
         /// </summary>
         /// <param name="appender">The appender to remove.</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// The appender removed is not closed.
         /// If you are discarding the appender you must call
@@ -234,7 +234,7 @@ namespace log4net.Appender
         /// Removes the appender with the specified name from the list of appenders.
         /// </summary>
         /// <param name="name">The name of the appender to remove.</param>
-        /// <returns>The appender removed from the list</returns>
+        /// <returns>The appender removed from the list.</returns>
         /// <remarks>
         /// The appender removed is not closed.
         /// If you are discarding the appender you must call
@@ -254,7 +254,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Implementation of the <see cref="IAppenderAttachable"/> interface
+        /// Implementation of the <see cref="IAppenderAttachable"/> interface.
         /// </summary>
         private AppenderAttachedImpl m_appenderAttachedImpl;
     }

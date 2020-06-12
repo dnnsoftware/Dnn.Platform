@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The WidgetComponentWriter class handles creating the manifest for Widget Component(s)
+    /// The WidgetComponentWriter class handles creating the manifest for Widget Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -25,9 +25,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("widgetFiles")
+        /// Gets the name of the Collection Node ("widgetFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -39,9 +39,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("widgetFiles")
+        /// Gets the name of the Item Node ("widgetFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -53,9 +53,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("Widget")
+        /// Gets the name of the Component Type ("Widget").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {

@@ -12,7 +12,7 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Entities.Users
 {
     /// <summary>
-    /// DefaultRelationshipType defined in system
+    /// DefaultRelationshipType defined in system.
     /// </summary>
     public enum DefaultRelationshipTypes
     {

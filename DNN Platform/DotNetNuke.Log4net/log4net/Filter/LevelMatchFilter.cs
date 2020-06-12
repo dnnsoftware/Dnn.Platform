@@ -43,29 +43,29 @@ namespace log4net.Filter
     /// the result will be <see cref="FilterDecision.Neutral"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class LevelMatchFilter : FilterSkeleton
     {
         /// <summary>
-        /// flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match
+        /// flag to indicate if the filter should <see cref="FilterDecision.Accept"/> on a match.
         /// </summary>
         private bool m_acceptOnMatch = true;
 
         /// <summary>
-        /// the <see cref="Level"/> to match against
+        /// the <see cref="Level"/> to match against.
         /// </summary>
         private Level m_levelToMatch;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public LevelMatchFilter()
         {
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LevelToMatch"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LevelToMatch"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -85,7 +85,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="Level"/> that the filter will match
+        /// Gets or sets the <see cref="Level"/> that the filter will match.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -101,10 +101,10 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Tests if the <see cref="Level"/> of the logging event matches that of the filter
+        /// Tests if the <see cref="Level"/> of the logging event matches that of the filter.
         /// </summary>
-        /// <param name="loggingEvent">the event to filter</param>
-        /// <returns>see remarks</returns>
+        /// <param name="loggingEvent">the event to filter.</param>
+        /// <returns>see remarks.</returns>
         /// <remarks>
         /// <para>
         /// If the <see cref="Level"/> of the event matches the level of the

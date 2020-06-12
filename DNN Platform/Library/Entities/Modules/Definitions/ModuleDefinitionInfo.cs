@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
     /// Class    : ModuleDefinitionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleDefinitionInfo provides the Entity Layer for Module Definitions
+    /// ModuleDefinitionInfo provides the Entity Layer for Module Definitions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -39,38 +39,38 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module Definition ID
+        /// Gets or sets and sets the Module Definition ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Default Cache Time
+        /// Gets or sets and sets the Default Cache Time.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int DefaultCacheTime { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the associated Desktop Module ID
+        /// Gets or sets and sets the associated Desktop Module ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int DesktopModuleID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Friendly Name
+        /// Gets or sets and sets the Friendly Name.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the DefinitionName
+        /// Gets or sets the DefinitionName.
         /// </summary>
         public string DefinitionName
         {
@@ -89,9 +89,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Dictionary of ModuleControls that are part of this definition
+        /// Gets the Dictionary of ModuleControls that are part of this definition.
         /// </summary>
-        /// <returns>A Dictionary(Of String, ModuleControlInfo)</returns>
+        /// <returns>A Dictionary(Of String, ModuleControlInfo).</returns>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, ModuleControlInfo> ModuleControls
         {
@@ -108,17 +108,17 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Dictionary of Permissions that are part of this definition
+        /// Gets the Dictionary of Permissions that are part of this definition.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PermissionInfo> Permissions { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModuleDefinitionInfo from a Data Reader
+        /// Fills a ModuleDefinitionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -134,9 +134,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -153,7 +153,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the ModuleDefinitionInfo
+        /// Gets an XmlSchema for the ModuleDefinitionInfo.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -164,9 +164,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a ModuleDefinitionInfo from an XmlReader
+        /// Reads a ModuleDefinitionInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -223,9 +223,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a ModuleDefinitionInfo to an XmlWriter
+        /// Writes a ModuleDefinitionInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
@@ -260,9 +260,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads the ModuleControls from an XmlReader
+        /// Reads the ModuleControls from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         private void ReadModuleControls(XmlReader reader)
         {

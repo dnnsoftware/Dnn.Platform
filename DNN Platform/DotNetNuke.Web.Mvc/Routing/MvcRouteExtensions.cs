@@ -22,9 +22,9 @@ namespace DotNetNuke.Web.Mvc.Routing
         }
 
         /// <summary>
-        /// Get Namespaces that are searched for controllers for this route
+        /// Get Namespaces that are searched for controllers for this route.
         /// </summary>
-        /// <returns>Namespaces</returns>
+        /// <returns>Namespaces.</returns>
         internal static string[] GetNameSpaces(this Route route)
         {
             return (string[])route.DataTokens[NamespaceKey];
@@ -36,9 +36,9 @@ namespace DotNetNuke.Web.Mvc.Routing
         }
 
         /// <summary>
-        /// Get the name of the route
+        /// Get the name of the route.
         /// </summary>
-        /// <returns>Route name</returns>
+        /// <returns>Route name.</returns>
         public static string GetName(this Route route)
         {
             return (string)route.DataTokens[NameKey];

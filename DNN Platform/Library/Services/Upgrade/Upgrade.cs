@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Upgrade
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///  The Upgrade class provides Shared/Static methods to Upgrade/Install
-    ///  a DotNetNuke Application
+    ///  a DotNetNuke Application.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -117,16 +117,16 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddAdminPages adds an Admin Page and an associated Module to all configured Portals
+        /// AddAdminPages adds an Admin Page and an associated Module to all configured Portals.
         /// </summary>
-        ///     <param name="tabName">The Name to give this new Tab</param>
+        ///     <param name="tabName">The Name to give this new Tab.</param>
         /// <param name="description">Description.</param>
-        ///     <param name="tabIconFile">The Icon for this new Tab</param>
-        /// <param name="tabIconFileLarge">The large Icon for this new Tab</param>
-        ///     <param name="isVisible">A flag indicating whether the tab is visible</param>
-        ///     <param name="moduleDefId">The Module Deinition Id for the module to be aded to this tab</param>
-        ///     <param name="moduleTitle">The Module's title</param>
-        ///     <param name="moduleIconFile">The Module's icon</param>
+        ///     <param name="tabIconFile">The Icon for this new Tab.</param>
+        /// <param name="tabIconFileLarge">The large Icon for this new Tab.</param>
+        ///     <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        ///     <param name="moduleDefId">The Module Deinition Id for the module to be aded to this tab.</param>
+        ///     <param name="moduleTitle">The Module's title.</param>
+        ///     <param name="moduleIconFile">The Module's icon.</param>
         /// -----------------------------------------------------------------------------
         private static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile)
         {
@@ -188,18 +188,18 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleControl adds a new Module Control to the system
+        /// AddModuleControl adds a new Module Control to the system.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="moduleDefId">The Module Definition Id</param>
-        ///     <param name="controlKey">The key for this control in the Definition</param>
-        ///     <param name="controlTitle">The title of this control</param>
-        ///     <param name="controlSrc">Te source of ths control</param>
-        ///     <param name="iconFile">The icon file</param>
-        ///     <param name="controlType">The type of control</param>
-        ///     <param name="viewOrder">The vieworder for this module</param>
-        ///     <param name="helpURL">The Help Url</param>
+        ///     <param name="moduleDefId">The Module Definition Id.</param>
+        ///     <param name="controlKey">The key for this control in the Definition.</param>
+        ///     <param name="controlTitle">The title of this control.</param>
+        ///     <param name="controlSrc">Te source of ths control.</param>
+        ///     <param name="iconFile">The icon file.</param>
+        ///     <param name="controlType">The type of control.</param>
+        ///     <param name="viewOrder">The vieworder for this module.</param>
+        ///     <param name="helpURL">The Help Url.</param>
         /// -----------------------------------------------------------------------------
         private static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder, string helpURL)
         {
@@ -234,18 +234,18 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleDefinition adds a new Core Module Definition to the system
+        /// AddModuleDefinition adds a new Core Module Definition to the system.
         /// </summary>
         /// <remarks>
         ///     This overload allows the caller to determine whether the module has a controller
-        /// class
+        /// class.
         /// </remarks>
-        ///     <param name="desktopModuleName">The Friendly Name of the Module to Add</param>
-        ///     <param name="description">Description of the Module</param>
-        ///     <param name="moduleDefinitionName">The Module Definition Name</param>
-        ///     <param name="premium">A flag representing whether the module is a Premium module</param>
-        ///     <param name="admin">A flag representing whether the module is an Admin module</param>
-        ///     <returns>The Module Definition Id of the new Module</returns>
+        ///     <param name="desktopModuleName">The Friendly Name of the Module to Add.</param>
+        ///     <param name="description">Description of the Module.</param>
+        ///     <param name="moduleDefinitionName">The Module Definition Name.</param>
+        ///     <param name="premium">A flag representing whether the module is a Premium module.</param>
+        ///     <param name="admin">A flag representing whether the module is an Admin module.</param>
+        ///     <returns>The Module Definition Id of the new Module.</returns>
         /// -----------------------------------------------------------------------------
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, bool premium, bool admin)
         {
@@ -254,20 +254,20 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleDefinition adds a new Core Module Definition to the system
+        /// AddModuleDefinition adds a new Core Module Definition to the system.
         /// </summary>
         /// <remarks>
         ///     This overload allows the caller to determine whether the module has a controller
-        /// class
+        /// class.
         /// </remarks>
-        ///     <param name="desktopModuleName">The Friendly Name of the Module to Add</param>
-        ///     <param name="description">Description of the Module</param>
-        ///     <param name="moduleDefinitionName">The Module Definition Name</param>
+        ///     <param name="desktopModuleName">The Friendly Name of the Module to Add.</param>
+        ///     <param name="description">Description of the Module.</param>
+        ///     <param name="moduleDefinitionName">The Module Definition Name.</param>
         /// <param name="businessControllerClass">Business Control Class.</param>
         /// <param name="isPortable">Whether the module is enable for portals.</param>
-        ///     <param name="premium">A flag representing whether the module is a Premium module</param>
-        ///     <param name="admin">A flag representing whether the module is an Admin module</param>
-        ///     <returns>The Module Definition Id of the new Module</returns>
+        ///     <param name="premium">A flag representing whether the module is a Premium module.</param>
+        ///     <param name="admin">A flag representing whether the module is an Admin module.</param>
+        ///     <returns>The Module Definition Id of the new Module.</returns>
         /// -----------------------------------------------------------------------------
         private static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName, string businessControllerClass, bool isPortable, bool premium, bool admin)
         {
@@ -341,15 +341,15 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleToPage adds a module to a Page
+        /// AddModuleToPage adds a module to a Page.
         /// </summary>
         /// <remarks>
-        /// This overload assumes ModulePermissions will be inherited
+        /// This overload assumes ModulePermissions will be inherited.
         /// </remarks>
-        ///     <param name="page">The Page to add the Module to</param>
-        ///     <param name="moduleDefId">The Module Deinition Id for the module to be aded to this tab</param>
-        ///     <param name="moduleTitle">The Module's title</param>
-        ///     <param name="moduleIconFile">The Module's icon</param>
+        ///     <param name="page">The Page to add the Module to.</param>
+        ///     <param name="moduleDefId">The Module Deinition Id for the module to be aded to this tab.</param>
+        ///     <param name="moduleTitle">The Module's title.</param>
+        ///     <param name="moduleIconFile">The Module's icon.</param>
         /// -----------------------------------------------------------------------------
         private static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile)
         {
@@ -359,19 +359,19 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPage adds a Tab Page
+        /// AddPage adds a Tab Page.
         /// </summary>
         /// <remarks>
-        /// Adds a Tab to a parentTab
+        /// Adds a Tab to a parentTab.
         /// </remarks>
-        ///     <param name="parentTab">The Parent Tab</param>
-        ///     <param name="tabName">The Name to give this new Tab</param>
+        ///     <param name="parentTab">The Parent Tab.</param>
+        ///     <param name="tabName">The Name to give this new Tab.</param>
         /// <param name="description">Description.</param>
-        ///     <param name="tabIconFile">The Icon for this new Tab</param>
-        /// <param name="tabIconFileLarge">The Large Icon for this new Tab</param>
-        ///     <param name="isVisible">A flag indicating whether the tab is visible</param>
-        ///     <param name="permissions">Page Permissions Collection for this page</param>
-        /// <param name="isAdmin">Is an admin page</param>
+        ///     <param name="tabIconFile">The Icon for this new Tab.</param>
+        /// <param name="tabIconFileLarge">The Large Icon for this new Tab.</param>
+        ///     <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        ///     <param name="permissions">Page Permissions Collection for this page.</param>
+        /// <param name="isAdmin">Is an admin page.</param>
         /// -----------------------------------------------------------------------------
         private static TabInfo AddPage(TabInfo parentTab, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, TabPermissionCollection permissions, bool isAdmin)
         {
@@ -389,17 +389,17 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPage adds a Tab Page
+        /// AddPage adds a Tab Page.
         /// </summary>
-        ///     <param name="portalId">The Id of the Portal</param>
-        ///     <param name="parentId">The Id of the Parent Tab</param>
-        ///     <param name="tabName">The Name to give this new Tab</param>
+        ///     <param name="portalId">The Id of the Portal.</param>
+        ///     <param name="parentId">The Id of the Parent Tab.</param>
+        ///     <param name="tabName">The Name to give this new Tab.</param>
         /// <param name="description">Description.</param>
-        ///     <param name="tabIconFile">The Icon for this new Tab</param>
-        /// <param name="tabIconFileLarge">The large Icon for this new Tab</param>
-        ///     <param name="isVisible">A flag indicating whether the tab is visible</param>
-        ///     <param name="permissions">Page Permissions Collection for this page</param>
-        /// <param name="isAdmin">Is and admin page</param>
+        ///     <param name="tabIconFile">The Icon for this new Tab.</param>
+        /// <param name="tabIconFileLarge">The large Icon for this new Tab.</param>
+        ///     <param name="isVisible">A flag indicating whether the tab is visible.</param>
+        ///     <param name="permissions">Page Permissions Collection for this page.</param>
+        /// <param name="isAdmin">Is and admin page.</param>
         /// -----------------------------------------------------------------------------
         private static TabInfo AddPage(int portalId, int parentId, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, TabPermissionCollection permissions, bool isAdmin)
         {
@@ -442,11 +442,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPagePermission adds a TabPermission to a TabPermission Collection
+        /// AddPagePermission adds a TabPermission to a TabPermission Collection.
         /// </summary>
-        ///     <param name="permissions">Page Permissions Collection for this page</param>
-        ///     <param name="key">The Permission key</param>
-        ///     <param name="roleId">The role given the permission</param>
+        ///     <param name="permissions">Page Permissions Collection for this page.</param>
+        ///     <param name="key">The Permission key.</param>
+        ///     <param name="roleId">The role given the permission.</param>
         /// -----------------------------------------------------------------------------
         private static void AddPagePermission(TabPermissionCollection permissions, string key, int roleId)
         {
@@ -461,9 +461,9 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddSearchResults adds a top level Hidden Search Results Page
+        /// AddSearchResults adds a top level Hidden Search Results Page.
         /// </summary>
-        ///     <param name="moduleDefId">The Module Deinition Id for the Search Results Module</param>
+        ///     <param name="moduleDefId">The Module Deinition Id for the Search Results Module.</param>
         /// -----------------------------------------------------------------------------
         private static void AddSearchResults(int moduleDefId)
         {
@@ -492,13 +492,13 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddSkinControl adds a new Module Control to the system
+        /// AddSkinControl adds a new Module Control to the system.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="controlKey">The key for this control in the Definition</param>
+        ///     <param name="controlKey">The key for this control in the Definition.</param>
         /// <param name="packageName">Package Name.</param>
-        ///     <param name="controlSrc">Te source of ths control</param>
+        ///     <param name="controlSrc">Te source of ths control.</param>
         /// -----------------------------------------------------------------------------
         private static void AddSkinControl(string controlKey, string packageName, string controlSrc)
         {
@@ -679,12 +679,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CoreModuleExists determines whether a Core Module exists on the system
+        /// CoreModuleExists determines whether a Core Module exists on the system.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="desktopModuleName">The Friendly Name of the Module</param>
-        ///     <returns>True if the Module exists, otherwise False</returns>
+        ///     <param name="desktopModuleName">The Friendly Name of the Module.</param>
+        ///     <returns>True if the Module exists, otherwise False.</returns>
         /// -----------------------------------------------------------------------------
         private static bool CoreModuleExists(string desktopModuleName)
         {
@@ -754,11 +754,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ExecuteScript executes a SQl script file
+        /// ExecuteScript executes a SQl script file.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="scriptFile">The script to Execute</param>
+        ///     <param name="scriptFile">The script to Execute.</param>
         /// <param name="writeFeedback">Need to output feedback message.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -815,11 +815,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleDefinition gets the Module Definition Id of a module
+        /// GetModuleDefinition gets the Module Definition Id of a module.
         /// </summary>
-        ///     <param name="desktopModuleName">The Friendly Name of the Module to Add</param>
-        ///     <param name="moduleDefinitionName">The Module Definition Name</param>
-        ///     <returns>The Module Definition Id of the Module (-1 if no module definition)</returns>
+        ///     <param name="desktopModuleName">The Friendly Name of the Module to Add.</param>
+        ///     <param name="moduleDefinitionName">The Module Definition Name.</param>
+        ///     <returns>The Module Definition Id of the Module (-1 if no module definition).</returns>
         /// -----------------------------------------------------------------------------
         private static int GetModuleDefinition(string desktopModuleName, string moduleDefinitionName)
         {
@@ -842,12 +842,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// HostTabExists determines whether a tab of a given name exists under the Host tab
+        /// HostTabExists determines whether a tab of a given name exists under the Host tab.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="tabName">The Name of the Tab</param>
-        ///     <returns>True if the Tab exists, otherwise False</returns>
+        ///     <param name="tabName">The Name of the Tab.</param>
+        ///     <returns>True if the Tab exists, otherwise False.</returns>
         /// -----------------------------------------------------------------------------
         private static bool HostTabExists(string tabName)
         {
@@ -865,11 +865,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InstallMemberRoleProvider - Installs the MemberRole Provider Db objects
+        /// InstallMemberRoleProvider - Installs the MemberRole Provider Db objects.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="providerPath">The Path to the Provider Directory</param>
+        ///     <param name="providerPath">The Path to the Provider Directory.</param>
         /// <param name="writeFeedback">Whether need to output feedback message.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -918,13 +918,13 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InstallMemberRoleProviderScript - Installs a specific MemberRole Provider script
+        /// InstallMemberRoleProviderScript - Installs a specific MemberRole Provider script.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="providerPath">The Path to the Provider Directory</param>
-        ///     <param name="scriptFile">The Name of the Script File</param>
-        ///     <param name="writeFeedback">Whether or not to echo results</param>
+        ///     <param name="providerPath">The Path to the Provider Directory.</param>
+        ///     <param name="scriptFile">The Name of the Script File.</param>
+        ///     <param name="writeFeedback">Whether or not to echo results.</param>
         private static string InstallMemberRoleProviderScript(string providerPath, string scriptFile, bool writeFeedback)
         {
             if (writeFeedback)
@@ -954,12 +954,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ParseFiles parses the Host Template's Files node
+        /// ParseFiles parses the Host Template's Files node.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="node">The Files node</param>
-        ///     <param name="portalId">The PortalId (-1 for Host Files)</param>
+        ///     <param name="node">The Files node.</param>
+        ///     <param name="portalId">The PortalId (-1 for Host Files).</param>
         /// -----------------------------------------------------------------------------
         private static void ParseFiles(XmlNode node, int portalId)
         {
@@ -1003,15 +1003,15 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RemoveCoreModule removes a Core Module from the system
+        /// RemoveCoreModule removes a Core Module from the system.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="desktopModuleName">The Friendly Name of the Module to Remove</param>
-        ///     <param name="parentTabName">The Name of the parent Tab/Page for this module</param>
-        ///     <param name="tabName">The Name to tab that contains the Module</param>
+        ///     <param name="desktopModuleName">The Friendly Name of the Module to Remove.</param>
+        ///     <param name="parentTabName">The Name of the parent Tab/Page for this module.</param>
+        ///     <param name="tabName">The Name to tab that contains the Module.</param>
         ///     <param name="removeTab">A flag to determine whether to remove the Tab if it has no
-        ///     other modules</param>
+        ///     other modules.</param>
         /// -----------------------------------------------------------------------------
         private static void RemoveCoreModule(string desktopModuleName, string parentTabName, string tabName, bool removeTab)
         {
@@ -3568,17 +3568,17 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  AddAdminPages adds an Admin Page and an associated Module to all configured Portals
+        ///  AddAdminPages adds an Admin Page and an associated Module to all configured Portals.
         /// </summary>
-        /// <param name = "tabName">The Name to give this new Tab</param>
+        /// <param name = "tabName">The Name to give this new Tab.</param>
         /// <param name="description"></param>
-        /// <param name = "tabIconFile">The Icon for this new Tab</param>
+        /// <param name = "tabIconFile">The Icon for this new Tab.</param>
         /// <param name="tabIconFileLarge"></param>
-        /// <param name = "isVisible">A flag indicating whether the tab is visible</param>
-        /// <param name = "moduleDefId">The Module Deinition Id for the module to be aded to this tab</param>
-        /// <param name = "moduleTitle">The Module's title</param>
-        /// <param name = "moduleIconFile">The Module's icon</param>
-        /// <param name = "inheritPermissions">Modules Inherit the Pages View Permisions</param>
+        /// <param name = "isVisible">A flag indicating whether the tab is visible.</param>
+        /// <param name = "moduleDefId">The Module Deinition Id for the module to be aded to this tab.</param>
+        /// <param name = "moduleTitle">The Module's title.</param>
+        /// <param name = "moduleIconFile">The Module's icon.</param>
+        /// <param name = "inheritPermissions">Modules Inherit the Pages View Permisions.</param>
         /// -----------------------------------------------------------------------------
         public static void AddAdminPages(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
         {
@@ -3599,14 +3599,14 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  AddAdminPage adds an Admin Tab Page
+        ///  AddAdminPage adds an Admin Tab Page.
         /// </summary>
-        /// <param name = "portal">The Portal</param>
-        /// <param name = "tabName">The Name to give this new Tab</param>
+        /// <param name = "portal">The Portal.</param>
+        /// <param name = "tabName">The Name to give this new Tab.</param>
         /// <param name="description"></param>
-        /// <param name = "tabIconFile">The Icon for this new Tab</param>
+        /// <param name = "tabIconFile">The Icon for this new Tab.</param>
         /// <param name="tabIconFileLarge"></param>
-        /// <param name = "isVisible">A flag indicating whether the tab is visible</param>
+        /// <param name = "isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TabInfo AddAdminPage(PortalInfo portal, string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
@@ -3627,13 +3627,13 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  AddHostPage adds a Host Tab Page
+        ///  AddHostPage adds a Host Tab Page.
         /// </summary>
-        /// <param name = "tabName">The Name to give this new Tab</param>
+        /// <param name = "tabName">The Name to give this new Tab.</param>
         /// <param name="description"></param>
-        /// <param name = "tabIconFile">The Icon for this new Tab</param>
+        /// <param name = "tabIconFile">The Icon for this new Tab.</param>
         /// <param name="tabIconFileLarge"></param>
-        /// <param name = "isVisible">A flag indicating whether the tab is visible</param>
+        /// <param name = "isVisible">A flag indicating whether the tab is visible.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static TabInfo AddHostPage(string tabName, string description, string tabIconFile, string tabIconFileLarge, bool isVisible)
@@ -3651,17 +3651,17 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  AddModuleControl adds a new Module Control to the system
+        ///  AddModuleControl adds a new Module Control to the system.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "moduleDefId">The Module Definition Id</param>
-        /// <param name = "controlKey">The key for this control in the Definition</param>
-        /// <param name = "controlTitle">The title of this control</param>
-        /// <param name = "controlSrc">Te source of ths control</param>
-        /// <param name = "iconFile">The icon file</param>
-        /// <param name = "controlType">The type of control</param>
-        /// <param name = "viewOrder">The vieworder for this module</param>
+        /// <param name = "moduleDefId">The Module Definition Id.</param>
+        /// <param name = "controlKey">The key for this control in the Definition.</param>
+        /// <param name = "controlTitle">The title of this control.</param>
+        /// <param name = "controlSrc">Te source of ths control.</param>
+        /// <param name = "iconFile">The icon file.</param>
+        /// <param name = "controlType">The type of control.</param>
+        /// <param name = "viewOrder">The vieworder for this module.</param>
         /// -----------------------------------------------------------------------------
         public static void AddModuleControl(int moduleDefId, string controlKey, string controlTitle, string controlSrc, string iconFile, SecurityAccessLevel controlType, int viewOrder)
         {
@@ -3671,15 +3671,15 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  AddModuleDefinition adds a new Core Module Definition to the system
+        ///  AddModuleDefinition adds a new Core Module Definition to the system.
         /// </summary>
         /// <remarks>
-        ///  This overload asumes the module is an Admin module and not a Premium Module
+        ///  This overload asumes the module is an Admin module and not a Premium Module.
         /// </remarks>
-        /// <param name = "desktopModuleName">The Friendly Name of the Module to Add</param>
-        /// <param name = "description">Description of the Module</param>
-        /// <param name = "moduleDefinitionName">The Module Definition Name</param>
-        /// <returns>The Module Definition Id of the new Module</returns>
+        /// <param name = "desktopModuleName">The Friendly Name of the Module to Add.</param>
+        /// <param name = "description">Description of the Module.</param>
+        /// <param name = "moduleDefinitionName">The Module Definition Name.</param>
+        /// <returns>The Module Definition Id of the new Module.</returns>
         /// -----------------------------------------------------------------------------
         public static int AddModuleDefinition(string desktopModuleName, string description, string moduleDefinitionName)
         {
@@ -3689,15 +3689,15 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  AddModuleToPage adds a module to a Page
+        ///  AddModuleToPage adds a module to a Page.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "page">The Page to add the Module to</param>
-        /// <param name = "moduleDefId">The Module Deinition Id for the module to be aded to this tab</param>
-        /// <param name = "moduleTitle">The Module's title</param>
-        /// <param name = "moduleIconFile">The Module's icon</param>
-        /// <param name = "inheritPermissions">Inherit the Pages View Permisions</param>
+        /// <param name = "page">The Page to add the Module to.</param>
+        /// <param name = "moduleDefId">The Module Deinition Id for the module to be aded to this tab.</param>
+        /// <param name = "moduleTitle">The Module's title.</param>
+        /// <param name = "moduleIconFile">The Module's icon.</param>
+        /// <param name = "inheritPermissions">Inherit the Pages View Permisions.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int AddModuleToPage(TabInfo page, int moduleDefId, string moduleTitle, string moduleIconFile, bool inheritPermissions)
@@ -3799,7 +3799,7 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   AddPortal manages the Installation of a new DotNetNuke Portal
+        ///   AddPortal manages the Installation of a new DotNetNuke Portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -3942,7 +3942,7 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Obsolete, AddPortal manages the Installation of a new DotNetNuke Portal
+        ///   Obsolete, AddPortal manages the Installation of a new DotNetNuke Portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -4069,7 +4069,7 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   CheckUpgrade checks whether there are any possible upgrade issues
+        ///   CheckUpgrade checks whether there are any possible upgrade issues.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -4133,7 +4133,7 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   DeleteInstallerFiles - clean up install config and installwizard files
-        ///   If installwizard is ran again this will be recreated via the dotnetnuke.install.config.resources file
+        ///   If installwizard is ran again this will be recreated via the dotnetnuke.install.config.resources file.
         /// </summary>
         /// <remarks>
         /// uses FileSystemUtils.DeleteFile as it checks for readonly attribute status
@@ -4172,13 +4172,13 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   DeleteFiles - clean up deprecated files and folders
+        ///   DeleteFiles - clean up deprecated files and folders.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="providerPath">Path to provider</param>
-        /// <param name = "version">The Version being Upgraded</param>
-        /// <param name="writeFeedback">Display status in UI?</param>
+        /// <param name="providerPath">Path to provider.</param>
+        /// <param name = "version">The Version being Upgraded.</param>
+        /// <param name="writeFeedback">Display status in UI?.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string DeleteFiles(string providerPath, Version version, bool writeFeedback)
@@ -4244,11 +4244,11 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///  ExecuteScripts manages the Execution of Scripts from the Install/Scripts folder.
-        ///  It is also triggered by InstallDNN and UpgradeDNN
+        ///  It is also triggered by InstallDNN and UpgradeDNN.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "strProviderPath">The path to the Data Provider</param>
+        /// <param name = "strProviderPath">The path to the Data Provider.</param>
         /// -----------------------------------------------------------------------------
         public static void ExecuteScripts(string strProviderPath)
         {
@@ -4281,11 +4281,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  ExecuteScript executes a special script
+        ///  ExecuteScript executes a special script.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "file">The script file to execute</param>
+        /// <param name = "file">The script file to execute.</param>
         /// -----------------------------------------------------------------------------
         public static void ExecuteScript(string file)
         {
@@ -4298,12 +4298,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  GetInstallTemplate retrieves the Installation Template as specifeid in web.config
+        ///  GetInstallTemplate retrieves the Installation Template as specifeid in web.config.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "xmlDoc">The Xml Document to load</param>
-        /// <returns>A string which contains the error message - if appropriate</returns>
+        /// <param name = "xmlDoc">The Xml Document to load.</param>
+        /// <returns>A string which contains the error message - if appropriate.</returns>
         /// -----------------------------------------------------------------------------
         public static string GetInstallTemplate(XmlDocument xmlDoc)
         {
@@ -4323,10 +4323,10 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>
-        ///  SetInstalltemplate saves the XmlDocument back to Installation Template specified in web.config
+        ///  SetInstalltemplate saves the XmlDocument back to Installation Template specified in web.config.
         /// </summary>
-        /// <param name="xmlDoc">The Xml Document to save</param>
-        /// <returns>A string which contains the error massage - if appropriate</returns>
+        /// <param name="xmlDoc">The Xml Document to save.</param>
+        /// <returns>A string which contains the error massage - if appropriate.</returns>
         public static string SetInstallTemplate(XmlDocument xmlDoc)
         {
             string errorMessage = Null.NullString;
@@ -4357,11 +4357,11 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///  GetInstallVersion retrieves the Base Instal Version as specifeid in the install
-        ///  template
+        ///  template.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "xmlDoc">The Install Template</param>
+        /// <param name = "xmlDoc">The Install Template.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Version GetInstallVersion(XmlDocument xmlDoc)
@@ -4380,12 +4380,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  GetLogFile gets the filename for the version's log file
+        ///  GetLogFile gets the filename for the version's log file.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "providerPath">The path to the Data Provider</param>
-        /// <param name = "version">The Version</param>
+        /// <param name = "providerPath">The path to the Data Provider.</param>
+        /// <param name = "version">The Version.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetLogFile(string providerPath, Version version)
@@ -4395,12 +4395,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  GetScriptFile gets the filename for the version
+        ///  GetScriptFile gets the filename for the version.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "providerPath">The path to the Data Provider</param>
-        /// <param name = "version">The Version</param>
+        /// <param name = "providerPath">The path to the Data Provider.</param>
+        /// <param name = "version">The Version.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetScriptFile(string providerPath, Version version)
@@ -4410,11 +4410,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  GetStringVersion gets the Version String (xx.xx.xx) from the Version
+        ///  GetStringVersion gets the Version String (xx.xx.xx) from the Version.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "version">The Version</param>
+        /// <param name = "version">The Version.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string GetStringVersion(Version version)
@@ -4450,12 +4450,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  GetSuperUser gets the superuser from the Install Template
+        ///  GetSuperUser gets the superuser from the Install Template.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "xmlTemplate">The install Templae</param>
-        /// <param name = "writeFeedback">a flag to determine whether to output feedback</param>
+        /// <param name = "xmlTemplate">The install Templae.</param>
+        /// <param name = "writeFeedback">a flag to determine whether to output feedback.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static UserInfo GetSuperUser(XmlDocument xmlTemplate, bool writeFeedback)
@@ -4509,12 +4509,12 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///  GetUpgradeScripts gets an ArrayList of the Scripts required to Upgrade to the
-        ///  current Assembly Version
+        ///  current Assembly Version.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "providerPath">The path to the Data Provider</param>
-        /// <param name = "databaseVersion">The current Database Version</param>
+        /// <param name = "providerPath">The path to the Data Provider.</param>
+        /// <param name = "databaseVersion">The current Database Version.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ArrayList GetUpgradeScripts(string providerPath, Version databaseVersion)
@@ -4591,12 +4591,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  InitialiseHostSettings gets the Host Settings from the Install Template
+        ///  InitialiseHostSettings gets the Host Settings from the Install Template.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "xmlTemplate">The install Templae</param>
-        /// <param name = "writeFeedback">a flag to determine whether to output feedback</param>
+        /// <param name = "xmlTemplate">The install Templae.</param>
+        /// <param name = "writeFeedback">a flag to determine whether to output feedback.</param>
         /// -----------------------------------------------------------------------------
         public static void InitialiseHostSettings(XmlDocument xmlTemplate, bool writeFeedback)
         {
@@ -4667,15 +4667,15 @@ namespace DotNetNuke.Services.Upgrade
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///  InstallDatabase runs all the "scripts" identifed in the Install Template to
-        ///  install the base version
+        ///  install the base version.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="providerPath"></param>
-        /// <param name = "xmlDoc">The Xml Document to load</param>
-        /// <param name = "writeFeedback">A flag that determines whether to output feedback to the Response Stream</param>
+        /// <param name = "xmlDoc">The Xml Document to load.</param>
+        /// <param name = "writeFeedback">A flag that determines whether to output feedback to the Response Stream.</param>
         /// <param name="version"></param>
-        /// <returns>A string which contains the error message - if appropriate</returns>
+        /// <returns>A string which contains the error message - if appropriate.</returns>
         /// -----------------------------------------------------------------------------
         public static string InstallDatabase(Version version, string providerPath, XmlDocument xmlDoc, bool writeFeedback)
         {
@@ -4708,11 +4708,11 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  InstallDNN manages the Installation of a new DotNetNuke Application
+        ///  InstallDNN manages the Installation of a new DotNetNuke Application.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "strProviderPath">The path to the Data Provider</param>
+        /// <param name = "strProviderPath">The path to the Data Provider.</param>
         /// -----------------------------------------------------------------------------
         public static void InstallDNN(string strProviderPath)
         {
@@ -4823,12 +4823,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  InstallFiles intsalls any files listed in the Host Install Configuration file
+        ///  InstallFiles intsalls any files listed in the Host Install Configuration file.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "xmlDoc">The Xml Document to load</param>
-        /// <param name = "writeFeedback">A flag that determines whether to output feedback to the Response Stream</param>
+        /// <param name = "xmlDoc">The Xml Document to load.</param>
+        /// <param name = "writeFeedback">A flag that determines whether to output feedback to the Response Stream.</param>
         /// -----------------------------------------------------------------------------
         public static void InstallFiles(XmlDocument xmlDoc, bool writeFeedback)
         {
@@ -4943,7 +4943,7 @@ namespace DotNetNuke.Services.Upgrade
         }
 
         /// <summary>
-        /// Gets a ist of installable extensions sorted to ensure dependencies are installed first
+        /// Gets a ist of installable extensions sorted to ensure dependencies are installed first.
         /// </summary>
         /// <returns></returns>
         public static IDictionary<string, PackageInfo> GetInstallPackages()
@@ -5899,12 +5899,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  UpgradeDNN manages the Upgrade of an exisiting DotNetNuke Application
+        ///  UpgradeDNN manages the Upgrade of an exisiting DotNetNuke Application.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "providerPath">The path to the Data Provider</param>
-        /// <param name = "dataBaseVersion">The current Database Version</param>
+        /// <param name = "providerPath">The path to the Data Provider.</param>
+        /// <param name = "dataBaseVersion">The current Database Version.</param>
         /// -----------------------------------------------------------------------------
         public static void UpgradeDNN(string providerPath, Version dataBaseVersion)
         {
@@ -6043,12 +6043,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  UpgradeVersion upgrades a single version
+        ///  UpgradeVersion upgrades a single version.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "scriptFile">The upgrade script file</param>
-        /// <param name="writeFeedback">Write status to Response Stream?</param>
+        /// <param name = "scriptFile">The upgrade script file.</param>
+        /// <param name="writeFeedback">Write status to Response Stream?.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static string UpgradeVersion(string scriptFile, bool writeFeedback)
@@ -6059,12 +6059,12 @@ namespace DotNetNuke.Services.Upgrade
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///  UpgradeVersion upgrades a single version
+        ///  UpgradeVersion upgrades a single version.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="scriptFile">The upgrade script file</param>
-        /// <param name="writeFeedback">Write status to Response Stream?</param>
+        /// <param name="scriptFile">The upgrade script file.</param>
+        /// <param name="writeFeedback">Write status to Response Stream?.</param>
         /// <param name="scriptExecuted">Identity whether the script file executed.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------

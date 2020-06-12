@@ -13,12 +13,12 @@ using System.Threading.Tasks;
 namespace DotNetNuke.Web.Api
 {
     /// <summary>
-    /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type
+    /// A MediaTypeFormatter that simply allows strings to pass through WebAPI and be associated with the specified MIME type.
     /// </summary>
     public class StringPassThroughMediaTypeFormatter : MediaTypeFormatter
     {
         /// <summary>
-        /// Initialize a formatter that can handle text/plain and text/html
+        /// Initialize a formatter that can handle text/plain and text/html.
         /// </summary>
         public StringPassThroughMediaTypeFormatter()
             : this(new[] { "text/plain", "text/html" })
@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Initialize a formatter that can handle the specified media types
+        /// Initialize a formatter that can handle the specified media types.
         /// </summary>
         public StringPassThroughMediaTypeFormatter(IEnumerable<string> mediaTypes)
         {

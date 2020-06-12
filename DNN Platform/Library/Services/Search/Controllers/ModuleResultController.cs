@@ -25,7 +25,7 @@ using DotNetNuke.Services.Search.Entities;
 namespace DotNetNuke.Services.Search.Controllers
 {
     /// <summary>
-    /// Search Result Controller for Module Crawler
+    /// Search Result Controller for Module Crawler.
     /// </summary>
     /// <remarks></remarks>
     [Serializable]

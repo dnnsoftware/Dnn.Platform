@@ -13,9 +13,9 @@ namespace DotNetNuke.Services.FileSystem.Internal
         void DeleteFile(IFileInfo file);
 
         /// <summary>
-        /// Unlinks the specified file
+        /// Unlinks the specified file.
         /// </summary>
-        /// <param name="file">The file to unlink</param>
+        /// <param name="file">The file to unlink.</param>
         void UnlinkFile(IFileInfo file);
 
         /// <summary>

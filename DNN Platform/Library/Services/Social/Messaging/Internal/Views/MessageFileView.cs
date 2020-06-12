@@ -6,7 +6,7 @@ using System;
 
 namespace DotNetNuke.Services.Social.Messaging.Internal.Views
 {
-    /// <summary>The MessageFileView class contains details about the attachment</summary>
+    /// <summary>The MessageFileView class contains details about the attachment.</summary>
     /// -----------------------------------------------------------------------------
     /// Project:    DotNetNuke
     /// Namespace:  DotNetNuke.Entities.Messaging.Views
@@ -15,14 +15,14 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     /// -----------------------------------------------------------------------------
     public class MessageFileView
     {
-        /// <summary>The _size</summary>
+        /// <summary>The _size.</summary>
         private string _size;
 
         /// <summary>Gets or sets the file identifier.</summary>
         /// <value>The file identifier.</value>
         public int FileId { get; set; }
 
-        /// <summary>Gets or sets the name of the file with extension</summary>
+        /// <summary>Gets or sets the name of the file with extension.</summary>
         /// <value>The name.</value>
         public string Name { get; set; }
 
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         }
 
         /// <summary>
-        /// Gets or sets the url of the file to download
+        /// Gets or sets the url of the file to download.
         /// </summary>
         public string Url { get; set; }
     }

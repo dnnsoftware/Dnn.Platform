@@ -13,15 +13,15 @@ namespace DotNetNuke.Entities.Modules
     /// <summary>
     /// Modules participating in Search should inherit from this class. A scheduled job will call the methods from this class.
     /// </summary>
-    /// <remarks>Since the methods will be called through a Scheduled job, there will be no Portal Context available by the module to take advantage of</remarks>
+    /// <remarks>Since the methods will be called through a Scheduled job, there will be no Portal Context available by the module to take advantage of.</remarks>
     public abstract class ModuleSearchBase
     {
         /// <summary>
         /// Return a list of Modified Search Documents based on date. The documents will be stored in Search Index.
         /// </summary>
-        /// <param name="moduleInfo">Module Info</param>
-        /// <param name="beginDateUtc">Provide modified content from this time in Utc</param>
-        /// <returns>Collection of SearchDocument</returns>
+        /// <param name="moduleInfo">Module Info.</param>
+        /// <param name="beginDateUtc">Provide modified content from this time in Utc.</param>
+        /// <returns>Collection of SearchDocument.</returns>
         /// <remarks>Module must return New, Updated and Deleted Search Documents.
         /// It is important to include all the relevant Properties for Updated content (sames as supplied for New document), as partial SearchDocument cannot be Updated in Search Index.
         /// This is different from standard SQL Update where selective columns can updated. In this case, entire Document must be supplied during Update or else information will be lost.

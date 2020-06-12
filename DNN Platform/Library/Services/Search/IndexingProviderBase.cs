@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Search
         /// <param name="portalId">ID of the portal for which to index items.</param>
         /// <param name="startDateLocal">Minimum modification date of items that need to be indexed.</param>
         /// <param name="indexer">A delegate function to send the collection of documents to for saving/indexing.</param>
-        /// <returns>The number of documents indexed</returns>
+        /// <returns>The number of documents indexed.</returns>
         public abstract int IndexSearchDocuments(
             int portalId,
             ScheduleHistoryItem schedule, DateTime startDateLocal, Action<IEnumerable<SearchDocument>> indexer);
@@ -29,11 +29,11 @@ namespace DotNetNuke.Services.Search
         private const string TimePostfix = "UtcTime";
         private const string DataPostfix = "Data";
 
-        /// <summary>Retrieves the date/time of the last item to be indexed</summary>
+        /// <summary>Retrieves the date/time of the last item to be indexed.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="scheduleId">The schedule ID.</param>
         /// <param name="localTime">The local time passed to <see cref="IndexSearchDocuments" />.</param>
-        /// <returns>Either <paramref name="localTime"/> or the stored index time, whichever is earlier</returns>
+        /// <returns>Either <paramref name="localTime"/> or the stored index time, whichever is earlier.</returns>
         protected DateTime GetLocalTimeOfLastIndexedItem(int portalId, int scheduleId, DateTime localTime)
         {
             var lastTime = SearchHelper.Instance.GetIndexerCheckpointUtcTime(
@@ -51,16 +51,16 @@ namespace DotNetNuke.Services.Search
                 scheduleId, this.ScheduleItemSettingKey(portalId, TimePostfix), localTime.ToUniversalTime());
         }
 
-        /// <summary>Retrieves free format data to help the indexer to perform its job</summary>
+        /// <summary>Retrieves free format data to help the indexer to perform its job.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="scheduleId">The schedule ID.</param>
-        /// <returns>The checkpoint data</returns>
+        /// <returns>The checkpoint data.</returns>
         protected string GetLastCheckpointData(int portalId, int scheduleId)
         {
             return SearchHelper.Instance.GetIndexerCheckpointData(scheduleId, this.ScheduleItemSettingKey(portalId, DataPostfix));
         }
 
-        /// <summary>Stores free format data to help the indexer to perform its job</summary>
+        /// <summary>Stores free format data to help the indexer to perform its job.</summary>
         /// <param name="portalId">The portal ID.</param>
         /// <param name="scheduleId">The schedule ID.</param>
         /// <param name="data">The data to store.</param>
@@ -85,13 +85,13 @@ namespace DotNetNuke.Services.Search
         /// Creates a unique name for the IndexingProvider implementation that can be used
         /// to save/retrieve scheduler item {key,name} setting pairs per portal and feature.
         /// </summary>
-        /// <param name="portalId">The ID of the portal</param>
-        /// <param name="propertyId">The name of the property</param>
+        /// <param name="portalId">The ID of the portal.</param>
+        /// <param name="propertyId">The name of the property.</param>
         /// <remarks>
         /// Note that changing the class name in derived classes will cause this key to differ
         /// from the names stored in the database; therefore, don't change the derived class
         /// [full] names once these are deployed to market in an actual release version.
-        /// <para>The format of the key is as follows:
+        /// <para>The format of the key is as follows:.
         /// <ol>
         /// <li>"Search" literal</li>
         /// <li>Name of the indexer class</li>
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Search
         /// </ol>
         /// </para>
         /// </remarks>
-        /// <returns>The setting key</returns>
+        /// <returns>The setting key.</returns>
         private string ScheduleItemSettingKey(int portalId, string propertyId)
         {
             Requires.NotNullOrEmpty("propertyId", propertyId);

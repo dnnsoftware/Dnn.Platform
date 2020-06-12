@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Urls
         public int ExtensionUrlProviderId { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether when true, provider is active
+        /// Gets or sets a value indicating whether when true, provider is active.
         /// </summary>
         public bool IsActive { get; set; }
 
@@ -52,19 +52,19 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>
         /// Gets or sets a value indicating whether when true, TransformFriendlyUrl is called for every Url in the portal
-        /// When false, TransformFriendlyUrl is called only for tabs in the TabIds list
+        /// When false, TransformFriendlyUrl is called only for tabs in the TabIds list.
         /// </summary>
         public bool RewriteAllUrls { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether when true, CheckForRedirect is called for every Url in the portal
-        /// When false, CheckForRedirect is called only for tabs in the TabIds list
+        /// When false, CheckForRedirect is called only for tabs in the TabIds list.
         /// </summary>
         public bool RedirectAllUrls { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether when true, ChangeFriendlyUrl is called for every generated Url called through the NavigateUrl API
-        /// When false, ChangeFriendlyUrl is called only for tabs in the TabIds list
+        /// When false, ChangeFriendlyUrl is called only for tabs in the TabIds list.
         /// </summary>
         public bool ReplaceAllUrls { get; set; }
 
@@ -73,7 +73,7 @@ namespace DotNetNuke.Entities.Urls
         public Dictionary<string, string> Settings { get; private set; }
 
         /// <summary>
-        /// Gets a list of TabIds where the module provider should be called when generating friendly urls
+        /// Gets a list of TabIds where the module provider should be called when generating friendly urls.
         /// </summary>
         public List<int> TabIds { get; private set; }
 

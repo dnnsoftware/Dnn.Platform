@@ -34,7 +34,7 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// AppSetting pattern converter
+    /// AppSetting pattern converter.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -83,10 +83,10 @@ namespace log4net.Util.PatternStringConverters
         private static Hashtable _appSettingsHashTable;
 
         /// <summary>
-        /// Write the property value to the output
+        /// Write the property value to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Writes out the value of a named property. The property name

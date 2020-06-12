@@ -120,10 +120,10 @@ namespace log4net.Appender
     /// </appender>
     /// </code>
     /// </example>
-    /// <author>Julian Biddle</author>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Lance Nehring</author>
+    /// <author>Julian Biddle.</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Lance Nehring.</author>
     public class AdoNetAppender : BufferingAppenderSkeleton
     {
         /// <summary>
@@ -377,7 +377,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the appender based on the options set
+        /// Initialize the appender based on the options set.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -405,7 +405,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Override the parent method to close the database
+        /// Override the parent method to close the database.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -674,7 +674,7 @@ namespace log4net.Appender
         /// if necessary.
         /// </para>
         /// </remarks>
-        /// <returns>The <see cref="Type"/> of the ADO.NET provider</returns>
+        /// <returns>The <see cref="Type"/> of the ADO.NET provider.</returns>
         protected virtual Type ResolveConnectionType()
         {
             try
@@ -754,7 +754,7 @@ namespace log4net.Appender
         protected ArrayList m_parameters;
 
         /// <summary>
-        /// The security context to use for privileged calls
+        /// The security context to use for privileged calls.
         /// </summary>
         private SecurityContext m_securityContext;
 
@@ -1068,7 +1068,7 @@ namespace log4net.Appender
         private DbType m_dbType;
 
         /// <summary>
-        /// Flag to infer type rather than use the DbType
+        /// Flag to infer type rather than use the DbType.
         /// </summary>
         private bool m_inferType = true;
 

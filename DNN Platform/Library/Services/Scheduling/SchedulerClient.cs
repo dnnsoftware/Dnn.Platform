@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Scheduling
         /// '''''''''''''''''''''''''''''''''''''''''''''''''''
         /// <summary>
         /// This is the sub that kicks off the actual
-        /// work within the SchedulerClient's subclass
+        /// work within the SchedulerClient's subclass.
         /// </summary>
         /// '''''''''''''''''''''''''''''''''''''''''''''''''''
         public abstract void DoWork();

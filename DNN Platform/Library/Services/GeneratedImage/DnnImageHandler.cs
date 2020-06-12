@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.GeneratedImage
     {
         /// <summary>
         /// While list of server folders where the system allow the dnn image handler to
-        /// read to serve image files from it and its subfolders
+        /// read to serve image files from it and its subfolders.
         /// </summary>
         private static readonly string[] WhiteListFolderPaths =
         {

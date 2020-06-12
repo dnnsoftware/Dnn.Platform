@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinInstaller installs Skin Components to a DotNetNuke site
+    /// The SkinInstaller installs Skin Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -32,9 +32,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("skinFiles")
+        /// Gets the name of the Collection Node ("skinFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -46,9 +46,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("skinFile")
+        /// Gets the name of the Item Node ("skinFile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -60,9 +60,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PhysicalBasePath for the skin files
+        /// Gets the PhysicalBasePath for the skin files.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string PhysicalBasePath
         {
@@ -80,9 +80,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the root folder for the Skin
+        /// Gets the root folder for the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected string RootPath
         {
@@ -104,9 +104,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of Skin Files
+        /// Gets the collection of Skin Files.
         /// </summary>
-        /// <value>A List(Of InstallFile)</value>
+        /// <value>A List(Of InstallFile).</value>
         /// -----------------------------------------------------------------------------
         protected ArrayList SkinFiles
         {
@@ -118,9 +118,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the SkinName Node ("skinName")
+        /// Gets the name of the SkinName Node ("skinName").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinNameNodeName
         {
@@ -132,9 +132,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the RootName of the Skin
+        /// Gets the RootName of the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinRoot
         {
@@ -146,9 +146,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Type of the Skin
+        /// Gets the Type of the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string SkinType
         {
@@ -160,9 +160,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -199,10 +199,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node
+        /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
-        /// <param name="file">The file represented by the node</param>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -226,9 +226,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ReadCustomManifest method reads the custom manifest items
+        /// The ReadCustomManifest method reads the custom manifest items.
         /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ReadCustomManifest(XPathNavigator nav)
         {
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the skin component
+        /// The Install method installs the skin component.
         /// </summary>
         public override void Install()
         {
@@ -354,7 +354,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
-        /// that one of the other components fails
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -377,7 +377,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the skin component
+        /// The UnInstall method uninstalls the skin component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

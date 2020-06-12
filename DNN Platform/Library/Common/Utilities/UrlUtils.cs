@@ -113,7 +113,7 @@ namespace DotNetNuke.Common.Utilities
         /// in order to prep for navigateUrl.
         /// we don't ever want a tabid, a ctl and a language parameter in the qs
         /// either, the portalid param is not allowed when the tab is a supertab
-        /// (because NavigateUrl adds the portalId param to the qs)
+        /// (because NavigateUrl adds the portalId param to the qs).
         /// </summary>
         /// <returns></returns>
         public static string[] GetQSParamsForNavigateURL()
@@ -163,10 +163,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>
         /// check if connection is HTTPS
-        /// or is HTTP but with ssloffload enabled on a secure page
+        /// or is HTTP but with ssloffload enabled on a secure page.
         /// </summary>
-        /// <param name="request">current request</param>
-        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise</returns>
+        /// <param name="request">current request.</param>
+        /// <returns>true if HTTPS or if HTTP with an SSL offload header value, false otherwise.</returns>
         public static bool IsSecureConnectionOrSslOffload(HttpRequest request)
         {
             var isSecureTab = PortalController.Instance.GetCurrentPortalSettings()?.ActiveTab.IsSecure ?? false;

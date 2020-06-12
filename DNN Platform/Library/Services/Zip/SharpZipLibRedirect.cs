@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Zip
     /// Once this remapping has been completed, this code will not be used again until the next
     /// restart of the DNN application.
     ///
-    /// final solution taken from https://raw.githubusercontent.com/2sic/2sxc/master/2sxc%20Dnn/Dnn920/SharpZipLibRedirect.cs
+    /// final solution taken from https://raw.githubusercontent.com/2sic/2sxc/master/2sxc%20Dnn/Dnn920/SharpZipLibRedirect.cs.
     /// </remarks>
     internal class SharpZipLibRedirect
     {
@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Zip
 
         /// <summary>
         /// Registration call - should only be called once
-        /// Has extra security to prevent it from running multiple times
+        /// Has extra security to prevent it from running multiple times.
         /// </summary>
         internal static void RegisterSharpZipLibRedirect()
         {

@@ -27,7 +27,7 @@ using Directory = System.IO.Directory;
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     /// <summary>
-    ///  Testing various aspects of LuceneController
+    ///  Testing various aspects of LuceneController.
     /// </summary>
     [TestFixture]
     public class LuceneControllerTests
@@ -129,7 +129,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         }
 
         /// <summary>
-        /// Adds standarad SearchDocs in Lucene Index
+        /// Adds standarad SearchDocs in Lucene Index.
         /// </summary>
         private void AddStandardDocs()
         {

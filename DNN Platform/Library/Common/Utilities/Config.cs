@@ -21,7 +21,7 @@ namespace DotNetNuke.Common.Utilities
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Config class provides access to the web.config file
+    /// The Config class provides access to the web.config file.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -51,12 +51,12 @@ namespace DotNetNuke.Common.Utilities
 
         /// <summary>
         /// Adds a new AppSetting to Web.Config. The update parameter allows you to define if,
-        /// when the key already exists, this need to be updated or not
+        /// when the key already exists, this need to be updated or not.
         /// </summary>
-        /// <param name="xmlDoc">xml representation of the web.config file</param>
-        /// <param name="key">key to be created</param>
-        /// <param name="value">value to be created</param>
-        /// <param name="update">If setting already exists, it will be updated if this parameter true</param>
+        /// <param name="xmlDoc">xml representation of the web.config file.</param>
+        /// <param name="key">key to be created.</param>
+        /// <param name="value">value to be created.</param>
+        /// <param name="update">If setting already exists, it will be updated if this parameter true.</param>
         /// <returns></returns>
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value, bool update)
         {
@@ -89,11 +89,11 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Adds a new AppSetting to Web.Config. If the key already exists, it will be updated with the new value
+        /// Adds a new AppSetting to Web.Config. If the key already exists, it will be updated with the new value.
         /// </summary>
-        /// <param name="xmlDoc">xml representation of the web.config file</param>
-        /// <param name="key">key to be created</param>
-        /// <param name="value">value to be created</param>
+        /// <param name="xmlDoc">xml representation of the web.config file.</param>
+        /// <param name="key">key to be created.</param>
+        /// <param name="value">value to be created.</param>
         /// <returns></returns>
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value)
         {
@@ -169,7 +169,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the default connection String as specified in the provider.
         /// </summary>
-        /// <returns>The connection String</returns>
+        /// <returns>The connection String.</returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString()
@@ -179,10 +179,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the specified connection String
+        /// Gets the specified connection String.
         /// </summary>
-        /// <param name="name">Name of Connection String to return</param>
-        /// <returns>The connection String</returns>
+        /// <param name="name">Name of Connection String to return.</param>
+        /// <returns>The connection String.</returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string GetConnectionString(string name)
@@ -212,9 +212,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Returns the decryptionkey from webconfig machinekey
+        ///   Returns the decryptionkey from webconfig machinekey.
         /// </summary>
-        /// <returns>decryption key</returns>
+        /// <returns>decryption key.</returns>
         /// -----------------------------------------------------------------------------
         public static string GetDecryptionkey()
         {
@@ -224,9 +224,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Returns the fcnMode from webconfig httpRuntime
+        ///   Returns the fcnMode from webconfig httpRuntime.
         /// </summary>
-        /// <returns>decryption key</returns>
+        /// <returns>decryption key.</returns>
         /// -----------------------------------------------------------------------------
         public static string GetFcnMode()
         {
@@ -237,9 +237,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Returns the maximum file size allowed to be uploaded to the application in bytes
+        ///   Returns the maximum file size allowed to be uploaded to the application in bytes.
         /// </summary>
-        /// <returns>Size in bytes</returns>
+        /// <returns>Size in bytes.</returns>
         /// -----------------------------------------------------------------------------
         public static long GetMaxUploadSize()
         {
@@ -273,9 +273,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Returns the maximum file size allowed to be uploaded based on the request filter limit
+        ///   Returns the maximum file size allowed to be uploaded based on the request filter limit.
         /// </summary>
-        /// <returns>Size in megabytes</returns>
+        /// <returns>Size in megabytes.</returns>
         /// -----------------------------------------------------------------------------
         public static long GetRequestFilterSize()
         {
@@ -299,7 +299,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Sets the maximum file size allowed to be uploaded to the application in bytes
+        ///   Sets the maximum file size allowed to be uploaded to the application in bytes.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void SetMaxUploadSize(long newSize)
@@ -336,9 +336,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the specified upgrade connection string
+        /// Gets the specified upgrade connection string.
         /// </summary>
-        /// <returns>The connection String</returns>
+        /// <returns>The connection String.</returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string GetUpgradeConnectionString()
@@ -348,9 +348,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the specified database owner
+        /// Gets the specified database owner.
         /// </summary>
-        /// <returns>The database owner</returns>
+        /// <returns>The database owner.</returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string GetDataBaseOwner()
@@ -409,9 +409,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the specified object qualifier
+        /// Gets the specified object qualifier.
         /// </summary>
-        /// <returns>The object qualifier</returns>
+        /// <returns>The object qualifier.</returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string GetObjectQualifer()
@@ -448,11 +448,11 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Get's optional persistent cookie timeout value from web.config
+        ///   Get's optional persistent cookie timeout value from web.config.
         /// </summary>
-        /// <returns>persistent cookie value</returns>
+        /// <returns>persistent cookie value.</returns>
         /// <remarks>
-        ///   allows users to override default asp.net values
+        ///   allows users to override default asp.net values.
         /// </remarks>
         public static int GetPersistentCookieTimeout()
         {
@@ -475,9 +475,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the specified provider path
+        /// Gets the specified provider path.
         /// </summary>
-        /// <returns>The provider path</returns>
+        /// <returns>The provider path.</returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
         public static string GetProviderPath(string type)
@@ -686,7 +686,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates the specified upgrade connection string
+        /// Updates the specified upgrade connection string.
         /// </summary>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -792,12 +792,12 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Gets the path for the specificed Config file
+        ///   Gets the path for the specificed Config file.
         /// </summary>
-        /// <param name = "file">The config.file to get the path for</param>
-        /// <returns>fully qualified path to the file</returns>
+        /// <param name = "file">The config.file to get the path for.</param>
+        /// <returns>fully qualified path to the file.</returns>
         /// <remarks>
-        ///   Will copy the file from the template directory as requried
+        ///   Will copy the file from the template directory as requried.
         /// </remarks>
         public static string GetPathToFile(ConfigFileType file)
         {
@@ -805,13 +805,13 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        ///   Gets the path for the specificed Config file
+        ///   Gets the path for the specificed Config file.
         /// </summary>
-        /// <param name = "file">The config.file to get the path for</param>
-        /// <param name = "overwrite">force an overwrite of the config file</param>
-        /// <returns>fully qualified path to the file</returns>
+        /// <param name = "file">The config.file to get the path for.</param>
+        /// <param name = "overwrite">force an overwrite of the config file.</param>
+        /// <returns>fully qualified path to the file.</returns>
         /// <remarks>
-        ///   Will copy the file from the template directory as requried
+        ///   Will copy the file from the template directory as requried.
         /// </remarks>
         public static string GetPathToFile(ConfigFileType file, bool overwrite)
         {
@@ -843,7 +843,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// UpdateInstallVersion, but only if the setting does not already exist
+        /// UpdateInstallVersion, but only if the setting does not already exist.
         /// </summary>
         /// <returns></returns>
         public static string UpdateInstallVersion(Version version)

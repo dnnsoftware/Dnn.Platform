@@ -18,7 +18,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
         /// <summary>
-        /// Gets or sets the Action to execute
+        /// Gets or sets the Action to execute.
         /// </summary>
         public Action Action { get; set; }
 
@@ -28,7 +28,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the maximum number of retries to attempt
+        /// Gets or sets the maximum number of retries to attempt.
         /// </summary>
         public int MaxRetries { get; set; }
 
@@ -56,7 +56,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         }
 
         /// <summary>
-        /// Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes
+        /// Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes.
         /// </summary>
         public static Action<int> SleepAction { get; set; }
 

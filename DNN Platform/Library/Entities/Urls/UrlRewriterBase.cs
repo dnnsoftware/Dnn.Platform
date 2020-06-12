@@ -14,7 +14,7 @@ using DotNetNuke.Entities.Portals;
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// Abstract class to allow derived classes of different implementations of Url Rewriter
+    /// Abstract class to allow derived classes of different implementations of Url Rewriter.
     /// </summary>
     public abstract class UrlRewriterBase
     {

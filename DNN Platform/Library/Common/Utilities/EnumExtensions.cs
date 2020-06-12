@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
-    /// Extensions for enumeration of KeyValue Paire
+    /// Extensions for enumeration of KeyValue Paire.
     /// </summary>
     public static class EnumExtensions
     {
@@ -17,7 +17,7 @@ namespace DotNetNuke.Common.Utilities
         /// To the key value pairs.
         /// </summary>
         /// <param name="enumType">Type of the enum defined by GetType.</param>
-        /// <returns>A list of Key Value pairs</returns>
+        /// <returns>A list of Key Value pairs.</returns>
         public static List<KeyValuePair<int, string>> ToKeyValuePairs(this Enum enumType)
         {
             var pairs = new List<KeyValuePair<int, string>>();

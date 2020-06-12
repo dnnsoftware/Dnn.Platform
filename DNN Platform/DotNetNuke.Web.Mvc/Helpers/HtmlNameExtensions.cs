@@ -28,7 +28,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         }
 
         /// <summary>
-        /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string
+        /// Gets the ID of the <see cref="T:DotNetNuke.Web.Mvc.HtmlHelper"/> string.
         /// </summary>
         ///
         /// <returns>

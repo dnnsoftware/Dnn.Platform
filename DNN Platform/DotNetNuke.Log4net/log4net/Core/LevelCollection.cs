@@ -28,7 +28,7 @@ namespace log4net.Core
     /// <summary>
     /// A strongly-typed collection of <see cref="Level"/> objects.
     /// </summary>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class LevelCollection : ICollection, IList, IEnumerable
 #if !NETSTANDARD1_3
         , ICloneable
@@ -70,7 +70,7 @@ namespace log4net.Core
         /// <summary>
         /// Creates a read-only wrapper for a <c>LevelCollection</c> instance.
         /// </summary>
-        /// <param name="list">list to create a readonly wrapper arround</param>
+        /// <param name="list">list to create a readonly wrapper arround.</param>
         /// <returns>
         /// A <c>LevelCollection</c> wrapper that is read-only.
         /// </returns>
@@ -140,7 +140,7 @@ namespace log4net.Core
 
         /// <summary>
         /// Type visible only to our subclasses
-        /// Used to access protected constructor
+        /// Used to access protected constructor.
         /// </summary>
         protected internal enum Tag
         {
@@ -151,7 +151,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Allow subclasses to avoid our default constructors
+        /// Allow subclasses to avoid our default constructors.
         /// </summary>
         /// <param name="tag"></param>
         protected internal LevelCollection(Tag tag)
@@ -215,7 +215,7 @@ namespace log4net.Core
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para><paramref name="index"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="LevelCollection.Count"/>.</para>
         /// </exception>
@@ -323,7 +323,7 @@ namespace log4net.Core
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="Level"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para><paramref name="index"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="LevelCollection.Count"/>.</para>
         /// </exception>
@@ -370,7 +370,7 @@ namespace log4net.Core
         /// </summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para><paramref name="index"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="LevelCollection.Count"/>.</para>
         /// </exception>
@@ -396,7 +396,7 @@ namespace log4net.Core
         /// <summary>
         /// Gets a value indicating whether the collection has a fixed size.
         /// </summary>
-        /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
+        /// <value>true if the collection has a fixed size; otherwise, false. The default is false.</value>
         public virtual bool IsFixedSize
         {
             get { return false; }
@@ -405,7 +405,7 @@ namespace log4net.Core
         /// <summary>
         /// Gets a value indicating whether the IList is read-only.
         /// </summary>
-        /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
+        /// <value>true if the collection is read-only; otherwise, false. The default is false.</value>
         public virtual bool IsReadOnly
         {
             get { return false; }
@@ -520,7 +520,7 @@ namespace log4net.Core
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="i"/> is less than zero</para>
+        /// <para><paramref name="i"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="i"/> is equal to or greater than <see cref="LevelCollection.Count"/>.</para>
         /// </exception>
@@ -530,7 +530,7 @@ namespace log4net.Core
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="i"/> is less than zero</para>
+        /// <para><paramref name="i"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="i"/> is equal to or greater than <see cref="LevelCollection.Count"/>.</para>
         /// </exception>

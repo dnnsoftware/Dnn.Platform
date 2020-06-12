@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// The StringLengthComparer class is a comparer override used for sorting portal aliases by length
+    /// The StringLengthComparer class is a comparer override used for sorting portal aliases by length.
     /// </summary>
     internal class StringLengthComparer : Comparer<string>
     {

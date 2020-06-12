@@ -18,7 +18,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Controllers.Search
 {
     /// <summary>
-    ///  Testing various aspects of SearchController
+    ///  Testing various aspects of SearchController.
     /// </summary>
     [TestFixture]
     public class SearchHelperTests

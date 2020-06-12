@@ -40,16 +40,16 @@ namespace log4net.ObjectRenderer
     /// See the <see cref="RenderObject"/> method for details of the output.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class DefaultRenderer : IObjectRenderer
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor
+        /// Default constructor.
         /// </para>
         /// </remarks>
         public DefaultRenderer()
@@ -57,11 +57,11 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Render the object <paramref name="obj"/> to a string
+        /// Render the object <paramref name="obj"/> to a string.
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers</param>
-        /// <param name="obj">The object to render</param>
-        /// <param name="writer">The writer to render to</param>
+        /// <param name="rendererMap">The map used to lookup renderers.</param>
+        /// <param name="obj">The object to render.</param>
+        /// <param name="writer">The writer to render to.</param>
         /// <remarks>
         /// <para>
         /// Render the object <paramref name="obj"/> to a string.
@@ -209,11 +209,11 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Render the array argument into a string
+        /// Render the array argument into a string.
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers</param>
-        /// <param name="array">the array to render</param>
-        /// <param name="writer">The writer to render to</param>
+        /// <param name="rendererMap">The map used to lookup renderers.</param>
+        /// <param name="array">the array to render.</param>
+        /// <param name="writer">The writer to render to.</param>
         /// <remarks>
         /// <para>
         /// For a one dimensional array this is the
@@ -253,11 +253,11 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Render the enumerator argument into a string
+        /// Render the enumerator argument into a string.
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers</param>
-        /// <param name="enumerator">the enumerator to render</param>
-        /// <param name="writer">The writer to render to</param>
+        /// <param name="rendererMap">The map used to lookup renderers.</param>
+        /// <param name="enumerator">the enumerator to render.</param>
+        /// <param name="writer">The writer to render to.</param>
         /// <remarks>
         /// <para>
         /// Rendered as an open brace, followed by a comma
@@ -285,11 +285,11 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Render the DictionaryEntry argument into a string
+        /// Render the DictionaryEntry argument into a string.
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers</param>
-        /// <param name="entry">the DictionaryEntry to render</param>
-        /// <param name="writer">The writer to render to</param>
+        /// <param name="rendererMap">The map used to lookup renderers.</param>
+        /// <param name="entry">the DictionaryEntry to render.</param>
+        /// <param name="writer">The writer to render to.</param>
         /// <remarks>
         /// <para>
         /// Render the key, an equals sign ('='), and the value (using the appropriate

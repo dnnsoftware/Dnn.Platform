@@ -10,7 +10,7 @@ using System.Web.UI.WebControls;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   RssHyperLink control - works with RssHttpHandler
+    ///   RssHyperLink control - works with RssHttpHandler.
     /// </summary>
     public class RssHyperLink : HyperLink
     {

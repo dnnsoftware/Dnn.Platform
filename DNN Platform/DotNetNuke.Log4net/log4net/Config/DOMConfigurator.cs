@@ -44,13 +44,13 @@ namespace log4net.Config
     /// Configures a <see cref="ILoggerRepository"/> using an Xml tree.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [Obsolete("Use XmlConfigurator instead of DOMConfigurator. Scheduled removal in v10.0.0.")]
     public sealed class DOMConfigurator
     {
         /// <summary>
-        /// Private constructor
+        /// Private constructor.
         /// </summary>
         private DOMConfigurator()
         {
@@ -98,7 +98,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Configures log4net using a <c>log4net</c> element
+        /// Configures log4net using a <c>log4net</c> element.
         /// </summary>
         /// <remarks>
         /// <para>

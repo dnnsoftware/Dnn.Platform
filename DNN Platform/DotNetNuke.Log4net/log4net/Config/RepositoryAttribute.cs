@@ -44,8 +44,8 @@ namespace log4net.Config
     /// once per assembly.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     [Serializable]
     public /*sealed*/ class RepositoryAttribute : Attribute

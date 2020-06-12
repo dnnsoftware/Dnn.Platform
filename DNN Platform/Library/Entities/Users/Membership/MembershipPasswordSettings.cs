@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Users.Membership
         public int ResetLinkValidity { get; set; }
 
         /// <summary>
-        /// Gets minimum number of non-alphanumeric characters setting for password strength indicator
+        /// Gets minimum number of non-alphanumeric characters setting for password strength indicator.
         /// </summary>
         public int MinNonAlphanumericCharacters
         {
@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>
-        /// Gets minimum length of password setting for password strength indicator
+        /// Gets minimum length of password setting for password strength indicator.
         /// </summary>
         public int MinPasswordLength
         {
@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Users.Membership
         }
 
         /// <summary>
-        /// Gets currently configured password format for installation
+        /// Gets currently configured password format for installation.
         /// </summary>
         public PasswordFormat PasswordFormat
         {

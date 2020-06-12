@@ -17,19 +17,19 @@ namespace DotNetNuke.Services.Search.Internals
     public interface IInternalSearchController
     {
         /// <summary>
-        /// Get a List of Search Content Source that participate in Search
+        /// Get a List of Search Content Source that participate in Search.
         /// </summary>
         /// <returns></returns>
         IEnumerable<SearchContentSource> GetSearchContentSourceList(int portalId);
 
         /// <summary>
-        /// Returns current search indexs general information
+        /// Returns current search indexs general information.
         /// </summary>
         /// <returns></returns>
         SearchStatistics GetSearchStatistics();
 
         /// <summary>
-        /// Get Friendly Display Name for the Search Result
+        /// Get Friendly Display Name for the Search Result.
         /// </summary>
         /// <remarks>SearchTypeId is used primarily to obtain this value. Multiple SearchTypeId can map to same Display Name,
         /// e.g. Tab, Module, Html/Module all map to Pages.
@@ -39,15 +39,15 @@ namespace DotNetNuke.Services.Search.Internals
         string GetSearchDocumentTypeDisplayName(SearchResult searchResult);
 
         /// <summary>
-        /// Add a Search Document to Search Index
+        /// Add a Search Document to Search Index.
         /// </summary>
         void AddSearchDocument(SearchDocument searchDocument);
 
         /// <summary>
-        /// Adds the collection of search documents to the search index
+        /// Adds the collection of search documents to the search index.
         /// </summary>
         /// <remarks>
-        /// The controller auto-commits at the end of this method
+        /// The controller auto-commits at the end of this method.
         /// </remarks>
         /// <param name="searchDocumentList"></param>
         void AddSearchDocuments(IEnumerable<SearchDocument> searchDocumentList);
@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Search.Internals
         void DeleteSearchDocument(SearchDocument searchDocument);
 
         /// <summary>
-        /// Delete all search documents related to a particula module
+        /// Delete all search documents related to a particula module.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="moduleId"></param>
@@ -68,14 +68,14 @@ namespace DotNetNuke.Services.Search.Internals
         void DeleteSearchDocumentsByModule(int portalId, int moduleId, int moduleDefId);
 
         /// <summary>
-        /// Deletes all documents of a specified portal and search type (used for re-index operation)
+        /// Deletes all documents of a specified portal and search type (used for re-index operation).
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="searchTypeId"></param>
         void DeleteAllDocuments(int portalId, int searchTypeId);
 
         /// <summary>
-        /// Commits individually added/deleted documents to the search index
+        /// Commits individually added/deleted documents to the search index.
         /// </summary>
         void Commit();
 

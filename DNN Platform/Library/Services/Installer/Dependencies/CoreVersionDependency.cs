@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CoreVersionDependency determines whether the CoreVersion is correct
+    /// The CoreVersionDependency determines whether the CoreVersion is correct.
     /// </summary>
     /// <remarks>
     /// </remarks>

@@ -32,7 +32,7 @@ using log4net.Util.TypeConverters;
 namespace log4net.Layout
 {
     /// <summary>
-    /// Type converter for the <see cref="IRawLayout"/> interface
+    /// Type converter for the <see cref="IRawLayout"/> interface.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -41,15 +41,15 @@ namespace log4net.Layout
     /// the <see cref="IRawLayout"/> interface using the <see cref="Layout2RawLayoutAdapter"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class RawLayoutConverter : IConvertFrom
     {
         /// <summary>
-        /// Can the sourceType be converted to an <see cref="IRawLayout"/>
+        /// Can the sourceType be converted to an <see cref="IRawLayout"/>.
         /// </summary>
-        /// <param name="sourceType">the source to be to be converted</param>
-        /// <returns><c>true</c> if the source type can be converted to <see cref="IRawLayout"/></returns>
+        /// <param name="sourceType">the source to be to be converted.</param>
+        /// <returns><c>true</c> if the source type can be converted to <see cref="IRawLayout"/>.</returns>
         /// <remarks>
         /// <para>
         /// Test if the <paramref name="sourceType"/> can be converted to a
@@ -64,10 +64,10 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Convert the value to a <see cref="IRawLayout"/> object
+        /// Convert the value to a <see cref="IRawLayout"/> object.
         /// </summary>
-        /// <param name="source">the value to convert</param>
-        /// <returns>the <see cref="IRawLayout"/> object</returns>
+        /// <param name="source">the value to convert.</param>
+        /// <returns>the <see cref="IRawLayout"/> object.</returns>
         /// <remarks>
         /// <para>
         /// Convert the <paramref name="source"/> object to a

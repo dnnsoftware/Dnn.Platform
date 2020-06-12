@@ -25,7 +25,7 @@ using System;
 namespace log4net.Util.TypeConverters
 {
     /// <summary>
-    /// Attribute used to associate a type converter
+    /// Attribute used to associate a type converter.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -38,22 +38,22 @@ namespace log4net.Util.TypeConverters
     /// type of the type converter on the attribute.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Enum)]
     public sealed class TypeConverterAttribute : Attribute
     {
         /// <summary>
-        /// The string type name of the type converter
+        /// The string type name of the type converter.
         /// </summary>
         private string m_typeName = null;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor
+        /// Default constructor.
         /// </para>
         /// </remarks>
         public TypeConverterAttribute()
@@ -61,9 +61,9 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// Create a new type converter attribute for the specified type name
+        /// Create a new type converter attribute for the specified type name.
         /// </summary>
-        /// <param name="typeName">The string type name of the type converter</param>
+        /// <param name="typeName">The string type name of the type converter.</param>
         /// <remarks>
         /// <para>
         /// The type specified must implement the <see cref="IConvertFrom"/>
@@ -76,9 +76,9 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// Create a new type converter attribute for the specified type
+        /// Create a new type converter attribute for the specified type.
         /// </summary>
-        /// <param name="converterType">The type of the type converter</param>
+        /// <param name="converterType">The type of the type converter.</param>
         /// <remarks>
         /// <para>
         /// The type specified must implement the <see cref="IConvertFrom"/>
@@ -91,10 +91,10 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// Gets or sets the string type name of the type converter
+        /// Gets or sets the string type name of the type converter.
         /// </summary>
         /// <value>
-        /// The string type name of the type converter
+        /// The string type name of the type converter.
         /// </value>
         /// <remarks>
         /// <para>

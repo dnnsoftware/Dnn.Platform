@@ -31,7 +31,7 @@ using log4net.Util;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Write the TimeStamp to the output
+    /// Write the TimeStamp to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -47,14 +47,14 @@ namespace log4net.Layout.Pattern
     /// </para>
     /// </remarks>
     /// <seealso cref="DatePatternConverter"/>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal class UtcDatePatternConverter : DatePatternConverter
     {
         /// <summary>
-        /// Write the TimeStamp to the output
+        /// Write the TimeStamp to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// Pass the <see cref="LoggingEvent.TimeStamp"/> to the <see cref="IDateFormatter"/>

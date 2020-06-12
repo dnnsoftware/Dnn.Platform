@@ -28,7 +28,7 @@ using log4net.Core;
 namespace log4net.Util
 {
     /// <summary>
-    /// Manages a mapping from levels to <see cref="LevelMappingEntry"/>
+    /// Manages a mapping from levels to <see cref="LevelMappingEntry"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,11 +36,11 @@ namespace log4net.Util
     /// to <see cref="LevelMappingEntry"/> subclasses.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class LevelMapping : IOptionHandler
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -52,9 +52,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Add a <see cref="LevelMappingEntry"/> to this mapping
+        /// Add a <see cref="LevelMappingEntry"/> to this mapping.
         /// </summary>
-        /// <param name="entry">the entry to add</param>
+        /// <param name="entry">the entry to add.</param>
         /// <remarks>
         /// <para>
         /// If a <see cref="LevelMappingEntry"/> has previously been added
@@ -73,10 +73,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Lookup the mapping for the specified level
+        /// Lookup the mapping for the specified level.
         /// </summary>
-        /// <param name="level">the level to lookup</param>
-        /// <returns>the <see cref="LevelMappingEntry"/> for the level or <c>null</c> if no mapping found</returns>
+        /// <param name="level">the level to lookup.</param>
+        /// <returns>the <see cref="LevelMappingEntry"/> for the level or <c>null</c> if no mapping found.</returns>
         /// <remarks>
         /// <para>
         /// Lookup the value for the specified level. Finds the nearest
@@ -104,11 +104,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Initialize options
+        /// Initialize options.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Caches the sorted list of <see cref="LevelMappingEntry"/> in an array
+        /// Caches the sorted list of <see cref="LevelMappingEntry"/> in an array.
         /// </para>
         /// </remarks>
         public void ActivateOptions()

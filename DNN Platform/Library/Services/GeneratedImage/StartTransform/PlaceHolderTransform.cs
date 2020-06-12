@@ -9,37 +9,37 @@ using System.Drawing.Text;
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
     /// <summary>
-    /// Placeholder ImageTransform class
+    /// Placeholder ImageTransform class.
     /// </summary>
     public class PlaceholderTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets the width of the placeholder image
+        /// Gets or sets the width of the placeholder image.
         /// </summary>
         public int Width { get; set; }
 
         /// <summary>
-        /// Gets or sets the Height of the placeholder image
+        /// Gets or sets the Height of the placeholder image.
         /// </summary>
         public int Height { get; set; }
 
         /// <summary>
-        /// Gets or sets the Color of the border and text element
+        /// Gets or sets the Color of the border and text element.
         /// </summary>
         public Color Color { get; set; }
 
         /// <summary>
-        /// Gets or sets the backcolor of the placeholder element
+        /// Gets or sets the backcolor of the placeholder element.
         /// </summary>
         public Color BackColor { get; set; }
 
         /// <summary>
-        /// Gets or sets the text of the placeholder image. if blank dimension will be used
+        /// Gets or sets the text of the placeholder image. if blank dimension will be used.
         /// </summary>
         public string Text { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
 
@@ -57,10 +57,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
-        /// Processes an input image returning a placeholder image
+        /// Processes an input image returning a placeholder image.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             // Check dimensions

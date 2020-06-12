@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Late-bound RSS element (used for late bound item and image)
+    ///   Late-bound RSS element (used for late bound item and image).
     /// </summary>
     public sealed class GenericRssElement : RssElementBase
     {

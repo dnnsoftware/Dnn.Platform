@@ -14,7 +14,7 @@ using DotNetNuke.Entities.Modules;
 namespace DotNetNuke.Services.Social.Messaging
 {
     /// <summary>
-    /// Read Status of a Message
+    /// Read Status of a Message.
     /// </summary>
     public enum MessageReadStatus
     {

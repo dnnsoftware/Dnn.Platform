@@ -16,11 +16,11 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     public class PaletteQuantizer : Quantizer
     {
         /// <summary>
-        /// Construct the palette quantizer
+        /// Construct the palette quantizer.
         /// </summary>
-        /// <param name="palette">The color palette to quantize to</param>
+        /// <param name="palette">The color palette to quantize to.</param>
         /// <remarks>
-        /// Palette quantization only requires a single quantization step
+        /// Palette quantization only requires a single quantization step.
         /// </remarks>
         public PaletteQuantizer(ArrayList palette)
             : base(true)
@@ -32,10 +32,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm
+        /// Override this to process the pixel in the second pass of the algorithm.
         /// </summary>
-        /// <param name="pixel">The pixel to quantize</param>
-        /// <returns>The quantized value</returns>
+        /// <param name="pixel">The pixel to quantize.</param>
+        /// <returns>The quantized value.</returns>
         protected override byte QuantizePixel(Color32 pixel)
         {
             byte    colorIndex = 0;
@@ -105,10 +105,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Retrieve the palette for the quantized image
+        /// Retrieve the palette for the quantized image.
         /// </summary>
-        /// <param name="palette">Any old palette, this is overrwritten</param>
-        /// <returns>The new color palette</returns>
+        /// <param name="palette">Any old palette, this is overrwritten.</param>
+        /// <returns>The new color palette.</returns>
         protected override ColorPalette GetPalette(ColorPalette palette)
         {
             for (int index = 0; index < this._colors.Length; index++)
@@ -120,12 +120,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Lookup table for colors
+        /// Lookup table for colors.
         /// </summary>
         private readonly Hashtable _colorMap;
 
         /// <summary>
-        /// List of all colors in the palette
+        /// List of all colors in the palette.
         /// </summary>
         protected Color[] _colors;
     }

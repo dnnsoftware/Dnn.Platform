@@ -252,7 +252,7 @@ namespace DotNetNuke.Tests.Content
             Assert.AreEqual(0, emptyFiles.Count);
         }
 
-        /// <remarks>This test should be moved elsewhere (cb)</remarks>
+        /// <remarks>This test should be moved elsewhere (cb).</remarks>
         [Test]
         public void Set_MetaData_To_Same_Value_Doesnt_Update_Database_Entry()
         {

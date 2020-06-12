@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNRegionEditControl control provides a standard UI component for editing
-    /// Regions
+    /// Regions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNRegionEditControl runat=server></{0}:DNNRegionEditControl>")]
@@ -100,14 +100,14 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the parent key of the List to display
+        /// Gets or sets the parent key of the List to display.
         /// </summary>
         public string ParentKey { get; set; }
 
         private List<ListEntryInfo> _listEntries;
 
         /// <summary>
-        /// Gets the ListEntryInfo objects associated witht the control
+        /// Gets the ListEntryInfo objects associated witht the control.
         /// </summary>
         protected IEnumerable<ListEntryInfo> ListEntries
         {

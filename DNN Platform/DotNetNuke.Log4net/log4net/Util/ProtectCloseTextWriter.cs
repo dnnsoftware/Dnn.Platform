@@ -29,7 +29,7 @@ using log4net.Core;
 namespace log4net.Util
 {
     /// <summary>
-    /// A <see cref="TextWriter"/> that ignores the <see cref="Close"/> message
+    /// A <see cref="TextWriter"/> that ignores the <see cref="Close"/> message.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -37,16 +37,16 @@ namespace log4net.Util
     /// to protect a writer from being closed by a client.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class ProtectCloseTextWriter : TextWriterAdapter
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
-        /// <param name="writer">the writer to actually write to</param>
+        /// <param name="writer">the writer to actually write to.</param>
         /// <remarks>
         /// <para>
-        /// Create a new ProtectCloseTextWriter using a writer
+        /// Create a new ProtectCloseTextWriter using a writer.
         /// </para>
         /// </remarks>
         public ProtectCloseTextWriter(TextWriter writer)
@@ -55,12 +55,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Attach this instance to a different underlying <see cref="TextWriter"/>
+        /// Attach this instance to a different underlying <see cref="TextWriter"/>.
         /// </summary>
-        /// <param name="writer">the writer to attach to</param>
+        /// <param name="writer">the writer to attach to.</param>
         /// <remarks>
         /// <para>
-        /// Attach this instance to a different underlying <see cref="TextWriter"/>
+        /// Attach this instance to a different underlying <see cref="TextWriter"/>.
         /// </para>
         /// </remarks>
         public void Attach(TextWriter writer)

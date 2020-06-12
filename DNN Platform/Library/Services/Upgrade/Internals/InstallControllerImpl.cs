@@ -25,16 +25,16 @@ namespace DotNetNuke.Services.Upgrade.Internals
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Controller class for Installer
+    ///   The Controller class for Installer.
     /// </summary>
     /// <remarks>
     /// </remarks>
     internal class InstallControllerImpl : IInstallController
     {
         /// <summary>
-        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file
+        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.
         /// </summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file</returns>
+        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public ConnectionConfig GetConnectionFromWebConfig()
         {
             var connectionConfig = new ConnectionConfig();
@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         }
 
         /// <summary>
-        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config
+        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.
         /// </summary>
         public void SetInstallConfig(InstallConfig installConfig)
         {
@@ -271,9 +271,9 @@ namespace DotNetNuke.Services.Upgrade.Internals
         }
 
         /// <summary>
-        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config
+        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.
         /// </summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file</returns>
+        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         public InstallConfig GetInstallConfig()
         {
             var installConfig = new InstallConfig();
@@ -560,7 +560,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
         }
 
         /// <summary>
-        /// Tests the Database Connection using the database connection config
+        /// Tests the Database Connection using the database connection config.
         /// </summary>
         /// <remarks>
         /// </remarks>

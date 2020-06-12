@@ -81,19 +81,19 @@ namespace log4net.Core
     ///         </item>
     /// </list>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
 #if !NETCF
     [Serializable]
 #endif
     public sealed class Level : IComparable
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
         /// <param name="levelName">The string name of this level.</param>
-        /// <param name="displayName">The display name for this level. This may be localized or otherwise different from the name</param>
+        /// <param name="displayName">The display name for this level. This may be localized or otherwise different from the name.</param>
         /// <remarks>
         /// <para>
         /// Initializes a new instance of the <see cref="Level" /> class with
@@ -122,7 +122,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="level">Integer value for this level, higher values represent more severe levels.</param>
         /// <param name="levelName">The string name of this level.</param>
@@ -228,7 +228,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Returns a hash code
+        /// Returns a hash code.
         /// </summary>
         /// <returns>A hash code for the current <see cref="Level" />.</returns>
         /// <remarks>
@@ -298,8 +298,8 @@ namespace log4net.Core
         /// Returns a value indicating whether a specified <see cref="Level" />
         /// is greater than another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" /></param>
-        /// <param name="r">A <see cref="Level" /></param>
+        /// <param name="l">A <see cref="Level" />.</param>
+        /// <param name="r">A <see cref="Level" />.</param>
         /// <returns>
         /// <c>true</c> if <paramref name="l" /> is greater than
         /// <paramref name="r" />; otherwise, <c>false</c>.
@@ -318,8 +318,8 @@ namespace log4net.Core
         /// Returns a value indicating whether a specified <see cref="Level" />
         /// is less than another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" /></param>
-        /// <param name="r">A <see cref="Level" /></param>
+        /// <param name="l">A <see cref="Level" />.</param>
+        /// <param name="r">A <see cref="Level" />.</param>
         /// <returns>
         /// <c>true</c> if <paramref name="l" /> is less than
         /// <paramref name="r" />; otherwise, <c>false</c>.
@@ -338,8 +338,8 @@ namespace log4net.Core
         /// Returns a value indicating whether a specified <see cref="Level" />
         /// is greater than or equal to another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" /></param>
-        /// <param name="r">A <see cref="Level" /></param>
+        /// <param name="l">A <see cref="Level" />.</param>
+        /// <param name="r">A <see cref="Level" />.</param>
         /// <returns>
         /// <c>true</c> if <paramref name="l" /> is greater than or equal to
         /// <paramref name="r" />; otherwise, <c>false</c>.
@@ -358,8 +358,8 @@ namespace log4net.Core
         /// Returns a value indicating whether a specified <see cref="Level" />
         /// is less than or equal to another specified <see cref="Level" />.
         /// </summary>
-        /// <param name="l">A <see cref="Level" /></param>
-        /// <param name="r">A <see cref="Level" /></param>
+        /// <param name="l">A <see cref="Level" />.</param>
+        /// <param name="r">A <see cref="Level" />.</param>
         /// <returns>
         /// <c>true</c> if <paramref name="l" /> is less than or equal to
         /// <paramref name="r" />; otherwise, <c>false</c>.

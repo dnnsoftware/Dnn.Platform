@@ -35,7 +35,7 @@ namespace DotNetNuke.Framework
     /// Class:      PageBase
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// PageBase provides a custom DotNetNuke base class for pages
+    /// PageBase provides a custom DotNetNuke base class for pages.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
@@ -54,7 +54,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates the Page
+        /// Creates the Page.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected PageBase()
@@ -64,9 +64,9 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State
+        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State.
         /// </summary>
-        /// <returns>A System.Web.UI.PageStatePersister</returns>
+        /// <returns>A System.Web.UI.PageStatePersister.</returns>
         /// -----------------------------------------------------------------------------
         protected override PageStatePersister PageStatePersister
         {
@@ -318,10 +318,10 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// <para>GetControlAttribute looks a the type of control and does it's best to find an AttributeCollection.</para>
         /// </summary>
-        /// <param name="control">Control to find the AttributeCollection on</param>
+        /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="attributeName">Name of key to search for.</param>
-        /// <returns>A string containing the key for the specified control or null if a key attribute wasn't found</returns>
+        /// <returns>A string containing the key for the specified control or null if a key attribute wasn't found.</returns>
         internal static string GetControlAttribute(Control control, ArrayList affectedControls, string attributeName)
         {
             AttributeCollection attributeCollection = null;
@@ -471,7 +471,7 @@ namespace DotNetNuke.Framework
         /// <summary>
         /// <para>ProcessControl peforms the high level localization for a single control and optionally it's children.</para>
         /// </summary>
-        /// <param name="control">Control to find the AttributeCollection on</param>
+        /// <param name="control">Control to find the AttributeCollection on.</param>
         /// <param name="affectedControls">ArrayList that hold the controls that have been localized. This is later used for the removal of the key attribute.</param>
         /// <param name="includeChildren">If true, causes this method to process children of this controls.</param>
         /// <param name="resourceFileRoot">Root Resource File.</param>

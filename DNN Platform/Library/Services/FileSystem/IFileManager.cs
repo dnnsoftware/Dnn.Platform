@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
         /// <param name="contentType">The content type of the file.</param>
-        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <param name="createdByUserID">ID of the user that creates the file.</param>
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, string contentType, int createdByUserID);
 
@@ -66,9 +66,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="fileContent">The content of the file.</param>
         /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
-        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
+        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored.</param>
         /// <param name="contentType">The content type of the file.</param>
-        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <param name="createdByUserID">ID of the user that creates the file.</param>
         /// <returns>A <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> as specified by the parameters.</returns>
         IFileInfo AddFile(IFolderInfo folder, string fileName, Stream fileContent, bool overwrite, bool checkPermissions, bool ignoreWhiteList, string contentType, int createdByUserID);
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.FileSystem
         IFileInfo CopyFile(IFileInfo file, IFolderInfo destinationFolder);
 
         /// <summary>
-        /// Gets the system defined content types
+        /// Gets the system defined content types.
         /// </summary>
         [Obsolete("Deprecated in DNN 7.4.2.  It has been replaced by FileContentTypeManager.Instance.ContentTypes. Scheduled removal in v10.0.0.")]
         IDictionary<string, string> ContentTypes { get; }
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder where to check the existence of the file.</param>
         /// <param name="fileName">The file name to check the existence of.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>A boolean value indicating whether the file exists or not in the specified folder.</returns>
         bool FileExists(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles);
 
@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the file metadata for the specified file.
         /// </summary>
         /// <param name="fileID">The file identifier.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         IFileInfo GetFile(int fileID, bool retrieveUnpublishedFiles);
 
@@ -151,14 +151,14 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder where the file is stored.</param>
         /// <param name="fileName">The name of the file.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         IFileInfo GetFile(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles);
 
         /// <summary>
         /// Gets the file metadata for the specified file.
         /// </summary>
-        /// <param name="portalId">The portal ID or Null.NullInteger for the Host</param>
+        /// <param name="portalId">The portal ID or Null.NullInteger for the Host.</param>
         /// <param name="relativePath">Relative path to the file.</param>
         /// <remarks>Host and portal settings commonly return a relative path to a file.  This method uses that relative path to fetch file metadata.</remarks>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
@@ -167,9 +167,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the file metadata for the specified file.
         /// </summary>
-        /// <param name="portalId">The portal ID or Null.NullInteger for the Host</param>
+        /// <param name="portalId">The portal ID or Null.NullInteger for the Host.</param>
         /// <param name="relativePath">Relative path to the file.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <remarks>Host and portal settings commonly return a relative path to a file.  This method uses that relative path to fetch file metadata.</remarks>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles);
@@ -196,7 +196,7 @@ namespace DotNetNuke.Services.FileSystem
         string GetUrl(IFileInfo file);
 
         /// <summary>
-        /// Gets a flag that dertermines if the file is an Image
+        /// Gets a flag that dertermines if the file is an Image.
         /// </summary>
         /// <param name="file">The file to test.</param>
         /// <returns>The flag as a boolean value.</returns>
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Renames the specified file.
         /// </summary>
-        /// <param name="file">The file to rename</param>
+        /// <param name="file">The file to rename.</param>
         /// <param name="newFileName">The new filename to assign to the file.</param>
         /// <returns>An <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> with the information of the renamed file.</returns>
         IFileInfo RenameFile(IFileInfo file, string newFileName);

@@ -32,7 +32,7 @@ using log4net.Util;
 namespace log4net.Repository
 {
     /// <summary>
-    /// Base implementation of <see cref="ILoggerRepository"/>
+    /// Base implementation of <see cref="ILoggerRepository"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -43,8 +43,8 @@ namespace log4net.Repository
     /// All <see cref="ILoggerRepository"/> types can extend this type.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class LoggerRepositorySkeleton : ILoggerRepository, Appender.IFlushable
     {
         private string m_name;
@@ -64,7 +64,7 @@ namespace log4net.Repository
         private PropertiesDictionary m_properties;
 
         /// <summary>
-        /// Default Constructor
+        /// Default Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -77,9 +77,9 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Construct the repository using specific properties
+        /// Construct the repository using specific properties.
         /// </summary>
-        /// <param name="properties">the properties to set for this repository</param>
+        /// <param name="properties">the properties to set for this repository.</param>
         /// <remarks>
         /// <para>
         /// Initializes the repository with specified properties.
@@ -101,10 +101,10 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Gets or sets the name of the repository
+        /// Gets or sets the name of the repository.
         /// </summary>
         /// <value>
-        /// The string name of the repository
+        /// The string name of the repository.
         /// </value>
         /// <remarks>
         /// <para>
@@ -120,14 +120,14 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Gets or sets the threshold for all events in this repository
+        /// Gets or sets the threshold for all events in this repository.
         /// </summary>
         /// <value>
-        /// The threshold for all events in this repository
+        /// The threshold for all events in this repository.
         /// </value>
         /// <remarks>
         /// <para>
-        /// The threshold for all events in this repository
+        /// The threshold for all events in this repository.
         /// </para>
         /// </remarks>
         public virtual Level Threshold
@@ -205,10 +205,10 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Test if logger exists
+        /// Test if logger exists.
         /// </summary>
-        /// <param name="name">The name of the logger to lookup</param>
-        /// <returns>The Logger object with the name specified</returns>
+        /// <param name="name">The name of the logger to lookup.</param>
+        /// <returns>The Logger object with the name specified.</returns>
         /// <remarks>
         /// <para>
         /// Check if the named logger exists in the repository. If so return
@@ -218,9 +218,9 @@ namespace log4net.Repository
         public abstract ILogger Exists(string name);
 
         /// <summary>
-        /// Returns all the currently defined loggers in the repository
+        /// Returns all the currently defined loggers in the repository.
         /// </summary>
-        /// <returns>All the defined loggers</returns>
+        /// <returns>All the defined loggers.</returns>
         /// <remarks>
         /// <para>
         /// Returns all the currently defined loggers in the repository as an Array.
@@ -229,10 +229,10 @@ namespace log4net.Repository
         public abstract ILogger[] GetCurrentLoggers();
 
         /// <summary>
-        /// Return a new logger instance
+        /// Return a new logger instance.
         /// </summary>
-        /// <param name="name">The name of the logger to retrieve</param>
-        /// <returns>The logger object with the name specified</returns>
+        /// <param name="name">The name of the logger to retrieve.</param>
+        /// <returns>The logger object with the name specified.</returns>
         /// <remarks>
         /// <para>
         /// Return a new logger instance.
@@ -246,7 +246,7 @@ namespace log4net.Repository
         public abstract ILogger GetLogger(string name);
 
         /// <summary>
-        /// Shutdown the repository
+        /// Shutdown the repository.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -268,7 +268,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Reset the repositories configuration to a default state
+        /// Reset the repositories configuration to a default state.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -302,7 +302,7 @@ namespace log4net.Repository
         /// <summary>
         /// Log the logEvent through this repository.
         /// </summary>
-        /// <param name="logEvent">the event to log</param>
+        /// <param name="logEvent">the event to log.</param>
         /// <remarks>
         /// <para>
         /// This method should not normally be used to log.
@@ -397,13 +397,13 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Gets repository specific properties
+        /// Gets repository specific properties.
         /// </summary>
         /// <value>
-        /// Repository specific properties
+        /// Repository specific properties.
         /// </value>
         /// <remarks>
-        /// These properties can be specified on a repository specific basis
+        /// These properties can be specified on a repository specific basis.
         /// </remarks>
         public PropertiesDictionary Properties
         {
@@ -413,7 +413,7 @@ namespace log4net.Repository
         /// <summary>
         /// Returns all the Appenders that are configured as an Array.
         /// </summary>
-        /// <returns>All the Appenders</returns>
+        /// <returns>All the Appenders.</returns>
         /// <remarks>
         /// <para>
         /// Returns all the Appenders that are configured as an Array.
@@ -487,9 +487,9 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Notify the registered listeners that the repository is shutting down
+        /// Notify the registered listeners that the repository is shutting down.
         /// </summary>
-        /// <param name="e">Empty EventArgs</param>
+        /// <param name="e">Empty EventArgs.</param>
         /// <remarks>
         /// <para>
         /// Notify any listeners that this repository is shutting down.
@@ -510,9 +510,9 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Notify the registered listeners that the repository has had its configuration reset
+        /// Notify the registered listeners that the repository has had its configuration reset.
         /// </summary>
-        /// <param name="e">Empty EventArgs</param>
+        /// <param name="e">Empty EventArgs.</param>
         /// <remarks>
         /// <para>
         /// Notify any listeners that this repository's configuration has been reset.
@@ -533,9 +533,9 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Notify the registered listeners that the repository has had its configuration changed
+        /// Notify the registered listeners that the repository has had its configuration changed.
         /// </summary>
-        /// <param name="e">Empty EventArgs</param>
+        /// <param name="e">Empty EventArgs.</param>
         /// <remarks>
         /// <para>
         /// Notify any listeners that this repository's configuration has changed.
@@ -556,9 +556,9 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Raise a configuration changed event on this repository
+        /// Raise a configuration changed event on this repository.
         /// </summary>
-        /// <param name="e">EventArgs.Empty</param>
+        /// <param name="e">EventArgs.Empty.</param>
         /// <remarks>
         /// <para>
         /// Applications that programmatically change the configuration of the repository should

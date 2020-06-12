@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The AuthenticationPackageWriter class
+    /// The AuthenticationPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -36,9 +36,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Authentication System
+        /// Gets or sets the associated Authentication System.
         /// </summary>
-        /// <value>An AuthenticationInfo object</value>
+        /// <value>An AuthenticationInfo object.</value>
         /// -----------------------------------------------------------------------------
         public AuthenticationInfo AuthSystem { get; set; }
 

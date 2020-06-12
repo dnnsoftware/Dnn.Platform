@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Creates a one-dimensional <see cref="T:System.Array">Array</see> instance containing the collection items.
         /// </summary>
-        /// <returns>Array of type SearchItemInfo</returns>
+        /// <returns>Array of type SearchItemInfo.</returns>
         public SearchItemInfo[] ToArray()
         {
             var arr = new SearchItemInfo[this.Count];

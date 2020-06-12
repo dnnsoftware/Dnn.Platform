@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a TrueFalseEditControl
+        /// Constructs a TrueFalseEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public TrueFalseEditControl()
@@ -42,9 +42,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether booleanValue returns the Boolean representation of the Value
+        /// Gets a value indicating whether booleanValue returns the Boolean representation of the Value.
         /// </summary>
-        /// <value>A Boolean representing the Value</value>
+        /// <value>A Boolean representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected bool BooleanValue
         {
@@ -67,9 +67,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether oldBooleanValue returns the Boolean representation of the OldValue
+        /// Gets a value indicating whether oldBooleanValue returns the Boolean representation of the OldValue.
         /// </summary>
-        /// <value>A Boolean representing the OldValue</value>
+        /// <value>A Boolean representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected bool OldBooleanValue
         {
@@ -92,9 +92,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets stringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String.
         /// </summary>
-        /// <value>A string representing the Value</value>
+        /// <value>A string representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected override string StringValue
         {
@@ -113,7 +113,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// OnDataChanged runs when the PostbackData has changed.  It raises the ValueChanged
-        /// Event
+        /// Event.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnDataChanged(EventArgs e)
@@ -127,7 +127,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

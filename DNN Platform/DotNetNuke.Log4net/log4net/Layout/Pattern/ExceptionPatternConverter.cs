@@ -28,7 +28,7 @@ using log4net.Core;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Write the exception text to the output
+    /// Write the exception text to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -43,11 +43,11 @@ namespace log4net.Layout.Pattern
     /// and to have the exception as the last data in the pattern.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class ExceptionPatternConverter : PatternLayoutConverter
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public ExceptionPatternConverter()
         {
@@ -56,10 +56,10 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Write the exception text to the output
+        /// Write the exception text to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// If an exception object is stored in the logging event

@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.Skins
     /// Class    : Pane
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Pane class represents a Pane within the Skin
+    /// The Pane class represents a Pane within the Skin.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new Pane object from the Control in the Skin
+        /// Constructs a new Pane object from the Control in the Skin.
         /// </summary>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
         /// -----------------------------------------------------------------------------
@@ -61,9 +61,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new Pane object from the Control in the Skin
+        /// Constructs a new Pane object from the Control in the Skin.
         /// </summary>
-        /// <param name="name">The name (ID) of the HtmlContainerControl</param>
+        /// <param name="name">The name (ID) of the HtmlContainerControl.</param>
         /// <param name="pane">The HtmlContainerControl in the Skin.</param>
         /// -----------------------------------------------------------------------------
         public Pane(string name, HtmlContainerControl pane)
@@ -87,21 +87,21 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the name (ID) of the Pane
+        /// Gets or sets and sets the name (ID) of the Pane.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected string Name { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the HtmlContainerControl
+        /// Gets or sets and sets the HtmlContainerControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected HtmlContainerControl PaneControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PortalSettings of the Portal
+        /// Gets the PortalSettings of the Portal.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected PortalSettings PortalSettings
@@ -148,10 +148,10 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadContainerByPath gets the Container from its Url(Path)
+        /// LoadContainerByPath gets the Container from its Url(Path).
         /// </summary>
-        /// <param name="containerPath">The Url to the Container control</param>
-        /// <returns>A Container</returns>
+        /// <param name="containerPath">The Url to the Container control.</param>
+        /// <returns>A Container.</returns>
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerByPath(string containerPath)
         {
@@ -195,10 +195,10 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadModuleContainer gets the Container for cookie
+        /// LoadModuleContainer gets the Container for cookie.
         /// </summary>
         /// <param name="request">Current Http Request.</param>
-        /// <returns>A Container</returns>
+        /// <returns>A Container.</returns>
         /// -----------------------------------------------------------------------------
         private Containers.Container LoadContainerFromCookie(HttpRequest request)
         {
@@ -384,9 +384,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop
+        /// ModuleMoveToPanePostBack excutes when a module is moved by Drag-and-Drop.
         /// </summary>
-        /// <param name="args">A ClientAPIPostBackEventArgs object</param>
+        /// <param name="args">A ClientAPIPostBackEventArgs object.</param>
         /// -----------------------------------------------------------------------------
         private void ModuleMoveToPanePostBack(ClientAPIPostBackEventArgs args)
         {
@@ -418,9 +418,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InjectModule injects a Module (and its container) into the Pane
+        /// InjectModule injects a Module (and its container) into the Pane.
         /// </summary>
-        /// <param name="module">The Module</param>
+        /// <param name="module">The Module.</param>
         /// -----------------------------------------------------------------------------
         public void InjectModule(ModuleInfo module)
         {
@@ -541,7 +541,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessPane processes the Attributes for the PaneControl
+        /// ProcessPane processes the Attributes for the PaneControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void ProcessPane()

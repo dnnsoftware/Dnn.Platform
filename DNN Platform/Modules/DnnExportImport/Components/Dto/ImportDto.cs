@@ -21,23 +21,23 @@ namespace Dnn.ExportImport.Components.Dto
         public int PortalId { get; set; }
 
         /// <summary>
-        /// Gets or sets id of exported package to be imported
+        /// Gets or sets id of exported package to be imported.
         /// </summary>
         /// <remarks>
         /// For security reasons, this name does not have a folder or extension name.
         /// These will be used by convention and picked from a very specific location
-        /// in the portal (<see cref="Constants.ExportFolder"/>)
+        /// in the portal (<see cref="Constants.ExportFolder"/>).
         /// </remarks>
         public string PackageId { get; set; }
 
         /// <summary>
         /// Gets or sets specifies what to do when there is a collision during the import process.
-        /// See <see cref="CollisionResolution"/>
+        /// See <see cref="CollisionResolution"/>.
         /// </summary>
         public CollisionResolution CollisionResolution { get; set; } = CollisionResolution.Ignore;
 
         /// <summary>
-        /// Gets or sets snapshot of the export dto from the import package
+        /// Gets or sets snapshot of the export dto from the import package.
         /// </summary>
         public ExportDto ExportDto { get; set; }
 

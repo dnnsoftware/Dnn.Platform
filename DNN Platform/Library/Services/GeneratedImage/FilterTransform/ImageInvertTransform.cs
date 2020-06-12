@@ -8,7 +8,7 @@ using System.Drawing.Drawing2D;
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
     /// <summary>
-    /// Invert ImageTransform class
+    /// Invert ImageTransform class.
     /// </summary>
     public class ImageInvertTransform : ImageTransform
     {
@@ -21,10 +21,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Processes an input image applying an invert image transformation
+        /// Processes an input image applying an invert image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             var temp = (Bitmap)image;

@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Search.Internals
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Impl Controller class for Lucene
+    ///   The Impl Controller class for Lucene.
     /// </summary>
     /// -----------------------------------------------------------------------------
     internal class InternalSearchControllerImpl : IInternalSearchController
@@ -550,7 +550,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Add Field to Doc when supplied fieldValue > 0
+        /// Add Field to Doc when supplied fieldValue > 0.
         /// </summary>
         private static void AddIntField(Document doc, int fieldValue, string fieldTag)
         {

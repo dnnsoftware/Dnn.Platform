@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.Html
 {
     /// <summary>
     ///   The Settings ModuleSettingsBase is used to manage the
-    ///   settings for the HTML Module
+    ///   settings for the HTML Module.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   LoadSettings loads the settings from the Database and displays them
+        ///   LoadSettings loads the settings from the Database and displays them.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   UpdateSettings saves the modified settings to the Database
+        ///   UpdateSettings saves the modified settings to the Database.
         /// </summary>
         public override void UpdateSettings()
         {

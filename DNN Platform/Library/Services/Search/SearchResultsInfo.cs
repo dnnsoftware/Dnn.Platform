@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Search
     /// Class:      SearchResultsInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchResultsInfo represents a Search Result Item
+    /// The SearchResultsInfo represents a Search Result Item.
     /// </summary>
     /// <remarks>
     /// </remarks>

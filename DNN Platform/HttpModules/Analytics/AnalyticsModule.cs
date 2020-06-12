@@ -19,7 +19,7 @@ namespace DotNetNuke.HttpModules.Analytics
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// This module contains functionality for injecting web analytics scripts into the page
+    /// This module contains functionality for injecting web analytics scripts into the page.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class AnalyticsModule : IHttpModule

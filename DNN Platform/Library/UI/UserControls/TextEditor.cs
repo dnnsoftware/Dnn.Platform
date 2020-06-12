@@ -25,7 +25,7 @@ namespace DotNetNuke.UI.UserControls
     /// Project: DotNetNuke
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// TextEditor is a user control that provides a wrapper for the HtmlEditor providers
+    /// TextEditor is a user control that provides a wrapper for the HtmlEditor providers.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -55,10 +55,10 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>Gets or sets a value indicating whether enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
         public bool ChooseMode { get; set; }
 
-        /// <summary>Gets or sets a value indicating whether determines wether or not the Text/Html button is rendered for Basic mode, Default is True</summary>
+        /// <summary>Gets or sets a value indicating whether determines wether or not the Text/Html button is rendered for Basic mode, Default is True.</summary>
         public bool ChooseRender { get; set; }
 
-        /// <summary>Gets or sets /Sets the Default mode of the control, either "RICH" or "BASIC", Defaults to Rich</summary>
+        /// <summary>Gets or sets /Sets the Default mode of the control, either "RICH" or "BASIC", Defaults to Rich.</summary>
         public string DefaultMode
         {
             get
@@ -79,13 +79,13 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets or sets /Sets the Height of the control</summary>
+        /// <summary>Gets or sets /Sets the Height of the control.</summary>
         public Unit Height { get; set; }
 
         /// <summary>Gets or sets a value indicating whether turns on HtmlEncoding of text.  If this option is on the control will assume, it is being passed encoded text and will decode.</summary>
         public bool HtmlEncode { get; set; }
 
-        /// <summary>Gets or sets the current mode of the control "RICH",  "BASIC"</summary>
+        /// <summary>Gets or sets the current mode of the control "RICH",  "BASIC".</summary>
         public string Mode
         {
             get
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets or sets /Sets the Text of the control</summary>
+        /// <summary>Gets or sets /Sets the Text of the control.</summary>
         public string Text
         {
             get
@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets or sets the render mode for Basic mode.  {Raw | HTML | Text}</summary>
+        /// <summary>Gets or sets the render mode for Basic mode.  {Raw | HTML | Text}.</summary>
         public string TextRenderMode
         {
             get
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets or sets /Sets the Width of the control</summary>
+        /// <summary>Gets or sets /Sets the Width of the control.</summary>
         public Unit Width { get; set; }
 
         public bool IsRichEditorAvailable
@@ -220,7 +220,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets allows public access ot the HtmlEditorProvider</summary>
+        /// <summary>Gets allows public access ot the HtmlEditorProvider.</summary>
         public HtmlEditorProvider RichText
         {
             get
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets allows public access of the BasicTextEditor</summary>
+        /// <summary>Gets allows public access of the BasicTextEditor.</summary>
         public TextBox BasicTextEditor
         {
             get
@@ -256,12 +256,12 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Decodes the html
+        /// Decodes the html.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="strHtml">Html to decode</param>
-        /// <returns>The decoded html</returns>
+        /// <param name="strHtml">Html to decode.</param>
+        /// <returns>The decoded html.</returns>
         /// -----------------------------------------------------------------------------
         private string Decode(string strHtml)
         {
@@ -270,12 +270,12 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Encodes the html
+        /// Encodes the html.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="strHtml">Html to encode</param>
-        /// <returns>The encoded html</returns>
+        /// <param name="strHtml">Html to encode.</param>
+        /// <returns>The encoded html.</returns>
         /// -----------------------------------------------------------------------------
         private string Encode(string strHtml)
         {
@@ -284,7 +284,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Builds the radio button lists
+        /// Builds the radio button lists.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -310,7 +310,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets the Mode displayed
+        /// Sets the Mode displayed.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -392,7 +392,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -451,7 +451,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// optRender_SelectedIndexChanged runs when Basic Text Box mode is changed
+        /// optRender_SelectedIndexChanged runs when Basic Text Box mode is changed.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -473,7 +473,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// optView_SelectedIndexChanged runs when Editor Mode is changed
+        /// optView_SelectedIndexChanged runs when Editor Mode is changed.
         /// </summary>
         /// <remarks>
         /// </remarks>

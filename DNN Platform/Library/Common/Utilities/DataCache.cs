@@ -35,7 +35,7 @@ namespace DotNetNuke.Common.Utilities
     /// Class:      DataCache
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The DataCache class is a facade class for the CachingProvider Instance's
+    /// The DataCache class is a facade class for the CachingProvider Instance's.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class DataCache

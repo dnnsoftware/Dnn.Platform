@@ -559,10 +559,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Deletes the specified folder and all its content
+        /// Deletes the specified folder and all its content.
         /// </summary>
-        /// <param name="folder">The folder to delete</param>
-        /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action</param>
+        /// <param name="folder">The folder to delete.</param>
+        /// <param name="notDeletedSubfolders">A collection with all not deleted subfolders after processiong the action.</param>
         public void DeleteFolder(IFolderInfo folder, ICollection<IFolderInfo> notDeletedSubfolders)
         {
             this.DeleteFolderRecursive(folder, notDeletedSubfolders, true, this.GetOnlyUnmap(folder));
@@ -595,7 +595,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the files contained in the specified folder.
         /// </summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
-        /// <param name="recursive">Whether or not to include all the subfolders</param>
+        /// <param name="recursive">Whether or not to include all the subfolders.</param>
         /// <returns>The list of files contained in the specified folder.</returns>
         public virtual IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, bool recursive)
         {
@@ -606,8 +606,8 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the files contained in the specified folder.
         /// </summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
-        /// <param name="recursive">Whether or not to include all the subfolders</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="recursive">Whether or not to include all the subfolders.</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The list of files contained in the specified folder.</returns>
         public virtual IEnumerable<IFileInfo> GetFiles(IFolderInfo folder, bool recursive, bool retrieveUnpublishedFiles)
         {
@@ -619,7 +619,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the list of Standard folders the specified user has the provided permissions.
         /// </summary>
-        /// <param name="user">The user info</param>
+        /// <param name="user">The user info.</param>
         /// <param name="permissions">The permissions the folders have to met.</param>
         /// <returns>The list of Standard folders the specified user has the provided permissions.</returns>
         /// <remarks>This method is used to support legacy behaviours and situations where we know the file/folder is in the file system.</remarks>
@@ -716,7 +716,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the sorted list of folders of the provided portal.
         /// </summary>
         /// <param name="portalId">The portal identifier.</param>
-        /// <param name="useCache">True = Read from Cache, False = Read from DB </param>
+        /// <param name="useCache">True = Read from Cache, False = Read from DB. </param>
         /// <returns>The sorted list of folders of the provided portal.</returns>
         public virtual IEnumerable<IFolderInfo> GetFolders(int portalId, bool useCache)
         {
@@ -762,9 +762,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets the list of folders the specified user has read permissions
+        /// Gets the list of folders the specified user has read permissions.
         /// </summary>
-        /// <param name="user">The user info</param>
+        /// <param name="user">The user info.</param>
         /// <returns>The list of folders the specified user has read permissions.</returns>
         public virtual IEnumerable<IFolderInfo> GetFolders(UserInfo user)
         {
@@ -772,9 +772,9 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets the list of folders the specified user has the provided permissions
+        /// Gets the list of folders the specified user has the provided permissions.
         /// </summary>
-        /// <param name="user">The user info</param>
+        /// <param name="user">The user info.</param>
         /// <param name="permissions">The permissions the folders have to met.</param>
         /// <returns>The list of folders the specified user has the provided permissions.</returns>
         public virtual IEnumerable<IFolderInfo> GetFolders(UserInfo user, string permissions)
@@ -927,10 +927,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Search the files contained in the specified folder, for a matching pattern
+        /// Search the files contained in the specified folder, for a matching pattern.
         /// </summary>
         /// <param name="folder">The folder from which to retrieve the files.</param>
-        /// <param name="pattern">The patter to search for</param>
+        /// <param name="pattern">The patter to search for.</param>
         /// <returns>The list of files contained in the specified folder.</returns>
         public virtual IEnumerable<IFileInfo> SearchFiles(IFolderInfo folder, string pattern, bool recursive)
         {
@@ -1091,7 +1091,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Sets folder permissions to the given folder by copying parent folder permissions.
         /// </summary>
-        /// <param name="folder">The folder to copy permissions to</param>
+        /// <param name="folder">The folder to copy permissions to.</param>
         public virtual void CopyParentFolderPermissions(IFolderInfo folder)
         {
             Requires.NotNull("folder", folder);
@@ -1144,9 +1144,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Sets specific folder permissions for the given role to the given folder.
         /// </summary>
-        /// <param name="folder">The folder to set permission to</param>
-        /// <param name="permissionId">The id of the permission to assign</param>
-        /// <param name="roleId">The role to assign the permission to</param>
+        /// <param name="folder">The folder to set permission to.</param>
+        /// <param name="permissionId">The id of the permission to assign.</param>
+        /// <param name="roleId">The role to assign the permission to.</param>
         public virtual void SetFolderPermission(IFolderInfo folder, int permissionId, int roleId)
         {
             this.SetFolderPermission(folder, permissionId, roleId, Null.NullInteger);
@@ -1155,10 +1155,10 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Sets specific folder permissions for the given role/user to the given folder.
         /// </summary>
-        /// <param name="folder">The folder to set permission to</param>
-        /// <param name="permissionId">The id of the permission to assign</param>
-        /// <param name="roleId">The role to assign the permission to</param>
-        /// <param name="userId">The user to assign the permission to</param>
+        /// <param name="folder">The folder to set permission to.</param>
+        /// <param name="permissionId">The id of the permission to assign.</param>
+        /// <param name="roleId">The role to assign the permission to.</param>
+        /// <param name="userId">The user to assign the permission to.</param>
         public virtual void SetFolderPermission(IFolderInfo folder, int permissionId, int roleId, int userId)
         {
             if (folder.FolderPermissions.Cast<FolderPermissionInfo>()
@@ -1183,8 +1183,8 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Sets folder permissions for administrator role to the given folder.
         /// </summary>
-        /// <param name="folder">The folder to set permission to</param>
-        /// <param name="administratorRoleId">The administrator role id to assign the permission to</param>
+        /// <param name="folder">The folder to set permission to.</param>
+        /// <param name="administratorRoleId">The administrator role id to assign the permission to.</param>
         public virtual void SetFolderPermissions(IFolderInfo folder, int administratorRoleId)
         {
             Requires.NotNull("folder", folder);

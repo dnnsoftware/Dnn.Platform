@@ -9,7 +9,7 @@ using System.Xml;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Base class for RSS channel (for strongly-typed and late-bound channel types)
+    ///   Base class for RSS channel (for strongly-typed and late-bound channel types).
     /// </summary>
     /// <typeparam name = "RssItemType"></typeparam>
     /// <typeparam name = "RssImageType"></typeparam>

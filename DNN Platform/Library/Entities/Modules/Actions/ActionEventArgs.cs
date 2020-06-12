@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Modules.Actions
     /// Class       : ActionEventArgs
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ActionEventArgs provides a custom EventARgs class for Action Events
+    /// ActionEventArgs provides a custom EventARgs class for Action Events.
     /// </summary>
     /// <remarks></remarks>
     /// -----------------------------------------------------------------------------

@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ConfigInstaller installs Config changes
+    /// The ConfigInstaller installs Config changes.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,9 +31,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Install config changes
+        /// Gets the Install config changes.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string InstallConfig
         {
@@ -45,9 +45,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Target Config XmlDocument
+        /// Gets the Target Config XmlDocument.
         /// </summary>
-        /// <value>An XmlDocument</value>
+        /// <value>An XmlDocument.</value>
         /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig
         {
@@ -59,9 +59,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Target Config file to change
+        /// Gets the Target Config file to change.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public InstallFile TargetFile
         {
@@ -73,9 +73,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UnInstall config changes
+        /// Gets the UnInstall config changes.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string UnInstallConfig
         {
@@ -117,7 +117,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the config component
+        /// The Install method installs the config component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the file component in the event
-        /// that one of the other components fails
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the config component
+        /// The UnInstall method uninstalls the config component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

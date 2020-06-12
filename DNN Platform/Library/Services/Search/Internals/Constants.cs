@@ -10,7 +10,7 @@ using Version = Lucene.Net.Util.Version;
 namespace DotNetNuke.Services.Search.Internals
 {
     /// <summary>
-    /// Constants
+    /// Constants.
     /// </summary>
     internal static class Constants
     {

@@ -243,9 +243,9 @@ namespace DotNetNuke.Services.Mail
         /// <summary>
         /// <summary>Send an email notification</summary>
         /// </summary>
-        /// <param name="user">The user to whom the message is being sent</param>
-        /// <param name="msgType">The type of message being sent</param>
-        /// <param name="settings">Portal Settings</param>
+        /// <param name="user">The user to whom the message is being sent.</param>
+        /// <param name="msgType">The type of message being sent.</param>
+        /// <param name="settings">Portal Settings.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -258,10 +258,10 @@ namespace DotNetNuke.Services.Mail
         /// <summary>
         /// <summary>Send an email notification</summary>
         /// </summary>
-        /// <param name="portalId">The PortalId of the user to whom the message is being sent</param>
-        /// <param name="userId">The UserId of the user to whom the message is being sent</param>
-        /// <param name="msgType">The type of message being sent</param>
-        /// <param name="settings">Portal Settings</param>
+        /// <param name="portalId">The PortalId of the user to whom the message is being sent.</param>
+        /// <param name="userId">The UserId of the user to whom the message is being sent.</param>
+        /// <param name="msgType">The type of message being sent.</param>
+        /// <param name="settings">Portal Settings.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         /// -----------------------------------------------------------------------------
@@ -460,18 +460,18 @@ namespace DotNetNuke.Services.Mail
         /// <summary>
         /// Sends an email based on params.
         /// </summary>
-        /// <param name="mailFrom">Email sender</param>
-        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons</param>
-        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons</param>
-        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons</param>
-        /// <param name="replyTo">Reply-to email to be displayed for recipients</param>
-        /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/></param>
-        /// <param name="subject">Subject of email</param>
-        /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/></param>
-        /// <param name="bodyEncoding">Email Encoding from System.Text.Encoding</param>
-        /// <param name="body">Body of email</param>
-        /// <param name="attachments">List of filenames to attach to email</param>
-        /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings</param>
+        /// <param name="mailFrom">Email sender.</param>
+        /// <param name="mailTo">Recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="cc">CC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="bcc">BCC-recipients, can be more then one separated by semi-colons.</param>
+        /// <param name="replyTo">Reply-to email to be displayed for recipients.</param>
+        /// <param name="priority"><see cref="DotNetNuke.Services.Mail.MailPriority"/>.</param>
+        /// <param name="subject">Subject of email.</param>
+        /// <param name="bodyFormat"><see cref="DotNetNuke.Services.Mail.MailFormat"/>.</param>
+        /// <param name="bodyEncoding">Email Encoding from System.Text.Encoding.</param>
+        /// <param name="body">Body of email.</param>
+        /// <param name="attachments">List of filenames to attach to email.</param>
+        /// <param name="smtpServer">IP or ServerName of the SMTP server. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpAuthentication">SMTP authentication method. Can be "0" - anonymous, "1" - basic, "2" - NTLM. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpUsername">SMTP authentication UserName. When empty or null, then it takes from the HostSettings.</param>
         /// <param name="smtpPassword">SMTP authentication Password. When empty or null, then it takes from the HostSettings.</param>
@@ -492,7 +492,7 @@ namespace DotNetNuke.Services.Mail
         ///                         "1",
         ///                         "admin@email.com",
         ///                         "AdminPassword",
-        ///                         false);
+        ///                         false).
         ///     </example>
         public static string SendMail(string mailFrom, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)

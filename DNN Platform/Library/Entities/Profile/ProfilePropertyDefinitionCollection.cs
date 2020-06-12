@@ -15,7 +15,7 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfilePropertyDefinitionCollection class provides Business Layer methods for
-    /// a collection of property Definitions
+    /// a collection of property Definitions.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -25,7 +25,7 @@ namespace DotNetNuke.Entities.Profile
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new default collection
+        /// Constructs a new default collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection()
@@ -34,9 +34,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new Collection from an ArrayList of ProfilePropertyDefinition objects
+        /// Constructs a new Collection from an ArrayList of ProfilePropertyDefinition objects.
         /// </summary>
-        /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects</param>
+        /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects.</param>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection(ArrayList definitionsList)
         {
@@ -45,9 +45,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new Collection from a ProfilePropertyDefinitionCollection
+        /// Constructs a new Collection from a ProfilePropertyDefinitionCollection.
         /// </summary>
-        /// <param name="collection">A ProfilePropertyDefinitionCollection</param>
+        /// <param name="collection">A ProfilePropertyDefinitionCollection.</param>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection(ProfilePropertyDefinitionCollection collection)
         {
@@ -59,8 +59,8 @@ namespace DotNetNuke.Entities.Profile
         /// Gets and sets an item in the collection.
         /// </summary>
         /// <remarks>This overload returns the item by its index. </remarks>
-        /// <param name="index">The index to get</param>
-        /// <returns>A ProfilePropertyDefinition object</returns>
+        /// <param name="index">The index to get.</param>
+        /// <returns>A ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition this[int index]
         {
@@ -79,9 +79,9 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets an item in the collection.
         /// </summary>
-        /// <remarks>This overload returns the item by its name</remarks>
-        /// <param name="name">The name of the Property to get</param>
-        /// <returns>A ProfilePropertyDefinition object</returns>
+        /// <remarks>This overload returns the item by its name.</remarks>
+        /// <param name="name">The name of the Property to get.</param>
+        /// <returns>A ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition this[string name]
         {
@@ -95,8 +95,8 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Adds a property Definition to the collectio.
         /// </summary>
-        /// <param name="value">A ProfilePropertyDefinition object</param>
-        /// <returns>The index of the property Definition in the collection</returns>
+        /// <param name="value">A ProfilePropertyDefinition object.</param>
+        /// <returns>The index of the property Definition in the collection.</returns>
         /// -----------------------------------------------------------------------------
         public int Add(ProfilePropertyDefinition value)
         {
@@ -105,9 +105,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Add an ArrayList of ProfilePropertyDefinition objects
+        /// Add an ArrayList of ProfilePropertyDefinition objects.
         /// </summary>
-        /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects</param>
+        /// <param name="definitionsList">An ArrayList of ProfilePropertyDefinition objects.</param>
         /// -----------------------------------------------------------------------------
         public void AddRange(ArrayList definitionsList)
         {
@@ -119,9 +119,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Add an existing ProfilePropertyDefinitionCollection
+        /// Add an existing ProfilePropertyDefinitionCollection.
         /// </summary>
-        /// <param name="collection">A ProfilePropertyDefinitionCollection</param>
+        /// <param name="collection">A ProfilePropertyDefinitionCollection.</param>
         /// -----------------------------------------------------------------------------
         public void AddRange(ProfilePropertyDefinitionCollection collection)
         {
@@ -133,10 +133,10 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Determines whether the collection contains a property definition
+        /// Determines whether the collection contains a property definition.
         /// </summary>
-        /// <param name="value">A ProfilePropertyDefinition object</param>
-        /// <returns>A Boolean True/False</returns>
+        /// <param name="value">A ProfilePropertyDefinition object.</param>
+        /// <returns>A Boolean True/False.</returns>
         /// -----------------------------------------------------------------------------
         public bool Contains(ProfilePropertyDefinition value)
         {
@@ -147,8 +147,8 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets a sub-collection of items in the collection by category.
         /// </summary>
-        /// <param name="category">The category to get</param>
-        /// <returns>A ProfilePropertyDefinitionCollection object</returns>
+        /// <param name="category">The category to get.</param>
+        /// <returns>A ProfilePropertyDefinitionCollection object.</returns>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection GetByCategory(string category)
         {
@@ -168,8 +168,8 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets an item in the collection by Id.
         /// </summary>
-        /// <param name="id">The id of the Property to get</param>
-        /// <returns>A ProfilePropertyDefinition object</returns>
+        /// <param name="id">The id of the Property to get.</param>
+        /// <returns>A ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition GetById(int id)
         {
@@ -189,8 +189,8 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Gets an item in the collection by name.
         /// </summary>
-        /// <param name="name">The name of the Property to get</param>
-        /// <returns>A ProfilePropertyDefinition object</returns>
+        /// <param name="name">The name of the Property to get.</param>
+        /// <returns>A ProfilePropertyDefinition object.</returns>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinition GetByName(string name)
         {
@@ -209,10 +209,10 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the index of a property Definition
+        /// Gets the index of a property Definition.
         /// </summary>
-        /// <param name="value">A ProfilePropertyDefinition object</param>
-        /// <returns>The index of the property Definition in the collection</returns>
+        /// <param name="value">A ProfilePropertyDefinition object.</param>
+        /// <returns>The index of the property Definition in the collection.</returns>
         /// -----------------------------------------------------------------------------
         public int IndexOf(ProfilePropertyDefinition value)
         {
@@ -223,8 +223,8 @@ namespace DotNetNuke.Entities.Profile
         /// <summary>
         /// Inserts a property Definition into the collectio.
         /// </summary>
-        /// <param name="value">A ProfilePropertyDefinition object</param>
-        /// <param name="index">The index to insert the item at</param>
+        /// <param name="value">A ProfilePropertyDefinition object.</param>
+        /// <param name="index">The index to insert the item at.</param>
         /// -----------------------------------------------------------------------------
         public void Insert(int index, ProfilePropertyDefinition value)
         {
@@ -233,9 +233,9 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Removes a property definition from the collection
+        /// Removes a property definition from the collection.
         /// </summary>
-        /// <param name="value">The ProfilePropertyDefinition object to remove</param>
+        /// <param name="value">The ProfilePropertyDefinition object to remove.</param>
         /// -----------------------------------------------------------------------------
         public void Remove(ProfilePropertyDefinition value)
         {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sorts the collection using the ProfilePropertyDefinitionComparer (ie by ViewOrder)
+        /// Sorts the collection using the ProfilePropertyDefinitionComparer (ie by ViewOrder).
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void Sort()

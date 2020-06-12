@@ -116,13 +116,13 @@ namespace DotNetNuke.Services.Journal
         IEnumerable<JournalTypeInfo> GetJournalTypes(int portalId);
 
         /// <summary>
-        /// Save an uploaded file
+        /// Save an uploaded file.
         /// </summary>
-        /// <param name="module">Module where the file is uploaded</param>
-        /// <param name="userInfo">User who uploads the file</param>
-        /// <param name="fileName">File Name</param>
-        /// <param name="fileContent">File content</param>
-        /// <returns>A FileInfo object corresponding to the saved file</returns>
+        /// <param name="module">Module where the file is uploaded.</param>
+        /// <param name="userInfo">User who uploads the file.</param>
+        /// <param name="fileName">File Name.</param>
+        /// <param name="fileContent">File content.</param>
+        /// <returns>A FileInfo object corresponding to the saved file.</returns>
         IFileInfo SaveJourmalFile(ModuleInfo module, UserInfo userInfo, string fileName, Stream fileContent);
 
         /// <summary>
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Journal
         void DeleteJournalItem(int portalId, int userId, int journalId);
 
         /// <summary>
-        /// Hard delete journal items based on group Id
+        /// Hard delete journal items based on group Id.
         /// </summary>
         /// <param name="portalId">Id of portal.</param>
         /// <param name="groupId">Id of social group.</param>
@@ -176,7 +176,7 @@ namespace DotNetNuke.Services.Journal
         void SoftDeleteJournalItem(int portalId, int userId, int journalId);
 
         /// <summary>
-        /// Soft delete journal items based on group Id
+        /// Soft delete journal items based on group Id.
         /// </summary>
         /// <param name="portalId">Id of portal.</param>
         /// <param name="groupId">Id of social group.</param>

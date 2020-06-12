@@ -16,7 +16,7 @@ namespace DotNetNuke.Entities.Users
     /// Class:      UserRoleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserRoleInfo class provides Business Layer model for a User/Role
+    /// The UserRoleInfo class provides Business Layer model for a User/Role.
     /// </summary>
     /// <remarks>
     /// </remarks>

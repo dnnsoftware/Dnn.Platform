@@ -18,7 +18,7 @@ namespace DotNetNuke.HttpModules.RequestFilter
         private const string InstalledKey = "httprequestfilter.attemptedinstall";
 
         /// <summary>
-        /// Implementation of <see cref="IHttpModule"/>
+        /// Implementation of <see cref="IHttpModule"/>.
         /// </summary>
         /// <remarks>
         /// Currently empty.  Nothing to really do, as I have no member variables.

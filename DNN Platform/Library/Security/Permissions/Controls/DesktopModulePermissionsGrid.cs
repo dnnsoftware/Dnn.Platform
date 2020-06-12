@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Permissions Collection
+        /// Gets the Permissions Collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionCollection Permissions
@@ -54,7 +54,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the Id of the PortalDesktopModule
+        /// Gets or sets and Sets the Id of the PortalDesktopModule.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID
@@ -77,7 +77,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the DesktopModulePermissions from the Data Store
+        /// Gets the DesktopModulePermissions from the Data Store.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void GetDesktopModulePermissions()
@@ -87,9 +87,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
         /// </summary>
-        /// <param name="Settings">A string array of settings</param>
+        /// <param name="Settings">A string array of settings.</param>
         /// -----------------------------------------------------------------------------
         private DesktopModulePermissionInfo ParseKeys(string[] Settings)
         {
@@ -127,10 +127,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Permission
+        /// Updates a Permission.
         /// </summary>
-        /// <param name="permissions">The permissions collection</param>
-        /// <param name="user">The user to add</param>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="user">The user to add.</param>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
@@ -160,10 +160,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Permission
+        /// Updates a Permission.
         /// </summary>
-        /// <param name="permissions">The permissions collection</param>
-        /// <param name="role">The roleto add</param>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="role">The roleto add.</param>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
@@ -185,7 +185,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the permissions from the Database
+        /// Gets the permissions from the Database.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -196,9 +196,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Load the ViewState
+        /// Load the ViewState.
         /// </summary>
-        /// <param name="savedState">The saved state</param>
+        /// <param name="savedState">The saved state.</param>
         /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
@@ -248,7 +248,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Saves the ViewState
+        /// Saves the ViewState.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -295,7 +295,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// returns whether or not the derived grid supports Deny permissions
+        /// returns whether or not the derived grid supports Deny permissions.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------

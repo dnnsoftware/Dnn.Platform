@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Packages
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageEditorBase class provides a Base Classs for Package Editors
+    /// The PackageEditorBase class provides a Base Classs for Package Editors.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class PackageEditorBase : ModuleUserControlBase, IPackageEditor
@@ -54,9 +54,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Package ID
+        /// Gets or sets and sets the Package ID.
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int PackageID
         {
@@ -73,9 +73,9 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Editor is in the Wizard
+        /// Gets or sets a value indicating whether gets and sets whether the Editor is in the Wizard.
         /// </summary>
-        /// <value>An Boolean</value>
+        /// <value>An Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool IsWizard
         {
@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Used to Initialize the Control
+        /// Used to Initialize the Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public virtual void Initialize()
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Used to Update the Package
+        /// Used to Update the Package.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public virtual void UpdatePackage()

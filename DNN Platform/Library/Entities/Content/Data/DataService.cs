@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>
         /// Get a list of content items of the specified content type, <paramref name="contentTypeId"/>.
         /// </summary>
-        /// <param name="contentTypeId">The type of content items you are searching for</param>
+        /// <param name="contentTypeId">The type of content items you are searching for.</param>
         /// <returns></returns>
         public IDataReader GetContentItemsByContentType(int contentTypeId)
         {
@@ -114,7 +114,7 @@ namespace DotNetNuke.Entities.Content.Data
         /// <summary>
         /// Get a list of content items based on TabID (PageID).
         /// </summary>
-        /// <param name="tabId">The TabID (or "Page ID") that the content items are associated with</param>
+        /// <param name="tabId">The TabID (or "Page ID") that the content items are associated with.</param>
         /// <returns></returns>
         public IDataReader GetContentItemsByTabId(int tabId)
         {

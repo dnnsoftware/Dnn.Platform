@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The InstallerFactory is a factory class that is used to instantiate the
-    /// appropriate Component Installer
+    /// appropriate Component Installer.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -25,9 +25,9 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The GetInstaller method instantiates the relevant Component Installer
+        /// The GetInstaller method instantiates the relevant Component Installer.
         /// </summary>
-        /// <param name="installerType">The type of Installer</param>
+        /// <param name="installerType">The type of Installer.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(string installerType)
@@ -109,10 +109,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The GetInstaller method instantiates the relevant Component Installer
+        /// The GetInstaller method instantiates the relevant Component Installer.
         /// </summary>
-        /// <param name="manifestNav">The manifest (XPathNavigator) for the component</param>
-        /// <param name="package">The associated PackageInfo instance</param>
+        /// <param name="manifestNav">The manifest (XPathNavigator) for the component.</param>
+        /// <param name="package">The associated PackageInfo instance.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ComponentInstallerBase GetInstaller(XPathNavigator manifestNav, PackageInfo package)

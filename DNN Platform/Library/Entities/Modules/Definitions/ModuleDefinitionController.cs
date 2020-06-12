@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
     /// Class    : ModuleDefinitionController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleDefinitionController provides the Business Layer for Module Definitions
+    /// ModuleDefinitionController provides the Business Layer for Module Definitions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class ModuleDefinitionController
@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private static object GetModuleDefinitionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -46,9 +46,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleDefinitionByID gets a Module Definition by its ID
+        /// GetModuleDefinitionByID gets a Module Definition by its ID.
         /// </summary>
-        /// <param name="objModuleDefinition">The object of the Module Definition</param>
+        /// <param name="objModuleDefinition">The object of the Module Definition.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(ModuleDefinitionInfo objModuleDefinition)
         {
@@ -57,9 +57,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteModuleDefinition deletes a Module Definition By ID
+        /// DeleteModuleDefinition deletes a Module Definition By ID.
         /// </summary>
-        /// <param name="moduleDefinitionId">The ID of the Module Definition to delete</param>
+        /// <param name="moduleDefinitionId">The ID of the Module Definition to delete.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(int moduleDefinitionId)
         {
@@ -84,9 +84,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleDefinitionByID gets a Module Definition by its ID
+        /// GetModuleDefinitionByID gets a Module Definition by its ID.
         /// </summary>
-        /// <param name="moduleDefID">The ID of the Module Definition</param>
+        /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByID(int moduleDefID)
@@ -100,9 +100,9 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
-        /// Name (and DesktopModuleID)
+        /// Name (and DesktopModuleID).
         /// </summary>
-        /// <param name="friendlyName">The friendly name</param>
+        /// <param name="friendlyName">The friendly name.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName)
@@ -118,10 +118,10 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetModuleDefinitionByFriendlyName gets a Module Definition by its Friendly
-        /// Name (and DesktopModuleID)
+        /// Name (and DesktopModuleID).
         /// </summary>
-        /// <param name="friendlyName">The friendly name</param>
-        /// <param name="desktopModuleID">The ID of the Dekstop Module</param>
+        /// <param name="friendlyName">The friendly name.</param>
+        /// <param name="desktopModuleID">The ID of the Dekstop Module.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleDefinitionInfo GetModuleDefinitionByFriendlyName(string friendlyName, int desktopModuleID)
@@ -155,7 +155,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// GetModuleDefinitionsByDesktopModuleID gets a Dictionary of Module Definitions
         /// with a particular DesktopModuleID, keyed by the FriendlyName.
         /// </summary>
-        /// <param name="desktopModuleID">The ID of the Desktop Module</param>
+        /// <param name="desktopModuleID">The ID of the Desktop Module.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)
@@ -166,11 +166,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
         }
 
         /// <summary>
-        /// Get ModuleDefinition by DefinitionName
+        /// Get ModuleDefinition by DefinitionName.
         /// </summary>
-        /// <param name="definitionName">The defintion name</param>
-        /// <param name="desktopModuleID">The ID of the Dekstop Module</param>
-        /// <returns>A ModuleDefinition or null if not found</returns>
+        /// <param name="definitionName">The defintion name.</param>
+        /// <param name="desktopModuleID">The ID of the Dekstop Module.</param>
+        /// <returns>A ModuleDefinition or null if not found.</returns>
         public static ModuleDefinitionInfo GetModuleDefinitionByDefinitionName(string definitionName, int desktopModuleID)
         {
             Requires.NotNullOrEmpty("definitionName", definitionName);
@@ -184,11 +184,11 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveModuleDefinition saves the Module Definition to the database
+        /// SaveModuleDefinition saves the Module Definition to the database.
         /// </summary>
-        /// <param name="moduleDefinition">The Module Definition to save</param>
-        /// <param name="saveChildren">A flag that determines whether the child objects are also saved</param>
-        /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
+        /// <param name="moduleDefinition">The Module Definition to save.</param>
+        /// <param name="saveChildren">A flag that determines whether the child objects are also saved.</param>
+        /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveModuleDefinition(ModuleDefinitionInfo moduleDefinition, bool saveChildren, bool clearCache)

@@ -42,7 +42,7 @@ namespace log4net.Appender
     /// <remarks>
     /// <para>
     /// The appender will fail if you try to write using an event source that doesn't exist unless it is running with local administrator privileges.
-    /// See also http://logging.apache.org/log4net/release/faq.html#trouble-EventLog
+    /// See also http://logging.apache.org/log4net/release/faq.html#trouble-EventLog.
     /// </para>
     /// <para>
     /// The <c>EventID</c> of the event log entry can be
@@ -55,7 +55,7 @@ namespace log4net.Appender
     /// on the <see cref="LoggingEvent"/>.
     /// </para>
     /// <para>
-    /// There is a limit of 32K characters for an event log message
+    /// There is a limit of 32K characters for an event log message.
     /// </para>
     /// <para>
     /// When configuring the EventLogAppender a mapping can be
@@ -81,11 +81,11 @@ namespace log4net.Appender
     /// </list>
     /// </para>
     /// </remarks>
-    /// <author>Aspi Havewala</author>
-    /// <author>Douglas de la Torre</author>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Thomas Voss</author>
+    /// <author>Aspi Havewala.</author>
+    /// <author>Douglas de la Torre.</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Thomas Voss.</author>
     public class EventLogAppender : AppenderSkeleton
     {
         /// <summary>
@@ -163,7 +163,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets or sets this property is used to return the name of the computer to use
         /// when accessing the event logs.  Currently, this is the current
-        /// computer, denoted by a dot "."
+        /// computer, denoted by a dot ".".
         /// </summary>
         /// <value>
         /// The string name of the machine holding the event log that
@@ -180,9 +180,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Add a mapping of level to <see cref="EventLogEntryType"/> - done by the config file
+        /// Add a mapping of level to <see cref="EventLogEntryType"/> - done by the config file.
         /// </summary>
-        /// <param name="mapping">The mapping to add</param>
+        /// <param name="mapping">The mapping to add.</param>
         /// <remarks>
         /// <para>
         /// Add a <see cref="Level2EventLogEntryType"/> mapping to this appender.
@@ -252,7 +252,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the appender based on the options set
+        /// Initialize the appender based on the options set.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -337,10 +337,10 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Create an event log source
+        /// Create an event log source.
         /// </summary>
         /// <remarks>
-        /// Uses different API calls under NET_2_0
+        /// Uses different API calls under NET_2_0.
         /// </remarks>
         private static void CreateEventSource(string source, string logName, string machineName)
         {
@@ -357,7 +357,7 @@ namespace log4net.Appender
         /// This method is called by the <see cref="M:AppenderSkeleton.DoAppend(LoggingEvent)"/>
         /// method.
         /// </summary>
-        /// <param name="loggingEvent">the event to log</param>
+        /// <param name="loggingEvent">the event to log.</param>
         /// <remarks>
         /// <para>Writes the event to the system event log using the
         /// <see cref="ApplicationName"/>.</para>
@@ -366,7 +366,7 @@ namespace log4net.Appender
         /// set then this integer will be used as the event log event id.</para>
         ///
         /// <para>
-        /// There is a limit of 32K characters for an event log message
+        /// There is a limit of 32K characters for an event log message.
         /// </para>
         /// </remarks>
         protected override void Append(LoggingEvent loggingEvent)
@@ -467,7 +467,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -479,10 +479,10 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Get the equivalent <see cref="EventLogEntryType"/> for a <see cref="Level"/> <paramref name="level"/>
+        /// Get the equivalent <see cref="EventLogEntryType"/> for a <see cref="Level"/> <paramref name="level"/>.
         /// </summary>
-        /// <param name="level">the Level to convert to an EventLogEntryType</param>
-        /// <returns>The equivalent <see cref="EventLogEntryType"/> for a <see cref="Level"/> <paramref name="level"/></returns>
+        /// <param name="level">the Level to convert to an EventLogEntryType.</param>
+        /// <returns>The equivalent <see cref="EventLogEntryType"/> for a <see cref="Level"/> <paramref name="level"/>.</returns>
         /// <remarks>
         /// Because there are fewer applicable <see cref="EventLogEntryType"/>
         /// values to use in logging levels than there are in the
@@ -531,12 +531,12 @@ namespace log4net.Appender
         private string m_machineName;
 
         /// <summary>
-        /// Mapping from level object to EventLogEntryType
+        /// Mapping from level object to EventLogEntryType.
         /// </summary>
         private LevelMapping m_levelMapping = new LevelMapping();
 
         /// <summary>
-        /// The security context to use for privileged calls
+        /// The security context to use for privileged calls.
         /// </summary>
         private SecurityContext m_securityContext;
 
@@ -564,12 +564,12 @@ namespace log4net.Appender
             private EventLogEntryType m_entryType;
 
             /// <summary>
-            /// Gets or sets the <see cref="EventLogEntryType"/> for this entry
+            /// Gets or sets the <see cref="EventLogEntryType"/> for this entry.
             /// </summary>
             /// <remarks>
             /// <para>
             /// Required property.
-            /// The <see cref="EventLogEntryType"/> for this entry
+            /// The <see cref="EventLogEntryType"/> for this entry.
             /// </para>
             /// </remarks>
             public EventLogEntryType EventLogEntryType

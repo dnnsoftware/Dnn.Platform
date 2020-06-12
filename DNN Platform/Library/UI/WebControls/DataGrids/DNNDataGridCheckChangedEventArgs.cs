@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNDataGridCheckChangedEventArgs class is a cusom EventArgs class for
-    /// handling Event Args from the CheckChanged event in a CheckBox Column
+    /// handling Event Args from the CheckChanged event in a CheckBox Column.
     /// </summary>
     /// <remarks>
     /// </remarks>

@@ -41,7 +41,7 @@ namespace log4net
     /// See the <see cref="ILog"/> interface for more details.
     /// </para>
     /// </remarks>
-    /// <example>Simple example of logging messages
+    /// <example>Simple example of logging messages.
     /// <code lang="C#">
     /// ILog log = LogManager.GetLogger("application-log");
     ///
@@ -56,8 +56,8 @@ namespace log4net
     /// </example>
     /// <threadsafety static="true" instance="true" />
     /// <seealso cref="ILog"/>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class LogManager
     {
         /// <summary>
@@ -390,7 +390,7 @@ namespace log4net
         }
 
 #if !NETSTANDARD1_3
-        /// <overloads>Reset the configuration of a repository</overloads>
+        /// <overloads>Reset the configuration of a repository.</overloads>
         /// <summary>
         /// Resets all values contained in this repository instance to their defaults.
         /// </summary>
@@ -552,7 +552,7 @@ namespace log4net
         }
 
 #if !NETSTANDARD1_3
-        /// <overloads>Create a domain</overloads>
+        /// <overloads>Create a domain.</overloads>
         /// <summary>
         /// Creates a repository with the specified repository type.
         /// </summary>

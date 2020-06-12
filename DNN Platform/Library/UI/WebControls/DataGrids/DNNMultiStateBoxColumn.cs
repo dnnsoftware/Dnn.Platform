@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      DNNMultiStateBoxColumn
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid
+    /// The DNNMultiStateBoxColumn control provides a DNNMultiState Box column for a Data Grid.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class DNNMultiStateBoxColumn : TemplateColumn
@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the DNNMultiStateBoxColumn
+        /// Constructs the DNNMultiStateBoxColumn.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DNNMultiStateBoxColumn()
@@ -42,9 +42,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Constructs the MultiStateBoxColumn, with an optional AutoPostBack (where each change
-        /// of state of the control causes a Post Back)
+        /// of state of the control causes a Post Back).
         /// </summary>
-        /// <param name="autoPostBack">Optional set the control to postback</param>
+        /// <param name="autoPostBack">Optional set the control to postback.</param>
         /// -----------------------------------------------------------------------------
         public DNNMultiStateBoxColumn(bool autoPostBack)
         {
@@ -53,9 +53,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when the control changes
+        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when the control changes.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool AutoPostBack
         {
@@ -72,9 +72,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the selected state of the DNNMultiStateBox (unless DataBound)
+        /// Gets or sets and sets the selected state of the DNNMultiStateBox (unless DataBound).
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public string SelectedStateKey
         {
@@ -92,9 +92,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Data Field that the column should bind to
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public string DataField
         {
@@ -113,9 +113,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
         /// the EnabledField is set)
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool Enabled
         {
@@ -133,9 +133,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets the Data Field that determines whether the control is Enabled
-        /// changed
+        /// changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string EnabledField
         {
@@ -152,9 +152,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the image path of the DNNMultiStateBox
+        /// Gets or sets and sets the image path of the DNNMultiStateBox.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public string ImagePath
         {
@@ -171,9 +171,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the state collection of the DNNMultiStateBox
+        /// Gets or sets and sets the state collection of the DNNMultiStateBox.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public DNNMultiStateCollection States
         {
@@ -195,9 +195,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates a DNNMultiStateBoxColumnTemplate
+        /// Creates a DNNMultiStateBoxColumnTemplate.
         /// </summary>
-        /// <returns>A DNNMultiStateBoxColumnTemplate</returns>
+        /// <returns>A DNNMultiStateBoxColumnTemplate.</returns>
         /// -----------------------------------------------------------------------------
         private DNNMultiStateBoxColumnTemplate CreateTemplate(ListItemType type)
         {
@@ -235,7 +235,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialises the Column
+        /// Initialises the Column.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Initialize()

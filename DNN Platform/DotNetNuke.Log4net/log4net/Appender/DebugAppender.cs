@@ -40,7 +40,7 @@ namespace log4net.Appender
     /// method. The event's logger name is passed as the value for the category name to the Write method.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class DebugAppender : AppenderSkeleton
     {
         /// <summary>
@@ -144,7 +144,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.

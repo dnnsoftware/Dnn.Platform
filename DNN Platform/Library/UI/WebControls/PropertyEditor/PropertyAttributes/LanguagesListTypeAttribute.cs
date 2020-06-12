@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Initializes a new instance of the LanguagesListTypeAttribute class.
         /// </summary>
-        /// <param name="type">The type of List</param>
+        /// <param name="type">The type of List.</param>
         public LanguagesListTypeAttribute(LanguagesListType type)
         {
             this._ListType = type;

@@ -49,12 +49,12 @@ namespace log4net.Layout
     /// </para>
     /// </note>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class LayoutSkeleton : ILayout, IOptionHandler
     {
         /// <summary>
-        /// The header text
+        /// The header text.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -64,7 +64,7 @@ namespace log4net.Layout
         private string m_header = null;
 
         /// <summary>
-        /// The footer text
+        /// The footer text.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -74,21 +74,21 @@ namespace log4net.Layout
         private string m_footer = null;
 
         /// <summary>
-        /// Flag indicating if this layout handles exceptions
+        /// Flag indicating if this layout handles exceptions.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// <c>false</c> if this layout handles exceptions
+        /// <c>false</c> if this layout handles exceptions.
         /// </para>
         /// </remarks>
         private bool m_ignoresException = true;
 
         /// <summary>
-        /// Empty default constructor
+        /// Empty default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Empty default constructor
+        /// Empty default constructor.
         /// </para>
         /// </remarks>
         protected LayoutSkeleton()
@@ -96,7 +96,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Activate component options
+        /// Activate component options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -119,8 +119,8 @@ namespace log4net.Layout
         /// <summary>
         /// Implement this method to create your own layout format.
         /// </summary>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
-        /// <param name="loggingEvent">The event to format</param>
+        /// <param name="writer">The TextWriter to write the formatted event to.</param>
+        /// <param name="loggingEvent">The event to format.</param>
         /// <remarks>
         /// <para>
         /// This method is called by an appender to format
@@ -147,7 +147,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets the content type output by this layout.
         /// </summary>
-        /// <value>The content type is <c>"text/plain"</c></value>
+        /// <value>The content type is <c>"text/plain"</c>.</value>
         /// <remarks>
         /// <para>
         /// The content type output by this layout.
@@ -166,7 +166,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets or sets the header for the layout format.
         /// </summary>
-        /// <value>the layout header</value>
+        /// <value>the layout header.</value>
         /// <remarks>
         /// <para>
         /// The Header text will be appended before any logging events
@@ -182,7 +182,7 @@ namespace log4net.Layout
         /// <summary>
         /// Gets or sets the footer for the layout format.
         /// </summary>
-        /// <value>the layout footer</value>
+        /// <value>the layout footer.</value>
         /// <remarks>
         /// <para>
         /// The Footer text will be appended after all the logging events
@@ -196,9 +196,9 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether flag indicating if this layout handles exceptions
+        /// Gets or sets a value indicating whether flag indicating if this layout handles exceptions.
         /// </summary>
-        /// <value><c>false</c> if this layout handles exceptions</value>
+        /// <value><c>false</c> if this layout handles exceptions.</value>
         /// <remarks>
         /// <para>
         /// If this layout handles the exception object contained within

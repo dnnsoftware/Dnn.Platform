@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Interface for InstallController. This Interface is meant for Internal use only
+    ///   Interface for InstallController. This Interface is meant for Internal use only.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -30,26 +30,26 @@ namespace DotNetNuke.Services.Upgrade.Internals
         bool IsAvailableLanguagePack(string cultureCode);
 
         /// <summary>
-        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config
+        /// GetInstallConfig - Returns configuration stored in DotNetNuke.Install.Config.
         /// </summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file</returns>
+        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         InstallConfig GetInstallConfig();
 
         /// <summary>
-        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config
+        /// SetInstallConfig - Saves configuration n DotNetNuke.Install.Config.
         /// </summary>
         void SetInstallConfig(InstallConfig installConfig);
 
         /// <summary>
-        /// RemoveFromInstallConfig - Removes the specified XML Node from the InstallConfig
+        /// RemoveFromInstallConfig - Removes the specified XML Node from the InstallConfig.
         /// </summary>
         /// <param name="xmlNodePath"></param>
         void RemoveFromInstallConfig(string xmlNodePath);
 
         /// <summary>
-        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file
+        /// GetConnectionFromWebConfig - Returns Connection Configuration in web.config file.
         /// </summary>
-        /// <returns>ConnectionConfig object. Null if information is not present in the config file</returns>
+        /// <returns>ConnectionConfig object. Null if information is not present in the config file.</returns>
         ConnectionConfig GetConnectionFromWebConfig();
 
         CultureInfo GetCurrentLanguage();

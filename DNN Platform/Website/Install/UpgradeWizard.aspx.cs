@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Install
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The InstallWizard class provides the Installation Wizard for DotNetNuke
+    /// The InstallWizard class provides the Installation Wizard for DotNetNuke.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -338,7 +338,7 @@ namespace DotNetNuke.Services.Install
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the Page is initialised
+        /// Page_Init runs when the Page is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -358,7 +358,7 @@ namespace DotNetNuke.Services.Install
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the Page loads
+        /// Page_Load runs when the Page loads.
         /// </summary>
         /// <remarks>
         /// </remarks>

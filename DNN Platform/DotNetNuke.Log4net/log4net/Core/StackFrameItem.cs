@@ -38,7 +38,7 @@ namespace log4net.Core
     public class StackFrameItem
     {
         /// <summary>
-        /// returns a stack frame item from a stack frame. This
+        /// returns a stack frame item from a stack frame. This.
         /// </summary>
         /// <param name="frame"></param>
         /// <returns></returns>
@@ -145,16 +145,16 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets all available caller information
+        /// Gets all available caller information.
         /// </summary>
         /// <value>
         /// All available caller information, in the format
-        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
+        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>.
         /// </value>
         /// <remarks>
         /// <para>
         /// Gets all available caller information, in the format
-        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
+        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>.
         /// </para>
         /// </remarks>
         public string FullInfo

@@ -27,7 +27,7 @@ using System.Text;
 namespace log4net.Util
 {
     /// <summary>
-    /// A <see cref="StringWriter"/> that can be <see cref="Reset"/> and reused
+    /// A <see cref="StringWriter"/> that can be <see cref="Reset"/> and reused.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -35,16 +35,16 @@ namespace log4net.Util
     /// This uses a single buffer for string operations.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class ReusableStringWriter : StringWriter
     {
         /// <summary>
-        /// Create an instance of <see cref="ReusableStringWriter"/>
+        /// Create an instance of <see cref="ReusableStringWriter"/>.
         /// </summary>
-        /// <param name="formatProvider">the format provider to use</param>
+        /// <param name="formatProvider">the format provider to use.</param>
         /// <remarks>
         /// <para>
-        /// Create an instance of <see cref="ReusableStringWriter"/>
+        /// Create an instance of <see cref="ReusableStringWriter"/>.
         /// </para>
         /// </remarks>
         public ReusableStringWriter(IFormatProvider formatProvider)
@@ -53,12 +53,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Override Dispose to prevent closing of writer
+        /// Override Dispose to prevent closing of writer.
         /// </summary>
-        /// <param name="disposing">flag</param>
+        /// <param name="disposing">flag.</param>
         /// <remarks>
         /// <para>
-        /// Override Dispose to prevent closing of writer
+        /// Override Dispose to prevent closing of writer.
         /// </para>
         /// </remarks>
         protected override void Dispose(bool disposing)
@@ -69,8 +69,8 @@ namespace log4net.Util
         /// <summary>
         /// Reset this string writer so that it can be reused.
         /// </summary>
-        /// <param name="maxCapacity">the maximum buffer capacity before it is trimmed</param>
-        /// <param name="defaultSize">the default size to make the buffer</param>
+        /// <param name="maxCapacity">the maximum buffer capacity before it is trimmed.</param>
+        /// <param name="defaultSize">the default size to make the buffer.</param>
         /// <remarks>
         /// <para>
         /// Reset this string writer so that it can be reused.

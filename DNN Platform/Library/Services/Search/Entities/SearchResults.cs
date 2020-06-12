@@ -11,19 +11,19 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Services.Search.Entities
 {
     /// <summary>
-    /// Collection storing Search Results
+    /// Collection storing Search Results.
     /// </summary>
     [Serializable]
     public class SearchResults
     {
         /// <summary>
-        /// Gets or sets total Hits found in Lucene
+        /// Gets or sets total Hits found in Lucene.
         /// </summary>
         /// <remarks>This number will generally be larger than count of Results object as Results usually holds 10 items, whereas TotalHits indicates TOTAL hits in entire Lucene for the query supplied.</remarks>
         public int TotalHits { get; set; }
 
         /// <summary>
-        /// Gets or sets collection of Results
+        /// Gets or sets collection of Results.
         /// </summary>
         public IList<SearchResult> Results { get; set; }
 

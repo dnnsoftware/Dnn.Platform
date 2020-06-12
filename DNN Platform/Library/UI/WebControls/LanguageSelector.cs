@@ -16,7 +16,7 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.WebControls
 {
     /// <summary>
-    /// Language Selector control
+    /// Language Selector control.
     /// </summary>
     public class LanguageSelector : Control, INamingContainer
     {
@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Selection object: Language ("de", "en") or Locale ("de-DE", "en-US")
+        /// Selection object: Language ("de", "en") or Locale ("de-DE", "en-US").
         /// </summary>
         public enum LanguageSelectionObject
         {
@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
         private Panel pnlControl;
 
         /// <summary>
-        /// Gets or sets selection mode (single, multiple)
+        /// Gets or sets selection mode (single, multiple).
         /// </summary>
         public LanguageSelectionMode SelectionMode
         {
@@ -84,7 +84,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the type of objects to be selectable: NeutralCulture ("de") or SpecificCulture ("de-DE")
+        /// Gets or sets the type of objects to be selectable: NeutralCulture ("de") or SpecificCulture ("de-DE").
         /// </summary>
         public LanguageSelectionObject SelectionObject
         {
@@ -114,7 +114,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the style of the language items
+        /// Gets or sets the style of the language items.
         /// </summary>
         public LanguageItemStyle ItemStyle
         {
@@ -144,7 +144,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the direction of the language list
+        /// Gets or sets the direction of the language list.
         /// </summary>
         public LanguageListDirection ListDirection
         {
@@ -174,7 +174,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets the list of selected languages
+        /// Gets or sets the list of selected languages.
         /// </summary>
         public string[] SelectedLanguages
         {
@@ -259,7 +259,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Create Child Controls
+        /// Create Child Controls.
         /// </summary>
         protected override void CreateChildControls()
         {
@@ -324,10 +324,10 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// retrieve the cultures, currently supported by the portal
+        /// retrieve the cultures, currently supported by the portal.
         /// </summary>
-        /// <param name="specific">true: locales, false: neutral languages</param>
-        /// <returns>Array of cultures</returns>
+        /// <param name="specific">true: locales, false: neutral languages.</param>
+        /// <returns>Array of cultures.</returns>
         private CultureInfo[] GetCultures(bool specific)
         {
             var a = new ArrayList();

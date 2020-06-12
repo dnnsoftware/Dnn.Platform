@@ -37,11 +37,11 @@ namespace log4net.Util
     /// messages to an instance of <see cref="TextWriter"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public abstract class TextWriterAdapter : TextWriter
     {
         /// <summary>
-        /// The writer to forward messages to
+        /// The writer to forward messages to.
         /// </summary>
         private TextWriter m_writer;
 
@@ -49,7 +49,7 @@ namespace log4net.Util
         /// Create an instance of <see cref="TextWriterAdapter"/> that forwards all
         /// messages to a <see cref="TextWriter"/>.
         /// </summary>
-        /// <param name="writer">The <see cref="TextWriter"/> to forward to</param>
+        /// <param name="writer">The <see cref="TextWriter"/> to forward to.</param>
         /// <remarks>
         /// <para>
         /// Create an instance of <see cref="TextWriterAdapter"/> that forwards all
@@ -80,14 +80,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the Encoding in which the output is written
+        /// Gets the Encoding in which the output is written.
         /// </summary>
         /// <value>
-        /// The <see cref="Encoding"/>
+        /// The <see cref="Encoding"/>.
         /// </value>
         /// <remarks>
         /// <para>
-        /// The Encoding in which the output is written
+        /// The Encoding in which the output is written.
         /// </para>
         /// </remarks>
         public override Encoding Encoding
@@ -96,14 +96,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets an object that controls formatting
+        /// Gets an object that controls formatting.
         /// </summary>
         /// <value>
-        /// The format provider
+        /// The format provider.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets an object that controls formatting
+        /// Gets an object that controls formatting.
         /// </para>
         /// </remarks>
         public override IFormatProvider FormatProvider
@@ -112,14 +112,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets the line terminator string used by the TextWriter
+        /// Gets or sets the line terminator string used by the TextWriter.
         /// </summary>
         /// <value>
-        /// The line terminator to use
+        /// The line terminator to use.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets or sets the line terminator string used by the TextWriter
+        /// Gets or sets the line terminator string used by the TextWriter.
         /// </para>
         /// </remarks>
         public override string NewLine
@@ -129,7 +129,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Closes the writer and releases any system resources associated with the writer
+        /// Closes the writer and releases any system resources associated with the writer.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -148,12 +148,12 @@ namespace log4net.Util
 #endif
 
         /// <summary>
-        /// Dispose this writer
+        /// Dispose this writer.
         /// </summary>
-        /// <param name="disposing">flag indicating if we are being disposed</param>
+        /// <param name="disposing">flag indicating if we are being disposed.</param>
         /// <remarks>
         /// <para>
-        /// Dispose this writer
+        /// Dispose this writer.
         /// </para>
         /// </remarks>
         protected override void Dispose(bool disposing)
@@ -165,12 +165,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Flushes any buffered output
+        /// Flushes any buffered output.
         /// </summary>
         /// <remarks>
         /// <para>
         /// Clears all buffers for the writer and causes any buffered data to be written
-        /// to the underlying device
+        /// to the underlying device.
         /// </para>
         /// </remarks>
         public override void Flush()
@@ -179,12 +179,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes a character to the wrapped TextWriter
+        /// Writes a character to the wrapped TextWriter.
         /// </summary>
-        /// <param name="value">the value to write to the TextWriter</param>
+        /// <param name="value">the value to write to the TextWriter.</param>
         /// <remarks>
         /// <para>
-        /// Writes a character to the wrapped TextWriter
+        /// Writes a character to the wrapped TextWriter.
         /// </para>
         /// </remarks>
         public override void Write(char value)
@@ -193,14 +193,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes a character buffer to the wrapped TextWriter
+        /// Writes a character buffer to the wrapped TextWriter.
         /// </summary>
-        /// <param name="buffer">the data buffer</param>
-        /// <param name="index">the start index</param>
-        /// <param name="count">the number of characters to write</param>
+        /// <param name="buffer">the data buffer.</param>
+        /// <param name="index">the start index.</param>
+        /// <param name="count">the number of characters to write.</param>
         /// <remarks>
         /// <para>
-        /// Writes a character buffer to the wrapped TextWriter
+        /// Writes a character buffer to the wrapped TextWriter.
         /// </para>
         /// </remarks>
         public override void Write(char[] buffer, int index, int count)
@@ -209,12 +209,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes a string to the wrapped TextWriter
+        /// Writes a string to the wrapped TextWriter.
         /// </summary>
-        /// <param name="value">the value to write to the TextWriter</param>
+        /// <param name="value">the value to write to the TextWriter.</param>
         /// <remarks>
         /// <para>
-        /// Writes a string to the wrapped TextWriter
+        /// Writes a string to the wrapped TextWriter.
         /// </para>
         /// </remarks>
         public override void Write(string value)

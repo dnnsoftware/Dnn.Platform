@@ -13,7 +13,7 @@ namespace DotNetNuke.Common.Controls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Privacy PortalModuleBase displays the Privacy text
+    /// The Privacy PortalModuleBase displays the Privacy text.
     /// </summary>
     /// <returns></returns>
     /// <remarks>

@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Urls
     internal class RedirectController
     {
         /// <summary>
-        /// Cancels a redirect
+        /// Cancels a redirect.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="context"></param>
@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Checks for a redirect based on a module friendly url provider rule
+        /// Checks for a redirect based on a module friendly url provider rule.
         /// </summary>
         /// <param name="requestUri"></param>
         /// <param name="result"></param>
@@ -403,7 +403,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="permRedirect"></param>
         /// <param name="parentTraceId"></param>
         /// <returns></returns>
-        /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline</remarks>
+        /// <remarks>823 : Moved from CheckForRedirects to allow call earlier in pipeline.</remarks>
         internal static string GetTabRedirectUrl(
             TabInfo tab,
             FriendlyUrlSettings settings,

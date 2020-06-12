@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The LibraryPackageWriter class
+    /// The LibraryPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>

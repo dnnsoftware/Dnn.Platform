@@ -13,12 +13,12 @@ namespace DotNetNuke.Framework
     public interface IServicesFramework
     {
         /// <summary>
-        /// Will cause anti forgery tokens to be included in the current page
+        /// Will cause anti forgery tokens to be included in the current page.
         /// </summary>
         void RequestAjaxAntiForgerySupport();
 
         /// <summary>
-        /// Will cause ajax scripts to be included in the current page
+        /// Will cause ajax scripts to be included in the current page.
         /// </summary>
         void RequestAjaxScriptSupport();
     }

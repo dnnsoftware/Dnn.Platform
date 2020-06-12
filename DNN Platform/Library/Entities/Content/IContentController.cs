@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Content
         void DeleteContentItem(ContentItem contentItem);
 
         /// <summary>Delete a ContentItem object by ID.</summary>
-        /// <param name="contentItemId">The ID of the ContentItem object (ContentItemId)</param>
+        /// <param name="contentItemId">The ID of the ContentItem object (ContentItemId).</param>
         void DeleteContentItem(int contentItemId);
 
         /// <summary>
@@ -68,21 +68,21 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Get a list of content items by ContentType ID.
         /// </summary>
-        /// <param name="contentTypeId">The Content Type ID of the content items we want to query</param>
+        /// <param name="contentTypeId">The Content Type ID of the content items we want to query.</param>
         /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByContentType(int contentTypeId);
 
         /// <summary>
         /// Get a list of content items by ContentType.
         /// </summary>
-        /// <param name="contentType">The Content Type of the content items we want to query</param>
+        /// <param name="contentType">The Content Type of the content items we want to query.</param>
         /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByContentType(ContentType contentType);
 
         /// <summary>
         /// Return a list of ContentItems that have all of the specified terms attached.
         /// </summary>
-        /// <param name="terms">A list of terms that should be attached to the ContentItems returned</param>
+        /// <param name="terms">A list of terms that should be attached to the ContentItems returned.</param>
         /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTerms(IList<Term> terms);
 
@@ -99,14 +99,14 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Retrieve all content items associated with the specified module ID, <paramref name="moduleId"/>.
         /// </summary>
-        /// <param name="moduleId">The module ID to use in the content item lookup</param>
+        /// <param name="moduleId">The module ID to use in the content item lookup.</param>
         /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByModuleId(int moduleId);
 
         /// <summary>
         /// Retrieve all content items on the specified page (tab).
         /// </summary>
-        /// <param name="tabId">The page ID to use in the lookup of content items</param>
+        /// <param name="tabId">The page ID to use in the lookup of content items.</param>
         /// <returns></returns>
         IQueryable<ContentItem> GetContentItemsByTabId(int tabId);
 

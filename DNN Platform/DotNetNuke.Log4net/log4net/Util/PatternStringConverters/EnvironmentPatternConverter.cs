@@ -33,7 +33,7 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Write an environment variable to the output
+    /// Write an environment variable to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -42,14 +42,14 @@ namespace log4net.Util.PatternStringConverters
     /// the name of the variable to output.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class EnvironmentPatternConverter : PatternConverter
     {
         /// <summary>
-        /// Write an environment variable to the output
+        /// Write an environment variable to the output.
         /// </summary>
-        /// <param name="writer">the writer to write to</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="writer">the writer to write to.</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Writes the environment variable to the output <paramref name="writer"/>.

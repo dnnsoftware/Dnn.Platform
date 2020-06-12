@@ -1516,20 +1516,20 @@ namespace DotNetNuke.Entities.Urls
         /// Gets the Tab Dictionary from the DataCache memory location, if it's empty or missing, builds a new one.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="minTabPathDepth">ByRef parameter to return the minimum tab path depth (the number of '/' in the tab path)</param>
-        /// <param name="maxTabPathDepth">ByRef parameter to return the maximum tab path depth (the number of '/' in the tab path)</param>
-        /// <param name="minAliasPathDepth">ByRef parameter to return the minimum alias path depth (the number of '/' in the alias path</param>
-        /// <param name="maxAliasPathDepth">ByRef parameter to return the maximum alias path depth (the number of '/' in the alias path)</param>
+        /// <param name="minTabPathDepth">ByRef parameter to return the minimum tab path depth (the number of '/' in the tab path).</param>
+        /// <param name="maxTabPathDepth">ByRef parameter to return the maximum tab path depth (the number of '/' in the tab path).</param>
+        /// <param name="minAliasPathDepth">ByRef parameter to return the minimum alias path depth (the number of '/' in the alias path.</param>
+        /// <param name="maxAliasPathDepth">ByRef parameter to return the maximum alias path depth (the number of '/' in the alias path).</param>
         /// <param name="settings"></param>
         /// <param name="forceRebuild"></param>
         /// <param name="bypassCache"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns>Dictionary (string, string) of Tab paths in tab key, with the rewrite path as the value</returns>
+        /// <returns>Dictionary (string, string) of Tab paths in tab key, with the rewrite path as the value.</returns>
         /// <remarks>
         /// Changes
         /// Task 608 : Incrementally build tab dictionary instead of building entire dicitionary all at once
         /// Task 609 : If usePortalAlias is specified, only build dictionary with specific portal alias : ignore others
-        /// Task 791 : allow for specification of true/false for using thread locking to prevent multiple rebuilds on threads
+        /// Task 791 : allow for specification of true/false for using thread locking to prevent multiple rebuilds on threads.
         /// </remarks>
         internal static SharedDictionary<string, string> FetchTabDictionary(
             int portalId,
@@ -1754,12 +1754,12 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage
+        /// Returns the tab path of the base DNN tab.  Ie /Home or /Somepage/SomeOtherPage.
         /// </summary>
         /// <param name="tab"></param>
         /// <param name="options"></param>
         /// <param name="parentTraceId"></param>
-        /// <remarks>Will remove // from the tabPath as stored in the Tabs object/table</remarks>
+        /// <remarks>Will remove // from the tabPath as stored in the Tabs object/table.</remarks>
         /// <returns></returns>
         internal static string GetTabPath(TabInfo tab, FriendlyUrlOptions options, Guid parentTraceId)
         {

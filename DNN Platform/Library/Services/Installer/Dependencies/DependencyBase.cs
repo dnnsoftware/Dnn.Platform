@@ -11,7 +11,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The DependencyBase is a base class for Installer Dependencies
+    /// The DependencyBase is a base class for Installer Dependencies.
     /// </summary>
     /// <remarks>
     /// </remarks>

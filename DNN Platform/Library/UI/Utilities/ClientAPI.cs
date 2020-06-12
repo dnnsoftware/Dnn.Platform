@@ -48,10 +48,10 @@ namespace DotNetNuke.UI.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds client side body.onload event handler
+        /// Adds client side body.onload event handler.
         /// </summary>
-        /// <param name="objPage">Current page rendering content</param>
-        /// <param name="strJSFunction">Javascript function name to execute</param>
+        /// <param name="objPage">Current page rendering content.</param>
+        /// <param name="strJSFunction">Javascript function name to execute.</param>
         /// <remarks>
         /// </remarks>
         [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
@@ -94,11 +94,11 @@ namespace DotNetNuke.UI.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows any module to have drag and drop functionality enabled
+        /// Allows any module to have drag and drop functionality enabled.
         /// </summary>
-        /// <param name="objTitle">Title element that responds to the click and dragged</param>
-        /// <param name="objContainer">Container</param>
-        /// <param name="ModuleID">Module ID</param>
+        /// <param name="objTitle">Title element that responds to the click and dragged.</param>
+        /// <param name="objContainer">Container.</param>
+        /// <param name="ModuleID">Module ID.</param>
         /// <remarks>
         /// This sub also will send down information to notify the client of the panes that have been defined in the current skin.
         /// </remarks>
@@ -133,12 +133,12 @@ namespace DotNetNuke.UI.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows a button and a content area to support client side min/max functionality
+        /// Allows a button and a content area to support client side min/max functionality.
         /// </summary>
-        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown</param>
-        /// <param name="objContent">Content area that is hidden/shown</param>
-        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true</param>
-        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None</param>
+        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown.</param>
+        /// <param name="objContent">Content area that is hidden/shown.</param>
+        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true.</param>
+        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None.</param>
         /// <remarks>
         /// This method's purpose is to provide a higher level of abstraction between the ClientAPI and the module developer.
         /// </remarks>
@@ -159,15 +159,15 @@ namespace DotNetNuke.UI.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows a button and a content area to support client side min/max functionality
+        /// Allows a button and a content area to support client side min/max functionality.
         /// </summary>
-        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown</param>
-        /// <param name="objContent">Content area that is hidden/shown</param>
-        /// <param name="intModuleId">Module id of button/content, used only for persistance type of Cookie</param>
-        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true</param>
-        /// <param name="strMinIconLoc">Location of minimized icon</param>
-        /// <param name="strMaxIconLoc">Location of maximized icon</param>
-        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None</param>
+        /// <param name="objButton">Control that when clicked causes content area to be hidden/shown.</param>
+        /// <param name="objContent">Content area that is hidden/shown.</param>
+        /// <param name="intModuleId">Module id of button/content, used only for persistance type of Cookie.</param>
+        /// <param name="blnDefaultMin">If content area is to be defaulted to minimized pass in true.</param>
+        /// <param name="strMinIconLoc">Location of minimized icon.</param>
+        /// <param name="strMaxIconLoc">Location of maximized icon.</param>
+        /// <param name="ePersistanceType">How to store current state of min/max.  Cookie, Page, None.</param>
         /// <remarks>
         /// This method's purpose is to provide a higher level of abstraction between the ClientAPI and the module developer.
         /// </remarks>

@@ -30,7 +30,7 @@ using System;
 namespace log4net.Util
 {
     /// <summary>
-    /// Defines a lock that supports single writers and multiple readers
+    /// Defines a lock that supports single writers and multiple readers.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -47,11 +47,11 @@ namespace log4net.Util
     /// the caller must not rely on multiple simultaneous readers.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class ReaderWriterLock
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -70,7 +70,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Acquires a reader lock
+        /// Acquires a reader lock.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -99,7 +99,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Decrements the lock count
+        /// Decrements the lock count.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -122,7 +122,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Acquires the writer lock
+        /// Acquires the writer lock.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -150,7 +150,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Decrements the lock count on the writer lock
+        /// Decrements the lock count on the writer lock.
         /// </summary>
         /// <remarks>
         /// <para>

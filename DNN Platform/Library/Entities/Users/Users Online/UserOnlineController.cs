@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Users
     /// Class:      UserOnlineController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserOnlineController class provides Business Layer methods for Users Online
+    /// The UserOnlineController class provides Business Layer methods for Users Online.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -37,7 +37,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears the cached Users Online Information
+        /// Clears the cached Users Online Information.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Online time window
+        /// Gets the Online time window.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the cached Users Online Information
+        /// Gets the cached Users Online Information.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Users Online functionality is enabled
+        /// Gets whether the Users Online functionality is enabled.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Determines whether a User is online
+        /// Determines whether a User is online.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets the cached Users Online Information
+        /// Sets the cached Users Online Information.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -128,9 +128,9 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tracks an Anonymous User
+        /// Tracks an Anonymous User.
         /// </summary>
-        /// <param name="context">An HttpContext Object</param>
+        /// <param name="context">An HttpContext Object.</param>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAnonymousUser(HttpContext context)
@@ -218,9 +218,9 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tracks an Authenticated User
+        /// Tracks an Authenticated User.
         /// </summary>
-        /// <param name="context">An HttpContext Object</param>
+        /// <param name="context">An HttpContext Object.</param>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAuthenticatedUser(HttpContext context)
@@ -259,7 +259,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tracks an online User
+        /// Tracks an online User.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -289,7 +289,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Update the Users Online information
+        /// Update the Users Online information.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]

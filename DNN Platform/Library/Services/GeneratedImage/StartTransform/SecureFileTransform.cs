@@ -15,22 +15,22 @@ using DotNetNuke.Services.FileSystem;
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
     /// <summary>
-    /// Secure File ImageTransform class
+    /// Secure File ImageTransform class.
     /// </summary>
     public class SecureFileTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets set IFileInfo object of given FileId
+        /// Gets or sets set IFileInfo object of given FileId.
         /// </summary>
         public IFileInfo SecureFile { get; set; }
 
         /// <summary>
-        /// Gets or sets the Image to return if no image or error
+        /// Gets or sets the Image to return if no image or error.
         /// </summary>
         public Image EmptyImage { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
 
@@ -43,12 +43,12 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
-        /// Processes an input image returing a secure file image
+        /// Processes an input image returing a secure file image.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         /// <remarks>
-        /// If the secure file is not an image, it returns an image representing the file extension
+        /// If the secure file is not an image, it returns an image representing the file extension.
         /// </remarks>
         public override Image ProcessImage(Image image)
         {
@@ -82,10 +82,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         }
 
         /// <summary>
-        /// Checks if the current user have READ permission on a given folder
+        /// Checks if the current user have READ permission on a given folder.
         /// </summary>
-        /// <param name="folder">Folder info object</param>
-        /// <returns>True if the user has READ permission, false otherwise</returns>
+        /// <param name="folder">Folder info object.</param>
+        /// <returns>True if the user has READ permission, false otherwise.</returns>
         public bool DoesHaveReadFolderPermission(IFolderInfo folder)
         {
             return FolderPermissionController.HasFolderPermission(folder.FolderPermissions, "Read");

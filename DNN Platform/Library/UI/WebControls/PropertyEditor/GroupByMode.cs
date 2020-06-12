@@ -6,7 +6,7 @@ namespace DotNetNuke.UI.WebControls
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Enumeration that determines the grouping method
+    /// Enumeration that determines the grouping method.
     /// </summary>
     /// <remarks>
     /// GroupByMode is used by <see cref="DotNetNuke.UI.WebControls.PropertyEditorControl">PropertyEditorControl</see>

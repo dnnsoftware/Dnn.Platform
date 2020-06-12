@@ -37,12 +37,12 @@ namespace log4net.Plugin
     /// attached to a repository.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class PluginMap
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="repository">The repository that the plugins should be attached to.</param>
         /// <remarks>

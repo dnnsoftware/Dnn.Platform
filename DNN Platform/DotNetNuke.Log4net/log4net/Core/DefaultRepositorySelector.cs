@@ -50,8 +50,8 @@ namespace log4net.Core
     /// configure the hierarchy for the repository.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class DefaultRepositorySelector : IRepositorySelector
     {
         /// <summary>
@@ -77,7 +77,7 @@ namespace log4net.Core
         /// <summary>
         /// Creates a new repository selector.
         /// </summary>
-        /// <param name="defaultRepositoryType">The type of the repositories to create, must implement <see cref="ILoggerRepository"/></param>
+        /// <param name="defaultRepositoryType">The type of the repositories to create, must implement <see cref="ILoggerRepository"/>.</param>
         /// <remarks>
         /// <para>
         /// Create an new repository selector.
@@ -126,7 +126,7 @@ namespace log4net.Core
         /// the <paramref name="repositoryAssembly"/>.
         /// </para>
         /// </remarks>
-        /// <returns>The <see cref="ILoggerRepository"/> for the assembly</returns>
+        /// <returns>The <see cref="ILoggerRepository"/> for the assembly.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="repositoryAssembly"/> is <see langword="null" />.</exception>
         public ILoggerRepository GetRepository(Assembly repositoryAssembly)
         {
@@ -176,7 +176,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Create a new repository for the assembly specified
+        /// Create a new repository for the assembly specified.
         /// </summary>
         /// <param name="repositoryAssembly">the assembly to use to create the repository to associate with the <see cref="ILoggerRepository"/>.</param>
         /// <param name="repositoryType">The type of repository to create, must implement <see cref="ILoggerRepository"/>.</param>
@@ -221,8 +221,8 @@ namespace log4net.Core
         /// </summary>
         /// <param name="repositoryAssembly">the assembly to use to create the repository to associate with the <see cref="ILoggerRepository"/>.</param>
         /// <param name="repositoryType">The type of repository to create, must implement <see cref="ILoggerRepository"/>.</param>
-        /// <param name="repositoryName">The name to assign to the created repository</param>
-        /// <param name="readAssemblyAttributes">Set to <c>true</c> to read and apply the assembly attributes</param>
+        /// <param name="repositoryName">The name to assign to the created repository.</param>
+        /// <param name="readAssemblyAttributes">Set to <c>true</c> to read and apply the assembly attributes.</param>
         /// <returns>The repository created.</returns>
         /// <remarks>
         /// <para>
@@ -429,10 +429,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Test if a named repository exists
+        /// Test if a named repository exists.
         /// </summary>
-        /// <param name="repositoryName">the named repository to check</param>
-        /// <returns><c>true</c> if the repository exists</returns>
+        /// <param name="repositoryName">the named repository to check.</param>
+        /// <returns><c>true</c> if the repository exists.</returns>
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(string, Type)"/>
@@ -449,9 +449,9 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets a list of <see cref="ILoggerRepository"/> objects
+        /// Gets a list of <see cref="ILoggerRepository"/> objects.
         /// </summary>
-        /// <returns>an array of all known <see cref="ILoggerRepository"/> objects</returns>
+        /// <returns>an array of all known <see cref="ILoggerRepository"/> objects.</returns>
         /// <remarks>
         /// <para>
         /// Gets an array of all of the repositories created by this selector.

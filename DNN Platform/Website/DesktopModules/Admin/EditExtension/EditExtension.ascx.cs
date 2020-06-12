@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The EditExtension control is used to edit a Extension
+    /// The EditExtension control is used to edit a Extension.
     /// </summary>
     /// <remarks>
     /// </remarks>

@@ -17,7 +17,7 @@ using DotNetNuke.Services.ClientCapability;
 namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
 {
     /// <summary>
-    /// AspNet.BrowserDetector implementation of ClientCapabilityProvider
+    /// AspNet.BrowserDetector implementation of ClientCapabilityProvider.
     /// </summary>
     public class AspNetClientCapabilityProvider : ClientCapabilityProvider
     {
@@ -154,22 +154,22 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <summary>
-        /// Returns available Capability Values for every Capability Name
+        /// Returns available Capability Values for every Capability Name.
         /// </summary>
         /// <returns>
-        /// Dictionary of Capability Name along with List of possible values of the Capability
+        /// Dictionary of Capability Name along with List of possible values of the Capability.
         /// </returns>
-        /// <example>Capability Name = mobile_browser, value = Safari, Andriod Webkit </example>
+        /// <example>Capability Name = mobile_browser, value = Safari, Andriod Webkit. </example>
         public override IDictionary<string, List<string>> GetAllClientCapabilityValues()
         {
             return ClientCapabilityValues;
         }
 
         /// <summary>
-        /// Returns All available Client Capabilities present
+        /// Returns All available Client Capabilities present.
         /// </summary>
         /// <returns>
-        /// List of IClientCapability present
+        /// List of IClientCapability present.
         /// </returns>
         public override IQueryable<IClientCapability> GetAllClientCapabilities()
         {

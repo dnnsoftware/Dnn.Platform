@@ -39,7 +39,7 @@ using log4net.Util;
 namespace log4net.Appender
 {
     /// <summary>
-    /// Appender that allows clients to connect via Telnet to receive log messages
+    /// Appender that allows clients to connect via Telnet to receive log messages.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -53,19 +53,19 @@ namespace log4net.Appender
     /// The default <see cref="Port"/> is 23 (the telnet port).
     /// </para>
     /// </remarks>
-    /// <author>Keith Long</author>
-    /// <author>Nicko Cadell</author>
+    /// <author>Keith Long.</author>
+    /// <author>Nicko Cadell.</author>
     public class TelnetAppender : AppenderSkeleton
     {
         private SocketHandler m_handler;
         private int m_listeningPort = 23;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor
+        /// Default constructor.
         /// </para>
         /// </remarks>
         public TelnetAppender()
@@ -120,7 +120,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Overrides the parent method to close the socket handler
+        /// Overrides the parent method to close the socket handler.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -141,7 +141,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -168,7 +168,7 @@ namespace log4net.Appender
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// <para>
-        /// Create the socket handler and wait for connections
+        /// Create the socket handler and wait for connections.
         /// </para>
         /// </remarks>
         public override void ActivateOptions()
@@ -204,7 +204,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Helper class to manage connected clients
+        /// Helper class to manage connected clients.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -221,11 +221,11 @@ namespace log4net.Appender
             private ArrayList m_clients = new ArrayList();
 
             /// <summary>
-            /// Class that represents a client connected to this handler
+            /// Class that represents a client connected to this handler.
             /// </summary>
             /// <remarks>
             /// <para>
-            /// Class that represents a client connected to this handler
+            /// Class that represents a client connected to this handler.
             /// </para>
             /// </remarks>
             protected class SocketClient : IDisposable
@@ -234,9 +234,9 @@ namespace log4net.Appender
                 private StreamWriter m_writer;
 
                 /// <summary>
-                /// Create this <see cref="SocketClient"/> for the specified <see cref="Socket"/>
+                /// Create this <see cref="SocketClient"/> for the specified <see cref="Socket"/>.
                 /// </summary>
-                /// <param name="socket">the client's socket</param>
+                /// <param name="socket">the client's socket.</param>
                 /// <remarks>
                 /// <para>
                 /// Opens a stream writer on the socket.
@@ -258,12 +258,12 @@ namespace log4net.Appender
                 }
 
                 /// <summary>
-                /// Write a string to the client
+                /// Write a string to the client.
                 /// </summary>
-                /// <param name="message">string to send</param>
+                /// <param name="message">string to send.</param>
                 /// <remarks>
                 /// <para>
-                /// Write a string to the client
+                /// Write a string to the client.
                 /// </para>
                 /// </remarks>
                 public void Send(string message)
@@ -273,7 +273,7 @@ namespace log4net.Appender
                 }
 
                 /// <summary>
-                /// Cleanup the clients connection
+                /// Cleanup the clients connection.
                 /// </summary>
                 /// <remarks>
                 /// <para>
@@ -318,9 +318,9 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Opens a new server port on <paramref ref="port"/>
+            /// Opens a new server port on <paramref ref="port"/>.
             /// </summary>
-            /// <param name="port">the local port to listen on for connections</param>
+            /// <param name="port">the local port to listen on for connections.</param>
             /// <remarks>
             /// <para>
             /// Creates a socket handler on the specified local server port.
@@ -345,12 +345,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Sends a string message to each of the connected clients
+            /// Sends a string message to each of the connected clients.
             /// </summary>
-            /// <param name="message">the text to send</param>
+            /// <param name="message">the text to send.</param>
             /// <remarks>
             /// <para>
-            /// Sends a string message to each of the connected clients
+            /// Sends a string message to each of the connected clients.
             /// </para>
             /// </remarks>
             public void Send(string message)
@@ -373,9 +373,9 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Add a client to the internal clients list
+            /// Add a client to the internal clients list.
             /// </summary>
-            /// <param name="client">client to add</param>
+            /// <param name="client">client to add.</param>
             private void AddClient(SocketClient client)
             {
                 lock (this)
@@ -387,9 +387,9 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Remove a client from the internal clients list
+            /// Remove a client from the internal clients list.
             /// </summary>
-            /// <param name="client">client to remove</param>
+            /// <param name="client">client to remove.</param>
             private void RemoveClient(SocketClient client)
             {
                 lock (this)
@@ -401,10 +401,10 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Gets a value indicating whether test if this handler has active connections
+            /// Gets a value indicating whether test if this handler has active connections.
             /// </summary>
             /// <value>
-            /// <c>true</c> if this handler has active connections
+            /// <c>true</c> if this handler has active connections.
             /// </value>
             /// <remarks>
             /// <para>
@@ -427,13 +427,13 @@ namespace log4net.Appender
 			private void OnConnect(Task<Socket> acceptTask)
 #else
             /// <summary>
-            /// Callback used to accept a connection on the server socket
+            /// Callback used to accept a connection on the server socket.
             /// </summary>
-            /// <param name="asyncResult">The result of the asynchronous operation</param>
+            /// <param name="asyncResult">The result of the asynchronous operation.</param>
             /// <remarks>
             /// <para>
             /// On connection adds to the list of connections
-            /// if there are two many open connections you will be disconnected
+            /// if there are two many open connections you will be disconnected.
             /// </para>
             /// </remarks>
             private void OnConnect(IAsyncResult asyncResult)
@@ -482,11 +482,11 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Close all network connections
+            /// Close all network connections.
             /// </summary>
             /// <remarks>
             /// <para>
-            /// Make sure we close all network connections
+            /// Make sure we close all network connections.
             /// </para>
             /// </remarks>
             public void Dispose()

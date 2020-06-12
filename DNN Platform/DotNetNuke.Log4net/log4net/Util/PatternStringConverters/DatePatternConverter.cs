@@ -29,7 +29,7 @@ using log4net.DateFormatter;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Write the current date to the output
+    /// Write the current date to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -82,21 +82,21 @@ namespace log4net.Util.PatternStringConverters
     /// To output the time in Universal time see <see cref="UtcDatePatternConverter"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal class DatePatternConverter : PatternConverter, IOptionHandler
     {
         /// <summary>
-        /// The <see cref="IDateFormatter"/> used to render the date to a string
+        /// The <see cref="IDateFormatter"/> used to render the date to a string.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="IDateFormatter"/> used to render the date to a string
+        /// The <see cref="IDateFormatter"/> used to render the date to a string.
         /// </para>
         /// </remarks>
         protected IDateFormatter m_dateFormatter;
 
         /// <summary>
-        /// Initialize the converter options
+        /// Initialize the converter options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -147,10 +147,10 @@ namespace log4net.Util.PatternStringConverters
         }
 
         /// <summary>
-        /// Write the current date to the output
+        /// Write the current date to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Pass the current date and time to the <see cref="IDateFormatter"/>

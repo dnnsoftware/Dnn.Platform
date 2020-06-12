@@ -24,17 +24,17 @@ namespace DotNetNuke.Security
     ///     TripleDESCryptoServiceProvider
     ///     Asymmetric algorithms (use a public key for encryption and a private key for decryption)
     ///     DSACryptoServiceProvider
-    ///     RSACryptoServiceProvider
+    ///     RSACryptoServiceProvider.
     /// </summary>
     public class FIPSCompliant
     {
         /// <summary>
-        /// uses the AES FIPS-140 compliant algorithm to encrypt a string
+        /// uses the AES FIPS-140 compliant algorithm to encrypt a string.
         /// </summary>
-        /// <param name="plainText">the text to encrypt</param>
-        /// <param name="passPhrase">the pass phase to do the encryption</param>
-        /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different</param>
-        /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000</param>
+        /// <param name="plainText">the text to encrypt.</param>
+        /// <param name="passPhrase">the pass phase to do the encryption.</param>
+        /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different.</param>
+        /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000.</param>
         /// <returns></returns>
         public static string EncryptAES(string plainText, string passPhrase, string salt, int iterations = 1000)
         {
@@ -86,12 +86,12 @@ namespace DotNetNuke.Security
         }
 
         /// <summary>
-        /// uses the AES FIPS-140 compliant algorithm to encrypt a string
+        /// uses the AES FIPS-140 compliant algorithm to encrypt a string.
         /// </summary>
-        /// <param name="encryptedText">the text to decrypt</param>
-        /// <param name="passPhrase">the pass phase to do the decryption</param>
-        /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different</param>
-        /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000</param>
+        /// <param name="encryptedText">the text to decrypt.</param>
+        /// <param name="passPhrase">the pass phase to do the decryption.</param>
+        /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different.</param>
+        /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000.</param>
         /// <returns></returns>
         public static string DecryptAES(string encryptedText, string passPhrase, string salt, int iterations = 1000)
         {

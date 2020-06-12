@@ -137,7 +137,7 @@ namespace DotNetNuke.Tests.Utilities
 
         /// <summary>
         /// This proc loads up specified DNN providers, because the BuildManager doesn't get the context right
-        /// The providers are cahced so that the DNN base buildManager calls don't have to load up hte providers
+        /// The providers are cahced so that the DNN base buildManager calls don't have to load up hte providers.
         /// </summary>
         private static void LoadDnnProviders(string providerList)
         {

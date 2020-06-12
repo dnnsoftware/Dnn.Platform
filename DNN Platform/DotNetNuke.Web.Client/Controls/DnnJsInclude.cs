@@ -9,12 +9,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core.Controls;
 
     /// <summary>
-    /// Registers a JavaScript resource
+    /// Registers a JavaScript resource.
     /// </summary>
     public class DnnJsInclude : JsInclude
     {
         /// <summary>
-        /// Sets up default settings for the control
+        /// Sets up default settings for the control.
         /// </summary>
         public DnnJsInclude()
         {

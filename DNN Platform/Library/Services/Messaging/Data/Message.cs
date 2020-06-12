@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Messaging.Data
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Info class for Messaging
+    ///   The Info class for Messaging.
     /// </summary>
     /// <remarks>
     /// </remarks>

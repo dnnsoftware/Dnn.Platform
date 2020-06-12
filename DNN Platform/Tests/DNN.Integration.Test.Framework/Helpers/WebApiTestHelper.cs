@@ -28,9 +28,9 @@ namespace DNN.Integration.Test.Framework.Helpers
         }
 
         /// <summary>
-        /// Returns a coonector to access the default site annonymously
+        /// Returns a coonector to access the default site annonymously.
         /// </summary>
-        /// <returns>IWebApiConnector object to perform more actions</returns>
+        /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector GetAnnonymousConnector(string url = null)
         {
             url = url ?? AppConfigHelper.SiteUrl;
@@ -80,7 +80,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Register a user by using the Registration form
+        /// Register a user by using the Registration form.
         /// </summary>
         /// <returns></returns>
         public static HttpWebResponse Register(string userName, string password, string displayName, string email,
@@ -137,7 +137,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             return str.GenerateHash("SHA256");
         }
 
-        /// <summary>Generate a MD5 hash of a string
+        /// <summary>Generate a MD5 hash of a string.
         /// </summary>
         /// <returns></returns>
         public static string GenerateMd5(this string str)
@@ -180,7 +180,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         /// Creates a Registered User and performs Login for that user in as well.
         /// Password used is same as that for Host. Existing user is used if it's already present.
         /// </summary>
-        /// <returns>IWebApiConnector object to perform more actions</returns>
+        /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector LoginRegisteredUser(string firstName = IntegrationConstants.RuFirstName, string lastName = IntegrationConstants.RuLastName, string url = null)
         {
             IWebApiConnector connector;
@@ -209,7 +209,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         /// Creates an Administrator and performs Login for that user in as well.
         /// Password used is same as that for Host. Existing user is used if it's already present.
         /// </summary>
-        /// <returns>WebApiConnector object to perform more actions</returns>
+        /// <returns>WebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector LoginAdministrator(string firstName = IntegrationConstants.AdminFirstName, string lastName = IntegrationConstants.AdminLastName, string url = null)
         {
             IWebApiConnector connector;
@@ -236,16 +236,16 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         /// <summary>
         /// Logs in Host.
         /// </summary>
-        /// <returns>IWebApiConnector object to perform more actions</returns>
+        /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector LoginHost()
         {
             return LoginUser(AppConfigHelper.HostUserName);
         }
 
         /// <summary>
-        /// Logs in an already registered user (regardless of the user's role)
+        /// Logs in an already registered user (regardless of the user's role).
         /// </summary>
-        /// <returns>IWebApiConnector object to perform more actions</returns>
+        /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector LoginUser(string username, string url = null)
         {
             IWebApiConnector connector;
@@ -272,9 +272,9 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Logs in as host and clears host cache
+        /// Logs in as host and clears host cache.
         /// </summary>
-        /// <returns>IWebApiConnector object to perform more actions</returns>
+        /// <returns>IWebApiConnector object to perform more actions.</returns>
         public static IWebApiConnector ClearHostCache()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
@@ -285,7 +285,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Logs in as host and recycle the application
+        /// Logs in as host and recycle the application.
         /// </summary>
         public static void RecycleApplication()
         {
@@ -294,9 +294,9 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Returns TabId and ModuleId headers for a Page to be passed in a Post WebApi call
+        /// Returns TabId and ModuleId headers for a Page to be passed in a Post WebApi call.
         /// </summary>
-        /// <param name="tabPath">double-slashed prefixed page name, e.g. //Home or //Groups//GroupSpaces//Members</param>
+        /// <param name="tabPath">double-slashed prefixed page name, e.g. //Home or //Groups//GroupSpaces//Members.</param>
         /// <returns></returns>
         public static Dictionary<string, string> GetTabModuleHeaders(string tabPath)
         {
@@ -311,10 +311,10 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         }
 
         /// <summary>
-        /// Returns TabId and ModuleId headers for a Page and Module to be passed in a Post WebApi call
+        /// Returns TabId and ModuleId headers for a Page and Module to be passed in a Post WebApi call.
         /// </summary>
-        /// <param name="moduleFriendlyName">Module's friendly name, e.g. Wiki or Activity Stream</param>
-        /// <param name="tabPath">double-slashed prefixed page name, e.g. //Home or //Groups//GroupSpaces//Members</param>
+        /// <param name="moduleFriendlyName">Module's friendly name, e.g. Wiki or Activity Stream.</param>
+        /// <param name="tabPath">double-slashed prefixed page name, e.g. //Home or //Groups//GroupSpaces//Members.</param>
         /// <returns></returns>
         public static Dictionary<string, string> GetTabModuleHeaders(string moduleFriendlyName, string tabPath)
         {

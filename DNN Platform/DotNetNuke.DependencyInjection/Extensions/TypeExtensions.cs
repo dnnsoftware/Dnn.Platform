@@ -22,13 +22,13 @@ namespace DotNetNuke.DependencyInjection.Extensions
         /// <summary>
         /// Safely Get all Types from the assembly. If there
         /// is an error while retrieving the types it will
-        /// return an empty array of <see cref="Type"/>
+        /// return an empty array of <see cref="Type"/>.
         /// </summary>
         /// <param name="assembly">
         /// The assembly to retrieve all types from.
         /// </param>
         /// <returns>
-        /// An array of all <see cref="Type"/> in the given <see cref="Assembly"/>
+        /// An array of all <see cref="Type"/> in the given <see cref="Assembly"/>.
         /// </returns>
         public static Type[] SafeGetTypes(this Assembly assembly)
         {

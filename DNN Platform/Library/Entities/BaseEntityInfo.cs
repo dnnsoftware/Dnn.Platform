@@ -33,9 +33,9 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the CreatedByUserID
+        /// Gets the CreatedByUserID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -43,9 +43,9 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the CreatedOnDate
+        /// Gets the CreatedOnDate.
         /// </summary>
-        /// <returns>A DateTime</returns>
+        /// <returns>A DateTime.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -53,9 +53,9 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the LastModifiedByUserID
+        /// Gets the LastModifiedByUserID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -63,9 +63,9 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the LastModifiedOnDate
+        /// Gets the LastModifiedOnDate.
         /// </summary>
-        /// <returns>A DateTime</returns>
+        /// <returns>A DateTime.</returns>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [XmlIgnore]
@@ -73,10 +73,10 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserInfo object associated with this user
+        /// Gets the UserInfo object associated with this user.
         /// </summary>
-        /// <param name="portalId">The PortalID associated with the desired user</param>
-        /// <returns>A UserInfo object</returns>
+        /// <param name="portalId">The PortalID associated with the desired user.</param>
+        /// <returns>A UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public UserInfo CreatedByUser(int portalId)
         {
@@ -91,10 +91,10 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserInfo object associated with this user
+        /// Gets the UserInfo object associated with this user.
         /// </summary>
-        /// <param name="portalId">The PortalID associated with the desired user</param>
-        /// <returns>A UserInfo object</returns>
+        /// <param name="portalId">The PortalID associated with the desired user.</param>
+        /// <returns>A UserInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public UserInfo LastModifiedByUser(int portalId)
         {
@@ -109,9 +109,9 @@ namespace DotNetNuke.Entities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a BaseEntityInfo from a Data Reader
+        /// Fills a BaseEntityInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void FillInternal(IDataReader dr)
         {
@@ -130,9 +130,9 @@ namespace DotNetNuke.Entities
         }
 
         /// <summary>
-        /// method used by cbo to fill readonly properties ignored by HydrateObject reflection
+        /// method used by cbo to fill readonly properties ignored by HydrateObject reflection.
         /// </summary>
-        /// <param name="dr">the data reader to use</param>
+        /// <param name="dr">the data reader to use.</param>
         /// <remarks></remarks>
         internal void FillBaseProperties(IDataReader dr)
         {

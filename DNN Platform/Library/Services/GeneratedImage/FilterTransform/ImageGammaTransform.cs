@@ -9,17 +9,17 @@ using System.Drawing.Drawing2D;
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
     /// <summary>
-    /// Gamma ImageTransform class
+    /// Gamma ImageTransform class.
     /// </summary>
     public class ImageGammaTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5
+        /// Gets or sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5.
         /// </summary>
         public double Gamma { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for this class
+        /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Gamma;
 
@@ -33,10 +33,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Processes an input image applying a gamma image transformation
+        /// Processes an input image applying a gamma image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             var temp = (Bitmap)image;

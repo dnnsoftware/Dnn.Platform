@@ -91,9 +91,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Available List Box Style
+        /// Gets the value of the Available List Box Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -111,9 +111,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Button Style
+        /// Gets the value of the Button Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -131,9 +131,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Container Style
+        /// Gets the value of the Container Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -151,9 +151,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Header Style
+        /// Gets the value of the Header Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -171,9 +171,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Selected List Box Style
+        /// Gets the value of the Selected List Box Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]

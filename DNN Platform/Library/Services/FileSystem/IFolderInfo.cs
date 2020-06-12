@@ -44,27 +44,27 @@ namespace DotNetNuke.Services.FileSystem
         bool IsStorageSecure { get; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether file versions are active for the folder
+        /// Gets or sets a value indicating whether file versions are active for the folder.
         /// </summary>
         bool IsVersioned { get; set; }
 
         /// <summary>
-        /// Gets or sets a reference to the active Workflow for the folder
+        /// Gets or sets a reference to the active Workflow for the folder.
         /// </summary>
         int WorkflowID { get; set; }
 
         /// <summary>
-        /// Gets or sets a reference to the parent folder
+        /// Gets or sets a reference to the parent folder.
         /// </summary>
         int ParentID { get; set; }
 
         /// <summary>
-        /// Gets or sets the path this folder is mapped on its provider file system
+        /// Gets or sets the path this folder is mapped on its provider file system.
         /// </summary>
         string MappedPath { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether the folder has any child subfolder
+        /// Gets a value indicating whether the folder has any child subfolder.
         /// </summary>
         bool HasChildren { get; }
 

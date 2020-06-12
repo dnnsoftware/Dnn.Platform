@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ContainerPackageWriter class
+    /// The ContainerPackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>

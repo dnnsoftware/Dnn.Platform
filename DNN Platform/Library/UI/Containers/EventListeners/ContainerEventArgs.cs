@@ -9,7 +9,7 @@ namespace DotNetNuke.UI.Containers.EventListeners
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ContainerEventArgs provides a custom EventARgs class for Container Events
+    /// ContainerEventArgs provides a custom EventARgs class for Container Events.
     /// </summary>
     /// <remarks></remarks>
     /// -----------------------------------------------------------------------------

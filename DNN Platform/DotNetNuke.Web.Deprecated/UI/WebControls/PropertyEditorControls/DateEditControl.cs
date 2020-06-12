@@ -38,9 +38,9 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets dateValue returns the Date representation of the Value
+        /// Gets dateValue returns the Date representation of the Value.
         /// </summary>
-        /// <value>A Date representing the Value</value>
+        /// <value>A Date representing the Value.</value>
         /// -----------------------------------------------------------------------------
         protected DateTime DateValue
         {
@@ -64,10 +64,10 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets defaultDateFormat is a string that will be used to format the date in the absence of a
-        /// FormatAttribute
+        /// FormatAttribute.
         /// </summary>
-        /// <value>A String representing the default format to use to render the date</value>
-        /// <returns>A Format String</returns>
+        /// <value>A String representing the default format to use to render the date.</value>
+        /// <returns>A Format String.</returns>
         /// -----------------------------------------------------------------------------
         protected virtual string DefaultFormat
         {
@@ -79,10 +79,10 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets format is a string that will be used to format the date in View mode
+        /// Gets format is a string that will be used to format the date in View mode.
         /// </summary>
-        /// <value>A String representing the format to use to render the date</value>
-        /// <returns>A Format String</returns>
+        /// <value>A String representing the format to use to render the date.</value>
+        /// <returns>A Format String.</returns>
         /// -----------------------------------------------------------------------------
         protected virtual string Format
         {
@@ -108,9 +108,9 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets oldDateValue returns the Date representation of the OldValue
+        /// Gets oldDateValue returns the Date representation of the OldValue.
         /// </summary>
-        /// <value>A Date representing the OldValue</value>
+        /// <value>A Date representing the OldValue.</value>
         /// -----------------------------------------------------------------------------
         protected DateTime OldDateValue
         {
@@ -136,7 +136,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         }
 
         /// <summary>
-        /// Gets or sets the Value expressed as a String
+        /// Gets or sets the Value expressed as a String.
         /// </summary>
         protected override string StringValue
         {
@@ -235,9 +235,9 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         }
 
         /// <summary>
-        /// OnDataChanged is called by the PostBack Handler when the Data has changed
+        /// OnDataChanged is called by the PostBack Handler when the Data has changed.
         /// </summary>
-        /// <param name="e">An EventArgs object</param>
+        /// <param name="e">An EventArgs object.</param>
         protected override void OnDataChanged(EventArgs e)
         {
             var args = new PropertyEditorEventArgs(this.Name);
@@ -260,7 +260,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
         }
 
         /// <summary>
-        /// RenderEditMode is called by the base control to render the control in Edit Mode
+        /// RenderEditMode is called by the base control to render the control in Edit Mode.
         /// </summary>
         /// <param name="writer"></param>
         protected override void RenderEditMode(HtmlTextWriter writer)
@@ -270,7 +270,7 @@ namespace DotNetNuke.Web.UI.WebControls.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View (readonly) mode of the control
+        /// RenderViewMode renders the View (readonly) mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

@@ -51,8 +51,8 @@ namespace log4net.Appender
     /// behavior of this appender it may have security implications in your application.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class ConsoleAppender : AppenderSkeleton
     {
         /// <summary>
@@ -70,7 +70,7 @@ namespace log4net.Appender
         /// Initializes a new instance of the <see cref="ConsoleAppender" /> class
         /// with the specified layout.
         /// </summary>
-        /// <param name="layout">the layout to use for this appender</param>
+        /// <param name="layout">the layout to use for this appender.</param>
         /// <remarks>
         /// The instance of the <see cref="ConsoleAppender" /> class is set up to write
         /// to the standard output stream.
@@ -85,8 +85,8 @@ namespace log4net.Appender
         /// Initializes a new instance of the <see cref="ConsoleAppender" /> class
         /// with the specified layout.
         /// </summary>
-        /// <param name="layout">the layout to use for this appender</param>
-        /// <param name="writeToErrorStream">flag set to <c>true</c> to write to the console error stream</param>
+        /// <param name="layout">the layout to use for this appender.</param>
+        /// <param name="writeToErrorStream">flag set to <c>true</c> to write to the console error stream.</param>
         /// <remarks>
         /// When <paramref name="writeToErrorStream" /> is set to <c>true</c>, output is written to
         /// the standard error output stream.  Otherwise, output is written to the standard
@@ -166,7 +166,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.

@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.FileSystem
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Business Class that provides access to the Database for the functions within the calling classes
-    /// Instantiates the instance of the DataProvider and returns the object, if any
+    /// Instantiates the instance of the DataProvider and returns the object, if any.
     /// </summary>
     /// <remarks>
     /// </remarks>

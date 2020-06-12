@@ -16,7 +16,7 @@ using DotNetNuke.Entities.Users;
 namespace DotNetNuke.Security.Roles
 {
     /// <summary>
-    /// The RoleController class provides Business Layer methods for Roles
+    /// The RoleController class provides Business Layer methods for Roles.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class RoleController

@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.Html
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The HtmlModule Class provides the UI for displaying the Html
+    ///   The HtmlModule Class provides the UI for displaying the Html.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Page_Init runs when the control is initialized
+        ///   Page_Init runs when the control is initialized.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Page_Load runs when the control is loaded
+        ///   Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -169,7 +169,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   lblContent_UpdateLabel allows for inline editing of content
+        ///   lblContent_UpdateLabel allows for inline editing of content.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -217,7 +217,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   ModuleAction_Click handles all ModuleAction events raised from the action menu
+        ///   ModuleAction_Click handles all ModuleAction events raised from the action menu.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -258,7 +258,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets moduleActions is an interface property that returns the module actions collection for the module
+        ///   Gets moduleActions is an interface property that returns the module actions collection for the module.
         /// </summary>
         /// <remarks>
         /// </remarks>

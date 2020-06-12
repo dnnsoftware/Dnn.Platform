@@ -21,7 +21,7 @@ namespace DotNetNuke.Modules.Groups
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ViewSocialGroups class displays the content
+    /// The ViewSocialGroups class displays the content.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class View : GroupsModuleBase
@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Groups
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, EventArgs e)

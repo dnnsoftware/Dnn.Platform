@@ -42,13 +42,13 @@ namespace DotNetNuke.UI
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Recursive function to add module's actions to the DNNNodeCollection based off of passed in ModuleActions
+        /// Recursive function to add module's actions to the DNNNodeCollection based off of passed in ModuleActions.
         /// </summary>
-        /// <param name="parentAction">Parent action</param>
-        /// <param name="parentNode">Parent node</param>
+        /// <param name="parentAction">Parent action.</param>
+        /// <param name="parentNode">Parent node.</param>
         /// <param name="rootNode">Root Node.</param>
-        /// <param name="actionControl">ActionControl to base actions off of</param>
-        /// <param name="intDepth">How many levels deep should be populated</param>
+        /// <param name="actionControl">ActionControl to base actions off of.</param>
+        /// <param name="intDepth">How many levels deep should be populated.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -124,15 +124,15 @@ namespace DotNetNuke.UI
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Assigns common properties from passed in tab to newly created DNNNode that is added to the passed in DNNNodeCollection
+        /// Assigns common properties from passed in tab to newly created DNNNode that is added to the passed in DNNNodeCollection.
         /// </summary>
-        /// <param name="objTab">Tab to base DNNNode off of</param>
-        /// <param name="objNodes">Node collection to append new node to</param>
-        /// <param name="objBreadCrumbs">Hashtable of breadcrumb IDs to efficiently determine node's BreadCrumb property</param>
-        /// <param name="objPortalSettings">Portal settings object to determine if node is selected</param>
+        /// <param name="objTab">Tab to base DNNNode off of.</param>
+        /// <param name="objNodes">Node collection to append new node to.</param>
+        /// <param name="objBreadCrumbs">Hashtable of breadcrumb IDs to efficiently determine node's BreadCrumb property.</param>
+        /// <param name="objPortalSettings">Portal settings object to determine if node is selected.</param>
         /// <param name="eToolTips"></param>
         /// <remarks>
-        /// Logic moved to separate sub to make GetNavigationNodes cleaner
+        /// Logic moved to separate sub to make GetNavigationNodes cleaner.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, IDictionary<string, DNNNode> nodesLookup)
@@ -385,15 +385,15 @@ namespace DotNetNuke.UI
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows for DNNNode object to be easily obtained based off of passed in ID
+        /// Allows for DNNNode object to be easily obtained based off of passed in ID.
         /// </summary>
-        /// <param name="strID">NodeID to retrieve</param>
-        /// <param name="strNamespace">Namespace for node collection (usually control's ClientID)</param>
-        /// <param name="objActionRoot">Root Action object used in searching</param>
-        /// <param name="objControl">ActionControl to base actions off of</param>
-        /// <returns>DNNNode</returns>
+        /// <param name="strID">NodeID to retrieve.</param>
+        /// <param name="strNamespace">Namespace for node collection (usually control's ClientID).</param>
+        /// <param name="objActionRoot">Root Action object used in searching.</param>
+        /// <param name="objControl">ActionControl to base actions off of.</param>
+        /// <returns>DNNNode.</returns>
         /// <remarks>
-        /// Primary purpose of this is to obtain the DNNNode needed for the events exposed by the NavigationProvider
+        /// Primary purpose of this is to obtain the DNNNode needed for the events exposed by the NavigationProvider.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static DNNNode GetActionNode(string strID, string strNamespace, ModuleAction objActionRoot, Control objControl)
@@ -409,10 +409,10 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function provides a central location to obtain a generic node collection of the actions associated
-        /// to a module based off of the current user's context
+        /// to a module based off of the current user's context.
         /// </summary>
-        /// <param name="objActionRoot">Root module action</param>
-        /// <param name="objControl">ActionControl to base actions off of</param>
+        /// <param name="objActionRoot">Root module action.</param>
+        /// <param name="objControl">ActionControl to base actions off of.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
@@ -425,11 +425,11 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function provides a central location to obtain a generic node collection of the actions associated
-        /// to a module based off of the current user's context
+        /// to a module based off of the current user's context.
         /// </summary>
-        /// <param name="objActionRoot">Root module action</param>
-        /// <param name="objControl">ActionControl to base actions off of</param>
-        /// <param name="intDepth">How many levels deep should be populated</param>
+        /// <param name="objActionRoot">Root module action.</param>
+        /// <param name="objControl">ActionControl to base actions off of.</param>
+        /// <param name="intDepth">How many levels deep should be populated.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
@@ -461,12 +461,12 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function provides a central location to obtain a generic node collection of the actions associated
-        /// to a module based off of the current user's context
+        /// to a module based off of the current user's context.
         /// </summary>
-        /// <param name="objActionRoot">Root module action</param>
-        /// <param name="objRootNode">Root node on which to populate children</param>
-        /// <param name="objControl">ActionControl to base actions off of</param>
-        /// <param name="intDepth">How many levels deep should be populated</param>
+        /// <param name="objActionRoot">Root module action.</param>
+        /// <param name="objRootNode">Root node on which to populate children.</param>
+        /// <param name="objControl">ActionControl to base actions off of.</param>
+        /// <param name="intDepth">How many levels deep should be populated.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>
@@ -485,13 +485,13 @@ namespace DotNetNuke.UI
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows for DNNNode object to be easily obtained based off of passed in ID
+        /// Allows for DNNNode object to be easily obtained based off of passed in ID.
         /// </summary>
-        /// <param name="strID">NodeID to retrieve</param>
-        /// <param name="strNamespace">Namespace for node collection (usually control's ClientID)</param>
-        /// <returns>DNNNode</returns>
+        /// <param name="strID">NodeID to retrieve.</param>
+        /// <param name="strNamespace">Namespace for node collection (usually control's ClientID).</param>
+        /// <returns>DNNNode.</returns>
         /// <remarks>
-        /// Primary purpose of this is to obtain the DNNNode needed for the events exposed by the NavigationProvider
+        /// Primary purpose of this is to obtain the DNNNode needed for the events exposed by the NavigationProvider.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static DNNNode GetNavigationNode(string strID, string strNamespace)
@@ -507,12 +507,12 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function provides a central location to obtain a generic node collection of the pages/tabs included in
-        /// the current context's (user) navigation hierarchy
+        /// the current context's (user) navigation hierarchy.
         /// </summary>
-        /// <param name="strNamespace">Namespace (typically control's ClientID) of node collection to create</param>
-        /// <returns>Collection of DNNNodes</returns>
+        /// <param name="strNamespace">Namespace (typically control's ClientID) of node collection to create.</param>
+        /// <returns>Collection of DNNNodes.</returns>
         /// <remarks>
-        /// Returns all navigation nodes for a given user
+        /// Returns all navigation nodes for a given user.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(string strNamespace)
@@ -523,16 +523,16 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function provides a central location to obtain a generic node collection of the pages/tabs included in
-        /// the current context's (user) navigation hierarchy
+        /// the current context's (user) navigation hierarchy.
         /// </summary>
-        /// <param name="strNamespace">Namespace (typically control's ClientID) of node collection to create</param>
-        /// <param name="eToolTips">Enumerator to determine what text to display in the tooltips</param>
-        /// <param name="intStartTabId">If using Populate On Demand, then this is the tab id of the root element to retrieve (-1 for no POD)</param>
-        /// <param name="intDepth">If Populate On Demand is enabled, then this parameter determines the number of nodes to retrieve beneath the starting tab passed in (intStartTabId) (-1 for no POD)</param>
-        /// <param name="intNavNodeOptions">Bitwise integer containing values to determine what nodes to display (self, siblings, parent)</param>
-        /// <returns>Collection of DNNNodes</returns>
+        /// <param name="strNamespace">Namespace (typically control's ClientID) of node collection to create.</param>
+        /// <param name="eToolTips">Enumerator to determine what text to display in the tooltips.</param>
+        /// <param name="intStartTabId">If using Populate On Demand, then this is the tab id of the root element to retrieve (-1 for no POD).</param>
+        /// <param name="intDepth">If Populate On Demand is enabled, then this parameter determines the number of nodes to retrieve beneath the starting tab passed in (intStartTabId) (-1 for no POD).</param>
+        /// <param name="intNavNodeOptions">Bitwise integer containing values to determine what nodes to display (self, siblings, parent).</param>
+        /// <returns>Collection of DNNNodes.</returns>
         /// <remarks>
-        /// Returns a subset of navigation nodes based off of passed in starting node id and depth
+        /// Returns a subset of navigation nodes based off of passed in starting node id and depth.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(string strNamespace, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)
@@ -544,16 +544,16 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This function provides a central location to obtain a generic node collection of the pages/tabs included in
-        /// the current context's (user) navigation hierarchy
+        /// the current context's (user) navigation hierarchy.
         /// </summary>
-        /// <param name="objRootNode">Node in which to add children to</param>
-        /// <param name="eToolTips">Enumerator to determine what text to display in the tooltips</param>
-        /// <param name="intStartTabId">If using Populate On Demand, then this is the tab id of the root element to retrieve (-1 for no POD)</param>
-        /// <param name="intDepth">If Populate On Demand is enabled, then this parameter determines the number of nodes to retrieve beneath the starting tab passed in (intStartTabId) (-1 for no POD)</param>
-        /// <param name="intNavNodeOptions">Bitwise integer containing values to determine what nodes to display (self, siblings, parent)</param>
-        /// <returns>Collection of DNNNodes</returns>
+        /// <param name="objRootNode">Node in which to add children to.</param>
+        /// <param name="eToolTips">Enumerator to determine what text to display in the tooltips.</param>
+        /// <param name="intStartTabId">If using Populate On Demand, then this is the tab id of the root element to retrieve (-1 for no POD).</param>
+        /// <param name="intDepth">If Populate On Demand is enabled, then this parameter determines the number of nodes to retrieve beneath the starting tab passed in (intStartTabId) (-1 for no POD).</param>
+        /// <param name="intNavNodeOptions">Bitwise integer containing values to determine what nodes to display (self, siblings, parent).</param>
+        /// <returns>Collection of DNNNodes.</returns>
         /// <remarks>
-        /// Returns a subset of navigation nodes based off of passed in starting node id and depth
+        /// Returns a subset of navigation nodes based off of passed in starting node id and depth.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static DNNNodeCollection GetNavigationNodes(DNNNode objRootNode, ToolTipSource eToolTips, int intStartTabId, int intDepth, int intNavNodeOptions)

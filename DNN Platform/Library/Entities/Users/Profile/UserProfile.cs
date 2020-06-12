@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Users
 // ReSharper restore CheckNamespace
 {
     /// <summary>
-    /// The UserProfile class provides a Business Layer entity for the Users Profile
+    /// The UserProfile class provides a Business Layer entity for the Users Profile.
     /// </summary>
     [Serializable]
     public class UserProfile : IIndexable
@@ -73,7 +73,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Cell/Mobile Phone
+        /// Gets or sets and sets the Cell/Mobile Phone.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Cell
@@ -91,7 +91,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the City part of the Address
+        /// Gets or sets and sets the City part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string City
@@ -109,7 +109,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Country part of the Address
+        /// Gets or sets and sets the Country part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Country
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Fax Phone
+        /// Gets or sets and sets the Fax Phone.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Fax
@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the First Name
+        /// Gets or sets and sets the First Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string FirstName
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Full Name
+        /// Gets and sets the Full Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string FullName
@@ -176,7 +176,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Instant Messenger Handle
+        /// Gets or sets and sets the Instant Messenger Handle.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string IM
@@ -194,7 +194,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets or sets whether the property has been changed
+        /// Gets a value indicating whether gets or sets whether the property has been changed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsDirty
@@ -207,7 +207,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last Name
+        /// Gets or sets and sets the Last Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string LastName
@@ -237,7 +237,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets property will return a URL for the photourl - if the path contains invalid url characters it will return a fileticket
+        /// Gets property will return a URL for the photourl - if the path contains invalid url characters it will return a fileticket.
         /// </summary>
         public string PhotoURL
         {
@@ -266,7 +266,7 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets property will return the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching)
+        /// Gets property will return the file path of the photo url (designed to be used when files are loaded via the filesystem e.g for caching).
         /// </summary>
         [Obsolete("Obsolete in 7.2.2, Use PhotoUrl instead of it.. Scheduled removal in v10.0.0.")]
         public string PhotoURLFile
@@ -326,7 +326,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the PostalCode part of the Address
+        /// Gets or sets and sets the PostalCode part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PostalCode
@@ -344,7 +344,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Preferred Locale
+        /// Gets or sets and sets the Preferred Locale.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string PreferredLocale
@@ -400,7 +400,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Collection of Profile Properties
+        /// Gets and sets the Collection of Profile Properties.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ProfilePropertyDefinitionCollection ProfileProperties
@@ -410,7 +410,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Region part of the Address
+        /// Gets or sets and sets the Region part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Region
@@ -428,7 +428,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Street part of the Address
+        /// Gets or sets and sets the Street part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Street
@@ -446,7 +446,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Telephone
+        /// Gets or sets and sets the Telephone.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Telephone
@@ -464,7 +464,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Title
+        /// Gets or sets and sets the Title.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Title
@@ -482,7 +482,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Unit part of the Address
+        /// Gets or sets and sets the Unit part of the Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Unit
@@ -500,7 +500,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Website
+        /// Gets or sets and sets the Website.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string Website
@@ -518,7 +518,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears the IsDirty Flag
+        /// Clears the IsDirty Flag.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void ClearIsDirty()
@@ -532,7 +532,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Profile Property from the Profile
+        /// Gets a Profile Property from the Profile.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the property to retrieve.</param>
@@ -545,7 +545,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Profile Property Value from the Profile
+        /// Gets a Profile Property Value from the Profile.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the propoerty to retrieve.</param>
@@ -591,7 +591,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialises the Profile with an empty collection of profile properties
+        /// Initialises the Profile with an empty collection of profile properties.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="portalId">The name of the property to retrieve.</param>
@@ -603,7 +603,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialises the Profile with an empty collection of profile properties
+        /// Initialises the Profile with an empty collection of profile properties.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="portalId">The name of the property to retrieve.</param>
@@ -624,7 +624,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets a Profile Property Value in the Profile
+        /// Sets a Profile Property Value in the Profile.
         /// </summary>
         /// <remarks></remarks>
         /// <param name="propName">The name of the propoerty to set.</param>

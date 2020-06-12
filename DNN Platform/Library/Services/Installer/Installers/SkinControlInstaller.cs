@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SkinControlInstaller installs SkinControl (SkinObject) Components to a DotNetNuke site
+    /// The SkinControlInstaller installs SkinControl (SkinObject) Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,9 +26,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Modules this is not neccessary</remarks>
+        /// <remarks>In the case of Modules this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the Module component
+        /// The Install method installs the Module component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the component in the event
-        /// that one of the other components fails
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -141,7 +141,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the SkinControl component
+        /// The UnInstall method uninstalls the SkinControl component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

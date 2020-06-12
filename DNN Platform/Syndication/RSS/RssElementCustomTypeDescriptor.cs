@@ -10,7 +10,7 @@ using System.ComponentModel;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Helper class to enable the data binding logic generate column names at runtime
+    ///   Helper class to enable the data binding logic generate column names at runtime.
     /// </summary>
     internal class RssElementCustomTypeDescriptor : ICustomTypeDescriptor
     {

@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.Containers
     using DotNetNuke.Web.Client;
 
     /// <summary>
-    /// Container is the base for the Containers
+    /// Container is the base for the Containers.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -49,9 +49,9 @@ namespace DotNetNuke.UI.Containers
         private ModuleHost _moduleHost;
 
         /// <summary>
-        /// Gets the Content Pane Control (Id="ContentPane")
+        /// Gets the Content Pane Control (Id="ContentPane").
         /// </summary>
-        /// <returns>An HtmlContainerControl</returns>
+        /// <returns>An HtmlContainerControl.</returns>
         protected HtmlContainerControl ContentPane
         {
             get
@@ -62,9 +62,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Portal Settings for the current Portal
+        /// Gets the Portal Settings for the current Portal.
         /// </summary>
-        /// <returns>A PortalSettings object</returns>
+        /// <returns>A PortalSettings object.</returns>
         protected PortalSettings PortalSettings
         {
             get
@@ -75,9 +75,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleControl object that this container is displaying
+        /// Gets the ModuleControl object that this container is displaying.
         /// </summary>
-        /// <returns>A ModuleHost object</returns>
+        /// <returns>A ModuleHost object.</returns>
         public IModuleControl ModuleControl
         {
             get
@@ -94,9 +94,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleInfo object that this container is displaying
+        /// Gets and sets the ModuleInfo object that this container is displaying.
         /// </summary>
-        /// <returns>A ModuleInfo object</returns>
+        /// <returns>A ModuleInfo object.</returns>
         public ModuleInfo ModuleConfiguration
         {
             get
@@ -107,9 +107,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleHost object that this container is displaying
+        /// Gets the ModuleHost object that this container is displaying.
         /// </summary>
-        /// <returns>A ModuleHost object</returns>
+        /// <returns>A ModuleHost object.</returns>
         public ModuleHost ModuleHost
         {
             get
@@ -120,9 +120,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Parent Container for this container
+        /// Gets the Parent Container for this container.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         public Skins.Skin ParentSkin
         {
             get
@@ -134,9 +134,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path for this container
+        /// Gets the Path for this container.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         public string ContainerPath
         {
             get
@@ -147,9 +147,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Source for this container
+        /// Gets or sets the Source for this container.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         public string ContainerSrc { get; set; }
 
         internal bool InjectActionMenu { get; set; }
@@ -298,7 +298,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessModule processes the module which is attached to this container
+        /// ProcessModule processes the module which is attached to this container.
         /// </summary>
         private void ProcessModule()
         {

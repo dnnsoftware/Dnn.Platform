@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.FileSystem
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Represents the File object and holds the Properties of that object
+    ///   Represents the File object and holds the Properties of that object.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [XmlRoot("file", IsNullable = false)]
@@ -347,41 +347,41 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets or sets a metadata field with an optional title associated to the file
+        /// Gets or sets a metadata field with an optional title associated to the file.
         /// </summary>
         public string Title { get; set; }
 
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the date on which the file starts to be published
+        /// Gets or sets the date on which the file starts to be published.
         /// </summary>
         public DateTime StartDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the date on which the file ends to be published
+        /// Gets or sets the date on which the file ends to be published.
         /// </summary>
         public DateTime EndDate { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether publish period is enabled for the file
+        /// Gets or sets a value indicating whether publish period is enabled for the file.
         /// </summary>
         public bool EnablePublishPeriod { get; set; }
 
         /// <summary>
-        /// Gets or sets the published version number of the file
+        /// Gets or sets the published version number of the file.
         /// </summary>
         public int PublishedVersion { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether gets a flag which says whether the file has ever been published
+        /// Gets a value indicating whether gets a flag which says whether the file has ever been published.
         /// </summary>
         [XmlIgnore]
         public bool HasBeenPublished { get; private set; }
 
         /// <summary>
         /// Gets a value indicating whether the file is enabled,
-        /// considering if the publish period is active and if the current date is within the publish period
+        /// considering if the publish period is active and if the current date is within the publish period.
         /// </summary>
         public bool IsEnabled
         {
@@ -394,7 +394,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets or sets a reference to ContentItem, to use in Workflows
+        /// Gets or sets a reference to ContentItem, to use in Workflows.
         /// </summary>
         public int ContentItemID { get; set; }
 

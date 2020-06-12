@@ -10,7 +10,7 @@ using System.Xml;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Class for managing an OPML feed outline
+    ///   Class for managing an OPML feed outline.
     /// </summary>
     public class OpmlOutline
     {

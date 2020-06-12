@@ -16,10 +16,10 @@ namespace DotNetNuke.Web.Api
     public abstract class AuthFilterBase : IAuthorizationFilter
     {
         /// <summary>
-        /// Tests if the request passes the authorization requirements
+        /// Tests if the request passes the authorization requirements.
         /// </summary>
-        /// <param name="context">The auth filter context</param>
-        /// <returns>True when authorization is succesful</returns>
+        /// <param name="context">The auth filter context.</param>
+        /// <returns>True when authorization is succesful.</returns>
         public abstract bool IsAuthorized(AuthFilterContext context);
 
         /// <summary>

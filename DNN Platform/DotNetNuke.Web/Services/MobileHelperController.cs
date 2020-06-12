@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Services
         private readonly string _dnnVersion = Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, false);
 
         /// <summary>
-        /// Gets the various defined monikers for the various tab modules in the system
+        /// Gets the various defined monikers for the various tab modules in the system.
         /// </summary>
         /// <returns></returns>
         [HttpGet]

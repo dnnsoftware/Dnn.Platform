@@ -16,13 +16,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// <summary>
     /// SynchConnectionStringStep - Step that synchs connection string between DotNetNuke.Install.Config and Web.Config
     /// The connection information stored in DotNetNuke.Install.Config takes precendence (if present)
-    /// Synchornization only happens when settings are different
+    /// Synchornization only happens when settings are different.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class SynchConnectionStringStep : BaseInstallationStep
     {
         /// <summary>
-        /// Main method to execute the step
+        /// Main method to execute the step.
         /// </summary>
         public override void Execute()
         {

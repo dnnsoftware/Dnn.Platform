@@ -33,12 +33,12 @@ namespace log4net.DateFormatter
     /// Formats the <see cref="DateTime"/> using the <see cref="DateTime"/> <see cref="M:DateTime.ToString(string, IFormatProvider)"/> method.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class SimpleDateFormatter : IDateFormatter
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="format">The format string.</param>
         /// <remarks>

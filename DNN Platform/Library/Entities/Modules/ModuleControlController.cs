@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : ModuleControlController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleControlController provides the Business Layer for Module Controls
+    /// ModuleControlController provides the Business Layer for Module Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class ModuleControlController
@@ -51,7 +51,7 @@ namespace DotNetNuke.Entities.Modules
         /// the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private static object GetModuleControlsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -60,9 +60,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleControl adds a new Module Control to the database
+        /// AddModuleControl adds a new Module Control to the database.
         /// </summary>
-        /// <param name="objModuleControl">The Module Control to save</param>
+        /// <param name="objModuleControl">The Module Control to save.</param>
         /// -----------------------------------------------------------------------------
         public static void AddModuleControl(ModuleControlInfo objModuleControl)
         {
@@ -71,9 +71,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteModuleControl deletes a Module Control in the database
+        /// DeleteModuleControl deletes a Module Control in the database.
         /// </summary>
-        /// <param name="moduleControlID">The ID of the Module Control to delete</param>
+        /// <param name="moduleControlID">The ID of the Module Control to delete.</param>
         /// -----------------------------------------------------------------------------
         public static void DeleteModuleControl(int moduleControlID)
         {
@@ -83,9 +83,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleControl gets a single Module Control from the database
+        /// GetModuleControl gets a single Module Control from the database.
         /// </summary>
-        /// <param name="moduleControlID">The ID of the Module Control to fetch</param>
+        /// <param name="moduleControlID">The ID of the Module Control to fetch.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControl(int moduleControlID)
@@ -98,9 +98,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleControl gets a Dictionary of Module Controls by Module Definition
+        /// GetModuleControl gets a Dictionary of Module Controls by Module Definition.
         /// </summary>
-        /// <param name="moduleDefID">The ID of the Module Definition</param>
+        /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleControlInfo> GetModuleControlsByModuleDefinitionID(int moduleDefID)
@@ -111,10 +111,10 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleControlByControlKey gets a single Module Control from the database
+        /// GetModuleControlByControlKey gets a single Module Control from the database.
         /// </summary>
-        /// <param name="controlKey">The key for the control</param>
-        /// <param name="moduleDefID">The ID of the Module Definition</param>
+        /// <param name="controlKey">The key for the control.</param>
+        /// <param name="moduleDefID">The ID of the Module Definition.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleControlInfo GetModuleControlByControlKey(string controlKey, int moduleDefID)
@@ -128,10 +128,10 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveModuleControl updates a Module Control in the database
+        /// SaveModuleControl updates a Module Control in the database.
         /// </summary>
-        /// <param name="moduleControl">The Module Control to save</param>
-        /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
+        /// <param name="moduleControl">The Module Control to save.</param>
+        /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveModuleControl(ModuleControlInfo moduleControl, bool clearCache)
@@ -181,9 +181,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateModuleControl updates a Module Control in the database
+        /// UpdateModuleControl updates a Module Control in the database.
         /// </summary>
-        /// <param name="objModuleControl">The Module Control to save</param>
+        /// <param name="objModuleControl">The Module Control to save.</param>
         /// -----------------------------------------------------------------------------
         public static void UpdateModuleControl(ModuleControlInfo objModuleControl)
         {

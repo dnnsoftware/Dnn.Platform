@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Installer.Log
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The LogEntry class provides a single entry for the Installer Log
+    /// The LogEntry class provides a single entry for the Installer Log.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -21,12 +21,12 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor builds a LogEntry from its type and description
+        /// This Constructor builds a LogEntry from its type and description.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="description">The description (detail) of the entry</param>
-        /// <param name="type">The type of LogEntry</param>
+        /// <param name="description">The description (detail) of the entry.</param>
+        /// <param name="type">The type of LogEntry.</param>
         /// -----------------------------------------------------------------------------
         public LogEntry(LogType type, string description)
         {
@@ -36,17 +36,17 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the type of LogEntry
+        /// Gets the type of LogEntry.
         /// </summary>
-        /// <value>A LogType</value>
+        /// <value>A LogType.</value>
         /// -----------------------------------------------------------------------------
         public LogType Type { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the description of LogEntry
+        /// Gets the description of LogEntry.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Description
         {

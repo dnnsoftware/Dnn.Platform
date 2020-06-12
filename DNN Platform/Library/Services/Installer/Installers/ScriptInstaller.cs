@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ScriptInstaller installs Script Components to a DotNetNuke site
+    /// The ScriptInstaller installs Script Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -30,9 +30,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the base Install Script (if present)
+        /// Gets the base Install Script (if present).
         /// </summary>
-        /// <value>An InstallFile</value>
+        /// <value>An InstallFile.</value>
         /// -----------------------------------------------------------------------------
         protected InstallFile InstallScript
         {
@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of Install Scripts
+        /// Gets the collection of Install Scripts.
         /// </summary>
-        /// <value>A List(Of InstallFile)</value>
+        /// <value>A List(Of InstallFile).</value>
         /// -----------------------------------------------------------------------------
         protected SortedList<Version, InstallFile> InstallScripts
         {
@@ -58,9 +58,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of UnInstall Scripts
+        /// Gets the collection of UnInstall Scripts.
         /// </summary>
-        /// <value>A List(Of InstallFile)</value>
+        /// <value>A List(Of InstallFile).</value>
         /// -----------------------------------------------------------------------------
         protected SortedList<Version, InstallFile> UnInstallScripts
         {
@@ -72,9 +72,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("scripts")
+        /// Gets the name of the Collection Node ("scripts").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -86,9 +86,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("script")
+        /// Gets the name of the Item Node ("script").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -108,9 +108,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Upgrade Script (if present)
+        /// Gets the Upgrade Script (if present).
         /// </summary>
-        /// <value>An InstallFile</value>
+        /// <value>An InstallFile.</value>
         /// -----------------------------------------------------------------------------
         protected InstallFile UpgradeScript
         {
@@ -122,9 +122,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -195,9 +195,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that determines what type of file this installer supports
+        /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
-        /// <param name="type">The type of file being processed</param>
+        /// <param name="type">The type of file being processed.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
@@ -207,10 +207,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node
+        /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
-        /// <param name="file">The file represented by the node</param>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected override void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -265,7 +265,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Files this is not neccessary</remarks>
+        /// <remarks>In the case of Files this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -274,7 +274,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the script component
+        /// The Install method installs the script component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -344,7 +344,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the script component in the event
-        /// that one of the other components fails
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -354,7 +354,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the script component
+        /// The UnInstall method uninstalls the script component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

@@ -17,7 +17,7 @@ namespace DotNetNuke.Entities.Users
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PurgeUsersOnline class provides a Scheduler for purging the Users Online
-    /// data
+    /// data.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -27,11 +27,11 @@ namespace DotNetNuke.Entities.Users
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a PurgeUsesOnline SchedulerClient
+        /// Constructs a PurgeUsesOnline SchedulerClient.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem</param>
+        /// <param name="objScheduleHistoryItem">A SchedulerHistiryItem.</param>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public PurgeUsersOnline(ScheduleHistoryItem objScheduleHistoryItem)
@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateUsersOnline updates the Users Online information
+        /// UpdateUsersOnline updates the Users Online information.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DoWork does th4 Scheduler work
+        /// DoWork does th4 Scheduler work.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]

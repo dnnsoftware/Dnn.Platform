@@ -14,10 +14,10 @@ namespace DotNetNuke.Services.Cryptography
     internal class FipsCompilanceCryptographyProvider : CryptographyProvider
     {
         /// <summary>
-        ///     copy of legacy PortalSecurity.Encrypt method
+        ///     copy of legacy PortalSecurity.Encrypt method.
         /// </summary>
-        /// <param name="message">string to be encrypted</param>
-        /// <param name="passphrase">key for encryption</param>
+        /// <param name="message">string to be encrypted.</param>
+        /// <param name="passphrase">key for encryption.</param>
         /// <returns></returns>
         public override string EncryptParameter(string message, string passphrase)
         {
@@ -63,10 +63,10 @@ namespace DotNetNuke.Services.Cryptography
         }
 
         /// <summary>
-        ///     copy of legacy PortalSecurity.Decrypt method
+        ///     copy of legacy PortalSecurity.Decrypt method.
         /// </summary>
-        /// <param name="message">string to be decrypted</param>
-        /// <param name="passphrase">key for decryption</param>
+        /// <param name="message">string to be decrypted.</param>
+        /// <param name="passphrase">key for decryption.</param>
         /// <returns></returns>
         public override string DecryptParameter(string message, string passphrase)
         {
@@ -116,10 +116,10 @@ namespace DotNetNuke.Services.Cryptography
         }
 
         /// <summary>
-        ///     copy of legacy PortalSecurity.EncryptString method
+        ///     copy of legacy PortalSecurity.EncryptString method.
         /// </summary>
-        /// <param name="message">string to be encrypted</param>
-        /// <param name="passphrase">key for encryption</param>
+        /// <param name="message">string to be encrypted.</param>
+        /// <param name="passphrase">key for encryption.</param>
         /// <returns></returns>
         public override string EncryptString(string message, string passphrase)
         {
@@ -158,10 +158,10 @@ namespace DotNetNuke.Services.Cryptography
         }
 
         /// <summary>
-        ///     copy of legacy PortalSecurity.DecryptString method
+        ///     copy of legacy PortalSecurity.DecryptString method.
         /// </summary>
-        /// <param name="message">string to be decrypted</param>
-        /// <param name="passphrase">key for decryption</param>
+        /// <param name="message">string to be decrypted.</param>
+        /// <param name="passphrase">key for decryption.</param>
         /// <returns></returns>
         public override string DecryptString(string message, string passphrase)
         {

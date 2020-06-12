@@ -23,7 +23,7 @@
 namespace log4net.Repository
 {
     /// <summary>
-    /// Basic Configurator interface for repositories
+    /// Basic Configurator interface for repositories.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -35,14 +35,14 @@ namespace log4net.Repository
     /// configuration by the <see cref="log4net.Config.BasicConfigurator"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IBasicRepositoryConfigurator
     {
         /// <summary>
-        /// Initialize the repository using the specified appender
+        /// Initialize the repository using the specified appender.
         /// </summary>
-        /// <param name="appender">the appender to use to log all logging events</param>
+        /// <param name="appender">the appender to use to log all logging events.</param>
         /// <remarks>
         /// <para>
         /// Configure the repository to route all logging events to the
@@ -52,9 +52,9 @@ namespace log4net.Repository
         void Configure(Appender.IAppender appender);
 
         /// <summary>
-        /// Initialize the repository using the specified appenders
+        /// Initialize the repository using the specified appenders.
         /// </summary>
-        /// <param name="appenders">the appenders to use to log all logging events</param>
+        /// <param name="appenders">the appenders to use to log all logging events.</param>
         /// <remarks>
         /// <para>
         /// Configure the repository to route all logging events to the

@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Internal representation of parsed RSS channel
+    ///   Internal representation of parsed RSS channel.
     /// </summary>
     internal class RssChannelDom
     {

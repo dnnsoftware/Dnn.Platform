@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Client.Providers
     using ClientDependency.Core.CompositeFiles.Providers;
 
     /// <summary>
-    /// A provider for combining, minifying, compressing and saving composite scripts/css files
+    /// A provider for combining, minifying, compressing and saving composite scripts/css files.
     /// </summary>
     public class DnnCompositeFileProcessingProvider : CompositeFileProcessingProvider
     {

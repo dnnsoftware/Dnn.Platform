@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.Modules
     using DotNetNuke.Common.Internal;
 
     /// <summary>
-    /// Provides context data for a particular instance of a module
+    /// Provides context data for a particular instance of a module.
     /// </summary>
     public class ModuleInstanceContext
     {
@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Actions for this module context
+        /// Gets or sets and sets the Actions for this module context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModuleActionCollection Actions
@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context
+        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModuleInfo Configuration
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.Modules
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
-        /// Administrator role
+        /// Administrator role.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool EditMode
@@ -107,14 +107,14 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the HelpUrl for this context
+        /// Gets or sets and sets the HelpUrl for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the module is Editable (in Admin mode)
+        /// Gets a value indicating whether gets whether the module is Editable (in Admin mode).
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsEditable
@@ -161,7 +161,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the module ID for this context
+        /// Gets or sets and sets the module ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int ModuleId
@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the settings for this context
+        /// Gets the settings for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Hashtable Settings
@@ -236,7 +236,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the tab ID for this context
+        /// Gets the tab ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabId
@@ -254,7 +254,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the tabnmodule ID for this context
+        /// Gets or sets the tabnmodule ID for this context.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabModuleId
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddHelpActions Adds the Help actions to the Action Menu
+        /// AddHelpActions Adds the Help actions to the Action Menu.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -365,7 +365,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddMenuMoveActions Adds the Move actions to the Action Menu
+        /// AddMenuMoveActions Adds the Move actions to the Action Menu.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -459,10 +459,10 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetActionsCount gets the current number of actions
+        /// GetActionsCount gets the current number of actions.
         /// </summary>
         /// <param name="actions">The actions collection to count.</param>
-        /// <param name="count">The current count</param>
+        /// <param name="count">The current count.</param>
         /// -----------------------------------------------------------------------------
         private static int GetActionsCount(int count, ModuleActionCollection actions)
         {
@@ -482,7 +482,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadActions loads the Actions collections
+        /// LoadActions loads the Actions collections.
         /// </summary>
         /// <remarks>
         /// </remarks>

@@ -35,8 +35,8 @@ namespace log4net.Util
     /// Utility class for transforming strings.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class Transform
     {
         /// <summary>
@@ -52,11 +52,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Write a string to an <see cref="XmlWriter"/>
+        /// Write a string to an <see cref="XmlWriter"/>.
         /// </summary>
-        /// <param name="writer">the writer to write to</param>
-        /// <param name="textData">the string to write</param>
-        /// <param name="invalidCharReplacement">The string to replace non XML compliant chars with</param>
+        /// <param name="writer">the writer to write to.</param>
+        /// <param name="textData">the string to write.</param>
+        /// <param name="invalidCharReplacement">The string to replace non XML compliant chars with.</param>
         /// <remarks>
         /// <para>
         /// The test is escaped either using XML escape entities
@@ -114,10 +114,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Replace invalid XML characters in text string
+        /// Replace invalid XML characters in text string.
         /// </summary>
-        /// <param name="textData">the XML text input string</param>
-        /// <param name="mask">the string to use in place of invalid characters</param>
+        /// <param name="textData">the XML text input string.</param>
+        /// <param name="mask">the string to use in place of invalid characters.</param>
         /// <returns>A string that does not contain invalid XML characters.</returns>
         /// <remarks>
         /// <para>
@@ -135,11 +135,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Count the number of times that the substring occurs in the text
+        /// Count the number of times that the substring occurs in the text.
         /// </summary>
-        /// <param name="text">the text to search</param>
-        /// <param name="substring">the substring to find</param>
-        /// <returns>the number of times the substring occurs in the text</returns>
+        /// <param name="text">the text to search.</param>
+        /// <param name="substring">the substring to find.</param>
+        /// <returns>the number of times the substring occurs in the text.</returns>
         /// <remarks>
         /// <para>
         /// The substring is assumed to be non repeating within itself.
@@ -182,7 +182,7 @@ namespace log4net.Util
         private const string CDATA_UNESCAPABLE_TOKEN    = "]]";
 
         /// <summary>
-        /// Characters illegal in XML 1.0
+        /// Characters illegal in XML 1.0.
         /// </summary>
         private static Regex INVALIDCHARS = new Regex(@"[^\x09\x0A\x0D\x20-\uD7FF\uE000-\uFFFD]", RegexOptions.Compiled);
     }

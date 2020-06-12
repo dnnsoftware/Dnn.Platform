@@ -24,16 +24,16 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
     using DotNetNuke.Services.Upgrade;
 
     /// <summary>
-    /// Class that contains upgrade procedures
+    /// Class that contains upgrade procedures.
     /// </summary>
     public class UpgradeController : IUpgradeable
     {
-        /// <summary>The module folder location</summary>
+        /// <summary>The module folder location.</summary>
         private const string ModuleFolder = "~/DesktopModules/Admin/HtmlEditorManager";
 
         /// <summary>Called when a module is upgraded.</summary>
         /// <param name="version">The version.</param>
-        /// <returns>Success if all goes well, otherwise, Failed</returns>
+        /// <returns>Success if all goes well, otherwise, Failed.</returns>
         public string UpgradeModule(string version)
         {
             try
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.HtmlEditorManager.Components
         /// <summary>Gets the module definition identifier.</summary>
         /// <param name="moduleName">Name of the module.</param>
         /// <param name="moduleDefinitionName">Name of the module definition.</param>
-        /// <returns>The Module Id for the HTML Editor Management module</returns>
+        /// <returns>The Module Id for the HTML Editor Management module.</returns>
         private int GetModuleDefinitionID(string moduleName, string moduleDefinitionName)
         {
             // get desktop module

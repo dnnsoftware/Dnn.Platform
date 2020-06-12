@@ -82,8 +82,8 @@ namespace DotNetNuke.Entities.Portals
         /// </summary>
         /// <remarks>
         /// </remarks>
-        ///     <param name="tabId">The current tab</param>
-        ///     <param name="portalAliasInfo">The current portal</param>
+        ///     <param name="tabId">The current tab.</param>
+        ///     <param name="portalAliasInfo">The current portal.</param>
         /// -----------------------------------------------------------------------------
         public PortalSettings(int tabId, PortalAliasInfo portalAliasInfo)
         {
@@ -225,9 +225,9 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets a value indicating whether allows users to select their own UI culture.
         /// When set to false (default) framework will allways same culture for both
-        /// CurrentCulture (content) and CurrentUICulture (interface)
+        /// CurrentCulture (content) and CurrentUICulture (interface).
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool AllowUserUICulture { get; internal set; }
 
@@ -251,9 +251,9 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Default Module Id
+        /// Gets the Default Module Id.
         /// </summary>
-        /// <remarks>Defaults to Null.NullInteger</remarks>
+        /// <remarks>Defaults to Null.NullInteger.</remarks>
         /// -----------------------------------------------------------------------------
         public int DefaultModuleId { get; internal set; }
 
@@ -265,17 +265,17 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Default Tab Id
+        /// Gets the Default Tab Id.
         /// </summary>
-        /// <remarks>Defaults to Null.NullInteger</remarks>
+        /// <remarks>Defaults to Null.NullInteger.</remarks>
         /// -----------------------------------------------------------------------------
         public int DefaultTabId { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether Browser Language Detection is Enabled
+        /// Gets a value indicating whether gets whether Browser Language Detection is Enabled.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnableBrowserLanguage { get; internal set; }
 
@@ -285,7 +285,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets a value indicating whether gets whether to use the module effect in edit mode.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in Platform 7.4.0.. Scheduled removal in v10.0.0.")]
         public bool EnableModuleEffect { get; internal set; }
@@ -294,7 +294,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets a value indicating whether gets whether to use the popup.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnablePopUps { get; internal set; }
 
@@ -305,23 +305,23 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported
+        /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnableSkinWidgets { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether a cookie consent popup should be shown
+        /// Gets a value indicating whether gets whether a cookie consent popup should be shown.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool ShowCookieConsent { get; internal set; }
 
         /// <summary>
         /// Gets link for the user to find out more about cookies. If not specified the link
-        /// shown will point to cookiesandyou.com
+        /// shown will point to cookiesandyou.com.
         /// </summary>
         public string CookieMoreLink { get; internal set; }
 
@@ -329,7 +329,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets a value indicating whether gets whether enable url language.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnableUrlLanguage { get; internal set; }
 
@@ -343,7 +343,7 @@ namespace DotNetNuke.Entities.Portals
         ///   are included in folder synchronization.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public bool HideFoldersEnabled { get; internal set; }
@@ -362,51 +362,51 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Inline Editor is enabled
+        /// Gets a value indicating whether gets whether the Inline Editor is enabled.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
+        /// <remarks>Defaults to True.</remarks>
         /// -----------------------------------------------------------------------------
         public bool InlineEditorEnabled { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool SearchIncludeCommon { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
+        /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
         public bool SearchIncludeNumeric { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the filter used for inclusion of tag info
+        ///   Gets the filter used for inclusion of tag info.
         /// </summary>
         /// <remarks>
-        ///   Defaults to ""
+        ///   Defaults to "".
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public string SearchIncludedTagInfoFilter { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the maximum Search Word length to index
+        /// Gets the maximum Search Word length to index.
         /// </summary>
-        /// <remarks>Defaults to 3</remarks>
+        /// <remarks>Defaults to 3.</remarks>
         /// -----------------------------------------------------------------------------
         public int SearchMaxWordlLength { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the minum Search Word length to index
+        /// Gets the minum Search Word length to index.
         /// </summary>
-        /// <remarks>Defaults to 3</remarks>
+        /// <remarks>Defaults to 3.</remarks>
         /// -----------------------------------------------------------------------------
         public int SearchMinWordlLength { get; internal set; }
 
@@ -618,7 +618,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow
+        /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow.
         /// </summary>
         public bool DataConsentActive { get; internal set; }
 
@@ -643,17 +643,17 @@ namespace DotNetNuke.Entities.Portals
         public UserDeleteAction DataConsentUserDeleteAction { get; internal set; }
 
         /// <summary>
-        /// Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction
+        /// Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction.
         /// </summary>
         public int DataConsentDelay { get; internal set; }
 
         /// <summary>
-        /// Gets units for DataConsentDelay
+        /// Gets units for DataConsentDelay.
         /// </summary>
         public string DataConsentDelayMeasurement { get; internal set; }
 
         /// <summary>
-        /// Gets whitelist of file extensions for end users
+        /// Gets whitelist of file extensions for end users.
         /// </summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 

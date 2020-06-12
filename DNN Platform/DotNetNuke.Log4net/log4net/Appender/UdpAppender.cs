@@ -107,8 +107,8 @@ namespace log4net.Appender
     /// </appender>
     /// </code>
     /// </example>
-    /// <author>Gert Driesen</author>
-    /// <author>Nicko Cadell</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Nicko Cadell.</author>
     public class UdpAppender : AppenderSkeleton
     {
         /// <summary>
@@ -411,7 +411,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.

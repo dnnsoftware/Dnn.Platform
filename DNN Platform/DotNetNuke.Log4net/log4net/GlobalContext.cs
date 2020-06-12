@@ -51,7 +51,7 @@ namespace log4net
     /// </code>
     /// </example>
     /// <threadsafety static="true" instance="true" />
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class GlobalContext
     {
         /// <summary>
@@ -86,7 +86,7 @@ namespace log4net
         }
 
         /// <summary>
-        /// The global context properties instance
+        /// The global context properties instance.
         /// </summary>
         private static readonly GlobalContextProperties s_properties = new GlobalContextProperties();
     }

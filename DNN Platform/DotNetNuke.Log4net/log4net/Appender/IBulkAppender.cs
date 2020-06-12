@@ -34,13 +34,13 @@ namespace log4net.Appender
     /// should only implement this interface if they can bulk log efficiently.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public interface IBulkAppender : IAppender
     {
         /// <summary>
         /// Log the array of logging events in Appender specific way.
         /// </summary>
-        /// <param name="loggingEvents">The events to log</param>
+        /// <param name="loggingEvents">The events to log.</param>
         /// <remarks>
         /// <para>
         /// This method is called to log an array of events into this appender.

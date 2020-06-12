@@ -28,7 +28,7 @@ using System.Xml;
 namespace log4net.Config
 {
     /// <summary>
-    /// Class to register for the log4net section of the configuration file
+    /// Class to register for the log4net section of the configuration file.
     /// </summary>
     /// <remarks>
     /// The log4net section of the configuration file needs to have a section
@@ -48,8 +48,8 @@ namespace log4net.Config
     /// </configuration>
     /// </code>
     /// </example>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class Log4NetConfigurationSectionHandler : IConfigurationSectionHandler
     {
         /// <summary>
@@ -73,7 +73,7 @@ namespace log4net.Config
         /// <returns>The <see cref="XmlNode" /> for the log4net section.</returns>
         /// <remarks>
         /// <para>
-        /// Returns the <see cref="XmlNode"/> containing the configuration data,
+        /// Returns the <see cref="XmlNode"/> containing the configuration data.
         /// </para>
         /// </remarks>
         public object Create(object parent, object configContext, XmlNode section)

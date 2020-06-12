@@ -25,20 +25,20 @@ using System.Collections;
 namespace log4net.Util
 {
     /// <summary>
-    /// Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/>
+    /// Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/>
+    /// Implementation of Stacks collection for the <see cref="log4net.LogicalThreadContext"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class LogicalThreadContextStacks
     {
         private readonly LogicalThreadContextProperties m_properties;
 
         /// <summary>
-        /// Internal constructor
+        /// Internal constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -51,14 +51,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets the named thread context stack
+        /// Gets the named thread context stack.
         /// </summary>
         /// <value>
-        /// The named stack
+        /// The named stack.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets the named thread context stack
+        /// Gets the named thread context stack.
         /// </para>
         /// </remarks>
         public LogicalThreadContextStack this[string key]

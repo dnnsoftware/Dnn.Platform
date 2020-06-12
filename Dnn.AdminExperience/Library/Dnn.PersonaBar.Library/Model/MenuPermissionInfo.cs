@@ -19,7 +19,7 @@ namespace Dnn.PersonaBar.Library.Model
     /// Class    : MenuPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// MenuPermissionInfo provides the Entity Layer for Module Permissions
+    /// MenuPermissionInfo provides the Entity Layer for Module Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -32,7 +32,7 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new MenuPermissionInfo
+        /// Constructs a new MenuPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo()
@@ -43,9 +43,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new MenuPermissionInfo
+        /// Constructs a new MenuPermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
         public MenuPermissionInfo(PermissionInfo permission)
             : this()
@@ -59,9 +59,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module Permission ID
+        /// Gets or sets and sets the Module Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("menupermissionid")]
         public int MenuPermissionId
@@ -79,9 +79,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module ID
+        /// Gets or sets and sets the Module ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("menuid")]
         public int MenuId
@@ -102,9 +102,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a MenuPermissionInfo from a Data Reader
+        /// Fills a MenuPermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -116,9 +116,9 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
@@ -136,11 +136,11 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two MenuPermissionInfo objects are equivalent/equal
+        /// Compares if two MenuPermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="other">a ModulePermissionObject</param>
+        /// <param name="other">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
@@ -165,11 +165,11 @@ namespace Dnn.PersonaBar.Library.Model
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two MenuPermissionInfo objects are equivalent/equal
+        /// Compares if two MenuPermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="obj">a ModulePermissionObject</param>
+        /// <param name="obj">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.

@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ModuleIndexer is an implementation of the abstract IndexingProvider
-    /// class
+    /// class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -252,7 +252,7 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets a list of modules that are listed as "Searchable" from the module definition and check if they
-        /// implement ModuleSearchBase -- which is a newer implementation of search that replaces ISearchable
+        /// implement ModuleSearchBase -- which is a newer implementation of search that replaces ISearchable.
         /// </summary>
         /// <param name="portalId"></param>
         /// <returns></returns>

@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <returns>
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>1</filterpriority>
+        /// <filterpriority>1.</filterpriority>
         public IEnumerator<TChildren> GetEnumerator()
         {
             var enumerator = this._owner.Controls.GetEnumerator();
@@ -243,7 +243,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         /// </returns>
-        /// <filterpriority>2</filterpriority>
+        /// <filterpriority>2.</filterpriority>
         private IEnumerator EnumerableGetEnumerator()
         {
             return this._owner.Controls.GetEnumerator();

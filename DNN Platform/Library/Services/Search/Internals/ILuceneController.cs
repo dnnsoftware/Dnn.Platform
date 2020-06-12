@@ -16,24 +16,24 @@ namespace DotNetNuke.Services.Search.Internals
     internal interface ILuceneController
     {
         /// <summary>
-        /// Execute Search
+        /// Execute Search.
         /// </summary>
-        /// <param name="luceneSearchContext">Search Context</param>
-        /// <returns>List of matching Documents</returns>
+        /// <param name="luceneSearchContext">Search Context.</param>
+        /// <returns>List of matching Documents.</returns>
         LuceneResults Search(LuceneSearchContext luceneSearchContext);
 
         /// <summary>
-        /// Adds Lucene Document in Lucene Index
+        /// Adds Lucene Document in Lucene Index.
         /// </summary>
         void Add(Document doc);
 
         /// <summary>
-        /// Delete a Search Document from the Search Index
+        /// Delete a Search Document from the Search Index.
         /// </summary>
         void Delete(Query query);
 
         /// <summary>
-        /// Commits the added search documents into the search database
+        /// Commits the added search documents into the search database.
         /// </summary>
         void Commit();
 
@@ -67,13 +67,13 @@ namespace DotNetNuke.Services.Search.Internals
         int SearchbleDocsCount();
 
         /// <summary>
-        /// Returns if the current search index has deletions
+        /// Returns if the current search index has deletions.
         /// </summary>
-        /// <returns>Whther the search index has deletions or not</returns>
+        /// <returns>Whther the search index has deletions or not.</returns>
         bool HasDeletions();
 
         /// <summary>
-        /// Returns current search indexs general information
+        /// Returns current search indexs general information.
         /// </summary>
         /// <returns><see cref="SearchStatistics"/> object or null if the information can not be retrieved.</returns>
         SearchStatistics GetSearchStatistics();

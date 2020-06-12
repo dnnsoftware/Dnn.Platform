@@ -10,7 +10,7 @@ namespace DotNetNuke.Common.Utilities
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The SqlUtils class provides Shared/Static methods for working with SQL Server related code
+    ///   The SqlUtils class provides Shared/Static methods for working with SQL Server related code.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -20,7 +20,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         ///   function to translate sql exceptions to readable messages.
         ///   It also captures cases where sql server is not available and guards against
-        ///   database connection details being leaked
+        ///   database connection details being leaked.
         /// </summary>
         /// <param name = "exc"></param>
         /// <returns></returns>

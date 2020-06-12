@@ -28,7 +28,7 @@ using log4net.Core;
 namespace log4net.Util
 {
     /// <summary>
-    /// <see cref="TextWriter"/> that does not leak exceptions
+    /// <see cref="TextWriter"/> that does not leak exceptions.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,18 +36,18 @@ namespace log4net.Util
     /// Instead, it delegates error handling to its <see cref="IErrorHandler"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class QuietTextWriter : TextWriterAdapter
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
-        /// <param name="writer">the writer to actually write to</param>
-        /// <param name="errorHandler">the error handler to report error to</param>
+        /// <param name="writer">the writer to actually write to.</param>
+        /// <param name="errorHandler">the error handler to report error to.</param>
         /// <remarks>
         /// <para>
-        /// Create a new QuietTextWriter using a writer and error handler
+        /// Create a new QuietTextWriter using a writer and error handler.
         /// </para>
         /// </remarks>
         public QuietTextWriter(TextWriter writer, IErrorHandler errorHandler)
@@ -105,12 +105,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes a character to the underlying writer
+        /// Writes a character to the underlying writer.
         /// </summary>
-        /// <param name="value">the char to write</param>
+        /// <param name="value">the char to write.</param>
         /// <remarks>
         /// <para>
-        /// Writes a character to the underlying writer
+        /// Writes a character to the underlying writer.
         /// </para>
         /// </remarks>
         public override void Write(char value)
@@ -126,14 +126,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Writes a buffer to the underlying writer
+        /// Writes a buffer to the underlying writer.
         /// </summary>
-        /// <param name="buffer">the buffer to write</param>
-        /// <param name="index">the start index to write from</param>
-        /// <param name="count">the number of characters to write</param>
+        /// <param name="buffer">the buffer to write.</param>
+        /// <param name="index">the start index to write from.</param>
+        /// <param name="count">the number of characters to write.</param>
         /// <remarks>
         /// <para>
-        /// Writes a buffer to the underlying writer
+        /// Writes a buffer to the underlying writer.
         /// </para>
         /// </remarks>
         public override void Write(char[] buffer, int index, int count)
@@ -184,12 +184,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The error handler instance to pass all errors to
+        /// The error handler instance to pass all errors to.
         /// </summary>
         private IErrorHandler m_errorHandler;
 
         /// <summary>
-        /// Flag to indicate if this writer is closed
+        /// Flag to indicate if this writer is closed.
         /// </summary>
         private bool m_closed = false;
     }

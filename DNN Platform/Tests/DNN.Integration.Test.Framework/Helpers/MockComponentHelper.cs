@@ -11,7 +11,7 @@ namespace DNN.Integration.Test.Framework.Helpers
     /// <summary>
     /// Class copied from Platform Tests: DotNetNuke.Tests.Utilities.Mocks.MockComponentProvider
     ///
-    /// This class helps to mock any components that have been registered using the ComponentFactory
+    /// This class helps to mock any components that have been registered using the ComponentFactory.
     /// </summary>
     public static class MockComponentHelper
     {

@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private string _webURL;
 
         /// <summary>
-        /// Gets or sets the CSS class for the option buttons and search button
+        /// Gets or sets the CSS class for the option buttons and search button.
         /// </summary>
         /// <remarks>If you are using the DropDownList option then you can style the search
         /// elements without requiring a custom CssClass.</remarks>
@@ -340,19 +340,19 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// Gets or sets minium chars required to trigger auto search
+        /// Gets or sets minium chars required to trigger auto search.
         /// </summary>
         public int MinCharRequired { get; set; }
 
         /// <summary>
-        /// Gets or sets the millisecond to delay trigger auto search
+        /// Gets or sets the millisecond to delay trigger auto search.
         /// </summary>
         public int AutoSearchDelayInMilliSecond { get; set; }
 
         private bool _enableWildSearch = true;
 
         /// <summary>
-        /// Gets or sets a value indicating whether disable the wild search
+        /// Gets or sets a value indicating whether disable the wild search.
         /// </summary>
         public bool EnableWildSearch
         {

@@ -35,15 +35,15 @@ namespace log4net.Util.TypeConverters
     /// <seealso cref="ConverterRegistry"/>
     /// <seealso cref="IConvertFrom"/>
     /// <seealso cref="IConvertTo"/>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     internal class BooleanConverter : IConvertFrom
     {
         /// <summary>
-        /// Can the source type be converted to the type supported by this object
+        /// Can the source type be converted to the type supported by this object.
         /// </summary>
-        /// <param name="sourceType">the type to convert</param>
-        /// <returns>true if the conversion is possible</returns>
+        /// <param name="sourceType">the type to convert.</param>
+        /// <returns>true if the conversion is possible.</returns>
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="sourceType"/> is
@@ -56,10 +56,10 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// Convert the source object to the type supported by this object
+        /// Convert the source object to the type supported by this object.
         /// </summary>
-        /// <param name="source">the object to convert</param>
-        /// <returns>the converted object</returns>
+        /// <param name="source">the object to convert.</param>
+        /// <returns>the converted object.</returns>
         /// <remarks>
         /// <para>
         /// Uses the <see cref="bool.Parse"/> method to convert the

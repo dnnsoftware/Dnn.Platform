@@ -32,7 +32,7 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Property pattern converter
+    /// Property pattern converter.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -48,14 +48,14 @@ namespace log4net.Util.PatternStringConverters
     /// then all properties will be dumped as a list of key value pairs.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class PropertyPatternConverter : PatternConverter
     {
         /// <summary>
-        /// Write the property value to the output
+        /// Write the property value to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Writes out the value of a named property. The property name

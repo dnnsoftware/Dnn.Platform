@@ -53,11 +53,11 @@ namespace Dnn.PersonaBar.Library.Prompt
         }
 
         /// <summary>
-        /// Get the flag value
+        /// Get the flag value.
         /// </summary>
-        /// <typeparam name="T">Type of the output expected</typeparam>
-        /// <param name="flag">Flag name to look</param>
-        /// <param name="fieldName">Filed name to show in message</param>
+        /// <typeparam name="T">Type of the output expected.</typeparam>
+        /// <param name="flag">Flag name to look.</param>
+        /// <param name="fieldName">Filed name to show in message.</param>
         /// <param name="defaultVal">Default value of the flag, if any.</param>
         /// <param name="required">Is this a required flag or not.</param>
         /// <param name="checkmain">Try to find the flag value in first args or not.</param>

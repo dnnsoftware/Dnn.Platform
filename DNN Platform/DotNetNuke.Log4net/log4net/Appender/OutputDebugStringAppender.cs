@@ -46,8 +46,8 @@ namespace log4net.Appender
     /// function.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class OutputDebugStringAppender : AppenderSkeleton
     {
         /// <summary>
@@ -63,12 +63,12 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Write the logging event to the output debug string API
+        /// Write the logging event to the output debug string API.
         /// </summary>
-        /// <param name="loggingEvent">the event to log</param>
+        /// <param name="loggingEvent">the event to log.</param>
         /// <remarks>
         /// <para>
-        /// Write the logging event to the output debug string API
+        /// Write the logging event to the output debug string API.
         /// </para>
         /// </remarks>
 #if NET_4_0 || MONO_4_0 || NETSTANDARD1_3
@@ -91,7 +91,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -103,12 +103,12 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Stub for OutputDebugString native method
+        /// Stub for OutputDebugString native method.
         /// </summary>
-        /// <param name="message">the string to output</param>
+        /// <param name="message">the string to output.</param>
         /// <remarks>
         /// <para>
-        /// Stub for OutputDebugString native method
+        /// Stub for OutputDebugString native method.
         /// </para>
         /// </remarks>
 #if NETCF

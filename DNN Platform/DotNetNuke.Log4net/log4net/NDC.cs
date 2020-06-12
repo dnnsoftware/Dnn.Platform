@@ -56,7 +56,7 @@ namespace log4net
     /// calling thread.
     /// </para>
     /// </remarks>
-    /// <example>How to push a message into the context
+    /// <example>How to push a message into the context.
     /// <code lang="C#">
     ///     using(NDC.Push("my context message"))
     ///     {
@@ -66,8 +66,8 @@ namespace log4net
     /// </code>
     /// </example>
     /// <threadsafety static="true" instance="true" />
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [Obsolete("NDC has been replaced by ThreadContext.Stacks. Scheduled removal in v10.0.0.")]
     public sealed class NDC
     {
@@ -300,7 +300,7 @@ namespace log4net
         /// <summary>
         /// Forces the stack depth to be at most <paramref name="maxDepth"/>.
         /// </summary>
-        /// <param name="maxDepth">The maximum depth of the stack</param>
+        /// <param name="maxDepth">The maximum depth of the stack.</param>
         /// <remarks>
         /// <note>
         /// <para>

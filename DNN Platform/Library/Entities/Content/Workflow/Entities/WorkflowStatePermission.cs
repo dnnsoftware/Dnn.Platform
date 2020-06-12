@@ -7,17 +7,17 @@ using DotNetNuke.Security.Permissions;
 namespace DotNetNuke.Entities.Content.Workflow.Entities
 {
     /// <summary>
-    /// This entity represents a state permission
+    /// This entity represents a state permission.
     /// </summary>
     public class WorkflowStatePermission : PermissionInfoBase
     {
         /// <summary>
-        /// Gets or sets workflow state permission Id
+        /// Gets or sets workflow state permission Id.
         /// </summary>
         public int WorkflowStatePermissionID { get; set; }
 
         /// <summary>
-        /// Gets or sets state Id
+        /// Gets or sets state Id.
         /// </summary>
         public int StateID { get; set; }
     }

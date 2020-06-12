@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.ComponentModel
 {
     /// <summary>
-    ///   Summary description for ComponentFactoryTests
+    ///   Summary description for ComponentFactoryTests.
     /// </summary>
     [TestFixture]
     public class ComponentFactoryTests

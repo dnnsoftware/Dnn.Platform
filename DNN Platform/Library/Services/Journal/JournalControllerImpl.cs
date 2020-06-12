@@ -644,7 +644,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>
-        /// HARD deletes journal items based on item key
+        /// HARD deletes journal items based on item key.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="objectKey"></param>
@@ -654,7 +654,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>
-        /// HARD deletes journal items based on group Id
+        /// HARD deletes journal items based on group Id.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="groupId"></param>
@@ -675,7 +675,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>
-        /// SOFT deletes journal items based on item key
+        /// SOFT deletes journal items based on item key.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="objectKey"></param>
@@ -685,7 +685,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>
-        /// SOFT deletes journal items based on group Id
+        /// SOFT deletes journal items based on group Id.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="groupId"></param>

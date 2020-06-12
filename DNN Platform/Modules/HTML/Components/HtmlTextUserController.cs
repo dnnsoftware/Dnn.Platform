@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.Html
     /// Class:      HtmlTextUserController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The HtmlTextUserController is the Controller class for managing User information the HtmlText module
+    ///   The HtmlTextUserController is the Controller class for managing User information the HtmlText module.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -24,11 +24,11 @@ namespace DotNetNuke.Modules.Html
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetHtmlTextUser retrieves a collection of HtmlTextUserInfo objects for an Item
+        ///   GetHtmlTextUser retrieves a collection of HtmlTextUserInfo objects for an Item.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "UserID">The Id of the User</param>
+        /// <param name = "UserID">The Id of the User.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextUser(int UserID)
@@ -38,11 +38,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   AddHtmlTextUser creates a new HtmlTextUser for an Item
+        ///   AddHtmlTextUser creates a new HtmlTextUser for an Item.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "objHtmlTextUser">An HtmlTextUserInfo object</param>
+        /// <param name = "objHtmlTextUser">An HtmlTextUserInfo object.</param>
         /// -----------------------------------------------------------------------------
         public void AddHtmlTextUser(HtmlTextUserInfo objHtmlTextUser)
         {
@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   DeleteHtmlTextUsers cleans up old HtmlTextUser records
+        ///   DeleteHtmlTextUsers cleans up old HtmlTextUser records.
         /// </summary>
         /// <remarks>
         /// </remarks>

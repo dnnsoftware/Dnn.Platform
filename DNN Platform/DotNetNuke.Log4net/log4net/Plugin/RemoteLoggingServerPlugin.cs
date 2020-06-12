@@ -34,7 +34,7 @@ using IRemoteLoggingSink = log4net.Appender.RemotingAppender.IRemoteLoggingSink;
 namespace log4net.Plugin
 {
     /// <summary>
-    /// Plugin that listens for events from the <see cref="log4net.Appender.RemotingAppender"/>
+    /// Plugin that listens for events from the <see cref="log4net.Appender.RemotingAppender"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -47,12 +47,12 @@ namespace log4net.Plugin
     /// as if it had been raised locally.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class RemoteLoggingServerPlugin : PluginSkeleton
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -93,7 +93,7 @@ namespace log4net.Plugin
         /// <remarks>
         /// <para>
         /// This is the name under which the object is marshaled.
-        /// <see cref="M:RemotingServices.Marshal(MarshalByRefObject,String,Type)"/>
+        /// <see cref="M:RemotingServices.Marshal(MarshalByRefObject,String,Type)"/>.
         /// </para>
         /// </remarks>
         public virtual string SinkUri
@@ -179,7 +179,7 @@ namespace log4net.Plugin
         private class RemoteLoggingSinkImpl : MarshalByRefObject, IRemoteLoggingSink
         {
             /// <summary>
-            /// Constructor
+            /// Constructor.
             /// </summary>
             /// <param name="repository">The repository to log to.</param>
             /// <remarks>
@@ -199,7 +199,7 @@ namespace log4net.Plugin
             /// <param name="events">The events to log.</param>
             /// <remarks>
             /// <para>
-            /// The events passed are logged to the <see cref="ILoggerRepository"/>
+            /// The events passed are logged to the <see cref="ILoggerRepository"/>.
             /// </para>
             /// </remarks>
             public void LogEvents(LoggingEvent[] events)

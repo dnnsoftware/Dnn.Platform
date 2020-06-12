@@ -33,7 +33,7 @@ namespace log4net.Core
     /// <see cref="Interval"/> has passed since last check.
     /// </para>
     /// </remarks>
-    /// <author>Robert Sevcik</author>
+    /// <author>Robert Sevcik.</author>
     public class TimeEvaluator : ITriggeringEventEvaluator
     {
         /// <summary>
@@ -91,7 +91,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets or sets the time threshold in seconds to trigger after
+        /// Gets or sets the time threshold in seconds to trigger after.
         /// </summary>
         /// <value>
         /// The time threshold in seconds to trigger after.
@@ -110,12 +110,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Is this <paramref name="loggingEvent"/> the triggering event?
+        /// Is this <paramref name="loggingEvent"/> the triggering event?.
         /// </summary>
-        /// <param name="loggingEvent">The event to check</param>
+        /// <param name="loggingEvent">The event to check.</param>
         /// <returns>This method returns <c>true</c>, if the specified time period
         /// <see cref="Interval"/> has passed since last check..
-        /// Otherwise it returns <c>false</c></returns>
+        /// Otherwise it returns <c>false</c>.</returns>
         /// <remarks>
         /// <para>
         /// This evaluator will trigger if the specified time period

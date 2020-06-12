@@ -179,7 +179,7 @@ namespace DotNetNuke.Security.Permissions
         /// GetModulePermissions gets a Dictionary of ModulePermissionCollections by
         /// Module.
         /// </summary>
-        /// <param name="tabID">The ID of the tab</param>
+        /// <param name="tabID">The ID of the tab.</param>
         /// -----------------------------------------------------------------------------
         private Dictionary<int, ModulePermissionCollection> GetModulePermissions(int tabID)
         {
@@ -194,7 +194,7 @@ namespace DotNetNuke.Security.Permissions
         /// Module from the the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private object GetModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -243,7 +243,7 @@ namespace DotNetNuke.Security.Permissions
         /// GetTabPermissions gets a Dictionary of TabPermissionCollections by
         /// Tab.
         /// </summary>
-        /// <param name="portalID">The ID of the portal</param>
+        /// <param name="portalID">The ID of the portal.</param>
         /// -----------------------------------------------------------------------------
         private Dictionary<int, TabPermissionCollection> GetTabPermissions(int portalID)
         {
@@ -259,7 +259,7 @@ namespace DotNetNuke.Security.Permissions
         /// Tab from the the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private object GetTabPermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -393,7 +393,7 @@ namespace DotNetNuke.Security.Permissions
         /// DesktopModule from the the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private static object GetDesktopModulePermissionsCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -403,9 +403,9 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// FillDesktopModulePermissionDictionary fills a Dictionary of DesktopModulePermissions from a
-        /// dataReader
+        /// dataReader.
         /// </summary>
-        /// <param name="dr">The IDataReader</param>
+        /// <param name="dr">The IDataReader.</param>
         /// -----------------------------------------------------------------------------
         private static Dictionary<int, DesktopModulePermissionCollection> FillDesktopModulePermissionDictionary(IDataReader dr)
         {
@@ -493,20 +493,20 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can add a folder or file
+        /// Returns a flag indicating whether the current user can add a folder or file.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddFolder(FolderInfo folder)
         {
             return this.HasFolderPermission(folder, AddFolderPermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can browse the folder
+        /// Returns a flag indicating whether the current user can browse the folder.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanBrowseFolder(FolderInfo folder)
         {
             if (folder == null)
@@ -520,10 +520,10 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can addmister a folder
+        /// Returns a flag indicating whether the current user can addmister a folder.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAdminFolder(FolderInfo folder)
         {
             if (folder == null)
@@ -535,40 +535,40 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can copy a folder or file
+        /// Returns a flag indicating whether the current user can copy a folder or file.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanCopyFolder(FolderInfo folder)
         {
             return this.HasFolderPermission(folder, CopyFolderPermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can delete a folder or file
+        /// Returns a flag indicating whether the current user can delete a folder or file.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeleteFolder(FolderInfo folder)
         {
             return this.HasFolderPermission(folder, DeleteFolderPermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can manage a folder's settings
+        /// Returns a flag indicating whether the current user can manage a folder's settings.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManageFolder(FolderInfo folder)
         {
             return this.HasFolderPermission(folder, ManageFolderPermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can view a folder or file
+        /// Returns a flag indicating whether the current user can view a folder or file.
         /// </summary>
-        /// <param name="folder">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="folder">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewFolder(FolderInfo folder)
         {
             return this.HasFolderPermission(folder, ViewFolderPermissionKey);
@@ -636,9 +636,9 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// SaveFolderPermissions updates a Folder's permissions
+        /// SaveFolderPermissions updates a Folder's permissions.
         /// </summary>
-        /// <param name="folder">The Folder to update</param>
+        /// <param name="folder">The Folder to update.</param>
         public virtual void SaveFolderPermissions(FolderInfo folder)
         {
             this.SaveFolderPermissions((IFolderInfo)folder);
@@ -646,9 +646,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveFolderPermissions updates a Folder's permissions
+        /// SaveFolderPermissions updates a Folder's permissions.
         /// </summary>
-        /// <param name="folder">The Folder to update</param>
+        /// <param name="folder">The Folder to update.</param>
         /// -----------------------------------------------------------------------------
         public virtual void SaveFolderPermissions(IFolderInfo folder)
         {
@@ -719,70 +719,70 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can administer a module
+        /// Returns a flag indicating whether the current user can administer a module.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAdminModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(AdminModulePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can delete a module
+        /// Returns a flag indicating whether the current user can delete a module.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeleteModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(DeleteModulePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can edit module content
+        /// Returns a flag indicating whether the current user can edit module content.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanEditModuleContent(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ContentModulePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can export a module
+        /// Returns a flag indicating whether the current user can export a module.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanExportModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ExportModulePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can import a module
+        /// Returns a flag indicating whether the current user can import a module.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanImportModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ImportModulePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can manage a module's settings
+        /// Returns a flag indicating whether the current user can manage a module's settings.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManageModule(ModuleInfo module)
         {
             return PortalSecurity.IsInRoles(module.ModulePermissions.ToString(ManageModulePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can view a module
+        /// Returns a flag indicating whether the current user can view a module.
         /// </summary>
-        /// <param name="module">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="module">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewModule(ModuleInfo module)
         {
             bool canView;
@@ -801,9 +801,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteModulePermissionsByUser deletes a user's Module Permission in the Database
+        /// DeleteModulePermissionsByUser deletes a user's Module Permission in the Database.
         /// </summary>
-        /// <param name="user">The user</param>
+        /// <param name="user">The user.</param>
         /// -----------------------------------------------------------------------------
         public virtual void DeleteModulePermissionsByUser(UserInfo user)
         {
@@ -813,10 +813,10 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModulePermissions gets a ModulePermissionCollection
+        /// GetModulePermissions gets a ModulePermissionCollection.
         /// </summary>
-        /// <param name="moduleID">The ID of the module</param>
-        /// <param name="tabID">The ID of the tab</param>
+        /// <param name="moduleID">The ID of the module.</param>
+        /// <param name="tabID">The ID of the tab.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual ModulePermissionCollection GetModulePermissions(int moduleID, int tabID)
@@ -844,7 +844,7 @@ namespace DotNetNuke.Security.Permissions
         /// <param name="accessLevel">The SecurityAccessLevel required to access a portal module or module action.</param>
         /// <param name="permissionKey">If Security Access is Edit the permissionKey is the actual "edit" permisison required.</param>
         /// <param name="moduleConfiguration">The ModuleInfo object for the associated module.</param>
-        /// <returns>A boolean value indicating if the user has the necessary permissions</returns>
+        /// <returns>A boolean value indicating if the user has the necessary permissions.</returns>
         /// <remarks>Every module control and module action has an associated permission level.  This
         /// function determines whether the user represented by UserName has sufficient permissions, as
         /// determined by the PortalSettings and ModuleSettings, to access a resource with the
@@ -924,10 +924,10 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// HasModulePermission checks whether the current user has a specific Module Permission
+        /// HasModulePermission checks whether the current user has a specific Module Permission.
         /// </summary>
-        /// <param name="modulePermissions">The Permissions for the Module</param>
-        /// <param name="permissionKey">The Permission to check</param>
+        /// <param name="modulePermissions">The Permissions for the Module.</param>
+        /// <param name="permissionKey">The Permission to check.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool HasModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
@@ -954,9 +954,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveModulePermissions updates a Module's permissions
+        /// SaveModulePermissions updates a Module's permissions.
         /// </summary>
-        /// <param name="module">The Module to update</param>
+        /// <param name="module">The Module to update.</param>
         /// -----------------------------------------------------------------------------
         public virtual void SaveModulePermissions(ModuleInfo module)
         {
@@ -990,120 +990,120 @@ namespace DotNetNuke.Security.Permissions
         }
 
         /// <summary>
-        /// Returns a list with all roles with implicit permissions on Tabs
+        /// Returns a list with all roles with implicit permissions on Tabs.
         /// </summary>
-        /// <param name="portalId">The Portal Id where the Roles are</param>
-        /// <returns>A List with the implicit roles</returns>
+        /// <param name="portalId">The Portal Id where the Roles are.</param>
+        /// <returns>A List with the implicit roles.</returns>
         public virtual IEnumerable<RoleInfo> ImplicitRolesForPages(int portalId)
         {
             return this.DefaultImplicitRoles(portalId);
         }
 
         /// <summary>
-        /// Returns a list with all roles with implicit permissions on Folders
+        /// Returns a list with all roles with implicit permissions on Folders.
         /// </summary>
-        /// <param name="portalId">The Portal Id where the permissions are</param>
-        /// <returns>A List with the implicit roles</returns>
+        /// <param name="portalId">The Portal Id where the permissions are.</param>
+        /// <returns>A List with the implicit roles.</returns>
         public virtual IEnumerable<RoleInfo> ImplicitRolesForFolders(int portalId)
         {
             return this.DefaultImplicitRoles(portalId);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can add content to a page
+        /// Returns a flag indicating whether the current user can add content to a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddContentToPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, ContentPagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can add a child page to a page
+        /// Returns a flag indicating whether the current user can add a child page to a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAddPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, AddPagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can administer a page
+        /// Returns a flag indicating whether the current user can administer a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanAdminPage(TabInfo tab)
         {
             return PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can copy a page
+        /// Returns a flag indicating whether the current user can copy a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanCopyPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, CopyPagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can delete a page
+        /// Returns a flag indicating whether the current user can delete a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanDeletePage(TabInfo tab)
         {
             return this.HasPagePermission(tab, DeletePagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can export a page
+        /// Returns a flag indicating whether the current user can export a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanExportPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, ExportPagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can import a page
+        /// Returns a flag indicating whether the current user can import a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanImportPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, ImportPagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can manage a page's settings
+        /// Returns a flag indicating whether the current user can manage a page's settings.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanManagePage(TabInfo tab)
         {
             return this.HasPagePermission(tab, ManagePagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can see a page in a navigation object
+        /// Returns a flag indicating whether the current user can see a page in a navigation object.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanNavigateToPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, NavigatePagePermissionKey) || this.HasPagePermission(tab, ViewPagePermissionKey);
         }
 
         /// <summary>
-        /// Returns a flag indicating whether the current user can view a page
+        /// Returns a flag indicating whether the current user can view a page.
         /// </summary>
-        /// <param name="tab">The page</param>
-        /// <returns>A flag indicating whether the user has permission</returns>
+        /// <param name="tab">The page.</param>
+        /// <returns>A flag indicating whether the user has permission.</returns>
         public virtual bool CanViewPage(TabInfo tab)
         {
             return this.HasPagePermission(tab, ViewPagePermissionKey);
@@ -1111,9 +1111,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteTabPermissionsByUser deletes a user's Tab Permissions in the Database
+        /// DeleteTabPermissionsByUser deletes a user's Tab Permissions in the Database.
         /// </summary>
-        /// <param name="user">The user</param>
+        /// <param name="user">The user.</param>
         /// -----------------------------------------------------------------------------
         public virtual void DeleteTabPermissionsByUser(UserInfo user)
         {
@@ -1123,10 +1123,10 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetTabPermissions gets a TabPermissionCollection
+        /// GetTabPermissions gets a TabPermissionCollection.
         /// </summary>
-        /// <param name="tabId">The ID of the tab</param>
-        /// <param name="portalId">The ID of the portal</param>
+        /// <param name="tabId">The ID of the tab.</param>
+        /// <param name="portalId">The ID of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual TabPermissionCollection GetTabPermissions(int tabId, int portalId)
@@ -1148,10 +1148,10 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// HasTabPermission checks whether the current user has a specific Tab Permission
+        /// HasTabPermission checks whether the current user has a specific Tab Permission.
         /// </summary>
-        /// <param name="tabPermissions">The Permissions for the Tab</param>
-        /// <param name="permissionKey">The Permission to check</param>
+        /// <param name="tabPermissions">The Permissions for the Tab.</param>
+        /// <param name="permissionKey">The Permission to check.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool HasTabPermission(TabPermissionCollection tabPermissions, string permissionKey)
@@ -1181,9 +1181,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveTabPermissions saves a Tab's permissions
+        /// SaveTabPermissions saves a Tab's permissions.
         /// </summary>
-        /// <param name="tab">The Tab to update</param>
+        /// <param name="tab">The Tab to update.</param>
         /// -----------------------------------------------------------------------------
         public virtual void SaveTabPermissions(TabInfo tab)
         {
@@ -1219,9 +1219,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModulePermission gets a DesktopModule Permission from the Database
+        /// GetDesktopModulePermission gets a DesktopModule Permission from the Database.
         /// </summary>
-        /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission</param>
+        /// <param name="desktopModulePermissionId">The ID of the DesktopModule Permission.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionInfo GetDesktopModulePermission(int desktopModulePermissionId)
@@ -1231,9 +1231,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection
+        /// GetDesktopModulePermissions gets a DesktopModulePermissionCollection.
         /// </summary>
-        /// <param name="portalDesktopModuleId">The ID of the DesktopModule</param>
+        /// <param name="portalDesktopModuleId">The ID of the DesktopModule.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
@@ -1255,10 +1255,10 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// HasDesktopModulePermission checks whether the current user has a specific DesktopModule Permission
+        /// HasDesktopModulePermission checks whether the current user has a specific DesktopModule Permission.
         /// </summary>
-        /// <param name="desktopModulePermissions">The Permissions for the DesktopModule</param>
-        /// <param name="permissionKey">The Permission to check</param>
+        /// <param name="desktopModulePermissions">The Permissions for the DesktopModule.</param>
+        /// <param name="permissionKey">The Permission to check.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool HasDesktopModulePermission(DesktopModulePermissionCollection desktopModulePermissions, string permissionKey)

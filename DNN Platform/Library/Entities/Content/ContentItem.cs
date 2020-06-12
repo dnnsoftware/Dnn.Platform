@@ -131,7 +131,7 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Gets the metadata.
         /// </summary>
-        /// <value>metadata collection</value>
+        /// <value>metadata collection.</value>
         [XmlIgnore]
         [ScriptIgnore]
         public NameValueCollection Metadata
@@ -163,7 +163,7 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Gets the terms.
         /// </summary>
-        /// <value>Terms Collection</value>
+        /// <value>Terms Collection.</value>
         [XmlIgnore]
         [ScriptIgnore]
         public List<Term> Terms

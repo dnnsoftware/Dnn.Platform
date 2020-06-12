@@ -83,15 +83,15 @@ namespace log4net.Layout.Pattern
     /// To output the time in Universal time see <see cref="UtcDatePatternConverter"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal class DatePatternConverter : PatternLayoutConverter, IOptionHandler
     {
         /// <summary>
-        /// The <see cref="IDateFormatter"/> used to render the date to a string
+        /// The <see cref="IDateFormatter"/> used to render the date to a string.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The <see cref="IDateFormatter"/> used to render the date to a string
+        /// The <see cref="IDateFormatter"/> used to render the date to a string.
         /// </para>
         /// </remarks>
         protected IDateFormatter m_dateFormatter;
@@ -147,10 +147,10 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Convert the pattern into the rendered message
+        /// Convert the pattern into the rendered message.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// Pass the <see cref="LoggingEvent.TimeStamp"/> to the <see cref="IDateFormatter"/>

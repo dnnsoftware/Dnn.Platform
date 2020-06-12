@@ -17,10 +17,10 @@ namespace DotNetNuke.Common.Utilities
         private readonly Func<T> _initializer;
 
         /// <summary>
-        /// Initializes a new item variable
+        /// Initializes a new item variable.
         /// </summary>
         /// <param name="key">
-        /// The key to use for storing the value in the items
+        /// The key to use for storing the value in the items.
         /// </param>
         protected StateVariable(string key)
         {
@@ -33,10 +33,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Initializes a new item variable with a initializer
+        /// Initializes a new item variable with a initializer.
         /// </summary>
-        /// <param name="key">The key to use for storing the value in the dictionary</param>
-        /// <param name="initializer">A function that is called in order to create a default value per dictionary</param>
+        /// <param name="key">The key to use for storing the value in the dictionary.</param>
+        /// <param name="initializer">A function that is called in order to create a default value per dictionary.</param>
         /// <remarks></remarks>
         protected StateVariable(string key, Func<T> initializer)
             : this(key)
@@ -62,23 +62,23 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Get/sets the value in associated dictionary/map
+        /// Get/sets the value in associated dictionary/map.
         /// </summary>
-        /// <param name="key">Value key</param>
+        /// <param name="key">Value key.</param>
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
         protected abstract object this[string key] { get; set; }
 
         /// <summary>
-        /// Removes the value in associated dictionary according
+        /// Removes the value in associated dictionary according.
         /// </summary>
-        /// <param name="key">Value key</param>
+        /// <param name="key">Value key.</param>
         /// <remarks></remarks>
         protected abstract void Remove(string key);
 
         /// <summary>
-        /// Gets a value indicating whether indicates wether there is a value present or not
+        /// Gets a value indicating whether indicates wether there is a value present or not.
         /// </summary>
         public bool HasValue
         {
@@ -89,10 +89,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets or sets or gets the value in the current items
+        /// Gets or sets or gets the value in the current items.
         /// </summary>
         /// <exception cref="InvalidOperationException">
-        /// If you try to get a value while none is set use <see cref="ValueOrDefault"/> for safe access
+        /// If you try to get a value while none is set use <see cref="ValueOrDefault"/> for safe access.
         /// </exception>
         public T Value
         {
@@ -114,7 +114,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets the value in the current items or if none is available <c>default(T)</c>
+        /// Gets the value in the current items or if none is available <c>default(T)</c>.
         /// </summary>
         public T ValueOrDefault
         {
@@ -131,7 +131,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Clears the value in the current items
+        /// Clears the value in the current items.
         /// </summary>
         public void Clear()
         {

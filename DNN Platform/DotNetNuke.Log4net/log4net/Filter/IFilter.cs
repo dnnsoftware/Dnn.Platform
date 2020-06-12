@@ -27,7 +27,7 @@ using log4net.Core;
 namespace log4net.Filter
 {
     /// <summary>
-    /// Implement this interface to provide customized logging event filtering
+    /// Implement this interface to provide customized logging event filtering.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -68,15 +68,15 @@ namespace log4net.Filter
     /// Linux ipchains.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IFilter : IOptionHandler
     {
         /// <summary>
         /// Decide if the logging event should be logged through an appender.
         /// </summary>
-        /// <param name="loggingEvent">The LoggingEvent to decide upon</param>
-        /// <returns>The decision of the filter</returns>
+        /// <param name="loggingEvent">The LoggingEvent to decide upon.</param>
+        /// <returns>The decision of the filter.</returns>
         /// <remarks>
         /// <para>
         /// If the decision is <see cref="FilterDecision.Deny"/>, then the event will be
@@ -89,10 +89,10 @@ namespace log4net.Filter
         FilterDecision Decide(LoggingEvent loggingEvent);
 
         /// <summary>
-        /// Gets or sets property to get and set the next filter
+        /// Gets or sets property to get and set the next filter.
         /// </summary>
         /// <value>
-        /// The next filter in the chain
+        /// The next filter in the chain.
         /// </value>
         /// <remarks>
         /// <para>

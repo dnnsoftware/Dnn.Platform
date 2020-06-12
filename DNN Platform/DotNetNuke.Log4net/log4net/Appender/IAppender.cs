@@ -40,8 +40,8 @@ namespace log4net.Appender
     /// be called after the appenders properties have been configured.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IAppender
     {
         /// <summary>
@@ -61,7 +61,7 @@ namespace log4net.Appender
         /// <summary>
         /// Log the logging event in Appender specific way.
         /// </summary>
-        /// <param name="loggingEvent">The event to log</param>
+        /// <param name="loggingEvent">The event to log.</param>
         /// <remarks>
         /// <para>
         /// This method is called to log a message into this appender.

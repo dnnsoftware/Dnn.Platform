@@ -18,7 +18,7 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// The TabPathHelper class provides helper methods for working with tab urls
+    /// The TabPathHelper class provides helper methods for working with tab urls.
     /// </summary>
     public class TabPathHelper
     {
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Get the tab path for the supplied Tab
+        /// Get the tab path for the supplied Tab.
         /// </summary>
         /// <param name="tab"></param>
         /// <param name="options"></param>
@@ -73,14 +73,14 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Finds a culture-specific homepage tabid for a non-default language
+        /// Finds a culture-specific homepage tabid for a non-default language.
         /// </summary>
-        /// <param name="defaultCulture">The default culture of the portal</param>
+        /// <param name="defaultCulture">The default culture of the portal.</param>
         /// <param name="cultureCode"></param>
-        /// <param name="defaultHomeTabId">The default home page tab id</param>
+        /// <param name="defaultHomeTabId">The default home page tab id.</param>
         /// <param name="portalId"></param>
-        /// <returns>THe valid home page tabid for the portalid and culture</returns>
-        /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back</remarks>
+        /// <returns>THe valid home page tabid for the portalid and culture.</returns>
+        /// <remarks>Note if no specific home page found for the culture, will return defaultHomeTabId back.</remarks>
         internal static int GetHomePageTabIdForCulture(string defaultCulture, int portalId, string cultureCode,
                                                        int defaultHomeTabId)
         {
@@ -122,12 +122,12 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// For the supplied options, return a tab path for the specified tab
+        /// For the supplied options, return a tab path for the specified tab.
         /// </summary>
-        /// <param name="tab">TabInfo object of selected tab</param>
-        /// <param name="settings">FriendlyUrlSettings</param>
+        /// <param name="tab">TabInfo object of selected tab.</param>
+        /// <param name="settings">FriendlyUrlSettings.</param>
         /// <param name="options"></param>
-        /// <param name="ignoreCustomRedirects">Whether to add in the customised Tab redirects or not</param>
+        /// <param name="ignoreCustomRedirects">Whether to add in the customised Tab redirects or not.</param>
         /// <param name="homePageSiteRoot"></param>
         /// <param name="isHomeTab"></param>
         /// <param name="cultureCode"></param>
@@ -139,9 +139,9 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="parentTraceId"></param>
         /// <remarks>751 : include isDefaultCultureCode flag to determine when using the portal default language
         /// 770 : include custom http alias output for when the Url uses a specific alias due to custom Url rules
-        ///  : include new out parameter 'isCustomPath' to return whether the Url was generated from Url-Master custom url
+        ///  : include new out parameter 'isCustomPath' to return whether the Url was generated from Url-Master custom url.
         /// </remarks>
-        /// <returns>The tab path as specified</returns>
+        /// <returns>The tab path as specified.</returns>
         internal static string GetTabPath(
             TabInfo tab,
             FriendlyUrlSettings settings,
@@ -373,7 +373,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Replaces the diacritic characters in a path with other values
+        /// Replaces the diacritic characters in a path with other values.
         /// </summary>
         /// <param name="tabPath"></param>
         /// <param name="replacedDiacritic"></param>

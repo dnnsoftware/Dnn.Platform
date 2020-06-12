@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the User is valid
+        /// Gets a value indicating whether gets whether the User is valid.
         /// </summary>
         public bool IsValid
         {
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Password section is displayed
+        /// Gets or sets a value indicating whether gets and sets whether the Password section is displayed.
         /// </summary>
         public bool ShowPassword
         {
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Update button
+        /// Gets or sets a value indicating whether gets and sets whether the Update button.
         /// </summary>
         public bool ShowUpdate
         {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// <summary>
         /// method checks to see if its allowed to change the username
-        /// valid if a host, or an admin where the username is in only 1 portal
+        /// valid if a host, or an admin where the username is in only 1 portal.
         /// </summary>
         /// <returns></returns>
         private bool CanUpdateUsername()
@@ -162,7 +162,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Validate validates the User
+        /// Validate validates the User.
         /// </summary>
         private bool Validate()
         {
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateUser creates a new user in the Database
+        /// CreateUser creates a new user in the Database.
         /// </summary>
         public void CreateUser()
         {
@@ -268,7 +268,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         public override void DataBind()
         {
@@ -407,7 +407,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -481,7 +481,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdDelete_Click runs when the delete Button is clicked
+        /// cmdDelete_Click runs when the delete Button is clicked.
         /// </summary>
         private void cmdDelete_Click(object sender, EventArgs e)
         {
@@ -546,7 +546,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdUpdate_Click runs when the Update Button is clicked
+        /// cmdUpdate_Click runs when the Update Button is clicked.
         /// </summary>
         private void cmdUpdate_Click(object sender, EventArgs e)
         {

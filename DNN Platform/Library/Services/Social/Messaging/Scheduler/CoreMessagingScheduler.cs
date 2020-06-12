@@ -25,20 +25,20 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
     using DotNetNuke.Services.Social.Messaging.Internal;
 
     /// <summary>
-    /// A SchedulerClient instance that handles all the offline messaging actions
+    /// A SchedulerClient instance that handles all the offline messaging actions.
     /// </summary>
     public class CoreMessagingScheduler : SchedulerClient
     {
-        /// <summary>The setting name for number hours since last hourly digest run</summary>
+        /// <summary>The setting name for number hours since last hourly digest run.</summary>
         private const string SettingLastHourlyRun = "CoreMessagingLastHourlyDigestRun";
 
-        /// <summary>The setting name for number hours since last daily digest run</summary>
+        /// <summary>The setting name for number hours since last daily digest run.</summary>
         private const string SettingLastDailyRun = "CoreMessagingLastDailyDigestRun";
 
-        /// <summary>The setting name for number hours since last weekly digest run</summary>
+        /// <summary>The setting name for number hours since last weekly digest run.</summary>
         private const string SettingLastWeeklyRun = "CoreMessagingLastWeeklyDigestRun";
 
-        /// <summary>The setting name for number hours since last monthly digest run</summary>
+        /// <summary>The setting name for number hours since last monthly digest run.</summary>
         private const string SettingLastMonthlyRun = "CoreMessagingLastMonthlyDigestRun";
 
         /// <summary>Initializes a new instance of the <see cref="CoreMessagingScheduler"/> class.</summary>
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
             this.ScheduleHistoryItem = objScheduleHistoryItem;
         }
 
-        /// <summary>This is the method that kicks off the actual work within the SchedulerClient's subclass</summary>
+        /// <summary>This is the method that kicks off the actual work within the SchedulerClient's subclass.</summary>
         public override void DoWork()
         {
             try
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Determines whether [is send email enable] [the specified portal identifier].</summary>
         /// <param name="portalId">The portal identifier.</param>
-        /// <returns>True if mail is enabled in PortalSettings</returns>
+        /// <returns>True if mail is enabled in PortalSettings.</returns>
         private static bool IsSendEmailEnable(int portalId)
         {
             return PortalController.GetPortalSetting("MessagingSendEmail", portalId, "YES") == "YES";
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Determines whether [is user able to receive an email] [the specified recipient user].</summary>
         /// <param name="recipientUser">The recipient user.</param>
-        /// <returns>True if the user can receive email, otherwise false</returns>
+        /// <returns>True if the user can receive email, otherwise false.</returns>
         private static bool IsUserAbleToReceiveAnEmail(UserInfo recipientUser)
         {
             return recipientUser != null && !recipientUser.IsDeleted && recipientUser.Membership.Approved;
@@ -102,7 +102,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the sender address.</summary>
         /// <param name="sender">The sender.</param>
         /// <param name="fromAddress">From address.</param>
-        /// <returns>The formatted sender address</returns>
+        /// <returns>The formatted sender address.</returns>
         private static string GetSenderAddress(string sender, string fromAddress)
         {
             return string.Format("{0} < {1} >", sender, fromAddress);
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <param name="messageBody">The message body.</param>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="recipientUser">The recipient user.</param>
-        /// <returns>A string containing the email body with any tokens replaced</returns>
+        /// <returns>A string containing the email body with any tokens replaced.</returns>
         private static string GetEmailBody(string template, string messageBody, PortalSettings portalSettings, UserInfo recipientUser)
         {
             template = template.Replace("[MESSAGEBODY]", messageBody); // moved to top since that we we can replace tokens in there too...
@@ -189,7 +189,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the email body item template.</summary>
         /// <param name="language">The language.</param>
-        /// <returns>The email body template item from the Global Resource File: EMAIL_MESSAGING_DISPATCH_ITEM</returns>
+        /// <returns>The email body template item from the Global Resource File: EMAIL_MESSAGING_DISPATCH_ITEM.</returns>
         private static string GetEmailBodyItemTemplate(string language)
         {
             return Localization.Localization.GetString("EMAIL_MESSAGING_DISPATCH_ITEM", Localization.Localization.GlobalResourceFile, language);
@@ -197,7 +197,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the email body template.</summary>
         /// <param name="language">The language.</param>
-        /// <returns>The email body template from the Global Resource File: EMAIL_MESSAGING_DISPATCH_BODY</returns>
+        /// <returns>The email body template from the Global Resource File: EMAIL_MESSAGING_DISPATCH_BODY.</returns>
         private static string GetEmailBodyTemplate(string language)
         {
             return Localization.Localization.GetString("EMAIL_MESSAGING_DISPATCH_BODY", Localization.Localization.GlobalResourceFile, language);
@@ -205,7 +205,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the email subject template.</summary>
         /// <param name="language">The language.</param>
-        /// <returns>The email subject template from the Global Resource File: EMAIL_SUBJECT_FORMAT</returns>
+        /// <returns>The email subject template from the Global Resource File: EMAIL_SUBJECT_FORMAT.</returns>
         private static string GetEmailSubjectTemplate(string language)
         {
             return Localization.Localization.GetString("EMAIL_SUBJECT_FORMAT", Localization.Localization.GlobalResourceFile, language);
@@ -213,7 +213,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the friend request actions template.</summary>
         /// <param name="language">The language.</param>
-        /// <returns>The friend request actions defined in the Global Resource File: EMAIL_SOCIAL_FRIENDREQUESTACTIONS</returns>
+        /// <returns>The friend request actions defined in the Global Resource File: EMAIL_SOCIAL_FRIENDREQUESTACTIONS.</returns>
         private static string GetFriendRequestActionsTemplate(string language)
         {
             return Localization.Localization.GetString("EMAIL_SOCIAL_FRIENDREQUESTACTIONS", Localization.Localization.GlobalResourceFile, language);
@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the follow request actions template.</summary>
         /// <param name="language">The language.</param>
-        /// <returns>The follow request actions defined in the Global Resource File: EMAIL_SOCIAL_FOLLOWREQUESTACTIONS</returns>
+        /// <returns>The follow request actions defined in the Global Resource File: EMAIL_SOCIAL_FOLLOWREQUESTACTIONS.</returns>
         private static string GetFollowRequestActionsTemplate(string language)
         {
             return Localization.Localization.GetString("EMAIL_SOCIAL_FOLLOWREQUESTACTIONS", Localization.Localization.GlobalResourceFile, language);
@@ -230,7 +230,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the name of the sender.</summary>
         /// <param name="displayName">The display name.</param>
         /// <param name="portalName">Name of the portal.</param>
-        /// <returns>Either the display name for the sender or the portal name</returns>
+        /// <returns>Either the display name for the sender or the portal name.</returns>
         private static string GetSenderName(string displayName, string portalName)
         {
             return string.IsNullOrEmpty(displayName) ? portalName : displayName;
@@ -239,7 +239,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the profile pic URL.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>The handler url to fetch the picture for the specified userId</returns>
+        /// <returns>The handler url to fetch the picture for the specified userId.</returns>
         private static string GetProfilePicUrl(PortalSettings portalSettings, int userId)
         {
             return string.Format(
@@ -254,7 +254,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userId">The user identifier.</param>
         /// <param name="action">The action.</param>
-        /// <returns>The handler url to fetch the relationship picture for the specified userId</returns>
+        /// <returns>The handler url to fetch the relationship picture for the specified userId.</returns>
         private static string GetRelationshipAcceptRequestUrl(PortalSettings portalSettings, int userId, string action)
         {
             return string.Format(
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the profile URL.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>The handler url to fetch the profile picture for the specified userId</returns>
+        /// <returns>The handler url to fetch the profile picture for the specified userId.</returns>
         private static string GetProfileUrl(PortalSettings portalSettings, int userId)
         {
             return string.Format(
@@ -283,7 +283,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the display name.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>The display name for the given user</returns>
+        /// <returns>The display name for the given user.</returns>
         private static string GetDisplayName(PortalSettings portalSettings, int userId)
         {
             return (UserController.GetUserById(portalSettings.PortalId, userId) != null)
@@ -294,7 +294,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the notification URL.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>The handler url to fetch a notification for the specified userId</returns>
+        /// <returns>The handler url to fetch a notification for the specified userId.</returns>
         private static string GetNotificationUrl(PortalSettings portalSettings, int userId)
         {
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", portalSettings.PortalId, portalSettings.CultureCode);
@@ -333,7 +333,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the portal logo URL.</summary>
         /// <param name="portalSettings">The portal settings.</param>
-        /// <returns>A Url to the portal logo</returns>
+        /// <returns>A Url to the portal logo.</returns>
         private static string GetPortalLogoUrl(PortalSettings portalSettings)
         {
             return string.Format(
@@ -345,7 +345,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the name of the domain.</summary>
         /// <param name="portalSettings">The portal settings.</param>
-        /// <returns>Resolves the domain name (portal alias) for the specified portal</returns>
+        /// <returns>Resolves the domain name (portal alias) for the specified portal.</returns>
         private static string GetDomainName(PortalSettings portalSettings)
         {
             var portalAlias = portalSettings.DefaultPortalAlias;
@@ -356,7 +356,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the portal home URL.</summary>
         /// <param name="portalSettings">The portal settings.</param>
-        /// <returns>The default portal alias url</returns>
+        /// <returns>The default portal alias url.</returns>
         private static string GetPortalHomeUrl(PortalSettings portalSettings)
         {
             return string.Format("http://{0}", portalSettings.DefaultPortalAlias);
@@ -365,7 +365,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <summary>Gets the subscriptions URL.</summary>
         /// <param name="portalSettings">The portal settings.</param>
         /// <param name="userId">The user identifier.</param>
-        /// <returns>The url for viewing subscriptions</returns>
+        /// <returns>The url for viewing subscriptions.</returns>
         private static string GetSubscriptionsUrl(PortalSettings portalSettings, int userId)
         {
             return string.Format(
@@ -377,7 +377,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the message tab.</summary>
         /// <param name="sendingPortal">The sending portal.</param>
-        /// <returns>The tabId for where the Message Center is installed</returns>
+        /// <returns>The tabId for where the Message Center is installed.</returns>
         private static int GetMessageTab(PortalSettings sendingPortal)
         {
             var cacheKey = string.Format("MessageTab:{0}", sendingPortal.PortalId);
@@ -438,7 +438,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <param name="frequency">The frequency.</param>
         /// <param name="schedulerInstance">The scheduler instance.</param>
         /// <param name="remainingMessages">The remaining messages.</param>
-        /// <returns>The count of messages processed</returns>
+        /// <returns>The count of messages processed.</returns>
         private int HandleFrequencyDigest(DateTime dateToCompare, string settingKeyLastRunDate, Frequency frequency, Guid schedulerInstance, int remainingMessages)
         {
             int handledMessages = 0;
@@ -465,7 +465,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
         /// <param name="schedulerInstance">The scheduler instance.</param>
         /// <param name="frequency">The frequency.</param>
         /// <param name="remainingMessages">The remaining messages.</param>
-        /// <returns>The count of messages processed</returns>
+        /// <returns>The count of messages processed.</returns>
         private int HandleDigest(Guid schedulerInstance, Frequency frequency, int remainingMessages)
         {
             var messagesSent = 0;
@@ -583,7 +583,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Gets the schedule item date setting.</summary>
         /// <param name="settingKey">The setting key.</param>
-        /// <returns>The date the schedule was ran</returns>
+        /// <returns>The date the schedule was ran.</returns>
         private DateTime GetScheduleItemDateSetting(string settingKey)
         {
             var colScheduleItemSettings = SchedulingProvider.Instance().GetScheduleItemSettings(this.ScheduleHistoryItem.ScheduleID);
@@ -613,7 +613,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Handles the sending of messages.</summary>
         /// <param name="schedulerInstance">The scheduler instance.</param>
-        /// <returns>The count of messages sent</returns>
+        /// <returns>The count of messages sent.</returns>
         private int HandleInstantMessages(Guid schedulerInstance)
         {
             var messageLeft = true;
@@ -704,7 +704,7 @@ namespace DotNetNuke.Services.Social.Messaging.Scheduler
 
         /// <summary>Creates list of attachments for the specified message.</summary>
         /// <param name="messageId">The message identifier.</param>
-        /// <returns>A list of attachments</returns>
+        /// <returns>A list of attachments.</returns>
         private IEnumerable<Attachment> CreateAttachments(int messageId)
         {
             foreach (var fileView in InternalMessagingController.Instance.GetAttachments(messageId))

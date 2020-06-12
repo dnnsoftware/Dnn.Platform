@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Finds the best match friendlyurlparms.config file path
+        /// Finds the best match friendlyurlparms.config file path.
         /// </summary>
         /// <param name="portalId">The portalId to search for. -1 if all portals required.</param>
         /// <param name="portalSpecificFound"></param>
@@ -130,7 +130,7 @@ namespace DotNetNuke.Entities.Urls
         /// First priority is a file called n.friendlyurlparms.config, in the root path
         /// Next priority is a file called portals\n\friendlyurlparms.config, in the portal path
         /// Last priority is the friendlyurlparms.config file, in the root path
-        /// Task no 807
+        /// Task no 807.
         /// </remarks>
         internal static string FindFriendlyUrlParmsConfigFilePath(int portalId, out bool portalSpecificFound)
         {
@@ -514,7 +514,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Store the Url Dictionary (all tab urls / tabids) for the installation
+        /// Store the Url Dictionary (all tab urls / tabids) for the installation.
         /// </summary>
         /// <param name="urlDict"></param>
         /// <param name="urlPortals"></param>
@@ -580,7 +580,7 @@ namespace DotNetNuke.Entities.Urls
         /// This is used to lookup and see if there are any providers to load for a tab,
         /// without having to store individual tabid/portaldId provider lists for every tab
         /// If a tab doesn't appear on this cached list, then the cache isn't checked
-        /// for that particular tabid/portalId combination
+        /// for that particular tabid/portalId combination.
         /// </summary>
         /// <param name="providers"></param>
         /// <param name="portalId"></param>
@@ -803,7 +803,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Returns a portal info object for the portal
+        /// Returns a portal info object for the portal.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="exceptionOnNull"></param>

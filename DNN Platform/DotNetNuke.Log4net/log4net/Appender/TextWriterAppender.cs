@@ -42,9 +42,9 @@ namespace log4net.Appender
     /// can open a <see cref="TextWriter"/> to write to.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Douglas de la Torre</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Douglas de la Torre.</author>
     public class TextWriterAppender : AppenderSkeleton
     {
         /// <summary>
@@ -81,8 +81,8 @@ namespace log4net.Appender
         /// Initializes a new instance of the <see cref="TextWriterAppender" /> class and sets
         /// the output destination to the specified <see cref="StreamWriter" />.
         /// </summary>
-        /// <param name="layout">The layout to use with this appender</param>
-        /// <param name="writer">The <see cref="TextWriter" /> to output to</param>
+        /// <param name="layout">The layout to use with this appender.</param>
+        /// <param name="writer">The <see cref="TextWriter" /> to output to.</param>
         /// <remarks>
         /// The <see cref="TextWriter" /> must have been previously opened.
         /// </remarks>
@@ -294,7 +294,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -401,7 +401,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Called to allow a subclass to lazily initialize the writer
+        /// Called to allow a subclass to lazily initialize the writer.
         /// </summary>
         /// <remarks>
         /// <para>

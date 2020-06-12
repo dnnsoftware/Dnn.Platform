@@ -10,7 +10,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal
+    /// PortalConfig - A class that represents Install/DotNetNuke.Install.Config/Portals/Portal.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class PortalConfig

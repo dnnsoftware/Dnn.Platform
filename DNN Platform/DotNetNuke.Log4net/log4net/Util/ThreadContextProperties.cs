@@ -28,7 +28,7 @@ using System.Collections;
 namespace log4net.Util
 {
     /// <summary>
-    /// Implementation of Properties collection for the <see cref="log4net.ThreadContext"/>
+    /// Implementation of Properties collection for the <see cref="log4net.ThreadContext"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,7 +36,7 @@ namespace log4net.Util
     /// The class is not synchronized as each thread has its own <see cref="PropertiesDictionary"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class ThreadContextProperties : ContextPropertiesBase
     {
 #if NETCF
@@ -53,7 +53,7 @@ namespace log4net.Util
 #endif
 
         /// <summary>
-        /// Internal constructor
+        /// Internal constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -65,14 +65,14 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets the value of a property
+        /// Gets or sets the value of a property.
         /// </summary>
         /// <value>
-        /// The value for the property with the specified key
+        /// The value for the property with the specified key.
         /// </value>
         /// <remarks>
         /// <para>
-        /// Gets or sets the value of a property
+        /// Gets or sets the value of a property.
         /// </para>
         /// </remarks>
         public override object this[string key]
@@ -97,12 +97,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Remove a property
+        /// Remove a property.
         /// </summary>
-        /// <param name="key">the key for the entry to remove</param>
+        /// <param name="key">the key for the entry to remove.</param>
         /// <remarks>
         /// <para>
-        /// Remove a property
+        /// Remove a property.
         /// </para>
         /// </remarks>
         public void Remove(string key)
@@ -122,7 +122,7 @@ namespace log4net.Util
         /// <para>
         /// Gets the keys stored in the properties.
         /// </para>
-        /// <returns>a set of the defined keys</returns>
+        /// <returns>a set of the defined keys.</returns>
         public string[] GetKeys()
         {
 #if NETCF
@@ -137,11 +137,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Clear all properties
+        /// Clear all properties.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Clear all properties
+        /// Clear all properties.
         /// </para>
         /// </remarks>
         public void Clear()
@@ -158,8 +158,8 @@ namespace log4net.Util
         /// <summary>
         /// Get the <c>PropertiesDictionary</c> for this thread.
         /// </summary>
-        /// <param name="create">create the dictionary if it does not exist, otherwise return null if does not exist</param>
-        /// <returns>the properties for this thread</returns>
+        /// <param name="create">create the dictionary if it does not exist, otherwise return null if does not exist.</param>
+        /// <returns>the properties for this thread.</returns>
         /// <remarks>
         /// <para>
         /// The collection returned is only to be used on the calling thread. If the

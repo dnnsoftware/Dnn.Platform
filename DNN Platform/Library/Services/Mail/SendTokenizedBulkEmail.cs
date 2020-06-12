@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Mail
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SendTokenizedBulkEmail Class is a class to manage the sending of bulk mails
-    /// that contains tokens, which might be replaced with individual user properties
+    /// that contains tokens, which might be replaced with individual user properties.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Mail
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
 
         /// <summary>
-        /// Addressing Methods (personalized or hidden)
+        /// Addressing Methods (personalized or hidden).
         /// </summary>
         // ReSharper disable InconsistentNaming
         // Existing public API
@@ -100,20 +100,20 @@ namespace DotNetNuke.Services.Mail
         }
 
         /// <summary>
-        /// Gets or sets priority of emails to be sent
+        /// Gets or sets priority of emails to be sent.
         /// </summary>
         public MailPriority Priority { get; set; }
 
         /// <summary>
-        /// Gets or sets subject of the emails to be sent
+        /// Gets or sets subject of the emails to be sent.
         /// </summary>
-        /// <remarks>may contain tokens</remarks>
+        /// <remarks>may contain tokens.</remarks>
         public string Subject { get; set; }
 
         /// <summary>
-        /// Gets or sets body text of the email to be sent
+        /// Gets or sets body text of the email to be sent.
         /// </summary>
-        /// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically</remarks>
+        /// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically.</remarks>
         public string Body
         {
             get
@@ -132,15 +132,15 @@ namespace DotNetNuke.Services.Mail
         /// <remarks>by default activated, if tokens are found in Body and subject.</remarks>
         public MailFormat BodyFormat { get; set; }
 
-        /// <summary>Gets or sets address method for the email to be sent (TO or BCC)</summary>
-        /// <remarks>TO is default value</remarks>
+        /// <summary>Gets or sets address method for the email to be sent (TO or BCC).</summary>
+        /// <remarks>TO is default value.</remarks>
         public AddressMethods AddressMethod { get; set; }
 
         /// <summary>Gets or sets portal alias http path to be used for links to images, ...</summary>
         public string PortalAlias { get; set; }
 
-        /// <summary>Gets or sets userInfo of the user sending the mail</summary>
-        /// <remarks>if not set explicitely, currentuser will be used</remarks>
+        /// <summary>Gets or sets userInfo of the user sending the mail.</summary>
+        /// <remarks>if not set explicitely, currentuser will be used.</remarks>
         public UserInfo SendingUser
         {
             get
@@ -163,8 +163,8 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        /// <summary>Gets or sets email of the user to be shown in the mail as replyTo address</summary>
-        /// <remarks>if not set explicitely, sendingUser will be used</remarks>
+        /// <summary>Gets or sets email of the user to be shown in the mail as replyTo address.</summary>
+        /// <remarks>if not set explicitely, sendingUser will be used.</remarks>
         public UserInfo ReplyTo
         {
             get
@@ -178,15 +178,15 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-         /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false)</summary>
+         /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false).</summary>
          /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-         /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?</summary>
-         /// <remarks>default value: false</remarks>
+         /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?.</summary>
+         /// <remarks>default value: false.</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-         /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?</summary>
+         /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?.</summary>
          /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 
@@ -205,7 +205,7 @@ namespace DotNetNuke.Services.Mail
 
         public string[] LanguageFilter { get; set; }
 
-        /// <summary>internal method to initialize used objects, depending on parameters of construct method</summary>
+        /// <summary>internal method to initialize used objects, depending on parameters of construct method.</summary>
         private void Initialize()
         {
             this._portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -219,14 +219,14 @@ namespace DotNetNuke.Services.Mail
             this._smtpEnableSSL = Host.EnableSMTPSSL;
         }
 
-        /// <summary>Send bulkmail confirmation to admin</summary>
-        /// <param name="numRecipients">number of email recipients</param>
-        /// <param name="numMessages">number of messages sent, -1 if not determinable</param>
-        /// <param name="numErrors">number of emails not sent</param>
-        /// <param name="subject">Subject of BulkMail sent (to be used as reference)</param>
-        /// <param name="startedAt">date/time, sendout started</param>
-        /// <param name="mailErrors">mail error texts</param>
-        /// <param name="recipientList">List of recipients as formatted string</param>
+        /// <summary>Send bulkmail confirmation to admin.</summary>
+        /// <param name="numRecipients">number of email recipients.</param>
+        /// <param name="numMessages">number of messages sent, -1 if not determinable.</param>
+        /// <param name="numErrors">number of emails not sent.</param>
+        /// <param name="subject">Subject of BulkMail sent (to be used as reference).</param>
+        /// <param name="startedAt">date/time, sendout started.</param>
+        /// <param name="mailErrors">mail error texts.</param>
+        /// <param name="recipientList">List of recipients as formatted string.</param>
         /// <remarks></remarks>
         private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
         {
@@ -264,10 +264,10 @@ namespace DotNetNuke.Services.Mail
             Mail.SendEmail(this._sendingUser.Email, this._sendingUser.Email, message.Subject, message.Body);
         }
 
-        /// <summary>check, if the user's language matches the current language filter</summary>
-        /// <param name="userLanguage">Language of the user</param>
-        /// <returns>userlanguage matches current languageFilter</returns>
-        /// <remarks>if filter not set, true is returned</remarks>
+        /// <summary>check, if the user's language matches the current language filter.</summary>
+        /// <param name="userLanguage">Language of the user.</param>
+        /// <returns>userlanguage matches current languageFilter.</returns>
+        /// <remarks>if filter not set, true is returned.</remarks>
         private bool MatchLanguageFilter(string userLanguage)
         {
             if (this.LanguageFilter == null || this.LanguageFilter.Length == 0)
@@ -283,11 +283,11 @@ namespace DotNetNuke.Services.Mail
             return this.LanguageFilter.Any(s => userLanguage.StartsWith(s, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        /// <summary>add a user to the userlist, if it is not already in there</summary>
-        /// <param name="user">user to add</param>
-        /// <param name="keyList">list of key (either email addresses or userid's)</param>
-        /// <param name="userList">List of users</param>
-        /// <remarks>for use by Recipients method only</remarks>
+        /// <summary>add a user to the userlist, if it is not already in there.</summary>
+        /// <param name="user">user to add.</param>
+        /// <param name="keyList">list of key (either email addresses or userid's).</param>
+        /// <param name="userList">List of users.</param>
+        /// <remarks>for use by Recipients method only.</remarks>
         private void ConditionallyAddUser(UserInfo user, ref List<string> keyList, ref List<UserInfo> userList)
         {
             if (((user.UserID <= 0 || user.Membership.Approved) && user.Email != string.Empty) && this.MatchLanguageFilter(user.Profile.PreferredLocale))
@@ -349,14 +349,14 @@ namespace DotNetNuke.Services.Mail
             return attachments;
         }
 
-        /// <summary>Specify SMTP server to be used</summary>
-        /// <param name="smtpServer">name of the SMTP server</param>
-        /// <param name="smtpAuthentication">authentication string (0: anonymous, 1: basic, 2: NTLM)</param>
-        /// <param name="smtpUsername">username to log in SMTP server</param>
-        /// <param name="smtpPassword">password to log in SMTP server</param>
-        /// <param name="smtpEnableSSL">SSL used to connect tp SMTP server</param>
-        /// <returns>always true</returns>
-        /// <remarks>if not called, values will be taken from host settings</remarks>
+        /// <summary>Specify SMTP server to be used.</summary>
+        /// <param name="smtpServer">name of the SMTP server.</param>
+        /// <param name="smtpAuthentication">authentication string (0: anonymous, 1: basic, 2: NTLM).</param>
+        /// <param name="smtpUsername">username to log in SMTP server.</param>
+        /// <param name="smtpPassword">password to log in SMTP server.</param>
+        /// <param name="smtpEnableSSL">SSL used to connect tp SMTP server.</param>
+        /// <returns>always true.</returns>
+        /// <remarks>if not called, values will be taken from host settings.</remarks>
         public bool SetSMTPServer(string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             this.EnsureNotDisposed();
@@ -369,9 +369,9 @@ namespace DotNetNuke.Services.Mail
             return true;
         }
 
-        /// <summary>Add a single attachment file to the email</summary>
-        /// <param name="localPath">path to file to attach</param>
-        /// <remarks>only local stored files can be added with a path</remarks>
+        /// <summary>Add a single attachment file to the email.</summary>
+        /// <param name="localPath">path to file to attach.</param>
+        /// <remarks>only local stored files can be added with a path.</remarks>
         public void AddAttachment(string localPath)
         {
             this.EnsureNotDisposed();
@@ -384,27 +384,27 @@ namespace DotNetNuke.Services.Mail
             this._attachments.Add(new Attachment(contentStream, contentType));
         }
 
-        /// <summary>Add a single recipient</summary>
-        /// <param name="recipient">userinfo of user to add</param>
-        /// <remarks>emaiol will be used for addressing, other properties might be used for TokenReplace</remarks>
+        /// <summary>Add a single recipient.</summary>
+        /// <param name="recipient">userinfo of user to add.</param>
+        /// <remarks>emaiol will be used for addressing, other properties might be used for TokenReplace.</remarks>
         public void AddAddressedUser(UserInfo recipient)
         {
             this.EnsureNotDisposed();
             this._addressedUsers.Add(recipient);
         }
 
-        /// <summary>Add all members of a role to recipient list</summary>
-        /// <param name="roleName">name of a role, whose members shall be added to recipients</param>
-        /// <remarks>emaiol will be used for addressing, other properties might be used for TokenReplace</remarks>
+        /// <summary>Add all members of a role to recipient list.</summary>
+        /// <param name="roleName">name of a role, whose members shall be added to recipients.</param>
+        /// <remarks>emaiol will be used for addressing, other properties might be used for TokenReplace.</remarks>
         public void AddAddressedRole(string roleName)
         {
             this.EnsureNotDisposed();
             this._addressedRoles.Add(roleName);
         }
 
-        /// <summary>All bulk mail recipients, derived from role names and individual adressees </summary>
-        /// <returns>List of userInfo objects, who receive the bulk mail </returns>
-        /// <remarks>user.Email used for sending, other properties might be used for TokenReplace</remarks>
+        /// <summary>All bulk mail recipients, derived from role names and individual adressees. </summary>
+        /// <returns>List of userInfo objects, who receive the bulk mail. </returns>
+        /// <remarks>user.Email used for sending, other properties might be used for TokenReplace.</remarks>
         public List<UserInfo> Recipients()
         {
             this.EnsureNotDisposed();
@@ -439,9 +439,9 @@ namespace DotNetNuke.Services.Mail
             return userList;
         }
 
-        /// <summary>Send bulkmail to all recipients according to settings</summary>
-        /// <returns>Number of emails sent, null.integer if not determinable</returns>
-        /// <remarks>Detailed status report is sent by email to sending user</remarks>
+        /// <summary>Send bulkmail to all recipients according to settings.</summary>
+        /// <returns>Number of emails sent, null.integer if not determinable.</returns>
+        /// <remarks>Detailed status report is sent by email to sending user.</remarks>
         public int SendMails()
         {
             this.EnsureNotDisposed();
@@ -623,7 +623,7 @@ namespace DotNetNuke.Services.Mail
             return messagesSent;
         }
 
-        /// <summary>Wrapper for Function SendMails</summary>
+        /// <summary>Wrapper for Function SendMails.</summary>
         public void Send()
         {
             this.EnsureNotDisposed();

@@ -45,15 +45,15 @@ namespace log4net.Appender
     /// be called after the appenders properties have been configured.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class AppenderSkeleton : IAppender, IBulkAppender, IOptionHandler, IFlushable
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
-        /// <para>Empty default constructor</para>
+        /// <para>Empty default constructor.</para>
         /// </remarks>
         protected AppenderSkeleton()
         {
@@ -107,7 +107,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets or sets the <see cref="IErrorHandler"/> for this appender.
         /// </summary>
-        /// <value>The <see cref="IErrorHandler"/> of the appender</value>
+        /// <value>The <see cref="IErrorHandler"/> of the appender.</value>
         /// <remarks>
         /// <para>
         /// The <see cref="AppenderSkeleton"/> provides a default
@@ -168,7 +168,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Initialize the appender based on the options set
+        /// Initialize the appender based on the options set.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -427,10 +427,10 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Test if the logging event should we output by this appender
+        /// Test if the logging event should we output by this appender.
         /// </summary>
-        /// <param name="loggingEvent">the event to test</param>
-        /// <returns><c>true</c> if the event should be output, <c>false</c> if the event should be ignored</returns>
+        /// <param name="loggingEvent">the event to test.</param>
+        /// <returns><c>true</c> if the event should be output, <c>false</c> if the event should be ignored.</returns>
         /// <remarks>
         /// <para>
         /// This method checks the logging event against the threshold level set
@@ -489,7 +489,7 @@ namespace log4net.Appender
         /// <summary>
         /// Adds a filter to the end of the filter chain.
         /// </summary>
-        /// <param name="filter">the filter to add to this appender</param>
+        /// <param name="filter">the filter to add to this appender.</param>
         /// <remarks>
         /// <para>
         /// The Filters are organized in a linked list.
@@ -589,7 +589,7 @@ namespace log4net.Appender
         /// <summary>
         /// Append a bulk array of logging events.
         /// </summary>
-        /// <param name="loggingEvents">the array of logging events</param>
+        /// <param name="loggingEvents">the array of logging events.</param>
         /// <remarks>
         /// <para>
         /// This base class implementation calls the <see cref="M:Append(LoggingEvent)"/>
@@ -683,7 +683,7 @@ namespace log4net.Appender
         /// Renders the <see cref="LoggingEvent"/> to a string.
         /// </summary>
         /// <param name="loggingEvent">The event to render.</param>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
+        /// <param name="writer">The TextWriter to write the formatted event to.</param>
         /// <remarks>
         /// <para>
         /// Helper method to render a <see cref="LoggingEvent"/> to
@@ -756,7 +756,7 @@ namespace log4net.Appender
         /// Flushes any buffered log data.
         /// </summary>
         /// <remarks>
-        /// This implementation doesn't flush anything and always returns true
+        /// This implementation doesn't flush anything and always returns true.
         /// </remarks>
         /// <returns><c>True</c> if all logging events were flushed successfully, else <c>false</c>.</returns>
         public virtual bool Flush(int millisecondsTimeout)
@@ -836,22 +836,22 @@ namespace log4net.Appender
         private bool m_closed = false;
 
         /// <summary>
-        /// The guard prevents an appender from repeatedly calling its own DoAppend method
+        /// The guard prevents an appender from repeatedly calling its own DoAppend method.
         /// </summary>
         private bool m_recursiveGuard = false;
 
         /// <summary>
-        /// StringWriter used to render events
+        /// StringWriter used to render events.
         /// </summary>
         private ReusableStringWriter m_renderWriter = null;
 
         /// <summary>
-        /// Initial buffer size
+        /// Initial buffer size.
         /// </summary>
         private const int c_renderBufferSize = 256;
 
         /// <summary>
-        /// Maximum buffer size before it is recycled
+        /// Maximum buffer size before it is recycled.
         /// </summary>
         private const int c_renderBufferMaxCapacity = 1024;
 

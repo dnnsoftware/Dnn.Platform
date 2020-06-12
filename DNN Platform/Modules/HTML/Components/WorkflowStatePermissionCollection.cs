@@ -17,7 +17,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   DesktopModulePermissionCollection provides the a custom collection for WorkflowStatePermissionInfo
-    ///   objects
+    ///   objects.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]

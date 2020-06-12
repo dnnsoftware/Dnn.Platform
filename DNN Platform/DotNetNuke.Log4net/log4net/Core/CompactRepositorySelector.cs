@@ -32,7 +32,7 @@ namespace log4net.Core
 {
     /// <summary>
     /// The implementation of the <see cref="IRepositorySelector"/> interface suitable
-    /// for use with the compact framework
+    /// for use with the compact framework.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -46,7 +46,7 @@ namespace log4net.Core
     /// this selector does not examine the calling assembly for attributes.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class CompactRepositorySelector : IRepositorySelector
     {
         private const string DefaultRepositoryName = "log4net-default-repository";
@@ -57,9 +57,9 @@ namespace log4net.Core
         private event LoggerRepositoryCreationEventHandler m_loggerRepositoryCreatedEvent;
 
         /// <summary>
-        /// Create a new repository selector
+        /// Create a new repository selector.
         /// </summary>
-        /// <param name="defaultRepositoryType">the type of the repositories to create, must implement <see cref="ILoggerRepository"/></param>
+        /// <param name="defaultRepositoryType">the type of the repositories to create, must implement <see cref="ILoggerRepository"/>.</param>
         /// <remarks>
         /// <para>
         /// Create an new compact repository selector.
@@ -67,8 +67,8 @@ namespace log4net.Core
         /// an appropriate value would be <see cref="log4net.Repository.Hierarchy.Hierarchy"/>.
         /// </para>
         /// </remarks>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="defaultRepositoryType"/> is null</exception>
-        /// <exception cref="ArgumentOutOfRangeException">throw if <paramref name="defaultRepositoryType"/> does not implement <see cref="ILoggerRepository"/></exception>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="defaultRepositoryType"/> is null.</exception>
+        /// <exception cref="ArgumentOutOfRangeException">throw if <paramref name="defaultRepositoryType"/> does not implement <see cref="ILoggerRepository"/>.</exception>
         public CompactRepositorySelector(Type defaultRepositoryType)
         {
             if (defaultRepositoryType == null)
@@ -88,10 +88,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Get the <see cref="ILoggerRepository"/> for the specified assembly
+        /// Get the <see cref="ILoggerRepository"/> for the specified assembly.
         /// </summary>
-        /// <param name="assembly">not used</param>
-        /// <returns>The default <see cref="ILoggerRepository"/></returns>
+        /// <param name="assembly">not used.</param>
+        /// <returns>The default <see cref="ILoggerRepository"/>.</returns>
         /// <remarks>
         /// <para>
         /// The <paramref name="assembly"/> argument is not used. This selector does not create a
@@ -108,10 +108,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Get the named <see cref="ILoggerRepository"/>
+        /// Get the named <see cref="ILoggerRepository"/>.
         /// </summary>
-        /// <param name="repositoryName">the name of the repository to lookup</param>
-        /// <returns>The named <see cref="ILoggerRepository"/></returns>
+        /// <param name="repositoryName">the name of the repository to lookup.</param>
+        /// <returns>The named <see cref="ILoggerRepository"/>.</returns>
         /// <remarks>
         /// <para>
         /// Get the named <see cref="ILoggerRepository"/>. The default
@@ -120,8 +120,8 @@ namespace log4net.Core
         /// If the named repository does not exist an exception is thrown.
         /// </para>
         /// </remarks>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="repositoryName"/> is null</exception>
-        /// <exception cref="LogException">throw if the <paramref name="repositoryName"/> does not exist</exception>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="repositoryName"/> is null.</exception>
+        /// <exception cref="LogException">throw if the <paramref name="repositoryName"/> does not exist.</exception>
         public ILoggerRepository GetRepository(string repositoryName)
         {
             if (repositoryName == null)
@@ -143,11 +143,11 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Create a new repository for the assembly specified
+        /// Create a new repository for the assembly specified.
         /// </summary>
-        /// <param name="assembly">not used</param>
-        /// <param name="repositoryType">the type of repository to create, must implement <see cref="ILoggerRepository"/></param>
-        /// <returns>the repository created</returns>
+        /// <param name="assembly">not used.</param>
+        /// <param name="repositoryType">the type of repository to create, must implement <see cref="ILoggerRepository"/>.</param>
+        /// <returns>the repository created.</returns>
         /// <remarks>
         /// <para>
         /// The <paramref name="assembly"/> argument is not used. This selector does not create a
@@ -187,12 +187,12 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Create a new repository for the repository specified
+        /// Create a new repository for the repository specified.
         /// </summary>
-        /// <param name="repositoryName">the repository to associate with the <see cref="ILoggerRepository"/></param>
+        /// <param name="repositoryName">the repository to associate with the <see cref="ILoggerRepository"/>.</param>
         /// <param name="repositoryType">the type of repository to create, must implement <see cref="ILoggerRepository"/>.
         /// If this param is null then the default repository type is used.</param>
-        /// <returns>the repository created</returns>
+        /// <returns>the repository created.</returns>
         /// <remarks>
         /// <para>
         /// The <see cref="ILoggerRepository"/> created will be associated with the repository
@@ -207,8 +207,8 @@ namespace log4net.Core
         /// repository type specified to the constructor is used.
         /// </para>
         /// </remarks>
-        /// <exception cref="ArgumentNullException">throw if <paramref name="repositoryName"/> is null</exception>
-        /// <exception cref="LogException">throw if the <paramref name="repositoryName"/> already exists</exception>
+        /// <exception cref="ArgumentNullException">throw if <paramref name="repositoryName"/> is null.</exception>
+        /// <exception cref="LogException">throw if the <paramref name="repositoryName"/> already exists.</exception>
         public ILoggerRepository CreateRepository(string repositoryName, Type repositoryType)
         {
             if (repositoryName == null)
@@ -254,10 +254,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Test if a named repository exists
+        /// Test if a named repository exists.
         /// </summary>
-        /// <param name="repositoryName">the named repository to check</param>
-        /// <returns><c>true</c> if the repository exists</returns>
+        /// <param name="repositoryName">the named repository to check.</param>
+        /// <returns><c>true</c> if the repository exists.</returns>
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(string, Type)"/>
@@ -274,9 +274,9 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets a list of <see cref="ILoggerRepository"/> objects
+        /// Gets a list of <see cref="ILoggerRepository"/> objects.
         /// </summary>
-        /// <returns>an array of all known <see cref="ILoggerRepository"/> objects</returns>
+        /// <returns>an array of all known <see cref="ILoggerRepository"/> objects.</returns>
         /// <remarks>
         /// <para>
         /// Gets an array of all of the repositories created by this selector.
@@ -323,9 +323,9 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Notify the registered listeners that the repository has been created
+        /// Notify the registered listeners that the repository has been created.
         /// </summary>
-        /// <param name="repository">The repository that has been created</param>
+        /// <param name="repository">The repository that has been created.</param>
         /// <remarks>
         /// <para>
         /// Raises the <event cref="LoggerRepositoryCreatedEvent">LoggerRepositoryCreatedEvent</event>

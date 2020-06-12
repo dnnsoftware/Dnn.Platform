@@ -42,12 +42,12 @@ namespace log4net.Repository.Hierarchy
     /// level field without walking the hierarchy.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class RootLogger : Logger
     {
         /// <summary>
-        /// Construct a <see cref="RootLogger"/>
+        /// Construct a <see cref="RootLogger"/>.
         /// </summary>
         /// <param name="level">The level to assign to the root logger.</param>
         /// <remarks>

@@ -353,12 +353,12 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Get actual path to a file
+        /// Get actual path to a file.
         /// </summary>
-        /// <param name="folderMapping">Folder Mapping of the folder</param>
-        /// <param name="folderPath">Folder Path where the file is contained</param>
-        /// <param name="fileName">Name of the file</param>
-        /// <returns>A windows supported path to the file</returns>
+        /// <param name="folderMapping">Folder Mapping of the folder.</param>
+        /// <param name="folderPath">Folder Path where the file is contained.</param>
+        /// <param name="fileName">Name of the file.</param>
+        /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(FolderMappingInfo folderMapping, string folderPath, string fileName)
         {
             var actualFolderPath = this.GetActualPath(folderMapping, folderPath);
@@ -366,42 +366,42 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Get actual path to an IFileInfo
+        /// Get actual path to an IFileInfo.
         /// </summary>
-        /// <param name="file">The file</param>
-        /// <returns>A windows supported path to the file</returns>
+        /// <param name="file">The file.</param>
+        /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(IFileInfo file)
         {
             return file.PhysicalPath;
         }
 
         /// <summary>
-        /// Get actual path to a file in specified folder
+        /// Get actual path to a file in specified folder.
         /// </summary>
-        /// <param name="folder">The folder that contains the file</param>
-        /// <param name="fileName">The file name</param>
-        /// <returns>A windows supported path to the file</returns>
+        /// <param name="folder">The folder that contains the file.</param>
+        /// <param name="fileName">The file name.</param>
+        /// <returns>A windows supported path to the file.</returns>
         protected virtual string GetActualPath(IFolderInfo folder, string fileName)
         {
             return Path.Combine(folder.PhysicalPath, fileName);
         }
 
         /// <summary>
-        /// Get actual path to a folder in the specified folder mapping
+        /// Get actual path to a folder in the specified folder mapping.
         /// </summary>
-        /// <param name="folderMapping">The folder mapping</param>
-        /// <param name="folderPath">The folder path</param>
-        /// <returns>A windows supported path to the folder</returns>
+        /// <param name="folderMapping">The folder mapping.</param>
+        /// <param name="folderPath">The folder path.</param>
+        /// <returns>A windows supported path to the folder.</returns>
         protected virtual string GetActualPath(FolderMappingInfo folderMapping, string folderPath)
         {
             return PathUtils.Instance.GetPhysicalPath(folderMapping.PortalID, folderPath);
         }
 
         /// <summary>
-        /// Get actual path to a folder
+        /// Get actual path to a folder.
         /// </summary>
-        /// <param name="folder">The folder</param>
-        /// <returns>A windows supported path to the folder</returns>
+        /// <param name="folder">The folder.</param>
+        /// <returns>A windows supported path to the folder.</returns>
         protected virtual string GetActualPath(IFolderInfo folder)
         {
             return folder.PhysicalPath;
@@ -428,11 +428,11 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Get the path relative to the root of the FolderMapping
+        /// Get the path relative to the root of the FolderMapping.
         /// </summary>
-        /// <param name="folderMapping">Path is relative to this</param>
-        /// <param name="path">The path</param>
-        /// <returns>A relative path</returns>
+        /// <param name="folderMapping">Path is relative to this.</param>
+        /// <param name="path">The path.</param>
+        /// <returns>A relative path.</returns>
         protected virtual string GetRelativePath(FolderMappingInfo folderMapping, string path)
         {
             return PathUtils.Instance.GetRelativePath(folderMapping.PortalID, path);

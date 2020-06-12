@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Admin.Security
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The SecurityRoles PortalModuleBase is used to manage the users and roles they
-    /// have
+    /// have.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -60,7 +60,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Return Url for the page
+        /// Gets the Return Url for the page.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected string ReturnUrl
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the control should use a Combo Box or Text Box to display the users
+        /// Gets the control should use a Combo Box or Text Box to display the users.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected UsersControl UsersControl
@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ParentModule (if one exists)
+        /// Gets or sets and sets the ParentModule (if one exists).
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BindData loads the controls from the Database
+        /// BindData loads the controls from the Database.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -303,7 +303,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BindGrid loads the data grid from the Database
+        /// BindGrid loads the data grid from the Database.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -355,12 +355,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDates gets the expiry/effective Dates of a Users Role membership
+        /// GetDates gets the expiry/effective Dates of a Users Role membership.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="UserId">The Id of the User</param>
-        /// <param name="RoleId">The Id of the Role</param>
+        /// <param name="UserId">The Id of the User.</param>
+        /// <param name="RoleId">The Id of the Role.</param>
         /// -----------------------------------------------------------------------------
         private void GetDates(int UserId, int RoleId)
         {
@@ -410,7 +410,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
@@ -434,12 +434,12 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DeleteButonVisible returns a boolean indicating if the delete button for
-        /// the specified UserID, RoleID pair should be shown
+        /// the specified UserID, RoleID pair should be shown.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="UserID">The ID of the user to check delete button visibility for</param>
-        /// <param name="RoleID">The ID of the role to check delete button visibility for</param>
+        /// <param name="UserID">The ID of the user to check delete button visibility for.</param>
+        /// <param name="RoleID">The ID of the role to check delete button visibility for.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool DeleteButtonVisible(int UserID, int RoleID)
@@ -457,11 +457,11 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls
+        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="DateTime">The Date object to format</param>
+        /// <param name="DateTime">The Date object to format.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public string FormatDate(DateTime DateTime)
@@ -478,7 +478,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FormatExpiryDate formats the expiry/effective date and filters out nulls
+        /// FormatExpiryDate formats the expiry/effective date and filters out nulls.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -536,7 +536,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -574,7 +574,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// cboUsers_SelectedIndexChanged runs when the selected User is changed in the
-        /// Users Drop-Down
+        /// Users Drop-Down.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -592,7 +592,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdValidate_Click executes when a user selects the Validate link for a username
+        /// cmdValidate_Click executes when a user selects the Validate link for a username.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -625,7 +625,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// cboRoles_SelectedIndexChanged runs when the selected Role is changed in the
-        /// Roles Drop-Down
+        /// Roles Drop-Down.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -638,7 +638,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdAdd_Click runs when the Update Button is clicked
+        /// cmdAdd_Click runs when the Update Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -734,7 +734,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// grdUserRoles_ItemCreated runs when an item in the UserRoles Grid is created
+        /// grdUserRoles_ItemCreated runs when an item in the UserRoles Grid is created.
         /// </summary>
         /// <remarks>
         /// </remarks>

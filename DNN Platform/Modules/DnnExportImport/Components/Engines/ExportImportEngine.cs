@@ -477,8 +477,8 @@ namespace Dnn.ExportImport.Components.Engines
         /// <summary>
         /// Callback function to provide a checkpoint mechanism for an <see cref="BasePortableService"/> implementation.
         /// </summary>
-        /// <param name="service">The <see cref="BasePortableService"/> implementation</param>
-        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise</returns>
+        /// <param name="service">The <see cref="BasePortableService"/> implementation.</param>
+        /// <returns>Treu to stop further <see cref="BasePortableService"/> processing; false otherwise.</returns>
         private bool CheckpointCallback(BasePortableService service)
         {
             EntitiesController.Instance.UpdateJobChekpoint(service.CheckPoint);

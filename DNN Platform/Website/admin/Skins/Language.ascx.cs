@@ -21,7 +21,7 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.UI.Skins.Controls
 {
     /// <summary>
-    /// The Language skinobject allows the visitor to select the language of the page
+    /// The Language skinobject allows the visitor to select the language of the page.
     /// </summary>
     /// <remarks></remarks>
     public partial class Language : SkinObjectBase
@@ -404,7 +404,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// Binds data to repeater. a template is used to render the items
+        /// Binds data to repeater. a template is used to render the items.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

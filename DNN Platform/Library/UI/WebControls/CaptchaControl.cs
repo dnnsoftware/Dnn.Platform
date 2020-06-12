@@ -30,7 +30,7 @@ using Image = System.Web.UI.WebControls.Image;
 namespace DotNetNuke.UI.WebControls
 {
     /// <summary>
-    /// The CaptchaControl control provides a Captcha Challenge control
+    /// The CaptchaControl control provides a Captcha Challenge control.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the BackGroundColor
+        /// Gets or sets and sets the BackGroundColor.
         /// </summary>
         [Category("Appearance")]
         [Description("The Background Color to use for the Captcha Image.")]
@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the BackGround Image
+        /// Gets or sets and sets the BackGround Image.
         /// </summary>
         [Category("Appearance")]
         [Description("A Background Image to use for the Captcha Image.")]
@@ -114,7 +114,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the list of characters
+        /// Gets or sets and sets the list of characters.
         /// </summary>
         [Category("Behavior")]
         [DefaultValue(CHARS_DEFAULT)]
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the height of the Captcha image
+        /// Gets or sets and sets the height of the Captcha image.
         /// </summary>
         [Category("Appearance")]
         [Description("Height of Captcha Image.")]
@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the length of the Captcha string
+        /// Gets or sets and sets the length of the Captcha string.
         /// </summary>
         [Category("Behavior")]
         [DefaultValue(LENGTH_DEFAULT)]
@@ -170,7 +170,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the width of the Captcha image
+        /// Gets or sets and sets the width of the Captcha image.
         /// </summary>
         [Category("Appearance")]
         [Description("Width of Captcha Image.")]
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Viewstate is enabled
+        /// Gets or sets a value indicating whether gets and sets whether the Viewstate is enabled.
         /// </summary>
         [Browsable(false)]
         public override bool EnableViewState
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the ErrorMessage to display if the control is invalid
+        /// Gets or sets and sets the ErrorMessage to display if the control is invalid.
         /// </summary>
         [Category("Behavior")]
         [Description("The Error Message to display if invalid.")]
@@ -213,7 +213,7 @@ namespace DotNetNuke.UI.WebControls
         public string ErrorMessage { get; set; }
 
         /// <summary>
-        /// Gets and sets the BackGroundColor
+        /// Gets and sets the BackGroundColor.
         /// </summary>
         [Browsable(true)]
         [Category("Appearance")]
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the Expiration time in seconds
+        /// Gets or sets and sets the Expiration time in seconds.
         /// </summary>
         [Category("Behavior")]
         [Description("The duration of time (seconds) a user has before the challenge expires.")]
@@ -248,7 +248,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the control is valid
+        /// Gets a value indicating whether gets whether the control is valid.
         /// </summary>
         [Category("Validation")]
         [Description("Returns True if the user was CAPTCHA validated after a postback.")]
@@ -261,7 +261,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the Url to use to render the control
+        /// Gets or sets and sets the Url to use to render the control.
         /// </summary>
         [Category("Behavior")]
         [Description("The URL used to render the image to the client.")]
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the Help Text to use
+        /// Gets or sets and sets the Help Text to use.
         /// </summary>
         [Category("Captcha")]
         [DefaultValue("Enter the code shown above:")]
@@ -288,7 +288,7 @@ namespace DotNetNuke.UI.WebControls
         public string Text { get; set; }
 
         /// <summary>
-        /// Gets the Style to use for the Text Box
+        /// Gets the Style to use for the Text Box.
         /// </summary>
         [Browsable(true)]
         [Category("Appearance")]
@@ -305,10 +305,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadPostData loads the Post Back Data and determines whether the value has change
+        /// LoadPostData loads the Post Back Data and determines whether the value has change.
         /// </summary>
-        /// <param name="postDataKey">A key to the PostBack Data to load</param>
-        /// <param name="postCollection">A name value collection of postback data</param>
+        /// <param name="postDataKey">A key to the PostBack Data to load.</param>
+        /// <param name="postCollection">A name value collection of postback data.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public virtual bool LoadPostData(string postDataKey, NameValueCollection postCollection)
@@ -335,7 +335,7 @@ namespace DotNetNuke.UI.WebControls
         public event ServerValidateEventHandler UserValidated;
 
         /// <summary>
-        /// Builds the url for the Handler
+        /// Builds the url for the Handler.
         /// </summary>
         private string GetUrl()
         {
@@ -349,7 +349,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Encodes the querystring to pass to the Handler
+        /// Encodes the querystring to pass to the Handler.
         /// </summary>
         private string EncodeTicket()
         {
@@ -364,10 +364,10 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Creates the Image
+        /// Creates the Image.
         /// </summary>
-        /// <param name="width">The width of the image</param>
-        /// <param name="height">The height of the image</param>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
         private static Bitmap CreateImage(int width, int height)
         {
             var bmp = new Bitmap(width, height);
@@ -398,11 +398,11 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Creates the Text
+        /// Creates the Text.
         /// </summary>
-        /// <param name="text">The text to display</param>
-        /// <param name="width">The width of the image</param>
-        /// <param name="height">The height of the image</param>
+        /// <param name="text">The text to display.</param>
+        /// <param name="width">The width of the image.</param>
+        /// <param name="height">The height of the image.</param>
         /// <param name="g">Graphic draw context.</param>
         private static GraphicsPath CreateText(string text, int width, int height, Graphics g)
         {
@@ -451,9 +451,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Decrypts the CAPTCHA Text
+        /// Decrypts the CAPTCHA Text.
         /// </summary>
-        /// <param name="encryptedContent">The encrypted text</param>
+        /// <param name="encryptedContent">The encrypted text.</param>
         /// -----------------------------------------------------------------------------
         private static string Decrypt(string encryptedContent)
         {
@@ -476,9 +476,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DistortImage distorts the captcha image
+        /// DistortImage distorts the captcha image.
         /// </summary>
-        /// <param name="b">The Image to distort</param>
+        /// <param name="b">The Image to distort.</param>
         /// <param name="distortion">Distortion.</param>
         /// -----------------------------------------------------------------------------
         private static void DistortImage(ref Bitmap b, double distortion)
@@ -510,10 +510,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Encrypts the CAPTCHA Text
+        /// Encrypts the CAPTCHA Text.
         /// </summary>
-        /// <param name="content">The text to encrypt</param>
-        /// <param name="expiration">The time the ticket expires</param>
+        /// <param name="content">The text to encrypt.</param>
+        /// <param name="expiration">The time the ticket expires.</param>
         /// -----------------------------------------------------------------------------
         private static string Encrypt(string content, DateTime expiration)
         {
@@ -523,9 +523,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GenerateImage generates the Captch Image
+        /// GenerateImage generates the Captch Image.
         /// </summary>
-        /// <param name="encryptedText">The Encrypted Text to display</param>
+        /// <param name="encryptedText">The Encrypted Text to display.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         internal static Bitmap GenerateImage(string encryptedText)
@@ -578,7 +578,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetFont gets a random font to use for the Captcha Text
+        /// GetFont gets a random font to use for the Captcha Text.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private static FontFamily GetFont()
@@ -603,12 +603,12 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Generates a random point
+        /// Generates a random point.
         /// </summary>
-        /// <param name="xmin">The minimum x value</param>
-        /// <param name="xmax">The maximum x value</param>
-        /// <param name="ymin">The minimum y value</param>
-        /// <param name="ymax">The maximum y value</param>
+        /// <param name="xmin">The minimum x value.</param>
+        /// <param name="xmax">The maximum x value.</param>
+        /// <param name="ymin">The minimum y value.</param>
+        /// <param name="ymax">The maximum y value.</param>
         /// -----------------------------------------------------------------------------
         private static PointF RandomPoint(int xmin, int xmax, int ymin, int ymax)
         {
@@ -617,10 +617,10 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Warps the Text
+        /// Warps the Text.
         /// </summary>
-        /// <param name="textPath">The Graphics Path for the text</param>
-        /// <param name="rect">a rectangle which defines the image</param>
+        /// <param name="textPath">The Graphics Path for the text.</param>
+        /// <param name="rect">a rectangle which defines the image.</param>
         /// -----------------------------------------------------------------------------
         private static void WarpText(ref GraphicsPath textPath, Rectangle rect)
         {
@@ -644,7 +644,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Creates the child controls
+        /// Creates the child controls.
         /// </summary>
         protected override void CreateChildControls()
         {
@@ -660,7 +660,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the next Captcha
+        /// Gets the next Captcha.
         /// </summary>
         /// <returns></returns>
         protected virtual string GetNextCaptcha()
@@ -688,9 +688,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Loads the previously saved Viewstate
+        /// Loads the previously saved Viewstate.
         /// </summary>
-        /// <param name="savedState">The saved state</param>
+        /// <param name="savedState">The saved state.</param>
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -716,7 +716,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Runs just before the control is to be rendered
+        /// Runs just before the control is to be rendered.
         /// </summary>
         protected override void OnPreRender(EventArgs e)
         {
@@ -740,9 +740,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Render the  control
+        /// Render the  control.
         /// </summary>
-        /// <param name="writer">An Html Text Writer</param>
+        /// <param name="writer">An Html Text Writer.</param>
         protected override void Render(HtmlTextWriter writer)
         {
             this.ControlStyle.AddAttributesToRender(writer);
@@ -821,7 +821,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Save the controls Voewstate
+        /// Save the controls Voewstate.
         /// </summary>
         /// <returns></returns>
         protected override object SaveViewState()
@@ -840,9 +840,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Validates the posted back data
+        /// Validates the posted back data.
         /// </summary>
-        /// <param name="userData">The user entered data</param>
+        /// <param name="userData">The user entered data.</param>
         /// <returns></returns>
         public bool Validate(string userData)
         {

@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      CollectionEditorInfoFactory
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CollectionEditorInfoAdapter control provides an Adapter for Collection Onjects
+    /// The CollectionEditorInfoAdapter control provides an Adapter for Collection Onjects.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetEditorInfo builds an EditorInfo object for a propoerty
+        /// GetEditorInfo builds an EditorInfo object for a propoerty.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private EditorInfo GetEditorInfo()

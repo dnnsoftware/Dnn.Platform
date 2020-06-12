@@ -15,7 +15,7 @@ namespace DotNetNuke.Modules.Html
     /// Class:      HtmlTextUserInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlTextUser object
+    ///   Defines an instance of an HtmlTextUser object.
     /// </summary>
     /// <remarks>
     /// </remarks>

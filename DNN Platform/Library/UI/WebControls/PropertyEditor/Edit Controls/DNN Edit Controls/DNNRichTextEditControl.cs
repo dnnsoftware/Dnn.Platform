@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.WebControls
 {
     /// <summary>
     /// The DNNRichTextEditControl control provides a standard UI component for editing
-    /// RichText
+    /// RichText.
     /// </summary>
     [ToolboxData("<{0}:DNNRichTextEditControl runat=server></{0}:DNNRichTextEditControl>")]
     public class DNNRichTextEditControl : TextEditControl

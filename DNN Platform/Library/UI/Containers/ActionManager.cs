@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.Containers
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// ActionManager is a helper class that provides common Action Behaviours that can
-    /// be used by any IActionControl implementation
+    /// be used by any IActionControl implementation.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class ActionManager
@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ActionManager
+        /// Constructs a new ActionManager.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ActionManager(IActionControl actionControl)
@@ -51,18 +51,18 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Action Control that is connected to this ActionManager instance
+        /// Gets or sets and sets the Action Control that is connected to this ActionManager instance.
         /// </summary>
-        /// <returns>An IActionControl object</returns>
+        /// <returns>An IActionControl object.</returns>
         /// -----------------------------------------------------------------------------
         public IActionControl ActionControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the ModuleInstanceContext instance that is connected to this ActionManager
-        /// instance
+        /// instance.
         /// </summary>
-        /// <returns>A ModuleInstanceContext object</returns>
+        /// <returns>A ModuleInstanceContext object.</returns>
         /// -----------------------------------------------------------------------------
         protected ModuleInstanceContext ModuleContext
         {
@@ -190,7 +190,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// DisplayControl determines whether the associated Action control should be
-        /// displayed
+        /// displayed.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -223,9 +223,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetAction gets the action associated with the commandName
+        /// GetAction gets the action associated with the commandName.
         /// </summary>
-        /// <param name="commandName">The command name</param>
+        /// <param name="commandName">The command name.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(string commandName)
@@ -235,9 +235,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetAction gets the action associated with the id
+        /// GetAction gets the action associated with the id.
         /// </summary>
-        /// <param name="id">The Id</param>
+        /// <param name="id">The Id.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ModuleAction GetAction(int id)
@@ -248,10 +248,10 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// GetClientScriptURL gets the client script to attach to the control's client
-        /// side onclick event
+        /// side onclick event.
         /// </summary>
-        /// <param name="action">The Action</param>
-        /// <param name="control">The Control</param>
+        /// <param name="action">The Action.</param>
+        /// <param name="control">The Control.</param>
         /// -----------------------------------------------------------------------------
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
@@ -271,9 +271,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IsVisible determines whether the action control is Visible
+        /// IsVisible determines whether the action control is Visible.
         /// </summary>
-        /// <param name="action">The Action</param>
+        /// <param name="action">The Action.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool IsVisible(ModuleAction action)
@@ -300,9 +300,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessAction processes the action
+        /// ProcessAction processes the action.
         /// </summary>
-        /// <param name="id">The Id of the Action</param>
+        /// <param name="id">The Id of the Action.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(string id)
@@ -319,9 +319,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProcessAction processes the action
+        /// ProcessAction processes the action.
         /// </summary>
-        /// <param name="action">The Action</param>
+        /// <param name="action">The Action.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool ProcessAction(ModuleAction action)

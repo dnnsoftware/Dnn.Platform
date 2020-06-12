@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets a value indicating whether determines whether the List Auto Posts Back
+        ///   Gets or sets a value indicating whether determines whether the List Auto Posts Back.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool AutoPostBack { get; set; }

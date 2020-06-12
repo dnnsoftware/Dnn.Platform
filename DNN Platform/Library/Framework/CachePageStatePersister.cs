@@ -19,7 +19,7 @@ namespace DotNetNuke.Framework
     /// Class:      CachePageStatePersister
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// CachePageStatePersister provides a cache based page state peristence mechanism
+    /// CachePageStatePersister provides a cache based page state peristence mechanism.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class CachePageStatePersister : PageStatePersister
@@ -28,7 +28,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates the CachePageStatePersister
+        /// Creates the CachePageStatePersister.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public CachePageStatePersister(Page page)
@@ -38,7 +38,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Loads the Page State from the Cache
+        /// Loads the Page State from the Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Load()
@@ -69,7 +69,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Saves the Page State to the Cache
+        /// Saves the Page State to the Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Save()

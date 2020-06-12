@@ -26,7 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DotNetNuke.Modules.Admin.ViewProfile
 {
     /// <summary>
-    ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile
+    ///   The ViewProfile ProfileModuleUserControlBase is used to view a Users Profile.
     /// </summary>
     public partial class ViewProfile : ProfileModuleUserControlBase
     {
@@ -79,7 +79,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         }
 
         /// <summary>
-        ///   Page_Load runs when the control is loaded
+        ///   Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>

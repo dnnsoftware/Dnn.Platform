@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Skins
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///     Handles the Business Object for Skins
+    ///     Handles the Business Object for Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>

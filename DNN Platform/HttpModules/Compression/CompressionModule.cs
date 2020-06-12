@@ -17,7 +17,7 @@ namespace DotNetNuke.HttpModules.Compression
     public class CompressionModule : IHttpModule
     {
         /// <summary>
-        /// Init the handler and fulfill <see cref="IHttpModule"/>
+        /// Init the handler and fulfill <see cref="IHttpModule"/>.
         /// </summary>
         /// <remarks>
         /// This implementation hooks the ReleaseRequestState and PreSendRequestHeaders events to
@@ -30,7 +30,7 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// Implementation of <see cref="IHttpModule"/>
+        /// Implementation of <see cref="IHttpModule"/>.
         /// </summary>
         /// <remarks>
         /// Currently empty.  Nothing to really do, as I have no member variables.

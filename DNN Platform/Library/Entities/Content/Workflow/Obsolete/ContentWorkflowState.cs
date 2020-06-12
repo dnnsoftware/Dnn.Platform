@@ -10,28 +10,28 @@ namespace DotNetNuke.Entities.Content.Workflow
 // ReSharper enable CheckNamespace
 {
     /// <summary>
-    /// This entity represents a Workflow State
+    /// This entity represents a Workflow State.
     /// </summary>
     [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
     public class ContentWorkflowState
     {
         /// <summary>
-        /// Gets or sets state Id
+        /// Gets or sets state Id.
         /// </summary>
         public int StateID { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow associated to the state
+        /// Gets or sets workflow associated to the state.
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// Gets or sets state name
+        /// Gets or sets state name.
         /// </summary>
         public string StateName { get; set; }
 
         /// <summary>
-        /// Gets or sets state Order
+        /// Gets or sets state Order.
         /// </summary>
         public int Order { get; set; }
 

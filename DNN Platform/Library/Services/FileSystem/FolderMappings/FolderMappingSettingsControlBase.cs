@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.FileSystem
         ///     {
         ///         tbSettingValue.Text = folderMappingSettings["SettingName"].ToString();
         ///     }
-        /// }
+        /// }.
         /// </example>
         public abstract void LoadSettings(Hashtable folderMappingSettings);
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.FileSystem
         ///     {
         ///         throw new Exception();
         ///     }
-        /// }
+        /// }.
         /// </example>
         public abstract void UpdateSettings(int folderMappingID);
     }

@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// LicenseConfig - A class that represents Install/DotNetNuke.Install.Config/LicenseActivation
+    /// LicenseConfig - A class that represents Install/DotNetNuke.Install.Config/LicenseActivation.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class LicenseConfig

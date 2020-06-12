@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Search.Controllers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Impl Controller class for Search
+    ///   The Impl Controller class for Search.
     /// </summary>
     /// -----------------------------------------------------------------------------
     internal class SearchControllerImpl : ISearchController

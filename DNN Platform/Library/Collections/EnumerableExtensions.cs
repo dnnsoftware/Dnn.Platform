@@ -9,14 +9,14 @@ using System.Linq;
 namespace DotNetNuke.Collections
 {
     /// <summary>
-    /// Provides extensions to IEnumerable
+    /// Provides extensions to IEnumerable.
     /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>
         /// Converts dynamic data to a DataTable. Useful for databinding.
         /// </summary>
-        /// <param name="items">The items in the IEnumerable</param>
+        /// <param name="items">The items in the IEnumerable.</param>
         /// <returns>A DataTable with the copied dynamic data.</returns>
         public static DataTable ToDataTable(this IEnumerable<dynamic> items)
         {

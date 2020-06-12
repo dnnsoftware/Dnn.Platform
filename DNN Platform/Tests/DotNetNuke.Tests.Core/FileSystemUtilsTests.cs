@@ -18,7 +18,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core
 {
     /// <summary>
-    ///   FileSystemUtilsTests
+    ///   FileSystemUtilsTests.
     /// </summary>
     [TestFixture]
     public class FileSystemUtilsTests

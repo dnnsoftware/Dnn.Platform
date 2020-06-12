@@ -28,7 +28,7 @@ using log4net.Repository;
 namespace log4net.Core
 {
     /// <summary>
-    /// Delegate used to handle logger repository creation event notifications
+    /// Delegate used to handle logger repository creation event notifications.
     /// </summary>
     /// <param name="sender">The <see cref="IRepositorySelector"/> which created the repository.</param>
     /// <param name="e">The <see cref="LoggerRepositoryCreationEventArgs"/> event args
@@ -52,17 +52,17 @@ namespace log4net.Core
     public class LoggerRepositoryCreationEventArgs : EventArgs
     {
         /// <summary>
-        /// The <see cref="ILoggerRepository"/> created
+        /// The <see cref="ILoggerRepository"/> created.
         /// </summary>
         private ILoggerRepository m_repository;
 
         /// <summary>
-        /// Construct instance using <see cref="ILoggerRepository"/> specified
+        /// Construct instance using <see cref="ILoggerRepository"/> specified.
         /// </summary>
-        /// <param name="repository">the <see cref="ILoggerRepository"/> that has been created</param>
+        /// <param name="repository">the <see cref="ILoggerRepository"/> that has been created.</param>
         /// <remarks>
         /// <para>
-        /// Construct instance using <see cref="ILoggerRepository"/> specified
+        /// Construct instance using <see cref="ILoggerRepository"/> specified.
         /// </para>
         /// </remarks>
         public LoggerRepositoryCreationEventArgs(ILoggerRepository repository)
@@ -71,14 +71,14 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets the <see cref="ILoggerRepository"/> that has been created
+        /// Gets the <see cref="ILoggerRepository"/> that has been created.
         /// </summary>
         /// <value>
-        /// The <see cref="ILoggerRepository"/> that has been created
+        /// The <see cref="ILoggerRepository"/> that has been created.
         /// </value>
         /// <remarks>
         /// <para>
-        /// The <see cref="ILoggerRepository"/> that has been created
+        /// The <see cref="ILoggerRepository"/> that has been created.
         /// </para>
         /// </remarks>
         public ILoggerRepository LoggerRepository
@@ -97,14 +97,14 @@ namespace log4net.Core
     /// to return to the caller.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IRepositorySelector
     {
         /// <summary>
         /// Gets the <see cref="ILoggerRepository"/> for the specified assembly.
         /// </summary>
-        /// <param name="assembly">The assembly to use to lookup to the <see cref="ILoggerRepository"/></param>
+        /// <param name="assembly">The assembly to use to lookup to the <see cref="ILoggerRepository"/>.</param>
         /// <returns>The <see cref="ILoggerRepository"/> for the assembly.</returns>
         /// <remarks>
         /// <para>
@@ -124,7 +124,7 @@ namespace log4net.Core
         /// Gets the named <see cref="ILoggerRepository"/>.
         /// </summary>
         /// <param name="repositoryName">The name to use to lookup to the <see cref="ILoggerRepository"/>.</param>
-        /// <returns>The named <see cref="ILoggerRepository"/></returns>
+        /// <returns>The named <see cref="ILoggerRepository"/>.</returns>
         /// <remarks>
         /// Lookup a named <see cref="ILoggerRepository"/>. This is the repository created by
         /// calling <see cref="M:CreateRepository(string,Type)"/>.
@@ -167,10 +167,10 @@ namespace log4net.Core
         ILoggerRepository CreateRepository(string repositoryName, Type repositoryType);
 
         /// <summary>
-        /// Test if a named repository exists
+        /// Test if a named repository exists.
         /// </summary>
-        /// <param name="repositoryName">the named repository to check</param>
-        /// <returns><c>true</c> if the repository exists</returns>
+        /// <param name="repositoryName">the named repository to check.</param>
+        /// <returns><c>true</c> if the repository exists.</returns>
         /// <remarks>
         /// <para>
         /// Test if a named repository exists. Use <see cref="M:CreateRepository(Assembly, Type)"/>

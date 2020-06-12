@@ -60,11 +60,11 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Deletes a module from the specified tab and clears host cache
+        /// Deletes a module from the specified tab and clears host cache.
         /// </summary>
-        /// <param name="tabId">tabId on which module is deleted</param>
-        /// <param name="moduleId">moduleId that is deleted</param>
-        /// <param name="softDelete">if True, then softdeleted, otherwise harddeleted</param>
+        /// <param name="tabId">tabId on which module is deleted.</param>
+        /// <param name="moduleId">moduleId that is deleted.</param>
+        /// <param name="softDelete">if True, then softdeleted, otherwise harddeleted.</param>
         public static void DeleteTabModule(int tabId, int moduleId, bool softDelete)
         {
             DatabaseHelper.ExecuteStoredProcedure("DeleteTabModule", tabId, moduleId, softDelete);

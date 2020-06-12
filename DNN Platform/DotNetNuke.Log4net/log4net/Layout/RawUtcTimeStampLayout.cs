@@ -29,19 +29,19 @@ using log4net.Util;
 namespace log4net.Layout
 {
     /// <summary>
-    /// Extract the date from the <see cref="LoggingEvent"/>
+    /// Extract the date from the <see cref="LoggingEvent"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Extract the date from the <see cref="LoggingEvent"/>
+    /// Extract the date from the <see cref="LoggingEvent"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class RawUtcTimeStampLayout : IRawLayout
     {
         /// <summary>
-        /// Constructs a RawUtcTimeStampLayout
+        /// Constructs a RawUtcTimeStampLayout.
         /// </summary>
         public RawUtcTimeStampLayout()
         {
@@ -50,8 +50,8 @@ namespace log4net.Layout
         /// <summary>
         /// Gets the <see cref="LoggingEvent.TimeStamp"/> as a <see cref="DateTime"/>.
         /// </summary>
-        /// <param name="loggingEvent">The event to format</param>
-        /// <returns>returns the time stamp</returns>
+        /// <param name="loggingEvent">The event to format.</param>
+        /// <returns>returns the time stamp.</returns>
         /// <remarks>
         /// <para>
         /// Gets the <see cref="LoggingEvent.TimeStamp"/> as a <see cref="DateTime"/>.

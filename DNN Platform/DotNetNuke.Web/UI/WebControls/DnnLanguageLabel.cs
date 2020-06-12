@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         ///   CreateChildControls overrides the Base class's method to correctly build the
-        ///   control based on the configuration
+        ///   control based on the configuration.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   OnPreRender runs just before the control is rendered
+        ///   OnPreRender runs just before the control is rendered.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)

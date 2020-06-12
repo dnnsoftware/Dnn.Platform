@@ -17,7 +17,7 @@ namespace DotNetNuke.UI.WebControls.Internal
     /// <summary>
     /// A TriState permission control built specifically for use in the PermissionGrid control
     /// This control is not general in any way shape of form and should NOT be used outside
-    /// of the PermissionGrid
+    /// of the PermissionGrid.
     /// </summary>
     public class PermissionTriState : HiddenField
     {

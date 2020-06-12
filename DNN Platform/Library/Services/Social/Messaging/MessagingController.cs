@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Social.Messaging
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Controller class for social Messaging
+    ///   The Controller class for social Messaging.
     /// </summary>
     /// <remarks>
     /// </remarks>

@@ -86,7 +86,7 @@ namespace DotNetNuke.Framework
         /// </summary>
         /// <remarks>
         ///   By default all authenticated users have permssions.
-        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>
+        ///   This property is only enforced if <see cref = "RequiresAuthentication" /> is <c>true</c>.
         /// </remarks>
         /// <value>
         ///   <c>true</c> if the user has the appropriate permissions
@@ -198,7 +198,7 @@ namespace DotNetNuke.Framework
         ///   valid, otherwise false.
         /// </summary>
         /// <returns><c>true</c> if the parameters are valid,
-        ///   otherwise <c>false</c></returns>
+        ///   otherwise <c>false</c>.</returns>
         public abstract bool ValidateParameters();
 
         /// <summary>

@@ -24,9 +24,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AcceptFriend - Current User accepts a Friend Request to the Target User
+        /// AcceptFriend - Current User accepts a Friend Request to the Target User.
         /// </summary>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void AcceptFriend(UserInfo targetUser)
         {
@@ -43,9 +43,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddFriend - Current User initiates a Friend Request to the Target User
+        /// AddFriend - Current User initiates a Friend Request to the Target User.
         /// </summary>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -58,10 +58,10 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddFriend - Initiating User initiates a Friend Request to the Target User
+        /// AddFriend - Initiating User initiates a Friend Request to the Target User.
         /// </summary>
-        /// <param name="initiatingUser">UserInfo for Initiating User</param>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="initiatingUser">UserInfo for Initiating User.</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// <remarks>If the Friend Relationship is setup for auto-acceptance at the Portal level, the UserRelationship
         /// status is set as Accepted, otherwise it is set as Initiated.
         /// </remarks>
@@ -90,9 +90,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteFriend - Current User deletes a friend relationship with the target User
+        /// DeleteFriend - Current User deletes a friend relationship with the target User.
         /// </summary>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo targetUser)
         {
@@ -102,10 +102,10 @@ namespace DotNetNuke.Entities.Users.Social.Internal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteFriend - Initiating User deletes a friend relationship with the target User
+        /// DeleteFriend - Initiating User deletes a friend relationship with the target User.
         /// </summary>
-        /// <param name="initiatingUser">UserInfo for Initiating User</param>
-        /// <param name="targetUser">UserInfo for Target User</param>
+        /// <param name="initiatingUser">UserInfo for Initiating User.</param>
+        /// <param name="targetUser">UserInfo for Target User.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteFriend(UserInfo initiatingUser, UserInfo targetUser)
         {

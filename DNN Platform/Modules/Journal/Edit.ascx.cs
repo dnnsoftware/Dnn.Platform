@@ -22,7 +22,7 @@ namespace DotNetNuke.Modules.Journal
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The EditJournal class is used to manage content
+    /// The EditJournal class is used to manage content.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Edit : JournalModuleBase
@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.Journal
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, System.EventArgs e)

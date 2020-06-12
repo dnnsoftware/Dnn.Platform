@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Utilities
         string GetRelativePath(int portalID, string physicalPath);
 
         /// <summary>
-        /// Gets the physical root folder path for the specified portal
+        /// Gets the physical root folder path for the specified portal.
         /// </summary>
         /// <returns></returns>
         string GetRootFolderMapPath(int portalID);
@@ -63,11 +63,11 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="path">Specifies the relative or virtual path to map to a physical directory. If Path starts with either
         /// a forward (/) or backward slash (\), the MapPath method returns a path as if Path were a full, virtual path. If Path
-        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed</param>
+        /// doesn't start with a slash, the MapPath method returns a path relative to the directory of the .asp file being processed.</param>
         /// <returns></returns>
         /// <remarks>
         /// If path is a null reference (Nothing in Visual Basic), then the MapPath method returns the full physical path
-        /// of the directory that contains the current application
+        /// of the directory that contains the current application.
         /// </remarks>
         string MapPath(string path);
 

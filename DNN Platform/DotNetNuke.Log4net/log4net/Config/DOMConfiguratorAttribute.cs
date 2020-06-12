@@ -49,8 +49,8 @@ namespace log4net.Config
     /// methods.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     [Serializable]
     [Obsolete("Use XmlConfiguratorAttribute instead of DOMConfiguratorAttribute. Scheduled removal in v10.0.0.")]

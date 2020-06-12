@@ -15,7 +15,7 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Helper class that provides memory and disk caching of the downloaded feeds
+    ///   Helper class that provides memory and disk caching of the downloaded feeds.
     /// </summary>
     internal class OpmlDownloadManager
     {

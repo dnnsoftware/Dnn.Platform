@@ -5,7 +5,7 @@
 namespace DotNetNuke.Services.Tokens
 {
     /// <summary>
-    /// Scope informs the property access classes about the planned usage of the token
+    /// Scope informs the property access classes about the planned usage of the token.
     /// </summary>
     /// <remarks>
     /// The result of a token replace operation depends on the current context, privacy settings

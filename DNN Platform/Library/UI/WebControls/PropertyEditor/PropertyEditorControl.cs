@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PropertyEditorControl control provides a way to display and edit any
-    /// properties of any Info class
+    /// properties of any Info class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -64,9 +64,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Underlying DataSource
+        /// Gets the Underlying DataSource.
         /// </summary>
-        /// <value>An IEnumerable Boolean</value>
+        /// <value>An IEnumerable Boolean.</value>
         /// -----------------------------------------------------------------------------
         protected virtual IEnumerable UnderlyingDataSource
         {
@@ -75,18 +75,18 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the editor Autogenerates its editors
+        /// Gets or sets a value indicating whether gets and sets whether the editor Autogenerates its editors.
         /// </summary>
-        /// <value>The DataSource object</value>
+        /// <value>The DataSource object.</value>
         /// -----------------------------------------------------------------------------
         [Category("Behavior")]
         public bool AutoGenerate { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the DataSource that is bound to this control
+        /// Gets or sets and sets the DataSource that is bound to this control.
         /// </summary>
-        /// <value>The DataSource object</value>
+        /// <value>The DataSource object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         [Category("Data")]
@@ -94,9 +94,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Edit Mode of the Editor
+        /// Gets or sets and sets the Edit Mode of the Editor.
         /// </summary>
-        /// <value>The mode of the editor</value>
+        /// <value>The mode of the editor.</value>
         /// -----------------------------------------------------------------------------
         [Category("Appearance")]
         public PropertyEditorMode EditMode { get; set; }
@@ -106,44 +106,44 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side
-        /// validation
+        /// validation.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         [Category("Behavior")]
         public bool EnableClientValidation { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the grouping mode
+        /// Gets or sets and sets the grouping mode.
         /// </summary>
-        /// <value>A GroupByMode enum</value>
+        /// <value>A GroupByMode enum.</value>
         /// -----------------------------------------------------------------------------
         [Category("Appearance")]
         public GroupByMode GroupByMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the grouping order
+        /// Gets or sets and sets the grouping order.
         /// </summary>
-        /// <value>A comma-delimited list of categories/groups</value>
+        /// <value>A comma-delimited list of categories/groups.</value>
         /// -----------------------------------------------------------------------------
         [Category("Appearance")]
         public string Groups { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets whether the control displays Help
+        /// Gets or sets and sets whether the control displays Help.
         /// </summary>
-        /// <value>A HelpDisplayMode enum</value>
+        /// <value>A HelpDisplayMode enum.</value>
         /// -----------------------------------------------------------------------------
         public HelpDisplayMode HelpDisplayMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether any of the properties have been changed
+        /// Gets a value indicating whether gets whether any of the properties have been changed.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsDirty
@@ -156,9 +156,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether all of the properties are Valid
+        /// Gets a value indicating whether gets whether all of the properties are Valid.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsValid
@@ -173,30 +173,30 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Local Resource File for the Control
+        /// Gets or sets and sets the Local Resource File for the Control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string LocalResourceFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Url of the Required Image
+        /// Gets or sets and sets the Url of the Required Image.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string RequiredUrl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Required icon is used
+        /// Gets or sets a value indicating whether gets and sets whether the Required icon is used.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool ShowRequired { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Visibility control is used
+        /// Gets or sets a value indicating whether gets and sets whether the Visibility control is used.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Category("Appearance")]
@@ -206,9 +206,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets or sets and sets whether to sort properties.
         /// </summary>
-        /// <value>The Sort Mode of the editor</value>
+        /// <value>The Sort Mode of the editor.</value>
         /// <remarks>
-        /// By default all properties will be sorted
+        /// By default all properties will be sorted.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Category("Appearance")]
@@ -221,7 +221,7 @@ namespace DotNetNuke.UI.WebControls
         /// Gets a collection of fields to display if AutoGenerate is false. Or the
         /// collection of fields generated if AutoGenerate is true.
         /// </summary>
-        /// <value>A collection of FieldEditorControl objects</value>
+        /// <value>A collection of FieldEditorControl objects.</value>
         /// -----------------------------------------------------------------------------
         [Category("Behavior")]
         [PersistenceMode(PersistenceMode.InnerProperty)]
@@ -230,9 +230,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Field Style
+        /// Gets the value of the Field Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -244,9 +244,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the width of the Edit Control Column
+        /// Gets or sets and sets the width of the Edit Control Column.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Appearance")]
@@ -255,9 +255,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Error Style
+        /// Gets the value of the Error Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -269,9 +269,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Group Header Style
+        /// Gets the value of the Group Header Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -283,9 +283,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether to add a &lt;hr&gt; to the Group Header
+        /// Gets or sets a value indicating whether gets and sets whether to add a &lt;hr&gt; to the Group Header.
         /// </summary>
-        /// <value>A boolean</value>
+        /// <value>A boolean.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Appearance")]
@@ -302,9 +302,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Label Style
+        /// Gets the value of the Label Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -316,9 +316,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Label Style
+        /// Gets the value of the Label Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -330,9 +330,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the width of the Label Column
+        /// Gets or sets and sets the width of the Label Column.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Appearance")]
@@ -341,9 +341,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the value of the Visibility Style
+        /// Gets the value of the Visibility Style.
         /// </summary>
-        /// <value>A Style object</value>
+        /// <value>A Style object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -361,7 +361,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>
+        /// GetProperties returns an array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see>.
         /// </summary>
         /// <returns>An array of <see cref="System.Reflection.PropertyInfo">PropertyInfo</see> objects
         /// for the current DataSource object.</returns>
@@ -430,11 +430,11 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// AddEditorRow builds a sigle editor row and adds it to the Table, using the
-        /// specified adapter
+        /// specified adapter.
         /// </summary>
-        /// <param name="table">The Table Control to add the row to</param>
-        /// <param name="name">The name of property being added</param>
-        /// <param name="adapter">An IEditorInfoAdapter</param>
+        /// <param name="table">The Table Control to add the row to.</param>
+        /// <param name="name">The name of property being added.</param>
+        /// <param name="adapter">An IEditorInfoAdapter.</param>
         /// -----------------------------------------------------------------------------
         protected void AddEditorRow(Table table, string name, IEditorInfoAdapter adapter)
         {
@@ -483,11 +483,11 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddEditorRow builds a sigle editor row and adds it to the Table
+        /// AddEditorRow builds a sigle editor row and adds it to the Table.
         /// </summary>
         /// <remarks>This method is protected so that classes that inherit from
-        /// PropertyEditor can modify how the Row is displayed</remarks>
-        /// <param name="table">The Table Control to add the row to</param>
+        /// PropertyEditor can modify how the Row is displayed.</remarks>
+        /// <param name="table">The Table Control to add the row to.</param>
         /// <param name="obj">Row Data Info.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void AddEditorRow(Table table, object obj)
@@ -538,9 +538,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddFields adds the fields that have beend defined in design mode (Autogenerate=false)
+        /// AddFields adds the fields that have beend defined in design mode (Autogenerate=false).
         /// </summary>
-        /// <param name="tbl">The Table Control to add the row to</param>
+        /// <param name="tbl">The Table Control to add the row to.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void AddFields(Table tbl)
         {
@@ -577,11 +577,11 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddHeader builds a group header
+        /// AddHeader builds a group header.
         /// </summary>
         /// <remarks>This method is protected so that classes that inherit from
-        /// PropertyEditor can modify how the Header is displayed</remarks>
-        /// <param name="tbl">The Table Control that contains the group</param>
+        /// PropertyEditor can modify how the Header is displayed.</remarks>
+        /// <param name="tbl">The Table Control that contains the group.</param>
         /// <param name="header">Table Header.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void AddHeader(Table tbl, string header)
@@ -759,7 +759,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetCategory gets the Category of an object
+        /// GetCategory gets the Category of an object.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -781,7 +781,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetGroups gets an array of Groups/Categories from the DataSource
+        /// GetGroups gets an array of Groups/Categories from the DataSource.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -814,9 +814,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetRowVisibility determines the Visibility of a row in the table
+        /// GetRowVisibility determines the Visibility of a row in the table.
         /// </summary>
-        /// <param name="obj">The property</param>
+        /// <param name="obj">The property.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected virtual bool GetRowVisibility(object obj)
@@ -853,7 +853,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an item is added to a collection type property
+        /// Runs when an item is added to a collection type property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemAdded(PropertyEditorEventArgs e)
@@ -866,7 +866,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an Editor is Created
+        /// Runs when an Editor is Created.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemCreated(PropertyEditorItemEventArgs e)
@@ -879,7 +879,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an item is removed from a collection type property
+        /// Runs when an item is removed from a collection type property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void OnItemDeleted(PropertyEditorEventArgs e)
@@ -892,7 +892,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs just before the control is rendered
+        /// Runs just before the control is rendered.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void OnPreRender(EventArgs e)
@@ -925,7 +925,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Binds the controls to the DataSource
+        /// Binds the controls to the DataSource.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
@@ -951,7 +951,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an item is added to a collection type property
+        /// Runs when an item is added to a collection type property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void CollectionItemAdded(object sender, PropertyEditorEventArgs e)
@@ -961,7 +961,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an item is removed from a collection type property
+        /// Runs when an item is removed from a collection type property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void CollectionItemDeleted(object sender, PropertyEditorEventArgs e)
@@ -971,7 +971,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an Editor Is Created
+        /// Runs when an Editor Is Created.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void EditorItemCreated(object sender, PropertyEditorItemEventArgs e)
@@ -981,7 +981,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Runs when an Item in the List Is Changed
+        /// Runs when an Item in the List Is Changed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void ListItemChanged(object sender, PropertyEditorEventArgs e)

@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets portalSettings for the current portal
+        /// Gets portalSettings for the current portal.
         /// </summary>
         public PortalSettings PortalSettings
         {
@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets userInfo for the current user
+        /// Gets userInfo for the current user.
         /// </summary>
         public UserInfo UserInfo
         {
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets moduleInfo for the current module
+        /// Gets moduleInfo for the current module.
         /// <remarks>Will be null unless a valid pair of module and tab ids were provided in the request</remarks>
         /// </summary>
         public ModuleInfo ActiveModule

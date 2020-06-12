@@ -9,7 +9,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
     using ClientDependency.Core.Controls;
 
     /// <summary>
-    /// Registers a CSS resource
+    /// Registers a CSS resource.
     /// </summary>
     public class DnnCssInclude : CssInclude
     {

@@ -71,7 +71,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets property to allow the programmatic assigning of ScrollTop position
+        /// Gets or sets property to allow the programmatic assigning of ScrollTop position.
         /// </summary>
         /// <value>
         /// <placeholder>Property to allow the programmatic assigning of ScrollTop position</placeholder>
@@ -176,7 +176,7 @@ namespace DotNetNuke.Framework
         /// - set page title and stylesheet
         /// - check to see if we should show the Assembly Version in Page Title
         /// - set the background image if there is one selected
-        /// - set META tags, copyright, keywords and description
+        /// - set META tags, copyright, keywords and description.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         private void InitializePage()
@@ -506,9 +506,9 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// check if a warning about account defaults needs to be rendered
+        /// check if a warning about account defaults needs to be rendered.
         /// </summary>
-        /// <returns>localised error message</returns>
+        /// <returns>localised error message.</returns>
         /// <remarks></remarks>
         private string RenderDefaultsWarning()
         {
@@ -552,7 +552,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Contains the functionality to populate the Root aspx page with controls
+        /// Contains the functionality to populate the Root aspx page with controls.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -701,7 +701,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Initialize the Scrolltop html control which controls the open / closed nature of each module
+        /// Initialize the Scrolltop html control which controls the open / closed nature of each module.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>

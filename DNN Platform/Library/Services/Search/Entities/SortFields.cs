@@ -5,7 +5,7 @@
 namespace DotNetNuke.Services.Search.Entities
 {
     /// <summary>
-    /// Sorting criteria to be used for Querying
+    /// Sorting criteria to be used for Querying.
     /// </summary>
     public enum SortFields
     {

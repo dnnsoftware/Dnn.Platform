@@ -9,16 +9,16 @@ using System.Web.SessionState;
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
-    /// Wrapper class for <see cref="HttpContext.Session"/>
+    /// Wrapper class for <see cref="HttpContext.Session"/>.
     /// </summary>
-    /// <typeparam name="T">The type of the value to be stored</typeparam>
+    /// <typeparam name="T">The type of the value to be stored.</typeparam>
     public class SessionVariable<T> : StateVariable<T>
     {
         /// <summary>
-        /// Initializes a new HttpContext.Session item variable
+        /// Initializes a new HttpContext.Session item variable.
         /// </summary>
         /// <param name="key">
-        /// The key to use for storing the value in the items
+        /// The key to use for storing the value in the items.
         /// </param>
         public SessionVariable(string key)
             : base(key)
@@ -26,10 +26,10 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Initializes a new HttpContext.Session item variable with a initializer
+        /// Initializes a new HttpContext.Session item variable with a initializer.
         /// </summary>
-        /// <param name="key">The key to use for storing the value in the HttpContext.Current.Session</param>
-        /// <param name="initializer">A function that is called in order to create a default value per HttpContext.Current.Session</param>
+        /// <param name="key">The key to use for storing the value in the HttpContext.Current.Session.</param>
+        /// <param name="initializer">A function that is called in order to create a default value per HttpContext.Current.Session.</param>
         /// <remarks></remarks>
         public SessionVariable(string key, Func<T> initializer)
             : base(key, initializer)

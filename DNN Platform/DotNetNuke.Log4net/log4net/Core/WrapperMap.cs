@@ -62,12 +62,12 @@ namespace log4net.Core
     /// requiring subclassing of this type.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class WrapperMap
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="WrapperMap" />
+        /// Initializes a new instance of the <see cref="WrapperMap" />.
         /// </summary>
         /// <param name="createWrapperHandler">The handler to use to create the wrapper objects.</param>
         /// <remarks>
@@ -87,7 +87,7 @@ namespace log4net.Core
         /// <summary>
         /// Gets the wrapper object for the specified logger.
         /// </summary>
-        /// <returns>The wrapper object for the specified logger</returns>
+        /// <returns>The wrapper object for the specified logger.</returns>
         /// <remarks>
         /// <para>
         /// If the logger is null then the corresponding wrapper is null.
@@ -184,7 +184,7 @@ namespace log4net.Core
         /// <summary>
         /// Called when a monitored repository shutdown event is received.
         /// </summary>
-        /// <param name="repository">The <see cref="ILoggerRepository"/> that is shutting down</param>
+        /// <param name="repository">The <see cref="ILoggerRepository"/> that is shutting down.</param>
         /// <remarks>
         /// <para>
         /// This method is called when a <see cref="ILoggerRepository"/> that this
@@ -222,7 +222,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings
+        /// Map of logger repositories to hashtables of ILogger to ILoggerWrapper mappings.
         /// </summary>
         private readonly Hashtable m_repositories = new Hashtable();
 

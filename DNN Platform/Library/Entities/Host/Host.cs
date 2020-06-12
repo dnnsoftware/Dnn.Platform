@@ -33,10 +33,10 @@ namespace DotNetNuke.Entities.Host
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the AutoAccountUnlockDuration
+        ///   Gets the AutoAccountUnlockDuration.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 10
+        ///   Defaults to 10.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int AutoAccountUnlockDuration
@@ -49,10 +49,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the AuthenticatedCacheability
+        ///   Gets the AuthenticatedCacheability.
         /// </summary>
         /// <remarks>
-        ///   Defaults to HttpCacheability.ServerAndNoCache
+        ///   Defaults to HttpCacheability.ServerAndNoCache.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static string AuthenticatedCacheability
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether or not CDN has been enabled for all registered javascript libraries
+        /// Gets a value indicating whether gets whether or not CDN has been enabled for all registered javascript libraries.
         /// </summary>
         public static bool CdnEnabled
         {
@@ -84,10 +84,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether the Upgrade Indicator is enabled
+        ///   Gets a value indicating whether gets whether the Upgrade Indicator is enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool CheckUpgrade
@@ -100,10 +100,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Control Panel
+        ///   Gets the Control Panel.
         /// </summary>
         /// <remarks>
-        ///   Defaults to glbDefaultControlPanel constant
+        ///   Defaults to glbDefaultControlPanel constant.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static string ControlPanel
@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Host
         ///   Gets the Client Resource Management version number.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 1
+        ///   Defaults to 1.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int CrmVersion
@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Default Admin Container
+        ///   Gets the Default Admin Container.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string DefaultAdminContainer
@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Default Admin Skin
+        ///   Gets the Default Admin Skin.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string DefaultAdminSkin
@@ -222,7 +222,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Default Doc Type
+        ///   Gets the Default Doc Type.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string DefaultDocType
@@ -256,7 +256,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Default Portal Container
+        ///   Gets the Default Portal Container.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string DefaultPortalContainer
@@ -275,7 +275,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Default Portal Skin
+        ///   Gets the Default Portal Skin.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string DefaultPortalSkin
@@ -294,10 +294,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Demo Period for new portals
+        ///   Gets the Demo Period for new portals.
         /// </summary>
         /// <remarks>
-        ///   Defaults to -1
+        ///   Defaults to -1.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int DemoPeriod
@@ -310,10 +310,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether demo signups are enabled
+        ///   Gets a value indicating whether gets whether demo signups are enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool DemoSignup
@@ -326,10 +326,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether to dislpay the beta notice
+        ///   Gets a value indicating whether gets whether to dislpay the beta notice.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool DisplayBetaNotice
@@ -342,10 +342,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether to dislpay the copyright
+        ///   Gets a value indicating whether gets whether to dislpay the copyright.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool DisplayCopyright
@@ -357,7 +357,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether enable checking for banned words when setting password during registration
+        /// Gets a value indicating whether enable checking for banned words when setting password during registration.
         /// </summary>
         public static bool EnableBannedList
         {
@@ -369,10 +369,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether Browser Language Detection is Enabled
+        ///   Gets a value indicating whether gets whether Browser Language Detection is Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableBrowserLanguage
@@ -421,10 +421,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether a css class based on the Module Name is automatically rendered
+        ///   Gets a value indicating whether gets whether a css class based on the Module Name is automatically rendered.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableCustomModuleCssClass
@@ -459,10 +459,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether File AutoSync is Enabled
+        ///   Gets a value indicating whether gets whether File AutoSync is Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableFileAutoSync
@@ -474,7 +474,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether enable whether the IP address of the user is checked against a list during login
+        /// Gets a value indicating whether enable whether the IP address of the user is checked against a list during login.
         /// </summary>
         public static bool EnableIPChecking
         {
@@ -486,10 +486,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether Module Online Help is Enabled
+        ///   Gets a value indicating whether gets whether Module Online Help is Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableModuleOnLineHelp
@@ -502,10 +502,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether the Request Filters are Enabled
+        ///   Gets a value indicating whether gets whether the Request Filters are Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableRequestFilters
@@ -517,7 +517,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether enable whether a client-side password strength meter is shown on registration screen
+        /// Gets a value indicating whether enable whether a client-side password strength meter is shown on registration screen.
         /// </summary>
         public static bool EnableStrengthMeter
         {
@@ -528,7 +528,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether enable whether a previous passwords are stored to check if user is reusing them
+        /// Gets a value indicating whether enable whether a previous passwords are stored to check if user is reusing them.
         /// </summary>
         public static bool EnablePasswordHistory
         {
@@ -540,10 +540,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether to use the Language in the Url
+        ///   Gets a value indicating whether gets whether to use the Language in the Url.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableUrlLanguage
@@ -556,10 +556,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether Users Online are Enabled
+        ///   Gets a value indicating whether gets whether Users Online are Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -573,10 +573,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether SSL is Enabled for SMTP
+        ///   Gets a value indicating whether gets whether SSL is Enabled for SMTP.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EnableSMTPSSL
@@ -594,10 +594,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether the Event Log Buffer is Enabled
+        ///   Gets a value indicating whether gets whether the Event Log Buffer is Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool EventLogBuffer
@@ -632,7 +632,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the GUID
+        ///   Gets the GUID.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string GUID
@@ -645,7 +645,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Help URL
+        ///   Gets the Help URL.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string HelpURL
@@ -658,10 +658,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host Currency
+        ///   Gets the Host Currency.
         /// </summary>
         /// <remarks>
-        ///   Defaults to USD
+        ///   Defaults to USD.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static string HostCurrency
@@ -680,7 +680,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host Email
+        ///   Gets the Host Email.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string HostEmail
@@ -693,10 +693,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host Fee
+        ///   Gets the Host Fee.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 0
+        ///   Defaults to 0.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static double HostFee
@@ -709,10 +709,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host Portal's PortalId
+        ///   Gets the Host Portal's PortalId.
         /// </summary>
         /// <remarks>
-        ///   Defaults to Null.NullInteger
+        ///   Defaults to Null.NullInteger.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int HostPortalID
@@ -725,10 +725,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host Space
+        ///   Gets the Host Space.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 0
+        ///   Defaults to 0.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static double HostSpace
@@ -741,7 +741,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host Title
+        ///   Gets the Host Title.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string HostTitle
@@ -754,7 +754,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Host URL
+        ///   Gets the Host URL.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string HostURL
@@ -767,10 +767,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the HttpCompression Algorithm
+        ///   Gets the HttpCompression Algorithm.
         /// </summary>
         /// <remarks>
-        ///   Defaults to Null.NullInteger(None)
+        ///   Defaults to Null.NullInteger(None).
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int HttpCompressionAlgorithm
@@ -783,10 +783,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets size of the batch used to determine how many emails are sent per CoreMessaging Scheduler run
+        ///   Gets size of the batch used to determine how many emails are sent per CoreMessaging Scheduler run.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 50
+        ///   Defaults to 50.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int MessageSchedulerBatchSize
@@ -798,7 +798,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets set length of time (in minutes) that reset links are valid for - default is 60
+        /// Gets set length of time (in minutes) that reset links are valid for - default is 60.
         /// </summary>
         public static int MembershipResetLinkValidity
         {
@@ -809,7 +809,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets set length of time (in minutes) that reset links are valid for - default is 24 hours (1440 min)
+        /// Gets set length of time (in minutes) that reset links are valid for - default is 24 hours (1440 min).
         /// </summary>
         public static int AdminMembershipResetLinkValidity
         {
@@ -820,7 +820,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets set number of passwords stored for password change comparison operations - default is 5
+        /// Gets set number of passwords stored for password change comparison operations - default is 5.
         /// </summary>
         public static int MembershipNumberPasswords
         {
@@ -831,7 +831,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets the number of days that must pass before a password can be reused - default is 0 (i.e. password reuse is only governed by <see cref="EnablePasswordHistory"/> and <see cref="MembershipNumberPasswords"/>)
+        /// Gets the number of days that must pass before a password can be reused - default is 0 (i.e. password reuse is only governed by <see cref="EnablePasswordHistory"/> and <see cref="MembershipNumberPasswords"/>).
         /// </summary>
         public static int MembershipDaysBeforePasswordReuse
         {
@@ -843,7 +843,7 @@ namespace DotNetNuke.Entities.Host
 
         /// <summary>
         /// Gets the HTTP Status code returned if IP address filtering is enabled on login
-        /// and the users IP does not meet criteria -default is 403
+        /// and the users IP does not meet criteria -default is 403.
         /// </summary>
         public static string MembershipFailedIPException
         {
@@ -855,7 +855,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Module Caching method
+        ///   Gets the Module Caching method.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string ModuleCachingMethod
@@ -868,7 +868,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Page Caching method
+        ///   Gets the Page Caching method.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string PageCachingMethod
@@ -881,10 +881,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Page Quota
+        ///   Gets the Page Quota.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 0
+        ///   Defaults to 0.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int PageQuota
@@ -897,7 +897,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the PageState Persister
+        ///   Gets the PageState Persister.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string PageStatePersister
@@ -916,10 +916,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Password Expiry
+        ///   Gets the Password Expiry.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 0
+        ///   Defaults to 0.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int PasswordExpiry
@@ -932,10 +932,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Password Expiry Reminder window
+        ///   Gets the Password Expiry Reminder window.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 7 (1 week)
+        ///   Defaults to 7 (1 week).
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int PasswordExpiryReminder
@@ -948,7 +948,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Payment Processor
+        ///   Gets the Payment Processor.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string PaymentProcessor
@@ -963,10 +963,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the PerformanceSettings
+        ///   Gets or sets the PerformanceSettings.
         /// </summary>
         /// <remarks>
-        ///   Defaults to PerformanceSettings.ModerateCaching
+        ///   Defaults to PerformanceSettings.ModerateCaching.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static Globals.PerformanceSettings PerformanceSetting
@@ -992,7 +992,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Payment Processor Password
+        ///   Gets the Payment Processor Password.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string ProcessorPassword
@@ -1005,7 +1005,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Payment Processor User Id
+        ///   Gets the Payment Processor User Id.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string ProcessorUserId
@@ -1018,7 +1018,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Proxy Server Password
+        ///   Gets the Proxy Server Password.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string ProxyPassword
@@ -1031,7 +1031,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Proxy Server Port
+        ///   Gets the Proxy Server Port.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static int ProxyPort
@@ -1044,7 +1044,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Proxy Server
+        ///   Gets the Proxy Server.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string ProxyServer
@@ -1057,7 +1057,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Proxy Server UserName
+        ///   Gets the Proxy Server UserName.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string ProxyUsername
@@ -1070,10 +1070,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether to use the remember me checkbox
+        ///   Gets a value indicating whether gets whether to use the remember me checkbox.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool RememberCheckbox
@@ -1086,10 +1086,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Scheduler Mode
+        ///   Gets the Scheduler Mode.
         /// </summary>
         /// <remarks>
-        ///   Defaults to SchedulerMode.TIMER_METHOD
+        ///   Defaults to SchedulerMode.TIMER_METHOD.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static SchedulerMode SchedulerMode
@@ -1109,10 +1109,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the delayAtAppStart value
+        ///   Gets the delayAtAppStart value.
         /// </summary>
         /// <remarks>
-        ///   Defaults is 1 min(60 sec)
+        ///   Defaults is 1 min(60 sec).
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int SchedulerdelayAtAppStart
@@ -1125,10 +1125,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether to inlcude Common Words in the Search Index
+        ///   Gets a value indicating whether gets whether to inlcude Common Words in the Search Index.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool SearchIncludeCommon
@@ -1141,10 +1141,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether to inlcude Numbers in the Search Index
+        ///   Gets a value indicating whether gets whether to inlcude Numbers in the Search Index.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool SearchIncludeNumeric
@@ -1157,10 +1157,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the maximum Search Word length to index
+        ///   Gets the maximum Search Word length to index.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 25
+        ///   Defaults to 25.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int SearchMaxWordlLength
@@ -1173,10 +1173,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the maximum Search Word length to index
+        ///   Gets the maximum Search Word length to index.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 3
+        ///   Defaults to 3.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int SearchMinWordlLength
@@ -1189,10 +1189,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the filter used for inclusion of tag info
+        ///   Gets the filter used for inclusion of tag info.
         /// </summary>
         /// <remarks>
-        ///   Defaults to ""
+        ///   Defaults to "".
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static string SearchIncludedTagInfoFilter
@@ -1204,7 +1204,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether display the text of errors injected via the error querystring parameter
+        /// Gets a value indicating whether display the text of errors injected via the error querystring parameter.
         /// </summary>
         public static bool ShowCriticalErrors
         {
@@ -1216,10 +1216,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Site Log Buffer size
+        ///   Gets the Site Log Buffer size.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 1
+        ///   Defaults to 1.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
@@ -1233,10 +1233,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Site Log History
+        ///   Gets the Site Log History.
         /// </summary>
         /// <remarks>
-        ///   Defaults to -1
+        ///   Defaults to -1.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
@@ -1250,10 +1250,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the Site Log Storage location
+        ///   Gets the Site Log Storage location.
         /// </summary>
         /// <remarks>
-        ///   Defaults to "D"
+        ///   Defaults to "D".
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
@@ -1267,7 +1267,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the SMTP Authentication
+        ///   Gets the SMTP Authentication.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string SMTPAuthentication
@@ -1280,7 +1280,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets the SMTP mode (portal|host)
+        /// Gets a value indicating whether gets the SMTP mode (portal|host).
         /// </summary>
         /// -----------------------------------------------------------------------------
         internal static bool SMTPPortalEnabled
@@ -1324,7 +1324,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the SMTP Password
+        ///   Gets the SMTP Password.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string SMTPPassword
@@ -1364,7 +1364,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the SMTP Server
+        ///   Gets the SMTP Server.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string SMTPServer
@@ -1377,7 +1377,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the SMTP Username
+        ///   Gets the SMTP Username.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static string SMTPUsername
@@ -1390,7 +1390,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the SMTP Connection Limit
+        ///   Gets the SMTP Connection Limit.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static int SMTPConnectionLimit
@@ -1408,7 +1408,7 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the SMTP MaxIdleTime
+        ///   Gets the SMTP MaxIdleTime.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static int SMTPMaxIdleTime
@@ -1426,10 +1426,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether Exceptions are rethrown
+        ///   Gets a value indicating whether gets whether Exceptions are rethrown.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool ThrowCBOExceptions
@@ -1442,10 +1442,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether Friendly Urls is Enabled
+        ///   Gets a value indicating whether gets whether Friendly Urls is Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool UseFriendlyUrls
@@ -1458,10 +1458,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets a value indicating whether gets whether Custom Error Messages is Enabled
+        ///   Gets a value indicating whether gets whether Custom Error Messages is Enabled.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static bool UseCustomErrorMessages
@@ -1474,10 +1474,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the User Quota
+        ///   Gets the User Quota.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 0
+        ///   Defaults to 0.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int UserQuota
@@ -1490,10 +1490,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the window to use in minutes when determining if the user is online
+        ///   Gets the window to use in minutes when determining if the user is online.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 15
+        ///   Defaults to 15.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
@@ -1507,10 +1507,10 @@ namespace DotNetNuke.Entities.Host
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets the WebRequest Timeout value
+        ///   Gets the WebRequest Timeout value.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 10000
+        ///   Defaults to 10000.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         public static int WebRequestTimeout
@@ -1522,10 +1522,10 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        ///   Gets a value indicating whether gets whether to use the minified or debug version of the jQuery scripts
+        ///   Gets a value indicating whether gets whether to use the minified or debug version of the jQuery scripts.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool jQueryDebug
@@ -1537,10 +1537,10 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        ///   Gets a value indicating whether gets whether to use a hosted version of the jQuery script file
+        ///   Gets a value indicating whether gets whether to use a hosted version of the jQuery script file.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool jQueryHosted
@@ -1552,7 +1552,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        ///   Gets the Url for a hosted version of jQuery
+        ///   Gets the Url for a hosted version of jQuery.
         /// </summary>
         /// <remarks>
         ///   Defaults to the DefaultHostedUrl constant in the jQuery class.
@@ -1598,7 +1598,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        ///   Gets the Url for a hosted version of jQuery UI
+        ///   Gets the Url for a hosted version of jQuery UI.
         /// </summary>
         /// <remarks>
         ///   Defaults to the DefaultUIHostedUrl constant in the jQuery class.
@@ -1621,10 +1621,10 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        ///   Gets a value indicating whether gets whether to use a hosted version of the MS Ajax Library
+        ///   Gets a value indicating whether gets whether to use a hosted version of the MS Ajax Library.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         public static bool EnableMsAjaxCdn
         {
@@ -1635,10 +1635,10 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        ///   Gets a value indicating whether gets whether to use a hosted version of the Telerik Library
+        ///   Gets a value indicating whether gets whether to use a hosted version of the Telerik Library.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
         [Obsolete("Not used anymore. Scheduled removal in v10.0.0.")]
         public static bool EnableTelerikCdn
@@ -1691,7 +1691,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets a value indicating whether get a value indicating whether to put the entire instance into maintenance mode
+        /// Gets a value indicating whether get a value indicating whether to put the entire instance into maintenance mode.
         /// </summary>
         public static bool IsLocked
         {

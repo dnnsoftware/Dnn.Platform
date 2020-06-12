@@ -17,7 +17,7 @@ using Microsoft.WindowsAzure.Storage.Blob;
 namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
 {
     /// <summary>
-    /// Windows Azure Storage Settings Control
+    /// Windows Azure Storage Settings Control.
     /// </summary>
     public partial class Settings : FolderMappingSettingsControlBase
     {

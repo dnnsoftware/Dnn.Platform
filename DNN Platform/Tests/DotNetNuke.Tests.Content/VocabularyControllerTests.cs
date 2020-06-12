@@ -20,7 +20,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Content
 {
     /// <summary>
-    ///   Summary description for VocabularyTests
+    ///   Summary description for VocabularyTests.
     /// </summary>
     [TestFixture]
     public class VocabularyControllerTests

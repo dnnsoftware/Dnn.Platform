@@ -30,8 +30,8 @@ namespace log4net.Core
     /// This class should be used as the base for all wrapper implementations.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public abstract class LoggerWrapperImpl : ILoggerWrapper
     {
         /// <summary>
@@ -70,7 +70,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// The logger that this object is wrapping
+        /// The logger that this object is wrapping.
         /// </summary>
         private readonly ILogger m_logger;
     }

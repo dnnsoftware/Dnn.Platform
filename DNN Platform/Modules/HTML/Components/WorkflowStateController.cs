@@ -16,7 +16,7 @@ namespace DotNetNuke.Modules.Html
     /// Class:      WorkflowStateController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The WorkflowStateController is the Controller class for managing workflows and states for the HtmlText module
+    ///   The WorkflowStateController is the Controller class for managing workflows and states for the HtmlText module.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -30,11 +30,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetWorkFlows retrieves a collection of workflows for the portal
+        ///   GetWorkFlows retrieves a collection of workflows for the portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "PortalID">The ID of the Portal</param>
+        /// <param name = "PortalID">The ID of the Portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflows(int PortalID)
@@ -44,11 +44,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetWorkFlowStates retrieves a collection of WorkflowStateInfo objects for the Workflow from the cache
+        ///   GetWorkFlowStates retrieves a collection of WorkflowStateInfo objects for the Workflow from the cache.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "WorkflowID">The ID of the Workflow</param>
+        /// <param name = "WorkflowID">The ID of the Workflow.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflowStates(int WorkflowID)
@@ -59,11 +59,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetWorkFlowStatesCallback retrieves a collection of WorkflowStateInfo objects for the Workflow from the database
+        ///   GetWorkFlowStatesCallback retrieves a collection of WorkflowStateInfo objects for the Workflow from the database.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "cacheItemArgs">Arguments passed by the GetWorkflowStates method</param>
+        /// <param name = "cacheItemArgs">Arguments passed by the GetWorkflowStates method.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public object GetWorkflowStatesCallBack(CacheItemArgs cacheItemArgs)
@@ -74,11 +74,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetFirstWorkFlowStateID retrieves the first StateID for the Workflow
+        ///   GetFirstWorkFlowStateID retrieves the first StateID for the Workflow.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "WorkflowID">The ID of the Workflow</param>
+        /// <param name = "WorkflowID">The ID of the Workflow.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public int GetFirstWorkflowStateID(int WorkflowID)
@@ -95,12 +95,12 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetPreviousWorkFlowStateID retrieves the previous StateID for the Workflow and State specified
+        ///   GetPreviousWorkFlowStateID retrieves the previous StateID for the Workflow and State specified.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "WorkflowID">The ID of the Workflow</param>
-        /// <param name = "StateID">The ID of the State</param>
+        /// <param name = "WorkflowID">The ID of the Workflow.</param>
+        /// <param name = "StateID">The ID of the State.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public int GetPreviousWorkflowStateID(int WorkflowID, int StateID)
@@ -146,12 +146,12 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetNextWorkFlowStateID retrieves the next StateID for the Workflow and State specified
+        ///   GetNextWorkFlowStateID retrieves the next StateID for the Workflow and State specified.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "WorkflowID">The ID of the Workflow</param>
-        /// <param name = "StateID">The ID of the State</param>
+        /// <param name = "WorkflowID">The ID of the Workflow.</param>
+        /// <param name = "StateID">The ID of the State.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public int GetNextWorkflowStateID(int WorkflowID, int StateID)
@@ -197,11 +197,11 @@ namespace DotNetNuke.Modules.Html
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   GetLastWorkFlowStateID retrieves the last StateID for the Workflow
+        ///   GetLastWorkFlowStateID retrieves the last StateID for the Workflow.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name = "WorkflowID">The ID of the Workflow</param>
+        /// <param name = "WorkflowID">The ID of the Workflow.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public int GetLastWorkflowStateID(int WorkflowID)

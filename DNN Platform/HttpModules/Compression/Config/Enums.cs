@@ -5,7 +5,7 @@
 namespace DotNetNuke.HttpModules.Compression
 {
     /// <summary>
-    /// The available compression algorithms to use with the HttpCompressionModule
+    /// The available compression algorithms to use with the HttpCompressionModule.
     /// </summary>
     public enum Algorithms
     {

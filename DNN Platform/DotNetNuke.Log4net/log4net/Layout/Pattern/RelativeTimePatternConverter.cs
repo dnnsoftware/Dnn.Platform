@@ -29,21 +29,21 @@ using log4net.Core;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Converter to output the relative time of the event
+    /// Converter to output the relative time of the event.
     /// </summary>
     /// <remarks>
     /// <para>
     /// Converter to output the time of the event relative to the start of the program.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class RelativeTimePatternConverter : PatternLayoutConverter
     {
         /// <summary>
-        /// Write the relative time to the output
+        /// Write the relative time to the output.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// <para>
         /// Writes out the relative time of the event in milliseconds.
@@ -57,11 +57,11 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Helper method to get the time difference between two DateTime objects
+        /// Helper method to get the time difference between two DateTime objects.
         /// </summary>
-        /// <param name="start">start time (in the current local time zone)</param>
-        /// <param name="end">end time (in the current local time zone)</param>
-        /// <returns>the time difference in milliseconds</returns>
+        /// <param name="start">start time (in the current local time zone).</param>
+        /// <param name="end">end time (in the current local time zone).</param>
+        /// <returns>the time difference in milliseconds.</returns>
         private static long TimeDifferenceInMillis(DateTime start, DateTime end)
         {
             // We must convert all times to UTC before performing any mathematical

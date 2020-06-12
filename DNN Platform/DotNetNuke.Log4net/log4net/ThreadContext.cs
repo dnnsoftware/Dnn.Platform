@@ -59,7 +59,7 @@ namespace log4net
     ///     log.Info("This log message has a ThreadContext Property called 'user'");
     /// </code>
     /// </example>
-    /// <example>Example of how to push a message into the context stack
+    /// <example>Example of how to push a message into the context stack.
     /// <code lang="C#">
     ///     using(ThreadContext.Stacks["NDC"].Push("my context message"))
     ///     {
@@ -69,7 +69,7 @@ namespace log4net
     /// </code>
     /// </example>
     /// <threadsafety static="true" instance="true" />
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class ThreadContext
     {
         /// <summary>
@@ -85,10 +85,10 @@ namespace log4net
         }
 
         /// <summary>
-        /// Gets the thread properties map
+        /// Gets the thread properties map.
         /// </summary>
         /// <value>
-        /// The thread properties map
+        /// The thread properties map.
         /// </value>
         /// <remarks>
         /// <para>
@@ -102,10 +102,10 @@ namespace log4net
         }
 
         /// <summary>
-        /// Gets the thread stacks
+        /// Gets the thread stacks.
         /// </summary>
         /// <value>
-        /// stack map
+        /// stack map.
         /// </value>
         /// <remarks>
         /// <para>
@@ -118,12 +118,12 @@ namespace log4net
         }
 
         /// <summary>
-        /// The thread context properties instance
+        /// The thread context properties instance.
         /// </summary>
         private static readonly ThreadContextProperties s_properties = new ThreadContextProperties();
 
         /// <summary>
-        /// The thread context stacks instance
+        /// The thread context stacks instance.
         /// </summary>
         private static readonly ThreadContextStacks s_stacks = new ThreadContextStacks(s_properties);
     }

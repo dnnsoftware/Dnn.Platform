@@ -27,7 +27,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfileDefinitions PortalModuleBase is used to manage the Profile Properties
-    /// for a portal
+    /// for a portal.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether we are dealing with SuperUsers
+        /// Gets a value indicating whether gets whether we are dealing with SuperUsers.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool IsSuperUser
@@ -63,7 +63,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the collection of Profile Proeprties
+        /// Gets the collection of Profile Proeprties.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected ProfilePropertyDefinitionCollection ProfileProperties
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Return Url for the page
+        /// Gets the Return Url for the page.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string ReturnUrl
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Portal Id whose Users we are managing
+        /// Gets the Portal Id whose Users we are managing.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected int UsersPortalId
@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Helper function that determines whether the client-side functionality is possible
+        /// Helper function that determines whether the client-side functionality is possible.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool SupportsRichClient()
@@ -171,9 +171,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Deletes a property
+        /// Deletes a property.
         /// </summary>
-        /// <param name="index">The index of the Property to delete</param>
+        /// <param name="index">The index of the Property to delete.</param>
         /// -----------------------------------------------------------------------------
         private void DeleteProperty(int index)
         {
@@ -184,10 +184,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Moves a property
+        /// Moves a property.
         /// </summary>
-        /// <param name="index">The index of the Property to move</param>
-        /// <param name="destIndex">The new index of the Property</param>
+        /// <param name="index">The index of the Property to move.</param>
+        /// <param name="destIndex">The new index of the Property.</param>
         /// -----------------------------------------------------------------------------
         private void MoveProperty(int index, int destIndex)
         {
@@ -208,9 +208,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Moves a property down in the ViewOrder
+        /// Moves a property down in the ViewOrder.
         /// </summary>
-        /// <param name="index">The index of the Property to move</param>
+        /// <param name="index">The index of the Property to move.</param>
         /// -----------------------------------------------------------------------------
         private void MovePropertyDown(int index)
         {
@@ -219,9 +219,9 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Moves a property up in the ViewOrder
+        /// Moves a property up in the ViewOrder.
         /// </summary>
-        /// <param name="index">The index of the Property to move</param>
+        /// <param name="index">The index of the Property to move.</param>
         /// -----------------------------------------------------------------------------
         private void MovePropertyUp(int index)
         {
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Binds the Property Collection to the Grid
+        /// Binds the Property Collection to the Grid.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void BindGrid()
@@ -281,7 +281,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Refresh the Property Collection to the Grid
+        /// Refresh the Property Collection to the Grid.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void RefreshGrid()
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates any "dirty" properties
+        /// Updates any "dirty" properties.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void UpdateProperties()
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This method is responsible for taking in posted information from the grid and
-        /// persisting it to the property definition collection
+        /// persisting it to the property definition collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void ProcessPostBack()
@@ -413,7 +413,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -495,7 +495,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdRefresh_Click runs when the refresh button is clciked
+        /// cmdRefresh_Click runs when the refresh button is clciked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -508,7 +508,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// grdProfileProperties_ItemCheckedChanged runs when a checkbox in the grid
-        /// is clicked
+        /// is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -555,7 +555,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// grdProfileProperties_ItemCommand runs when a Command event is raised in the
-        /// Grid
+        /// Grid.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -582,7 +582,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// When it is determined that the client supports a rich interactivity the grdProfileProperties_ItemCreated
         /// event is responsible for disabling all the unneeded AutoPostBacks, along with assiging the appropriate
-        ///     client-side script for each event handler
+        ///     client-side script for each event handler.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -616,7 +616,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// grdProfileProperties_ItemDataBound runs when a row in the grid is bound to its data source
-        /// Grid
+        /// Grid.
         /// </summary>
         /// <remarks>
         /// </remarks>

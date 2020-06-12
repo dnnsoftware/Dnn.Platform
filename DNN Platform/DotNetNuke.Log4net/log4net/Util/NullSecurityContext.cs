@@ -27,7 +27,7 @@ using log4net.Core;
 namespace log4net.Util
 {
     /// <summary>
-    /// A SecurityContext used when a SecurityContext is not required
+    /// A SecurityContext used when a SecurityContext is not required.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,21 +36,21 @@ namespace log4net.Util
     /// is required but one has not been provided.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class NullSecurityContext : SecurityContext
     {
         /// <summary>
-        /// Singleton instance of <see cref="NullSecurityContext"/>
+        /// Singleton instance of <see cref="NullSecurityContext"/>.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Singleton instance of <see cref="NullSecurityContext"/>
+        /// Singleton instance of <see cref="NullSecurityContext"/>.
         /// </para>
         /// </remarks>
         public static readonly NullSecurityContext Instance = new NullSecurityContext();
 
         /// <summary>
-        /// Private constructor
+        /// Private constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -62,10 +62,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Impersonate this SecurityContext
+        /// Impersonate this SecurityContext.
         /// </summary>
-        /// <param name="state">State supplied by the caller</param>
-        /// <returns><c>null</c></returns>
+        /// <param name="state">State supplied by the caller.</param>
+        /// <returns><c>null</c>.</returns>
         /// <remarks>
         /// <para>
         /// No impersonation is done and <c>null</c> is always returned.

@@ -26,7 +26,7 @@ using System.IO;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Write an <see cref="System.Environment.SpecialFolder" /> folder path to the output
+    /// Write an <see cref="System.Environment.SpecialFolder" /> folder path to the output.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,14 +36,14 @@ namespace log4net.Util.PatternStringConverters
     /// should be a value in the <see cref="System.Environment.SpecialFolder" /> enumeration.
     /// </para>
     /// </remarks>
-    /// <author>Ron Grabowski</author>
+    /// <author>Ron Grabowski.</author>
     internal sealed class EnvironmentFolderPathPatternConverter : PatternConverter
     {
         /// <summary>
-        /// Write an special path environment folder path to the output
+        /// Write an special path environment folder path to the output.
         /// </summary>
-        /// <param name="writer">the writer to write to</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="writer">the writer to write to.</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Writes the special path environment folder path to the output <paramref name="writer"/>.

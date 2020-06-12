@@ -24,9 +24,9 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new DualListBoxEventArgs
+        /// Constructs a new DualListBoxEventArgs.
         /// </summary>
-        /// <param name="items">The items</param>
+        /// <param name="items">The items.</param>
         /// -----------------------------------------------------------------------------
         public DualListBoxEventArgs(List<string> items)
         {
@@ -35,9 +35,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Items
+        /// Gets or sets and sets the Items.
         /// </summary>
-        /// <value>A List(Of String)</value>
+        /// <value>A List(Of String).</value>
         /// -----------------------------------------------------------------------------
         public List<string> Items { get; set; }
     }

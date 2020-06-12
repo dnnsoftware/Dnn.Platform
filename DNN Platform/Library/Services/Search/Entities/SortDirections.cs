@@ -5,9 +5,9 @@
 namespace DotNetNuke.Services.Search.Entities
 {
     /// <summary>
-    /// Sorting direction to be used for Querying
+    /// Sorting direction to be used for Querying.
     /// </summary>
-    /// <remarks>Does not apply when SortFields.Relevance is specified in SearchQuery.SortField</remarks>
+    /// <remarks>Does not apply when SortFields.Relevance is specified in SearchQuery.SortField.</remarks>
     public enum SortDirections
     {
         /// <summary>

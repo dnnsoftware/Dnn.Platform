@@ -9,22 +9,22 @@ using System.Collections.Generic;
 namespace DotNetNuke.Web.InternalServices.Views.Search
 {
     /// <summary>
-    /// DetailedView grouped by Url (TabId)
+    /// DetailedView grouped by Url (TabId).
     /// </summary>
     public class GroupedDetailView
     {
         /// <summary>
-        /// Gets or sets document's Url
+        /// Gets or sets document's Url.
         /// </summary>
         public string DocumentUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets document's Title
+        /// Gets or sets document's Title.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Gets or sets results of the Search
+        /// Gets or sets results of the Search.
         /// </summary>
         public List<DetailedView> Results { get; set; }
 

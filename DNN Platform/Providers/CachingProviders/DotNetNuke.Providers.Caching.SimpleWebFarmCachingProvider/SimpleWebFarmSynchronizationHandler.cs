@@ -12,7 +12,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 {
     /// <summary>
     ///     This synchronization handler receives requests from other servers and passes them to the cache system for
-    ///     processing.  Error handling is purposefully allowed to bubble up from here to ensure the caller is notified
+    ///     processing.  Error handling is purposefully allowed to bubble up from here to ensure the caller is notified.
     /// </summary>
     public class SimpleWebFarmSynchronizationHandler : IHttpHandler
     {
@@ -50,7 +50,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         }
 
         /// <summary>
-        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests
+        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests.
         /// </summary>
         public bool IsReusable => true;
     }

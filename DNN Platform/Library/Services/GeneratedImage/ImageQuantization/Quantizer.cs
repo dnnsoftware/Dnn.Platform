@@ -10,14 +10,14 @@ using System.Runtime.InteropServices;
 namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 {
     /// <summary>
-    /// Abstarct class for Quantizers
+    /// Abstarct class for Quantizers.
     /// </summary>
     public abstract class Quantizer
     {
         /// <summary>
-        /// Construct the quantizer
+        /// Construct the quantizer.
         /// </summary>
-        /// <param name="singlePass">If true, the quantization only needs to loop through the source pixels once</param>
+        /// <param name="singlePass">If true, the quantization only needs to loop through the source pixels once.</param>
         /// <remarks>
         /// If you construct this class with a true value for singlePass, then the code will, when quantizing your image,
         /// only call the 'QuantizeImage' function. If two passes are required, the code will call 'InitialQuantizeImage'
@@ -30,10 +30,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Quantize an image and return the resulting output bitmap
+        /// Quantize an image and return the resulting output bitmap.
         /// </summary>
-        /// <param name="source">The image to quantize</param>
-        /// <returns>A quantized version of the image</returns>
+        /// <param name="source">The image to quantize.</param>
+        /// <returns>A quantized version of the image.</returns>
         public Bitmap Quantize(Image source)
         {
             // Get the size of the source image
@@ -93,11 +93,11 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Execute the first pass through the pixels in the image
+        /// Execute the first pass through the pixels in the image.
         /// </summary>
-        /// <param name="sourceData">The source data</param>
-        /// <param name="width">The width in pixels of the image</param>
-        /// <param name="height">The height in pixels of the image</param>
+        /// <param name="sourceData">The source data.</param>
+        /// <param name="width">The width in pixels of the image.</param>
+        /// <param name="height">The height in pixels of the image.</param>
         protected virtual void FirstPass(BitmapData sourceData, int width, int height)
         {
             // Define the source data pointers. The source row is a byte to
@@ -123,13 +123,13 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Execute a second pass through the bitmap
+        /// Execute a second pass through the bitmap.
         /// </summary>
-        /// <param name="sourceData">The source bitmap, locked into memory</param>
-        /// <param name="output">The output bitmap</param>
-        /// <param name="width">The width in pixels of the image</param>
-        /// <param name="height">The height in pixels of the image</param>
-        /// <param name="bounds">The bounding rectangle</param>
+        /// <param name="sourceData">The source bitmap, locked into memory.</param>
+        /// <param name="output">The output bitmap.</param>
+        /// <param name="width">The width in pixels of the image.</param>
+        /// <param name="height">The height in pixels of the image.</param>
+        /// <param name="bounds">The bounding rectangle.</param>
         protected virtual void SecondPass(BitmapData sourceData, Bitmap output, int width, int height, Rectangle bounds)
         {
             BitmapData outputData = null;
@@ -200,9 +200,9 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Override this to process the pixel in the first pass of the algorithm
+        /// Override this to process the pixel in the first pass of the algorithm.
         /// </summary>
-        /// <param name="pixel">The pixel to quantize</param>
+        /// <param name="pixel">The pixel to quantize.</param>
         /// <remarks>
         /// This function need only be overridden if your quantize algorithm needs two passes,
         /// such as an Octree quantizer.
@@ -212,17 +212,17 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         }
 
         /// <summary>
-        /// Override this to process the pixel in the second pass of the algorithm
+        /// Override this to process the pixel in the second pass of the algorithm.
         /// </summary>
-        /// <param name="pixel">The pixel to quantize</param>
-        /// <returns>The quantized value</returns>
+        /// <param name="pixel">The pixel to quantize.</param>
+        /// <returns>The quantized value.</returns>
         protected abstract byte QuantizePixel(Color32 pixel);
 
         /// <summary>
-        /// Retrieve the palette for the quantized image
+        /// Retrieve the palette for the quantized image.
         /// </summary>
-        /// <param name="original">Any old palette, this is overrwritten</param>
-        /// <returns>The new color palette</returns>
+        /// <param name="original">Any old palette, this is overrwritten.</param>
+        /// <returns>The new color palette.</returns>
         protected abstract ColorPalette GetPalette(ColorPalette original);
 
         /// <summary>
@@ -232,12 +232,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         private int _pixelSize;
 
         /// <summary>
-        /// Struct that defines a 32 bpp colour
+        /// Struct that defines a 32 bpp colour.
         /// </summary>
         /// <remarks>
         /// This struct is used to read data from a 32 bits per pixel image
         /// in memory, and is ordered in this manner as this is the way that
-        /// the data is layed out in memory
+        /// the data is layed out in memory.
         /// </remarks>
         [StructLayout(LayoutKind.Explicit)]
         public struct Color32
@@ -248,37 +248,37 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
 
             /// <summary>
-            /// Holds the blue component of the colour
+            /// Holds the blue component of the colour.
             /// </summary>
             [FieldOffset(0)]
             public byte Blue;
 
             /// <summary>
-            /// Holds the green component of the colour
+            /// Holds the green component of the colour.
             /// </summary>
             [FieldOffset(1)]
             public byte Green;
 
             /// <summary>
-            /// Holds the red component of the colour
+            /// Holds the red component of the colour.
             /// </summary>
             [FieldOffset(2)]
             public byte Red;
 
             /// <summary>
-            /// Holds the alpha component of the colour
+            /// Holds the alpha component of the colour.
             /// </summary>
             [FieldOffset(3)]
             public byte Alpha;
 
             /// <summary>
-            /// Permits the color32 to be treated as an int32
+            /// Permits the color32 to be treated as an int32.
             /// </summary>
             [FieldOffset(0)]
             public int ARGB;
 
             /// <summary>
-            /// Gets return the color for this Color32 object
+            /// Gets return the color for this Color32 object.
             /// </summary>
             public Color Color
             {

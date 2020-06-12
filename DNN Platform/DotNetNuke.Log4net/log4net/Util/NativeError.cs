@@ -40,8 +40,8 @@ namespace log4net.Util
     /// Represents a Win32 platform native error.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class NativeError
     {
         /// <summary>
@@ -120,7 +120,7 @@ namespace log4net.Util
         /// <summary>
         /// Create a new instance of the <see cref="NativeError" /> class.
         /// </summary>
-        /// <param name="number">the error number for the native error</param>
+        /// <param name="number">the error number for the native error.</param>
         /// <returns>
         /// An instance of the <see cref="NativeError" /> class for the specified
         /// error number.
@@ -197,12 +197,12 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Return error information string
+        /// Return error information string.
         /// </summary>
-        /// <returns>error information string</returns>
+        /// <returns>error information string.</returns>
         /// <remarks>
         /// <para>
-        /// Return error information string
+        /// Return error information string.
         /// </para>
         /// </remarks>
         public override string ToString()

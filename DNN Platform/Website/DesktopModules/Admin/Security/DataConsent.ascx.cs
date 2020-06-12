@@ -111,15 +111,15 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DataConsentEventArgs class provides a customised EventArgs class for
-        /// the DataConsent Event
+        /// the DataConsent Event.
         /// </summary>
         public class DataConsentEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new DataConsentEventArgs
+            /// Constructs a new DataConsentEventArgs.
             /// </summary>
-            /// <param name="status">The Data Consent Status</param>
+            /// <param name="status">The Data Consent Status.</param>
             public DataConsentEventArgs(DataConsentStatus status)
             {
                 this.Status = status;
@@ -127,7 +127,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets or sets and sets the Update Status
+            /// Gets or sets and sets the Update Status.
             /// </summary>
             public DataConsentStatus Status { get; set; }
         }

@@ -43,8 +43,8 @@ namespace log4net.Config
     /// as many times as necessary to alias all the required repositories.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly, AllowMultiple=true)]
     [Serializable]
     public /*sealed*/ class AliasRepositoryAttribute : Attribute

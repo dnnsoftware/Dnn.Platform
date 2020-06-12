@@ -36,9 +36,9 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets cssClass determines the Css Class used for the Title Text
+        /// Gets or sets cssClass determines the Css Class used for the Title Text.
         /// </summary>
-        /// <value>A string representing the name of the css class</value>
+        /// <value>A string representing the name of the css class.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -58,9 +58,9 @@ namespace DotNetNuke.UI.UserControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether includeRule determines whether there is a horizontal rule displayed under the
-        /// header text
+        /// header text.
         /// </summary>
-        /// <value>A string representing true or false</value>
+        /// <value>A string representing true or false.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.UserControls
         /// <summary>
         /// Gets or sets javaScript is the name of the javascript function implementation.
         /// </summary>
-        /// <value>A string representing the name of the javascript function implementation</value>
+        /// <value>A string representing the name of the javascript function implementation.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.UserControls
         /// Gets or sets the MaxImageUrl is the url of the image displayed when the contained panel is
         /// collapsed.
         /// </summary>
-        /// <value>A string representing the url of the Max Image</value>
+        /// <value>A string representing the url of the Max Image.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -148,7 +148,7 @@ namespace DotNetNuke.UI.UserControls
         /// Gets or sets the MinImageUrl is the url of the image displayed when the contained panel is
         /// expanded.
         /// </summary>
-        /// <value>A string representing the url of the Min Image</value>
+        /// <value>A string representing the url of the Min Image.</value>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Text is the name or title of the section
+        /// Gets or sets the Text is the name or title of the section.
         /// </summary>
         /// <value>A string representing the Title Text.</value>
         /// <remarks>
@@ -210,7 +210,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Assign resource key to label for localization
+        /// Assign resource key to label for localization.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>
@@ -236,7 +236,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Renders the SectionHeadControl
+        /// Renders the SectionHeadControl.
         /// </summary>
         /// <param name="e"></param>
         /// <remarks>

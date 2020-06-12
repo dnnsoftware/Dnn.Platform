@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the path of the Folder
+        /// Gets or sets and Sets the path of the Folder.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string FolderPath
@@ -71,7 +71,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Permission Collection
+        /// Gets the Permission Collection.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public FolderPermissionCollection Permissions
@@ -88,7 +88,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the TabPermissions from the Data Store
+        /// Gets the TabPermissions from the Data Store.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected virtual void GetFolderPermissions()
@@ -99,9 +99,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Parse the Permission Keys used to persist the Permissions in the ViewState
+        /// Parse the Permission Keys used to persist the Permissions in the ViewState.
         /// </summary>
-        /// <param name="settings">A string array of settings</param>
+        /// <param name="settings">A string array of settings.</param>
         /// -----------------------------------------------------------------------------
         private FolderPermissionInfo ParseKeys(string[] settings)
         {
@@ -165,10 +165,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Permission
+        /// Updates a Permission.
         /// </summary>
-        /// <param name="permissions">The permissions collection</param>
-        /// <param name="user">The user to add</param>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="user">The user to add.</param>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
@@ -197,10 +197,10 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Permission
+        /// Updates a Permission.
         /// </summary>
-        /// <param name="permissions">The permissions collection</param>
-        /// <param name="role">The role to add</param>
+        /// <param name="permissions">The permissions collection.</param>
+        /// <param name="role">The role to add.</param>
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
@@ -222,11 +222,11 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Enabled status of the permission
+        /// Gets the Enabled status of the permission.
         /// </summary>
-        /// <param name="objPerm">The permission being loaded</param>
-        /// <param name="role">The role</param>
-        /// <param name="column">The column of the Grid</param>
+        /// <param name="objPerm">The permission being loaded.</param>
+        /// <param name="role">The role.</param>
+        /// <param name="column">The column of the Grid.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool GetEnabled(PermissionInfo objPerm, RoleInfo role, int column)
@@ -236,13 +236,13 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Value of the permission
+        /// Gets the Value of the permission.
         /// </summary>
-        /// <param name="objPerm">The permission being loaded</param>
-        /// <param name="role">The role</param>
-        /// <param name="column">The column of the Grid</param>
+        /// <param name="objPerm">The permission being loaded.</param>
+        /// <param name="role">The role.</param>
+        /// <param name="column">The column of the Grid.</param>
         /// <param name="defaultState">Default State.</param>
-        /// <returns>A Boolean (True or False)</returns>
+        /// <returns>A Boolean (True or False).</returns>
         /// -----------------------------------------------------------------------------
         protected override string GetPermission(PermissionInfo objPerm, RoleInfo role, int column, string defaultState)
         {
@@ -287,7 +287,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the permissions from the Database
+        /// Gets the permissions from the Database.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -300,9 +300,9 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Load the ViewState
+        /// Load the ViewState.
         /// </summary>
-        /// <param name="savedState">The saved state</param>
+        /// <param name="savedState">The saved state.</param>
         /// -----------------------------------------------------------------------------
         protected override void LoadViewState(object savedState)
         {
@@ -352,7 +352,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Saves the ViewState
+        /// Saves the ViewState.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -399,7 +399,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// returns whether or not the derived grid supports Deny permissions
+        /// returns whether or not the derived grid supports Deny permissions.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -410,7 +410,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Overrides the Base method to Generate the Data Grid
+        /// Overrides the Base method to Generate the Data Grid.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void GenerateDataGrid()

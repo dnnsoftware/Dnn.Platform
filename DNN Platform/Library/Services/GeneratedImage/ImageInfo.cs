@@ -9,22 +9,22 @@ using System.Net;
 namespace DotNetNuke.Services.GeneratedImage
 {
     /// <summary>
-    /// Image info class
+    /// Image info class.
     /// </summary>
     public class ImageInfo
     {
         /// <summary>
-        /// Gets image
+        /// Gets image.
         /// </summary>
         public Image Image { get; private set; }
 
         /// <summary>
-        /// Gets image byte buffer
+        /// Gets image byte buffer.
         /// </summary>
         public byte[] ImageByteBuffer { get; private set; }
 
         /// <summary>
-        /// Gets http status code
+        /// Gets http status code.
         /// </summary>
         public HttpStatusCode? HttpStatusCode { get; private set; }
 

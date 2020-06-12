@@ -82,10 +82,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a value indicating whether indicates if the folder provider supports mapped paths when creating new folders
+        /// Gets a value indicating whether indicates if the folder provider supports mapped paths when creating new folders.
         /// </summary>
         /// <remarks>
-        /// If this method is not overrided it returns false
+        /// If this method is not overrided it returns false.
         /// </remarks>
         public virtual bool SupportsMappedPaths
         {
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Moves a file to a new folder
+        /// Moves a file to a new folder.
         /// </summary>
         /// <param name="file"></param>
         public virtual void MoveFile(IFileInfo file, IFolderInfo destinationFolder)
@@ -268,13 +268,13 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets the decrypted value of an encrypted folder mapping setting
+        /// Gets the decrypted value of an encrypted folder mapping setting.
         /// </summary>
-        /// <remarks>If the value is not set the method returns null</remarks>
-        /// <param name="folderMappingSettings">Folder mapping settings</param>
-        /// <param name="settingName">Setting name</param>
-        /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null</exception>
-        /// <returns>decrypted value</returns>
+        /// <remarks>If the value is not set the method returns null.</remarks>
+        /// <param name="folderMappingSettings">Folder mapping settings.</param>
+        /// <param name="settingName">Setting name.</param>
+        /// <exception cref="ArgumentNullException">the input parameters of the method cannot be null.</exception>
+        /// <returns>decrypted value.</returns>
         public string GetEncryptedSetting(Hashtable folderMappingSettings, string settingName)
         {
             Requires.NotNull(nameof(folderMappingSettings), folderMappingSettings);

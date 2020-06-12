@@ -8,14 +8,14 @@ using System.Web;
 namespace DotNetNuke.Common
 {
     /// <summary>
-    /// A unit testable alternative to HttpContext.Current
+    /// A unit testable alternative to HttpContext.Current.
     /// </summary>
     public class HttpContextSource
     {
         private static HttpContextBase _fakeContext;
 
         /// <summary>
-        /// Gets the current HttpContext
+        /// Gets the current HttpContext.
         /// </summary>
         public static HttpContextBase Current
         {
@@ -36,9 +36,9 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Injects a fake/mock context for unit testing
+        /// Injects a fake/mock context for unit testing.
         /// </summary>
-        /// <param name="instance">The fake context to inject</param>
+        /// <param name="instance">The fake context to inject.</param>
         public static void RegisterInstance(HttpContextBase instance)
         {
             _fakeContext = instance;

@@ -11,7 +11,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PagingControlMode Enum provides an enumeration of the modes of the Paging
-    /// Control
+    /// Control.
     /// </summary>
     /// <remarks>
     /// </remarks>

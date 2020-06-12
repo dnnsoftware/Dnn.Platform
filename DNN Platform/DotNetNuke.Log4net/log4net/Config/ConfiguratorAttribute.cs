@@ -38,8 +38,8 @@ namespace log4net.Config
     /// configurator to be parameterized by an assembly level
     /// attribute.
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     [AttributeUsage(AttributeTargets.Assembly)]
     public abstract class ConfiguratorAttribute : Attribute, IComparable
     {
@@ -48,7 +48,7 @@ namespace log4net.Config
         /// <summary>
         /// Constructor used by subclasses.
         /// </summary>
-        /// <param name="priority">the ordering priority for this configurator</param>
+        /// <param name="priority">the ordering priority for this configurator.</param>
         /// <remarks>
         /// <para>
         /// The <paramref name="priority"/> is used to order the configurator
@@ -75,10 +75,10 @@ namespace log4net.Config
         public abstract void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository);
 
         /// <summary>
-        /// Compare this instance to another ConfiguratorAttribute
+        /// Compare this instance to another ConfiguratorAttribute.
         /// </summary>
-        /// <param name="obj">the object to compare to</param>
-        /// <returns>see <see cref="IComparable.CompareTo"/></returns>
+        /// <param name="obj">the object to compare to.</param>
+        /// <returns>see <see cref="IComparable.CompareTo"/>.</returns>
         /// <remarks>
         /// <para>
         /// Compares the priorities of the two <see cref="ConfiguratorAttribute"/> instances.

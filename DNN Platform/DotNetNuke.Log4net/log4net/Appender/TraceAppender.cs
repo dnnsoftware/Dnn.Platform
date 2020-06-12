@@ -48,10 +48,10 @@ namespace log4net.Appender
     /// the Trace system. This appender will therefore behave like the <see cref="DebugAppender"/>.
     /// </para>
     /// </remarks>
-    /// <author>Douglas de la Torre</author>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Ron Grabowski</author>
+    /// <author>Douglas de la Torre.</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Ron Grabowski.</author>
     public class TraceAppender : AppenderSkeleton
     {
         /// <summary>
@@ -157,7 +157,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -186,7 +186,7 @@ namespace log4net.Appender
         private bool m_immediateFlush = true;
 
         /// <summary>
-        /// Defaults to %logger
+        /// Defaults to %logger.
         /// </summary>
         private PatternLayout m_category = new PatternLayout("%logger");
 

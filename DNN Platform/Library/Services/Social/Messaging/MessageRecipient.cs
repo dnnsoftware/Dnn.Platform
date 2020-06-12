@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Social.Messaging
     /// Class:      MessageRecipient
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MessageRecipient class is used to store the details of all recipients of a particular message
+    /// The MessageRecipient class is used to store the details of all recipients of a particular message.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Messaging
         private int _recipientID = -1;
 
         /// <summary>
-        /// Gets or sets recipientID - The primary key
+        /// Gets or sets recipientID - The primary key.
         /// </summary>
         [XmlAttribute]
         public int RecipientID
@@ -45,13 +45,13 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>
-        /// Gets or sets the messageID of who sent the message to this recipient
+        /// Gets or sets the messageID of who sent the message to this recipient.
         /// </summary>
         [XmlAttribute]
         public int MessageID { get; set; }
 
         /// <summary>
-        /// Gets or sets the UserID of the user receiving the message
+        /// Gets or sets the UserID of the user receiving the message.
         /// </summary>
         [XmlAttribute]
         public int UserID { get; set; }

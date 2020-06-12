@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.Skins
     /// Class    : Skin
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// Skin is the base for the Skins
+    /// Skin is the base for the Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -103,9 +103,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleCommunicate instance for the skin
+        /// Gets the ModuleCommunicate instance for the skin.
         /// </summary>
-        /// <returns>The ModuleCommunicate instance for the Skin</returns>
+        /// <returns>The ModuleCommunicate instance for the Skin.</returns>
         internal ModuleCommunicate Communicator
         {
             get
@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets an ArrayList of ActionEventListeners
+        /// Gets or sets an ArrayList of ActionEventListeners.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ArrayList ActionEventListeners
@@ -149,9 +149,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path for this skin
+        /// Gets the Path for this skin.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string SkinPath
         {
@@ -163,9 +163,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Source for this skin
+        /// Gets or sets the Source for this skin.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string SkinSrc { get; set; }
 
@@ -402,7 +402,7 @@ namespace DotNetNuke.UI.Skins
 
         /// <summary>
         /// Handle access denied errors by displaying an error message
-        /// or by performing a redirect to a predefined "access denied URL"
+        /// or by performing a redirect to a predefined "access denied URL".
         /// </summary>
         /// <param name="redirect"></param>
         private void HandleAccesDenied(bool redirect = false)
@@ -715,11 +715,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleMessage adds a Moduel Message control to the Skin
+        /// AddModuleMessage adds a Moduel Message control to the Skin.
         /// </summary>
-        /// <param name="message">The Message Text</param>
-        /// <param name="control">The current control</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="control">The current control.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -728,12 +728,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddModuleMessage adds a Moduel Message control to the Skin
+        /// AddModuleMessage adds a Moduel Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="control">The current control</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="control">The current control.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddModuleMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -742,12 +742,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="iconSrc">The Icon to diplay</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="page">The Page</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="iconSrc">The Icon to diplay.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="page">The Page.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Page page, string heading, string message, string iconSrc)
         {
@@ -756,12 +756,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="iconSrc">The Icon to diplay</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="skin">The skin</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="iconSrc">The Icon to diplay.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="skin">The skin.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Skin skin, string heading, string message, string iconSrc)
         {
@@ -770,12 +770,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="skin">The skin</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="skin">The skin.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Skin skin, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -784,12 +784,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPageMessage adds a Page Message control to the Skin
+        /// AddPageMessage adds a Page Message control to the Skin.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="page">The Page</param>
-        /// <param name="moduleMessageType">The type of the message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="page">The Page.</param>
+        /// <param name="moduleMessageType">The type of the message.</param>
         /// -----------------------------------------------------------------------------
         public static void AddPageMessage(Page page, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
         {
@@ -798,11 +798,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties
+        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="iconImage">The Message Icon</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="iconImage">The Message Icon.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, string iconImage)
@@ -812,11 +812,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties
+        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="moduleMessageType">The type of message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="moduleMessageType">The type of message.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType)
@@ -826,12 +826,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetModuleMessageControl gets an existing Message Control and sets its properties
+        /// GetModuleMessageControl gets an existing Message Control and sets its properties.
         /// </summary>
-        /// <param name="heading">The Message Heading</param>
-        /// <param name="message">The Message Text</param>
-        /// <param name="iconImage">The Message Icon</param>
-        /// <param name="moduleMessageType">The type of message</param>
+        /// <param name="heading">The Message Heading.</param>
+        /// <param name="message">The Message Text.</param>
+        /// <param name="iconImage">The Message Icon.</param>
+        /// <param name="moduleMessageType">The type of message.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
@@ -849,9 +849,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetParentSkin gets the Parent Skin for a control
+        /// GetParentSkin gets the Parent Skin for a control.
         /// </summary>
-        /// <param name="module">The control whose Parent Skin is requested</param>
+        /// <param name="module">The control whose Parent Skin is requested.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(PortalModuleBase module)
@@ -861,9 +861,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetParentSkin gets the Parent Skin for a control
+        /// GetParentSkin gets the Parent Skin for a control.
         /// </summary>
-        /// <param name="control">The control whose Parent Skin is requested</param>
+        /// <param name="control">The control whose Parent Skin is requested.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetParentSkin(Control control)
@@ -875,7 +875,7 @@ namespace DotNetNuke.UI.Skins
         /// <summary>
         /// GetPopUpSkin gets the Skin that is used in modal popup.
         /// </summary>
-        /// <param name="page">The Page</param>
+        /// <param name="page">The Page.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetPopUpSkin(PageBase page)
@@ -912,9 +912,9 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSkin gets the Skin
+        /// GetSkin gets the Skin.
         /// </summary>
-        /// <param name="page">The Page</param>
+        /// <param name="page">The Page.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Skin GetSkin(PageBase page)
@@ -975,10 +975,10 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// InjectModule injects the module into the Pane
+        /// InjectModule injects the module into the Pane.
         /// </summary>
-        /// <param name="module">The module to inject</param>
-        /// <param name="pane">The pane</param>
+        /// <param name="module">The module to inject.</param>
+        /// <param name="pane">The pane.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool InjectModule(Pane pane, ModuleInfo module)
@@ -1016,10 +1016,10 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RegisterModuleActionEvent registers a Module Action Event
+        /// RegisterModuleActionEvent registers a Module Action Event.
         /// </summary>
-        /// <param name="moduleId">The ID of the module</param>
-        /// <param name="e">An Action Event Handler</param>
+        /// <param name="moduleId">The ID of the module.</param>
+        /// <param name="e">An Action Event Handler.</param>
         /// -----------------------------------------------------------------------------
         public void RegisterModuleActionEvent(int moduleId, ActionEventHandler e)
         {

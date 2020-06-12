@@ -36,11 +36,11 @@ using log4net.Util;
 namespace log4net.Core
 {
     /// <summary>
-    /// Static manager that controls the creation of repositories
+    /// Static manager that controls the creation of repositories.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Static manager that controls the creation of repositories
+    /// Static manager that controls the creation of repositories.
     /// </para>
     /// <para>
     /// This class is used by the wrapper managers (e.g. <see cref="log4net.LogManager"/>)
@@ -54,8 +54,8 @@ namespace log4net.Core
     /// selector to use.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class LoggerManager
     {
         /// <summary>
@@ -71,7 +71,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Hook the shutdown event
+        /// Hook the shutdown event.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -153,7 +153,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Register for ProcessExit and DomainUnload events on the AppDomain
+        /// Register for ProcessExit and DomainUnload events on the AppDomain.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -178,8 +178,8 @@ namespace log4net.Core
         /// <summary>
         /// Return the default <see cref="ILoggerRepository"/> instance.
         /// </summary>
-        /// <param name="repository">the repository to lookup in</param>
-        /// <returns>Return the default <see cref="ILoggerRepository"/> instance</returns>
+        /// <param name="repository">the repository to lookup in.</param>
+        /// <returns>Return the default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
         /// <para>
         /// Gets the <see cref="ILoggerRepository"/> for the repository specified
@@ -206,8 +206,8 @@ namespace log4net.Core
         /// <summary>
         /// Return the default <see cref="ILoggerRepository"/> instance.
         /// </summary>
-        /// <param name="repository">the repository to lookup in</param>
-        /// <returns>Return the default <see cref="ILoggerRepository"/> instance</returns>
+        /// <param name="repository">the repository to lookup in.</param>
+        /// <returns>Return the default <see cref="ILoggerRepository"/> instance.</returns>
         /// <remarks>
         /// <para>
         /// Gets the <see cref="ILoggerRepository"/> for the repository specified
@@ -443,7 +443,7 @@ namespace log4net.Core
         /// <summary>
         /// Shorthand for <see cref="M:LogManager.GetLogger(string)"/>.
         /// </summary>
-        /// <param name="repositoryAssembly">the assembly to use to lookup the repository</param>
+        /// <param name="repositoryAssembly">the assembly to use to lookup the repository.</param>
         /// <param name="type">The <paramref name="type"/> of which the fullname will be used as the name of the logger to retrieve.</param>
         /// <returns>The logger with the name specified.</returns>
         /// <remarks>
@@ -838,10 +838,10 @@ namespace log4net.Core
 
 #if !NETCF
         /// <summary>
-        /// Called when the <see cref="AppDomain.DomainUnload"/> event fires
+        /// Called when the <see cref="AppDomain.DomainUnload"/> event fires.
         /// </summary>
-        /// <param name="sender">the <see cref="AppDomain"/> that is exiting</param>
-        /// <param name="e">null</param>
+        /// <param name="sender">the <see cref="AppDomain"/> that is exiting.</param>
+        /// <param name="e">null.</param>
         /// <remarks>
         /// <para>
         /// Called when the <see cref="AppDomain.DomainUnload"/> event fires.
@@ -856,10 +856,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Called when the <see cref="AppDomain.ProcessExit"/> event fires
+        /// Called when the <see cref="AppDomain.ProcessExit"/> event fires.
         /// </summary>
-        /// <param name="sender">the <see cref="AppDomain"/> that is exiting</param>
-        /// <param name="e">null</param>
+        /// <param name="sender">the <see cref="AppDomain"/> that is exiting.</param>
+        /// <param name="e">null.</param>
         /// <remarks>
         /// <para>
         /// Called when the <see cref="AppDomain.ProcessExit"/> event fires.
@@ -884,7 +884,7 @@ namespace log4net.Core
         private static readonly Type declaringType = typeof(LoggerManager);
 
         /// <summary>
-        /// Initialize the default repository selector
+        /// Initialize the default repository selector.
         /// </summary>
         private static IRepositorySelector s_repositorySelector;
     }

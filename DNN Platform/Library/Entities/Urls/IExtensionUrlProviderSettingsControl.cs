@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Urls
         void LoadSettings();
 
         /// <summary>
-        /// Build the Settings Dictionary and return it to the caller to persist to the database
+        /// Build the Settings Dictionary and return it to the caller to persist to the database.
         /// </summary>
         /// <returns></returns>
         Dictionary<string, string> SaveSettings();

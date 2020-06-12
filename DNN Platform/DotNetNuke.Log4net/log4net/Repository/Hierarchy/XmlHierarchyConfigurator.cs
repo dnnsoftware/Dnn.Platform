@@ -41,8 +41,8 @@ namespace log4net.Repository.Hierarchy
     /// Configures a <see cref="Hierarchy"/> using an XML DOM.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class XmlHierarchyConfigurator
     {
         private enum ConfigUpdateMode
@@ -52,7 +52,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Construct the configurator for a hierarchy
+        /// Construct the configurator for a hierarchy.
         /// </summary>
         /// <param name="hierarchy">The hierarchy to build.</param>
         /// <remarks>
@@ -831,10 +831,10 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Test if an element has no attributes or child elements
+        /// Test if an element has no attributes or child elements.
         /// </summary>
-        /// <param name="element">the element to inspect</param>
-        /// <returns><c>true</c> if the element has any attributes or child elements, <c>false</c> otherwise</returns>
+        /// <param name="element">the element to inspect.</param>
+        /// <returns><c>true</c> if the element has any attributes or child elements, <c>false</c> otherwise.</returns>
         private bool HasAttributesOrElements(XmlElement element)
         {
             foreach (XmlNode node in element.ChildNodes)
@@ -851,8 +851,8 @@ namespace log4net.Repository.Hierarchy
         /// <summary>
         /// Test if a <see cref="Type"/> is constructible with <c>Activator.CreateInstance</c>.
         /// </summary>
-        /// <param name="type">the type to inspect</param>
-        /// <returns><c>true</c> if the type is creatable using a default constructor, <c>false</c> otherwise</returns>
+        /// <param name="type">the type to inspect.</param>
+        /// <returns><c>true</c> if the type is creatable using a default constructor, <c>false</c> otherwise.</returns>
         private static bool IsTypeConstructible(Type type)
         {
 #if NETSTANDARD1_3
@@ -873,11 +873,11 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Look for a method on the <paramref name="targetType"/> that matches the <paramref name="name"/> supplied
+        /// Look for a method on the <paramref name="targetType"/> that matches the <paramref name="name"/> supplied.
         /// </summary>
-        /// <param name="targetType">the type that has the method</param>
-        /// <param name="name">the name of the method</param>
-        /// <returns>the method info found</returns>
+        /// <param name="targetType">the type that has the method.</param>
+        /// <param name="name">the name of the method.</param>
+        /// <returns>the method info found.</returns>
         /// <remarks>
         /// <para>
         /// The method must be a public instance method on the <paramref name="targetType"/>.
@@ -952,7 +952,7 @@ namespace log4net.Repository.Hierarchy
         /// <param name="element">The XML element that contains the definition of the object.</param>
         /// <param name="defaultTargetType">The object type to use if not explicitly specified.</param>
         /// <param name="typeConstraint">The type that the returned object must be or must inherit from.</param>
-        /// <returns>The object or <c>null</c></returns>
+        /// <returns>The object or <c>null</c>.</returns>
         /// <remarks>
         /// <para>
         /// Parse an XML element and create an object instance based on the configuration

@@ -48,9 +48,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and Sets the Caption Text if no ResourceKey is provided
+        /// Gets or sets and Sets the Caption Text if no ResourceKey is provided.
         /// </summary>
-        /// <value>A string representing the Caption</value>
+        /// <value>A string representing the Caption.</value>
         [Browsable(true)]
         [Category("Appearance")]
         [DefaultValue("Property")]
@@ -86,16 +86,16 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and Sets the related Edit Control
+        /// Gets or sets and Sets the related Edit Control.
         /// </summary>
-        /// <value>A Control</value>
+        /// <value>A Control.</value>
         [Browsable(false)]
         public Control EditControl { get; set; }
 
         /// <summary>
-        /// Gets or sets text is value of the Label Text if no ResourceKey is provided
+        /// Gets or sets text is value of the Label Text if no ResourceKey is provided.
         /// </summary>
-        /// <value>A string representing the Text</value>
+        /// <value>A string representing the Text.</value>
         [Browsable(true)]
         [Category("Appearance")]
         [DefaultValue("")]
@@ -116,13 +116,13 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets resourceKey is the root localization key for this control
+        /// Gets or sets resourceKey is the root localization key for this control.
         /// </summary>
-        /// <value>A string representing the Resource Key</value>
+        /// <value>A string representing the Resource Key.</value>
         /// <remarks>This control will "standardise" the resource key names, so for instance
         /// if the resource key is "Control", Control.Text is the label text key, Control.Help
         /// is the label help text, Control.ErrorMessage is the Validation Error Message for the
-        /// control
+        /// control.
         /// </remarks>
         [Browsable(true)]
         [Category("Localization")]
@@ -167,9 +167,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets and sets the value of the Field that is bound to the Label
+        /// Gets or sets and sets the value of the Field that is bound to the Label.
         /// </summary>
-        /// <value>A string representing the Name of the Field</value>
+        /// <value>A string representing the Name of the Field.</value>
         [Browsable(true)]
         [Category("Data")]
         [DefaultValue("")]
@@ -177,17 +177,17 @@ namespace DotNetNuke.UI.WebControls
         public string DataField { get; set; }
 
         /// <summary>
-        /// Gets or sets and sets the DataSource that is bound to this control
+        /// Gets or sets and sets the DataSource that is bound to this control.
         /// </summary>
-        /// <value>The DataSource object</value>
+        /// <value>The DataSource object.</value>
         [Browsable(false)]
         public object DataSource { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Label Style
+        /// Gets and sets the value of the Label Style.
         /// </summary>
-        /// <value>A string representing the Name of the Field</value>
+        /// <value>A string representing the Name of the Field.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -205,9 +205,9 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Label Style
+        /// Gets and sets the value of the Label Style.
         /// </summary>
-        /// <value>A string representing the Name of the Field</value>
+        /// <value>A string representing the Name of the Field.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(true)]
         [Category("Styles")]
@@ -267,7 +267,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>
         /// OnDataBinding runs when the Control is being Data Bound (It is triggered by
-        /// a call to Control.DataBind()
+        /// a call to Control.DataBind().
         /// </summary>
         protected override void OnDataBinding(EventArgs e)
         {
@@ -303,7 +303,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// <summary>
         /// OnLoad runs just before the Control is rendered, and makes sure that any
-        /// properties are set properly before the control is rendered
+        /// properties are set properly before the control is rendered.
         /// </summary>
         protected override void OnPreRender(EventArgs e)
         {

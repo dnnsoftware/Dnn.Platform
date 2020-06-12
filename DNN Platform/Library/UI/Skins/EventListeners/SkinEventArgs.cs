@@ -9,7 +9,7 @@ namespace DotNetNuke.UI.Skins.EventListeners
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// SkinEventArgs provides a custom EventARgs class for Skin Events
+    /// SkinEventArgs provides a custom EventARgs class for Skin Events.
     /// </summary>
     /// <remarks></remarks>
     /// -----------------------------------------------------------------------------

@@ -11,7 +11,7 @@ using System.Xml.Schema;
 namespace DotNetNuke.Common
 {
     /// <summary>
-    /// Base class od XmlValidator
+    /// Base class od XmlValidator.
     /// </summary>
     public class XmlValidatorBase
     {

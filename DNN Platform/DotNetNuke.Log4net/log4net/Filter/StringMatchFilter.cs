@@ -30,46 +30,46 @@ using log4net.Util;
 namespace log4net.Filter
 {
     /// <summary>
-    /// Simple filter to match a string in the rendered message
+    /// Simple filter to match a string in the rendered message.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Simple filter to match a string in the rendered message
+    /// Simple filter to match a string in the rendered message.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class StringMatchFilter : FilterSkeleton
     {
         /// <summary>
-        /// Flag to indicate the behavior when we have a match
+        /// Flag to indicate the behavior when we have a match.
         /// </summary>
         protected bool m_acceptOnMatch = true;
 
         /// <summary>
-        /// The string to substring match against the message
+        /// The string to substring match against the message.
         /// </summary>
         protected string m_stringToMatch;
 
         /// <summary>
-        /// A string regex to match
+        /// A string regex to match.
         /// </summary>
         protected string m_stringRegexToMatch;
 
         /// <summary>
-        /// A regex object to match (generated from m_stringRegexToMatch)
+        /// A regex object to match (generated from m_stringRegexToMatch).
         /// </summary>
         protected Regex m_regexToMatch;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public StringMatchFilter()
         {
         }
 
         /// <summary>
-        /// Initialize and precompile the Regex if required
+        /// Initialize and precompile the Regex if required.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -97,7 +97,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="StringToMatch"/> or <see cref="RegexToMatch"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="StringToMatch"/> or <see cref="RegexToMatch"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -117,7 +117,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Gets or sets the static string to match
+        /// Gets or sets the static string to match.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -138,7 +138,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Gets or sets the regular expression to match
+        /// Gets or sets the regular expression to match.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -159,10 +159,10 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Check if this filter should allow the event to be logged
+        /// Check if this filter should allow the event to be logged.
         /// </summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <returns>see remarks</returns>
+        /// <param name="loggingEvent">the event being logged.</param>
+        /// <returns>see remarks.</returns>
         /// <remarks>
         /// <para>
         /// The rendered message is matched against the <see cref="StringToMatch"/>.

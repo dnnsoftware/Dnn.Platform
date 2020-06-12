@@ -29,7 +29,7 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// Pattern converter for literal string instances in the pattern
+    /// Pattern converter for literal string instances in the pattern.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -38,14 +38,14 @@ namespace log4net.Util.PatternStringConverters
     /// the output.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal class LiteralPatternConverter : PatternConverter
     {
         /// <summary>
-        /// Set the next converter in the chain
+        /// Set the next converter in the chain.
         /// </summary>
-        /// <param name="pc">The next pattern converter in the chain</param>
-        /// <returns>The next pattern converter</returns>
+        /// <param name="pc">The next pattern converter in the chain.</param>
+        /// <returns>The next pattern converter.</returns>
         /// <remarks>
         /// <para>
         /// Special case the building of the pattern converter chain
@@ -73,10 +73,10 @@ namespace log4net.Util.PatternStringConverters
         }
 
         /// <summary>
-        /// Write the literal to the output
+        /// Write the literal to the output.
         /// </summary>
-        /// <param name="writer">the writer to write to</param>
-        /// <param name="state">null, not set</param>
+        /// <param name="writer">the writer to write to.</param>
+        /// <param name="state">null, not set.</param>
         /// <remarks>
         /// <para>
         /// Override the formatting behavior to ignore the FormattingInfo
@@ -93,10 +93,10 @@ namespace log4net.Util.PatternStringConverters
         }
 
         /// <summary>
-        /// Convert this pattern into the rendered message
+        /// Convert this pattern into the rendered message.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="state">null, not set</param>
+        /// <param name="state">null, not set.</param>
         /// <remarks>
         /// <para>
         /// This method is not used.

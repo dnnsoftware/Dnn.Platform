@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets list of the Names of the selected Roles
+        /// Gets or sets list of the Names of the selected Roles.
         /// </summary>
         public ArrayList SelectedRoleNames
         {
@@ -147,12 +147,12 @@ namespace DotNetNuke.UI.WebControls
         }
 
          /// <summary>
-         /// Gets or sets and Sets the ResourceFile to localize permissions
+         /// Gets or sets and Sets the ResourceFile to localize permissions.
          /// </summary>
         public string ResourceFile { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role
+        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role.
         /// </summary>
         public bool ShowUnauthenticatedUsers
         {
@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role
+        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role.
         /// </summary>
         public bool ShowAllUsers
         {
@@ -215,7 +215,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Bind the data to the controls
+        /// Bind the data to the controls.
         /// </summary>
         private void BindData()
         {
@@ -225,7 +225,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Bind the Roles data to the Grid
+        /// Bind the Roles data to the Grid.
         /// </summary>
         private void BindRolesGrid()
         {
@@ -268,7 +268,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the roles from the Database and loads them into the Roles property
+        /// Gets the roles from the Database and loads them into the Roles property.
         /// </summary>
         private void GetRoles()
         {
@@ -299,7 +299,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Sets up the columns for the Grid
+        /// Sets up the columns for the Grid.
         /// </summary>
         private void SetUpRolesGrid()
         {
@@ -319,9 +319,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Load the ViewState
+        /// Load the ViewState.
         /// </summary>
-        /// <param name="savedState">The saved state</param>
+        /// <param name="savedState">The saved state.</param>
         protected override void LoadViewState(object savedState)
         {
             if (savedState != null)
@@ -347,7 +347,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Saves the ViewState
+        /// Saves the ViewState.
         /// </summary>
         /// <returns></returns>
         protected override object SaveViewState()
@@ -379,7 +379,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Creates the Child Controls
+        /// Creates the Child Controls.
         /// </summary>
         protected override void CreateChildControls()
         {
@@ -422,7 +422,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Overrides the base OnPreRender method to Bind the Grid to the Permissions
+        /// Overrides the base OnPreRender method to Bind the Grid to the Permissions.
         /// </summary>
         protected override void OnPreRender(EventArgs e)
         {
@@ -430,9 +430,9 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Updates a Selection
+        /// Updates a Selection.
         /// </summary>
-        /// <param name="roleName">The name of the role</param>
+        /// <param name="roleName">The name of the role.</param>
         /// <param name="Selected"></param>
         protected virtual void UpdateSelection(string roleName, bool Selected)
         {
@@ -461,7 +461,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Updates the Selections
+        /// Updates the Selections.
         /// </summary>
         protected void UpdateSelections()
         {
@@ -471,7 +471,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Updates the permissions
+        /// Updates the permissions.
         /// </summary>
         protected void UpdateRoleSelections()
         {

@@ -25,11 +25,11 @@ namespace Dnn.PersonaBar.UI.Services
 
         /// GET: api/Portals/GetPortals
         /// <summary>
-        /// Gets portals
+        /// Gets portals.
         /// </summary>
         /// <param></param>
         /// <param name="addAll">Add all portals item in list.</param>
-        /// <returns>List of portals</returns>
+        /// <returns>List of portals.</returns>
         [HttpGet]
         public HttpResponseMessage GetPortals(bool addAll = false)
         {

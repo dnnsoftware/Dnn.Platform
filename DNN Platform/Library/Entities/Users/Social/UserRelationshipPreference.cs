@@ -30,25 +30,25 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// Gets or sets preferenceId - The primary key
+        /// Gets or sets preferenceId - The primary key.
         /// </summary>
         [XmlAttribute]
         public int PreferenceId { get; set; }
 
         /// <summary>
-        /// Gets or sets userId of the User that owns the relationship
+        /// Gets or sets userId of the User that owns the relationship.
         /// </summary>
         [XmlAttribute]
         public int UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers)
+        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers).
         /// </summary>
         [XmlAttribute]
         public int RelationshipId { get; set; }
 
         /// <summary>
-        /// Gets or sets default Relationship Status to be provided to any new Relationship Request
+        /// Gets or sets default Relationship Status to be provided to any new Relationship Request.
         /// </summary>
         [XmlAttribute]
         public RelationshipStatus DefaultResponse { get; set; }

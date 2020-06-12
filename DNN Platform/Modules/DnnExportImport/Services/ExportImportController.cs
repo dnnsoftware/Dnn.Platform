@@ -57,11 +57,11 @@ namespace Dnn.ExportImport.Services
         }
 
         /// <summary>
-        /// Get list of packages to import
+        /// Get list of packages to import.
         /// </summary>
-        /// <param name="keyword">Keyword to search the import package. This will look into the package name and description</param>
-        /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name</param>
-        /// <param name="pageIndex">Page index to get</param>
+        /// <param name="keyword">Keyword to search the import package. This will look into the package name and description.</param>
+        /// <param name="order">Order by which the packages list should be sorted. Allowed values: newest, oldest, name.</param>
+        /// <param name="pageIndex">Page index to get.</param>
         /// <param name="pageSize">Page size. Should not be more than 100.</param>
         /// <returns></returns>
         [HttpGet]

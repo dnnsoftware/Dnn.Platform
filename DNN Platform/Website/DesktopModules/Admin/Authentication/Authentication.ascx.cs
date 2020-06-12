@@ -18,7 +18,7 @@ using DotNetNuke.UI.UserControls;
 namespace DotNetNuke.Modules.Admin.Authentication
 {
     /// <summary>
-    /// Manages the Authentication settings
+    /// Manages the Authentication settings.
     /// </summary>
     /// <remarks>
     /// </remarks>

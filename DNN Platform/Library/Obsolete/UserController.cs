@@ -15,7 +15,7 @@ using DotNetNuke.Services.Exceptions;
 namespace DotNetNuke.Entities.Users
 {
     /// <summary>
-    /// The UserController class provides Business Layer methods for Users
+    /// The UserController class provides Business Layer methods for Users.
     /// </summary>
     /// <remarks>
     /// DotNetNuke user management is base on asp.net membership provider, but  the default implementation of these providers
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Users
         /// <summary>
         /// overload will validate the token and if valid change the password
         /// it does not require an old password as it supports hashed passwords
-        /// errorMessage will define why reset failed
+        /// errorMessage will define why reset failed.
         /// </summary>
         /// <param name="newPassword">The new password.</param>
         /// <param name="resetToken">The reset token, typically supplied through a password reset email.</param>

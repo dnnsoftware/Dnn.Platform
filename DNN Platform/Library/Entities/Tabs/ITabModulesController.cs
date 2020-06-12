@@ -12,9 +12,9 @@ namespace DotNetNuke.Entities.Tabs
     public interface ITabModulesController
     {
         /// <summary>
-        /// Returns an array of Modules well configured to be used into a Skin
+        /// Returns an array of Modules well configured to be used into a Skin.
         /// </summary>
-        /// <param name="tab">TabInfo object</param>
+        /// <param name="tab">TabInfo object.</param>
         /// <returns></returns>
         ArrayList GetTabModules(TabInfo tab);
 
@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Gets a collection of all setting values of <see cref="ModuleInfo"/> that contains the
         /// setting name in its collection of settings.
         /// </summary>
-        /// <param name="settingName">Name of the setting to look for</param>
+        /// <param name="settingName">Name of the setting to look for.</param>
         /// <returns></returns>
         Dictionary<int, string> GetTabModuleSettingsByName(string settingName);
 
@@ -30,8 +30,8 @@ namespace DotNetNuke.Entities.Tabs
         /// Gets a collection of all ID's of <see cref="ModuleInfo"/> that contains the setting name and
         /// specific value in its collection of settings.
         /// </summary>
-        /// <param name="settingName">Name of the setting to look for</param>
-        /// <param name="expectedValue">Value of the setting to look for</param>
+        /// <param name="settingName">Name of the setting to look for.</param>
+        /// <param name="expectedValue">Value of the setting to look for.</param>
         /// <returns></returns>
         IList<int> GetTabModuleIdsBySetting(string settingName, string expectedValue);
     }

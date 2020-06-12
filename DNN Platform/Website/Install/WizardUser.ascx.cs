@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.Install
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnLoad runs just before the page is rendered
+        /// OnLoad runs just before the page is rendered.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.Install
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnLoad runs just before the page is rendered
+        /// OnLoad runs just before the page is rendered.
         /// </summary>
         /// <remarks>
         /// </remarks>

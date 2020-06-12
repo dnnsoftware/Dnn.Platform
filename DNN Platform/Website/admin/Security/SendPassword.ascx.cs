@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.Admin.Security
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>
-    /// The SendPassword UserModuleBase is used to allow a user to retrieve their password
+    /// The SendPassword UserModuleBase is used to allow a user to retrieve their password.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Security
         private string _ipAddress;
 
         /// <summary>
-        /// Gets the Redirect URL (after successful sending of password)
+        /// Gets the Redirect URL (after successful sending of password).
         /// </summary>
         protected string RedirectURL
         {
@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
         /// </summary>
         protected bool UseCaptcha
         {
@@ -186,7 +186,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -211,7 +211,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>
-        /// cmdSendPassword_Click runs when the Password Reminder button is clicked
+        /// cmdSendPassword_Click runs when the Password Reminder button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>

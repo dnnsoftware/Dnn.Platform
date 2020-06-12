@@ -28,7 +28,7 @@ namespace log4net.Appender
     /// <summary>
     /// A strongly-typed collection of <see cref="IAppender"/> objects.
     /// </summary>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class AppenderCollection : ICollection, IList, IEnumerable
 #if !NETSTANDARD1_3
         , ICloneable
@@ -71,7 +71,7 @@ namespace log4net.Appender
         /// <summary>
         /// Creates a read-only wrapper for a <c>AppenderCollection</c> instance.
         /// </summary>
-        /// <param name="list">list to create a readonly wrapper arround</param>
+        /// <param name="list">list to create a readonly wrapper arround.</param>
         /// <returns>
         /// An <c>AppenderCollection</c> wrapper that is read-only.
         /// </returns>
@@ -86,7 +86,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// An empty readonly static AppenderCollection
+        /// An empty readonly static AppenderCollection.
         /// </summary>
         public static readonly AppenderCollection EmptyCollection = ReadOnly(new AppenderCollection(0));
 
@@ -146,7 +146,7 @@ namespace log4net.Appender
 
         /// <summary>
         /// Type visible only to our subclasses
-        /// Used to access protected constructor
+        /// Used to access protected constructor.
         /// </summary>
         /// <exclude/>
         internal protected enum Tag
@@ -158,7 +158,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Allow subclasses to avoid our default constructors
+        /// Allow subclasses to avoid our default constructors.
         /// </summary>
         /// <param name="tag"></param>
         /// <exclude/>
@@ -223,7 +223,7 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="index">The zero-based index of the element to get or set.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        ///         <para><paramref name="index"/> is less than zero</para>
+        ///         <para><paramref name="index"/> is less than zero.</para>
         ///         <para>-or-</para>
         ///         <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
@@ -331,7 +331,7 @@ namespace log4net.Appender
         /// <param name="index">The zero-based index at which <paramref name="item"/> should be inserted.</param>
         /// <param name="item">The <see cref="IAppender"/> to insert.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para><paramref name="index"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
@@ -378,7 +378,7 @@ namespace log4net.Appender
         /// </summary>
         /// <param name="index">The zero-based index of the element to remove.</param>
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="index"/> is less than zero</para>
+        /// <para><paramref name="index"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="index"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
@@ -404,7 +404,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether the collection has a fixed size.
         /// </summary>
-        /// <value>true if the collection has a fixed size; otherwise, false. The default is false</value>
+        /// <value>true if the collection has a fixed size; otherwise, false. The default is false.</value>
         public virtual bool IsFixedSize
         {
             get { return false; }
@@ -413,7 +413,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether the IList is read-only.
         /// </summary>
-        /// <value>true if the collection is read-only; otherwise, false. The default is false</value>
+        /// <value>true if the collection is read-only; otherwise, false. The default is false.</value>
         public virtual bool IsReadOnly
         {
             get { return false; }
@@ -528,9 +528,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Return the collection elements as an array
+        /// Return the collection elements as an array.
         /// </summary>
-        /// <returns>the array</returns>
+        /// <returns>the array.</returns>
         public virtual IAppender[] ToArray()
         {
             IAppender[] resultArray = new IAppender[this.m_count];
@@ -543,7 +543,7 @@ namespace log4net.Appender
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="i"/> is less than zero</para>
+        /// <para><paramref name="i"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="i"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>
@@ -553,7 +553,7 @@ namespace log4net.Appender
         }
 
         /// <exception cref="ArgumentOutOfRangeException">
-        /// <para><paramref name="i"/> is less than zero</para>
+        /// <para><paramref name="i"/> is less than zero.</para>
         /// <para>-or-</para>
         /// <para><paramref name="i"/> is equal to or greater than <see cref="AppenderCollection.Count"/>.</para>
         /// </exception>

@@ -5,7 +5,7 @@
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// Class used as a utility to help manage paging in database queries
+    /// Class used as a utility to help manage paging in database queries.
     /// </summary>
     public class PagingInfo
     {

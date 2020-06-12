@@ -34,8 +34,8 @@ namespace log4net.Util
     /// interface that always represents an empty collection.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
 #if !NETCF
     [Serializable]
 #endif

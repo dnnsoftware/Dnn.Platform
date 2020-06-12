@@ -11,7 +11,7 @@ using DotNetNuke.Services.Search.Entities;
 namespace DotNetNuke.Tests.Web.InternalServices
 {
     /// <summary>
-    /// Search Crawler for Module Content
+    /// Search Crawler for Module Content.
     /// </summary>
     /// <remarks></remarks>
     public class FakeResultController : BaseResultController

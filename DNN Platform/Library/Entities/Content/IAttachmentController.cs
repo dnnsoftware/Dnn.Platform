@@ -8,15 +8,15 @@ using DotNetNuke.Services.FileSystem;
 
 namespace DotNetNuke.Entities.Content
 {
-    /// <summary>Interface of FileController</summary>
+    /// <summary>Interface of FileController.</summary>
     /// <seealso cref="AttachmentController"/>
     public interface IAttachmentController
     {
         /// <summary>
         /// Add a generic file to a <see cref="ContentItem"/>.
         /// </summary>
-        /// <param name="contentItemId">The content item</param>
-        /// <param name="fileInfo">A file registered in the DotNetNuke <seealso cref="FileManager"/></param>
+        /// <param name="contentItemId">The content item.</param>
+        /// <param name="fileInfo">A file registered in the DotNetNuke. <seealso cref="FileManager"/></param>
         void AddFileToContent(int contentItemId, IFileInfo fileInfo);
 
         void AddFilesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo);
@@ -24,8 +24,8 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Add a video file to a <see cref="ContentItem"/>.
         /// </summary>
-        /// <param name="contentItemId">The content item</param>
-        /// <param name="fileInfo">A file registered in the DotNetNuke <seealso cref="FileManager"/></param>
+        /// <param name="contentItemId">The content item.</param>
+        /// <param name="fileInfo">A file registered in the DotNetNuke. <seealso cref="FileManager"/></param>
         void AddVideoToContent(int contentItemId, IFileInfo fileInfo);
 
         void AddVideosToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo);
@@ -33,8 +33,8 @@ namespace DotNetNuke.Entities.Content
         /// <summary>
         /// Attach an image to a ContentItem.
         /// </summary>
-        /// <param name="contentItemId">The content item</param>
-        /// <param name="fileInfo">A file registered in the DotNetNuke <seealso cref="FileManager"/></param>
+        /// <param name="contentItemId">The content item.</param>
+        /// <param name="fileInfo">A file registered in the DotNetNuke. <seealso cref="FileManager"/></param>
         void AddImageToContent(int contentItemId, IFileInfo fileInfo);
 
         void AddImagesToContent(int contentItemId, IEnumerable<IFileInfo> fileInfo);

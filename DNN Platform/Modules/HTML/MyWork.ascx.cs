@@ -14,7 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DotNetNuke.Modules.Html
 {
     /// <summary>
-    ///   MyWork allows a user to view any outstanding workflow items
+    ///   MyWork allows a user to view any outstanding workflow items.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Page_Load runs when the control is loaded
+        ///   Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>

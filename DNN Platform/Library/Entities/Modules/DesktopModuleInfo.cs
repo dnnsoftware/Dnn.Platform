@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : DesktopModuleInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// DesktopModuleInfo provides the Entity Layer for Desktop Modules
+    /// DesktopModuleInfo provides the Entity Layer for Desktop Modules.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -157,30 +157,30 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ID of the Desktop Module
+        /// Gets or sets and sets the ID of the Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int DesktopModuleID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ID of the Package for this Desktop Module
+        /// Gets or sets and sets the ID of the Package for this Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this has an associated Admin page
+        /// Gets or sets whether this has an associated Admin page.
         /// </summary>
         public string AdminPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the BusinessControllerClass of the Desktop Module
+        /// Gets or sets and sets the BusinessControllerClass of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string BusinessControllerClass { get; set; }
 
@@ -209,71 +209,71 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the AppCode Folder Name of the Desktop Module
+        /// Gets or sets and sets the AppCode Folder Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string CodeSubDirectory { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets and sets a Regular Expression that matches the versions of the core
-        /// that this module is compatible with
+        /// that this module is compatible with.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string CompatibleVersions { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets a list of Dependencies for the module
+        /// Gets or sets and sets a list of Dependencies for the module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Dependencies { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the  Description of the Desktop Module
+        /// Gets or sets and sets the  Description of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Description { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Folder Name of the Desktop Module
+        /// Gets or sets and sets the Folder Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string FolderName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Friendly Name of the Desktop Module
+        /// Gets or sets the Friendly Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
         /// <summary>
-        /// Gets or sets whether this has an associated hostpage
+        /// Gets or sets whether this has an associated hostpage.
         /// </summary>
         public string HostPage { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Module is an Admin Module
+        /// Gets or sets a value indicating whether gets and sets whether the Module is an Admin Module.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsAdmin { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Module is Portable
+        /// Gets or sets a value indicating whether gets and sets whether the Module is Portable.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsPortable
         {
@@ -290,17 +290,17 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Module is a Premium Module
+        /// Gets or sets a value indicating whether gets and sets whether the Module is a Premium Module.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsPremium { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Module is Searchable
+        /// Gets or sets a value indicating whether gets and sets whether the Module is Searchable.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsSearchable
         {
@@ -317,9 +317,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Module is Upgradable
+        /// Gets or sets a value indicating whether gets and sets whether the Module is Upgradable.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsUpgradeable
         {
@@ -335,7 +335,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets or sets is the module allowed to be shared across sites?
+        /// Gets or sets is the module allowed to be shared across sites?.
         /// </summary>
         public ModuleSharing Shareable
         {
@@ -345,9 +345,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Module Definitions for this Desktop Module
+        /// Gets the Module Definitions for this Desktop Module.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, ModuleDefinitionInfo> ModuleDefinitions
         {
@@ -371,33 +371,33 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the  Name of the Desktop Module
+        /// Gets or sets and sets the  Name of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ModuleName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets a list of Permissions for the module
+        /// Gets or sets and sets a list of Permissions for the module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Permissions { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Supported Features of the Module
+        /// Gets or sets and sets the Supported Features of the Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int SupportedFeatures { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Version of the Desktop Module
+        /// Gets or sets and sets the Version of the Desktop Module.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string Version { get; set; }
 
@@ -431,9 +431,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a DesktopModuleInfo from a Data Reader
+        /// Fills a DesktopModuleInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
@@ -462,7 +462,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the DesktopModule
+        /// Gets an XmlSchema for the DesktopModule.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -473,9 +473,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a DesktopModuleInfo from an XmlReader
+        /// Reads a DesktopModuleInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -563,9 +563,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a DesktopModuleInfo to an XmlWriter
+        /// Writes a DesktopModuleInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
@@ -648,9 +648,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clears a Feature from the Features
+        /// Clears a Feature from the Features.
         /// </summary>
-        /// <param name="feature">The feature to Clear</param>
+        /// <param name="feature">The feature to Clear.</param>
         /// -----------------------------------------------------------------------------
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
@@ -660,9 +660,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Feature from the Features
+        /// Gets a Feature from the Features.
         /// </summary>
-        /// <param name="feature">The feature to Get</param>
+        /// <param name="feature">The feature to Get.</param>
         /// -----------------------------------------------------------------------------
         private bool GetFeature(DesktopModuleSupportedFeature feature)
         {
@@ -671,9 +671,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets a Feature in the Features
+        /// Sets a Feature in the Features.
         /// </summary>
-        /// <param name="feature">The feature to Set</param>
+        /// <param name="feature">The feature to Set.</param>
         /// -----------------------------------------------------------------------------
         private void SetFeature(DesktopModuleSupportedFeature feature)
         {
@@ -682,10 +682,10 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a Feature in the Features
+        /// Updates a Feature in the Features.
         /// </summary>
-        /// <param name="feature">The feature to Set</param>
-        /// <param name="isSet">A Boolean indicating whether to set or clear the feature</param>
+        /// <param name="feature">The feature to Set.</param>
+        /// <param name="isSet">A Boolean indicating whether to set or clear the feature.</param>
         /// -----------------------------------------------------------------------------
         private void UpdateFeature(DesktopModuleSupportedFeature feature, bool isSet)
         {
@@ -701,9 +701,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a Supported Features from an XmlReader
+        /// Reads a Supported Features from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         private void ReadSupportedFeatures(XmlReader reader)
         {
@@ -759,9 +759,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a Module Definitions from an XmlReader
+        /// Reads a Module Definitions from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         private void ReadModuleDefinitions(XmlReader reader)
         {

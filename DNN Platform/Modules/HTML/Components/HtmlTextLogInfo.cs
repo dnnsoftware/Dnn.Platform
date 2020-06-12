@@ -12,7 +12,7 @@ namespace DotNetNuke.Modules.Html
     /// Class:      HtmlTextLogInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlTextLog object
+    ///   Defines an instance of an HtmlTextLog object.
     /// </summary>
     /// <remarks>
     /// </remarks>

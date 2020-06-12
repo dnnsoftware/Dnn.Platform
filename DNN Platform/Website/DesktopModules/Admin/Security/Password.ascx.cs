@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Password UserModuleBase is used to manage Users Passwords
+    /// The Password UserModuleBase is used to manage Users Passwords.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -54,7 +54,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserMembership associated with this control
+        /// Gets the UserMembership associated with this control.
         /// </summary>
         public UserMembership Membership
         {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the PasswordUpdated Event
+        /// Raises the PasswordUpdated Event.
         /// </summary>
         public void OnPasswordUpdated(PasswordUpdatedEventArgs e)
         {
@@ -93,7 +93,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Raises the PasswordQuestionAnswerUpdated Event
+        /// Raises the PasswordQuestionAnswerUpdated Event.
         /// </summary>
         public void OnPasswordQuestionAnswerUpdated(PasswordUpdatedEventArgs e)
         {
@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         public override void DataBind()
         {
@@ -544,7 +544,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdUpdate_Click runs when the Update Question and Answer  Button is clicked
+        /// cmdUpdate_Click runs when the Update Question and Answer  Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -583,15 +583,15 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The PasswordUpdatedEventArgs class provides a customised EventArgs class for
-        /// the PasswordUpdated Event
+        /// the PasswordUpdated Event.
         /// </summary>
         public class PasswordUpdatedEventArgs
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Constructs a new PasswordUpdatedEventArgs
+            /// Constructs a new PasswordUpdatedEventArgs.
             /// </summary>
-            /// <param name="status">The Password Update Status</param>
+            /// <param name="status">The Password Update Status.</param>
             public PasswordUpdatedEventArgs(PasswordUpdateStatus status)
             {
                 this.UpdateStatus = status;
@@ -599,7 +599,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets or sets and sets the Update Status
+            /// Gets or sets and sets the Update Status.
             /// </summary>
             public PasswordUpdateStatus UpdateStatus { get; set; }
         }

@@ -22,7 +22,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNPageEditControl control provides a standard UI component for selecting
-    /// a DNN Page
+    /// a DNN Page.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNPageEditControl runat=server></{0}:DNNPageEditControl>")]
@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderEditMode renders the Edit mode of the control
+        /// RenderEditMode renders the Edit mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// RenderViewMode renders the View mode of the control
+        /// RenderViewMode renders the View mode of the control.
         /// </summary>
         /// <param name="writer">A HtmlTextWriter.</param>
         /// -----------------------------------------------------------------------------

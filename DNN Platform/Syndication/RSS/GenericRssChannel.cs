@@ -10,7 +10,7 @@ using System.Xml;
 namespace DotNetNuke.Services.Syndication
 {
     /// <summary>
-    ///   Class to consume (or create) a channel in a late-bound way
+    ///   Class to consume (or create) a channel in a late-bound way.
     /// </summary>
     public sealed class GenericRssChannel : RssChannelBase<GenericRssElement, GenericRssElement>
     {

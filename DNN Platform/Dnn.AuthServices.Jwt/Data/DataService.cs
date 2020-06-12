@@ -15,7 +15,7 @@ namespace Dnn.AuthServices.Jwt.Data
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///  This class provides the Data Access Layer for the JWT Authentication library
+    ///  This class provides the Data Access Layer for the JWT Authentication library.
     /// </summary>
     public class DataService : ComponentBase<IDataService, DataService>, IDataService
     {

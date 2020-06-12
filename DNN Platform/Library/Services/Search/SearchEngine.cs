@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search
     /// Class:      SearchEngine
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The SearchEngine  manages the Indexing of the Portal content
+    /// The SearchEngine  manages the Indexing of the Portal content.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Indexes content within the given time farame
+        /// Indexes content within the given time farame.
         /// </summary>
         /// -----------------------------------------------------------------------------
         internal void IndexContent()
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Search
         }
 
         /// <summary>
-        /// Commits (flushes) all added and deleted content to search engine's disk file
+        /// Commits (flushes) all added and deleted content to search engine's disk file.
         /// </summary>
         internal void Commit()
         {
@@ -211,7 +211,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals
+        /// Gets all the Searchable Module MetaData SearchDocuments within the timeframe for all portals.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private int GetAndStoreModuleMetaData(ModuleIndexer indexer)
@@ -241,7 +241,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Ensures all SearchDocuments have a SearchTypeId
+        /// Ensures all SearchDocuments have a SearchTypeId.
         /// </summary>
         /// <param name="searchDocs"></param>
         /// -----------------------------------------------------------------------------
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adjusts the re-index date/time to account for the portal reindex value
+        /// Adjusts the re-index date/time to account for the portal reindex value.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private DateTime FixedIndexingStartDate(int portalId)
@@ -280,11 +280,11 @@ namespace DotNetNuke.Services.Search
         /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable)
         ///
-        /// GetContent gets all the content and passes it to the Indexer
+        /// GetContent gets all the content and passes it to the Indexer.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="indexer">The Index Provider that will index the content of the portal</param>
+        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]
@@ -306,12 +306,12 @@ namespace DotNetNuke.Services.Search
         /// LEGACY: Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.
         /// Used for Legacy Search (ISearchable)
         ///
-        /// GetContent gets the Portal's content and passes it to the Indexer
+        /// GetContent gets the Portal's content and passes it to the Indexer.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">The Id of the Portal</param>
-        /// <param name="indexer">The Index Provider that will index the content of the portal</param>
+        /// <param name="portalId">The Id of the Portal.</param>
+        /// <param name="indexer">The Index Provider that will index the content of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         [Obsolete("Legacy Search (ISearchable) -- Deprecated in DNN 7.1. Use 'IndexSearchDocuments' instead.. Scheduled removal in v10.0.0.")]

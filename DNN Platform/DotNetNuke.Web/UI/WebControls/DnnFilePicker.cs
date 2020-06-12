@@ -24,14 +24,14 @@ using FileInfo = DotNetNuke.Services.FileSystem.FileInfo;
 namespace DotNetNuke.Web.UI.WebControls
 {
     /// <summary>
-    ///   The FilePicker Class provides a File Picker Control for DotNetNuke
+    ///   The FilePicker Class provides a File Picker Control for DotNetNuke.
     /// </summary>
     public class DnnFilePicker : CompositeControl, ILocalizable
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
 
         /// <summary>
-        ///   Represents a possible mode for the File Control
+        ///   Represents a possible mode for the File Control.
         /// </summary>
         protected enum FileControlMode
         {
@@ -74,9 +74,9 @@ namespace DotNetNuke.Web.UI.WebControls
         private int _maxWidth = 135;
 
         /// <summary>
-        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab
+        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         protected bool IsHost
         {
             get
@@ -120,12 +120,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the current mode of the control
+        ///   Gets or sets the current mode of the control.
         /// </summary>
         /// <remarks>
-        ///   Defaults to FileControlMode.Normal
+        ///   Defaults to FileControlMode.Normal.
         /// </remarks>
-        /// <value>A FileControlMode enum</value>
+        /// <value>A FileControlMode enum.</value>
         protected FileControlMode Mode
         {
             get
@@ -140,9 +140,9 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets the root folder for the control
+        ///   Gets the root folder for the control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         protected string ParentFolder
         {
             get
@@ -152,12 +152,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets the file PortalId to use
+        ///   Gets the file PortalId to use.
         /// </summary>
         /// <remarks>
-        ///   Defaults to PortalSettings.PortalId
+        ///   Defaults to PortalSettings.PortalId.
         /// </remarks>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         protected int PortalId
         {
             get
@@ -177,7 +177,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets the current Portal Settings
+        ///   Gets the current Portal Settings.
         /// </summary>
         protected PortalSettings PortalSettings
         {
@@ -188,12 +188,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the class to be used for the Labels
+        ///   Gets or sets the class to be used for the Labels.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 'CommandButton'
+        ///   Defaults to 'CommandButton'.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string CommandCssClass
         {
             get
@@ -209,12 +209,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the file Filter to use
+        ///   Gets or sets the file Filter to use.
         /// </summary>
         /// <remarks>
-        ///   Defaults to ''
+        ///   Defaults to ''.
         /// </remarks>
-        /// <value>a comma seperated list of file extenstions no wildcards or periods e.g. "jpg,png,gif"</value>
+        /// <value>a comma seperated list of file extenstions no wildcards or periods e.g. "jpg,png,gif".</value>
         public string FileFilter
         {
             get
@@ -229,9 +229,9 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the FileID for the control
+        ///   Gets or sets the FileID for the control.
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         public int FileID
         {
             get
@@ -268,9 +268,9 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the FilePath for the control
+        ///   Gets or sets the FilePath for the control.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string FilePath
         {
             get
@@ -285,12 +285,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether to Include Personal Folder
+        ///   Gets or sets a value indicating whether gets or sets whether to Include Personal Folder.
         /// </summary>
         /// <remarks>
-        ///   Defaults to false
+        ///   Defaults to false.
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         public bool UsePersonalFolder
         {
             get
@@ -305,9 +305,9 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the class to be used for the Labels
+        ///   Gets or sets the class to be used for the Labels.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         public string LabelCssClass
         {
             get
@@ -337,12 +337,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether the combos have a "Not Specified" option
+        ///   Gets or sets a value indicating whether gets or sets whether the combos have a "Not Specified" option.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True (ie no "Not Specified")
+        ///   Defaults to True (ie no "Not Specified").
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         public bool Required
         {
             get
@@ -370,12 +370,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether to Show the Upload Button
+        ///   Gets or sets a value indicating whether gets or sets whether to Show the Upload Button.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         public bool ShowUpLoad
         {
             get
@@ -392,9 +392,9 @@ namespace DotNetNuke.Web.UI.WebControls
         public UserInfo User { get; set; }
 
         /// <summary>
-        ///   AddButton adds a button to the Command Row
+        ///   AddButton adds a button to the Command Row.
         /// </summary>
-        /// <param name = "button">The button to add to the Row</param>
+        /// <param name = "button">The button to add to the Row.</param>
         private void AddButton(ref LinkButton button)
         {
             button = new LinkButton { EnableViewState = false, CausesValidation = false };
@@ -405,7 +405,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   AddCommandRow adds the Command Row
+        ///   AddCommandRow adds the Command Row.
         /// </summary>
         private void AddButtonArea()
         {
@@ -424,7 +424,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   AddFileRow adds the Files Row
+        ///   AddFileRow adds the Files Row.
         /// </summary>
         private void AddFileAndUploadArea()
         {
@@ -454,7 +454,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   AddFolderRow adds the Folders Row
+        ///   AddFolderRow adds the Folders Row.
         /// </summary>
         private void AddFolderArea()
         {
@@ -487,7 +487,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   AddMessageRow adds the Message Row
+        ///   AddMessageRow adds the Message Row.
         /// </summary>
         private void AddMessageRow()
         {
@@ -519,7 +519,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   LoadFolders fetches the list of folders from the Database
+        ///   LoadFolders fetches the list of folders from the Database.
         /// </summary>
         private void LoadFolders()
         {
@@ -560,10 +560,10 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   SetFilePath sets the FilePath property
+        ///   SetFilePath sets the FilePath property.
         /// </summary>
         /// <remarks>
-        ///   This overload uses the selected item in the Folder combo
+        ///   This overload uses the selected item in the Folder combo.
         /// </remarks>
         private void SetFilePath()
         {
@@ -571,12 +571,12 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   SetFilePath sets the FilePath property
+        ///   SetFilePath sets the FilePath property.
         /// </summary>
         /// <remarks>
-        ///   This overload allows the caller to specify a file
+        ///   This overload allows the caller to specify a file.
         /// </remarks>
-        /// <param name = "fileName">The filename to use in setting the property</param>
+        /// <param name = "fileName">The filename to use in setting the property.</param>
         private void SetFilePath(string fileName)
         {
             if (string.IsNullOrEmpty(this._cboFolders.SelectedItem.Value))
@@ -590,10 +590,10 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   ShowButton configures and displays a button
+        ///   ShowButton configures and displays a button.
         /// </summary>
-        /// <param name = "button">The button to configure</param>
-        /// <param name = "command">The command name (amd key) of the button</param>
+        /// <param name = "button">The button to configure.</param>
+        /// <param name = "command">The command name (amd key) of the button.</param>
         private void ShowButton(LinkButton button, string command)
         {
             button.Visible = true;
@@ -607,7 +607,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   ShowImage displays the Preview Image
+        ///   ShowImage displays the Preview Image.
         /// </summary>
         private void ShowImage()
         {
@@ -645,7 +645,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// <summary>
         ///   CreateChildControls overrides the Base class's method to correctly build the
-        ///   control based on the configuration
+        ///   control based on the configuration.
         /// </summary>
         protected override void CreateChildControls()
         {
@@ -675,7 +675,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   OnPreRender runs just before the control is rendered
+        ///   OnPreRender runs just before the control is rendered.
         /// </summary>
         protected override void OnPreRender(EventArgs e)
         {

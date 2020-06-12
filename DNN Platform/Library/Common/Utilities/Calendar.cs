@@ -17,9 +17,9 @@ namespace DotNetNuke.Common.Utilities
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Opens a popup Calendar
+        /// Opens a popup Calendar.
         /// </summary>
-        /// <param name="Field">TextBox to return the date value</param>
+        /// <param name="Field">TextBox to return the date value.</param>
         /// <returns></returns>
         /// <remarks>
         /// </remarks>

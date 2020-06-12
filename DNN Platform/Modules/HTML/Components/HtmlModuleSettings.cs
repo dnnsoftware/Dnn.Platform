@@ -11,7 +11,7 @@ using DotNetNuke.Entities.Modules.Settings;
 namespace DotNetNuke.Modules.Html.Components
 {
     /// <summary>
-    /// An example implementation of the <see cref="ModuleSettingAttribute"/>
+    /// An example implementation of the <see cref="ModuleSettingAttribute"/>.
     /// </summary>
     /// <remarks>
     /// HtmlModuleSettings provides a strongly typed list of properties used by
@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Html.Components
     }
 
     /// <summary>
-    /// The <see cref="SettingsRepository{T}"/> used for storing and retrieving <see cref="HtmlModuleSettings"/>
+    /// The <see cref="SettingsRepository{T}"/> used for storing and retrieving <see cref="HtmlModuleSettings"/>.
     /// </summary>
     public class HtmlModuleSettingsRepository : SettingsRepository<HtmlModuleSettings>
     {

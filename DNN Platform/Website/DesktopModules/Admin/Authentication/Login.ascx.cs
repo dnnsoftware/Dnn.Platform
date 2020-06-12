@@ -48,7 +48,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
     using Host = DotNetNuke.Entities.Host.Host;
 
     /// <summary>
-    /// The Signin UserModuleBase is used to provide a login for a registered user
+    /// The Signin UserModuleBase is used to provide a login for a registered user.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private const string LOGIN_PATH = "/login";
 
         /// <summary>
-        /// Gets or sets and sets the current AuthenticationType
+        /// Gets or sets and sets the current AuthenticationType.
         /// </summary>
         protected string AuthenticationType
         {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered.
         /// </summary>
         protected bool AutoRegister
         {
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets or sets and sets the current Page No
+        /// Gets or sets and sets the current Page No.
         /// </summary>
         protected int PageNo
         {
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets the Redirect URL (after successful login)
+        /// Gets the Redirect URL (after successful login).
         /// </summary>
         protected string RedirectURL
         {
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
             || this.LoginStatus == UserLoginStatus.LOGIN_INSECUREADMINPASSWORD;
 
         /// <summary>
-        /// Replaces the original language with user language
+        /// Replaces the original language with user language.
         /// </summary>
         /// <param name="Url"></param>
         /// <param name="originalLanguage"></param>
@@ -285,7 +285,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created.
         /// </summary>
         protected bool RememberMe
         {
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
         /// </summary>
         protected bool UseCaptcha
         {
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets or sets and sets the current UserToken
+        /// Gets or sets and sets the current UserToken.
         /// </summary>
         protected string UserToken
         {
@@ -360,7 +360,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets or sets and sets the current UserName
+        /// Gets or sets and sets the current UserName.
         /// </summary>
         protected string UserName
         {
@@ -752,7 +752,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ShowPanel controls what "panel" is to be displayed
+        /// ShowPanel controls what "panel" is to be displayed.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void ShowPanel()
@@ -858,10 +858,10 @@ namespace DotNetNuke.Modules.Admin.Authentication
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// ValidateUser runs when the user has been authorized by the data store.  It validates for
-        /// things such as an expiring password, valid profile, or missing DNN User Association
+        /// things such as an expiring password, valid profile, or missing DNN User Association.
         /// </summary>
-        /// <param name="objUser">The logged in User</param>
-        /// <param name="ignoreExpiring">Ignore the situation where the password is expiring (but not yet expired)</param>
+        /// <param name="objUser">The logged in User.</param>
+        /// <param name="ignoreExpiring">Ignore the situation where the password is expiring (but not yet expired).</param>
         /// -----------------------------------------------------------------------------
         private void ValidateUser(UserInfo objUser, bool ignoreExpiring)
         {
@@ -1015,7 +1015,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1055,7 +1055,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1147,7 +1147,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// cmdAssociate_Click runs when the associate button is clicked
+        /// cmdAssociate_Click runs when the associate button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1186,7 +1186,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// cmdCreateUser runs when the register (as new user) button is clicked
+        /// cmdCreateUser runs when the register (as new user) button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1214,7 +1214,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// cmdProceed_Click runs when the Proceed Anyway button is clicked
+        /// cmdProceed_Click runs when the Proceed Anyway button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1225,7 +1225,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// PasswordUpdated runs when the password is updated
+        /// PasswordUpdated runs when the password is updated.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1251,7 +1251,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// DataConsentCompleted runs after the user has gone through the data consent screen
+        /// DataConsentCompleted runs after the user has gone through the data consent screen.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -1273,7 +1273,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// ProfileUpdated runs when the profile is updated
+        /// ProfileUpdated runs when the profile is updated.
         /// </summary>
         protected void ProfileUpdated(object sender, EventArgs e)
         {
@@ -1283,7 +1283,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
         /// <summary>
         /// UserAuthenticated runs when the user is authenticated by one of the child
-        /// Authentication controls
+        /// Authentication controls.
         /// </summary>
         protected void UserAuthenticated(object sender, UserAuthenticatedEventArgs e)
         {
@@ -1402,7 +1402,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// UserCreateCompleted runs when a new user has been Created
+        /// UserCreateCompleted runs when a new user has been Created.
         /// </summary>
         /// <remarks>
         /// </remarks>

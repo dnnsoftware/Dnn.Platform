@@ -37,8 +37,8 @@ namespace log4net.Core
     /// type of exception being thrown.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
 #if !NETCF
     [Serializable]
 #endif
@@ -49,7 +49,7 @@ namespace log4net.Core
 #endif
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -61,7 +61,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="message">A message to include with the exception.</param>
         /// <remarks>
@@ -76,7 +76,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="message">A message to include with the exception.</param>
         /// <param name="innerException">A nested exception to include.</param>
@@ -93,7 +93,7 @@ namespace log4net.Core
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
-        /// Serialization constructor
+        /// Serialization constructor.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data about the exception being thrown.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>

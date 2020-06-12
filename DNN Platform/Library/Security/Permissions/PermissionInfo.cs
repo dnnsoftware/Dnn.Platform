@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Permissions
     /// Class    : PermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// PermissionInfo provides the Entity Layer for Permissions
+    /// PermissionInfo provides the Entity Layer for Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -26,54 +26,54 @@ namespace DotNetNuke.Security.Permissions
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Mdoule Definition ID
+        /// Gets or sets and sets the Mdoule Definition ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int ModuleDefID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Permission Code
+        /// Gets or sets and sets the Permission Code.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissioncode")]
         public string PermissionCode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Permission ID
+        /// Gets or sets and sets the Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissionid")]
         public int PermissionID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Permission Key
+        /// Gets or sets and sets the Permission Key.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("permissionkey")]
         public string PermissionKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Permission Name
+        /// Gets or sets and sets the Permission Name.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public string PermissionName { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// FillInternal fills a PermissionInfo from a Data Reader
+        /// FillInternal fills a PermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {

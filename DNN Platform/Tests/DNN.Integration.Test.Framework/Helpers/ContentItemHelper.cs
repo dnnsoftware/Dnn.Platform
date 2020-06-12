@@ -10,10 +10,10 @@ namespace DNN.Integration.Test.Framework.Helpers
     public static class ContentItemHelper
     {
         /// <summary>
-        /// Get a string array representing the tags associated to a content item
+        /// Get a string array representing the tags associated to a content item.
         /// </summary>
-        /// <param name="contentItemId">The id of the content item</param>
-        /// <returns>An array of tags</returns>
+        /// <param name="contentItemId">The id of the content item.</param>
+        /// <returns>An array of tags.</returns>
         public static string[] GetTags(int contentItemId)
         {
             var tagsQuery = @"SELECT t.Name Name
@@ -25,10 +25,10 @@ namespace DNN.Integration.Test.Framework.Helpers
         }
 
         /// <summary>
-        /// Adds a valid Fake Content item
+        /// Adds a valid Fake Content item.
         /// </summary>
-        /// <param name="tabId">The TabId to associate the content item to</param>
-        /// <returns>the ContentItemId of the create content item</returns>
+        /// <param name="tabId">The TabId to associate the content item to.</param>
+        /// <returns>the ContentItemId of the create content item.</returns>
         public static int AddContentItem(int tabId)
         {
             var query = string.Format(
@@ -40,9 +40,9 @@ namespace DNN.Integration.Test.Framework.Helpers
         }
 
         /// <summary>
-        /// Removes a content item
+        /// Removes a content item.
         /// </summary>
-        /// <param name="contentItemId">The id of the content item to remove</param>
+        /// <param name="contentItemId">The id of the content item to remove.</param>
         public static void RemoveContentItem(int contentItemId)
         {
             var query = string.Format(

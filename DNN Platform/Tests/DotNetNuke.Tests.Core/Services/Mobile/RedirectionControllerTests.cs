@@ -32,7 +32,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Services.Mobile
 {
     /// <summary>
-    ///   Summary description for RedirectionControllerTests
+    ///   Summary description for RedirectionControllerTests.
     /// </summary>
     [TestFixture]
     public class RedirectionControllerTests

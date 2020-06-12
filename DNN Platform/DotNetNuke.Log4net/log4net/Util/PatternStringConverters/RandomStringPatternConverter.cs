@@ -31,7 +31,7 @@ using log4net.Util;
 namespace log4net.Util.PatternStringConverters
 {
     /// <summary>
-    /// A Pattern converter that generates a string of random characters
+    /// A Pattern converter that generates a string of random characters.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -47,11 +47,11 @@ namespace log4net.Util.PatternStringConverters
     /// The random number generator used by this class is not cryptographically secure.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal sealed class RandomStringPatternConverter : PatternConverter, IOptionHandler
     {
         /// <summary>
-        /// Shared random number generator
+        /// Shared random number generator.
         /// </summary>
         private static readonly Random s_random = new Random();
 
@@ -61,7 +61,7 @@ namespace log4net.Util.PatternStringConverters
         private int m_length = 4;
 
         /// <summary>
-        /// Initialize the converter options
+        /// Initialize the converter options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -94,10 +94,10 @@ namespace log4net.Util.PatternStringConverters
         }
 
         /// <summary>
-        /// Write a randoim string to the output
+        /// Write a randoim string to the output.
         /// </summary>
-        /// <param name="writer">the writer to write to</param>
-        /// <param name="state">null, state is not set</param>
+        /// <param name="writer">the writer to write to.</param>
+        /// <param name="state">null, state is not set.</param>
         /// <remarks>
         /// <para>
         /// Write a randoim string to the output <paramref name="writer"/>.

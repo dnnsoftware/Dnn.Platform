@@ -80,11 +80,11 @@ namespace log4net.Appender
     /// avoids having multiple processes logging to the same file.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Rodrigo B. de Oliveira</author>
-    /// <author>Douglas de la Torre</author>
-    /// <author>Niall Daley</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Rodrigo B. de Oliveira.</author>
+    /// <author>Douglas de la Torre.</author>
+    /// <author>Niall Daley.</author>
 #else
 	/// <summary>
 	/// Appends logging events to a file.
@@ -368,7 +368,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Locking model base class
+        /// Locking model base class.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -380,11 +380,11 @@ namespace log4net.Appender
             private FileAppender m_appender = null;
 
             /// <summary>
-            /// Open the output file
+            /// Open the output file.
             /// </summary>
-            /// <param name="filename">The filename to use</param>
-            /// <param name="append">Whether to append to the file, or overwrite</param>
-            /// <param name="encoding">The encoding to use</param>
+            /// <param name="filename">The filename to use.</param>
+            /// <param name="append">Whether to append to the file, or overwrite.</param>
+            /// <param name="encoding">The encoding to use.</param>
             /// <remarks>
             /// <para>
             /// Open the file specified and prepare for logging.
@@ -396,7 +396,7 @@ namespace log4net.Appender
             public abstract void OpenFile(string filename, bool append, Encoding encoding);
 
             /// <summary>
-            /// Close the file
+            /// Close the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -416,7 +416,7 @@ namespace log4net.Appender
             public abstract void OnClose();
 
             /// <summary>
-            /// Acquire the lock on the file
+            /// Acquire the lock on the file.
             /// </summary>
             /// <returns>A stream that is ready to be written to.</returns>
             /// <remarks>
@@ -429,7 +429,7 @@ namespace log4net.Appender
             public abstract Stream AcquireLock();
 
             /// <summary>
-            /// Release the lock on the file
+            /// Release the lock on the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -440,10 +440,10 @@ namespace log4net.Appender
             public abstract void ReleaseLock();
 
             /// <summary>
-            /// Gets or sets the <see cref="FileAppender"/> for this LockingModel
+            /// Gets or sets the <see cref="FileAppender"/> for this LockingModel.
             /// </summary>
             /// <value>
-            /// The <see cref="FileAppender"/> for this LockingModel
+            /// The <see cref="FileAppender"/> for this LockingModel.
             /// </value>
             /// <remarks>
             /// <para>
@@ -516,7 +516,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Hold an exclusive lock on the output file
+        /// Hold an exclusive lock on the output file.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -531,9 +531,9 @@ namespace log4net.Appender
             /// <summary>
             /// Open the file specified and prepare for logging.
             /// </summary>
-            /// <param name="filename">The filename to use</param>
-            /// <param name="append">Whether to append to the file, or overwrite</param>
-            /// <param name="encoding">The encoding to use</param>
+            /// <param name="filename">The filename to use.</param>
+            /// <param name="append">Whether to append to the file, or overwrite.</param>
+            /// <param name="encoding">The encoding to use.</param>
             /// <remarks>
             /// <para>
             /// Open the file specified and prepare for logging.
@@ -555,7 +555,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Close the file
+            /// Close the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -569,12 +569,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Acquire the lock on the file
+            /// Acquire the lock on the file.
             /// </summary>
             /// <returns>A stream that is ready to be written to.</returns>
             /// <remarks>
             /// <para>
-            /// Does nothing. The lock is already taken
+            /// Does nothing. The lock is already taken.
             /// </para>
             /// </remarks>
             public override Stream AcquireLock()
@@ -583,7 +583,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Release the lock on the file
+            /// Release the lock on the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -613,7 +613,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Acquires the file lock for each write
+        /// Acquires the file lock for each write.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -632,9 +632,9 @@ namespace log4net.Appender
             /// <summary>
             /// Prepares to open the file when the first message is logged.
             /// </summary>
-            /// <param name="filename">The filename to use</param>
-            /// <param name="append">Whether to append to the file, or overwrite</param>
-            /// <param name="encoding">The encoding to use</param>
+            /// <param name="filename">The filename to use.</param>
+            /// <param name="append">Whether to append to the file, or overwrite.</param>
+            /// <param name="encoding">The encoding to use.</param>
             /// <remarks>
             /// <para>
             /// Open the file specified and prepare for logging.
@@ -650,7 +650,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Close the file
+            /// Close the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -663,7 +663,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Acquire the lock on the file
+            /// Acquire the lock on the file.
             /// </summary>
             /// <returns>A stream that is ready to be written to.</returns>
             /// <remarks>
@@ -692,7 +692,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Release the lock on the file
+            /// Release the lock on the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -727,8 +727,8 @@ namespace log4net.Appender
         /// <summary>
         /// Provides cross-process file locking.
         /// </summary>
-        /// <author>Ron Grabowski</author>
-        /// <author>Steve Wranovsky</author>
+        /// <author>Ron Grabowski.</author>
+        /// <author>Steve Wranovsky.</author>
         public class InterProcessLock : LockingModelBase
         {
             private Mutex m_mutex = null;
@@ -738,9 +738,9 @@ namespace log4net.Appender
             /// <summary>
             /// Open the file specified and prepare for logging.
             /// </summary>
-            /// <param name="filename">The filename to use</param>
-            /// <param name="append">Whether to append to the file, or overwrite</param>
-            /// <param name="encoding">The encoding to use</param>
+            /// <param name="filename">The filename to use.</param>
+            /// <param name="append">Whether to append to the file, or overwrite.</param>
+            /// <param name="encoding">The encoding to use.</param>
             /// <remarks>
             /// <para>
             /// Open the file specified and prepare for logging.
@@ -765,7 +765,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Close the file
+            /// Close the file.
             /// </summary>
             /// <remarks>
             /// <para>
@@ -786,12 +786,12 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Acquire the lock on the file
+            /// Acquire the lock on the file.
             /// </summary>
             /// <returns>A stream that is ready to be written to.</returns>
             /// <remarks>
             /// <para>
-            /// Does nothing. The lock is already taken
+            /// Does nothing. The lock is already taken.
             /// </para>
             /// </remarks>
             public override Stream AcquireLock()
@@ -887,11 +887,11 @@ namespace log4net.Appender
 #endif
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor
+        /// Default constructor.
         /// </para>
         /// </remarks>
         public FileAppender()
@@ -901,9 +901,9 @@ namespace log4net.Appender
         /// <summary>
         /// Construct a new appender using the layout, file and append mode.
         /// </summary>
-        /// <param name="layout">the layout to use with this appender</param>
-        /// <param name="filename">the full path to the file to write to</param>
-        /// <param name="append">flag to indicate if the file should be appended to</param>
+        /// <param name="layout">the layout to use with this appender.</param>
+        /// <param name="filename">the full path to the file to write to.</param>
+        /// <param name="append">flag to indicate if the file should be appended to.</param>
         /// <remarks>
         /// <para>
         /// Obsolete constructor.
@@ -922,8 +922,8 @@ namespace log4net.Appender
         /// Construct a new appender using the layout and file specified.
         /// The file will be appended to.
         /// </summary>
-        /// <param name="layout">the layout to use with this appender</param>
-        /// <param name="filename">the full path to the file to write to</param>
+        /// <param name="layout">the layout to use with this appender.</param>
+        /// <param name="filename">the full path to the file to write to.</param>
         /// <remarks>
         /// <para>
         /// Obsolete constructor.
@@ -1136,7 +1136,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Called to initialize the file writer
+        /// Called to initialize the file writer.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -1297,7 +1297,7 @@ namespace log4net.Appender
         /// Sets and <i>opens</i> the file where the log output will go. The specified file must be writable.
         /// </summary>
         /// <param name="fileName">The path to the log file. Must be a fully qualified path.</param>
-        /// <param name="append">If true will append to fileName. Otherwise will truncate fileName</param>
+        /// <param name="append">If true will append to fileName. Otherwise will truncate fileName.</param>
         /// <remarks>
         /// <para>
         /// Calls <see cref="OpenFile"/> but guarantees not to throw an exception.
@@ -1320,7 +1320,7 @@ namespace log4net.Appender
         /// Sets and <i>opens</i> the file where the log output will go. The specified file must be writable.
         /// </summary>
         /// <param name="fileName">The path to the log file. Must be a fully qualified path.</param>
-        /// <param name="append">If true will append to fileName. Otherwise will truncate fileName</param>
+        /// <param name="append">If true will append to fileName. Otherwise will truncate fileName.</param>
         /// <remarks>
         /// <para>
         /// If there was already an opened file, then the previous file
@@ -1380,9 +1380,9 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Sets the quiet writer used for file output
+        /// Sets the quiet writer used for file output.
         /// </summary>
-        /// <param name="fileStream">the file stream that has been opened for writing</param>
+        /// <param name="fileStream">the file stream that has been opened for writing.</param>
         /// <remarks>
         /// <para>
         /// This implementation of <see cref="M:SetQWForFiles(Stream)"/> creates a <see cref="StreamWriter"/>
@@ -1403,7 +1403,7 @@ namespace log4net.Appender
         /// <summary>
         /// Sets the quiet writer being used.
         /// </summary>
-        /// <param name="writer">the writer over the file stream that has been opened for writing</param>
+        /// <param name="writer">the writer over the file stream that has been opened for writing.</param>
         /// <remarks>
         /// <para>
         /// This method can be overridden by sub classes that want to
@@ -1450,17 +1450,17 @@ namespace log4net.Appender
         private Encoding m_encoding = Encoding.GetEncoding(0);
 
         /// <summary>
-        /// The security context to use for privileged calls
+        /// The security context to use for privileged calls.
         /// </summary>
         private SecurityContext m_securityContext;
 
         /// <summary>
-        /// The stream to log to. Has added locking semantics
+        /// The stream to log to. Has added locking semantics.
         /// </summary>
         private FileAppender.LockingStream m_stream = null;
 
         /// <summary>
-        /// The locking model to use
+        /// The locking model to use.
         /// </summary>
         private FileAppender.LockingModelBase m_lockingModel = new FileAppender.ExclusiveLock();
 

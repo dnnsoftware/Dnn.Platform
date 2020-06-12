@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         /// <remarks>
         /// If parametername is not defined, then the name of the property will be used.  If
         /// a prefix is defined, then that will be concatenated with the parametername (or the
-        /// property name if no parametername is provided)
+        /// property name if no parametername is provided).
         /// </remarks>
         public string ParameterName { get; set; }
 

@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Journal
         }
 
         /// <summary>
-        /// Creates the content text
+        /// Creates the content text.
         /// </summary>
         /// <param name="objJournalItem"></param>
         /// <returns></returns>

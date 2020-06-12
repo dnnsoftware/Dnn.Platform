@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageDependency determines whether the dependent package is installed
+    /// The PackageDependency determines whether the dependent package is installed.
     /// </summary>
     /// <remarks>
     /// </remarks>

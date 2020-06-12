@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Search.Internals
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   The Impl Controller class for Lucene
+    ///   The Impl Controller class for Lucene.
     /// </summary>
     /// -----------------------------------------------------------------------------
     internal class LuceneControllerImpl : ILuceneController, IDisposable
@@ -346,7 +346,7 @@ namespace DotNetNuke.Services.Search.Internals
         }
 
         /// <summary>
-        /// Extract the Score portion of the match.ToString()
+        /// Extract the Score portion of the match.ToString().
         /// </summary>
         private string GetDisplayScoreFromMatch(string match)
         {

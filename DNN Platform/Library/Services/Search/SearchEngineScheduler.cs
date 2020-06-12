@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DoWork runs the scheduled item
+        /// DoWork runs the scheduled item.
         /// </summary>
         /// <remarks>
         /// </remarks>

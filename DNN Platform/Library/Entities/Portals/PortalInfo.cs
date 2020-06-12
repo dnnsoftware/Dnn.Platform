@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Portals
 {
     /// <summary>
     /// PortalInfo provides a base class for Portal information
-    /// This class inherites from the <c>BaseEntityInfo</c> and is <c>Hydratable</c>
+    /// This class inherites from the <c>BaseEntityInfo</c> and is <c>Hydratable</c>.
     /// </summary>
     /// <remarks><seealso cref="IHydratable"/>
     /// <example>This example shows how the <c>PortalInfo</c> class is used to get physical file names
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Portals
         private string _registeredRoleName;
 
         /// <summary>
-        /// Create new Portalinfo instance
+        /// Create new Portalinfo instance.
         /// </summary>
         /// <remarks>
         /// <example>This example illustrates the creation of a new <c>PortalInfo</c> object
@@ -76,10 +76,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets or sets userID of the user who is the admininistrator of the portal
+        /// Gets or sets userID of the user who is the admininistrator of the portal.
         /// </summary>
-        /// <value>UserId of the user who is the portal admin</value>
-        /// <returns>UserId of the user who is the portal admin</returns>
+        /// <value>UserId of the user who is the portal admin.</value>
+        /// <returns>UserId of the user who is the portal admin.</returns>
         /// <remarks><example>This show the usage of the <c>AdministratorId</c>
         /// <code lang="vbnet">
         /// Dim Arr As ArrayList = objRoleController.GetUserRolesByRoleName(intPortalId, objPortal.AdministratorRoleName)
@@ -96,10 +96,10 @@ namespace DotNetNuke.Entities.Portals
         public int AdministratorId { get; set; }
 
         /// <summary>
-        /// Gets or sets the RoleId of the Security Role of the Administrators group of the portal
+        /// Gets or sets the RoleId of the Security Role of the Administrators group of the portal.
         /// </summary>
-        /// <value>RoleId of de Administrators Security Role</value>
-        /// <returns>RoleId of de Administrators Security Role</returns>
+        /// <value>RoleId of de Administrators Security Role.</value>
+        /// <returns>RoleId of de Administrators Security Role.</returns>
         /// <remarks><example>This shows the usage of the AdministratoprRoleId
         /// <code lang="vbnet">
         /// Dim objPortal As PortalInfo = New PortalController().GetPortal(PortalID)
@@ -117,34 +117,34 @@ namespace DotNetNuke.Entities.Portals
         public int AdministratorRoleId { get; set; }
 
         /// <summary>
-        /// Gets or sets tabId at which admin tasks start
+        /// Gets or sets tabId at which admin tasks start.
         /// </summary>
-        /// <value>TabID of admin tasks</value>
-        /// <returns>TabID of admin tasks</returns>
+        /// <value>TabID of admin tasks.</value>
+        /// <returns>TabID of admin tasks.</returns>
         /// <remarks></remarks>
         [XmlElement("admintabid")]
         public int AdminTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets image (bitmap) file that is used as background for the portal
+        /// Gets or sets image (bitmap) file that is used as background for the portal.
         /// </summary>
-        /// <value>Name of the file that is used as background</value>
-        /// <returns>Name of the file that is used as background</returns>
+        /// <value>Name of the file that is used as background.</value>
+        /// <returns>Name of the file that is used as background.</returns>
         /// <remarks></remarks>
         [XmlElement("backgroundfile")]
         public string BackgroundFile { get; set; }
 
         /// <summary>
-        /// Gets or sets current host version
+        /// Gets or sets current host version.
         /// </summary>
         [XmlElement("crmversion")]
         public string CrmVersion { get; set; }
 
         /// <summary>
-        /// Gets or sets setting for the type of banner advertising in the portal
+        /// Gets or sets setting for the type of banner advertising in the portal.
         /// </summary>
-        /// <value>Type of banner advertising</value>
-        /// <returns>Type of banner advertising</returns>
+        /// <value>Type of banner advertising.</value>
+        /// <returns>Type of banner advertising.</returns>
         /// <remarks><example>This show the usage of BannerAdvertising setting
         /// <code lang="vbnet">
         /// optBanners.SelectedIndex = objPortal.BannerAdvertising
@@ -156,10 +156,10 @@ namespace DotNetNuke.Entities.Portals
         public string CultureCode { get; set; }
 
         /// <summary>
-        /// Gets or sets curreny format that is used in the portal
+        /// Gets or sets curreny format that is used in the portal.
         /// </summary>
-        /// <value>Currency of the portal</value>
-        /// <returns>Currency of the portal</returns>
+        /// <value>Currency of the portal.</value>
+        /// <returns>Currency of the portal.</returns>
         /// <remarks><example>This exampels show the usage of the Currentcy property
         /// <code lang="vbnet">
         /// cboCurrency.DataSource = colList
@@ -174,19 +174,19 @@ namespace DotNetNuke.Entities.Portals
         public string Currency { get; set; }
 
         /// <summary>
-        /// Gets or sets default language for the portal
+        /// Gets or sets default language for the portal.
         /// </summary>
-        /// <value>Default language of the portal</value>
-        /// <returns>Default language of the portal</returns>
+        /// <value>Default language of the portal.</value>
+        /// <returns>Default language of the portal.</returns>
         /// <remarks></remarks>
         [XmlElement("defaultlanguage")]
         public string DefaultLanguage { get; set; }
 
         /// <summary>
-        /// Gets or sets description of the portal
+        /// Gets or sets description of the portal.
         /// </summary>
-        /// <value>Description of the portal</value>
-        /// <returns>Description of the portal</returns>
+        /// <value>Description of the portal.</value>
+        /// <returns>Description of the portal.</returns>
         /// <remarks><example>This show the usage of the <c>Description</c> property
         /// <code lang="vbnet">
         /// Dim objPortalController As New PortalController
@@ -199,19 +199,19 @@ namespace DotNetNuke.Entities.Portals
         public string Description { get; set; }
 
         /// <summary>
-        /// Gets or sets the default e-mail to be used in the porta;
+        /// Gets or sets the default e-mail to be used in the porta.
         /// </summary>
-        /// <value>E-mail of the portal</value>
-        /// <returns>E-mail of the portal</returns>
+        /// <value>E-mail of the portal.</value>
+        /// <returns>E-mail of the portal.</returns>
         /// <remarks></remarks>
         [XmlElement("email")]
         public string Email { get; set; }
 
         /// <summary>
-        /// Gets or sets date at which the portal expires
+        /// Gets or sets date at which the portal expires.
         /// </summary>
-        /// <value>Date of expiration of the portal</value>
-        /// <returns>Date of expiration of the portal</returns>
+        /// <value>Date of expiration of the portal.</value>
+        /// <returns>Date of expiration of the portal.</returns>
         /// <remarks><example>This show the Portal expiration date usage
         /// <code lang="vbnet">
         /// If Not Null.IsNull(objPortal.ExpiryDate) Then
@@ -226,10 +226,10 @@ namespace DotNetNuke.Entities.Portals
         public DateTime ExpiryDate { get; set; }
 
         /// <summary>
-        /// Gets or sets the footer text as specified in the Portal settings
+        /// Gets or sets the footer text as specified in the Portal settings.
         /// </summary>
-        /// <value>Footer text of the portal</value>
-        /// <returns>Returns the the footer text of the portal</returns>
+        /// <value>Footer text of the portal.</value>
+        /// <returns>Returns the the footer text of the portal.</returns>
         /// <remarks>
         /// <example>This show the usage of the <c>FooterText</c> property
         /// <code lang="vbnet">
@@ -241,28 +241,28 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
 
         /// <summary>
-        /// Gets or sets gUID of the portal info object
+        /// Gets or sets gUID of the portal info object.
         /// </summary>
-        /// <value>Portal info Object GUID</value>
-        /// <returns>GUD of the portal info object</returns>
+        /// <value>Portal info Object GUID.</value>
+        /// <returns>GUD of the portal info object.</returns>
         /// <remarks></remarks>
         [XmlIgnore]
         public Guid GUID { get; set; }
 
         /// <summary>
-        /// Gets or sets home directory of the portal (logical path)
+        /// Gets or sets home directory of the portal (logical path).
         /// </summary>
-        /// <value>Portal home directory</value>
-        /// <returns>Portal home directory</returns>
+        /// <value>Portal home directory.</value>
+        /// <returns>Portal home directory.</returns>
         /// <remarks><seealso cref="HomeDirectoryMapPath"></seealso></remarks>
         [XmlElement("homedirectory")]
         public string HomeDirectory { get; set; }
 
         /// <summary>
-        /// Gets home System (local) directory of the portal (logical path)
+        /// Gets home System (local) directory of the portal (logical path).
         /// </summary>
-        /// <value>Portal home system directory</value>
-        /// <returns>Portal home system directory in local filesystem</returns>
+        /// <value>Portal home system directory.</value>
+        /// <returns>Portal home system directory in local filesystem.</returns>
         /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
         [XmlElement("homesystemdirectory")]
         public string HomeSystemDirectory
@@ -271,19 +271,19 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets or sets tabdId of the Home page
+        /// Gets or sets tabdId of the Home page.
         /// </summary>
-        /// <value>TabId of the Home page</value>
-        /// <returns>TabId of the Home page</returns>
+        /// <value>TabId of the Home page.</value>
+        /// <returns>TabId of the Home page.</returns>
         /// <remarks></remarks>
         [XmlElement("hometabid")]
         public int HomeTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets amount of currency that is used as a hosting fee of the portal
+        /// Gets or sets amount of currency that is used as a hosting fee of the portal.
         /// </summary>
-        /// <value>Currency amount hosting fee</value>
-        /// <returns>Currency amount hosting fee</returns>
+        /// <value>Currency amount hosting fee.</value>
+        /// <returns>Currency amount hosting fee.</returns>
         /// <remarks><example>This show the Portal <c>HostFee</c>usage
         /// <code lang="vbnet">
         /// If Not Null.IsNull(objPortal.ExpiryDate) Then
@@ -298,10 +298,10 @@ namespace DotNetNuke.Entities.Portals
         public float HostFee { get; set; }
 
         /// <summary>
-        /// Gets or sets total disk space allowed for the portal (Mb). 0 means not limited
+        /// Gets or sets total disk space allowed for the portal (Mb). 0 means not limited.
         /// </summary>
-        /// <value>Diskspace allowed for the portal</value>
-        /// <returns>Diskspace allowed for the portal</returns>
+        /// <value>Diskspace allowed for the portal.</value>
+        /// <returns>Diskspace allowed for the portal.</returns>
         /// <remarks><example>This show the Portal <c>HostSpace</c>usage
         /// <code lang="vbnet">
         /// If Not Null.IsNull(objPortal.ExpiryDate) Then
@@ -316,10 +316,10 @@ namespace DotNetNuke.Entities.Portals
         public int HostSpace { get; set; }
 
          /// <summary>
-        /// Gets or sets keywords (separated by ,) for this portal
+        /// Gets or sets keywords (separated by ,) for this portal.
         /// </summary>
-        /// <value>Keywords seperated by ,</value>
-        /// <returns>Keywords for this portal</returns>
+        /// <value>Keywords seperated by .</value>
+        /// <returns>Keywords for this portal.</returns>
         /// <remarks><example>This show the usage of the <c>KeyWords</c> property
         /// <code lang="vbnet">
         /// Dim objPortalController As New PortalController
@@ -332,19 +332,19 @@ namespace DotNetNuke.Entities.Portals
         public string KeyWords { get; set; }
 
         /// <summary>
-        /// Gets or sets tabId with the login control, page to login
+        /// Gets or sets tabId with the login control, page to login.
         /// </summary>
-        /// <value>TabId of the Login page</value>
-        /// <returns>TabId of the Login page</returns>
+        /// <value>TabId of the Login page.</value>
+        /// <returns>TabId of the Login page.</returns>
         /// <remarks></remarks>
         [XmlElement("logintabid")]
         public int LoginTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets the portal has a logo (bitmap) associated with the portal. Teh admin can set the logo in the portal settings
+        /// Gets or sets the portal has a logo (bitmap) associated with the portal. Teh admin can set the logo in the portal settings.
         /// </summary>
-        /// <value>URL of the logo</value>
-        /// <returns>URL of the Portal logo</returns>
+        /// <value>URL of the logo.</value>
+        /// <returns>URL of the Portal logo.</returns>
         /// <remarks><example><code lang="vbnet">
         ///  urlLogo.Url = objPortal.LogoFile
         ///  urlLogo.FileFilter = glbImageFileTypes
@@ -353,10 +353,10 @@ namespace DotNetNuke.Entities.Portals
         public string LogoFile { get; set; }
 
         /// <summary>
-        /// Gets or sets number of portal pages allowed in the portal. 0 means not limited
+        /// Gets or sets number of portal pages allowed in the portal. 0 means not limited.
         /// </summary>
-        /// <value>Number of portal pages allowed</value>
-        /// <returns>Number of portal pages allowed</returns>
+        /// <value>Number of portal pages allowed.</value>
+        /// <returns>Number of portal pages allowed.</returns>
         /// <remarks><example>This show the Portal <c>PageQuota</c>usage
         /// <code lang="vbnet">
         /// If Not Null.IsNull(objPortal.ExpiryDate) Then
@@ -371,37 +371,37 @@ namespace DotNetNuke.Entities.Portals
         public int PageQuota { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal
+        /// Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal.
         /// </summary>
-        /// <value>Name of the portal payment processor</value>
-        /// <returns>Name of the portal payment processor</returns>
+        /// <value>Name of the portal payment processor.</value>
+        /// <returns>Name of the portal payment processor.</returns>
         /// <remarks></remarks>
         [XmlElement("paymentprocessor")]
         public string PaymentProcessor { get; set; }
 
         /// <summary>
-        /// Gets or sets unique idenitifier of the Portal within the site
+        /// Gets or sets unique idenitifier of the Portal within the site.
         /// </summary>
-        /// <value>Portal identifier</value>
-        /// <returns>Portal Identifier</returns>
+        /// <value>Portal identifier.</value>
+        /// <returns>Portal Identifier.</returns>
         /// <remarks></remarks>
         [XmlElement("portalid")]
         public int PortalID { get; set; }
 
         /// <summary>
         /// Gets or sets contains the id of the portal group that the portal belongs to
-        /// Will be null or -1 (null.nullinteger) if the portal does not belong to a portal group
+        /// Will be null or -1 (null.nullinteger) if the portal does not belong to a portal group.
         /// </summary>
-        /// <value>Portal Group identifier</value>
-        /// <returns>Portal Group Identifier</returns>
+        /// <value>Portal Group identifier.</value>
+        /// <returns>Portal Group Identifier.</returns>
         /// <remarks></remarks>
         public int PortalGroupID { get; set; }
 
         /// <summary>
-        /// Gets or sets name of the portal. Can be set at creation time, Admin can change the name in the portal settings
+        /// Gets or sets name of the portal. Can be set at creation time, Admin can change the name in the portal settings.
         /// </summary>
-        /// <value>Name of the portal</value>
-        /// <returns>Name of the portal</returns>
+        /// <value>Name of the portal.</value>
+        /// <returns>Name of the portal.</returns>
         /// <remarks><example>This show the usage of the <c>PortalName</c> property
         /// <code lang="vbnet">
         /// Dim objPortalController As New PortalController
@@ -414,9 +414,9 @@ namespace DotNetNuke.Entities.Portals
         public string PortalName { get; set; }
 
         /// <summary>
-        /// Gets or sets password to use in the payment processor
+        /// Gets or sets password to use in the payment processor.
         /// </summary>
-        /// <value>Payment Processor password</value>
+        /// <value>Payment Processor password.</value>
         /// <returns></returns>
         /// <remarks><example>This shows the usage of the payment processing
         /// <code lang="vbnet">
@@ -438,7 +438,7 @@ namespace DotNetNuke.Entities.Portals
         public string ProcessorPassword { get; set; }
 
         /// <summary>
-        /// Gets or sets payment Processor userId
+        /// Gets or sets payment Processor userId.
         /// </summary>
         /// <value>
         /// <placeholder>Payment Processor userId</placeholder>
@@ -467,104 +467,104 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets or sets the RoleId of the Registered users group of the portal.
         /// </summary>
-        /// <value>RoleId of the Registered users </value>
-        /// <returns>RoleId of the Registered users </returns>
+        /// <value>RoleId of the Registered users. </value>
+        /// <returns>RoleId of the Registered users. </returns>
         /// <remarks></remarks>
         [XmlElement("registeredroleid")]
         public int RegisteredRoleId { get; set; }
 
         /// <summary>
-        ///   Gets or sets tabid of the Registration page
+        ///   Gets or sets tabid of the Registration page.
         /// </summary>
-        /// <value>TabId of the Registration page</value>
-        /// <returns>TabId of the Registration page</returns>
+        /// <value>TabId of the Registration page.</value>
+        /// <returns>TabId of the Registration page.</returns>
         /// <remarks>
         /// </remarks>
         [XmlElement("registertabid")]
         public int RegisterTabId { get; set; }
 
         /// <summary>
-        ///   Gets or sets tabid of the Search profile page
+        ///   Gets or sets tabid of the Search profile page.
         /// </summary>
-        /// <value>TabdId of the Search Results page</value>
-        /// <returns>TabdId of the Search Results page</returns>
+        /// <value>TabdId of the Search Results page.</value>
+        /// <returns>TabdId of the Search Results page.</returns>
         /// <remarks>
         /// </remarks>
         [XmlElement("searchtabid")]
         public int SearchTabId { get; set; }
 
         /// <summary>
-        ///   Gets or sets tabid of the Custom 404 page
+        ///   Gets or sets tabid of the Custom 404 page.
         /// </summary>
-        /// <value>Tabid of the Custom 404 page</value>
-        /// <returns>Tabid of the Custom 404 page</returns>
+        /// <value>Tabid of the Custom 404 page.</value>
+        /// <returns>Tabid of the Custom 404 page.</returns>
         /// <remarks>
         /// </remarks>
         [XmlElement("custom404tabid")]
         public int Custom404TabId { get; set; }
 
         /// <summary>
-        ///   Gets or sets tabid of the Custom 500 error page
+        ///   Gets or sets tabid of the Custom 500 error page.
         /// </summary>
-        /// <value>Tabid of the Custom 500 error page</value>
-        /// <returns>Tabid of the Custom 500 error page</returns>
+        /// <value>Tabid of the Custom 500 error page.</value>
+        /// <returns>Tabid of the Custom 500 error page.</returns>
         /// <remarks>
         /// </remarks>
         [XmlElement("custom500tabid")]
         public int Custom500TabId { get; set; }
 
         /// <summary>
-        ///   Gets or sets tabid of the Terms of Use page
+        ///   Gets or sets tabid of the Terms of Use page.
         /// </summary>
-        /// <value>Tabid of the Terms of Use page</value>
-        /// <returns>Tabid of the Terms of Use page</returns>
+        /// <value>Tabid of the Terms of Use page.</value>
+        /// <returns>Tabid of the Terms of Use page.</returns>
         /// <remarks>
         /// </remarks>
         [XmlElement("termstabid")]
         public int TermsTabId { get; set; }
 
         /// <summary>
-        ///   Gets or sets tabid of the Privacy Statement page
+        ///   Gets or sets tabid of the Privacy Statement page.
         /// </summary>
-        /// <value>Tabid of the Privacy Statement page</value>
-        /// <returns>Tabid of the Privacy Statement page</returns>
+        /// <value>Tabid of the Privacy Statement page.</value>
+        /// <returns>Tabid of the Privacy Statement page.</returns>
         /// <remarks>
         /// </remarks>
         [XmlElement("privacytabid")]
         public int PrivacyTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets # of days that Site log history should be kept. 0 means unlimited
+        /// Gets or sets # of days that Site log history should be kept. 0 means unlimited.
         /// </summary>
-        /// <value># of days sitelog history</value>
-        /// <returns># of days sitelog history</returns>
+        /// <value># of days sitelog history.</value>
+        /// <returns># of days sitelog history.</returns>
         [XmlElement("siteloghistory")]
         [Obsolete("Deprecated in 8.0.0. Scheduled removal in v11.0.0.")]
         public int SiteLogHistory { get; set; }
 
         /// <summary>
-        /// Gets or sets tabdId of the splash page. If 0, there is no splash page
+        /// Gets or sets tabdId of the splash page. If 0, there is no splash page.
         /// </summary>
-        /// <value>TabdId of the Splash page</value>
-        /// <returns>TabdId of the Splash page</returns>
+        /// <value>TabdId of the Splash page.</value>
+        /// <returns>TabdId of the Splash page.</returns>
         /// <remarks></remarks>
         [XmlElement("splashtabid")]
         public int SplashTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets tabId at which Host tasks start
+        /// Gets or sets tabId at which Host tasks start.
         /// </summary>
-        /// <value>TabId of Host tasks</value>
-        /// <returns>TabId of Host tasks</returns>
+        /// <value>TabId of Host tasks.</value>
+        /// <returns>TabId of Host tasks.</returns>
         /// <remarks></remarks>
         [XmlElement("supertabid")]
         public int SuperTabId { get; set; }
 
         /// <summary>
-        /// Gets or sets number of registered users allowed in the portal. 0 means not limited
+        /// Gets or sets number of registered users allowed in the portal. 0 means not limited.
         /// </summary>
-        /// <value>Number of registered users allowed </value>
-        /// <returns>Number of registered users allowed </returns>
+        /// <value>Number of registered users allowed. </value>
+        /// <returns>Number of registered users allowed. </returns>
         /// <remarks><example>This show the Portal userQuota usage
         /// <code lang="vbnet">
         /// If Not Null.IsNull(objPortal.ExpiryDate) Then
@@ -579,10 +579,10 @@ namespace DotNetNuke.Entities.Portals
         public int UserQuota { get; set; }
 
         /// <summary>
-        /// Gets or sets type of registration that the portal supports
+        /// Gets or sets type of registration that the portal supports.
         /// </summary>
-        /// <value>Type of registration</value>
-        /// <returns>Type of registration</returns>
+        /// <value>Type of registration.</value>
+        /// <returns>Type of registration.</returns>
         /// <remarks><example>Registration type
         /// <code lang="vbnet">
         /// optUserRegistration.SelectedIndex = objPortal.UserRegistration
@@ -591,10 +591,10 @@ namespace DotNetNuke.Entities.Portals
         public int UserRegistration { get; set; }
 
         /// <summary>
-        /// Gets or sets tabid of the User profile page
+        /// Gets or sets tabid of the User profile page.
         /// </summary>
-        /// <value>TabdId of the User profile page</value>
-        /// <returns>TabdId of the User profile page</returns>
+        /// <value>TabdId of the User profile page.</value>
+        /// <returns>TabdId of the User profile page.</returns>
         /// <remarks></remarks>
         [XmlElement("usertabid")]
         public int UserTabId { get; set; }
@@ -602,10 +602,10 @@ namespace DotNetNuke.Entities.Portals
         private int _users;
 
         /// <summary>
-        /// Gets or sets actual number of actual users for this portal
+        /// Gets or sets actual number of actual users for this portal.
         /// </summary>
-        /// <value>Number of users for the portal</value>
-        /// <returns>Number of users for the portal</returns>
+        /// <value>Number of users for the portal.</value>
+        /// <returns>Number of users for the portal.</returns>
         /// <remarks></remarks>
         [XmlElement("users")]
         public int Users
@@ -624,20 +624,20 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets or sets dNN Version # of the portal installation
+        /// Gets or sets dNN Version # of the portal installation.
         /// </summary>
-        /// <value>Version # of the portal installation</value>
-        /// <returns>Version # of the portal installation</returns>
+        /// <value>Version # of the portal installation.</value>
+        /// <returns>Version # of the portal installation.</returns>
         /// <remarks></remarks>
         [XmlElement("version")]
         public string Version { get; set; }
 
         /// <summary>
         /// Gets or sets the actual name of the Administrators group of the portal.
-        /// This name is retrieved from the RoleController object
+        /// This name is retrieved from the RoleController object.
         /// </summary>
-        /// <value>The name of the Administrators group</value>
-        /// <returns>The name of the Administrators group</returns>
+        /// <value>The name of the Administrators group.</value>
+        /// <returns>The name of the Administrators group.</returns>
         /// <remarks></remarks>
         [XmlElement("administratorrolename")]
         public string AdministratorRoleName
@@ -664,12 +664,12 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets fysical path on disk of the home directory of the portal
+        /// Gets fysical path on disk of the home directory of the portal.
         /// </summary>
         /// <value>
         /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
         /// </value>
-        /// <returns>Fully qualified path of the home directory</returns>
+        /// <returns>Fully qualified path of the home directory.</returns>
         /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
         [XmlIgnore]
         public string HomeDirectoryMapPath
@@ -681,12 +681,12 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets fysical path on disk of the home directory of the portal
+        /// Gets fysical path on disk of the home directory of the portal.
         /// </summary>
         /// <value>
         /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
         /// </value>
-        /// <returns>Fully qualified path of the home system (local) directory</returns>
+        /// <returns>Fully qualified path of the home system (local) directory.</returns>
         /// <remarks><seealso cref="HomeDirectory"></seealso></remarks>
         [XmlIgnore]
         public string HomeSystemDirectoryMapPath
@@ -698,10 +698,10 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets or sets actual number of pages of the portal
+        /// Gets or sets actual number of pages of the portal.
         /// </summary>
-        /// <value>Number of pages of the portal</value>
-        /// <returns>Number of pages of the portal</returns>
+        /// <value>Number of pages of the portal.</value>
+        /// <returns>Number of pages of the portal.</returns>
         /// <remarks></remarks>
         [XmlElement("pages")]
         public int Pages
@@ -724,10 +724,10 @@ namespace DotNetNuke.Entities.Portals
 
         /// <summary>
         /// Gets or sets the actual name of the Registerd Users group of the portal.
-        /// This name is retrieved from the RoleController object
+        /// This name is retrieved from the RoleController object.
         /// </summary>
-        /// <value>The name of the Registerd Users group</value>
-        /// <returns>The name of the Registerd Users group</returns>
+        /// <value>The name of the Registerd Users group.</value>
+        /// <returns>The name of the Registerd Users group.</returns>
         /// <remarks></remarks>
         [XmlElement("registeredrolename")]
         public string RegisteredRoleName
@@ -758,10 +758,10 @@ namespace DotNetNuke.Entities.Portals
         public int TimeZoneOffset { get; set; }
 
         /// <summary>
-        /// Fills a PortalInfo from a Data Reader
+        /// Fills a PortalInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// <remarks>Standard IHydratable.Fill implementation
+        /// <param name="dr">The Data Reader to use.</param>
+        /// <remarks>Standard IHydratable.Fill implementation.
         /// <seealso cref="KeyID"></seealso></remarks>
         public void Fill(IDataReader dr)
         {
@@ -859,9 +859,9 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>KeyId of the IHydratable.Key</returns>
+        /// <returns>KeyId of the IHydratable.Key.</returns>
         /// <remarks><seealso cref="Fill"></seealso></remarks>
         public int KeyID
         {

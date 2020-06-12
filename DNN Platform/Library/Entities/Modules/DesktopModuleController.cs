@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : DesktopModuleController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// DesktopModuleController provides the Busines Layer for Desktop Modules
+    /// DesktopModuleController provides the Busines Layer for Desktop Modules.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class DesktopModuleController
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Modules
         /// Portal from the the Database.
         /// </summary>
         /// <param name="cacheItemArgs">The CacheItemArgs object that contains the parameters
-        /// needed for the database call</param>
+        /// needed for the database call.</param>
         /// -----------------------------------------------------------------------------
         private static object GetDesktopModulesByPortalCallBack(CacheItemArgs cacheItemArgs)
         {
@@ -123,9 +123,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module
+        /// DeleteDesktopModule deletes a Desktop Module.
         /// </summary>
-        /// <param name="objDesktopModule">Desktop Module Info</param>
+        /// <param name="objDesktopModule">Desktop Module Info.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(DesktopModuleInfo objDesktopModule)
         {
@@ -134,9 +134,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module By ID
+        /// DeleteDesktopModule deletes a Desktop Module By ID.
         /// </summary>
-        /// <param name="desktopModuleID">The ID of the Desktop Module to delete</param>
+        /// <param name="desktopModuleID">The ID of the Desktop Module to delete.</param>
         /// -----------------------------------------------------------------------------
         public void DeleteDesktopModule(int desktopModuleID)
         {
@@ -152,9 +152,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteDesktopModule deletes a Desktop Module
+        /// DeleteDesktopModule deletes a Desktop Module.
         /// </summary>
-        /// <param name="moduleName">The Name of the Desktop Module to delete</param>
+        /// <param name="moduleName">The Name of the Desktop Module to delete.</param>
         /// -----------------------------------------------------------------------------
         public static void DeleteDesktopModule(string moduleName)
         {
@@ -171,13 +171,13 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModule gets a Desktop Module by its ID
+        /// GetDesktopModule gets a Desktop Module by its ID.
         /// </summary>
         /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
         /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
         /// to the Dataprovider.</remarks>
-        /// <param name="desktopModuleID">The ID of the Desktop Module to get</param>
-        /// <param name="portalID">The ID of the portal</param>
+        /// <param name="desktopModuleID">The ID of the Desktop Module to get.</param>
+        /// <param name="portalID">The ID of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModule(int desktopModuleID, int portalID)
@@ -205,9 +205,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModuleByPackageID gets a Desktop Module by its Package ID
+        /// GetDesktopModuleByPackageID gets a Desktop Module by its Package ID.
         /// </summary>
-        /// <param name="packageID">The ID of the Package</param>
+        /// <param name="packageID">The ID of the Package.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModuleByPackageID(int packageID)
@@ -227,13 +227,13 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModuleByModuleName gets a Desktop Module by its Name
+        /// GetDesktopModuleByModuleName gets a Desktop Module by its Name.
         /// </summary>
         /// <remarks>This method uses the cached Dictionary of DesktopModules.  It first checks
         /// if the DesktopModule is in the cache.  If it is not in the cache it then makes a call
         /// to the Dataprovider.</remarks>
-        /// <param name="moduleName">The name of the Desktop Module to get</param>
-        /// <param name="portalID">The ID of the portal</param>
+        /// <param name="moduleName">The name of the Desktop Module to get.</param>
+        /// <param name="portalID">The ID of the portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static DesktopModuleInfo GetDesktopModuleByModuleName(string moduleName, int portalID)
@@ -252,10 +252,10 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetDesktopModules gets a Dictionary of Desktop Modules
+        /// GetDesktopModules gets a Dictionary of Desktop Modules.
         /// </summary>
         /// <param name="portalID">The ID of the Portal (Use PortalID = Null.NullInteger (-1) to get
-        /// all the DesktopModules including Modules not allowed for the current portal</param>
+        /// all the DesktopModules including Modules not allowed for the current portal.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static Dictionary<int, DesktopModuleInfo> GetDesktopModules(int portalID)
@@ -277,11 +277,11 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveDesktopModule saves the Desktop Module to the database
+        /// SaveDesktopModule saves the Desktop Module to the database.
         /// </summary>
-        /// <param name="desktopModule">The Desktop Module to save</param>
-        /// <param name="saveChildren">A flag that determines whether the child objects are also saved</param>
-        /// <param name="clearCache">A flag that determines whether to clear the host cache</param>
+        /// <param name="desktopModule">The Desktop Module to save.</param>
+        /// <param name="saveChildren">A flag that determines whether the child objects are also saved.</param>
+        /// <param name="clearCache">A flag that determines whether to clear the host cache.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveDesktopModule(DesktopModuleInfo desktopModule, bool saveChildren, bool clearCache)

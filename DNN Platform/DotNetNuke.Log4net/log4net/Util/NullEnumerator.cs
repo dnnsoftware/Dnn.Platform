@@ -34,8 +34,8 @@ namespace log4net.Util
     /// that is empty and not modifiable.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class NullEnumerator : IEnumerator
     {
         /// <summary>
@@ -86,7 +86,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Test if the enumerator can advance, if so advance
+        /// Test if the enumerator can advance, if so advance.
         /// </summary>
         /// <returns><c>false</c> as the <see cref="NullEnumerator" /> cannot advance.</returns>
         /// <remarks>

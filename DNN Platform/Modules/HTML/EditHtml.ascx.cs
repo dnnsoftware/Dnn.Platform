@@ -28,7 +28,7 @@ using Telerik.Web.UI;
 namespace DotNetNuke.Modules.Html
 {
     /// <summary>
-    ///   The EditHtml PortalModuleBase is used to manage Html
+    ///   The EditHtml PortalModuleBase is used to manage Html.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Displays the versions of the html content in the versions section
+        ///   Displays the versions of the html content in the versions section.
         /// </summary>
         private void DisplayVersions()
         {
@@ -234,7 +234,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Displays the content preview in the preview section
+        ///   Displays the content preview in the preview section.
         /// </summary>
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayPreview(HtmlTextInfo htmlContent)
@@ -255,7 +255,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Displays the preview in the preview section
+        ///   Displays the preview in the preview section.
         /// </summary>
         /// <param name = "htmlContent">Content of the HTML.</param>
         private void DisplayPreview(string htmlContent)
@@ -291,7 +291,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Displays the content but hide the editor if editing is locked from the current user
+        ///   Displays the content but hide the editor if editing is locked from the current user.
         /// </summary>
         /// <param name = "htmlContent">Content of the HTML.</param>
         /// <param name = "lastPublishedContent">Last content of the published.</param>
@@ -375,7 +375,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Gets the latest html content of the module
+        ///   Gets the latest html content of the module.
         /// </summary>
         /// <returns></returns>
         private HtmlTextInfo GetLatestHTMLContent()
@@ -394,7 +394,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Returns whether or not the user has review permissions to this module
+        ///   Returns whether or not the user has review permissions to this module.
         /// </summary>
         /// <param name = "htmlContent">Content of the HTML.</param>
         /// <returns></returns>
@@ -404,7 +404,7 @@ namespace DotNetNuke.Modules.Html
         }
 
         /// <summary>
-        ///   Gets the last published version of this module
+        ///   Gets the last published version of this module.
         /// </summary>
         /// <param name = "publishedStateID">The published state ID.</param>
         /// <returns></returns>

@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The PermissionsDependency determines whether the DotNetNuke site has the
-    /// corretc permissions
+    /// corretc permissions.
     /// </summary>
     /// <remarks>
     /// </remarks>

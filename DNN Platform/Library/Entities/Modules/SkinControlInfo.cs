@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : SkinControlInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// SkinControlInfo provides the Entity Layer for Skin Controls (SkinObjects)
+    /// SkinControlInfo provides the Entity Layer for Skin Controls (SkinObjects).
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -33,25 +33,25 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the SkinControl ID
+        /// Gets or sets and sets the SkinControl ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int SkinControlID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ID of the Package for this Desktop Module
+        /// Gets or sets and sets the ID of the Package for this Desktop Module.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int PackageID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a SkinControlInfo from a Data Reader
+        /// Fills a SkinControlInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -62,9 +62,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the SkinControlInfo
+        /// Gets an XmlSchema for the SkinControlInfo.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -92,9 +92,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a SkinControlInfo from an XmlReader
+        /// Reads a SkinControlInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -116,9 +116,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a SkinControlInfo to an XmlWriter
+        /// Writes a SkinControlInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {

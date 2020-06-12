@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DesktopModuleSupportedFeature enum provides an enumeration of Supported
-    /// Features
+    /// Features.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Flags]

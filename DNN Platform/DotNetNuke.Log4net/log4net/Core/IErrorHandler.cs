@@ -33,8 +33,8 @@ namespace log4net.Core
     /// definition errors are hard to predict and to reproduce.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IErrorHandler
     {
         /// <summary>

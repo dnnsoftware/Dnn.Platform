@@ -38,7 +38,7 @@ using Globals = DotNetNuke.Common.Globals;
 namespace Dnn.EditBar.UI.Controllers
 {
     /// <summary>
-    /// Content Editor Manager
+    /// Content Editor Manager.
     /// </summary>
     public class ContentEditorManager : UserControlBase
     {

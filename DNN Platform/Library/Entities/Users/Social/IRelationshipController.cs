@@ -10,15 +10,15 @@ namespace DotNetNuke.Entities.Users.Social
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Delete RelationshipType
+        /// Delete RelationshipType.
         /// </summary>
-        /// <param name="relationshipType">RelationshipType</param>
+        /// <param name="relationshipType">RelationshipType.</param>
         /// -----------------------------------------------------------------------------
         void DeleteRelationshipType(RelationshipType relationshipType);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get list of All RelationshipTypes defined in system
+        /// Get list of All RelationshipTypes defined in system.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -26,96 +26,96 @@ namespace DotNetNuke.Entities.Users.Social
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get RelationshipType By RelationshipTypeId
+        /// Get RelationshipType By RelationshipTypeId.
         /// </summary>
-        /// <param name="relationshipTypeId">RelationshipTypeId</param>
+        /// <param name="relationshipTypeId">RelationshipTypeId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         RelationshipType GetRelationshipType(int relationshipTypeId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Save RelationshipType
+        /// Save RelationshipType.
         /// </summary>
-        /// <param name="relationshipType">RelationshipType object</param>
+        /// <param name="relationshipType">RelationshipType object.</param>
         /// <remarks>
         /// If RelationshipTypeId is -1 (Null.NullIntger), then a new RelationshipType is created,
-        /// else existing RelationshipType is updated
+        /// else existing RelationshipType is updated.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         void SaveRelationshipType(RelationshipType relationshipType);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Delete Relationship
+        /// Delete Relationship.
         /// </summary>
-        /// <param name="relationship">Relationship</param>
+        /// <param name="relationship">Relationship.</param>
         /// -----------------------------------------------------------------------------
         void DeleteRelationship(Relationship relationship);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get Relationship By RelationshipId
+        /// Get Relationship By RelationshipId.
         /// </summary>
-        /// <param name="relationshipId">RelationshipId</param>
+        /// <param name="relationshipId">RelationshipId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         Relationship GetRelationship(int relationshipId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get Relationships By UserId
+        /// Get Relationships By UserId.
         /// </summary>
-        /// <param name="userId">UserId</param>
+        /// <param name="userId">UserId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         IList<Relationship> GetRelationshipsByUserId(int userId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get Relationships By PortalId
+        /// Get Relationships By PortalId.
         /// </summary>
-        /// <param name="portalId">PortalId</param>
+        /// <param name="portalId">PortalId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         IList<Relationship> GetRelationshipsByPortalId(int portalId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Save Relationship
+        /// Save Relationship.
         /// </summary>
-        /// <param name="relationship">Relationship object</param>
+        /// <param name="relationship">Relationship object.</param>
         /// <remarks>
         /// If RelationshipId is -1 (Null.NullIntger), then a new Relationship is created,
-        /// else existing Relationship is updated
+        /// else existing Relationship is updated.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         void SaveRelationship(Relationship relationship);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Delete UserRelationship
+        /// Delete UserRelationship.
         /// </summary>
-        /// <param name="userRelationship">UserRelationship to delete</param>
+        /// <param name="userRelationship">UserRelationship to delete.</param>
         /// -----------------------------------------------------------------------------
         void DeleteUserRelationship(UserRelationship userRelationship);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get UserRelationship By UserRelationshipId
+        /// Get UserRelationship By UserRelationshipId.
         /// </summary>
-        /// <param name="userRelationshipId">UserRelationshipId</param>
+        /// <param name="userRelationshipId">UserRelationshipId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationship GetUserRelationship(int userRelationshipId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get UserRelationship by its members
+        /// Get UserRelationship by its members.
         /// </summary>
-        /// <param name="user">User</param>
-        /// <param name="relatedUser">Related User</param>
-        /// <param name="relationship">Relationship Object</param>
+        /// <param name="user">User.</param>
+        /// <param name="relatedUser">Related User.</param>
+        /// <param name="relationship">Relationship Object.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationship GetUserRelationship(UserInfo user, UserInfo relatedUser, Relationship relationship);
@@ -123,57 +123,57 @@ namespace DotNetNuke.Entities.Users.Social
         /// <summary>
         /// This method gets a Dictionary of all the relationships that a User belongs to and the members of thase relationships.
         /// </summary>
-        /// <param name="user">The user</param>
-        /// <returns>A Dictionary of Lists of UserRelationship, keyed by the Relationship</returns>
+        /// <param name="user">The user.</param>
+        /// <returns>A Dictionary of Lists of UserRelationship, keyed by the Relationship.</returns>
         IList<UserRelationship> GetUserRelationships(UserInfo user);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Save UserRelationship
+        /// Save UserRelationship.
         /// </summary>
-        /// <param name="userRelationship">UserRelationship object</param>
+        /// <param name="userRelationship">UserRelationship object.</param>
         /// <remarks>
         /// If UserRelationshipId is -1 (Null.NullIntger), then a new UserRelationship is created,
-        /// else existing UserRelationship is updated
+        /// else existing UserRelationship is updated.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         void SaveUserRelationship(UserRelationship userRelationship);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Delete UserRelationshipPreference
+        /// Delete UserRelationshipPreference.
         /// </summary>
-        /// <param name="userRelationshipPreference">UserRelationshipPreference to delete</param>
+        /// <param name="userRelationshipPreference">UserRelationshipPreference to delete.</param>
         /// -----------------------------------------------------------------------------
         void DeleteUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get UserRelationshipPreference By RelationshipTypeId
+        /// Get UserRelationshipPreference By RelationshipTypeId.
         /// </summary>
-        /// <param name="preferenceId">PreferenceId</param>
+        /// <param name="preferenceId">PreferenceId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationshipPreference GetUserRelationshipPreference(int preferenceId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get UserRelationshipPreference By UserId and RelationshipId
+        /// Get UserRelationshipPreference By UserId and RelationshipId.
         /// </summary>
-        /// <param name="userId">UserId</param>
-        /// <param name="relationshipId">RelationshipId</param>
+        /// <param name="userId">UserId.</param>
+        /// <param name="relationshipId">RelationshipId.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         UserRelationshipPreference GetUserRelationshipPreference(int userId, int relationshipId);
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Save UserRelationshipPreference
+        /// Save UserRelationshipPreference.
         /// </summary>
-        /// <param name="userRelationshipPreference">UserRelationshipPreference object</param>
+        /// <param name="userRelationshipPreference">UserRelationshipPreference object.</param>
         /// <remarks>
         /// If PreferenceId is -1 (Null.NullIntger), then a new UserRelationshipPreference is created,
-        /// else existing UserRelationshipPreference is updated
+        /// else existing UserRelationshipPreference is updated.
         /// </remarks>
         /// -----------------------------------------------------------------------------
         void SaveUserRelationshipPreference(UserRelationshipPreference userRelationshipPreference);

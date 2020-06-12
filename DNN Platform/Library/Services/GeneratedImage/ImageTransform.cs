@@ -10,7 +10,7 @@ using System.IO;
 namespace DotNetNuke.Services.GeneratedImage
 {
     /// <summary>
-    /// An abstract ImageTransform class
+    /// An abstract ImageTransform class.
     /// </summary>
     public abstract class ImageTransform
     {
@@ -35,16 +35,16 @@ namespace DotNetNuke.Services.GeneratedImage
         public CompositingQuality CompositingQuality { get; set; }
 
         /// <summary>
-        /// Process an input image applying the image transformation
+        /// Process an input image applying the image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image processed</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image processed.</returns>
         public abstract Image ProcessImage(Image image);
 
         // REVIEW: should this property be abstract?
 
         /// <summary>
-        /// Gets provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public virtual string UniqueString => this.GetType().FullName;
 
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.GeneratedImage
         /// Creates a new image from stream. The created image is independent of the stream.
         /// </summary>
         /// <param name="imgStream"></param>
-        /// <returns>Image object</returns>
+        /// <returns>Image object.</returns>
         public virtual Bitmap CopyImage(Stream imgStream)
         {
             using (var srcImage = new Bitmap(imgStream))

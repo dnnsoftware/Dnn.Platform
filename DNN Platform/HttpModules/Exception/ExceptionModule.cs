@@ -13,7 +13,7 @@ using DotNetNuke.Services.Log.EventLog;
 namespace DotNetNuke.HttpModules.Exceptions
 {
     /// <summary>
-    /// Handles the exception that occur with http modules
+    /// Handles the exception that occur with http modules.
     /// </summary>
     public class ExceptionModule : IHttpModule
     {
@@ -23,7 +23,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         /// Gets the name of the module.
         /// </summary>
         /// <value>
-        /// The name of the module: "ExceptionModule"
+        /// The name of the module: "ExceptionModule".
         /// </value>
         public string ModuleName
         {
@@ -49,7 +49,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         /// <summary>
         /// Called when error handling is requested.
         /// </summary>
-        /// <param name="s">The object with the error</param>
+        /// <param name="s">The object with the error.</param>
         /// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
         public void OnErrorRequest(object s, EventArgs e)
         {

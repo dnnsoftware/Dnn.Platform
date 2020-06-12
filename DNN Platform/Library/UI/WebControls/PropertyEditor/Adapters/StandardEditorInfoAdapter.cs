@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      StandardEditorInfoAdapter
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The StandardEditorInfoAdapter control provides an Adapter for standard datasources
+    /// The StandardEditorInfoAdapter control provides an Adapter for standard datasources.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetEditorInfo builds an EditorInfo object for a propoerty
+        /// GetEditorInfo builds an EditorInfo object for a propoerty.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private EditorInfo GetEditorInfo(object dataSource, PropertyInfo objProperty)
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetProperty returns the property that is being "bound" to
+        /// GetProperty returns the property that is being "bound" to.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private PropertyInfo GetProperty(object dataSource, string fieldName)

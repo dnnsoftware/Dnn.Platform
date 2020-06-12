@@ -13,7 +13,7 @@ using DotNetNuke.Services.FileSystem;
 namespace DotNetNuke.UI.Internals
 {
     /// <summary>
-    /// Manages the FavIcon of a portal
+    /// Manages the FavIcon of a portal.
     /// </summary>
     public class FavIcon
     {
@@ -22,29 +22,29 @@ namespace DotNetNuke.UI.Internals
         private readonly int _portalId;
 
         /// <summary>
-        /// Initializes a FavIcon instance
+        /// Initializes a FavIcon instance.
         /// </summary>
-        /// <param name="portalId">The id of the portal</param>
+        /// <param name="portalId">The id of the portal.</param>
         public FavIcon(int portalId)
         {
             this._portalId = portalId;
         }
 
         /// <summary>
-        /// Get the path of the favicon file relative to the portal root
+        /// Get the path of the favicon file relative to the portal root.
         /// </summary>
         /// <remarks>This relative path is only relevant to use with Host/Portal Settings the path is not guaranteed any
-        /// physical relevance in the local file system</remarks>
-        /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set</returns>
+        /// physical relevance in the local file system.</remarks>
+        /// <returns>Path to the favicon file relative to portal root, or empty string when there is no favicon set.</returns>
         public string GetSettingPath()
         {
             return PortalController.GetPortalSetting(SettingName, this._portalId, string.Empty);
         }
 
         /// <summary>
-        /// Update the file to use for a favIcon
+        /// Update the file to use for a favIcon.
         /// </summary>
-        /// <param name="fileId">The file id or Null.NullInteger for none</param>
+        /// <param name="fileId">The file id or Null.NullInteger for none.</param>
         public void Update(int fileId)
         {
             PortalController.UpdatePortalSetting(this._portalId, SettingName, fileId != Null.NullInteger ? string.Format("FileID={0}", fileId) : string.Empty, /*clearCache*/ true);
@@ -52,10 +52,10 @@ namespace DotNetNuke.UI.Internals
         }
 
         /// <summary>
-        /// Get the HTML for a favicon link
+        /// Get the HTML for a favicon link.
         /// </summary>
-        /// <param name="portalId">The portal id</param>
-        /// <returns>The HTML for the favicon link for the portal, or an empty string if there is no favicon</returns>
+        /// <param name="portalId">The portal id.</param>
+        /// <returns>The HTML for the favicon link for the portal, or an empty string if there is no favicon.</returns>
         public static string GetHeaderLink(int portalId)
         {
             string headerLink;

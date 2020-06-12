@@ -10,7 +10,7 @@ using System.Web;
 namespace DotNetNuke.Services.ClientCapability
 {
     /// <summary>
-    ///   ClientCapability provides capabilities supported by the http requester (e.g. Mobile Device, TV, Desktop)
+    ///   ClientCapability provides capabilities supported by the http requester (e.g. Mobile Device, TV, Desktop).
     /// </summary>
     /// <remarks>
     ///   The capabilities are primarily derived based on UserAgent.
@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.ClientCapability
         string ID { get; set; }
 
         /// <summary>
-        ///   Gets or sets user Agent of the client making request
+        ///   Gets or sets user Agent of the client making request.
         /// </summary>
         string UserAgent { get; set; }
 
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <remarks>
         ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.
         ///   In order to ensure request is coming from Facebook, FacebookRequest.IsValidSignature method should be called with the secrety key provided by Facebook.
-        ///   Most of the properties in IClientCapability doesnot apply to Facebook
+        ///   Most of the properties in IClientCapability doesnot apply to Facebook.
         /// </remarks>
         FacebookRequest FacebookRequest { get; set; }
 
@@ -63,7 +63,7 @@ namespace DotNetNuke.Services.ClientCapability
         int ScreenResolutionHeightInPixels { get; set; }
 
         /// <summary>
-        /// Gets or sets represents the name of the broweser in the request
+        /// Gets or sets represents the name of the broweser in the request.
         /// </summary>
         string BrowserName { get; set; }
 
@@ -73,18 +73,18 @@ namespace DotNetNuke.Services.ClientCapability
         bool SupportsFlash { get; set; }
 
         /// <summary>
-        /// Gets or sets a key-value collection containing all capabilities supported by requester
+        /// Gets or sets a key-value collection containing all capabilities supported by requester.
         /// </summary>
         [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name.. Scheduled removal in v10.0.0.")]
         IDictionary<string, string> Capabilities { get; set; }
 
         /// <summary>
-        /// Gets or sets the request prefered HTML DTD
+        /// Gets or sets the request prefered HTML DTD.
         /// </summary>
         string HtmlPreferedDTD { get; set; }
 
         /// <summary>
-        ///   Gets or sets http server variable used for SSL offloading - if this value is empty offloading is not enabled
+        ///   Gets or sets http server variable used for SSL offloading - if this value is empty offloading is not enabled.
         /// </summary>
         string SSLOffload { get; set; }
 

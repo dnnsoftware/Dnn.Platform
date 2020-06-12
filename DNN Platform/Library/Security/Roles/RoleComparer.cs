@@ -14,18 +14,18 @@ namespace DotNetNuke.Security.Roles
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The RoleComparer class provides an Implementation of IComparer for
-    /// RoleInfo objects
+    /// RoleInfo objects.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class RoleComparer : IComparer
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares two RoleInfo objects by performing a comparison of their rolenames
+        /// Compares two RoleInfo objects by performing a comparison of their rolenames.
         /// </summary>
-        /// <param name="x">One of the items to compare</param>
-        /// <param name="y">One of the items to compare</param>
-        /// <returns>An Integer that determines whether x is greater, smaller or equal to y </returns>
+        /// <param name="x">One of the items to compare.</param>
+        /// <param name="y">One of the items to compare.</param>
+        /// <returns>An Integer that determines whether x is greater, smaller or equal to y. </returns>
         /// -----------------------------------------------------------------------------
         public int Compare(object x, object y)
         {

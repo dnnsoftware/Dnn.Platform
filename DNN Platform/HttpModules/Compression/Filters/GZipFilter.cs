@@ -9,7 +9,7 @@ using System.IO.Compression;
 namespace DotNetNuke.HttpModules.Compression
 {
     /// <summary>
-    /// This is a little filter to support HTTP compression using GZip
+    /// This is a little filter to support HTTP compression using GZip.
     /// </summary>
     public class GZipFilter : CompressingFilter
     {

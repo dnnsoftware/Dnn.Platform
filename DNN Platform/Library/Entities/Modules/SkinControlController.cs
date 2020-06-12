@@ -19,7 +19,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : ModuleControlController
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleControlController provides the Business Layer for Module Controls
+    /// ModuleControlController provides the Business Layer for Module Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class SkinControlController
@@ -28,9 +28,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteSkinControl deletes a Skin Control in the database
+        /// DeleteSkinControl deletes a Skin Control in the database.
         /// </summary>
-        /// <param name="skinControl">The Skin Control to delete</param>
+        /// <param name="skinControl">The Skin Control to delete.</param>
         /// -----------------------------------------------------------------------------
         public static void DeleteSkinControl(SkinControlInfo skinControl)
         {
@@ -40,9 +40,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSkinControl gets a single Skin Control from the database
+        /// GetSkinControl gets a single Skin Control from the database.
         /// </summary>
-        /// <param name="skinControlID">The ID of the SkinControl</param>
+        /// <param name="skinControlID">The ID of the SkinControl.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControl(int skinControlID)
@@ -52,9 +52,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSkinControlByPackageID gets a single Skin Control from the database
+        /// GetSkinControlByPackageID gets a single Skin Control from the database.
         /// </summary>
-        /// <param name="packageID">The ID of the Package</param>
+        /// <param name="packageID">The ID of the Package.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControlByPackageID(int packageID)
@@ -64,9 +64,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSkinControlByKey gets a single Skin Control from the database
+        /// GetSkinControlByKey gets a single Skin Control from the database.
         /// </summary>
-        /// <param name="key">The key of the Control</param>
+        /// <param name="key">The key of the Control.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static SkinControlInfo GetSkinControlByKey(string key)
@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetSkinControls gets all the Skin Controls from the database
+        /// GetSkinControls gets all the Skin Controls from the database.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -87,9 +87,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SaveSkinControl updates a Skin Control in the database
+        /// SaveSkinControl updates a Skin Control in the database.
         /// </summary>
-        /// <param name="skinControl">The Skin Control to save</param>
+        /// <param name="skinControl">The Skin Control to save.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static int SaveSkinControl(SkinControlInfo skinControl)

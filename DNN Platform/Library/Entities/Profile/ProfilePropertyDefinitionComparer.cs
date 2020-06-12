@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Profile
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The ProfilePropertyDefinitionComparer class provides an implementation of
-    /// IComparer to sort the ProfilePropertyDefinitionCollection by ViewOrder
+    /// IComparer to sort the ProfilePropertyDefinitionCollection by ViewOrder.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -23,11 +23,11 @@ namespace DotNetNuke.Entities.Profile
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares two ProfilePropertyDefinition objects
+        /// Compares two ProfilePropertyDefinition objects.
         /// </summary>
-        /// <param name="x">A ProfilePropertyDefinition object</param>
-        /// <param name="y">A ProfilePropertyDefinition object</param>
-        /// <returns>An integer indicating whether x greater than y, x=y or x less than y</returns>
+        /// <param name="x">A ProfilePropertyDefinition object.</param>
+        /// <param name="y">A ProfilePropertyDefinition object.</param>
+        /// <returns>An integer indicating whether x greater than y, x=y or x less than y.</returns>
         /// -----------------------------------------------------------------------------
         public int Compare(object x, object y)
         {

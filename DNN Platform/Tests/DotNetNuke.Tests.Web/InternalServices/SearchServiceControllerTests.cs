@@ -36,7 +36,7 @@ using Constants = DotNetNuke.Services.Search.Internals.Constants;
 namespace DotNetNuke.Tests.Web.InternalServices
 {
     /// <summary>
-    ///  Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods)
+    ///  Testing grouping logic of GetGroupedBasicView and GetGroupedDetailView (SearchServiceController methods).
     /// </summary>
     [TestFixture]
     public class SearchServiceControllerTests

@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Modules
     /// Class    : ModuleControlInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModuleControlInfo provides the Entity Layer for Module Controls
+    /// ModuleControlInfo provides the Entity Layer for Module Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -36,49 +36,49 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Control Title
+        /// Gets or sets and sets the Control Title.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string ControlTitle { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Control Type
+        /// Gets or sets and sets the Control Type.
         /// </summary>
-        /// <returns>A SecurityAccessLevel</returns>
+        /// <returns>A SecurityAccessLevel.</returns>
         /// -----------------------------------------------------------------------------
         public SecurityAccessLevel ControlType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Help URL
+        /// Gets or sets and sets the Help URL.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Icon  Source
+        /// Gets or sets and sets the Icon  Source.
         /// </summary>
-        /// <returns>A String</returns>
+        /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
         public string IconFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module Control ID
+        /// Gets or sets and sets the Module Control ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleControlID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module Definition ID
+        /// Gets or sets and sets the Module Definition ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ModuleDefID { get; set; }
 
@@ -86,23 +86,23 @@ namespace DotNetNuke.Entities.Modules
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether to support popup.
         /// </summary>
-        /// <returns>A Boolean value</returns>
+        /// <returns>A Boolean value.</returns>
         /// -----------------------------------------------------------------------------
         public bool SupportsPopUps { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the View Order
+        /// Gets or sets and sets the View Order.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int ViewOrder { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModuleControlInfo from a Data Reader
+        /// Fills a ModuleControlInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -122,9 +122,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the ModuleControlInfo
+        /// Gets an XmlSchema for the ModuleControlInfo.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -152,9 +152,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a ModuleControlInfo from an XmlReader
+        /// Reads a ModuleControlInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -209,9 +209,9 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a ModuleControlInfo to an XmlWriter
+        /// Writes a ModuleControlInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {

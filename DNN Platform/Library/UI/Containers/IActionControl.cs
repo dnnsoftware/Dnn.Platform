@@ -14,7 +14,7 @@ namespace DotNetNuke.UI.Containers
     /// Class    : IActionControl
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// IActionControl provides a common INterface for Action Controls
+    /// IActionControl provides a common INterface for Action Controls.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public interface IActionControl

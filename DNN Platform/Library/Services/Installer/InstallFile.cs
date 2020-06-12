@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The InstallFile class represents a single file in an Installer Package
+    /// The InstallFile class represents a single file in an Installer Package.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,13 +26,13 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance from a ZipInputStream and a ZipEntry
+        /// This Constructor creates a new InstallFile instance from a ZipInputStream and a ZipEntry.
         /// </summary>
         /// <remarks>The ZipInputStream is read into a byte array (Buffer), and the ZipEntry is used to
         /// set up the properties of the InstallFile class.</remarks>
-        /// <param name="zip">The ZipInputStream</param>
-        /// <param name="entry">The ZipEntry</param>
-        /// <param name="info">An INstallerInfo instance</param>
+        /// <param name="zip">The ZipInputStream.</param>
+        /// <param name="entry">The ZipEntry.</param>
+        /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(ZipInputStream zip, ZipEntry entry, InstallerInfo info)
         {
@@ -43,9 +43,9 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The fileName of the File</param>
+        /// <param name="fileName">The fileName of the File.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName)
         {
@@ -55,10 +55,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The fileName of the File</param>
-        /// <param name="info">An INstallerInfo instance</param>
+        /// <param name="fileName">The fileName of the File.</param>
+        /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, InstallerInfo info)
         {
@@ -69,11 +69,11 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The fileName of the File</param>
+        /// <param name="fileName">The fileName of the File.</param>
         /// <param name="sourceFileName">Source file name.</param>
-        /// <param name="info">An INstallerInfo instance</param>
+        /// <param name="info">An INstallerInfo instance.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string sourceFileName, InstallerInfo info)
         {
@@ -85,10 +85,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new InstallFile instance
+        /// This Constructor creates a new InstallFile instance.
         /// </summary>
-        /// <param name="fileName">The file name of the File</param>
-        /// <param name="filePath">The file path of the file</param>
+        /// <param name="fileName">The file name of the File.</param>
+        /// <param name="filePath">The file path of the file.</param>
         /// -----------------------------------------------------------------------------
         public InstallFile(string fileName, string filePath)
         {
@@ -99,17 +99,17 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Action for this file
+        /// Gets or sets and sets the Action for this file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Action { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the location of the backup file
+        /// Gets the location of the backup file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string BackupFileName
         {
@@ -121,9 +121,9 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the location of the backup folder
+        /// Gets the location of the backup folder.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public virtual string BackupPath
         {
@@ -137,9 +137,9 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the File Extension of the file
+        /// Gets the File Extension of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Extension
         {
@@ -157,9 +157,9 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Full Name of the file
+        /// Gets the Full Name of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string FullName
         {
@@ -171,42 +171,42 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated InstallerInfo
+        /// Gets the associated InstallerInfo.
         /// </summary>
-        /// <value>An InstallerInfo object</value>
+        /// <value>An InstallerInfo object.</value>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Name of the file
+        /// Gets the Name of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Name { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Path of the file
+        /// Gets the Path of the file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string Path { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the source file name
+        /// Gets the source file name.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string SourceFileName { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the location of the temporary file
+        /// Gets the location of the temporary file.
         /// </summary>
-        /// <value>A string</value>
+        /// <value>A string.</value>
         /// -----------------------------------------------------------------------------
         public string TempFileName
         {
@@ -224,25 +224,25 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Type of the file
+        /// Gets or sets and sets the Type of the file.
         /// </summary>
-        /// <value>An InstallFileType Enumeration</value>
+        /// <value>An InstallFileType Enumeration.</value>
         /// -----------------------------------------------------------------------------
         public InstallFileType Type { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of the file
+        /// Gets the Version of the file.
         /// </summary>
-        /// <value>A System.Version</value>
+        /// <value>A System.Version.</value>
         /// -----------------------------------------------------------------------------
         public Version Version { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ParseFileName parses the ZipEntry metadata
+        /// The ParseFileName parses the ZipEntry metadata.
         /// </summary>
-        /// <param name="fileName">A String representing the file name</param>
+        /// <param name="fileName">A String representing the file name.</param>
         /// -----------------------------------------------------------------------------
         private void ParseFileName(string fileName)
         {
@@ -321,10 +321,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ReadZip method reads the zip stream and parses the ZipEntry metadata
+        /// The ReadZip method reads the zip stream and parses the ZipEntry metadata.
         /// </summary>
-        /// <param name="unzip">A ZipStream containing the file content</param>
-        /// <param name="entry">A ZipEntry containing the file metadata</param>
+        /// <param name="unzip">A ZipStream containing the file content.</param>
+        /// <param name="entry">A ZipEntry containing the file metadata.</param>
         /// -----------------------------------------------------------------------------
         private void ReadZip(ZipInputStream unzip, ZipEntry entry)
         {
@@ -335,9 +335,9 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The SetVersion method sets the version of the file
+        /// The SetVersion method sets the version of the file.
         /// </summary>
-        /// <param name="version">The version of the file</param>
+        /// <param name="version">The version of the file.</param>
         /// -----------------------------------------------------------------------------
         public void SetVersion(Version version)
         {

@@ -27,13 +27,13 @@ namespace DNN.Integration.Test.Framework.Controllers
         private const string CreateFollowersMarker = @"'$[CreateFollowers]'";
 
         /// <summary>
-        /// Creates a new user with Registered User Role and with the same password as the host user
+        /// Creates a new user with Registered User Role and with the same password as the host user.
         /// </summary>
-        /// <param name="firstName">First name of the user</param>
-        /// <param name="lastName">Last name of the user</param>
-        /// <param name="portalId">PortalID to create the user under</param>
-        /// <returns>Id of the created user</returns>
-        /// <remarks>Username created is firstname.lastname</remarks>
+        /// <param name="firstName">First name of the user.</param>
+        /// <param name="lastName">Last name of the user.</param>
+        /// <param name="portalId">PortalID to create the user under.</param>
+        /// <returns>Id of the created user.</returns>
+        /// <remarks>Username created is firstname.lastname.</remarks>
         public static int CreateRegisteredUser(
             string firstName = IntegrationConstants.RuFirstName,
             string lastName = IntegrationConstants.RuLastName, int portalId = 0)
@@ -42,26 +42,26 @@ namespace DNN.Integration.Test.Framework.Controllers
         }
 
         /// <summary>
-        /// Creates a new SuperUser and with the same password as the host user
+        /// Creates a new SuperUser and with the same password as the host user.
         /// </summary>
-        /// <param name="firstName">First name of the user</param>
-        /// <param name="lastName">Last name of the user</param>
-        /// <param name="portalId">PortalID to create the user under</param>
-        /// <returns>Id of the created user</returns>
-        /// <remarks>Username created is firstname.lastname</remarks>
+        /// <param name="firstName">First name of the user.</param>
+        /// <param name="lastName">Last name of the user.</param>
+        /// <param name="portalId">PortalID to create the user under.</param>
+        /// <returns>Id of the created user.</returns>
+        /// <remarks>Username created is firstname.lastname.</remarks>
         public static int CreateSuperUser(string firstName, string lastName, int portalId = 0)
         {
             return CreateUser(new CreateUserParams { FirstName = firstName, LastName = lastName, PortalId = portalId, SuperUser = true });
         }
 
         /// <summary>
-        /// Creates a new user with Administrator Role and with the same password as the host user
+        /// Creates a new user with Administrator Role and with the same password as the host user.
         /// </summary>
-        /// <param name="firstName">First name of the administrator user</param>
-        /// <param name="lastName">Last name of the administrator user</param>
-        /// <param name="portalId">PortalID to create the user under</param>
-        /// <returns>Id of the created user</returns>
-        /// <remarks>Username created is firstname.lastname</remarks>
+        /// <param name="firstName">First name of the administrator user.</param>
+        /// <param name="lastName">Last name of the administrator user.</param>
+        /// <param name="portalId">PortalID to create the user under.</param>
+        /// <returns>Id of the created user.</returns>
+        /// <remarks>Username created is firstname.lastname.</remarks>
         public static int CreateAdministratorUser(
             string firstName = IntegrationConstants.AdminFirstName,
             string lastName = IntegrationConstants.AdminLastName, int portalId = 0)

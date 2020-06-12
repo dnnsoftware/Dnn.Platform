@@ -223,10 +223,10 @@ namespace DotNetNuke.Modules.Admin.Sales
         }
 
         /// <summary>
-        /// This methods return the text description of the Frequency value
+        /// This methods return the text description of the Frequency value.
         /// </summary>
-        /// <param name="value">value of the Frequency</param>
-        /// <returns>text of the Frequency</returns>
+        /// <param name="value">value of the Frequency.</param>
+        /// <returns>text of the Frequency.</returns>
         private string GetBillingFrequencyText(string value)
         {
             var ctlEntry = new ListController();

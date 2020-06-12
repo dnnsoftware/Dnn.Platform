@@ -23,9 +23,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// return height of image
+        /// return height of image.
         /// </summary>
-        /// <param name="sPath">file path of image</param>
+        /// <param name="sPath">file path of image.</param>
         /// <returns></returns>
         public static int GetHeight(string sPath)
         {
@@ -36,9 +36,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// return width of image
+        /// return width of image.
         /// </summary>
-        /// <param name="sPath">file path of image</param>
+        /// <param name="sPath">file path of image.</param>
         /// <returns></returns>
         public static int GetWidth(string sPath)
         {
@@ -49,9 +49,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// return height of image
+        /// return height of image.
         /// </summary>
-        /// <param name="sFile">Stream of image</param>
+        /// <param name="sFile">Stream of image.</param>
         /// <returns></returns>
         public static int GetHeightFromStream(Stream sFile)
         {
@@ -62,9 +62,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// width of image
+        /// width of image.
         /// </summary>
-        /// <param name="sFile">Steam of image</param>
+        /// <param name="sFile">Steam of image.</param>
         /// <returns></returns>
         public static int GetWidthFromStream(Stream sFile)
         {
@@ -75,9 +75,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// create an image
+        /// create an image.
         /// </summary>
-        /// <param name="sFile">path of load image file - will be resized according to height and width set</param>
+        /// <param name="sFile">path of load image file - will be resized according to height and width set.</param>
         /// <returns></returns>
         public static string CreateImage(string sFile)
         {
@@ -89,11 +89,11 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// create an image
+        /// create an image.
         /// </summary>
-        /// <param name="sFile">path of image file</param>
-        /// <param name="intHeight">height</param>
-        /// <param name="intWidth">width</param>
+        /// <param name="sFile">path of image file.</param>
+        /// <param name="intHeight">height.</param>
+        /// <param name="intWidth">width.</param>
         /// <returns></returns>
         public static string CreateImage(string sFile, int intHeight, int intWidth)
         {
@@ -232,11 +232,11 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// create a JPG image
+        /// create a JPG image.
         /// </summary>
-        /// <param name="sFile">name of image</param>
-        /// <param name="img">bitmap of image</param>
-        /// <param name="compressionLevel">image quality</param>
+        /// <param name="sFile">name of image.</param>
+        /// <param name="img">bitmap of image.</param>
+        /// <param name="compressionLevel">image quality.</param>
         /// <returns></returns>
         public static string CreateJPG(string sFile, Bitmap img, int compressionLevel)
         {
@@ -272,12 +272,12 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// create an image based on a stream (read from a database)
+        /// create an image based on a stream (read from a database).
         /// </summary>
-        /// <param name="sFile">image name</param>
-        /// <param name="intHeight">height</param>
-        /// <param name="intWidth">width</param>
-        /// <returns>steam</returns>
+        /// <param name="sFile">image name.</param>
+        /// <param name="intHeight">height.</param>
+        /// <param name="intWidth">width.</param>
+        /// <returns>steam.</returns>
         public static MemoryStream CreateImageForDB(Stream sFile, int intHeight, int intWidth)
         {
             var newStream = new MemoryStream();
@@ -325,9 +325,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// return the approriate encoded for the mime-type of the image being created
+        /// return the approriate encoded for the mime-type of the image being created.
         /// </summary>
-        /// <param name="myMimeType">mime type (e.g jpg/png)</param>
+        /// <param name="myMimeType">mime type (e.g jpg/png).</param>
         /// <returns></returns>
         public static ImageCodecInfo GetEncoderInfo(string myMimeType)
         {
@@ -352,13 +352,13 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// scale an image based on existing dimensions and updated requirement
+        /// scale an image based on existing dimensions and updated requirement.
         /// </summary>
-        /// <param name="currentWidth">current width</param>
-        /// <param name="currentHeight">current height</param>
-        /// <param name="newWidth">new width</param>
-        /// <param name="newHeight">new height</param>
-        /// <returns>updated calculated height/width minesions</returns>
+        /// <param name="currentWidth">current width.</param>
+        /// <param name="currentHeight">current height.</param>
+        /// <param name="newWidth">new width.</param>
+        /// <param name="newHeight">new height.</param>
+        /// <returns>updated calculated height/width minesions.</returns>
         public static Size NewImageSize(int currentWidth, int currentHeight, int newWidth, int newHeight)
         {
             decimal decScale = ((decimal)currentWidth / (decimal)newWidth) > ((decimal)currentHeight / (decimal)newHeight) ? Convert.ToDecimal((decimal)currentWidth / (decimal)newWidth) : Convert.ToDecimal((decimal)currentHeight / (decimal)newHeight);

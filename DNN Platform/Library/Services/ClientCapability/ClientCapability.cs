@@ -12,7 +12,7 @@ using DotNetNuke.Services.ClientCapability;
 namespace DotNetNuke.Services.ClientCapability
 {
     /// <summary>
-    /// Default Implementation of IClientCapability
+    /// Default Implementation of IClientCapability.
     /// </summary>
     public class ClientCapability : IClientCapability
     {
@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.ClientCapability
         public string ID { get; set; }
 
         /// <summary>
-        ///   Gets or sets user Agent of the client making request
+        ///   Gets or sets user Agent of the client making request.
         /// </summary>
         public string UserAgent { get; set; }
 
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.ClientCapability
         public bool SupportsFlash { get; set; }
 
         /// <summary>
-        /// Gets or sets a key-value collection containing all capabilities supported by requester
+        /// Gets or sets a key-value collection containing all capabilities supported by requester.
         /// </summary>
         [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled removal in v10.0.0.")]
         public IDictionary<string, string> Capabilities
@@ -93,17 +93,17 @@ namespace DotNetNuke.Services.ClientCapability
         }
 
         /// <summary>
-        /// Gets or sets represents the name of the broweser in the request
+        /// Gets or sets represents the name of the broweser in the request.
         /// </summary>
         public string BrowserName { get; set; }
 
         /// <summary>
-        /// Gets or sets the request prefered HTML DTD
+        /// Gets or sets the request prefered HTML DTD.
         /// </summary>
         public string HtmlPreferedDTD { get; set; }
 
         /// <summary>
-        ///   Gets or sets http server variable used for SSL offloading - if this value is empty offloading is not enabled
+        ///   Gets or sets http server variable used for SSL offloading - if this value is empty offloading is not enabled.
         /// </summary>
         public string SSLOffload { get; set; }
 

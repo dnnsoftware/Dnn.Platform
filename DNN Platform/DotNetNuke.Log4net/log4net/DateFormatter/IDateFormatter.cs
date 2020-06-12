@@ -38,8 +38,8 @@ namespace log4net.DateFormatter
     /// date to a text writer.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IDateFormatter
     {
         /// <summary>

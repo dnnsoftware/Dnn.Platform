@@ -143,7 +143,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// returns a tabId indexed dictionary of Friendly Urls
+        /// returns a tabId indexed dictionary of Friendly Urls.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="forceRebuild"></param>

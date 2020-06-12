@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ComponentInstallerBase is a base class for all Component Installers
+    /// The ComponentInstallerBase is a base class for all Component Installers.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,9 +31,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public virtual string AllowableFiles
         {
@@ -45,17 +45,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets the Completed flag
+        /// Gets or sets a value indicating whether gets the Completed flag.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool Completed { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the InstallMode
+        /// Gets the InstallMode.
         /// </summary>
-        /// <value>An InstallMode value</value>
+        /// <value>An InstallMode value.</value>
         /// -----------------------------------------------------------------------------
         public InstallMode InstallMode
         {
@@ -67,9 +67,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Logger
+        /// Gets the Logger.
         /// </summary>
-        /// <value>An Logger object</value>
+        /// <value>An Logger object.</value>
         /// -----------------------------------------------------------------------------
         public Logger Log
         {
@@ -81,17 +81,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Package
+        /// Gets or sets the associated Package.
         /// </summary>
-        /// <value>An PackageInfo object</value>
+        /// <value>An PackageInfo object.</value>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Files that are included in the Package
+        /// Gets a Dictionary of Files that are included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> PackageFiles
         {
@@ -103,9 +103,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke")
+        /// Gets the Physical Path to the root of the Site (eg D:\Websites\DotNetNuke").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string PhysicalSitePath
         {
@@ -198,9 +198,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public virtual bool SupportsManifestOnlyInstall
         {
@@ -212,17 +212,17 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Type of the component
+        /// Gets or sets and sets the Type of the component.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Type { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Version of the Component
+        /// Gets or sets the Version of the Component.
         /// </summary>
-        /// <value>A System.Version</value>
+        /// <value>A System.Version.</value>
         /// -----------------------------------------------------------------------------
         public Version Version { get; set; }
 

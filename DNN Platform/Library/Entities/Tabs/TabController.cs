@@ -889,7 +889,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Adds localized copies of the page in all missing languages
+        /// Adds localized copies of the page in all missing languages.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
@@ -932,9 +932,9 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Adds a tab
+        /// Adds a tab.
         /// </summary>
-        /// <param name="tab">The tab to be added</param>
+        /// <param name="tab">The tab to be added.</param>
         /// <remarks>The tab is added to the end of the current Level.</remarks>
         /// <returns></returns>
         public int AddTab(TabInfo tab)
@@ -943,11 +943,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Adds a tab
+        /// Adds a tab.
         /// </summary>
-        /// <param name="tab">The tab to be added</param>
+        /// <param name="tab">The tab to be added.</param>
         /// <param name="includeAllTabsModules">Flag that indicates whether to add the "AllTabs"
-        /// Modules</param>
+        /// Modules.</param>
         /// <remarks>The tab is added to the end of the current Level.</remarks>
         /// <returns></returns>
         public int AddTab(TabInfo tab, bool includeAllTabsModules)
@@ -962,10 +962,10 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Adds a tab after the specified tab
+        /// Adds a tab after the specified tab.
         /// </summary>
-        /// <param name="tab">The tab to be added</param>
-        /// <param name="afterTabId">Id of the tab after which this tab is added</param>
+        /// <param name="tab">The tab to be added.</param>
+        /// <param name="afterTabId">Id of the tab after which this tab is added.</param>
         /// <returns></returns>
         public int AddTabAfter(TabInfo tab, int afterTabId)
         {
@@ -979,10 +979,10 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Adds a tab before the specified tab
+        /// Adds a tab before the specified tab.
         /// </summary>
-        /// <param name="objTab">The tab to be added</param>
-        /// <param name="beforeTabId">Id of the tab before which this tab is added</param>
+        /// <param name="objTab">The tab to be added.</param>
+        /// <param name="beforeTabId">Id of the tab before which this tab is added.</param>
         /// <returns></returns>
         public int AddTabBefore(TabInfo objTab, int beforeTabId)
         {
@@ -1023,7 +1023,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>
         /// Converts one single tab to a neutral culture
-        /// clears the tab cache optionally
+        /// clears the tab cache optionally.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
@@ -1091,7 +1091,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </summary>
         /// <param name="originalTab">The original tab.</param>
         /// <param name="locale">The locale.</param>
-        /// <param name="clearCache">Clear the cache?</param>
+        /// <param name="clearCache">Clear the cache?.</param>
         public void CreateLocalizedCopy(TabInfo originalTab, Locale locale, bool clearCache)
         {
             this.CreateLocalizedCopyInternal(originalTab, locale, true, clearCache);
@@ -1124,10 +1124,10 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Deletes a tab permanently from the database
+        /// Deletes a tab permanently from the database.
         /// </summary>
-        /// <param name="tabId">TabId of the tab to be deleted</param>
-        /// <param name="portalId">PortalId of the portal</param>
+        /// <param name="tabId">TabId of the tab to be deleted.</param>
+        /// <param name="portalId">PortalId of the portal.</param>
         /// <remarks>
         /// The tab will not delete if it has child tab(s).
         /// </remarks>
@@ -1143,7 +1143,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Deletes a tab permanently from the database
+        /// Deletes a tab permanently from the database.
         /// </summary>
         /// <param name="tabId">The tab id.</param>
         /// <param name="portalId">The portal id.</param>
@@ -1164,10 +1164,10 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Delete a Setting of a tab instance
+        /// Delete a Setting of a tab instance.
         /// </summary>
-        /// <param name="tabId">ID of the affected tab</param>
-        /// <param name="settingName">Name of the setting to be deleted</param>
+        /// <param name="tabId">ID of the affected tab.</param>
+        /// <param name="settingName">Name of the setting to be deleted.</param>
         public void DeleteTabSetting(int tabId, string settingName)
         {
             this._dataProvider.DeleteTabSetting(tabId, settingName);
@@ -1181,9 +1181,9 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Delete all Settings of a tab instance
+        /// Delete all Settings of a tab instance.
         /// </summary>
-        /// <param name="tabId">ID of the affected tab</param>
+        /// <param name="tabId">ID of the affected tab.</param>
         public void DeleteTabSettings(int tabId)
         {
             this._dataProvider.DeleteTabSettings(tabId);
@@ -1195,11 +1195,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Delete a taburl
+        /// Delete a taburl.
         /// </summary>
-        /// <param name="tabUrl">the taburl</param>
-        /// <param name="portalId">the portal</param>
-        /// <param name="clearCache">whether to clear the cache</param>
+        /// <param name="tabUrl">the taburl.</param>
+        /// <param name="portalId">the portal.</param>
+        /// <param name="clearCache">whether to clear the cache.</param>
         public void DeleteTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
             DataProvider.Instance().DeleteTabUrl(tabUrl.TabId, tabUrl.SeqNum);
@@ -1221,7 +1221,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>
         /// Deletes all tabs for a specific language. Double checks if we are not deleting pages for the default language
-        /// Clears the tab cache optionally
+        /// Clears the tab cache optionally.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -1248,7 +1248,7 @@ namespace DotNetNuke.Entities.Tabs
 
         /// <summary>
         /// Reverts page culture back to Neutral (Null), to ensure a non localized site
-        /// clears the tab cache optionally
+        /// clears the tab cache optionally.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="cultureCode"></param>
@@ -1263,11 +1263,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Get the list of skins per alias at tab level
+        /// Get the list of skins per alias at tab level.
         /// </summary>
-        /// <param name="tabId">the tab id</param>
-        /// <param name="portalId">the portal id</param>
-        /// <returns>list of TabAliasSkinInfo</returns>
+        /// <param name="tabId">the tab id.</param>
+        /// <param name="portalId">the portal id.</param>
+        /// <returns>list of TabAliasSkinInfo.</returns>
         public List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId)
         {
             // Get the Portal AliasSkin Dictionary
@@ -1286,11 +1286,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Get the list of custom aliases associated with a page (tab)
+        /// Get the list of custom aliases associated with a page (tab).
         /// </summary>
-        /// <param name="tabId">the tab id</param>
-        /// <param name="portalId">the portal id</param>
-        /// <returns>dictionary of tabid and aliases</returns>
+        /// <param name="tabId">the tab id.</param>
+        /// <param name="portalId">the portal id.</param>
+        /// <returns>dictionary of tabid and aliases.</returns>
         public Dictionary<string, string> GetCustomAliases(int tabId, int portalId)
         {
             // Get the Portal CustomAlias Dictionary
@@ -1442,7 +1442,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabName">Name of the tab.</param>
         /// <param name="portalId">The portal id.</param>
         /// <param name="parentId">The parent id.</param>
-        /// <returns>tab info</returns>
+        /// <returns>tab info.</returns>
         public TabInfo GetTabByName(string tabName, int portalId, int parentId)
         {
             return this.GetTabsByPortal(portalId).WithTabNameAndParentId(tabName, parentId);
@@ -1452,7 +1452,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Gets the tabs which use the module.
         /// </summary>
         /// <param name="moduleID">The module ID.</param>
-        /// <returns>tab collection</returns>
+        /// <returns>tab collection.</returns>
         public IDictionary<int, TabInfo> GetTabsByModuleID(int moduleID)
         {
             return CBO.FillDictionary<int, TabInfo>("TabID", this._dataProvider.GetTabsByModuleID(moduleID));
@@ -1462,7 +1462,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Gets the tabs which use the module.
         /// </summary>
         /// <param name="tabModuleId">The tabmodule ID.</param>
-        /// <returns>tab collection</returns>
+        /// <returns>tab collection.</returns>
         public IDictionary<int, TabInfo> GetTabsByTabModuleID(int tabModuleId)
         {
             return CBO.FillDictionary<int, TabInfo>("TabID", this._dataProvider.GetTabsByTabModuleID(tabModuleId));
@@ -1474,7 +1474,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="portalID">The portal ID.</param>
         /// <param name="packageID">The package ID.</param>
         /// <param name="forHost">if set to <c>true</c> [for host].</param>
-        /// <returns>tab collection</returns>
+        /// <returns>tab collection.</returns>
         public IDictionary<int, TabInfo> GetTabsByPackageID(int portalID, int packageID, bool forHost)
         {
             return CBO.FillDictionary<int, TabInfo>("TabID", this._dataProvider.GetTabsByPackageID(portalID, packageID, forHost));
@@ -1484,7 +1484,7 @@ namespace DotNetNuke.Entities.Tabs
         /// Gets the tabs by portal.
         /// </summary>
         /// <param name="portalId">The portal id.</param>
-        /// <returns>tab collection</returns>
+        /// <returns>tab collection.</returns>
         public TabCollection GetTabsByPortal(int portalId)
         {
             string cacheKey = string.Format(DataCache.TabCacheKey, portalId);
@@ -1522,11 +1522,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// read all settings for a tab from TabSettings table
+        /// read all settings for a tab from TabSettings table.
         /// </summary>
-        /// <param name="tabId">ID of the Tab to query</param>
+        /// <param name="tabId">ID of the Tab to query.</param>
         /// <returns>
-        /// (cached) hashtable containing all settings
+        /// (cached) hashtable containing all settings.
         /// </returns>
         public Hashtable GetTabSettings(int tabId)
         {
@@ -1541,11 +1541,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Get the list of url's associated with a page (tab)
+        /// Get the list of url's associated with a page (tab).
         /// </summary>
-        /// <param name="tabId">the tab id</param>
-        /// <param name="portalId">the portal id</param>
-        /// <returns>list of urls associated with a tab</returns>
+        /// <param name="tabId">the tab id.</param>
+        /// <param name="portalId">the portal id.</param>
+        /// <returns>list of urls associated with a tab.</returns>
         public List<TabUrlInfo> GetTabUrls(int tabId, int portalId)
         {
             // Get the Portal TabUrl Dictionary
@@ -1614,7 +1614,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Returns True if a page is missing a translated version in at least one other language
+        /// Returns True if a page is missing a translated version in at least one other language.
         /// </summary>
         /// <param name="portalId"></param>
         /// <param name="tabId"></param>
@@ -1638,10 +1638,10 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Checks whether the tab is published. Published means: view permissions of tab are identical to the DefaultLanguageTab
+        /// Checks whether the tab is published. Published means: view permissions of tab are identical to the DefaultLanguageTab.
         /// </summary>
-        /// <param name="publishTab">The tab that is checked</param>
-        /// <returns>true if tab is published</returns>
+        /// <param name="publishTab">The tab that is checked.</param>
+        /// <returns>true if tab is published.</returns>
         public bool IsTabPublished(TabInfo publishTab)
         {
             bool returnValue = true;
@@ -1681,7 +1681,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Localizes the tab, with optional clear cache
+        /// Localizes the tab, with optional clear cache.
         /// </summary>
         /// <param name="originalTab"></param>
         /// <param name="locale"></param>
@@ -1751,7 +1751,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Moves the tab to a new parent
+        /// Moves the tab to a new parent.
         /// </summary>
         /// <param name="tab">The tab want to move.</param>
         /// <param name="parentId">will move tab to this parent.</param>
@@ -1820,7 +1820,7 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Publishes the tab. Set the VIEW permission
+        /// Publishes the tab. Set the VIEW permission.
         /// </summary>
         /// <param name="publishTab">The publish tab.</param>
         public void PublishTab(TabInfo publishTab)
@@ -1905,11 +1905,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Save url information for a page (tab)
+        /// Save url information for a page (tab).
         /// </summary>
-        /// <param name="tabUrl">the tab url</param>
-        /// <param name="portalId">the portal id</param>
-        /// <param name="clearCache">whether to clear the cache</param>
+        /// <param name="tabUrl">the tab url.</param>
+        /// <param name="portalId">the portal id.</param>
+        /// <param name="clearCache">whether to clear the cache.</param>
         public void SaveTabUrl(TabUrlInfo tabUrl, int portalId, bool clearCache)
         {
             var portalAliasId = (tabUrl.PortalAliasUsage == PortalAliasUsageType.Default)
@@ -2089,12 +2089,12 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Adds or updates a tab's setting value
+        /// Adds or updates a tab's setting value.
         /// </summary>
-        /// <param name="tabId">ID of the tab to update</param>
-        /// <param name="settingName">name of the setting property</param>
+        /// <param name="tabId">ID of the tab to update.</param>
+        /// <param name="settingName">name of the setting property.</param>
         /// <param name="settingValue">value of the setting (String).</param>
-        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true</remarks>
+        /// <remarks>empty SettingValue will remove the setting, if not preserveIfEmpty is true.</remarks>
         public void UpdateTabSetting(int tabId, string settingName, string settingValue)
         {
             this.UpdateTabSettingInternal(tabId, settingName, settingValue, true);
@@ -2125,9 +2125,9 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// It marks a page as published at least once
+        /// It marks a page as published at least once.
         /// </summary>
-        /// <param name="tab">The Tab to be marked</param>
+        /// <param name="tab">The Tab to be marked.</param>
         public void MarkAsPublished(TabInfo tab)
         {
             this._dataProvider.MarkAsPublished(tab.TabID);
@@ -2246,11 +2246,11 @@ namespace DotNetNuke.Entities.Tabs
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Processes all panes and modules in the template file
+        /// Processes all panes and modules in the template file.
         /// </summary>
-        /// <param name="nodePanes">Template file node for the panes is current tab</param>
-        /// <param name="portalId">PortalId of the new portal</param>
-        /// <param name="tabId">Tab being processed</param>
+        /// <param name="nodePanes">Template file node for the panes is current tab.</param>
+        /// <param name="portalId">PortalId of the new portal.</param>
+        /// <param name="tabId">Tab being processed.</param>
         /// <param name="mergeTabs">Tabs need to merge.</param>
         /// <param name="hModules">Modules Hashtable.</param>
         /// <remarks>
@@ -2715,11 +2715,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// Get all TabInfo for the current culture in SortOrder
+        /// Get all TabInfo for the current culture in SortOrder.
         /// </summary>
-        /// <param name="portalId">The portalid to load tabs for</param>
+        /// <param name="portalId">The portalid to load tabs for.</param>
         /// <returns>
-        /// List of TabInfo oredered by default SortOrder
+        /// List of TabInfo oredered by default SortOrder.
         /// </returns>
         /// <remarks>
         /// This method uses the Active culture.  There is an overload <seealso cref="TabController.GetTabsBySortOrder(int, string, bool)"/>
@@ -2781,11 +2781,11 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// SerializeTab
+        /// SerializeTab.
         /// </summary>
-        /// <param name="tabXml">The Xml Document to use for the Tab</param>
-        /// <param name="objTab">The TabInfo object to serialize</param>
-        /// <param name="includeContent">A flag used to determine if the Module content is included</param>
+        /// <param name="tabXml">The Xml Document to use for the Tab.</param>
+        /// <param name="objTab">The TabInfo object to serialize.</param>
+        /// <param name="includeContent">A flag used to determine if the Module content is included.</param>
         /// <returns></returns>
         public static XmlNode SerializeTab(XmlDocument tabXml, TabInfo objTab, bool includeContent)
         {
@@ -2793,13 +2793,13 @@ namespace DotNetNuke.Entities.Tabs
         }
 
         /// <summary>
-        /// SerializeTab
+        /// SerializeTab.
         /// </summary>
-        /// <param name="tabXml">The Xml Document to use for the Tab</param>
-        /// <param name="tabs">A Hashtable used to store the names of the tabs</param>
-        /// <param name="tab">The TabInfo object to serialize</param>
-        /// <param name="portal">The Portal object to which the tab belongs</param>
-        /// <param name="includeContent">A flag used to determine if the Module content is included</param>
+        /// <param name="tabXml">The Xml Document to use for the Tab.</param>
+        /// <param name="tabs">A Hashtable used to store the names of the tabs.</param>
+        /// <param name="tab">The TabInfo object to serialize.</param>
+        /// <param name="portal">The Portal object to which the tab belongs.</param>
+        /// <param name="includeContent">A flag used to determine if the Module content is included.</param>
         /// <returns></returns>
         public static XmlNode SerializeTab(XmlDocument tabXml, Hashtable tabs, TabInfo tab, PortalInfo portal,
                                            bool includeContent)

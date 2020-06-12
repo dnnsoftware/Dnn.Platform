@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationConfigBase class provides base configuration class for the
-    /// Authentication providers
+    /// Authentication providers.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]

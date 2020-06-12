@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TabIndexer is an implementation of the abstract IndexingProvider
-    /// class
+    /// class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Searches for and indexes modified users for the given portal.
         /// </summary>
-        /// <returns>Count of indexed records</returns>
+        /// <returns>Count of indexed records.</returns>
         /// -----------------------------------------------------------------------------
         public override int IndexSearchDocuments(
             int portalId,

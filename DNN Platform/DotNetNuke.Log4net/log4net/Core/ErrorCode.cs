@@ -32,7 +32,7 @@ namespace log4net.Core
     /// Values passed to the <see cref="M:IErrorHandler.Error(string, Exception, ErrorCode)"/> method.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public enum ErrorCode : int
     {
         /// <summary>

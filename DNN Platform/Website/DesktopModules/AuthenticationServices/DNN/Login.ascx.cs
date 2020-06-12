@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login.
         /// </summary>
         protected bool UseCaptcha
         {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
         }
 
         /// <summary>
-        /// Gets a value indicating whether check if the Auth System is Enabled (for the Portal)
+        /// Gets a value indicating whether check if the Auth System is Enabled (for the Portal).
         /// </summary>
         /// <remarks></remarks>
         public override bool Enabled

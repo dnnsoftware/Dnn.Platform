@@ -14,23 +14,23 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     /// Class:      MessageBoxView
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The MessageBoxView contains the View of Inbox, Sent or Archived messages
+    /// The MessageBoxView contains the View of Inbox, Sent or Archived messages.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class MessageBoxView
     {
         /// <summary>
-        /// Gets or sets total Number of Coversations
+        /// Gets or sets total Number of Coversations.
         /// </summary>
         public int TotalConversations { get; set; }
 
         /// <summary>
-        /// Gets or sets total Number of New (Unread) Threads
+        /// Gets or sets total Number of New (Unread) Threads.
         /// </summary>
         public int TotalNewThreads { get; set; }
 
         /// <summary>
-        /// Gets or sets list of Conversations
+        /// Gets or sets list of Conversations.
         /// </summary>
         public List<MessageConversationView> Conversations { get; set; }
     }

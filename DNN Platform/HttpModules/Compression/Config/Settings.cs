@@ -16,7 +16,7 @@ using DotNetNuke.Services.Cache;
 namespace DotNetNuke.HttpModules.Compression
 {
     /// <summary>
-    /// This class encapsulates the settings for an HttpCompressionModule
+    /// This class encapsulates the settings for an HttpCompressionModule.
     /// </summary>
     [Serializable]
     public class Settings
@@ -42,7 +42,7 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// Gets the preferred algorithm to use for compression
+        /// Gets the preferred algorithm to use for compression.
         /// </summary>
         public Algorithms PreferredAlgorithm
         {
@@ -53,7 +53,7 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// Get the current settings from the xml config file
+        /// Get the current settings from the xml config file.
         /// </summary>
         /// <returns></returns>
         public static Settings GetSettings()
@@ -96,10 +96,10 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// Looks for a given path in the list of paths excluded from compression
+        /// Looks for a given path in the list of paths excluded from compression.
         /// </summary>
-        /// <param name="relUrl">the relative url to check</param>
-        /// <returns>true if excluded, false if not</returns>
+        /// <param name="relUrl">the relative url to check.</param>
+        /// <returns>true if excluded, false if not.</returns>
         public bool IsExcludedPath(string relUrl)
         {
             bool match = false;

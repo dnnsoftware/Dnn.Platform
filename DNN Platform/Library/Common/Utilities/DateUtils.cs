@@ -11,7 +11,7 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
-    /// Provides utility methods to work with Dates
+    /// Provides utility methods to work with Dates.
     /// </summary>
     public class DateUtils
     {
@@ -25,7 +25,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the database time.
         /// </summary>
-        /// <returns>Date/time of the database in UTC</returns>
+        /// <returns>Date/time of the database in UTC.</returns>
         [Obsolete("Deprecated in DNN 9.1.0.  Replaced by GetDatabaseUtcTime. Scheduled removal in v11.0.0.")]
         public static DateTime GetDatabaseTime()
         {
@@ -33,9 +33,9 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Gets DateTime Offset of current DB
+        /// Gets DateTime Offset of current DB.
         /// </summary>
-        /// <returns>DateTimeOffset object</returns>
+        /// <returns>DateTimeOffset object.</returns>
         public static TimeZoneInfo GetDatabaseDateTimeOffset()
         {
             var dateTimeOffset = DataProvider.Instance().GetDatabaseTimeOffset();
@@ -47,7 +47,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the database server's time in UTC.
         /// </summary>
-        /// <returns>Date/time of the database in UTC</returns>
+        /// <returns>Date/time of the database in UTC.</returns>
         public static DateTime GetDatabaseUtcTime()
         {
             try
@@ -71,7 +71,7 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Gets the database server's local time of the DB server and not the web server's local time.
         /// </summary>
-        /// <returns>Date/time of the database in UTC</returns>
+        /// <returns>Date/time of the database in UTC.</returns>
         public static DateTime GetDatabaseLocalTime()
         {
             try
@@ -95,8 +95,8 @@ namespace DotNetNuke.Common.Utilities
         /// <summary>
         /// Returns a string with the pretty printed amount of time since the specified date.
         /// </summary>
-        /// <param name="date">DateTime in UTC</param>
-        /// <returns>String representing the required date for display</returns>
+        /// <param name="date">DateTime in UTC.</param>
+        /// <returns>String representing the required date for display.</returns>
         public static string CalculateDateForDisplay(DateTime date)
         {
             var utcTimeDifference = GetDatabaseUtcTime() - date;

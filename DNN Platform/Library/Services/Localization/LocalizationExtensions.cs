@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Localization
         /// E.g. My file with.fancy-characters.fr-FR.resx should return "fr-FR".
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <returns>Microsoft compatible locale code</returns>
+        /// <returns>Microsoft compatible locale code.</returns>
         public static string GetLocaleCodeFromFileName(this string fileName)
         {
             var m = FileNameMatchRegex.Match(fileName);
@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Localization
         /// E.g. My file with.fancy-characters.fr-FR.resx should return "My file with.fancy-characters".
         /// </summary>
         /// <param name="fileName">Name of the file.</param>
-        /// <returns>File name stripped of culture code or extension</returns>
+        /// <returns>File name stripped of culture code or extension.</returns>
         public static string GetFileNameFromLocalizedResxFile(this string fileName)
         {
             var m = FileNameMatchRegex.Match(fileName);

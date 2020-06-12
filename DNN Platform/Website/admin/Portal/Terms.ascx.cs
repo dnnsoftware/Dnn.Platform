@@ -27,7 +27,7 @@ namespace DotNetNuke.Common.Controls
             this.InitializeComponent();
         }
 
-        /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page</summary>
+        /// <summary>The Page_Load server event handler on this page is used to populate the role information for the page.</summary>
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);

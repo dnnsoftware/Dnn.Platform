@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ContainerInstaller installs Container Components to a DotNetNuke site
+    /// The ContainerInstaller installs Container Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -18,9 +18,9 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("containerFiles")
+        /// Gets the name of the Collection Node ("containerFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -32,9 +32,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("containerFile")
+        /// Gets the name of the Item Node ("containerFile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -46,9 +46,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the SkinName Node ("containerName")
+        /// Gets the name of the SkinName Node ("containerName").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string SkinNameNodeName
         {
@@ -60,9 +60,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the RootName of the Skin
+        /// Gets the RootName of the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string SkinRoot
         {
@@ -74,9 +74,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Type of the Skin
+        /// Gets the Type of the Skin.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string SkinType
         {

@@ -27,7 +27,7 @@ namespace DotNetNuke.Security.Roles
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNRoleProvider overrides the default MembershipProvider to provide
-    /// a purely DNN Membership Component implementation
+    /// a purely DNN Membership Component implementation.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -48,7 +48,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateRole persists a Role to the Data Store
+        /// CreateRole persists a Role to the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -92,7 +92,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteRole deletes a Role from the Data Store
+        /// DeleteRole deletes a Role from the Data Store.
         /// </summary>
         /// <param name="role">The role to delete from the Data Store.</param>
         /// -----------------------------------------------------------------------------
@@ -103,11 +103,11 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get the roles for a portal
+        /// Get the roles for a portal.
         /// </summary>
         /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
         /// retrieved.</param>
-        /// <returns>An ArrayList of RoleInfo objects</returns>
+        /// <returns>An ArrayList of RoleInfo objects.</returns>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoles(int portalId)
         {
@@ -141,9 +141,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Update a role
+        /// Update a role.
         /// </summary>
-        /// <param name="role">The role to update</param>
+        /// <param name="role">The role to update.</param>
         /// -----------------------------------------------------------------------------
         public override void UpdateRole(RoleInfo role)
         {
@@ -170,9 +170,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Update the role settings for a role
+        /// Update the role settings for a role.
         /// </summary>
-        /// <param name="role">The role to update</param>
+        /// <param name="role">The role to update.</param>
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleSettings(RoleInfo role)
         {
@@ -189,11 +189,11 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddUserToRole adds a User to a Role
+        /// AddUserToRole adds a User to a Role.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">Id of the portal</param>
+        /// <param name="portalId">Id of the portal.</param>
         /// <param name="user">The user to add.</param>
         /// <param name="userRole">The role to add the user to.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
@@ -219,14 +219,14 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserRole gets a User/Role object from the Data Store
+        /// GetUserRole gets a User/Role object from the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="userId">The Id of the User</param>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="userId">The Id of the User.</param>
         /// <param name="roleId">The Id of the Role.</param>
-        /// <returns>The UserRoleInfo object</returns>
+        /// <returns>The UserRoleInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override UserRoleInfo GetUserRole(int portalId, int userId, int roleId)
         {
@@ -234,11 +234,11 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>
-        /// Gets a list of UserRoles for the user
+        /// Gets a list of UserRoles for the user.
         /// </summary>
-        /// <param name="user">A UserInfo object representaing the user</param>
+        /// <param name="user">A UserInfo object representaing the user.</param>
         /// <param name="includePrivate">Include private roles.</param>
-        /// <returns>A list of UserRoleInfo objects</returns>
+        /// <returns>A list of UserRoleInfo objects.</returns>
         public override IList<UserRoleInfo> GetUserRoles(UserInfo user, bool includePrivate)
         {
             Requires.NotNull("user", user);
@@ -250,14 +250,14 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetUserRoles gets a collection of User/Role objects from the Data Store
+        /// GetUserRoles gets a collection of User/Role objects from the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">Id of the portal</param>
-        /// <param name="userName">The user to fetch roles for</param>
-        /// <param name="roleName">The role to fetch users for</param>
-        /// <returns>An ArrayList of UserRoleInfo objects</returns>
+        /// <param name="portalId">Id of the portal.</param>
+        /// <param name="userName">The user to fetch roles for.</param>
+        /// <param name="roleName">The role to fetch users for.</param>
+        /// <returns>An ArrayList of UserRoleInfo objects.</returns>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUserRoles(int portalId, string userName, string roleName)
         {
@@ -266,12 +266,12 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get the users in a role (as User objects)
+        /// Get the users in a role (as User objects).
         /// </summary>
         /// <param name="portalId">Id of the portal (If -1 all roles for all portals are
         /// retrieved.</param>
-        /// <param name="roleName">The role to fetch users for</param>
-        /// <returns>An ArrayList of UserInfo objects</returns>
+        /// <param name="roleName">The role to fetch users for.</param>
+        /// <returns>An ArrayList of UserInfo objects.</returns>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUsersByRoleName(int portalId, string roleName)
         {
@@ -280,11 +280,11 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Remove a User from a Role
+        /// Remove a User from a Role.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="portalId">Id of the portal</param>
+        /// <param name="portalId">Id of the portal.</param>
         /// <param name="user">The user to remove.</param>
         /// <param name="userRole">The role to remove the user from.</param>
         /// -----------------------------------------------------------------------------
@@ -295,9 +295,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Updates a User/Role
+        /// Updates a User/Role.
         /// </summary>
-        /// <param name="userRole">The User/Role to update</param>
+        /// <param name="userRole">The User/Role to update.</param>
         /// -----------------------------------------------------------------------------
         public override void UpdateUserRole(UserRoleInfo userRole)
         {
@@ -320,7 +320,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateRoleGroup persists a RoleGroup to the Data Store
+        /// CreateRoleGroup persists a RoleGroup to the Data Store.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -338,7 +338,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DeleteRoleGroup deletes a RoleGroup from the Data Store
+        /// DeleteRoleGroup deletes a RoleGroup from the Data Store.
         /// </summary>
         /// <param name="roleGroup">The RoleGroup to delete from the Data Store.</param>
         /// -----------------------------------------------------------------------------
@@ -350,11 +350,11 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetRoleGroup gets a RoleGroup from the Data Store
+        /// GetRoleGroup gets a RoleGroup from the Data Store.
         /// </summary>
-        /// <param name="portalId">Id of the portal</param>
+        /// <param name="portalId">Id of the portal.</param>
         /// <param name="roleGroupId">The Id of the RoleGroup to retrieve.</param>
-        /// <returns>A RoleGroupInfo object</returns>
+        /// <returns>A RoleGroupInfo object.</returns>
         /// -----------------------------------------------------------------------------
         public override RoleGroupInfo GetRoleGroup(int portalId, int roleGroupId)
         {
@@ -370,10 +370,10 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Get the RoleGroups for a portal
+        /// Get the RoleGroups for a portal.
         /// </summary>
         /// <param name="portalId">Id of the portal.</param>
-        /// <returns>An ArrayList of RoleGroupInfo objects</returns>
+        /// <returns>An ArrayList of RoleGroupInfo objects.</returns>
         /// -----------------------------------------------------------------------------
         public override ArrayList GetRoleGroups(int portalId)
         {
@@ -393,9 +393,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Update a RoleGroup
+        /// Update a RoleGroup.
         /// </summary>
-        /// <param name="roleGroup">The RoleGroup to update</param>
+        /// <param name="roleGroup">The RoleGroup to update.</param>
         /// -----------------------------------------------------------------------------
         public override void UpdateRoleGroup(RoleGroupInfo roleGroup)
         {

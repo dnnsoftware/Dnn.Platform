@@ -23,7 +23,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         }
 
         /// <summary>
-        /// Gets or sets the ControlKey property is the key for the module control
+        /// Gets or sets the ControlKey property is the key for the module control.
         /// </summary>
         public string ControlKey { get; set; }
 

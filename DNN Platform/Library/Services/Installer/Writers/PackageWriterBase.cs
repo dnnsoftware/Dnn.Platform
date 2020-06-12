@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Installer.Writers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The PackageWriter class
+    /// The PackageWriter class.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -61,9 +61,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of AppCodeFiles that should be included in the Package
+        /// Gets a Dictionary of AppCodeFiles that should be included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> AppCodeFiles
         {
@@ -75,17 +75,17 @@ namespace DotNetNuke.Services.Installer.Writers
 
          /// -----------------------------------------------------------------------------
          /// <summary>
-         /// Gets or sets and sets the Path for the Package's app code files
+         /// Gets or sets and sets the Path for the Package's app code files.
          /// </summary>
-         /// <value>A String</value>
+         /// <value>A String.</value>
          /// -----------------------------------------------------------------------------
         public string AppCodePath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Assemblies that should be included in the Package
+        /// Gets a Dictionary of Assemblies that should be included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Assemblies
         {
@@ -97,17 +97,17 @@ namespace DotNetNuke.Services.Installer.Writers
 
          /// -----------------------------------------------------------------------------
          /// <summary>
-         /// Gets or sets and sets the Path for the Package's assemblies
+         /// Gets or sets and sets the Path for the Package's assemblies.
          /// </summary>
-         /// <value>A String</value>
+         /// <value>A String.</value>
          /// -----------------------------------------------------------------------------
         public string AssemblyPath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Base Path for the Package
+        /// Gets or sets and sets the Base Path for the Package.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string BasePath
         {
@@ -124,9 +124,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of CleanUpFiles that should be included in the Package
+        /// Gets a Dictionary of CleanUpFiles that should be included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public SortedList<string, InstallFile> CleanUpFiles
         {
@@ -138,9 +138,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Files that should be included in the Package
+        /// Gets a Dictionary of Files that should be included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Files
         {
@@ -152,17 +152,17 @@ namespace DotNetNuke.Services.Installer.Writers
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// Gets or sets a value indicating whether gets and sets whether a project file is found in the folder
+ /// Gets or sets a value indicating whether gets and sets whether a project file is found in the folder.
  /// </summary>
- /// <value>A String</value>
+ /// <value>A String.</value>
  /// -----------------------------------------------------------------------------
         public bool HasProjectFile { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to include Assemblies
+        /// Gets a value indicating whether gets whether to include Assemblies.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public virtual bool IncludeAssemblies
         {
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>
-        /// Gets or sets and sets whether there are any errors in parsing legacy packages
+        /// Gets or sets and sets whether there are any errors in parsing legacy packages.
         /// </summary>
         /// <value>
         /// <placeholder>And sets whether there are any errors in parsing legacy packages</placeholder>
@@ -184,9 +184,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Logger
+        /// Gets the Logger.
         /// </summary>
-        /// <value>An Logger object</value>
+        /// <value>An Logger object.</value>
         /// -----------------------------------------------------------------------------
         public Logger Log
         {
@@ -198,9 +198,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the associated Package
+        /// Gets or sets the associated Package.
         /// </summary>
-        /// <value>An PackageInfo object</value>
+        /// <value>An PackageInfo object.</value>
         /// -----------------------------------------------------------------------------
         public PackageInfo Package
         {
@@ -217,9 +217,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Resources that should be included in the Package
+        /// Gets a Dictionary of Resources that should be included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Resources
         {
@@ -231,9 +231,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Scripts that should be included in the Package
+        /// Gets a Dictionary of Scripts that should be included in the Package.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, InstallFile> Scripts
         {
@@ -245,9 +245,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a List of Versions that should be included in the Package
+        /// Gets a List of Versions that should be included in the Package.
         /// </summary>
-        /// <value>A List(Of String)</value>
+        /// <value>A List(Of String).</value>
         /// -----------------------------------------------------------------------------
         public List<string> Versions
         {
@@ -621,11 +621,11 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>
-        /// WriteManifest writes an existing manifest
+        /// WriteManifest writes an existing manifest.
         /// </summary>
-        /// <param name="manifestName">The name of the manifest file</param>
-        /// <param name="manifest">The manifest</param>
-        /// <remarks>This overload takes a package manifest and writes it to a file</remarks>
+        /// <param name="manifestName">The name of the manifest file.</param>
+        /// <param name="manifest">The manifest.</param>
+        /// <remarks>This overload takes a package manifest and writes it to a file.</remarks>
         public void WriteManifest(string manifestName, string manifest)
         {
             using (XmlWriter writer = XmlWriter.Create(Path.Combine(Globals.ApplicationMapPath, Path.Combine(this.BasePath, manifestName)), XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
@@ -637,11 +637,11 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>
-        /// WriteManifest writes a package manifest to an XmlWriter
+        /// WriteManifest writes a package manifest to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter</param>
-        /// <param name="manifest">The manifest</param>
-        /// <remarks>This overload takes a package manifest and writes it to a Writer</remarks>
+        /// <param name="writer">The XmlWriter.</param>
+        /// <param name="manifest">The manifest.</param>
+        /// <remarks>This overload takes a package manifest and writes it to a Writer.</remarks>
         public void WriteManifest(XmlWriter writer, string manifest)
         {
             WriteManifestStartElement(writer);
@@ -655,11 +655,11 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>
-        /// WriteManifest writes the manifest assoicated with this PackageWriter to a string
+        /// WriteManifest writes the manifest assoicated with this PackageWriter to a string.
         /// </summary>
         /// <param name="packageFragment">A flag that indicates whether to return the package element
-        /// as a fragment (True) or whether to add the outer dotnetnuke and packages elements (False)</param>
-        /// <returns>The manifest as a string</returns>
+        /// as a fragment (True) or whether to add the outer dotnetnuke and packages elements (False).</param>
+        /// <returns>The manifest as a string.</returns>
         /// <remarks></remarks>
         public string WriteManifest(bool packageFragment)
         {

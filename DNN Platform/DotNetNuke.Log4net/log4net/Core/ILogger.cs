@@ -28,7 +28,7 @@ using log4net.Repository;
 namespace log4net.Core
 {
     /// <summary>
-    /// Interface that all loggers implement
+    /// Interface that all loggers implement.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -41,8 +41,8 @@ namespace log4net.Core
     /// to be thrown to the caller.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface ILogger
     {
         /// <summary>
@@ -53,7 +53,7 @@ namespace log4net.Core
         /// </value>
         /// <remarks>
         /// <para>
-        /// The name of this logger
+        /// The name of this logger.
         /// </para>
         /// </remarks>
         string Name { get; }

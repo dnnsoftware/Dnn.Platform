@@ -20,14 +20,14 @@ namespace DotNetNuke.Modules.Groups
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Settings class manages Module Settings
+    /// The Settings class manages Module Settings.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class ListSettings : GroupsSettingsBase
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSettings loads the settings from the Database and displays them
+        /// LoadSettings loads the settings from the Database and displays them.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void LoadSettings()
@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.Groups
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateSettings saves the modified settings to the Database
+        /// UpdateSettings saves the modified settings to the Database.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UpdateSettings()

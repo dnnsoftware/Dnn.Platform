@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The AuthenticationConfig class providesa configuration class for the DNN
-    /// Authentication provider
+    /// Authentication provider.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]

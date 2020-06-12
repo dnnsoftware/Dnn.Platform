@@ -11,28 +11,28 @@ namespace DotNetNuke.Entities.Content.Workflow
 // ReSharper enable CheckNamespace
 {
     /// <summary>
-    /// This entity represents a Workflow
+    /// This entity represents a Workflow.
     /// </summary>
     [Obsolete("Deprecated in Platform 7.4.0. Scheduled removal in v10.0.0.")]
     public class ContentWorkflow
     {
         /// <summary>
-        /// Gets or sets workflow Id
+        /// Gets or sets workflow Id.
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// Gets or sets portal Id
+        /// Gets or sets portal Id.
         /// </summary>
         public int PortalID { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow Name
+        /// Gets or sets workflow Name.
         /// </summary>
         public string WorkflowName { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow Description
+        /// Gets or sets workflow Description.
         /// </summary>
         public string Description { get; set; }
 
@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         public bool DispositionEnabled { get; set; }
 
         /// <summary>
-        /// Gets or sets workflow states
+        /// Gets or sets workflow states.
         /// </summary>
         public IEnumerable<ContentWorkflowState> States { get; set; }
     }

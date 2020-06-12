@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets nodes image
+        /// Gets nodes image.
         /// </summary>
         /// <value>
         /// <placeholder>Returns nodes image</placeholder>
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets node name
+        /// Gets node name.
         /// </summary>
         /// <value>
         /// <placeholder>Returns node name</placeholder>
@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets value path of node
+        /// Gets value path of node.
         /// </summary>
         /// <value>
         /// <placeholder>Returns value path of node</placeholder>
@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets node navigation url
+        /// Gets node navigation url.
         /// </summary>
         /// <value>
         /// <placeholder>Returns node navigation url</placeholder>
@@ -191,7 +191,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets node description
+        /// Gets node description.
         /// </summary>
         /// <value>
         /// <placeholder>Returns Node description</placeholder>
@@ -212,10 +212,10 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Helper function to handle cases where property is null (Nothing)
+        /// Helper function to handle cases where property is null (Nothing).
         /// </summary>
-        /// <param name="Value">Value to evaluate for null</param>
-        /// <param name="Def">If null, return this default</param>
+        /// <param name="Value">Value to evaluate for null.</param>
+        /// <param name="Def">If null, return this default.</param>
         /// <returns></returns>
         /// <remarks></remarks>
         private string GetSafeValue(string Value, string Def)
@@ -231,11 +231,11 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Computes valuepath necessary for ASP.NET controls to guarantee uniqueness
+        /// Computes valuepath necessary for ASP.NET controls to guarantee uniqueness.
         /// </summary>
         /// <param name="objNode"></param>
-        /// <returns>ValuePath</returns>
-        /// <remarks>Not sure if it is ok to hardcode the "\" separator, but also not sure where I would get it from</remarks>
+        /// <returns>ValuePath.</returns>
+        /// <remarks>Not sure if it is ok to hardcode the "\" separator, but also not sure where I would get it from.</remarks>
         private string GetValuePath(DNNNode objNode)
         {
             DNNNode objParent = objNode.ParentNode;

@@ -50,22 +50,22 @@ namespace log4net.Core
     /// debug symbols contain most of the file, method name, line number, and column
     /// information used in constructing StackFrame and StackTrace objects. StackTrace
     /// might not report as many method calls as expected, due to code transformations
-    /// that occur during optimization."
+    /// that occur during optimization.".
     /// </para>
     /// <para>
     /// This means that in a Release build the caller information may be incomplete or may
     /// not exist at all! Therefore caller location information cannot be relied upon in a Release build.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
 #if !NETCF
     [Serializable]
 #endif
     public class LocationInfo
     {
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="callerStackBoundaryDeclaringType">The declaring type of the method that is
         /// the stack boundary into the logging system for this call.</param>
@@ -164,7 +164,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <param name="className">The fully qualified class name.</param>
         /// <param name="methodName">The method name.</param>
@@ -254,16 +254,16 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets all available caller information
+        /// Gets all available caller information.
         /// </summary>
         /// <value>
         /// All available caller information, in the format
-        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
+        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>.
         /// </value>
         /// <remarks>
         /// <para>
         /// Gets all available caller information, in the format
-        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>
+        /// <c>fully.qualified.classname.of.caller.methodName(Filename:line)</c>.
         /// </para>
         /// </remarks>
         public string FullInfo
@@ -273,7 +273,7 @@ namespace log4net.Core
 
 #if !(NETCF || NETSTANDARD1_3)
         /// <summary>
-        /// Gets the stack frames from the stack trace of the caller making the log request
+        /// Gets the stack frames from the stack trace of the caller making the log request.
         /// </summary>
         public StackFrameItem[] StackFrames
         {

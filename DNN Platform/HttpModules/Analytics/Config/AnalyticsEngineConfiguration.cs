@@ -22,7 +22,7 @@ namespace DotNetNuke.HttpModules.Config
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// Class definition for AnalyticsEngineConfiguration which is used to create
-    /// an AnalyticsEngineCollection
+    /// an AnalyticsEngineCollection.
     /// </summary>
     /// <remarks>
     /// </remarks>

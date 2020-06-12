@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Search
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The TabIndexer is an implementation of the abstract IndexingProvider
-    /// class
+    /// class.
     /// </summary>
     /// <remarks>
     /// </remarks>

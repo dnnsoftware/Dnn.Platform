@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Users
     /// Class:      UserInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The UserInfo class provides Business Layer model for Users
+    /// The UserInfo class provides Business Layer model for Users.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the AffiliateId for this user
+        /// Gets or sets and sets the AffiliateId for this user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Display Name
+        /// Gets or sets and sets the Display Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(3)]
@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Email Address
+        /// Gets or sets and sets the Email Address.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(4)]
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the First Name
+        /// Gets or sets and sets the First Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(1)]
@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the User is deleted
+        /// Gets or sets a value indicating whether gets and sets whether the User is deleted.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -102,14 +102,14 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the User is a SuperUser
+        /// Gets or sets a value indicating whether gets and sets whether the User is a SuperUser.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
 
         /// <summary>
-        /// Gets a value indicating whether gets whether the user is in the portal's administrators role
+        /// Gets a value indicating whether gets whether the user is in the portal's administrators role.
         /// </summary>
         public bool IsAdmin
         {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last IP address used by user
+        /// Gets or sets and sets the Last IP address used by user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Last Name
+        /// Gets or sets and sets the Last Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(2)]
@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Membership object
+        /// Gets or sets and sets the Membership object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -172,20 +172,20 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Gets or sets and sets the token created for resetting passwords
+        /// Gets or sets and sets the token created for resetting passwords.
         /// </summary>
         [Browsable(false)]
         public Guid PasswordResetToken { get; set; }
 
         /// <summary>
-        /// Gets or sets and sets the datetime that the PasswordResetToken is valid
+        /// Gets or sets and sets the datetime that the PasswordResetToken is valid.
         /// </summary>
         [Browsable(false)]
         public DateTime PasswordResetExpiration { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the PortalId
+        /// Gets or sets and sets the PortalId.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -193,7 +193,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the user has agreed to the terms and conditions
+        /// Gets or sets a value indicating whether gets and sets whether the user has agreed to the terms and conditions.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets when the user last agreed to the terms and conditions
+        /// Gets or sets and sets when the user last agreed to the terms and conditions.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -209,7 +209,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the user has requested they be removed from the site
+        /// Gets or sets a value indicating whether gets and sets whether the user has requested they be removed from the site.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -217,7 +217,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Profile Object
+        /// Gets or sets and sets the Profile Object.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -263,7 +263,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Social property
+        /// Gets and sets the Social property.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -277,7 +277,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User Id
+        /// Gets or sets and sets the User Id.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -285,7 +285,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User Name
+        /// Gets or sets and sets the User Name.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(0)]
@@ -297,15 +297,15 @@ namespace DotNetNuke.Entities.Users
         public string VanityUrl { get; set; }
 
         /// <summary>
-        /// Property access, initially provided for TokenReplace
+        /// Property access, initially provided for TokenReplace.
         /// </summary>
-        /// <param name="propertyName">Name of the Property</param>
-        /// <param name="format">format string</param>
-        /// <param name="formatProvider">format provider for numbers, dates, currencies</param>
-        /// <param name="accessingUser">userinfo of the user, who queries the data (used to determine permissions)</param>
-        /// <param name="currentScope">requested maximum access level, might be restricted due to user level</param>
+        /// <param name="propertyName">Name of the Property.</param>
+        /// <param name="format">format string.</param>
+        /// <param name="formatProvider">format provider for numbers, dates, currencies.</param>
+        /// <param name="accessingUser">userinfo of the user, who queries the data (used to determine permissions).</param>
+        /// <param name="currentScope">requested maximum access level, might be restricted due to user level.</param>
         /// <param name="propertyNotFound">out: flag, if property could be retrieved.</param>
-        /// <returns>current value of the property for this userinfo object</returns>
+        /// <returns>current value of the property for this userinfo object.</returns>
         public string GetProperty(string propertyName, string format, CultureInfo formatProvider, UserInfo accessingUser, Scope currentScope, ref bool propertyNotFound)
         {
             Scope internScope;
@@ -439,10 +439,10 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Determine, if accessing user is Administrator
+        /// Determine, if accessing user is Administrator.
         /// </summary>
-        /// <param name="accessingUser">userinfo of the user to query</param>
-        /// <returns>true, if user is portal administrator or superuser</returns>
+        /// <param name="accessingUser">userinfo of the user to query.</param>
+        /// <returns>true, if user is portal administrator or superuser.</returns>
         private bool isAdminUser(ref UserInfo accessingUser)
         {
             if (accessingUser == null || accessingUser.UserID == -1)
@@ -466,9 +466,9 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IsInRole determines whether the user is in the role passed
+        /// IsInRole determines whether the user is in the role passed.
         /// </summary>
-        /// <param name="role">The role to check</param>
+        /// <param name="role">The role to check.</param>
         /// <returns>A Boolean indicating success or failure.</returns>
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
@@ -505,7 +505,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets current time in User's timezone
+        /// Gets current time in User's timezone.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -516,9 +516,9 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Convert utc time in User's timezone
+        /// Convert utc time in User's timezone.
         /// </summary>
-        /// <param name="utcTime">Utc time to convert</param>
+        /// <param name="utcTime">Utc time to convert.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public DateTime LocalTime(DateTime utcTime)
@@ -533,9 +533,9 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// UpdateDisplayName updates the displayname to the format provided
+        /// UpdateDisplayName updates the displayname to the format provided.
         /// </summary>
-        /// <param name="format">The format to use</param>
+        /// <param name="format">The format to use.</param>
         /// -----------------------------------------------------------------------------
         public void UpdateDisplayName(string format)
         {

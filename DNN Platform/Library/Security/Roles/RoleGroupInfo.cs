@@ -23,7 +23,7 @@ namespace DotNetNuke.Security.Roles
     /// Class:      RoleGroupInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The RoleGroupInfo class provides the Entity Layer RoleGroup object
+    /// The RoleGroupInfo class provides the Entity Layer RoleGroup object.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -51,9 +51,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the RoleGroup Id
+        /// Gets or sets and sets the RoleGroup Id.
         /// </summary>
-        /// <value>An Integer representing the Id of the RoleGroup</value>
+        /// <value>An Integer representing the Id of the RoleGroup.</value>
         /// -----------------------------------------------------------------------------
         public int RoleGroupID
         {
@@ -70,9 +70,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Portal Id for the RoleGroup
+        /// Gets or sets and sets the Portal Id for the RoleGroup.
         /// </summary>
-        /// <value>An Integer representing the Id of the Portal</value>
+        /// <value>An Integer representing the Id of the Portal.</value>
         /// -----------------------------------------------------------------------------
         public int PortalID
         {
@@ -89,9 +89,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the RoleGroup Name
+        /// Gets or sets and sets the RoleGroup Name.
         /// </summary>
-        /// <value>A string representing the Name of the RoleGroup</value>
+        /// <value>A string representing the Name of the RoleGroup.</value>
         /// -----------------------------------------------------------------------------
         public string RoleGroupName
         {
@@ -108,9 +108,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets an sets the Description of the RoleGroup
+        /// Gets or sets an sets the Description of the RoleGroup.
         /// </summary>
-        /// <value>A string representing the description of the RoleGroup</value>
+        /// <value>A string representing the description of the RoleGroup.</value>
         /// -----------------------------------------------------------------------------
         public string Description
         {
@@ -127,9 +127,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Roles for this Role Group
+        /// Gets the Roles for this Role Group.
         /// </summary>
-        /// <returns>A Boolean</returns>
+        /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, RoleInfo> Roles
         {
@@ -146,9 +146,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a RoleGroupInfo from a Data Reader
+        /// Fills a RoleGroupInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -163,9 +163,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -182,7 +182,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an XmlSchema for the RoleGroupInfo
+        /// Gets an XmlSchema for the RoleGroupInfo.
         /// </summary>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
@@ -193,9 +193,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a RoleGroupInfo from an XmlReader
+        /// Reads a RoleGroupInfo from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
@@ -244,9 +244,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a RoleGroupInfo to an XmlWriter
+        /// Writes a RoleGroupInfo to an XmlWriter.
         /// </summary>
-        /// <param name="writer">The XmlWriter to use</param>
+        /// <param name="writer">The XmlWriter to use.</param>
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
@@ -287,9 +287,9 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Reads a Roles from an XmlReader
+        /// Reads a Roles from an XmlReader.
         /// </summary>
-        /// <param name="reader">The XmlReader to use</param>
+        /// <param name="reader">The XmlReader to use.</param>
         /// -----------------------------------------------------------------------------
         private void ReadRoles(XmlReader reader)
         {

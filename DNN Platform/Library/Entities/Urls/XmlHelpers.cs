@@ -10,12 +10,12 @@ using DotNetNuke.Entities.Tabs;
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// The Xml Helpers class is used to read in parameter rewrite/replace/redirect rules from the friendlyUrlParms.config file
+    /// The Xml Helpers class is used to read in parameter rewrite/replace/redirect rules from the friendlyUrlParms.config file.
     /// </summary>
     internal static class XmlHelpers
     {
         /// <summary>
-        /// Returns a tab id from either a raw tabId, or a list of tab names delimited by ';'
+        /// Returns a tab id from either a raw tabId, or a list of tab names delimited by ';'.
         /// </summary>
         /// <param name="tabIdsRaw"></param>
         /// <param name="tabNames"></param>

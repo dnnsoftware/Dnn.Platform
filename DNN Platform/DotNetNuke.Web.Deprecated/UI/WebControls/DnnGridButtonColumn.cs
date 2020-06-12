@@ -43,25 +43,25 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Icon Key to obtain ImageURL
+        /// Gets or sets the Icon Key to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Icon Siz to obtain ImageURL
+        /// Gets or sets the Icon Siz to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconSize { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Icon Style to obtain ImageURL
+        /// Gets or sets the Icon Style to obtain ImageURL.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconStyle { get; set; }
 

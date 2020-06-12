@@ -29,37 +29,37 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the ID of the User Record in the Authentication System
+        /// Gets or sets and Sets the ID of the User Record in the Authentication System.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int UserAuthenticationID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the PackageID for the Authentication System
+        /// Gets or sets and Sets the PackageID for the Authentication System.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int UserID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID)
+        /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID).
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and Sets the url for the Logoff Control
+        /// Gets or sets and Sets the url for the Logoff Control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationToken { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a UserAuthenticationInfo from a Data Reader
+        /// Fills a UserAuthenticationInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public virtual void Fill(IDataReader dr)
         {
@@ -74,9 +74,9 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public virtual int KeyID
         {

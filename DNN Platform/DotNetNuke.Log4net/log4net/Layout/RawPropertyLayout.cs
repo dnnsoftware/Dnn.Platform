@@ -29,18 +29,18 @@ using log4net.Util;
 namespace log4net.Layout
 {
     /// <summary>
-    /// Extract the value of a property from the <see cref="LoggingEvent"/>
+    /// Extract the value of a property from the <see cref="LoggingEvent"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Extract the value of a property from the <see cref="LoggingEvent"/>
+    /// Extract the value of a property from the <see cref="LoggingEvent"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public class RawPropertyLayout : IRawLayout
     {
         /// <summary>
-        /// Constructs a RawPropertyLayout
+        /// Constructs a RawPropertyLayout.
         /// </summary>
         public RawPropertyLayout()
         {
@@ -52,7 +52,7 @@ namespace log4net.Layout
         /// Gets or sets the name of the value to lookup in the LoggingEvent Properties collection.
         /// </summary>
         /// <value>
-        /// Value to lookup in the LoggingEvent Properties collection
+        /// Value to lookup in the LoggingEvent Properties collection.
         /// </value>
         /// <remarks>
         /// <para>
@@ -66,10 +66,10 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Lookup the property for <see cref="Key"/>
+        /// Lookup the property for <see cref="Key"/>.
         /// </summary>
-        /// <param name="loggingEvent">The event to format</param>
-        /// <returns>returns property value</returns>
+        /// <param name="loggingEvent">The event to format.</param>
+        /// <returns>returns property value.</returns>
         /// <remarks>
         /// <para>
         /// Looks up and returns the object value of the property

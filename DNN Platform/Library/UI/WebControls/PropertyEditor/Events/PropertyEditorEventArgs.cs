@@ -23,9 +23,9 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new PropertyEditorEventArgs
+        /// Constructs a new PropertyEditorEventArgs.
         /// </summary>
-        /// <param name="name">The name of the property</param>
+        /// <param name="name">The name of the property.</param>
         /// -----------------------------------------------------------------------------
         public PropertyEditorEventArgs(string name)
             : this(name, null, null)
@@ -34,11 +34,11 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new PropertyEditorEventArgs
+        /// Constructs a new PropertyEditorEventArgs.
         /// </summary>
-        /// <param name="name">The name of the property</param>
-        /// <param name="newValue">The new value of the property</param>
-        /// <param name="oldValue">The old value of the property</param>
+        /// <param name="name">The name of the property.</param>
+        /// <param name="newValue">The new value of the property.</param>
+        /// <param name="oldValue">The old value of the property.</param>
         /// -----------------------------------------------------------------------------
         public PropertyEditorEventArgs(string name, object newValue, object oldValue)
         {
@@ -49,57 +49,57 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the proeprty has changed
+        /// Gets or sets a value indicating whether gets and sets whether the proeprty has changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public bool Changed { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Index of the Item
+        /// Gets or sets and sets the Index of the Item.
         /// </summary>
-        /// <value>An Integer</value>
+        /// <value>An Integer.</value>
         /// -----------------------------------------------------------------------------
         public int Index { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key of the Item
+        /// Gets or sets and sets the Key of the Item.
         /// </summary>
-        /// <value>An Object</value>
+        /// <value>An Object.</value>
         /// -----------------------------------------------------------------------------
         public object Key { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Name of the Property being changed
+        /// Gets or sets and sets the Name of the Property being changed.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Name { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the OldValue of the Property being changed
+        /// Gets or sets and sets the OldValue of the Property being changed.
         /// </summary>
-        /// <value>An Object</value>
+        /// <value>An Object.</value>
         /// -----------------------------------------------------------------------------
         public object OldValue { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the String Value of the Property being changed
+        /// Gets or sets and sets the String Value of the Property being changed.
         /// </summary>
-        /// <value>An Object</value>
+        /// <value>An Object.</value>
         /// -----------------------------------------------------------------------------
         public string StringValue { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Value of the Property being changed
+        /// Gets or sets and sets the Value of the Property being changed.
         /// </summary>
-        /// <value>An Object</value>
+        /// <value>An Object.</value>
         /// -----------------------------------------------------------------------------
         public object Value { get; set; }
     }

@@ -18,7 +18,7 @@ using DotNetNuke.Services.Localization;
 namespace DotNetNuke.Entities.Tabs
 {
     /// <summary>
-    /// Represents the collection of Tabs for a portal
+    /// Represents the collection of Tabs for a portal.
     /// </summary>
     /// <remarks></remarks>
     [Serializable]

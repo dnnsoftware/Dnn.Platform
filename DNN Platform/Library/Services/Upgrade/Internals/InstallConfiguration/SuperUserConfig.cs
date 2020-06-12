@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.InstallConfiguration
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// SuperUserConfig - A class that represents Install/DotNetNuke.Install.Config/SuperUser
+    /// SuperUserConfig - A class that represents Install/DotNetNuke.Install.Config/SuperUser.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class SuperUserConfig

@@ -54,8 +54,8 @@ namespace DotNetNuke.Entities.Icons
         /// <summary>
         /// Gets the Icon URL.
         /// </summary>
-        /// <param name="key">Key to icon, e.g. edit</param>
-        /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png</returns>
+        /// <param name="key">Key to icon, e.g. edit.</param>
+        /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
         public static string IconURL(string key)
         {
             return IconURL(key, DefaultIconSize, DefaultIconStyle);
@@ -64,9 +64,9 @@ namespace DotNetNuke.Entities.Icons
         /// <summary>
         /// Gets the Icon URL.
         /// </summary>
-        /// <param name="key">Key to icon, e.g. edit</param>
-        /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32</param>
-        /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png</returns>
+        /// <param name="key">Key to icon, e.g. edit.</param>
+        /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32.</param>
+        /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
         public static string IconURL(string key, string size)
         {
             return IconURL(key, size, DefaultIconStyle);
@@ -75,10 +75,10 @@ namespace DotNetNuke.Entities.Icons
         /// <summary>
         /// Gets the Icon URL.
         /// </summary>
-        /// <param name="key">Key to icon, e.g. edit</param>
-        /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32</param>
-        /// <param name="style">Style of icon, e.g. Standard (default)</param>
-        /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png</returns>
+        /// <param name="key">Key to icon, e.g. edit.</param>
+        /// <param name="size">Size of icon, e.g.16x16 (default) or 32x32.</param>
+        /// <param name="style">Style of icon, e.g. Standard (default).</param>
+        /// <returns>Link to the image, e.g. /Icons/Sigma/edit_16x16_standard.png.</returns>
         public static string IconURL(string key, string size, string style)
         {
             if (string.IsNullOrEmpty(key))

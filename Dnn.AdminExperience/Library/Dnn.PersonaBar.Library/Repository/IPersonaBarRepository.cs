@@ -7,14 +7,14 @@ using Dnn.PersonaBar.Library.Model;
 namespace Dnn.PersonaBar.Library.Repository
 {
     /// <summary>
-    /// Interface responsible to get the Persona Bar menu structure from the data layer
+    /// Interface responsible to get the Persona Bar menu structure from the data layer.
     /// </summary>
     public interface IPersonaBarRepository
     {
         /// <summary>
-        /// Gets the menu structure of the persona bar
+        /// Gets the menu structure of the persona bar.
         /// </summary>
-        /// <returns>Persona bar menu structure</returns>
+        /// <returns>Persona bar menu structure.</returns>
         PersonaBarMenu GetMenu();
 
         /// <summary>

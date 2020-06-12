@@ -9,7 +9,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ProviderInstaller installs Provider Components to a DotNetNuke site
+    /// The ProviderInstaller installs Provider Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -18,9 +18,9 @@ namespace DotNetNuke.Services.Installer.Installers
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {

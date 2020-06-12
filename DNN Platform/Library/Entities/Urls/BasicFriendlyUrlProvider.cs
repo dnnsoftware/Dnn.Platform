@@ -52,13 +52,13 @@ namespace DotNetNuke.Entities.Urls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddPage adds the page to the friendly url
+        /// AddPage adds the page to the friendly url.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The page name.</param>
-        /// <returns>The formatted url</returns>
+        /// <returns>The formatted url.</returns>
         private string AddPage(string path, string pageName)
         {
             string friendlyPath = path;
@@ -86,14 +86,14 @@ namespace DotNetNuke.Entities.Urls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetFriendlyAlias gets the Alias root of the friendly url
+        /// GetFriendlyAlias gets the Alias root of the friendly url.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="path">The path to format.</param>
         /// <param name="portalAlias">The portal alias of the site.</param>
         /// <param name="isPagePath">Whether is a relative page path.</param>
-        /// <returns>The formatted url</returns>
+        /// <returns>The formatted url.</returns>
         private string GetFriendlyAlias(string path, string portalAlias, bool isPagePath)
         {
             string friendlyPath = path;
@@ -176,14 +176,14 @@ namespace DotNetNuke.Entities.Urls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// GetFriendlyQueryString gets the Querystring part of the friendly url
+        /// GetFriendlyQueryString gets the Querystring part of the friendly url.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="tab">The tab whose url is being formatted.</param>
         /// <param name="path">The path to format.</param>
         /// <param name="pageName">The Page name.</param>
-        /// <returns>The formatted url</returns>
+        /// <returns>The formatted url.</returns>
         private string GetFriendlyQueryString(TabInfo tab, string path, string pageName)
         {
             string friendlyPath = path;

@@ -606,7 +606,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// appends a language/culture code value if it is not already present in the rewrite path
+        /// appends a language/culture code value if it is not already present in the rewrite path.
         /// </summary>
         /// <param name="rewritePath"></param>
         /// <param name="cultureCode"></param>
@@ -633,14 +633,14 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// appends a skin value to the rewrite path, as long as there is no existing skin in the path
+        /// appends a skin value to the rewrite path, as long as there is no existing skin in the path.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="rewritePath">The current rewrite path</param>
-        /// <param name="skin">The selected skin</param>
+        /// <param name="rewritePath">The current rewrite path.</param>
+        /// <param name="skin">The selected skin.</param>
         /// <param name="tabId"></param>
         /// <param name="message"></param>
-        /// <remarks>852 : Add skin src to rewrite path for specific aliases</remarks>
+        /// <remarks>852 : Add skin src to rewrite path for specific aliases.</remarks>
         /// <returns></returns>
         internal static bool AddSkinToRewritePath(int tabId, int portalId, ref string rewritePath, string skin, out string message)
         {
@@ -678,7 +678,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Checks for exclusions on Rewriting the path, based on a regex pattern
+        /// Checks for exclusions on Rewriting the path, based on a regex pattern.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="requestedPath"></param>
@@ -781,11 +781,11 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Returns either the rewritten path (if a rewrite used) or the requested path (if no rewrite used)
+        /// Returns either the rewritten path (if a rewrite used) or the requested path (if no rewrite used).
         /// </summary>
         /// <param name="result"></param>
         /// <param name="requestUri"></param>
-        /// <returns>Url suitable for input into friendly url generation routine</returns>
+        /// <returns>Url suitable for input into friendly url generation routine.</returns>
         internal static string GetRewriteOrRequestedPath(UrlAction result, Uri requestUri)
         {
             var pathOnly = result.RewritePath;
@@ -1257,9 +1257,9 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Identifies a request for a physical file on the system
+        /// Identifies a request for a physical file on the system.
         /// </summary>
-        /// <param name="physicalPath">The Physical Path propery of the request</param>
+        /// <param name="physicalPath">The Physical Path propery of the request.</param>
         /// <param name="fullUrl"></param>
         /// <param name="queryStringCol"></param>
         /// <param name="result"></param>
@@ -1512,12 +1512,12 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0
+        /// Replaces the core IsAdminTab call which was decommissioned for DNN 5.0.
         /// </summary>
         /// <param name="portalId"></param>
-        /// <param name="tabPath">The path of the tab //admin//someothername</param>
+        /// <param name="tabPath">The path of the tab //admin//someothername.</param>
         /// <param name="settings"></param>
-        /// /// <remarks>Duplicated in UrlMasterController.cs</remarks>
+        /// /// <remarks>Duplicated in UrlMasterController.cs.</remarks>
         /// <returns></returns>
         internal static bool IsAdminTab(int portalId, string tabPath, FriendlyUrlSettings settings)
         {
@@ -1544,7 +1544,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Determines if the tab is excluded from FriendlyUrl Processing
+        /// Determines if the tab is excluded from FriendlyUrl Processing.
         /// </summary>
         /// <param name="tab"></param>
         /// <param name="settings"></param>
@@ -1572,12 +1572,12 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Checks for a current parameter belonging to one of the built in 'ctl' values
+        /// Checks for a current parameter belonging to one of the built in 'ctl' values.
         /// </summary>
         /// <param name="urlParm"></param>
         /// <param name="rewritePath"></param>
         /// <param name="result"></param>
-        /// <remarks>Sets the Action parameter of the Result to 'CheckFor301' if suspected. Actual redirect taken care of by friendly url redirection logic</remarks>
+        /// <remarks>Sets the Action parameter of the Result to 'CheckFor301' if suspected. Actual redirect taken care of by friendly url redirection logic.</remarks>
         internal static void RequestRedirectOnBuiltInUrl(string urlParm, string rewritePath, UrlAction result)
         {
             // on the lookout for items to potentially redirect
@@ -1591,14 +1591,14 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// converts an array of Url path sections into the rewritten string of parameters for the requested Url
+        /// converts an array of Url path sections into the rewritten string of parameters for the requested Url.
         /// </summary>
-        /// <param name="newUrl">The current candidate for the rewritten tab path, as found in the tab dictionary</param>
-        /// <param name="tabKeyVal">The tabKey value which was used to find the current newUrl value</param>
-        /// <param name="urlParms">The Url path (after the tab name) converted to an array</param>
-        /// <param name="result">The UrlAction parameter keeping track of the values</param>
-        /// <param name="langParms">The raw language/xx-XX values from the requested Url</param>
-        /// <param name="settings">The current friendly url settings</param>
+        /// <param name="newUrl">The current candidate for the rewritten tab path, as found in the tab dictionary.</param>
+        /// <param name="tabKeyVal">The tabKey value which was used to find the current newUrl value.</param>
+        /// <param name="urlParms">The Url path (after the tab name) converted to an array.</param>
+        /// <param name="result">The UrlAction parameter keeping track of the values.</param>
+        /// <param name="langParms">The raw language/xx-XX values from the requested Url.</param>
+        /// <param name="settings">The current friendly url settings.</param>
         /// <param name="cultureCode">an out parameter identifying if a culture code was determined during the process.</param>
         /// <returns></returns>
         internal static string RewriteParameters(
@@ -1793,7 +1793,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Scans the collection of Rewrite Parameter rules, and rewrites the parameters if a match is found
+        /// Scans the collection of Rewrite Parameter rules, and rewrites the parameters if a match is found.
         /// </summary>
         /// <param name="newUrl"></param>
         /// <param name="tabKeyVal"></param>
@@ -1802,7 +1802,7 @@ namespace DotNetNuke.Entities.Urls
         /// <param name="urlAction"></param>
         /// <param name="rewriteParms"></param>
         /// <param name="parentTraceId"></param>
-        /// <returns>The new Url with the parameters rewritten onto the end of hte old Url</returns>
+        /// <returns>The new Url with the parameters rewritten onto the end of hte old Url.</returns>
         internal static string RewriteParameters(
             string newUrl,
             string tabKeyVal,

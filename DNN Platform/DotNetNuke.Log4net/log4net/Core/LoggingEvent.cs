@@ -39,14 +39,14 @@ using log4net.Util;
 namespace log4net.Core
 {
     /// <summary>
-    /// Portable data structure used by <see cref="LoggingEvent"/>
+    /// Portable data structure used by <see cref="LoggingEvent"/>.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Portable data structure used by <see cref="LoggingEvent"/>
+    /// Portable data structure used by <see cref="LoggingEvent"/>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public struct LoggingEventData
     {
         /// <summary>
@@ -82,17 +82,17 @@ namespace log4net.Core
         public string Message;
 
         /// <summary>
-        /// The name of thread
+        /// The name of thread.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The name of thread in which this logging event was generated
+        /// The name of thread in which this logging event was generated.
         /// </para>
         /// </remarks>
         public string ThreadName;
 
         /// <summary>
-        /// Gets or sets the local time the event was logged
+        /// Gets or sets the local time the event was logged.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -103,7 +103,7 @@ namespace log4net.Core
         public DateTime TimeStamp;
 
         /// <summary>
-        /// Gets or sets the UTC time the event was logged
+        /// Gets or sets the UTC time the event was logged.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -149,12 +149,12 @@ namespace log4net.Core
         public LocationInfo LocationInfo;
 
         /// <summary>
-        /// String representation of the user
+        /// String representation of the user.
         /// </summary>
         /// <remarks>
         /// <para>
         /// String representation of the user's windows name,
-        /// like DOMAIN\username
+        /// like DOMAIN\username.
         /// </para>
         /// </remarks>
         public string UserName;
@@ -170,11 +170,11 @@ namespace log4net.Core
         public string Identity;
 
         /// <summary>
-        /// The string representation of the exception
+        /// The string representation of the exception.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// The string representation of the exception
+        /// The string representation of the exception.
         /// </para>
         /// </remarks>
         public string ExceptionString;
@@ -190,7 +190,7 @@ namespace log4net.Core
         public string Domain;
 
         /// <summary>
-        /// Additional event specific properties
+        /// Additional event specific properties.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -203,14 +203,14 @@ namespace log4net.Core
     }
 
     /// <summary>
-    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property
+    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property.
     /// </summary>
     /// <remarks>
     /// <para>
-    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property
+    /// Flags passed to the <see cref="LoggingEvent.Fix"/> property.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     [Flags]
     public enum FixFlags
     {
@@ -325,10 +325,10 @@ namespace log4net.Core
     /// is essential to maintaining data consistency.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Douglas de la Torre</author>
-    /// <author>Daniel Cazzulino</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Douglas de la Torre.</author>
+    /// <author>Daniel Cazzulino.</author>
 #if !NETCF
     [Serializable]
 #endif
@@ -467,7 +467,7 @@ namespace log4net.Core
 #if !(NETCF || NETSTANDARD1_3)
 
         /// <summary>
-        /// Serialization constructor
+        /// Serialization constructor.
         /// </summary>
         /// <param name="info">The <see cref="SerializationInfo" /> that holds the serialized object data.</param>
         /// <param name="context">The <see cref="StreamingContext" /> that contains contextual information about the source or destination.</param>
@@ -708,7 +708,7 @@ namespace log4net.Core
         /// <summary>
         /// Ensure that the repository is set.
         /// </summary>
-        /// <param name="repository">the value for the repository</param>
+        /// <param name="repository">the value for the repository.</param>
         internal void EnsureRepository(ILoggerRepository repository)
         {
             if (repository != null)
@@ -758,9 +758,9 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Write the rendered message to a TextWriter
+        /// Write the rendered message to a TextWriter.
         /// </summary>
-        /// <param name="writer">the writer to write the message to</param>
+        /// <param name="writer">the writer to write the message to.</param>
         /// <remarks>
         /// <para>
         /// Unlike the <see cref="RenderedMessage"/> property this method
@@ -1059,10 +1059,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Gets or sets the fixed fields in this event
+        /// Gets or sets the fixed fields in this event.
         /// </summary>
         /// <value>
-        /// The set of fields that are fixed in this event
+        /// The set of fields that are fixed in this event.
         /// </value>
         /// <remarks>
         /// <para>
@@ -1145,7 +1145,7 @@ namespace log4net.Core
         /// <summary>
         /// Gets the portable data for this <see cref="LoggingEvent" />.
         /// </summary>
-        /// <param name="fixFlags">The set of data to ensure is fixed in the LoggingEventData</param>
+        /// <param name="fixFlags">The set of data to ensure is fixed in the LoggingEventData.</param>
         /// <returns>The <see cref="LoggingEventData"/> for this event.</returns>
         /// <remarks>
         /// <para>
@@ -1288,9 +1288,9 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Fix the fields specified by the <see cref="FixFlags"/> parameter
+        /// Fix the fields specified by the <see cref="FixFlags"/> parameter.
         /// </summary>
-        /// <param name="flags">the fields to fix</param>
+        /// <param name="flags">the fields to fix.</param>
         /// <remarks>
         /// <para>
         /// Only fields specified in the <paramref name="flags"/> will be fixed.
@@ -1460,10 +1460,10 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Lookup a composite property in this event
+        /// Lookup a composite property in this event.
         /// </summary>
-        /// <param name="key">the key for the property to lookup</param>
-        /// <returns>the value for the property</returns>
+        /// <param name="key">the key for the property to lookup.</param>
+        /// <returns>the value for the property.</returns>
         /// <remarks>
         /// <para>
         /// This event has composite properties that combine together properties from
@@ -1509,9 +1509,9 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Get all the composite properties in this event
+        /// Get all the composite properties in this event.
         /// </summary>
-        /// <returns>the <see cref="PropertiesDictionary"/> containing all the properties</returns>
+        /// <returns>the <see cref="PropertiesDictionary"/> containing all the properties.</returns>
         /// <remarks>
         /// <para>
         /// See <see cref="LookupProperty"/> for details of the composite properties
@@ -1573,7 +1573,7 @@ namespace log4net.Core
         private readonly Exception m_thrownException;
 
         /// <summary>
-        /// The repository that generated the logging event
+        /// The repository that generated the logging event.
         /// </summary>
         /// <remarks>
         /// This is not serialized.
@@ -1581,7 +1581,7 @@ namespace log4net.Core
         private ILoggerRepository m_repository = null;
 
         /// <summary>
-        /// The fix state for this event
+        /// The fix state for this event.
         /// </summary>
         /// <remarks>
         /// These flags indicate which fields have been fixed.
@@ -1590,7 +1590,7 @@ namespace log4net.Core
         private FixFlags m_fixFlags = FixFlags.None;
 
         /// <summary>
-        /// Indicated that the internal cache is updateable (ie not fixed)
+        /// Indicated that the internal cache is updateable (ie not fixed).
         /// </summary>
         /// <remarks>
         /// This is a seperate flag to m_fixFlags as it allows incrementel fixing and simpler

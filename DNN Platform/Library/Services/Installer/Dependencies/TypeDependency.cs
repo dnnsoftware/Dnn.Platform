@@ -12,7 +12,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The TypeDependency determines whether the dependent type is installed
+    /// The TypeDependency determines whether the dependent type is installed.
     /// </summary>
     /// <remarks>
     /// </remarks>

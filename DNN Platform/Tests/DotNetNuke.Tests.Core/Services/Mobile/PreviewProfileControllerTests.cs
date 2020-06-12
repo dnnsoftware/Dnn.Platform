@@ -18,7 +18,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Services.Mobile
 {
     /// <summary>
-    ///   Summary description for PreviewProfileControllerTests
+    ///   Summary description for PreviewProfileControllerTests.
     /// </summary>
     [TestFixture]
     public class PreviewProfileControllerTests

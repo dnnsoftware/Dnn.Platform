@@ -15,7 +15,7 @@ using NUnit.Framework;
 namespace DotNetNuke.Tests.Core.Services.ClientCapability
 {
     /// <summary>
-    ///   Summary description for FacebookRequestController
+    ///   Summary description for FacebookRequestController.
     /// </summary>
     [TestFixture]
     public class FacebookRequestControllerTests
@@ -127,9 +127,9 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
         }
 
         /// <summary>
-        /// method for converting a System.DateTime value to a UNIX Timestamp
+        /// method for converting a System.DateTime value to a UNIX Timestamp.
         /// </summary>
-        /// <param name="value">date to convert</param>
+        /// <param name="value">date to convert.</param>
         /// <returns></returns>
         private static DateTime ConvertToTimestamp(long value)
         {

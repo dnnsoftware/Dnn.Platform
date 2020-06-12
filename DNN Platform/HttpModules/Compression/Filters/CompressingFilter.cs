@@ -9,7 +9,7 @@ using System.Web;
 namespace DotNetNuke.HttpModules.Compression
 {
     /// <summary>
-    /// Base for any HttpFilter that performing compression
+    /// Base for any HttpFilter that performing compression.
     /// </summary>
     /// <remarks>
     /// When implementing this class, you need to implement a <see cref="HttpOutputFilter"/>
@@ -22,16 +22,16 @@ namespace DotNetNuke.HttpModules.Compression
         private bool _HasWrittenHeaders;
 
         /// <summary>
-        /// Protected constructor that sets up the underlying stream we're compressing into
+        /// Protected constructor that sets up the underlying stream we're compressing into.
         /// </summary>
-        /// <param name="baseStream">The stream we're wrapping up</param>
+        /// <param name="baseStream">The stream we're wrapping up.</param>
         protected CompressingFilter(Stream baseStream)
             : base(baseStream)
         {
         }
 
         /// <summary>
-        /// Gets the name of the content-encoding that's being implemented
+        /// Gets the name of the content-encoding that's being implemented.
         /// </summary>
         /// <remarks>
         /// See http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5 for more
@@ -40,7 +40,7 @@ namespace DotNetNuke.HttpModules.Compression
         public abstract string ContentEncoding { get; }
 
         /// <summary>
-        /// Gets a value indicating whether keeps track of whether or not we're written the compression headers
+        /// Gets a value indicating whether keeps track of whether or not we're written the compression headers.
         /// </summary>
         protected bool HasWrittenHeaders
         {

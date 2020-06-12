@@ -27,14 +27,14 @@ namespace DotNetNuke.Entities.Urls
             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant | RegexOptions.Compiled);
 
         /// <summary>
-        /// Returns the list of tokens found in a rewrite path as a key/value dictionary
+        /// Returns the list of tokens found in a rewrite path as a key/value dictionary.
         /// </summary>
         /// <param name="rewritePath">
-        ///     Rewritten Url path
+        ///     Rewritten Url path.
         /// </param>
         /// <returns></returns>
         /// <summary>
-        /// Returns a list of the redirect tokens found in the querystring
+        /// Returns a list of the redirect tokens found in the querystring.
         /// </summary>
         /// <returns></returns>
         private static List<string> GetRedirectReasonTokensFromRewritePath(string rewritePath)
@@ -142,7 +142,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Adds on a redirect reason to the rewrite path
+        /// Adds on a redirect reason to the rewrite path.
         /// </summary>
         /// <param name="existingRewritePath"></param>
         /// <param name="action"></param>
@@ -213,15 +213,15 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>
         /// DetermineRedirectReasonAndAction extracts the redirect value from the rewrite url and
-        /// returns the new rewritten url, and the reason for the redirection, and an action value for the type of redirect
+        /// returns the new rewritten url, and the reason for the redirection, and an action value for the type of redirect.
         /// </summary>
-        /// <param name="rewrittenUrl">Rewritten url as found in page dictionary</param>
+        /// <param name="rewrittenUrl">Rewritten url as found in page dictionary.</param>
         /// <param name="result">The current rewrite result.</param>
-        /// <param name="wasParms">true if there are parameters in the path, false if not</param>
-        /// <param name="settings">current FriendlyUrlSettings object</param>
-        /// <param name="action">New action value for UrlAction object</param>
-        /// <param name="reason">New redirect reason value for UrlAction object</param>
-        /// <param name="newUrl">Url to used for rewrite process</param>
+        /// <param name="wasParms">true if there are parameters in the path, false if not.</param>
+        /// <param name="settings">current FriendlyUrlSettings object.</param>
+        /// <param name="action">New action value for UrlAction object.</param>
+        /// <param name="reason">New redirect reason value for UrlAction object.</param>
+        /// <param name="newUrl">Url to used for rewrite process.</param>
         internal static void DetermineRedirectReasonAndAction(
             string rewrittenUrl,
             UrlAction result,
@@ -360,7 +360,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Return the action type from a rewritten Url
+        /// Return the action type from a rewritten Url.
         /// </summary>
         /// <param name="rewrittenUrl"></param>
         /// <param name="action"></param>
@@ -421,7 +421,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Removes any reason tokens from the querystring
+        /// Removes any reason tokens from the querystring.
         /// </summary>
         /// <param name="rewritePath"></param>
         /// <returns></returns>
@@ -431,7 +431,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Removes any redirect tokens from the rewrite path
+        /// Removes any redirect tokens from the rewrite path.
         /// </summary>
         /// <param name="path"></param>
         /// <param name="queryStringCol"></param>
@@ -477,7 +477,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Removes and redirect tokens and redirect reasons from the rewritePath
+        /// Removes and redirect tokens and redirect reasons from the rewritePath.
         /// </summary>
         /// <param name="rewritePath"></param>
         /// <returns></returns>
@@ -521,7 +521,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Sets the Action and Reason values in the UrlAction parameter
+        /// Sets the Action and Reason values in the UrlAction parameter.
         /// </summary>
         /// <param name="result"></param>
         /// <param name="settings"></param>

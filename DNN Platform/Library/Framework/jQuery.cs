@@ -35,7 +35,7 @@ namespace DotNetNuke.Framework
         private const string jQueryVersionMatch = "(?<=(jquery|core_version)\\s*[:=]\\s*\")(.*)(?=\")";
 
         /// <summary>
-        /// Returns the default URL for a hosted version of the jQuery script
+        /// Returns the default URL for a hosted version of the jQuery script.
         /// </summary>
         /// <remarks>
         /// Google hosts versions of many popular javascript libraries on their CDN.
@@ -57,7 +57,7 @@ namespace DotNetNuke.Framework
         /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery script.</placeholder>
         /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUrl
         {
@@ -79,7 +79,7 @@ namespace DotNetNuke.Framework
         /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery migrated script.</placeholder>
         /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedMigrateUrl
         {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Framework
         /// <placeholder>The HostSetting for the URL of the hosted version of the jQuery UI script.</placeholder>
         /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryUIUrl property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static string HostedUIUrl
         {
@@ -191,7 +191,7 @@ namespace DotNetNuke.Framework
         /// <placeholder>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</placeholder>
         /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryDebug property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryDebug property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseDebugScript
         {
@@ -213,7 +213,7 @@ namespace DotNetNuke.Framework
         /// <placeholder>The HostSetting to determine if we should use a hosted version of the jQuery script.</placeholder>
         /// </value>
         /// <returns></returns>
-        /// <remarks>This is a simple wrapper around the Host.jQueryHosted property</remarks>
+        /// <remarks>This is a simple wrapper around the Host.jQueryHosted property.</remarks>
         [Obsolete("This is managed through the JavaScript Library package. Scheduled removal in v10.0.0.")]
         public static bool UseHostedScript
         {
@@ -229,7 +229,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the version string for the local jQuery script
+        /// Gets the version string for the local jQuery script.
         /// </summary>
         /// <value>
         /// <placeholder>The version string for the local jQuery script</placeholder>
@@ -265,7 +265,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the version string for the local jQuery UI script
+        /// Gets the version string for the local jQuery UI script.
         /// </summary>
         /// <value>
         /// <placeholder>The version string for the local jQuery UI script</placeholder>

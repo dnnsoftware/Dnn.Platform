@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// SkinThumbNailControl is a user control that provides that displays the skins
-    ///     as a Radio ButtonList with Thumbnail Images where available
+    ///     as a Radio ButtonList with Thumbnail Images where available.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -139,7 +139,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddDefaultSkin adds the not-specified skin to the radio button list
+        /// AddDefaultSkin adds the not-specified skin to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -153,13 +153,13 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// AddSkin adds the skin to the radio button list
+        /// AddSkin adds the skin to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
         /// <param name="root">Root Path.</param>
-        /// <param name="strFolder">The Skin Folder</param>
-        /// <param name="strFile">The Skin File</param>
+        /// <param name="strFolder">The Skin Folder.</param>
+        /// <param name="strFile">The Skin File.</param>
         /// -----------------------------------------------------------------------------
         private void AddSkin(string root, string strFolder, string strFile)
         {
@@ -179,12 +179,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// format skin name
+        /// format skin name.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="strSkinFolder">The Folder Name</param>
-        /// <param name="strSkinFile">The File Name without extension</param>
+        /// <param name="strSkinFolder">The Folder Name.</param>
+        /// <param name="strSkinFile">The File Name without extension.</param>
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
             if (strSkinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase)) // host folder
@@ -206,11 +206,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CreateThumbnail creates a thumbnail of the Preview Image
+        /// CreateThumbnail creates a thumbnail of the Preview Image.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="strImage">The Image File Name</param>
+        /// <param name="strImage">The Image File Name.</param>
         /// -----------------------------------------------------------------------------
         private static string CreateThumbnail(string strImage)
         {
@@ -288,7 +288,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Clear clears the radio button list
+        /// Clear clears the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -300,11 +300,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadAllSkins loads all the available skins (Host and Site) to the radio button list
+        /// LoadAllSkins loads all the available skins (Host and Site) to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         /// -----------------------------------------------------------------------------
         public void LoadAllSkins(bool includeNotSpecified)
         {
@@ -323,11 +323,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadHostSkins loads all the available Host skins to the radio button list
+        /// LoadHostSkins loads all the available Host skins to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         /// -----------------------------------------------------------------------------
         public void LoadHostSkins(bool includeNotSpecified)
         {
@@ -354,11 +354,11 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadHostSkins loads all the available Site/Portal skins to the radio button list
+        /// LoadHostSkins loads all the available Site/Portal skins to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         /// -----------------------------------------------------------------------------
         public void LoadPortalSkins(bool includeNotSpecified)
         {
@@ -382,13 +382,13 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// LoadSkins loads all the available skins in a specific folder to the radio button list
+        /// LoadSkins loads all the available skins in a specific folder to the radio button list.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="strFolder">The folder to search for skins</param>
-        /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]"</param>
-        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option</param>
+        /// <param name="strFolder">The folder to search for skins.</param>
+        /// <param name="skinType">A string that identifies whether the skin is Host "[G]" or Site "[L]".</param>
+        /// <param name="includeNotSpecified">Optionally include the "Not Specified" option.</param>
         /// -----------------------------------------------------------------------------
         public void LoadSkins(string strFolder, string skinType, bool includeNotSpecified)
         {

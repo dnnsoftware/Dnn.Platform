@@ -35,9 +35,9 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <summary>
-        /// Registers an instance to use for the Singleton
+        /// Registers an instance to use for the Singleton.
         /// </summary>
-        /// <remarks>Intended for unit testing purposes, not thread safe</remarks>
+        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         /// <param name="instance"></param>
         internal static void SetTestableInstance(TContract instance)
         {
@@ -46,9 +46,9 @@ namespace DotNetNuke.ComponentModel
         }
 
         /// <summary>
-        /// Clears the current instance, a new instance will be initialized when next requested
+        /// Clears the current instance, a new instance will be initialized when next requested.
         /// </summary>
-        /// <remarks>Intended for unit testing purposes, not thread safe</remarks>
+        /// <remarks>Intended for unit testing purposes, not thread safe.</remarks>
         internal static void ClearInstance()
         {
             _useTestable = false;

@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Installer
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The XmlMerge class is a utility class for XmlSplicing config files
+    /// The XmlMerge class is a utility class for XmlSplicing config files.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class XmlMerge
@@ -91,49 +91,49 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Source for the Config file
+        /// Gets the Source for the Config file.
         /// </summary>
-        /// <value>An XmlDocument</value>
+        /// <value>An XmlDocument.</value>
         /// -----------------------------------------------------------------------------
         public XmlDocument SourceConfig { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Sender (source) of the changes to be merged
+        /// Gets the Sender (source) of the changes to be merged.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Sender { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Target Config file
+        /// Gets or sets the Target Config file.
         /// </summary>
-        /// <value>An XmlDocument</value>
+        /// <value>An XmlDocument.</value>
         /// -----------------------------------------------------------------------------
         public XmlDocument TargetConfig { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the File Name of the Target Config file
+        /// Gets the File Name of the Target Config file.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string TargetFileName { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of the changes to be merged
+        /// Gets the Version of the changes to be merged.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string Version { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether the last update performed by this instance resulted in any changes
+        /// Gets a value indicating whether the last update performed by this instance resulted in any changes.
         /// </summary>
-        /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document</value>
+        /// <value><c>true</c> if there were changes, <c>false</c> if no changes were made to the target document.</value>
         /// -----------------------------------------------------------------------------
         public bool ConfigUpdateChangedNodes { get; private set; }
 
@@ -578,7 +578,7 @@ namespace DotNetNuke.Services.Installer
         /// The UpdateConfig method processes the source file and updates the Target
         /// Config Xml Document.
         /// </summary>
-        /// <param name="target">An Xml Document represent the Target Xml File</param>
+        /// <param name="target">An Xml Document represent the Target Xml File.</param>
         /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target)
         {
@@ -597,8 +597,8 @@ namespace DotNetNuke.Services.Installer
         /// The UpdateConfig method processes the source file and updates the Target
         /// Config file.
         /// </summary>
-        /// <param name="target">An Xml Document represent the Target Xml File</param>
-        /// <param name="fileName">The fileName for the Target Xml File - relative to the webroot</param>
+        /// <param name="target">An Xml Document represent the Target Xml File.</param>
+        /// <param name="fileName">The fileName for the Target Xml File - relative to the webroot.</param>
         /// -----------------------------------------------------------------------------
         public void UpdateConfig(XmlDocument target, string fileName)
         {
@@ -616,7 +616,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The UpdateConfigs method processes the source file and updates the various config
-        /// files
+        /// files.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public void UpdateConfigs()

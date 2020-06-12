@@ -12,7 +12,7 @@ using DotNetNuke.Common.Utilities;
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// This class encapsulates different options used in generating friendly urls
+    /// This class encapsulates different options used in generating friendly urls.
     /// </summary>
     [Serializable]
     public class FriendlyUrlOptions

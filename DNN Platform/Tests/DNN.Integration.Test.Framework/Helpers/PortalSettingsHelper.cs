@@ -7,11 +7,11 @@ namespace DNN.Integration.Test.Framework.Helpers
     public static class PortalSettingsHelper
     {
         /// <summary>
-        /// Gets a portal setting value
+        /// Gets a portal setting value.
         /// </summary>
-        /// <param name="settingName">The name of the setting</param>
-        /// <param name="portalId">The optional PortalId, default to 0</param>
-        /// <returns>The string value of the setting</returns>
+        /// <param name="settingName">The name of the setting.</param>
+        /// <param name="portalId">The optional PortalId, default to 0.</param>
+        /// <returns>The string value of the setting.</returns>
         public static string GetPortalSetting(string settingName, int portalId = 0)
         {
             var query = string.Format(
@@ -24,11 +24,11 @@ namespace DNN.Integration.Test.Framework.Helpers
         }
 
         /// <summary>
-        /// Sets a portal setting value, adding or updating the setting as required
+        /// Sets a portal setting value, adding or updating the setting as required.
         /// </summary>
-        /// <param name="settingName">The name of the setting</param>
-        /// <param name="settingValue">The value of the setting</param>
-        /// <param name="portalId">The optional PortalId, default to 0</param>
+        /// <param name="settingName">The name of the setting.</param>
+        /// <param name="settingValue">The value of the setting.</param>
+        /// <param name="portalId">The optional PortalId, default to 0.</param>
         /// <param name="isSecure">This flag specifies whether the value is encrypted or not, defaults to false.</param>
         public static void SetPortalSetting(string settingName, string settingValue, int portalId = 0, bool isSecure = false)
         {

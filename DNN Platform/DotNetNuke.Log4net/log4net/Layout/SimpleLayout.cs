@@ -30,23 +30,23 @@ using log4net.Util;
 namespace log4net.Layout
 {
     /// <summary>
-    /// A very simple layout
+    /// A very simple layout.
     /// </summary>
     /// <remarks>
     /// <para>
     /// SimpleLayout consists of the level of the log statement,
-    /// followed by " - " and then the log message itself. For example,
+    /// followed by " - " and then the log message itself. For example.
     /// <code>
     /// DEBUG - Hello world
     /// </code>
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class SimpleLayout : LayoutSkeleton
     {
         /// <summary>
-        /// Constructs a SimpleLayout
+        /// Constructs a SimpleLayout.
         /// </summary>
         public SimpleLayout()
         {
@@ -54,7 +54,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Initialize layout options
+        /// Initialize layout options.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -77,8 +77,8 @@ namespace log4net.Layout
         /// <summary>
         /// Produces a simple formatted output.
         /// </summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <param name="writer">The TextWriter to write the formatted event to</param>
+        /// <param name="loggingEvent">the event being logged.</param>
+        /// <param name="writer">The TextWriter to write the formatted event to.</param>
         /// <remarks>
         /// <para>
         /// Formats the event as the level of the even,

@@ -48,12 +48,12 @@ namespace log4net.Util.TypeConverters
     /// </remarks>
     /// <seealso cref="IConvertFrom"/>
     /// <seealso cref="IConvertTo"/>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class ConverterRegistry
     {
         /// <summary>
-        /// Private constructor
+        /// Private constructor.
         /// </summary>
         /// <remarks>
         /// Initializes a new instance of the <see cref="ConverterRegistry" /> class.

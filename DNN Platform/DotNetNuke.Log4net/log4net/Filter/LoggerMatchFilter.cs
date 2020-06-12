@@ -42,28 +42,28 @@ namespace log4net.Filter
     /// if it is <c>false</c> then <see cref="FilterDecision.Deny"/> is returned.
     /// </para>
     /// </remarks>
-    /// <author>Daniel Cazzulino</author>
+    /// <author>Daniel Cazzulino.</author>
     public class LoggerMatchFilter : FilterSkeleton
     {
         /// <summary>
-        /// Flag to indicate the behavior when we have a match
+        /// Flag to indicate the behavior when we have a match.
         /// </summary>
         private bool m_acceptOnMatch = true;
 
         /// <summary>
-        /// The logger name string to substring match against the event
+        /// The logger name string to substring match against the event.
         /// </summary>
         private string m_loggerToMatch;
 
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         public LoggerMatchFilter()
         {
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LoggerToMatch"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LoggerToMatch"/>.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -83,7 +83,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Gets or sets the <see cref="LoggingEvent.LoggerName"/> that the filter will match
+        /// Gets or sets the <see cref="LoggingEvent.LoggerName"/> that the filter will match.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -101,10 +101,10 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Check if this filter should allow the event to be logged
+        /// Check if this filter should allow the event to be logged.
         /// </summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <returns>see remarks</returns>
+        /// <param name="loggingEvent">the event being logged.</param>
+        /// <returns>see remarks.</returns>
         /// <remarks>
         /// <para>
         /// The rendered message is matched against the <see cref="LoggerToMatch"/>.

@@ -42,12 +42,12 @@ namespace log4net.Config
     /// Configures a <see cref="ILoggerRepository"/> using an Xml tree.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public sealed class XmlConfigurator
     {
         /// <summary>
-        /// Private constructor
+        /// Private constructor.
         /// </summary>
         private XmlConfigurator()
         {
@@ -203,7 +203,7 @@ namespace log4net.Config
         }
 
         /// <summary>
-        /// Configures log4net using a <c>log4net</c> element
+        /// Configures log4net using a <c>log4net</c> element.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -936,7 +936,7 @@ namespace log4net.Config
         private sealed class ConfigureAndWatchHandler : IDisposable
         {
             /// <summary>
-            /// Holds the FileInfo used to configure the XmlConfigurator
+            /// Holds the FileInfo used to configure the XmlConfigurator.
             /// </summary>
             private FileInfo m_configFile;
 
@@ -1044,7 +1044,7 @@ namespace log4net.Config
             /// <summary>
             /// Called by the timer when the configuration has been updated.
             /// </summary>
-            /// <param name="state">null</param>
+            /// <param name="state">null.</param>
             private void OnWatchedFileChange(object state)
             {
                 XmlConfigurator.InternalConfigure(this.m_repository, this.m_configFile);

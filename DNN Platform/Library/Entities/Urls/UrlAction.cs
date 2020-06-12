@@ -14,7 +14,7 @@ using DotNetNuke.Entities.Portals;
 namespace DotNetNuke.Entities.Urls
 {
     /// <summary>
-    /// The UrlAction class keeps state of the current Request throughout the rewriting process
+    /// The UrlAction class keeps state of the current Request throughout the rewriting process.
     /// </summary>
     public class UrlAction
     {
@@ -181,7 +181,7 @@ namespace DotNetNuke.Entities.Urls
 
         /// <summary>
         /// Sets the action value, but checks to ensure that the action is
-        /// not being 'downgraded' (example: cannot set 'Redirect301' to 'CheckFor301')
+        /// not being 'downgraded' (example: cannot set 'Redirect301' to 'CheckFor301').
         /// </summary>
         /// <param name="newAction"></param>
         public void SetActionWithNoDowngrade(ActionType newAction)
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias)
+        /// Copies the original request path to the OriginalPath variables (originalPath, originanPathNoAlias).
         /// </summary>
         /// <param name="path"></param>
         /// <param name="settings"></param>

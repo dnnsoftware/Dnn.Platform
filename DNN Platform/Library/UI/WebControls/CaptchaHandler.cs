@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.WebControls
     /// Class:      CaptchaHandler
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The CaptchaHandler control provides a validator to validate a CAPTCHA Challenge
+    /// The CaptchaHandler control provides a validator to validate a CAPTCHA Challenge.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class CaptchaHandler : IHttpHandler

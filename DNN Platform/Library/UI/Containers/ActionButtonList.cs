@@ -29,9 +29,9 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ModuleActionCollection to bind to the list
+        /// Gets the ModuleActionCollection to bind to the list.
         /// </summary>
-        /// <value>A ModuleActionCollection</value>
+        /// <value>A ModuleActionCollection.</value>
         protected ModuleActionCollection ModuleActions
         {
             get
@@ -47,10 +47,10 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Separator between Buttons
+        /// Gets or sets the Separator between Buttons.
         /// </summary>
-        /// <remarks>Defaults to 2 non-breaking spaces</remarks>
-        /// <value>A String</value>
+        /// <remarks>Defaults to 2 non-breaking spaces.</remarks>
+        /// <value>A String.</value>
         public string ButtonSeparator
         {
             get
@@ -66,10 +66,10 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Command Name
+        /// Gets or sets the Command Name.
         /// </summary>
-        /// <remarks>Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions</remarks>
-        /// <value>A String</value>
+        /// <remarks>Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions.</remarks>
+        /// <value>A String.</value>
         public string CommandName
         {
             get
@@ -85,18 +85,18 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed.
         /// </summary>
-        /// <remarks>Defaults to False</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to False.</remarks>
+        /// <value>A Boolean.</value>
         public bool DisplayIcon { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets or sets whether the link is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the link is displayed.
         /// </summary>
-        /// <remarks>Defaults to True</remarks>
-        /// <value>A Boolean</value>
+        /// <remarks>Defaults to True.</remarks>
+        /// <value>A Boolean.</value>
         public bool DisplayLink
         {
             get
@@ -112,19 +112,19 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Icon used
+        /// Gets or sets the Icon used.
         /// </summary>
-        /// <remarks>Defaults to the icon defined in Action</remarks>
-        /// <value>A String</value>
+        /// <remarks>Defaults to the icon defined in Action.</remarks>
+        /// <value>A String.</value>
         public string ImageURL { get; set; }
 
         public event ActionEventHandler Action;
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ActionManager instance for this Action control
+        /// Gets the ActionManager instance for this Action control.
         /// </summary>
-        /// <returns>An ActionManager object</returns>
+        /// <returns>An ActionManager object.</returns>
         public ActionManager ActionManager
         {
             get
@@ -140,14 +140,14 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control.
         /// </summary>
-        /// <returns>An IModuleControl object</returns>
+        /// <returns>An IModuleControl object.</returns>
         public IModuleControl ModuleControl { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnAction raises the Action Event
+        /// OnAction raises the Action Event.
         /// </summary>
         protected virtual void OnAction(ActionEventArgs e)
         {
@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OnLoad runs when the control is loaded into the Control Tree
+        /// OnLoad runs when the control is loaded into the Control Tree.
         /// </summary>
         protected override void OnLoad(EventArgs e)
         {
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ActionButtonClick handles the Action event of the contained ActionCommandButton(s)
+        /// ActionButtonClick handles the Action event of the contained ActionCommandButton(s).
         /// </summary>
         private void ActionButtonClick(object sender, ActionEventArgs e)
         {

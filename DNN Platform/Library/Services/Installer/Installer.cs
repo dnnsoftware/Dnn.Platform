@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer
 
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Installer class provides a single entrypoint for Package Installation
+    /// The Installer class provides a single entrypoint for Package Installation.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class Installer
@@ -40,12 +40,12 @@ namespace DotNetNuke.Services.Installer
         /// <summary>
         /// This Constructor creates a new Installer instance from a string representing
         /// the physical path to the temporary install folder and a string representing
-        /// the physical path to the root of the site
+        /// the physical path to the root of the site.
         /// </summary>
-        /// <param name="tempFolder">The physical path to the zip file containg the package</param>
-        /// <param name="manifest">The manifest filename</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site</param>
-        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded</param>
+        /// <param name="tempFolder">The physical path to the zip file containg the package.</param>
+        /// <param name="manifest">The manifest filename.</param>
+        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
         /// -----------------------------------------------------------------------------
         public Installer(string tempFolder, string manifest, string physicalSitePath, bool loadManifest)
         {
@@ -63,11 +63,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new Installer instance from a Stream and a
-        /// string representing the physical path to the root of the site
+        /// string representing the physical path to the root of the site.
         /// </summary>
-        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site</param>
-        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded</param>
+        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
+        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
         /// -----------------------------------------------------------------------------
         public Installer(Stream inputStream, string physicalSitePath, bool loadManifest)
             : this(inputStream, physicalSitePath, loadManifest, true)
@@ -77,11 +77,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// This Constructor creates a new Installer instance from a Stream and a
-        /// string representing the physical path to the root of the site
+        /// string representing the physical path to the root of the site.
         /// </summary>
-        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site</param>
-        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded</param>
+        /// <param name="inputStream">The Stream to use to create this InstallerInfo instance.</param>
+        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
+        /// <param name="loadManifest">Flag that determines whether the manifest will be loaded.</param>
         /// <param name="deleteTemp">Whether delete the temp folder.</param>
         /// -----------------------------------------------------------------------------
         public Installer(Stream inputStream, string physicalSitePath, bool loadManifest, bool deleteTemp)
@@ -102,10 +102,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// This Constructor creates a new Installer instance from a PackageInfo object
+        /// This Constructor creates a new Installer instance from a PackageInfo object.
         /// </summary>
-        /// <param name="package">The PackageInfo instance</param>
-        /// <param name="physicalSitePath">The physical path to the root of the site</param>
+        /// <param name="package">The PackageInfo instance.</param>
+        /// <param name="physicalSitePath">The physical path to the root of the site.</param>
         /// -----------------------------------------------------------------------------
         public Installer(PackageInfo package, string physicalSitePath)
         {
@@ -127,17 +127,17 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated InstallerInfo object
+        /// Gets the associated InstallerInfo object.
         /// </summary>
-        /// <value>An InstallerInfo</value>
+        /// <value>An InstallerInfo.</value>
         /// -----------------------------------------------------------------------------
         public InstallerInfo InstallerInfo { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the associated InstallerInfo is valid
+        /// Gets a value indicating whether gets whether the associated InstallerInfo is valid.
         /// </summary>
-        /// <value>True - if valid, False if not</value>
+        /// <value>True - if valid, False if not.</value>
         /// -----------------------------------------------------------------------------
         public bool IsValid
         {
@@ -149,17 +149,17 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a SortedList of Packages that are included in the Package Zip
+        /// Gets a SortedList of Packages that are included in the Package Zip.
         /// </summary>
-        /// <value>A SortedList(Of Integer, PackageInstaller)</value>
+        /// <value>A SortedList(Of Integer, PackageInstaller).</value>
         /// -----------------------------------------------------------------------------
         public SortedList<int, PackageInstaller> Packages { get; private set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets
+        /// Gets.
         /// </summary>
-        /// <value>A Dictionary(Of String, PackageInstaller)</value>
+        /// <value>A Dictionary(Of String, PackageInstaller).</value>
         /// -----------------------------------------------------------------------------
         public string TempInstallFolder
         {
@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The InstallPackages method installs the packages
+        /// The InstallPackages method installs the packages.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void InstallPackages(ref bool clearClientCache)
@@ -209,9 +209,9 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Logs the Install event to the Event Log
+        /// Logs the Install event to the Event Log.
         /// </summary>
-        /// <param name="package">The name of the package</param>
+        /// <param name="package">The name of the package.</param>
         /// <param name="eventType">Event Type.</param>
         /// -----------------------------------------------------------------------------
         private void LogInstallEvent(string package, string eventType)
@@ -240,7 +240,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessPackages method processes the packages nodes in the manifest
+        /// The ProcessPackages method processes the packages nodes in the manifest.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void ProcessPackages(XPathNavigator rootNav)
@@ -531,10 +531,10 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the feature
+        /// The UnInstall method uninstalls the feature.
         /// </summary>
         /// <param name="deleteFiles">A flag that indicates whether the files should be
-        /// deleted</param>
+        /// deleted.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public bool UnInstall(bool deleteFiles)

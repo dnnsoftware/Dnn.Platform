@@ -29,7 +29,7 @@ using System.Security;
 namespace log4net.Util
 {
     /// <summary>
-    /// Implementation of Properties collection for the <see cref="log4net.LogicalThreadContext"/>
+    /// Implementation of Properties collection for the <see cref="log4net.LogicalThreadContext"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -48,7 +48,7 @@ namespace log4net.Util
     /// It will not store any property values set on it.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public sealed class LogicalThreadContextProperties : ContextPropertiesBase
     {
         private const string c_SlotName = "log4net.Util.LogicalThreadContextProperties";
@@ -59,7 +59,7 @@ namespace log4net.Util
         private bool m_disabled = false;
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -71,10 +71,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets the value of a property
+        /// Gets or sets the value of a property.
         /// </summary>
         /// <value>
-        /// The value for the property with the specified key
+        /// The value for the property with the specified key.
         /// </value>
         /// <remarks>
         /// <para>
@@ -109,9 +109,9 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Remove a property
+        /// Remove a property.
         /// </summary>
-        /// <param name="key">the key for the entry to remove</param>
+        /// <param name="key">the key for the entry to remove.</param>
         /// <remarks>
         /// <para>
         /// Remove the value for the specified <paramref name="key"/> from the context.
@@ -129,11 +129,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Clear all the context properties
+        /// Clear all the context properties.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Clear all the context properties
+        /// Clear all the context properties.
         /// </para>
         /// </remarks>
         public void Clear()
@@ -149,8 +149,8 @@ namespace log4net.Util
         /// <summary>
         /// Get the PropertiesDictionary stored in the LocalDataStoreSlot for this thread.
         /// </summary>
-        /// <param name="create">create the dictionary if it does not exist, otherwise return null if is does not exist</param>
-        /// <returns>the properties for this thread</returns>
+        /// <param name="create">create the dictionary if it does not exist, otherwise return null if is does not exist.</param>
+        /// <returns>the properties for this thread.</returns>
         /// <remarks>
         /// <para>
         /// The collection returned is only to be used on the calling thread. If the
@@ -194,7 +194,7 @@ namespace log4net.Util
         /// <summary>
         /// Gets the call context get data.
         /// </summary>
-        /// <returns>The peroperties dictionary stored in the call context</returns>
+        /// <returns>The peroperties dictionary stored in the call context.</returns>
         /// <remarks>
         /// The <see cref="CallContext"/> method <see cref="CallContext.GetData"/> has a
         /// security link demand, therfore we must put the method call in a seperate method

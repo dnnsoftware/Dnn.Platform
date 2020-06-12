@@ -18,7 +18,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The DNNCountryEditControl control provides a standard UI component for editing
-    /// Countries
+    /// Countries.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [ToolboxData("<{0}:DNNCountryEditControl runat=server></{0}:DNNCountryEditControl>")]
@@ -26,7 +26,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a DNNCountryEditControl
+        /// Constructs a DNNCountryEditControl.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DNNCountryEditControl()

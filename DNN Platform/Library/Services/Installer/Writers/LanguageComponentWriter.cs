@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The LanguageComponentWriter class handles creating the manifest for Language
-    /// Component(s)
+    /// Component(s).
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -28,11 +28,11 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the LanguageComponentWriter
+        /// Constructs the LanguageComponentWriter.
         /// </summary>
         /// <param name="language">Language Info.</param>
         /// <param name="basePath">Base Path.</param>
-        /// <param name="files">A Dictionary of files</param>
+        /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
         public LanguageComponentWriter(Locale language, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
@@ -44,11 +44,11 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs the LanguageComponentWriter
+        /// Constructs the LanguageComponentWriter.
         /// </summary>
         /// <param name="languagePack">Language Package info.</param>
         /// <param name="basePath">Base Path.</param>
-        /// <param name="files">A Dictionary of files</param>
+        /// <param name="files">A Dictionary of files.</param>
         /// <param name="package">Package Info.</param>
         /// -----------------------------------------------------------------------------
         public LanguageComponentWriter(LanguagePackInfo languagePack, string basePath, Dictionary<string, InstallFile> files, PackageInfo package)
@@ -61,9 +61,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("languageFiles")
+        /// Gets the name of the Collection Node ("languageFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -75,9 +75,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Component Type ("CoreLanguage/ExtensionLanguage")
+        /// Gets the name of the Component Type ("CoreLanguage/ExtensionLanguage").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ComponentType
         {
@@ -96,9 +96,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("languageFile")
+        /// Gets the name of the Item Node ("languageFile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -110,9 +110,9 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The WriteCustomManifest method writes the custom manifest items
+        /// The WriteCustomManifest method writes the custom manifest items.
         /// </summary>
-        /// <param name="writer">The Xmlwriter to use</param>
+        /// <param name="writer">The Xmlwriter to use.</param>
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {

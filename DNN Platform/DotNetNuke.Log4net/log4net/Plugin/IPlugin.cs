@@ -40,8 +40,8 @@ namespace log4net.Plugin
     /// attributes.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IPlugin
     {
         /// <summary>

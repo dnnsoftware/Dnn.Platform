@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ResourceFileInstaller installs Resource File Components (zips) to a DotNetNuke site
+    /// The ResourceFileInstaller installs Resource File Components (zips) to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -30,9 +30,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("resourceFiles")
+        /// Gets the name of the Collection Node ("resourceFiles").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string CollectionNodeName
         {
@@ -44,9 +44,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("resourceFile")
+        /// Gets the name of the Item Node ("resourceFile").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected override string ItemNodeName
         {
@@ -67,9 +67,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets a list of allowable file extensions (in addition to the Host's List).
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public override string AllowableFiles
         {
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The CommitFile method commits a single file.
         /// </summary>
-        /// <param name="insFile">The InstallFile to commit</param>
+        /// <param name="insFile">The InstallFile to commit.</param>
         /// -----------------------------------------------------------------------------
         protected override void CommitFile(InstallFile insFile)
         {
@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The DeleteFile method deletes a single assembly.
         /// </summary>
-        /// <param name="file">The InstallFile to delete</param>
+        /// <param name="file">The InstallFile to delete.</param>
         /// -----------------------------------------------------------------------------
         protected override void DeleteFile(InstallFile file)
         {
@@ -103,7 +103,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         ///   The InstallFile method installs a single assembly.
         /// </summary>
-        /// <param name = "insFile">The InstallFile to install</param>
+        /// <param name = "insFile">The InstallFile to install.</param>
         /// <returns></returns>
         protected override bool InstallFile(InstallFile insFile)
         {
@@ -195,9 +195,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that determines what type of file this installer supports
+        /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
-        /// <param name="type">The type of file being processed</param>
+        /// <param name="type">The type of file being processed.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override bool IsCorrectType(InstallFileType type)
@@ -207,10 +207,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ReadManifestItem method reads a single node
+        /// The ReadManifestItem method reads a single node.
         /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <param name="checkFileExists">Flag that determines whether a check should be made</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        /// <param name="checkFileExists">Flag that determines whether a check should be made.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected override InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
@@ -233,8 +233,8 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The RollbackFile method rolls back the install of a single file.
         /// </summary>
         /// <remarks>For new installs this removes the added file.  For upgrades it restores the
-        /// backup file created during install</remarks>
-        /// <param name="insFile">The InstallFile to commit</param>
+        /// backup file created during install.</remarks>
+        /// <param name="insFile">The InstallFile to commit.</param>
         /// -----------------------------------------------------------------------------
         protected override void RollbackFile(InstallFile insFile)
         {

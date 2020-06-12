@@ -18,14 +18,14 @@ namespace DotNetNuke.Framework
     /// Class:      DiskPageStatePersister
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// DiskPageStatePersister provides a disk (stream) based page state peristence mechanism
+    /// DiskPageStatePersister provides a disk (stream) based page state peristence mechanism.
     /// </summary>
     /// -----------------------------------------------------------------------------
     public class DiskPageStatePersister : PageStatePersister
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Creates the DiskPageStatePersister
+        /// Creates the DiskPageStatePersister.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DiskPageStatePersister(Page page)
@@ -36,7 +36,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets the CacheDirectory property is used to return the location of the "Cache"
-        /// Directory for the Portal
+        /// Directory for the Portal.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -51,7 +51,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the StateFileName property is used to store the FileName for the State
+        /// Gets the StateFileName property is used to store the FileName for the State.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -74,7 +74,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Loads the Page State from the Cache
+        /// Loads the Page State from the Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Load()
@@ -107,7 +107,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Saves the Page State to the Cache
+        /// Saves the Page State to the Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Save()

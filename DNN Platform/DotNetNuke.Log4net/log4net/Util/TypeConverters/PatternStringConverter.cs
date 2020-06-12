@@ -31,7 +31,7 @@ using log4net.Util;
 namespace log4net.Util.TypeConverters
 {
     /// <summary>
-    /// Convert between string and <see cref="PatternString"/>
+    /// Convert between string and <see cref="PatternString"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -46,14 +46,14 @@ namespace log4net.Util.TypeConverters
     /// <seealso cref="ConverterRegistry"/>
     /// <seealso cref="IConvertFrom"/>
     /// <seealso cref="IConvertTo"/>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     internal class PatternStringConverter : IConvertTo, IConvertFrom
     {
         /// <summary>
-        /// Can the target type be converted to the type supported by this object
+        /// Can the target type be converted to the type supported by this object.
         /// </summary>
-        /// <param name="targetType">A <see cref="Type"/> that represents the type you want to convert to</param>
-        /// <returns>true if the conversion is possible</returns>
+        /// <param name="targetType">A <see cref="Type"/> that represents the type you want to convert to.</param>
+        /// <returns>true if the conversion is possible.</returns>
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="targetType"/> is
@@ -66,11 +66,11 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// Converts the given value object to the specified type, using the arguments
+        /// Converts the given value object to the specified type, using the arguments.
         /// </summary>
-        /// <param name="source">the object to convert</param>
-        /// <param name="targetType">The Type to convert the value parameter to</param>
-        /// <returns>the converted object</returns>
+        /// <param name="source">the object to convert.</param>
+        /// <param name="targetType">The Type to convert the value parameter to.</param>
+        /// <returns>the converted object.</returns>
         /// <remarks>
         /// <para>
         /// Uses the <see cref="M:PatternString.Format()"/> method to convert the
@@ -94,10 +94,10 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// Can the source type be converted to the type supported by this object
+        /// Can the source type be converted to the type supported by this object.
         /// </summary>
-        /// <param name="sourceType">the type to convert</param>
-        /// <returns>true if the conversion is possible</returns>
+        /// <param name="sourceType">the type to convert.</param>
+        /// <returns>true if the conversion is possible.</returns>
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="sourceType"/> is
@@ -112,8 +112,8 @@ namespace log4net.Util.TypeConverters
         /// <summary>
         /// Overrides the ConvertFrom method of IConvertFrom.
         /// </summary>
-        /// <param name="source">the object to convert to a PatternString</param>
-        /// <returns>the PatternString</returns>
+        /// <param name="source">the object to convert to a PatternString.</param>
+        /// <returns>the PatternString.</returns>
         /// <remarks>
         /// <para>
         /// Creates and returns a new <see cref="PatternString"/> using

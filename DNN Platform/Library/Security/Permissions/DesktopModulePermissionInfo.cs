@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
-    /// Permissions
+    /// Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -30,7 +30,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new DesktopModulePermissionInfo
+        /// Constructs a new DesktopModulePermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo()
@@ -41,9 +41,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new DesktopModulePermissionInfo
+        /// Constructs a new DesktopModulePermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
         public DesktopModulePermissionInfo(PermissionInfo permission)
             : this()
@@ -57,9 +57,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the DesktopModule Permission ID
+        /// Gets or sets and sets the DesktopModule Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int DesktopModulePermissionID
         {
@@ -76,9 +76,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the PortalDesktopModule ID
+        /// Gets or sets and sets the PortalDesktopModule ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID
         {
@@ -95,9 +95,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a DesktopModulePermissionInfo from a Data Reader
+        /// Fills a DesktopModulePermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -108,9 +108,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {
@@ -127,11 +127,11 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal
+        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="other">a DesktopModulePermissionObject</param>
+        /// <param name="other">a DesktopModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the DesktopModulePermissionCollection.
@@ -156,11 +156,11 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal
+        /// Compares if two DesktopModulePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="obj">a DesktopModulePermissionObject</param>
+        /// <param name="obj">a DesktopModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the DesktopModulePermissionCollection.

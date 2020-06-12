@@ -37,12 +37,12 @@ namespace log4net.Util
     /// objects when rendering the output.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public class FormattingInfo
     {
         /// <summary>
-        /// Defaut Constructor
+        /// Defaut Constructor.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -54,7 +54,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Constructor
+        /// Constructor.
         /// </summary>
         /// <remarks>
         /// <para>

@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Host
     public class IPFilterInfo : BaseEntityInfo, IHydratable
     {
         /// <summary>
-        /// Create new IPFilterInfo instance
+        /// Create new IPFilterInfo instance.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -49,10 +49,10 @@ namespace DotNetNuke.Entities.Host
         public int RuleType { get; set; }
 
         /// <summary>
-        /// Fills an IPFilterInfo from a Data Reader
+        /// Fills an IPFilterInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
-        /// <remarks>Standard IHydratable.Fill implementation
+        /// <param name="dr">The Data Reader to use.</param>
+        /// <remarks>Standard IHydratable.Fill implementation.
         /// <seealso cref="KeyID"></seealso></remarks>
         public void Fill(IDataReader dr)
         {
@@ -75,9 +75,9 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>KeyId of the IHydratable.Key</returns>
+        /// <returns>KeyId of the IHydratable.Key.</returns>
         /// <remarks><seealso cref="Fill"></seealso></remarks>
         public int KeyID
         {

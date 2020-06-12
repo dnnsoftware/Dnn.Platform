@@ -25,7 +25,7 @@ using System;
 namespace log4net.Core
 {
     /// <summary>
-    /// Test if an <see cref="LoggingEvent"/> triggers an action
+    /// Test if an <see cref="LoggingEvent"/> triggers an action.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,17 +36,17 @@ namespace log4net.Core
     /// The action or behavior triggered is defined by the implementation.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public interface ITriggeringEventEvaluator
     {
         /// <summary>
-        /// Test if this event triggers the action
+        /// Test if this event triggers the action.
         /// </summary>
-        /// <param name="loggingEvent">The event to check</param>
-        /// <returns><c>true</c> if this event triggers the action, otherwise <c>false</c></returns>
+        /// <param name="loggingEvent">The event to check.</param>
+        /// <returns><c>true</c> if this event triggers the action, otherwise <c>false</c>.</returns>
         /// <remarks>
         /// <para>
-        /// Return <c>true</c> if this event triggers the action
+        /// Return <c>true</c> if this event triggers the action.
         /// </para>
         /// </remarks>
         bool IsTriggeringEvent(LoggingEvent loggingEvent);

@@ -11,27 +11,27 @@ using System.Net;
 namespace DotNetNuke.Services.GeneratedImage.StartTransform
 {
     /// <summary>
-    /// Image File ImageTransform class
+    /// Image File ImageTransform class.
     /// </summary>
     public class ImageFileTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets file path of the image
+        /// Gets or sets file path of the image.
         /// </summary>
         public string ImageFilePath { get; set; }
 
         /// <summary>
-        /// Gets or sets url of the image
+        /// Gets or sets url of the image.
         /// </summary>
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Gets or sets the Image to return if no image or error
+        /// Gets or sets the Image to return if no image or error.
         /// </summary>
         public Image EmptyImage { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
 
@@ -45,10 +45,10 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
 
         /// <summary>
         /// Processes an input image applying a file image transformation.
-        /// This will return an image after read the stream from the File Path  <see cref="ImageFilePath"/> or Url <see cref="ImageUrl"/>
+        /// This will return an image after read the stream from the File Path  <see cref="ImageFilePath"/> or Url <see cref="ImageUrl"/>.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after file image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after file image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             return !string.IsNullOrEmpty(this.ImageUrl) ?

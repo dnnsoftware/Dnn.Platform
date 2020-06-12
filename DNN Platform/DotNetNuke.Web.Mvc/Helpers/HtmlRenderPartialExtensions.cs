@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         /// <summary>
         /// Renders the specified partial view by using the specified HTML helper.
         /// </summary>
-        /// <param name="html">The HTML helper.</param><param name="partialViewName">The name of the partial view</param>
+        /// <param name="html">The HTML helper.</param><param name="partialViewName">The name of the partial view.</param>
         public static void RenderPartial(this DnnHtmlHelper html, string partialViewName)
         {
             html.HtmlHelper.RenderPartial(partialViewName, html.HtmlHelper.ViewData);

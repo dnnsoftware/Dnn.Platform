@@ -28,7 +28,7 @@ using log4net.Core;
 namespace log4net.Util
 {
     /// <summary>
-    /// An entry in the <see cref="LevelMapping"/>
+    /// An entry in the <see cref="LevelMapping"/>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,15 +36,15 @@ namespace log4net.Util
     /// <see cref="LevelMapping"/> object.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public abstract class LevelMappingEntry : IOptionHandler
     {
         /// <summary>
-        /// Default protected constructor
+        /// Default protected constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default protected constructor
+        /// Default protected constructor.
         /// </para>
         /// </remarks>
         protected LevelMappingEntry()
@@ -52,10 +52,10 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets the level that is the key for this mapping
+        /// Gets or sets the level that is the key for this mapping.
         /// </summary>
         /// <value>
-        /// The <see cref="Level"/> that is the key for this mapping
+        /// The <see cref="Level"/> that is the key for this mapping.
         /// </value>
         /// <remarks>
         /// <para>
@@ -70,11 +70,11 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Initialize any options defined on this entry
+        /// Initialize any options defined on this entry.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Should be overridden by any classes that need to initialise based on their options
+        /// Should be overridden by any classes that need to initialise based on their options.
         /// </para>
         /// </remarks>
         public virtual void ActivateOptions()

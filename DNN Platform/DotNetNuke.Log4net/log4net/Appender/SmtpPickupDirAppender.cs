@@ -51,16 +51,16 @@ namespace log4net.Appender
     /// still delivering useful application context.
     /// </para>
     /// </remarks>
-    /// <author>Niall Daley</author>
-    /// <author>Nicko Cadell</author>
+    /// <author>Niall Daley.</author>
+    /// <author>Nicko Cadell.</author>
     public class SmtpPickupDirAppender : BufferingAppenderSkeleton
     {
         /// <summary>
-        /// Default constructor
+        /// Default constructor.
         /// </summary>
         /// <remarks>
         /// <para>
-        /// Default constructor
+        /// Default constructor.
         /// </para>
         /// </remarks>
         public SmtpPickupDirAppender()
@@ -135,14 +135,14 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets the file extension for the generated files
+        /// Gets or sets the file extension for the generated files.
         /// </summary>
         /// <value>
-        /// The file extension for the generated files
+        /// The file extension for the generated files.
         /// </value>
         /// <remarks>
         /// <para>
-        /// The file extension for the generated files
+        /// The file extension for the generated files.
         /// </para>
         /// </remarks>
         public string FileExtension
@@ -291,7 +291,7 @@ namespace log4net.Appender
         /// <summary>
         /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
-        /// <value><c>true</c></value>
+        /// <value><c>true</c>.</value>
         /// <remarks>
         /// <para>
         /// This appender requires a <see cref="Layout"/> to be set.
@@ -327,7 +327,7 @@ namespace log4net.Appender
         private string m_fileExtension;
 
         /// <summary>
-        /// The security context to use for privileged calls
+        /// The security context to use for privileged calls.
         /// </summary>
         private SecurityContext m_securityContext;
     }

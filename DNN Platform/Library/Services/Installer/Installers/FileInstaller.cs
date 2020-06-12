@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Installer.Installers
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The FileInstaller installs File Components to a DotNetNuke site
+    /// The FileInstaller installs File Components to a DotNetNuke site.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,18 +26,18 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the BasePath for the files
+        /// Gets or sets the BasePath for the files.
         /// </summary>
-        /// <remarks>The Base Path is relative to the WebRoot</remarks>
-        /// <value>A String</value>
+        /// <remarks>The Base Path is relative to the WebRoot.</remarks>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected string BasePath { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Collection Node ("files")
+        /// Gets the name of the Collection Node ("files").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string CollectionNodeName
         {
@@ -49,9 +49,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Dictionary of Files that are included in this component
+        /// Gets a Dictionary of Files that are included in this component.
         /// </summary>
-        /// <value>A Dictionary(Of String, InstallFile)</value>
+        /// <value>A Dictionary(Of String, InstallFile).</value>
         /// -----------------------------------------------------------------------------
         protected List<InstallFile> Files
         {
@@ -63,9 +63,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the default Path for the file - if not present in the manifest
+        /// Gets the default Path for the file - if not present in the manifest.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string DefaultPath
         {
@@ -77,9 +77,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name of the Item Node ("file")
+        /// Gets the name of the Item Node ("file").
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string ItemNodeName
         {
@@ -91,9 +91,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the PhysicalBasePath for the files
+        /// Gets the PhysicalBasePath for the files.
         /// </summary>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         protected virtual string PhysicalBasePath
         {
@@ -112,9 +112,9 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
-        /// package
+        /// package.
         /// </summary>
-        /// <value>A Boolean value</value>
+        /// <value>A Boolean value.</value>
         /// -----------------------------------------------------------------------------
         public bool DeleteFiles
         {
@@ -131,9 +131,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs.
         /// </summary>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public override bool SupportsManifestOnlyInstall
         {
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The CommitFile method commits a single file.
         /// </summary>
-        /// <param name="insFile">The InstallFile to commit</param>
+        /// <param name="insFile">The InstallFile to commit.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void CommitFile(InstallFile insFile)
         {
@@ -157,7 +157,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The DeleteFile method deletes a single file.
         /// </summary>
-        /// <param name="insFile">The InstallFile to delete</param>
+        /// <param name="insFile">The InstallFile to delete.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void DeleteFile(InstallFile insFile)
         {
@@ -171,7 +171,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The InstallFile method installs a single file.
         /// </summary>
-        /// <param name="insFile">The InstallFile to install</param>
+        /// <param name="insFile">The InstallFile to install.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected virtual bool InstallFile(InstallFile insFile)
@@ -206,9 +206,9 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a flag that determines what type of file this installer supports
+        /// Gets a flag that determines what type of file this installer supports.
         /// </summary>
-        /// <param name="type">The type of file being processed</param>
+        /// <param name="type">The type of file being processed.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected virtual bool IsCorrectType(InstallFileType type)
@@ -218,10 +218,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ProcessFile method determines what to do with parsed "file" node
+        /// The ProcessFile method determines what to do with parsed "file" node.
         /// </summary>
-        /// <param name="file">The file represented by the node</param>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="file">The file represented by the node.</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void ProcessFile(InstallFile file, XPathNavigator nav)
         {
@@ -237,9 +237,9 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The ReadCustomManifest method reads the custom manifest items (that subclasses
-        /// of FileInstaller may need)
+        /// of FileInstaller may need).
         /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void ReadCustomManifest(XPathNavigator nav)
         {
@@ -247,10 +247,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ReadManifestItem method reads a single node
+        /// The ReadManifestItem method reads a single node.
         /// </summary>
-        /// <param name="nav">The XPathNavigator representing the node</param>
-        /// <param name="checkFileExists">Flag that determines whether a check should be made</param>
+        /// <param name="nav">The XPathNavigator representing the node.</param>
+        /// <param name="checkFileExists">Flag that determines whether a check should be made.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         protected virtual InstallFile ReadManifestItem(XPathNavigator nav, bool checkFileExists)
@@ -324,8 +324,8 @@ namespace DotNetNuke.Services.Installer.Installers
         /// The RollbackFile method rolls back the install of a single file.
         /// </summary>
         /// <remarks>For new installs this removes the added file.  For upgrades it restores the
-        /// backup file created during install</remarks>
-        /// <param name="installFile">The InstallFile to commit</param>
+        /// backup file created during install.</remarks>
+        /// <param name="installFile">The InstallFile to commit.</param>
         /// -----------------------------------------------------------------------------
         protected virtual void RollbackFile(InstallFile installFile)
         {
@@ -354,7 +354,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// <summary>
         /// The Commit method finalises the Install and commits any pending changes.
         /// </summary>
-        /// <remarks>In the case of Files this is not neccessary</remarks>
+        /// <remarks>In the case of Files this is not neccessary.</remarks>
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
@@ -375,7 +375,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Install method installs the file component
+        /// The Install method installs the file component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Install()
@@ -427,7 +427,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The Rollback method undoes the installation of the file component in the event
-        /// that one of the other components fails
+        /// that one of the other components fails.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void Rollback()
@@ -449,7 +449,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The UnInstall method uninstalls the file component
+        /// The UnInstall method uninstalls the file component.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void UnInstall()

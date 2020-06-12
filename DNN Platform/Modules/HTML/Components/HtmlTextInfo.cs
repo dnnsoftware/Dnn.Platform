@@ -14,7 +14,7 @@ namespace DotNetNuke.Modules.Html
     /// Class:      HtmlTextInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///   Defines an instance of an HtmlText object
+    ///   Defines an instance of an HtmlText object.
     /// </summary>
     /// <remarks>
     /// </remarks>

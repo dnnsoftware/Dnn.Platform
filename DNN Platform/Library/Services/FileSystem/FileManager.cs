@@ -356,7 +356,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
         /// <param name="contentType">The content type of the file.</param>
-        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <param name="createdByUserID">ID of the user that creates the file.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder, fileName or fileContent are null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.InvalidFileExtensionException">Thrown when the extension of the specified file is not allowed.</exception>
@@ -376,9 +376,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="fileContent">The content of the file.</param>
         /// <param name="overwrite">Indicates if the file has to be over-written if it exists.</param>
         /// <param name="checkPermissions">Indicates if permissions have to be met.</param>
-        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored</param>
+        /// <param name="ignoreWhiteList">Indicates whether the whitelist should be ignored.</param>
         /// <param name="contentType">The content type of the file.</param>
-        /// <param name="createdByUserID">ID of the user that creates the file</param>
+        /// <param name="createdByUserID">ID of the user that creates the file.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when folder, fileName or fileContent are null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FolderProviderException">Thrown when the underlying system throw an exception.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.InvalidFileExtensionException">Thrown when the extension of the specified file is not allowed.</exception>
@@ -890,7 +890,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder where to check the existence of the file.</param>
         /// <param name="fileName">The file name to check the existence of.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>A bool value indicating whether the file exists or not in the specified folder.</returns>
         /// <exception cref="System.ArgumentNullException">Thrown when folder is null.</exception>
         /// <exception cref="System.ArgumentException">Thrown when fileName is null or empty.</exception>
@@ -942,7 +942,7 @@ namespace DotNetNuke.Services.FileSystem
         /// Gets the file metadata for the specified file.
         /// </summary>
         /// <param name="fileID">The file identifier.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int fileID, bool retrieveUnpublishedFiles)
         {
@@ -982,7 +982,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="folder">The folder where the file is stored.</param>
         /// <param name="fileName">The name of the file.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(IFolderInfo folder, string fileName, bool retrieveUnpublishedFiles)
         {
@@ -995,7 +995,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the file metadata for the specified file.
         /// </summary>
-        /// <param name="portalId">The portal ID or Null.NullInteger for the Host</param>
+        /// <param name="portalId">The portal ID or Null.NullInteger for the Host.</param>
         /// <param name="relativePath">Relative path to the file.</param>
         /// <remarks>Host and portal settings commonly return a relative path to a file.  This method uses that relative path to fetch file metadata.</remarks>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
@@ -1007,9 +1007,9 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Gets the file metadata for the specified file.
         /// </summary>
-        /// <param name="portalId">The portal ID or Null.NullInteger for the Host</param>
+        /// <param name="portalId">The portal ID or Null.NullInteger for the Host.</param>
         /// <param name="relativePath">Relative path to the file.</param>
-        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files</param>
+        /// <param name="retrieveUnpublishedFiles">Indicates if the file is retrieved from All files or from Published files.</param>
         /// <remarks>Host and portal settings commonly return a relative path to a file.  This method uses that relative path to fetch file metadata.</remarks>
         /// <returns>The <see cref="DotNetNuke.Services.FileSystem.IFileInfo">IFileInfo</see> object with the metadata of the specified file.</returns>
         public virtual IFileInfo GetFile(int portalId, string relativePath, bool retrieveUnpublishedFiles)
@@ -1130,7 +1130,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a flag that dertermines if the file is an Image
+        /// Gets a flag that dertermines if the file is an Image.
         /// </summary>
         /// <param name="file">The file to test.</param>
         /// <returns>The flag as a boolean value.</returns>
@@ -1227,7 +1227,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>
         /// Renames the specified file.
         /// </summary>
-        /// <param name="file">The file to rename</param>
+        /// <param name="file">The file to rename.</param>
         /// <param name="newFileName">The new filename to assign to the file.</param>
         /// <exception cref="System.ArgumentNullException">Thrown when file is null.</exception>
         /// <exception cref="DotNetNuke.Services.FileSystem.FileAlreadyExistsException">Thrown when the folder already contains a file with the same name.</exception>
@@ -1790,7 +1790,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
-        /// <returns>SHA1 hash of the file</returns>
+        /// <returns>SHA1 hash of the file.</returns>
         internal virtual string GetHash(Stream stream)
         {
             Requires.NotNull("stream", stream);
@@ -1808,10 +1808,10 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets the hash of a file
+        /// Gets the hash of a file.
         /// </summary>
         /// <param name="fileInfo">The file info.</param>
-        /// <returns>SHA1 hash of the file</returns>
+        /// <returns>SHA1 hash of the file.</returns>
         internal virtual string GetHash(IFileInfo fileInfo)
         {
             return FolderProvider.Instance(FolderMappingController.Instance.GetFolderMapping(fileInfo.FolderMappingID).FolderProviderType).GetHashCode(fileInfo);
@@ -1957,7 +1957,7 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">File info.</param>
         /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
-        /// <returns>The file info</returns>
+        /// <returns>The file info.</returns>
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
         {
             // By default File Events will be fired
@@ -1969,8 +1969,8 @@ namespace DotNetNuke.Services.FileSystem
         /// </summary>
         /// <param name="file">File info.</param>
         /// <param name="updateLazyload">Whether to update the lazy load properties: Width, Height, Sha1Hash.</param>
-        /// <param name="fireEvent">Whether to fire File events or not</param>
-        /// <returns>The file info</returns>
+        /// <param name="fireEvent">Whether to fire File events or not.</param>
+        /// <returns>The file info.</returns>
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload, bool fireEvent)
         {
             Requires.NotNull("file", file);

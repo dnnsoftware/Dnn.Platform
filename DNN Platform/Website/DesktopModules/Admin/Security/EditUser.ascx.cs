@@ -33,7 +33,7 @@ namespace DotNetNuke.Modules.Admin.Users
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The ManageUsers UserModuleBase is used to manage Users
+    /// The ManageUsers UserModuleBase is used to manage Users.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to display the Manage Services tab
+        /// Gets a value indicating whether gets whether to display the Manage Services tab.
         /// </summary>
         protected bool DisplayServices
         {
@@ -62,7 +62,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Redirect URL (after successful registration)
+        /// Gets the Redirect URL (after successful registration).
         /// </summary>
         protected string RedirectURL
         {
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Return Url for the page
+        /// Gets the Return Url for the page.
         /// </summary>
         protected string ReturnUrl
         {
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Filter to use
+        /// Gets and sets the Filter to use.
         /// </summary>
         protected string UserFilter
         {
@@ -149,7 +149,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the current Page No
+        /// Gets or sets and sets the current Page No.
         /// </summary>
         public int PageNo
         {
@@ -352,7 +352,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -403,7 +403,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -548,7 +548,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// PasswordUpdated runs when the Password has been updated or reset
+        /// PasswordUpdated runs when the Password has been updated or reset.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -595,7 +595,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ProfileUpdateCompleted runs when the Profile has been updated
+        /// ProfileUpdateCompleted runs when the Profile has been updated.
         /// </summary>
         /// <remarks>
         /// </remarks>

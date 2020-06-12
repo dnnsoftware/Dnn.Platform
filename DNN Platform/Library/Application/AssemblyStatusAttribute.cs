@@ -55,7 +55,7 @@ namespace DotNetNuke.Application
     /// The status of current assembly.
     /// </summary>
     /// <example>
-    /// [assembly: AssemblyStatus(ReleaseMode.Stable)]
+    /// [assembly: AssemblyStatus(ReleaseMode.Stable)].
     /// </example>
     [AttributeUsage(AttributeTargets.Assembly)]
     public class AssemblyStatusAttribute : Attribute

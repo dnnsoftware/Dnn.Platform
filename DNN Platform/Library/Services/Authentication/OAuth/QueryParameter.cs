@@ -5,7 +5,7 @@
 namespace DotNetNuke.Services.Authentication.OAuth
 {
     /// <summary>
-    /// Provides an internal structure to sort the query parameter
+    /// Provides an internal structure to sort the query parameter.
     /// </summary>
     public class QueryParameter
     {

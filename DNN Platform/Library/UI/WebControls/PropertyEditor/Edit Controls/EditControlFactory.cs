@@ -14,7 +14,7 @@ namespace DotNetNuke.UI.WebControls
     /// -----------------------------------------------------------------------------
     /// <summary>
     /// The EditControlFactory control provides a factory for creating the
-    /// appropriate Edit Control
+    /// appropriate Edit Control.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -24,9 +24,9 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// CreateEditControl creates the appropriate Control based on the EditorField or
-        /// TypeDataField
+        /// TypeDataField.
         /// </summary>
-        /// <param name="editorInfo">An EditorInfo object</param>
+        /// <param name="editorInfo">An EditorInfo object.</param>
         /// <returns></returns>
         /// -----------------------------------------------------------------------------
         public static EditControl CreateEditControl(EditorInfo editorInfo)

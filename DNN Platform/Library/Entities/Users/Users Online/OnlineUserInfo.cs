@@ -13,7 +13,7 @@ namespace DotNetNuke.Entities.Users
     /// Class:      OnlineUserInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The OnlineUserInfo class provides an Entity for an online user
+    /// The OnlineUserInfo class provides an Entity for an online user.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the User Id for this online user
+        /// Gets or sets and sets the User Id for this online user.
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]

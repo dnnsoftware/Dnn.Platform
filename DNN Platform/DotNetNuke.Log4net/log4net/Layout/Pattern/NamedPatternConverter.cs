@@ -31,7 +31,7 @@ using log4net.Util;
 namespace log4net.Layout.Pattern
 {
     /// <summary>
-    /// Converter to output and truncate <c>'.'</c> separated strings
+    /// Converter to output and truncate <c>'.'</c> separated strings.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -44,13 +44,13 @@ namespace log4net.Layout.Pattern
     /// return the fully qualified string.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public abstract class NamedPatternConverter : PatternLayoutConverter, IOptionHandler
     {
         private int m_precision = 0;
 
         /// <summary>
-        /// Initialize the converter
+        /// Initialize the converter.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -95,10 +95,10 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Get the fully qualified string data
+        /// Get the fully qualified string data.
         /// </summary>
-        /// <param name="loggingEvent">the event being logged</param>
-        /// <returns>the fully qualified name</returns>
+        /// <param name="loggingEvent">the event being logged.</param>
+        /// <returns>the fully qualified name.</returns>
         /// <remarks>
         /// <para>
         /// Overridden by subclasses to get the fully qualified name before the
@@ -111,10 +111,10 @@ namespace log4net.Layout.Pattern
         protected abstract string GetFullyQualifiedName(LoggingEvent loggingEvent);
 
         /// <summary>
-        /// Convert the pattern to the rendered message
+        /// Convert the pattern to the rendered message.
         /// </summary>
         /// <param name="writer"><see cref="TextWriter" /> that will receive the formatted result.</param>
-        /// <param name="loggingEvent">the event being logged</param>
+        /// <param name="loggingEvent">the event being logged.</param>
         /// <remarks>
         /// Render the <see cref="GetFullyQualifiedName"/> to the precision
         /// specified by the <see cref="PatternConverter.Option"/> property.

@@ -17,7 +17,7 @@ namespace DotNetNuke.Entities.Users
     /// Class:      RelationshipType
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The RelationshipType defines the core relationship types (Friend (2-way), Follower (1-way))
+    /// The RelationshipType defines the core relationship types (Friend (2-way), Follower (1-way)).
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Users
         private int _relationshipTypeId = -1;
 
         /// <summary>
-        /// Gets or sets relationshipId - The primary key
+        /// Gets or sets relationshipId - The primary key.
         /// </summary>
         [XmlAttribute]
         public int RelationshipTypeId

@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Permissions
     /// Class    : ModulePermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// ModulePermissionInfo provides the Entity Layer for Module Permissions
+    /// ModulePermissionInfo provides the Entity Layer for Module Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -31,7 +31,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ModulePermissionInfo
+        /// Constructs a new ModulePermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo()
@@ -42,9 +42,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new ModulePermissionInfo
+        /// Constructs a new ModulePermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
         public ModulePermissionInfo(PermissionInfo permission)
             : this()
@@ -58,9 +58,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module Permission ID
+        /// Gets or sets and sets the Module Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("modulepermissionid")]
         public int ModulePermissionID
@@ -78,9 +78,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Module ID
+        /// Gets or sets and sets the Module ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("moduleid")]
         public int ModuleID
@@ -98,9 +98,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a ModulePermissionInfo from a Data Reader
+        /// Fills a ModulePermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -111,9 +111,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID
@@ -131,11 +131,11 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two ModulePermissionInfo objects are equivalent/equal
+        /// Compares if two ModulePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="other">a ModulePermissionObject</param>
+        /// <param name="other">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.
@@ -160,11 +160,11 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Compares if two ModulePermissionInfo objects are equivalent/equal
+        /// Compares if two ModulePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name="obj">a ModulePermissionObject</param>
+        /// <param name="obj">a ModulePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        /// in the current object
+        /// in the current object.
         /// </returns>
         /// <remarks>
         /// This function is needed to prevent adding duplicates to the ModulePermissionCollection.

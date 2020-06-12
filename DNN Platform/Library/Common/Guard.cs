@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace DotNetNuke.Common
 {
-    /// <summary>Specifies that a certain condition is an error</summary>
+    /// <summary>Specifies that a certain condition is an error.</summary>
     public static class Guard
     {
         /// <summary>
@@ -21,7 +21,7 @@ namespace DotNetNuke.Common
         ///     placeholders, like <see cref="string.Format(string,object[])" />).
         /// </param>
         /// <param name="args">An array of objects to fill in the placeholders in <paramref name="message" />.</param>
-        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c></exception>
+        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c>.</exception>
         public static void Against(bool condition, string message, params object[] args)
         {
             Against(condition, string.Format(CultureInfo.CurrentUICulture, message, args));
@@ -33,7 +33,7 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="condition">if set to <c>true</c>, throws an <see cref="InvalidOperationException" />.</param>
         /// <param name="message">A message that describes the error condition.</param>
-        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c></exception>
+        /// <exception cref="InvalidOperationException">When <paramref name="condition" /> is <c>true</c>.</exception>
         public static void Against(bool condition, string message)
         {
             if (condition)

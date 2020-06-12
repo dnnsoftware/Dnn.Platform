@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Skins
     ///
     /// -----------------------------------------------------------------------------
     /// <summary>
-    ///     Handles the Business Control Layer for Skins
+    ///     Handles the Business Control Layer for Skins.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -306,12 +306,12 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// format skin name
+        /// format skin name.
         /// </summary>
         /// <remarks>
         /// </remarks>
-        /// <param name="skinFolder">The Folder Name</param>
-        /// <param name="skinFile">The File Name without extension</param>
+        /// <param name="skinFolder">The Folder Name.</param>
+        /// <param name="skinFile">The File Name without extension.</param>
         private static string FormatSkinName(string skinFolder, string skinFile)
         {
             if (skinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase))
@@ -333,7 +333,7 @@ namespace DotNetNuke.UI.Skins
         }
 
         /// <summary>
-        /// Determines if a given skin is defined as a global skin
+        /// Determines if a given skin is defined as a global skin.
         /// </summary>
         /// <param name="skinSrc">This is the app relative path and filename of the skin to be checked.</param>
         /// <returns>True if the skin is located in the HostPath child directories.</returns>

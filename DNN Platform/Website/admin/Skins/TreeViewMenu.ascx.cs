@@ -315,7 +315,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The BuildTree helper method is used to build the tree
+        /// The BuildTree helper method is used to build the tree.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -406,7 +406,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Sets common properties on DNNTree control
+        /// Sets common properties on DNNTree control.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -564,7 +564,7 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         /// <summary>
         /// The DNNTree_NodeClick server event handler on this user control runs when a
-        /// Node (Page) in the TreeView is clicked
+        /// Node (Page) in the TreeView is clicked.
         /// </summary>
         /// <remarks>The event only fires when the Node contains child nodes, as leaf nodes
         /// have their NavigateUrl Property set.

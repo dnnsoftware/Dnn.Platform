@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Mobile
         string Capability { get; set; }
 
         /// <summary>
-        /// Gets or sets reg expression to match the request
+        /// Gets or sets reg expression to match the request.
         /// </summary>
         string Expression { get; set; }
     }

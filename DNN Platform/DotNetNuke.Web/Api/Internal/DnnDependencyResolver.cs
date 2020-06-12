@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Api.Internal
         /// Instantiate a new instance of the <see cref="DnnDependencyResolver"/>.
         /// </summary>
         /// <param name="serviceProvider">
-        /// The <see cref="IServiceProvider"/> to be used in the <see cref="DnnDependencyResolver"/>
+        /// The <see cref="IServiceProvider"/> to be used in the <see cref="DnnDependencyResolver"/>.
         /// </param>
         public DnnDependencyResolver(IServiceProvider serviceProvider)
         {
@@ -32,10 +32,10 @@ namespace DotNetNuke.Web.Api.Internal
         }
 
         /// <summary>
-        /// Starts a new resolution scope
+        /// Starts a new resolution scope.
         /// </summary>
         /// <returns>
-        /// The dependency scope
+        /// The dependency scope.
         /// </returns>
         public IDependencyScope BeginScope()
         {
@@ -45,13 +45,13 @@ namespace DotNetNuke.Web.Api.Internal
         }
 
         /// <summary>
-        /// Returns the specified service from the scope
+        /// Returns the specified service from the scope.
         /// </summary>
         /// <param name="serviceType">
-        /// The service to be retrieved
+        /// The service to be retrieved.
         /// </param>
         /// <returns>
-        /// The retrieved service
+        /// The retrieved service.
         /// </returns>
         public object GetService(Type serviceType)
         {
@@ -59,13 +59,13 @@ namespace DotNetNuke.Web.Api.Internal
         }
 
         /// <summary>
-        /// Returns the specified services from the scope
+        /// Returns the specified services from the scope.
         /// </summary>
         /// <param name="serviceType">
-        /// The service to be retrieved
+        /// The service to be retrieved.
         /// </param>
         /// <returns>
-        /// The retrieved service
+        /// The retrieved service.
         /// </returns>
         public IEnumerable<object> GetServices(Type serviceType)
         {

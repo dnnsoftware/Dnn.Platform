@@ -465,10 +465,10 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Returns the encoder for the specified mime type
+        /// Returns the encoder for the specified mime type.
         /// </summary>
-        /// <param name="mimeType">The mime type of the content</param>
-        /// <returns>ImageCodecInfo</returns>
+        /// <param name="mimeType">The mime type of the content.</param>
+        /// <returns>ImageCodecInfo.</returns>
         private static ImageCodecInfo GetEncoderInfo(string mimeType)
         {
             var encoders = ImageCodecInfo.GetImageEncoders();

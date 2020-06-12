@@ -17,7 +17,7 @@ namespace DotNetNuke.Security.Permissions
     /// -----------------------------------------------------------------------------
     /// <summary>
     ///   DesktopModulePermissionInfo provides the Entity Layer for DesktopModulePermissionInfo
-    ///   Permissions
+    ///   Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -29,7 +29,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Constructs a new WorkflowStatePermissionInfo
+        ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo()
@@ -42,9 +42,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Constructs a new WorkflowStatePermissionInfo
+        ///   Constructs a new WorkflowStatePermissionInfo.
         /// </summary>
-        /// <param name = "permission">A PermissionInfo object</param>
+        /// <param name = "permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
         public WorkflowStatePermissionInfo(PermissionInfo permission)
             : this()
@@ -58,9 +58,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets and sets the WorkflowState Permission ID
+        ///   Gets or sets and sets the WorkflowState Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int WorkflowStatePermissionID
         {
@@ -77,9 +77,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets and sets the State ID
+        ///   Gets or sets and sets the State ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int StateID
         {
@@ -96,11 +96,11 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Compares if two WorkflowStatePermissionInfo objects are equivalent/equal
+        ///   Compares if two WorkflowStatePermissionInfo objects are equivalent/equal.
         /// </summary>
-        /// <param name = "obj">a WorkflowStatePermissionObject</param>
+        /// <param name = "obj">a WorkflowStatePermissionObject.</param>
         /// <returns>true if the permissions being passed represents the same permission
-        ///   in the current object
+        ///   in the current object.
         /// </returns>
         /// <remarks>
         ///   This function is needed to prevent adding duplicates to the WorkflowStatePermissionCollection.
@@ -153,9 +153,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Fills a WorkflowStatePermissionInfo from a Data Reader
+        ///   Fills a WorkflowStatePermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name = "dr">The Data Reader to use</param>
+        /// <param name = "dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -168,9 +168,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets and sets the Key ID
+        ///   Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         public int KeyID
         {

@@ -89,9 +89,9 @@ namespace DNN.Integration.Test.Framework.Helpers
         }
 
         /// <summary>
-        /// Returns a dynamic object with rows and columns
+        /// Returns a dynamic object with rows and columns.
         /// </summary>
-        /// <returns>Row can be accessed by return[0]. Column can be accessed by return[0].ColumnName. Column names are case sensitive</returns>
+        /// <returns>Row can be accessed by return[0]. Column can be accessed by return[0].ColumnName. Column names are case sensitive.</returns>
         public static IList<dynamic> ExecuteDynamicQuery(string queryString)
         {
             var results = new List<dynamic>();
@@ -140,7 +140,7 @@ namespace DNN.Integration.Test.Framework.Helpers
 
         /// <summary>
         /// Executes a specific STORED PROCEDURE.
-        /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed
+        /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed.
         /// </summary>
         /// <returns></returns>
         public static IList<IDictionary<string, object>> ExecuteStoredProcedure(string procedureName, params object[] sqlParameters)
@@ -166,7 +166,7 @@ namespace DNN.Integration.Test.Framework.Helpers
 
         /// <summary>
         /// Executes a specific STORED PROCEDURE.
-        /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed
+        /// The SP passed must not have the ObjectQualifier in its name; otherwise duplicate qualifier will be prefixed.
         /// </summary>
         /// <returns></returns>
         public static IEnumerable<TItem> ExecuteStoredProcedure<TItem>(string procedureName, params object[] sqlParameters)

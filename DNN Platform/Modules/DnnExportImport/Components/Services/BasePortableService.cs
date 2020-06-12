@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Components.Services
 
         /// <summary>
         /// Gets or sets a callback to the export/import engine to check if the undergoing export/import process was cancelled.
-        /// <para>The interface concrete classes should keep checking continuously for the cancellation flag to be true</para>
+        /// <para>The interface concrete classes should keep checking continuously for the cancellation flag to be true.</para>
         /// <para>If the callback returns true, the BasePortableService implementations should stop any work they do and
         /// return control to the caller immediately or as soon as possible.</para>
         /// </summary>

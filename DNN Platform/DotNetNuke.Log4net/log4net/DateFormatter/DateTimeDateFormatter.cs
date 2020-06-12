@@ -27,7 +27,7 @@ using System.Text;
 namespace log4net.DateFormatter
 {
     /// <summary>
-    /// Formats a <see cref="DateTime"/> as <c>"dd MMM yyyy HH:mm:ss,fff"</c>
+    /// Formats a <see cref="DateTime"/> as <c>"dd MMM yyyy HH:mm:ss,fff"</c>.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,9 +36,9 @@ namespace log4net.DateFormatter
     /// <c>"06 Nov 1994 15:49:37,459"</c>.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
-    /// <author>Angelika Schnagl</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
+    /// <author>Angelika Schnagl.</author>
     public class DateTimeDateFormatter : AbsoluteTimeDateFormatter
     {
         /// <summary>
@@ -55,7 +55,7 @@ namespace log4net.DateFormatter
         }
 
         /// <summary>
-        /// Formats the date without the milliseconds part
+        /// Formats the date without the milliseconds part.
         /// </summary>
         /// <param name="dateToFormat">The date to format.</param>
         /// <param name="buffer">The string builder to write to.</param>

@@ -22,7 +22,7 @@ namespace DesktopModules.Admin.Security
 {
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// The Profile UserModuleBase is used to register Users
+    /// The Profile UserModuleBase is used to register Users.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -31,7 +31,7 @@ namespace DesktopModules.Admin.Security
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether to display the Visibility controls
+        /// Gets a value indicating whether gets whether to display the Visibility controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool ShowVisibility
@@ -45,7 +45,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the EditorMode
+        /// Gets or sets and sets the EditorMode.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditorMode
@@ -63,7 +63,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a value indicating whether gets whether the User is valid
+        /// Gets a value indicating whether gets whether the User is valid.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsValid
@@ -76,7 +76,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value indicating whether gets and sets whether the Update button
+        /// Gets or sets a value indicating whether gets and sets whether the Update button.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool ShowUpdate
@@ -94,7 +94,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the UserProfile associated with this control
+        /// Gets the UserProfile associated with this control.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public UserProfile UserProfile
@@ -113,7 +113,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DataBind binds the data to the controls
+        /// DataBind binds the data to the controls.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public override void DataBind()
@@ -142,7 +142,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Init runs when the control is initialised
+        /// Page_Init runs when the control is initialised.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -165,7 +165,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -178,7 +178,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// cmdUpdate_Click runs when the Update Button is clicked
+        /// cmdUpdate_Click runs when the Update Button is clicked.
         /// </summary>
         /// <remarks>
         /// </remarks>

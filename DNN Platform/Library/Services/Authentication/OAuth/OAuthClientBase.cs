@@ -566,7 +566,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         }
 
         /// <summary>
-        /// Generate the timestamp for the signature
+        /// Generate the timestamp for the signature.
         /// </summary>
         /// <returns></returns>
         protected virtual string GenerateTimeStamp()
@@ -577,7 +577,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         }
 
         /// <summary>
-        /// Generate a nonce
+        /// Generate a nonce.
         /// </summary>
         /// <returns></returns>
         protected virtual string GenerateNonce()
@@ -730,19 +730,19 @@ namespace DotNetNuke.Services.Authentication.OAuth
         }
 
         /// <summary>
-        /// Generates a signature using the HMAC-SHA1 algorithm
+        /// Generates a signature using the HMAC-SHA1 algorithm.
         /// </summary>
-        /// <param name="url">The full url that needs to be signed including its non OAuth url parameters</param>
-        /// <param name="token">The token, if available. If not available pass null or an empty string</param>
-        /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string</param>
+        /// <param name="url">The full url that needs to be signed including its non OAuth url parameters.</param>
+        /// <param name="token">The token, if available. If not available pass null or an empty string.</param>
+        /// <param name="tokenSecret">The token secret, if available. If not available pass null or an empty string.</param>
         /// <param name="callbackurl"> </param>
-        /// <param name="oauthVerifier">This value MUST be included when exchanging Request Tokens for Access Tokens. Otherwise pass a null or an empty string</param>
-        /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc)</param>
+        /// <param name="oauthVerifier">This value MUST be included when exchanging Request Tokens for Access Tokens. Otherwise pass a null or an empty string.</param>
+        /// <param name="httpMethod">The http method used. Must be a valid HTTP method verb (POST,GET,PUT, etc).</param>
         /// <param name="timeStamp"> </param>
         /// <param name="nonce"> </param>
         /// <param name="normalizedUrl"> </param>
         /// <param name="requestParameters"> </param>
-        /// <returns>A base64 string of the hash value</returns>
+        /// <returns>A base64 string of the hash value.</returns>
         public string GenerateSignature(Uri url, string token, string tokenSecret, string callbackurl, string oauthVerifier, string httpMethod, string timeStamp, string nonce, out string normalizedUrl, out List<QueryParameter> requestParameters)
         {
             string signatureBase = this.GenerateSignatureBase(url, token, callbackurl, oauthVerifier, httpMethod, timeStamp, nonce, out normalizedUrl, out requestParameters);
@@ -804,10 +804,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         /// <summary>
         /// This is a different Url Encode implementation since the default .NET one outputs the percent encoding in lower case.
-        /// While this is not a problem with the percent encoding spec, it is used in upper case throughout OAuth
+        /// While this is not a problem with the percent encoding spec, it is used in upper case throughout OAuth.
         /// </summary>
-        /// <param name="value">The value to Url encode</param>
-        /// <returns>Returns a Url encoded string</returns>
+        /// <param name="value">The value to Url encode.</param>
+        /// <returns>Returns a Url encoded string.</returns>
         public static string UrlEncode(string value)
         {
             var result = new StringBuilder();

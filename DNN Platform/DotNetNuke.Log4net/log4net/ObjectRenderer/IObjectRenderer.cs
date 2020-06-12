@@ -26,7 +26,7 @@ using System.IO;
 namespace log4net.ObjectRenderer
 {
     /// <summary>
-    /// Implement this interface in order to render objects as strings
+    /// Implement this interface in order to render objects as strings.
     /// </summary>
     /// <remarks>
     /// <para>
@@ -36,16 +36,16 @@ namespace log4net.ObjectRenderer
     /// interface.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
-    /// <author>Gert Driesen</author>
+    /// <author>Nicko Cadell.</author>
+    /// <author>Gert Driesen.</author>
     public interface IObjectRenderer
     {
         /// <summary>
-        /// Render the object <paramref name="obj"/> to a string
+        /// Render the object <paramref name="obj"/> to a string.
         /// </summary>
-        /// <param name="rendererMap">The map used to lookup renderers</param>
-        /// <param name="obj">The object to render</param>
-        /// <param name="writer">The writer to render to</param>
+        /// <param name="rendererMap">The map used to lookup renderers.</param>
+        /// <param name="obj">The object to render.</param>
+        /// <param name="writer">The writer to render to.</param>
         /// <remarks>
         /// <para>
         /// Render the object <paramref name="obj"/> to a

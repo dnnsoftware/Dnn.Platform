@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a value indicating whether the folder has any child subfolder
+        /// Gets a value indicating whether the folder has any child subfolder.
         /// </summary>
         [XmlElement("haschildren")]
         public bool HasChildren
@@ -131,19 +131,19 @@ namespace DotNetNuke.Services.FileSystem
         public bool IsProtected { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether file versions are active for the folder
+        /// Gets or sets a value indicating whether file versions are active for the folder.
         /// </summary>
         [XmlElement("isversioned")]
         public bool IsVersioned { get; set; }
 
         /// <summary>
-        /// Gets or sets the path this folder is mapped on its provider file system
+        /// Gets or sets the path this folder is mapped on its provider file system.
         /// </summary>
         [XmlElement("mappedpath")]
         public string MappedPath { get; set; }
 
         /// <summary>
-        /// Gets or sets a reference to the active Workflow for the folder
+        /// Gets or sets a reference to the active Workflow for the folder.
         /// </summary>
         [XmlElement("workflowid")]
         public int WorkflowID { get; set; }
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.FileSystem
         public DateTime LastUpdated { get; set; }
 
         /// <summary>
-        /// Gets or sets a reference to the parent folder
+        /// Gets or sets a reference to the parent folder.
         /// </summary>
         [XmlElement("parentid")]
         public int ParentID { get; set; }
@@ -250,9 +250,9 @@ namespace DotNetNuke.Services.FileSystem
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Fills a FolderInfo from a Data Reader
+        ///   Fills a FolderInfo from a Data Reader.
         /// </summary>
-        /// <param name = "dr">The Data Reader to use</param>
+        /// <param name = "dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -275,9 +275,9 @@ namespace DotNetNuke.Services.FileSystem
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets and sets the Key ID
+        ///   Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID

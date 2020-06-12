@@ -8,7 +8,7 @@ using System.Web.UI;
 namespace DotNetNuke.Web.UI.WebControls
 {
     /// <summary>
-    /// Restricts the client to add only controls of specific type into the control collection
+    /// Restricts the client to add only controls of specific type into the control collection.
     /// </summary>
     /// <remarks></remarks>
     public sealed class TypedControlCollection<T> : ControlCollection

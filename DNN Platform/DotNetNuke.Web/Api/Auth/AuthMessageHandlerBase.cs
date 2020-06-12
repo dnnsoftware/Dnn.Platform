@@ -45,22 +45,22 @@ namespace DotNetNuke.Web.Api.Auth
         }
 
         /// <summary>
-        /// A chance to process inbound requests
+        /// A chance to process inbound requests.
         /// </summary>
-        /// <param name="request">the request message</param>
-        /// <param name="cancellationToken">a cancellationtoken</param>
-        /// <returns>null normally, if a response is returned all inbound processing is terminated and the resposne is returned</returns>
+        /// <param name="request">the request message.</param>
+        /// <param name="cancellationToken">a cancellationtoken.</param>
+        /// <returns>null normally, if a response is returned all inbound processing is terminated and the resposne is returned.</returns>
         public virtual HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             return null;
         }
 
         /// <summary>
-        /// A change to process outbound responses
+        /// A change to process outbound responses.
         /// </summary>
-        /// <param name="response">The response message</param>
-        /// <param name="cancellationToken">a cancellationtoken</param>
-        /// <returns>the responsemessage</returns>
+        /// <param name="response">The response message.</param>
+        /// <param name="cancellationToken">a cancellationtoken.</param>
+        /// <returns>the responsemessage.</returns>
         public virtual HttpResponseMessage OnOutboundResponse(HttpResponseMessage response, CancellationToken cancellationToken)
         {
             return response;

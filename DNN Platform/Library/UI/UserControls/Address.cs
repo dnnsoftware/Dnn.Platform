@@ -19,7 +19,7 @@ using DotNetNuke.UI.WebControls;
 namespace DotNetNuke.UI.UserControls
 {
     /// <summary>
-    /// The Address UserControl is used to manage User Addresses
+    /// The Address UserControl is used to manage User Addresses.
     /// </summary>
     /// <remarks>
     /// </remarks>
@@ -394,7 +394,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// Localize correctly sets up the control for US/Canada/Other Countries
+        /// Localize correctly sets up the control for US/Canada/Other Countries.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -463,7 +463,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// ShowRequiredFields sets up displaying which fields are required
+        /// ShowRequiredFields sets up displaying which fields are required.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -592,7 +592,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// UpdateRequiredFields updates which fields are required
+        /// UpdateRequiredFields updates which fields are required.
         /// </summary>
         /// <remarks>
         /// </remarks>
@@ -616,7 +616,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// Page_Load runs when the control is loaded
+        /// Page_Load runs when the control is loaded.
         /// </summary>
         /// <remarks>
         /// </remarks>

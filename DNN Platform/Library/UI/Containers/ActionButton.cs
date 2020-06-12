@@ -28,12 +28,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the Command Name
+        ///   Gets or sets the Command Name.
         /// </summary>
         /// <remarks>
-        ///   Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions
+        ///   Maps to ModuleActionType in DotNetNuke.Entities.Modules.Actions.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CommandName
         {
@@ -52,12 +52,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the CSS Class
+        ///   Gets or sets the CSS Class.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 'CommandButton'
+        ///   Defaults to 'CommandButton'.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string CssClass
         {
@@ -76,12 +76,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether the link is displayed
+        ///   Gets or sets a value indicating whether gets or sets whether the link is displayed.
         /// </summary>
         /// <remarks>
-        ///   Defaults to True
+        ///   Defaults to True.
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayLink
         {
@@ -100,12 +100,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets a value indicating whether gets or sets whether the icon is displayed
+        ///   Gets or sets a value indicating whether gets or sets whether the icon is displayed.
         /// </summary>
         /// <remarks>
-        ///   Defaults to False
+        ///   Defaults to False.
         /// </remarks>
-        /// <value>A Boolean</value>
+        /// <value>A Boolean.</value>
         /// -----------------------------------------------------------------------------
         public bool DisplayIcon
         {
@@ -124,12 +124,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the Icon used
+        ///   Gets or sets the Icon used.
         /// </summary>
         /// <remarks>
-        ///   Defaults to the icon defined in Action
+        ///   Defaults to the icon defined in Action.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string IconFile
         {
@@ -148,12 +148,12 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets the Separator between Buttons
+        ///   Gets or sets the Separator between Buttons.
         /// </summary>
         /// <remarks>
-        ///   Defaults to 2 non-breaking spaces
+        ///   Defaults to 2 non-breaking spaces.
         /// </remarks>
-        /// <value>A String</value>
+        /// <value>A String.</value>
         /// -----------------------------------------------------------------------------
         public string ButtonSeparator
         {
@@ -172,7 +172,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Action_Click responds to an Action Event in the contained actionButtonList
+        ///   Action_Click responds to an Action Event in the contained actionButtonList.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private void Action_Click(object sender, ActionEventArgs e)
@@ -182,7 +182,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   CreateChildControls builds the control tree
+        ///   CreateChildControls builds the control tree.
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()

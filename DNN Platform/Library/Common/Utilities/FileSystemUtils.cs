@@ -74,9 +74,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the filename for a file path
+        /// Gets the filename for a file path.
         /// </summary>
-        /// <param name="filePath">The full name of the file</param>
+        /// <param name="filePath">The full name of the file.</param>
         /// -----------------------------------------------------------------------------
         private static string GetFileName(string filePath)
         {
@@ -106,10 +106,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Writes a Stream to the appropriate File Storage
+        /// Writes a Stream to the appropriate File Storage.
         /// </summary>
-        /// <param name="objResponse">The Id of the File</param>
-        /// <param name="objStream">The Input Stream</param>
+        /// <param name="objResponse">The Id of the File.</param>
+        /// <param name="objStream">The Input Stream.</param>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Adds a File to a Zip File
+        /// Adds a File to a Zip File.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public static void AddToZip(ref ZipOutputStream ZipFile, string filePath, string fileName, string folder)
@@ -212,10 +212,10 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tries to copy a file in the file system
+        /// Tries to copy a file in the file system.
         /// </summary>
-        /// <param name="sourceFileName">The name of the source file</param>
-        /// <param name="destFileName">The name of the destination file</param>
+        /// <param name="sourceFileName">The name of the source file.</param>
+        /// <param name="destFileName">The name of the destination file.</param>
         /// -----------------------------------------------------------------------------
         public static void CopyFile(string sourceFileName, string destFileName)
         {
@@ -232,10 +232,10 @@ namespace DotNetNuke.Common.Utilities
         /// Deletes file in areas with a high degree of concurrent file access (i.e. caching, logging)
         /// This solves file concurrency issues under heavy load.
         /// </summary>
-        /// <param name="fileName">String</param>
-        /// <param name="waitInMilliseconds">Int16</param>
-        /// <param name="maxAttempts">Int16</param>
-        /// <returns>Boolean</returns>
+        /// <param name="fileName">String.</param>
+        /// <param name="waitInMilliseconds">Int16.</param>
+        /// <param name="maxAttempts">Int16.</param>
+        /// <returns>Boolean.</returns>
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
@@ -283,9 +283,9 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Tries to delete a file from the file system
+        /// Tries to delete a file from the file system.
         /// </summary>
-        /// <param name="fileName">The name of the file</param>
+        /// <param name="fileName">The name of the file.</param>
         /// -----------------------------------------------------------------------------
         public static void DeleteFile(string fileName)
         {

@@ -42,13 +42,13 @@ namespace log4net.Core
     /// method will be called.
     /// </para>
     /// </remarks>
-    /// <author>Nicko Cadell</author>
+    /// <author>Nicko Cadell.</author>
     public interface IFixingRequired
     {
         /// <summary>
-        /// Get a portable version of this object
+        /// Get a portable version of this object.
         /// </summary>
-        /// <returns>the portable instance of this object</returns>
+        /// <returns>the portable instance of this object.</returns>
         /// <remarks>
         /// <para>
         /// Get a portable instance object that represents the current

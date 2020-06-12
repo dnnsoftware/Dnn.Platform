@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Dnn.PersonaBar.Library.Prompt.Models
 {
     /// <summary>
-    /// Standard response object sent to client
+    /// Standard response object sent to client.
     /// </summary>
     public class ConsoleResultModel
     {

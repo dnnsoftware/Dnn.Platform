@@ -12,7 +12,7 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Common.Utilities
 {
     /// <summary>
-    ///   Verifies the abililty to create and delete files and folders
+    ///   Verifies the abililty to create and delete files and folders.
     /// </summary>
     /// <remarks>
     ///   This class is not meant for use in modules, or in any other manner outside the DotNetNuke core.
@@ -48,7 +48,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFileCreate checks whether a file can be created
+        ///   VerifyFileCreate checks whether a file can be created.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFileCreate()
@@ -85,7 +85,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFileDelete checks whether a file can be deleted
+        ///   VerifyFileDelete checks whether a file can be deleted.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFileDelete()
@@ -109,7 +109,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFolderCreate checks whether a folder can be created
+        ///   VerifyFolderCreate checks whether a folder can be created.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderCreate()
@@ -143,7 +143,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   VerifyFolderDelete checks whether a folder can be deleted
+        ///   VerifyFolderDelete checks whether a folder can be deleted.
         /// </summary>
         /// -----------------------------------------------------------------------------
         private bool VerifyFolderDelete()

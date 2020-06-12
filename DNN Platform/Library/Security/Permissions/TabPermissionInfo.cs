@@ -18,7 +18,7 @@ namespace DotNetNuke.Security.Permissions
     /// Class    : TabPermissionInfo
     /// -----------------------------------------------------------------------------
     /// <summary>
-    /// TabPermissionInfo provides the Entity Layer for Tab Permissions
+    /// TabPermissionInfo provides the Entity Layer for Tab Permissions.
     /// </summary>
     /// -----------------------------------------------------------------------------
     [Serializable]
@@ -32,7 +32,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new TabPermissionInfo
+        /// Constructs a new TabPermissionInfo.
         /// </summary>
         /// -----------------------------------------------------------------------------
         public TabPermissionInfo()
@@ -43,9 +43,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Constructs a new TabPermissionInfo
+        /// Constructs a new TabPermissionInfo.
         /// </summary>
-        /// <param name="permission">A PermissionInfo object</param>
+        /// <param name="permission">A PermissionInfo object.</param>
         /// -----------------------------------------------------------------------------
         public TabPermissionInfo(PermissionInfo permission)
             : this()
@@ -59,9 +59,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Tab Permission ID
+        /// Gets or sets and sets the Tab Permission ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("tabpermissionid")]
         public int TabPermissionID
@@ -79,9 +79,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Tab ID
+        /// Gets or sets and sets the Tab ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlElement("tabid")]
         public int TabID
@@ -99,9 +99,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Fills a TabPermissionInfo from a Data Reader
+        /// Fills a TabPermissionInfo from a Data Reader.
         /// </summary>
-        /// <param name="dr">The Data Reader to use</param>
+        /// <param name="dr">The Data Reader to use.</param>
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
@@ -113,9 +113,9 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets and sets the Key ID
+        /// Gets or sets and sets the Key ID.
         /// </summary>
-        /// <returns>An Integer</returns>
+        /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
         [XmlIgnore]
         public int KeyID

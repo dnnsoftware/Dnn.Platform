@@ -17,12 +17,12 @@ namespace DotNetNuke.Services.ClientCapability
     /// Make modules that are aware of Facebook’s signed_request – a parameter that is POSTed to the web page being loaded in the iFrame,
     /// giving it variables such as if the Page has been Liked, and the age range of the user.
     ///
-    /// For more details visit http://developers.facebook.com/docs/authentication/signed_request/
+    /// For more details visit http://developers.facebook.com/docs/authentication/signed_request/.
     /// </summary>
     public class FacebookRequest
     {
         /// <summary>
-        ///  Gets or sets mechanism used to sign the request
+        ///  Gets or sets mechanism used to sign the request.
         /// </summary>
         public string Algorithm { get; set; }
 
@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.ClientCapability
         public string OauthToken { get; set; }
 
         /// <summary>
-        ///  Gets or sets dateTime when the oauth_token expires
+        ///  Gets or sets dateTime when the oauth_token expires.
         /// </summary>
         public DateTime Expires { get; set; }
 
@@ -92,12 +92,12 @@ namespace DotNetNuke.Services.ClientCapability
         public string AppData { get; set; }
 
         /// <summary>
-        /// Gets or sets raw signed request coming from FaceBook in Post
+        /// Gets or sets raw signed request coming from FaceBook in Post.
         /// </summary>
         public string RawSignedRequest { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether is this a valid FaceBook Request. Check this value prior to accessing any other property
+        /// Gets or sets a value indicating whether is this a valid FaceBook Request. Check this value prior to accessing any other property.
         /// </summary>
         public bool IsValid { get; set; }
 

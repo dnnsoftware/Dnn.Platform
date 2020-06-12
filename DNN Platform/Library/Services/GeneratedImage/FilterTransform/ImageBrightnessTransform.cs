@@ -8,17 +8,17 @@ using System.Drawing.Drawing2D;
 namespace DotNetNuke.Services.GeneratedImage.FilterTransform
 {
     /// <summary>
-    /// Brightness ImageTransform class
+    /// Brightness ImageTransform class.
     /// </summary>
     public class ImageBrightnessTransform : ImageTransform
     {
         /// <summary>
-        /// Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255
+        /// Gets or sets the brightness value. Defaultvalue is 0. Range is -255 .. 255.
         /// </summary>
         public int Brightness { get; set; }
 
         /// <summary>
-        /// Gets provides an Unique String for this class
+        /// Gets provides an Unique String for this class.
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Brightness;
 
@@ -32,10 +32,10 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Processes an input image applying a brightness image transformation
+        /// Processes an input image applying a brightness image transformation.
         /// </summary>
-        /// <param name="image">Input image</param>
-        /// <returns>Image result after image transformation</returns>
+        /// <param name="image">Input image.</param>
+        /// <returns>Image result after image transformation.</returns>
         public override Image ProcessImage(Image image)
         {
             var temp = (Bitmap)image;

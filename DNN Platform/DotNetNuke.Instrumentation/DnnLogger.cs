@@ -18,7 +18,7 @@ using log4net.Util;
 namespace DotNetNuke.Instrumentation
 {
     /// <summary>
-    /// Please use LoggerSource.Instance as a more unit testable way to create loggers
+    /// Please use LoggerSource.Instance as a more unit testable way to create loggers.
     /// </summary>
     public sealed class DnnLogger : LoggerWrapperImpl
     {
@@ -63,12 +63,12 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Virtual method called when the configuration of the repository changes
+        ///   Virtual method called when the configuration of the repository changes.
         /// </summary>
-        /// <param name = "repository">the repository holding the levels</param>
+        /// <param name = "repository">the repository holding the levels.</param>
         /// <remarks>
         ///   <para>
-        ///     Virtual method called when the configuration of the repository changes
+        ///     Virtual method called when the configuration of the repository changes.
         ///   </para>
         /// </remarks>
         private static void ReloadLevels(ILoggerRepository repository)
@@ -130,8 +130,8 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>DEBUG</c> level.
         /// </summary>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -157,9 +157,9 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>DEBUG</c> level.
         /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information</param>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -208,8 +208,8 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>INFO</c> level.
         /// </summary>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -235,9 +235,9 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>INFO</c> level.
         /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information</param>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -273,7 +273,7 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a message object with the <c>WARN</c> level.
         /// </summary>
-        /// <param name = "message">the message object to log</param>
+        /// <param name = "message">the message object to log.</param>
         /// <remarks>
         ///   <para>
         ///     This method first checks if this logger is <c>WARN</c>
@@ -299,7 +299,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Logs a message object with the <c>WARN</c> level
+        ///   Logs a message object with the <c>WARN</c> level.
         /// </summary>
         /// <param name = "message">The message object to log.</param>
         /// <param name = "exception">The exception to log, including its stack trace.</param>
@@ -322,8 +322,8 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>WARN</c> level.
         /// </summary>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -349,9 +349,9 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>WARN</c> level.
         /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information</param>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -398,7 +398,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Logs a message object with the <c>ERROR</c> level
+        ///   Logs a message object with the <c>ERROR</c> level.
         /// </summary>
         /// <param name = "message">The message object to log.</param>
         /// <param name = "exception">The exception to log, including its stack trace.</param>
@@ -421,8 +421,8 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>ERROR</c> level.
         /// </summary>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -448,9 +448,9 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>ERROR</c> level.
         /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information</param>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -497,7 +497,7 @@ namespace DotNetNuke.Instrumentation
         }
 
         /// <summary>
-        ///   Logs a message object with the <c>FATAL</c> level
+        ///   Logs a message object with the <c>FATAL</c> level.
         /// </summary>
         /// <param name = "message">The message object to log.</param>
         /// <param name = "exception">The exception to log, including its stack trace.</param>
@@ -520,8 +520,8 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>FATAL</c> level.
         /// </summary>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
@@ -547,9 +547,9 @@ namespace DotNetNuke.Instrumentation
         /// <summary>
         ///   Logs a formatted message string with the <c>FATAL</c> level.
         /// </summary>
-        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information</param>
-        /// <param name = "format">A String containing zero or more format items</param>
-        /// <param name = "args">An Object array containing zero or more objects to format</param>
+        /// <param name = "provider">An <see cref = "IFormatProvider" /> that supplies culture-specific formatting information.</param>
+        /// <param name = "format">A String containing zero or more format items.</param>
+        /// <param name = "args">An Object array containing zero or more objects to format.</param>
         /// <remarks>
         ///   <para>
         ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
