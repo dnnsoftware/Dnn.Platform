@@ -130,7 +130,7 @@ namespace log4net.Appender
 			get { return this.m_errorHandler; }
 			set 
 			{
-				lock(this) 
+				lock (this) 
 				{
 					if (value == null) 
 					{
@@ -240,7 +240,7 @@ namespace log4net.Appender
 		public void Close()
 		{
 			// This lock prevents the appender being closed while it is still appending
-			lock(this)
+			lock (this)
 			{
 				if (!this.m_closed)
 				{
@@ -298,7 +298,7 @@ namespace log4net.Appender
 			// this, the message may be broken up into elements from
 			// multiple thread contexts (like get the wrong thread ID).
 
-			lock(this)
+			lock (this)
 			{
 				if (this.m_closed)
 				{
@@ -321,7 +321,7 @@ namespace log4net.Appender
 						this.Append(loggingEvent);
 					}
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					this.ErrorHandler.Error("Failed in DoAppend", ex);
 				}
@@ -395,7 +395,7 @@ namespace log4net.Appender
 			// this, the message may be broken up into elements from
 			// multiple thread contexts (like get the wrong thread ID).
 
-			lock(this)
+			lock (this)
 			{
 				if (this.m_closed)
 				{
@@ -415,7 +415,7 @@ namespace log4net.Appender
 
 					ArrayList filteredEvents = new ArrayList(loggingEvents.Length);
 
-					foreach(LoggingEvent loggingEvent in loggingEvents)
+					foreach (LoggingEvent loggingEvent in loggingEvents)
 					{
 						if (this.FilterEvent(loggingEvent))
 						{
@@ -428,7 +428,7 @@ namespace log4net.Appender
 						this.Append((LoggingEvent[])filteredEvents.ToArray(typeof(LoggingEvent)));
 					}
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					this.ErrorHandler.Error("Failed in Bulk DoAppend", ex);
 				}
@@ -492,9 +492,9 @@ namespace log4net.Appender
 
 			IFilter f = this.FilterHead;
 
-			while(f != null) 
+			while (f != null) 
 			{
-				switch(f.Decide(loggingEvent)) 
+				switch (f.Decide(loggingEvent)) 
 				{
 					case FilterDecision.Deny: 
 						return false;	// Return without appending
@@ -634,7 +634,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual protected void Append(LoggingEvent[] loggingEvents)
 		{
-			foreach(LoggingEvent loggingEvent in loggingEvents)
+			foreach (LoggingEvent loggingEvent in loggingEvents)
 			{
 				this.Append(loggingEvent);
 			}

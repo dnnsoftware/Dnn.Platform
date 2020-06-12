@@ -182,7 +182,7 @@ namespace log4net.Util
 				QuietMode = OptionConverter.ToBoolean(SystemInfo.GetAppSetting("log4net.Internal.Quiet"), false);
 				EmitInternalMessages = OptionConverter.ToBoolean(SystemInfo.GetAppSetting("log4net.Internal.Emit"), true);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				// If an exception is thrown here then it looks like the config file does not
 				// parse correctly.

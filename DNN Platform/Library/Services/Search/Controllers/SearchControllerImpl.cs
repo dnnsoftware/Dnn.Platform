@@ -67,10 +67,10 @@ namespace DotNetNuke.Services.Search.Controllers
             Requires.NotNull("Query", searchQuery);
             Requires.PropertyNotEqualTo("searchQuery", "SearchTypeIds", searchQuery.SearchTypeIds.Count(), 0);
 
-            if((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId)))
+            if ((searchQuery.ModuleId > 0) && (searchQuery.SearchTypeIds.Count() > 1 || !searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId)))
                 throw new ArgumentException(Localization.Localization.GetExceptionMessage("ModuleIdMustHaveSearchTypeIdForModule", "ModuleId based search must have SearchTypeId for a module only"));
 
-            if(searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
+            if (searchQuery.SortField == SortFields.CustomStringField || searchQuery.SortField == SortFields.CustomNumericField
                 || searchQuery.SortField == SortFields.NumericKey || searchQuery.SortField == SortFields.Keyword)
                 Requires.NotNullOrEmpty("CustomSortField", searchQuery.CustomSortField);
 
@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 query.Add(NumericRangeQuery.NewLongRange(Constants.ModifiedTimeTag, long.Parse(searchQuery.BeginModifiedTimeUtc.ToString(Constants.DateTimeFormat)), long.Parse(searchQuery.EndModifiedTimeUtc.ToString(Constants.DateTimeFormat)), true, true), Occur.MUST);
             }
 
-            if(searchQuery.RoleId > 0)
+            if (searchQuery.RoleId > 0)
                 query.Add(NumericRangeQuery.NewIntRange(Constants.RoleIdTag, searchQuery.RoleId, searchQuery.RoleId, true, true), Occur.MUST);  
 
             foreach (var tag in searchQuery.Tags)
@@ -314,7 +314,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         result.Url = field.StringValue;
                         break;
                     case Constants.SearchTypeTag:
-                        if(int.TryParse(field.StringValue, out intField)) result.SearchTypeId = intField;
+                        if (int.TryParse(field.StringValue, out intField)) result.SearchTypeId = intField;
                         break;
                     case Constants.ModuleIdTag:
                         if (int.TryParse(field.StringValue, out intField)) result.ModuleId = intField;

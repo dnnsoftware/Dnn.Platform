@@ -99,7 +99,7 @@ namespace log4net.Core
 					throw new ArgumentNullException("name");
 				}
 
-				lock(this)
+				lock (this)
 				{
 					return (Level)this.m_mapName2Level[name];
 				}
@@ -167,7 +167,7 @@ namespace log4net.Core
 			{
 				throw new ArgumentNullException("level");
 			}
-			lock(this)
+			lock (this)
 			{
 				this.m_mapName2Level[level.Name] = level;
 			}
@@ -186,7 +186,7 @@ namespace log4net.Core
 		{
 			get
 			{
-				lock(this)
+				lock (this)
 				{
 					return new LevelCollection(this.m_mapName2Level.Values);
 				}
@@ -218,7 +218,7 @@ namespace log4net.Core
 				throw new ArgumentNullException("defaultLevel");
 			}
 
-			lock(this)
+			lock (this)
 			{
 				Level level = (Level)this.m_mapName2Level[defaultLevel.Name];
 				if (level == null)

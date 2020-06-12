@@ -192,7 +192,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A string representing the Name of the Field</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
 		 Description("Set the Style for the Help Text.")]
 		public Style HelpStyle
 		{
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A string representing the Name of the Field</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
 		 Description("Set the Style for the Label Text")]
 		public Style LabelStyle
 		{
@@ -328,7 +328,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 this.pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", this.pnlHelp.ControlStyle.CssClass);
             }
-            if(!this.pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
+            if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnFormHelpContent"))
             {
                 this.pnlHelp.ControlStyle.CssClass = string.Format("dnnFormHelpContent {0}", this.pnlHelp.ControlStyle.CssClass);
             }

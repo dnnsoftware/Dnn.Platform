@@ -147,7 +147,7 @@ namespace log4net.Repository.Hierarchy
 		{
 			get 
 			{
-				for(Logger c = this; c != null; c = c.m_parent) 
+				for (Logger c = this; c != null; c = c.m_parent) 
 				{
 					Level level = c.m_level;
 
@@ -567,7 +567,7 @@ namespace log4net.Repository.Hierarchy
 
 			int writes = 0;
 
-			for(Logger c=this; c != null; c=c.m_parent) 
+			for (Logger c=this; c != null; c=c.m_parent) 
 			{
 				if (c.m_appenderAttachedImpl != null) 
 				{
@@ -615,7 +615,7 @@ namespace log4net.Repository.Hierarchy
 					LogLog.Debug(declaringType, "       DynamicDirectory: " + AppDomain.CurrentDomain.DynamicDirectory);
 #endif
 				}
-				catch(System.Security.SecurityException)
+				catch (System.Security.SecurityException)
 				{
 					// Insufficient permissions to display info from the AppDomain
 				}
@@ -638,7 +638,7 @@ namespace log4net.Repository.Hierarchy
 				if (this.m_appenderAttachedImpl != null)
 				{
 					AppenderCollection appenders = this.m_appenderAttachedImpl.Appenders;
-					foreach(IAppender appender in appenders)
+					foreach (IAppender appender in appenders)
 					{
 						if (appender is IAppenderAttachable)
 						{

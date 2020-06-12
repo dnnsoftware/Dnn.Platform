@@ -23,7 +23,7 @@ namespace DotNetNuke.Common.Utilities
     {
         public ArrayList GetUrls(int PortalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof (UrlInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetUrls(PortalID), typeof(UrlInfo));
         }
 
         public UrlInfo GetUrl(int PortalID, string Url)
@@ -108,7 +108,7 @@ namespace DotNetNuke.Common.Utilities
             UrlTrackingInfo objUrlTracking = this.GetUrlTracking(PortalID, Url, ModuleId);
             if (objUrlTracking != null)
             {
-                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof (UrlLogInfo));
+                arrUrlLog = CBO.FillCollection(DataProvider.Instance().GetUrlLog(objUrlTracking.UrlTrackingID, StartDate, EndDate), typeof(UrlLogInfo));
             }
             return arrUrlLog;
         }

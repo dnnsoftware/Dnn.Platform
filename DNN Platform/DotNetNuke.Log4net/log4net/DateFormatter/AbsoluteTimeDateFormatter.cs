@@ -129,7 +129,7 @@ namespace log4net.DateFormatter
 				// update the s_lastTimeToTheSecond and s_lastTimeStrings
 
 				// PERF: Try removing this lock and using a new StringBuilder each time
-				lock(s_lastTimeBuf)
+				lock (s_lastTimeBuf)
 				{
                                         timeString = (string) s_lastTimeStrings[this.GetType()];
 

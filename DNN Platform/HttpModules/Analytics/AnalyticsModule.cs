@@ -26,7 +26,7 @@ namespace DotNetNuke.HttpModules.Analytics
     /// -----------------------------------------------------------------------------
     public class AnalyticsModule : IHttpModule
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AnalyticsModule));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsModule));
 
         public string ModuleName
         {

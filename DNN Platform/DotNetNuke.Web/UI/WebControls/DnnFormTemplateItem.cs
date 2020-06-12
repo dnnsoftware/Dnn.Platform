@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnFormTemplateItem : DnnFormItemBase
     {
         [Browsable(false), DefaultValue(null), Description("The Item Template."), TemplateInstance(TemplateInstance.Single), PersistenceMode(PersistenceMode.InnerProperty),
-         TemplateContainer(typeof (DnnFormEmptyTemplate))]
+         TemplateContainer(typeof(DnnFormEmptyTemplate))]
         public ITemplate ItemTemplate { get; set; }
 
         protected override void CreateControlHierarchy()

@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Search.Internals
                 foreach (var searchContentSource in searchContentSources)
                 {
                     var key = string.Format("{0}-{1}", searchContentSource.SearchTypeId, searchContentSource.ModuleDefinitionId);
-                    if(!data.ContainsKey(key))
+                    if (!data.ContainsKey(key))
                         data.Add(key, searchContentSource.LocalizedName);
                 }
             }
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Search.Internals
             
             if (searchDocument.SearchTypeId == this._moduleSearchTypeId)
             {
-                if(searchDocument.ModuleDefId <= 0)
+                if (searchDocument.ModuleDefId <= 0)
                     throw new ArgumentException( Localization.Localization.GetExceptionMessage("ModuleDefIdMustBeGreaterThanZero","ModuleDefId must be greater than zero when SearchTypeId is for a module"));
 
                 if (searchDocument.ModuleId <= 0)

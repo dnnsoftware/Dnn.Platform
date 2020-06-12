@@ -128,7 +128,7 @@ namespace DotNetNuke.Tests.Core
             this._callTimes.Add(DateTime.Now);
             this.TimesCalled++;
 
-            if(this._failuresRemaining != 0)
+            if (this._failuresRemaining != 0)
             {
                 if (this._failuresRemaining > 0)
                 {

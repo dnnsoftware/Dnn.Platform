@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Exceptions
 {
     public class SecurityException : BasePortalException
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SecurityException));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityException));
         private string m_IP;
         private string m_Querystring;
 

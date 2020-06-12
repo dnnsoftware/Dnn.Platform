@@ -242,7 +242,7 @@ namespace DotNetNuke.Security.Roles
                             this.Description = reader.ReadElementContentAsString();
                             break;
                         default:
-                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }

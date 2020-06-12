@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public ArrayList GetWorkflows(int PortalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetWorkflows(PortalID), typeof (WorkflowStateInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetWorkflows(PortalID), typeof(WorkflowStateInfo));
         }
 
         /// -----------------------------------------------------------------------------
@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Html
         public object GetWorkflowStatesCallBack(CacheItemArgs cacheItemArgs)
         {
             var WorkflowID = (int) (cacheItemArgs.ParamList[0]);
-            return CBO.FillCollection(DataProvider.Instance().GetWorkflowStates(WorkflowID), typeof (WorkflowStateInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetWorkflowStates(WorkflowID), typeof(WorkflowStateInfo));
         }
 
         /// -----------------------------------------------------------------------------

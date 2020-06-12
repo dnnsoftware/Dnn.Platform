@@ -16,7 +16,7 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListInfoCollection : CollectionBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ListInfoCollection));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListInfoCollection));
         private readonly Hashtable mKeyIndexLookup = new Hashtable();
 
         public ListInfo GetChildren(string ParentName)

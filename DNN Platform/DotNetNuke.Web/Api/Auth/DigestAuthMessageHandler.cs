@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.Api.Auth
             {
                 SetCurrentPrincipal(digestAuthentication.User, request);
             }
-            else if(digestAuthentication.IsNonceStale)
+            else if (digestAuthentication.IsNonceStale)
             {
                 return true;
             }

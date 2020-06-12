@@ -48,7 +48,7 @@ namespace DotNetNuke.UI.Modules
     /// </summary>
     public sealed class ModuleHost : Panel
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleHost));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleHost));
 
         private static readonly Regex CdfMatchRegex = new Regex(@"<\!--CDF\((?<type>JAVASCRIPT|CSS|JS-LIBRARY)\|(?<path>.+?)(\|(?<provider>.+?)\|(?<priority>\d+?))?\)-->",
             RegexOptions.IgnoreCase | RegexOptions.Compiled);

@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
     [DnnModuleAuthorize(AccessLevel = SecurityAccessLevel.View)]
     public class MemberDirectoryController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (MemberDirectoryController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MemberDirectoryController));
         #region Private Methods
 
         private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
@@ -57,7 +57,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
         private bool CanViewGroupMembers(int portalId, int groupId)
         {
             var group = RoleController.Instance.GetRole(portalId, r => r.RoleID == groupId);
-            if(group == null)
+            if (group == null)
             {
                 return false;
             }

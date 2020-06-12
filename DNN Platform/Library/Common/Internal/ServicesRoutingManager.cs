@@ -10,7 +10,7 @@ namespace DotNetNuke.Common.Internal
 {
     public static class ServicesRoutingManager
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesRoutingManager));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
 
         public static void RegisterServiceRoutes()
         {

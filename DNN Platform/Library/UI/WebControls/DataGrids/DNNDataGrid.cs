@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.WebControls
         {
             foreach (DataGridColumn column in this.Columns)
             {
-                if (ReferenceEquals(column.GetType(), typeof (CheckBoxColumn)))
+                if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
                 {
 					//Manage CheckBox column events
                     var cbColumn = (CheckBoxColumn) column;

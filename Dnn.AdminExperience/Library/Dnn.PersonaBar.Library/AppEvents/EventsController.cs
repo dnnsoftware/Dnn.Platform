@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
 {
     public class EventsController : ServiceLocator<IEventsController, EventsController>, IEventsController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (EventsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(EventsController));
 
         private static readonly object LockThis = new object();
         private static bool _isInitialized;
@@ -112,7 +112,7 @@ namespace Dnn.PersonaBar.Library.AppEvents
                      t.IsClass &&
                      !t.IsAbstract &&
                      t.IsVisible &&
-                     typeof (T).IsAssignableFrom(t) &&
+                     typeof(T).IsAssignableFrom(t) &&
                      (IgnoreVersionMatchCheck(t) || VersionMatched(t)));
         }
 

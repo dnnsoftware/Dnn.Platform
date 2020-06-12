@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Search
     {
         #region Private Fields
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleIndexer));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleIndexer));
         private static readonly int ModuleSearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId;
 
 		private readonly IDictionary<int, IEnumerable<ModuleIndexInfo>> _searchModules;

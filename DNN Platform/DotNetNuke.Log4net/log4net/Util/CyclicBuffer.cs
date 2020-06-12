@@ -89,7 +89,7 @@ namespace log4net.Util
 				throw new ArgumentNullException("loggingEvent");
 			}
 
-			lock(this)
+			lock (this)
 			{
 				// save the discarded event
 				LoggingEvent discardedLoggingEvent = this.m_events[this.m_last];
@@ -135,7 +135,7 @@ namespace log4net.Util
 		/// </remarks>
 		public LoggingEvent PopOldest() 
 		{
-			lock(this)
+			lock (this)
 			{
 				LoggingEvent ret = null;
 				if (this.m_numElems > 0) 
@@ -163,7 +163,7 @@ namespace log4net.Util
 		/// </remarks>
 		public LoggingEvent[] PopAll()
 		{
-			lock(this)
+			lock (this)
 			{
 				LoggingEvent[] ret = new LoggingEvent[this.m_numElems];
 
@@ -196,7 +196,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void Clear()
 		{
-			lock(this)
+			lock (this)
 			{
 				// Set all the elements to null
 				Array.Clear(this.m_events, 0, this.m_events.Length);
@@ -284,7 +284,7 @@ namespace log4net.Util
 		{
 			get
 			{
-				lock(this)
+				lock (this)
 				{
 					if (i < 0 || i >= this.m_numElems)
 					{
@@ -309,7 +309,7 @@ namespace log4net.Util
 		{
 			get 
 			{ 
-				lock(this)
+				lock (this)
 				{
 					return this.m_maxSize; 
 				}
@@ -337,7 +337,7 @@ namespace log4net.Util
 		{
 			get 
 			{ 
-				lock(this) 
+				lock (this) 
 				{ 
 					return this.m_numElems; 
 				}

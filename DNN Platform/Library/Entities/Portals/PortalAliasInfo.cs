@@ -121,7 +121,7 @@ namespace DotNetNuke.Entities.Portals
                         this.IsPrimary = reader.ReadElementContentAsBoolean();
                         break;
                     default:
-                        if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }

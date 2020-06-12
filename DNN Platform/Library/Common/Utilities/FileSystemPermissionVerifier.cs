@@ -22,7 +22,7 @@ namespace DotNetNuke.Common.Utilities
     /// </remarks>
     public class FileSystemPermissionVerifier
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileSystemPermissionVerifier));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemPermissionVerifier));
         private readonly string _basePath;
 
 	    private int _retryTimes = 30;
@@ -80,7 +80,7 @@ namespace DotNetNuke.Common.Utilities
                 File.Delete(verifyPath);
             }
 
-            using(File.Create(verifyPath))
+            using (File.Create(verifyPath))
             {
                 //do nothing just let it close
             }

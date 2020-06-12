@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Containers
             {
                 foreach (ModuleInfo instance in ModuleController.Instance.GetTabModulesByModule(module.ModuleID))
                 {
-                    if(instance.IsShared)
+                    if (instance.IsShared)
                     {
                         //HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);

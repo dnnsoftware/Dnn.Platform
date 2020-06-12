@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Cache
 {
     public class FBCachingProvider : CachingProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FBCachingProvider));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FBCachingProvider));
         internal const string CacheFileExtension = ".resources";
         internal static string CachingDirectory = "Cache\\";
 

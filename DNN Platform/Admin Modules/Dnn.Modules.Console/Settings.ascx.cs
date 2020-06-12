@@ -28,7 +28,7 @@ namespace Dnn.Modules.Console
 
     public partial class Settings : ModuleSettingsBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Settings));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
         private void BindTabs(int tabId, bool includeParent)
         {

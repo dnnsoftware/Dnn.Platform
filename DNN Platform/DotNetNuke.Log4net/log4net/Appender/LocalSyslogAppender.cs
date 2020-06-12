@@ -418,7 +418,7 @@ namespace log4net.Appender
 				// close syslog
 				closelog();
 			}
-			catch(DllNotFoundException)
+			catch (DllNotFoundException)
 			{
 				// Ignore dll not found at this point
 			}

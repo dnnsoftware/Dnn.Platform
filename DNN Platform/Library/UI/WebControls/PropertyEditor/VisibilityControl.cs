@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.WebControls
 			var dataChanged = false;
             var presentVisibility = this.Visibility.VisibilityMode;
             var postedValue = Convert.ToInt32(postCollection[postDataKey]);
-		    var postedVisibility = (UserVisibilityMode) Enum.ToObject(typeof (UserVisibilityMode), postedValue);
+		    var postedVisibility = (UserVisibilityMode) Enum.ToObject(typeof(UserVisibilityMode), postedValue);
             if (!presentVisibility.Equals(postedVisibility) || postedVisibility == UserVisibilityMode.FriendsAndGroups)
 			{
                 if (postedVisibility == UserVisibilityMode.FriendsAndGroups)

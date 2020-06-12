@@ -599,7 +599,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
                     if (!ClientAPI.UseExternalScripts)
                     {
-                        ClientAPI.RegisterEmbeddedResource(page, "dnn.scripts.js", typeof (ClientAPI));
+                        ClientAPI.RegisterEmbeddedResource(page, "dnn.scripts.js", typeof(ClientAPI));
                     }
                     break;
                 case ClientAPI.ClientNamespaceReferences.dnn_dom_positioning:

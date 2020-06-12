@@ -65,7 +65,7 @@ namespace log4net.Util.PatternStringConverters
 					writer.Write( windowsIdentity.Name );
 				}
 			}
-			catch(System.Security.SecurityException)
+			catch (System.Security.SecurityException)
 			{
 				// This security exception will occur if the caller does not have 
 				// some undefined set of SecurityPermission flags.

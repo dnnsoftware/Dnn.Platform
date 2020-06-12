@@ -97,7 +97,7 @@ namespace log4net.Util
 		{
 			if (this.m_entries != null)
 			{
-				foreach(LevelMappingEntry entry in this.m_entries)
+				foreach (LevelMappingEntry entry in this.m_entries)
 				{
 					if (level >= entry.Level)
 					{
@@ -134,7 +134,7 @@ namespace log4net.Util
 			// Reverse list so that highest level is first
 			Array.Reverse(sortValues, 0, sortValues.Length);
 
-			foreach(LevelMappingEntry entry in sortValues)
+			foreach (LevelMappingEntry entry in sortValues)
 			{
 				entry.ActivateOptions();
 			}

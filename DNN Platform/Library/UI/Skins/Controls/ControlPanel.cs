@@ -27,7 +27,7 @@ namespace DotNetNuke.UI.Skins.Controls
 				var objControlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
                 var objForm = (HtmlForm)this.Page.FindControl("Form");
 
-                if(objControlPanel.IncludeInControlHierarchy)
+                if (objControlPanel.IncludeInControlHierarchy)
                 {
                     objControlPanel.IsDockable = this.IsDockable;
                     if (!Host.ControlPanel.EndsWith("controlbar.ascx", StringComparison.InvariantCultureIgnoreCase))

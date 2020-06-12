@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.Api.Internal
         public static bool HasTabPermission(string permissionKey)
         {
             var principal = Thread.CurrentPrincipal;
-            if(!principal.Identity.IsAuthenticated)
+            if (!principal.Identity.IsAuthenticated)
             {
                 return false;
             }

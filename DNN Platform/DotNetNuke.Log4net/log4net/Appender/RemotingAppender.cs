@@ -278,7 +278,7 @@ namespace log4net.Appender
 				// Send the events
 				this.m_sinkObj.LogEvents(events);
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				this.ErrorHandler.Error("Failed in SendBufferCallback", ex);
 			}

@@ -39,7 +39,7 @@ namespace DotNetNuke.Common.Utilities
 {
     public class FileSystemUtils
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileSystemUtils));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileSystemUtils));
         #region Private Methods
 
         private static string CreateFile(IFolderInfo folder, string fileName, string contentType, Stream fileContent, bool unzip, bool overwrite, bool checkPermissions)
@@ -365,7 +365,7 @@ namespace DotNetNuke.Common.Utilities
                                 }
                             }
                         }
-                        catch(Exception ex)
+                        catch (Exception ex)
                         {
 							Logger.Error(ex);
                         }

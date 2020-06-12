@@ -629,7 +629,7 @@ namespace DotNetNuke.UI.Skins
 	            var messageType = ModuleMessage.ModuleMessageType.YellowWarning;
 				if (HttpContext.Current.Items.Contains(OnInitMessageType))
 				{
-					messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof (ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
+					messageType = (ModuleMessage.ModuleMessageType)Enum.Parse(typeof(ModuleMessage.ModuleMessageType), HttpContext.Current.Items[OnInitMessageType].ToString(), true);
 				}
 				AddPageMessage(this, string.Empty, HttpContext.Current.Items[OnInitMessage].ToString(), messageType);
 
@@ -993,7 +993,7 @@ namespace DotNetNuke.UI.Skins
             //try to inject the module into the pane
             try
             {
-                if(this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId || this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId)
+                if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId || this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId)
                 {
                     var profileModule = this.ModuleControlPipeline.LoadModuleControl(this.Page, module) as IProfileModule;
                     if (profileModule == null || profileModule.DisplayModule)

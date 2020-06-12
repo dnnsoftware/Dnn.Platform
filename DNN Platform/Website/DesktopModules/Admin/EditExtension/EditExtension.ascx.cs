@@ -201,7 +201,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
                 this.packageForm.DataSource = this.Package;
                 this.packageFormReadOnly.DataSource = this.Package;
-                if(!this.Page.IsPostBack)
+                if (!this.Page.IsPostBack)
                 {
                     this.packageForm.DataBind();
                     this.packageFormReadOnly.DataBind();

@@ -438,7 +438,7 @@ namespace DNN.Integration.Test.Framework
         public HttpResponseMessage PostJson(string relativeUrl,
             object content, IDictionary<string, string> contentHeaders = null, bool waitHttpResponse = true, bool ignoreLoggedIn = false)
         {
-            if(!ignoreLoggedIn)
+            if (!ignoreLoggedIn)
                 this.EnsureLoggedIn();
 
             using (var client = this.CreateHttpClient("/", true))

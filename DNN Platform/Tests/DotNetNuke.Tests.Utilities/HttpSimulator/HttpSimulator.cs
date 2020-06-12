@@ -474,7 +474,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         /// <returns></returns>
         public HttpSimulator SetReferer(Uri referer)
         {
-            if(this.WorkerRequest != null)
+            if (this.WorkerRequest != null)
                 this.WorkerRequest.SetReferer(referer);
             this._referer = referer;
             return this;
@@ -623,7 +623,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             //We cheat by using reflection.
 
             // get singleton property value
-            var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof (HttpRuntime));
+            var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
            
             // set app path property value
             ReflectionHelper.SetPrivateInstanceFieldValue("_appDomainAppPath", runtime, this.PhysicalApplicationPath);

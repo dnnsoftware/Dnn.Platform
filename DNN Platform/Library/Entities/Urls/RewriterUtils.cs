@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Urls
 
             bool shouldOmit = omissions.Any(x => localPath.EndsWith(x));
 
-            if(!shouldOmit)
+            if (!shouldOmit)
             {
                 shouldOmit = Globals.ServicesFrameworkRegex.IsMatch(localPath);
             }

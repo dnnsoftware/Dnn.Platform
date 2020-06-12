@@ -15,7 +15,7 @@ namespace DotNetNuke.Common.Utilities.Internal
     /// </summary>
     public class RetryableAction
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RetryableAction));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
         /// <summary>
         /// The Action to execute
         /// </summary>
@@ -73,7 +73,7 @@ namespace DotNetNuke.Common.Utilities.Internal
 
         public RetryableAction(Action action, string description, int maxRetries, TimeSpan delay, float delayMultiplier)
         {
-            if(delay.TotalMilliseconds > int.MaxValue)
+            if (delay.TotalMilliseconds > int.MaxValue)
             {
                 throw new ArgumentException(string.Format("delay must be less than {0} milliseconds", int.MaxValue));
             }
@@ -99,7 +99,7 @@ namespace DotNetNuke.Common.Utilities.Internal
                         Logger.TraceFormat("Action succeeded - {0}", this.Description);
                     return;
                 }
-                catch(Exception)
+                catch (Exception)
                 {
                     if (retrysRemaining <= 0)
                     {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Common.Utilities.Internal
                     SleepAction.Invoke(currentDelay);
 
                     const double epsilon = 0.0001;
-                    if(Math.Abs(this.DelayMultiplier - 1) > epsilon)
+                    if (Math.Abs(this.DelayMultiplier - 1) > epsilon)
                     {
                         currentDelay = (int)(currentDelay * this.DelayMultiplier);
                     }

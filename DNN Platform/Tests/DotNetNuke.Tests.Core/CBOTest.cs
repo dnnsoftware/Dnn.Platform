@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         {
             var cboTable = new DataTable("CBOTable");
             var colValue = 12;
-            cboTable.Columns.Add("IntProp", typeof (int));
+            cboTable.Columns.Add("IntProp", typeof(int));
             cboTable.Rows.Add(colValue);
 
             //Assert.AreEqual(12, moq.Object["TestColumn"]);
@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         {
             var cboTable = new DataTable("CBOTable");
             var colValue = Guid.NewGuid().ToString();
-            cboTable.Columns.Add("StringProp", typeof (String));
+            cboTable.Columns.Add("StringProp", typeof(String));
             cboTable.Rows.Add(colValue);
 
             //Assert.AreEqual(12, moq.Object["TestColumn"]);
@@ -70,7 +70,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             var colValue = new DateTime(2010, 12, 11, 10, 9, 8);
 
-            cboTable.Columns.Add("DateTimeProp", typeof (DateTime));
+            cboTable.Columns.Add("DateTimeProp", typeof(DateTime));
             cboTable.Rows.Add(colValue);
 
             //Assert.AreEqual(12, moq.Object["TestColumn"]);
@@ -89,7 +89,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             var colValue = Encoding.ASCII.GetBytes("Hello This is test");
 
-            cboTable.Columns.Add("ByteArrayProp", typeof (byte[]));
+            cboTable.Columns.Add("ByteArrayProp", typeof(byte[]));
             cboTable.Rows.Add(colValue);
 
 
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             var colValue = Encoding.ASCII.GetBytes("Hello This is test");
 
-            cboTable.Columns.Add("ArrayProp", typeof (byte[]));
+            cboTable.Columns.Add("ArrayProp", typeof(byte[]));
             cboTable.Rows.Add(colValue);
 
 
@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             var colValue = true;
 
-            cboTable.Columns.Add("BitProp", typeof (Boolean));
+            cboTable.Columns.Add("BitProp", typeof(Boolean));
             cboTable.Rows.Add(colValue);
 
 
@@ -140,7 +140,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             decimal colValue = 12.99m;
 
-            cboTable.Columns.Add("DecimalProp", typeof (decimal));
+            cboTable.Columns.Add("DecimalProp", typeof(decimal));
             cboTable.Rows.Add(colValue);
 
 
@@ -157,7 +157,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             decimal colValue = 1;
 
-            cboTable.Columns.Add("BitProp", typeof (int));
+            cboTable.Columns.Add("BitProp", typeof(int));
             cboTable.Rows.Add(colValue);
 
 
@@ -174,7 +174,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             decimal colValue = 0;
 
-            cboTable.Columns.Add("BitProp", typeof (int));
+            cboTable.Columns.Add("BitProp", typeof(int));
             cboTable.Rows.Add(colValue);
 
 

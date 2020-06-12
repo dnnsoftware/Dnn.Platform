@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Icons
     /// </remarks>
     public class IconController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IconController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IconController));
         #region Constants
 
         public const string DefaultIconSize = "16X16";

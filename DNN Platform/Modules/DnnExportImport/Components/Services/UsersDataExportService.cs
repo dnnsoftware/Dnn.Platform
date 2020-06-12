@@ -230,29 +230,29 @@ namespace Dnn.ExportImport.Components.Services
 
         private static readonly Tuple<string, Type>[] UserRolesDatasetColumns =
         {
-            new Tuple<string, Type>("PortalId", typeof (int)),
-            new Tuple<string, Type>("UserId", typeof (int)),
-            new Tuple<string, Type>("RoleId", typeof (int)),
-            new Tuple<string, Type>("ExpiryDate", typeof (DateTime)),
-            new Tuple<string, Type>("IsTrialUsed", typeof (bool)),
-            new Tuple<string, Type>("EffectiveDate", typeof (DateTime)),
-            new Tuple<string, Type>("CreatedByUserId", typeof (int)),
-            new Tuple<string, Type>("LastModifiedByUserId", typeof (int)),
-            new Tuple<string, Type>("Status", typeof (int)),
-            new Tuple<string, Type>("IsOwner", typeof (bool)),
-            new Tuple<string, Type>("IsSuperUser", typeof (bool)),
+            new Tuple<string, Type>("PortalId", typeof(int)),
+            new Tuple<string, Type>("UserId", typeof(int)),
+            new Tuple<string, Type>("RoleId", typeof(int)),
+            new Tuple<string, Type>("ExpiryDate", typeof(DateTime)),
+            new Tuple<string, Type>("IsTrialUsed", typeof(bool)),
+            new Tuple<string, Type>("EffectiveDate", typeof(DateTime)),
+            new Tuple<string, Type>("CreatedByUserId", typeof(int)),
+            new Tuple<string, Type>("LastModifiedByUserId", typeof(int)),
+            new Tuple<string, Type>("Status", typeof(int)),
+            new Tuple<string, Type>("IsOwner", typeof(bool)),
+            new Tuple<string, Type>("IsSuperUser", typeof(bool)),
         };
 
         private static readonly Tuple<string, Type>[] UserProfileDatasetColumns =
         {
-            new Tuple<string, Type>("PortalId", typeof (int)),
-            new Tuple<string, Type>("UserId", typeof (int)),
-            new Tuple<string, Type>("PropertyDefinitionId", typeof (int)),
-            new Tuple<string, Type>("PropertyValue", typeof (string)),
-            new Tuple<string, Type>("PropertyText", typeof (string)),
-            new Tuple<string, Type>("Visibility", typeof (int)),
-            new Tuple<string, Type>("ExtendedVisibility", typeof (string)),
-            new Tuple<string, Type>("IsSuperUser", typeof (bool))
+            new Tuple<string, Type>("PortalId", typeof(int)),
+            new Tuple<string, Type>("UserId", typeof(int)),
+            new Tuple<string, Type>("PropertyDefinitionId", typeof(int)),
+            new Tuple<string, Type>("PropertyValue", typeof(string)),
+            new Tuple<string, Type>("PropertyText", typeof(string)),
+            new Tuple<string, Type>("Visibility", typeof(int)),
+            new Tuple<string, Type>("ExtendedVisibility", typeof(string)),
+            new Tuple<string, Type>("IsSuperUser", typeof(bool))
         };
     }
 }

@@ -49,7 +49,7 @@ namespace DotNetNuke.Data
         {
             this.CheckIfScoped();
 
-            if(this.IsCacheable)
+            if (this.IsCacheable)
             {
                 this.CacheArgs.CacheKey = String.Format(this.CacheArgs.CacheKey, scopeValue);
             }
@@ -127,7 +127,7 @@ namespace DotNetNuke.Data
 
         private void InitializeInternal()
         {
-            var type = typeof (T);
+            var type = typeof(T);
             this.Scope = String.Empty;
             this.IsCacheable = false;
             this.IsScoped = false;

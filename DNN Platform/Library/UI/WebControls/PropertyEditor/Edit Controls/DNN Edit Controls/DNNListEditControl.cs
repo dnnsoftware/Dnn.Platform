@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:DNNListEditControl runat=server></{0}:DNNListEditControl>")]
     public class DNNListEditControl : EditControl, IPostBackEventHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DNNListEditControl));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNListEditControl));
         private List<ListEntryInfo> _listEntries;
         private string _listName = "";
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if(this._listEntries == null)
+                if (this._listEntries == null)
                 {
                     var listController = new ListController();
                     if (this.SortAlphabetically)

@@ -248,7 +248,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Edit Control.")]
+        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Edit Control.")]
         public Style EditControlStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -266,7 +266,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Error Text.")]
+        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Error Text.")]
         public Style ErrorStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -275,7 +275,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Group Header Control.")]
+        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Group Header Control.")]
         public Style GroupHeaderStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -287,7 +287,7 @@ namespace DotNetNuke.UI.WebControls
         [Browsable(true), Category("Appearance"), Description("Set whether to include a rule <hr> in the Group Header.")]
         public bool GroupHeaderIncludeRule { get; set; }
 
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Help Text.")]
+        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Help Text.")]
         public Style HelpStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -305,7 +305,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Label Text")]
+        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Label Text")]
         public Style LabelStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -323,7 +323,7 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Visibility Control")]
+        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 		
 		#endregion
@@ -742,7 +742,7 @@ namespace DotNetNuke.UI.WebControls
             var categoryString = Null.NullString;
 
             //Get Category Field
-            var categoryAttributes = objProperty.GetCustomAttributes(typeof (CategoryAttribute), true);
+            var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {
                 var category = (CategoryAttribute) categoryAttributes[0];
@@ -762,7 +762,7 @@ namespace DotNetNuke.UI.WebControls
 
             foreach (PropertyInfo objProperty in arrObjects)
             {
-                var categoryAttributes = objProperty.GetCustomAttributes(typeof (CategoryAttribute), true);
+                var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
                 if (categoryAttributes.Length > 0)
                 {
                     var category = (CategoryAttribute) categoryAttributes[0];
@@ -792,7 +792,7 @@ namespace DotNetNuke.UI.WebControls
             var objProperty = (PropertyInfo) obj;
 
             bool isVisible = true;
-            object[] browsableAttributes = objProperty.GetCustomAttributes(typeof (BrowsableAttribute), true);
+            object[] browsableAttributes = objProperty.GetCustomAttributes(typeof(BrowsableAttribute), true);
             if (browsableAttributes.Length > 0)
             {
                 var browsable = (BrowsableAttribute) browsableAttributes[0];
@@ -804,7 +804,7 @@ namespace DotNetNuke.UI.WebControls
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
 				//Check if property is required - as this will need to override visibility
-                object[] requiredAttributes = objProperty.GetCustomAttributes(typeof (RequiredAttribute), true);
+                object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
                 if (requiredAttributes.Length > 0)
                 {
                     var required = (RequiredAttribute) requiredAttributes[0];

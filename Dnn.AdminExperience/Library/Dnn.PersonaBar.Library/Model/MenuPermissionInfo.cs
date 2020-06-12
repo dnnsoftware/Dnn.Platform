@@ -201,7 +201,7 @@ namespace Dnn.PersonaBar.Library.Model
             {
                 return true;
             }
-            if (obj.GetType() != typeof (MenuPermissionInfo))
+            if (obj.GetType() != typeof(MenuPermissionInfo))
             {
                 return false;
             }

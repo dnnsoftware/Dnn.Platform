@@ -86,7 +86,7 @@ namespace log4net.Util
 		/// </remarks>
 		public ReadOnlyPropertiesDictionary(ReadOnlyPropertiesDictionary propertiesDictionary)
 		{
-			foreach(DictionaryEntry entry in propertiesDictionary)
+			foreach (DictionaryEntry entry in propertiesDictionary)
 			{
 				this.InnerHashtable.Add(entry.Key, entry.Value);
 			}
@@ -110,7 +110,7 @@ namespace log4net.Util
 		/// </remarks>
 		protected ReadOnlyPropertiesDictionary(SerializationInfo info, StreamingContext context)
 		{
-			foreach(SerializationEntry entry in info)
+			foreach (SerializationEntry entry in info)
 			{
 				// The keys are stored as Xml encoded names
 				this.InnerHashtable[XmlConvert.DecodeName(entry.Name)] = entry.Value;
@@ -215,7 +215,7 @@ namespace log4net.Util
 #endif
         public virtual void GetObjectData(SerializationInfo info, StreamingContext context)
 		{
-			foreach(DictionaryEntry entry in this.InnerHashtable.Clone() as IDictionary)
+			foreach (DictionaryEntry entry in this.InnerHashtable.Clone() as IDictionary)
 			{
 				string entryKey = entry.Key as string;
 				object entryValue = entry.Value;

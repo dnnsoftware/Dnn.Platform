@@ -19,7 +19,7 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class RelationshipServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RelationshipServiceController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RelationshipServiceController));
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.InternalServices
                 Logger.Error(exc);
             }
             
-            if(success)
+            if (success)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }

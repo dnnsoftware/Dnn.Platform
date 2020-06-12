@@ -180,7 +180,7 @@ namespace DotNetNuke.Instrumentation
 
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelDebug))
             {
-                if(!args.Any())
+                if (!args.Any())
                 {
                     Logger.Debug(format);
                 }
@@ -228,7 +228,7 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelInfo))
             {
-                if(!args.Any())
+                if (!args.Any())
                 {
                     Logger.Info(format);
                 }
@@ -276,7 +276,7 @@ namespace DotNetNuke.Instrumentation
             EnsureConfig();
             if (Logger.Logger.IsEnabledFor(DnnLogger.LevelWarn))
             {
-                if(!args.Any())
+                if (!args.Any())
                 {
                     Logger.Warn(format);
                 }

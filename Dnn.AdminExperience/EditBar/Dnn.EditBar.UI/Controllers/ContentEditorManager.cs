@@ -330,7 +330,7 @@ namespace Dnn.EditBar.UI.Controllers
                 foundControls.Add(rootControl);
             }
 
-            foreach(Control subControl in rootControl.Controls)
+            foreach (Control subControl in rootControl.Controls)
             {
                 FindControlRecursive(subControl, controlId, foundControls);
             }
@@ -575,7 +575,7 @@ namespace Dnn.EditBar.UI.Controllers
             {
                 panels.Add(parent as UpdatePanel);
             }
-            else if(parent != null && !this.IsListControl(parent))
+            else if (parent != null && !this.IsListControl(parent))
             {
                 foreach (Control childControl in parent.Controls)
                 {

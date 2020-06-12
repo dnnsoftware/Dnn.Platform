@@ -24,7 +24,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 {
     public partial class PayPalSubscription : PageBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PayPalSubscription));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PayPalSubscription));
         private void InitializeComponent()
         {
         }

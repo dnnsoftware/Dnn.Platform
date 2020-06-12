@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.ClientCapability
 
 				return facebookRequest;
 			}
-			catch(Exception)
+			catch (Exception)
 			{
 				return null;
 			}

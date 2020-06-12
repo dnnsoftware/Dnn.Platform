@@ -340,7 +340,7 @@ namespace log4net
 				}
 				else
 				{
-					while(stack.Count > maxDepth)
+					while (stack.Count > maxDepth)
 					{
 						stack.Pop();
 					}

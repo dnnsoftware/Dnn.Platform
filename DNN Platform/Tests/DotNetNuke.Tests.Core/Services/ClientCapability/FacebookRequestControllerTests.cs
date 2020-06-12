@@ -134,7 +134,7 @@ namespace DotNetNuke.Tests.Core.Services.ClientCapability
 		private void SetReadonly(NameValueCollection collection, bool readOnly)
 		{
 			var readOnlyProperty = collection.GetType().GetProperty("IsReadOnly", BindingFlags.NonPublic | BindingFlags.Instance);
-			if(readOnlyProperty != null)
+			if (readOnlyProperty != null)
 			{
 				readOnlyProperty.SetValue(collection, readOnly, null);
 			}

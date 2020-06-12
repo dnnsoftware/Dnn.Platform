@@ -103,7 +103,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             base.OnLoad(e);
 
-            if(!this.IsPostBack)
+            if (!this.IsPostBack)
             {
                 if (this.Model.Groups.Count > 0)
                 {
@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         {
             base.OnSettingsLoaded();
 
-            if(!this.IsPostBack)
+            if (!this.IsPostBack)
             {
                 this.BindSortList();
 

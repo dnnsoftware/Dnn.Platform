@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.Skins.Controls
     	{
     		get
     		{
-    			if(string.IsNullOrEmpty(this._localResourcesFile))
+    			if (string.IsNullOrEmpty(this._localResourcesFile))
     			{
     				this._localResourcesFile = Localization.GetResourceFile(this, MyFileName);
     			}

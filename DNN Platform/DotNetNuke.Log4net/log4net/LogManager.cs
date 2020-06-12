@@ -799,7 +799,7 @@ namespace log4net
 		private static ILog[] WrapLoggers(ILogger[] loggers)
 		{
 			ILog[] results = new ILog[loggers.Length];
-			for(int i=0; i<loggers.Length; i++)
+			for (int i=0; i<loggers.Length; i++)
 			{
 				results[i] = WrapLogger(loggers[i]);
 			}

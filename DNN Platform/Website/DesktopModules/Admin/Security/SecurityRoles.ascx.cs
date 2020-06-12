@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.Admin.Security
     /// -----------------------------------------------------------------------------
     public partial class SecurityRoles : PortalModuleBase, IActionable
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SecurityRoles));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SecurityRoles));
         private readonly INavigationManager _navigationManager;
 		#region "Private Members"
 
@@ -690,7 +690,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         //Add User to Role
                         var isOwner = false;
 
-                        if(((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both)))
+                        if (((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both)))
                             isOwner = this.chkIsOwner.Checked;
 
                         RoleController.AddUserRole(this.User, this.Role, this.PortalSettings, RoleStatus.Approved, datEffectiveDate, datExpiryDate, this.chkNotify.Checked, isOwner);

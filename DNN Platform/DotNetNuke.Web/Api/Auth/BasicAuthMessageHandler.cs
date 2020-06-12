@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Api.Auth
 
         public override HttpResponseMessage OnInboundRequest(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            if(this.NeedsAuthentication(request))
+            if (this.NeedsAuthentication(request))
             {
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (portalSettings != null)

@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.Web.Api
             //including the assembly with object ensures that the assignabliity is done correctly
             var assembliesToReflect = new IAssembly[2];
             assembliesToReflect[0] = new AssemblyWrapper(this.GetType().Assembly);
-            assembliesToReflect[1] = new AssemblyWrapper(typeof (Object).Assembly);
+            assembliesToReflect[1] = new AssemblyWrapper(typeof(Object).Assembly);
 
             assemblyLocator.Setup(x => x.Assemblies).Returns(assembliesToReflect);
 
@@ -76,10 +76,10 @@ namespace DotNetNuke.Tests.Web.Api
             CollectionAssert.AreEquivalent(
                 new[]
                     {
-                        typeof (FakeServiceRouteMapper),
-                        typeof (ReflectedServiceRouteMappers.EmbeddedServiceRouteMapper),
-                        typeof (ExceptionOnCreateInstanceServiceRouteMapper),
-                        typeof (ExceptionOnRegisterServiceRouteMapper)
+                        typeof(FakeServiceRouteMapper),
+                        typeof(ReflectedServiceRouteMappers.EmbeddedServiceRouteMapper),
+                        typeof(ExceptionOnCreateInstanceServiceRouteMapper),
+                        typeof(ExceptionOnRegisterServiceRouteMapper)
                     }, types);
         }
 
@@ -100,9 +100,9 @@ namespace DotNetNuke.Tests.Web.Api
             var assembly = new Mock<IAssembly>();
             assembly.Setup(x => x.GetTypes()).Returns(new[]
                                                           {
-                                                              typeof (ExceptionOnRegisterServiceRouteMapper),
-                                                              typeof (ExceptionOnCreateInstanceServiceRouteMapper),
-                                                              typeof (FakeServiceRouteMapper)
+                                                              typeof(ExceptionOnRegisterServiceRouteMapper),
+                                                              typeof(ExceptionOnCreateInstanceServiceRouteMapper),
+                                                              typeof(FakeServiceRouteMapper)
                                                           });
             var al = new Mock<IAssemblyLocator>();
             al.Setup(x => x.Assemblies).Returns(new[] {assembly.Object});
@@ -119,7 +119,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             FakeServiceRouteMapper.RegistrationCalls = 0;
             var assembly = new Mock<IAssembly>();
-            assembly.Setup(x => x.GetTypes()).Returns(new[] {typeof (FakeServiceRouteMapper)});
+            assembly.Setup(x => x.GetTypes()).Returns(new[] {typeof(FakeServiceRouteMapper)});
             var al = new Mock<IAssemblyLocator>();
             al.Setup(x => x.Assemblies).Returns(new[] {assembly.Object});
             var tl = new TypeLocator {AssemblyLocator = al.Object};

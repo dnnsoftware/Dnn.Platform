@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public class DBLoggingProvider : LoggingProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DBLoggingProvider));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DBLoggingProvider));
         private const int ReaderLockTimeout = 10000;
         private const int WriterLockTimeout = 10000;
         private static readonly IList<LogQueueItem> LogQueue = new List<LogQueueItem>();
@@ -341,7 +341,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 try
                 {
                     dr = DataProvider.Instance().GetLogTypeConfigInfo();
-                    list = CBO.FillCollection(dr, typeof (LogTypeConfigInfo));
+                    list = CBO.FillCollection(dr, typeof(LogTypeConfigInfo));
                     DataCache.SetCache(LogTypeInfoCacheKey, list);
                     FillLogTypeConfigInfoByKey(list);
                 }
@@ -368,7 +368,7 @@ namespace DotNetNuke.Services.Log.EventLog
         public override ArrayList GetLogTypeInfo()
         {
             return CBO.GetCachedObject<ArrayList>(new CacheItemArgs(LogTypeCacheKey, 20, CacheItemPriority.Normal),
-                c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof (LogTypeInfo)));
+                c => CBO.FillCollection(DataProvider.Instance().GetLogTypeInfo(), typeof(LogTypeInfo)));
         }
 
         public override object GetSingleLog(LogInfo logInfo, ReturnType returnType)

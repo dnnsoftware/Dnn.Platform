@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.UserProfile
 {
     public class UserProfilePageHandler : IHttpHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (UserProfilePageHandler));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserProfilePageHandler));
         #region IHttpHandler Members
 
         /// -----------------------------------------------------------------------------

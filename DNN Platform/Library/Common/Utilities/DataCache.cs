@@ -43,7 +43,7 @@ namespace DotNetNuke.Common.Utilities
     /// -----------------------------------------------------------------------------
     public class DataCache
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DataCache));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
         //Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
         public const string UnSecureHostSettingsCacheKey = "UnsecureHostSettings";

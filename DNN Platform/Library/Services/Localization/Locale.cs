@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Localization
             DataTable schemaTable = dr.GetSchemaTable();
             bool hasColumns = schemaTable.Select("ColumnName = 'IsPublished' Or ColumnName = 'PortalID'").Length == 2;
             
-            if(hasColumns)
+            if (hasColumns)
             {
                 this.IsPublished = Null.SetNullBoolean(dr["IsPublished"]);
                 this.PortalId = Null.SetNullInteger(dr["PortalID"]);

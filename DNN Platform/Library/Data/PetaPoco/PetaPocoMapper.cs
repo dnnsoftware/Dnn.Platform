@@ -97,7 +97,7 @@ namespace DotNetNuke.Data.PetaPoco
             _lock.EnterWriteLock();
             try
             {
-                if (Mappers.GetMapper(typeof (T), _defaultMapper) is StandardMapper)
+                if (Mappers.GetMapper(typeof(T), _defaultMapper) is StandardMapper)
                 {
                     Mappers.Register(typeof(T), mapper);
                 }

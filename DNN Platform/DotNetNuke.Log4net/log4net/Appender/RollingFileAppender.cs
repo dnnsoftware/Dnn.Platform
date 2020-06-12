@@ -669,7 +669,7 @@ namespace log4net.Appender
 		/// </remarks>
 		override protected void OpenFile(string fileName, bool append)
 		{
-			lock(this)
+			lock (this)
 			{
 				fileName = this.GetNextOutputFileName(fileName);
 
@@ -677,7 +677,7 @@ namespace log4net.Appender
 				long currentCount = 0;
 				if (append) 
 				{
-					using(this.SecurityContext.Impersonate(this))
+					using (this.SecurityContext.Impersonate(this))
 					{
 						if (System.IO.File.Exists(fileName))
 						{
@@ -759,7 +759,7 @@ namespace log4net.Appender
 			string fullPath = null;
 			string fileName = null;
 
-			using(this.SecurityContext.Impersonate(this))
+			using (this.SecurityContext.Impersonate(this))
 			{
 				fullPath = System.IO.Path.GetFullPath(this.m_baseFileName);
 				fileName = System.IO.Path.GetFileName(fullPath);
@@ -801,7 +801,7 @@ namespace log4net.Appender
 
 			string directory = null;
 
-			using(this.SecurityContext.Impersonate(this))
+			using (this.SecurityContext.Impersonate(this))
 			{
 				string fullPath = Path.GetFullPath(baseFilePath);
 
@@ -839,7 +839,7 @@ namespace log4net.Appender
 				if (this.FileExists(this.m_baseFileName)) 
 				{
 					DateTime last;
-					using(this.SecurityContext.Impersonate(this)) {
+					using (this.SecurityContext.Impersonate(this)) {
 #if !NET_1_0 && !CLI_1_0 && !NETCF
                         if (this.DateTimeStrategy is UniversalDateTime)
 						{
@@ -890,7 +890,7 @@ namespace log4net.Appender
 				bool fileExists = false;
 				string fileName = this.GetNextOutputFileName(this.m_baseFileName);
 
-				using(this.SecurityContext.Impersonate(this))
+				using (this.SecurityContext.Impersonate(this))
 				{
 					fileExists = System.IO.File.Exists(fileName);
 				}
@@ -998,7 +998,7 @@ namespace log4net.Appender
                     LogLog.Debug(declaringType, "File name [" + curFileName + "] moves current count to [" + this.m_curSizeRollBackups + "]");
                 }
 			} 
-			catch(FormatException) 
+			catch (FormatException) 
 			{
 				//this happens when file.log -> file.log.yyyy-MM-dd which is normal
 				//when staticLogFileName == false
@@ -1049,7 +1049,7 @@ namespace log4net.Appender
 			{
 				string baseFileLower = baseFile.ToLower(System.Globalization.CultureInfo.InvariantCulture);
 
-				foreach(string curFileName in arrayFiles)
+				foreach (string curFileName in arrayFiles)
 				{
 					this.InitializeFromOneFile(baseFileLower, curFileName.ToLower(System.Globalization.CultureInfo.InvariantCulture));
 				}
@@ -1079,7 +1079,7 @@ namespace log4net.Appender
 			string r0 = s_date1970.ToString(datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo);
 
 			// Check each type of rolling mode starting with the smallest increment.
-			for(int i = (int)RollPoint.TopOfMinute; i <= (int)RollPoint.TopOfMonth; i++) 
+			for (int i = (int)RollPoint.TopOfMinute; i <= (int)RollPoint.TopOfMonth; i++) 
 			{
 				// Get string representation of next pattern
 				string r1 = this.NextCheckDate(s_date1970, (RollPoint)i).ToString(datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo);
@@ -1151,7 +1151,7 @@ namespace log4net.Appender
 				this.SecurityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
 			}
 
-			using(this.SecurityContext.Impersonate(this))
+			using (this.SecurityContext.Impersonate(this))
 			{
 				// Must convert the FileAppender's m_filePath to an absolute path before we
 				// call ExistingInit(). This will be done by the base.ActivateOptions() but
@@ -1284,12 +1284,12 @@ namespace log4net.Appender
 				try
 				{
 					LogLog.Debug(declaringType, "Moving [" + fromFile + "] -> [" + toFile + "]");
-					using(this.SecurityContext.Impersonate(this))
+					using (this.SecurityContext.Impersonate(this))
 					{
 						System.IO.File.Move(fromFile, toFile);
 					}
 				}
-				catch(Exception moveEx)
+				catch (Exception moveEx)
 				{
 					this.ErrorHandler.Error("Exception while rolling file [" + fromFile + "] -> [" + toFile + "]", moveEx, ErrorCode.GenericFailure);
 				}
@@ -1312,7 +1312,7 @@ namespace log4net.Appender
 		/// </remarks>
 		protected bool FileExists(string path)
 		{
-			using(this.SecurityContext.Impersonate(this))
+			using (this.SecurityContext.Impersonate(this))
 			{
 				return System.IO.File.Exists(path);
 			}
@@ -1343,13 +1343,13 @@ namespace log4net.Appender
 				string tempFileName = fileName + "." + Environment.TickCount + ".DeletePending";
 				try
 				{
-					using(this.SecurityContext.Impersonate(this))
+					using (this.SecurityContext.Impersonate(this))
 					{
 						System.IO.File.Move(fileName, tempFileName);
 					}
 					fileToDelete = tempFileName;
 				}
-				catch(Exception moveEx)
+				catch (Exception moveEx)
 				{
 					LogLog.Debug(declaringType, "Exception while moving file to be deleted [" + fileName + "] -> [" + tempFileName + "]", moveEx);
 				}
@@ -1357,13 +1357,13 @@ namespace log4net.Appender
 				// Try to delete the file (either the original or the moved file)
 				try
 				{
-					using(this.SecurityContext.Impersonate(this))
+					using (this.SecurityContext.Impersonate(this))
 					{
 						System.IO.File.Delete(fileToDelete);
 					}
 					LogLog.Debug(declaringType, "Deleted file [" + fileName + "]");
 				}
-				catch(Exception deleteEx)
+				catch (Exception deleteEx)
 				{
 					if (fileToDelete == fileName)
 					{
@@ -1544,7 +1544,7 @@ namespace log4net.Appender
 			DateTime current = currentDateTime;
 
 			// Do slightly different things depending on what the type of roll point we want.
-			switch(rollPoint) 
+			switch (rollPoint) 
 			{
 				case RollPoint.TopOfMinute:
 					current = current.AddMilliseconds(-current.Millisecond);

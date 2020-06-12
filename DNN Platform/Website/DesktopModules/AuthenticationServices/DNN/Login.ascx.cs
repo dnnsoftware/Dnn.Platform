@@ -34,7 +34,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 	/// </remarks>
 	public partial class Login : AuthenticationLoginBase
 	{
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Login));
+		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Login));
         private readonly INavigationManager _navigationManager;
 
         public Login()

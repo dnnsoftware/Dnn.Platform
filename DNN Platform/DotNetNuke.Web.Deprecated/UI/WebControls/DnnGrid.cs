@@ -57,7 +57,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ClientSettings.Scrolling.AllowScroll = true;
                 this.ClientSettings.Scrolling.UseStaticHeaders = true;
 
-                if(this.RowHeight == 0)
+                if (this.RowHeight == 0)
                     this.RowHeight = 25;
 
                 this.ClientSettings.Scrolling.ScrollHeight = this.RowHeight * this.ScreenRowNumber;

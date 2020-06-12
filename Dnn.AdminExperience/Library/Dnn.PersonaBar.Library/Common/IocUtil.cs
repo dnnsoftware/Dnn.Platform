@@ -11,7 +11,7 @@ namespace Dnn.PersonaBar.Library.Common
 {
     public class IocUtil
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IocUtil));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IocUtil));
 
         #region IOC helpers
 
@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Library.Common
             {
                 if (!string.IsNullOrEmpty(name))
                 {
-                    name += "." + typeof (TContract).FullName;
+                    name += "." + typeof(TContract).FullName;
                 }
 
                 var component = GetInstanceLocal<TContract>(name);
@@ -100,7 +100,7 @@ namespace Dnn.PersonaBar.Library.Common
             if (instance == null)
             {
                 Logger.WarnFormat("No instance of type '{0}' and name '{1}' is registered in the IOC container.",
-                                  typeof (TContract).FullName, name ?? "<empty>");
+                                  typeof(TContract).FullName, name ?? "<empty>");
             }
 
             return instance;

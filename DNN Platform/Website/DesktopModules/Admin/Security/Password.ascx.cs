@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </remarks>
     public partial class Password : UserModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Password));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Password));
         protected bool UseCaptcha
         {
             get

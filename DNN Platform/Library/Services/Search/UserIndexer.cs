@@ -355,7 +355,7 @@ namespace DotNetNuke.Services.Search
                 return;
             }
 
-            var values = Enum.GetValues(typeof (UserVisibilityMode));
+            var values = Enum.GetValues(typeof(UserVisibilityMode));
 
             var clauseCount = 0;
             foreach (var item in values)
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Search
                 var keyword = new StringBuilder("(");
                 foreach (var userId in usersList)
                 {
-                    var mode = Enum.GetName(typeof (UserVisibilityMode), item);
+                    var mode = Enum.GetName(typeof(UserVisibilityMode), item);
                     keyword.AppendFormat("{2} {0}_{1} OR {0}_{1}* ", userId, mode,
                         keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;

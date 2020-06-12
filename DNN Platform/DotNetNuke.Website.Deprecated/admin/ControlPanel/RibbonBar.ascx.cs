@@ -353,7 +353,7 @@ namespace DotNetNuke.UI.ControlPanels
 										"MobilePreview",
 										this.PortalSettings.ActiveTab.TabID);
 
-			if(this.PortalSettings.EnablePopUps)
+			if (this.PortalSettings.EnablePopUps)
 			{
 				return UrlUtils.PopUpUrl(previewUrl, this, this.PortalSettings, true, false, 660, 800);
 			}

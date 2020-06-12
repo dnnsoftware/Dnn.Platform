@@ -10,7 +10,7 @@ using System.ComponentModel;
 
 namespace DotNetNuke.Services.Installer
 {
-    [TypeConverter(typeof (EnumConverter))]
+    [TypeConverter(typeof(EnumConverter))]
     public enum InstallMode
     {
         Install,

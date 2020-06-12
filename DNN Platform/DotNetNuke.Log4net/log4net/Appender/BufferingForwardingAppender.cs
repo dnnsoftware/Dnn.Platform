@@ -81,7 +81,7 @@ namespace log4net.Appender
 		override protected void OnClose()
 		{
 			// Remove all the attached appenders
-			lock(this)
+			lock (this)
 			{
 				// Delegate to base, which will flush buffers
 				base.OnClose();
@@ -136,7 +136,7 @@ namespace log4net.Appender
 			{
 				throw new ArgumentNullException("newAppender");
 			}
-			lock(this)
+			lock (this)
 			{
 				if (this.m_appenderAttachedImpl == null) 
 				{
@@ -161,7 +161,7 @@ namespace log4net.Appender
 		{
 			get
 			{
-				lock(this)
+				lock (this)
 				{
 					if (this.m_appenderAttachedImpl == null)
 					{
@@ -189,7 +189,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public IAppender GetAppender(string name) 
 		{
-			lock(this)
+			lock (this)
 			{
 				if (this.m_appenderAttachedImpl == null || name == null)
 				{
@@ -210,7 +210,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public void RemoveAllAppenders() 
 		{
-			lock(this)
+			lock (this)
 			{
 				if (this.m_appenderAttachedImpl != null) 
 				{
@@ -232,7 +232,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public IAppender RemoveAppender(IAppender appender) 
 		{
-			lock(this)
+			lock (this)
 			{
 				if (appender != null && this.m_appenderAttachedImpl != null) 
 				{
@@ -254,7 +254,7 @@ namespace log4net.Appender
 		/// </remarks>
 		virtual public IAppender RemoveAppender(string name) 
 		{
-			lock(this)
+			lock (this)
 			{
 				if (name != null && this.m_appenderAttachedImpl != null)
 				{

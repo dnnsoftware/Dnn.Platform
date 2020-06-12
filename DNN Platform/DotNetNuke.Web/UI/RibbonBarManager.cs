@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.UI
 {
     public class RibbonBarManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RibbonBarManager));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RibbonBarManager));
         public static TabInfo InitTabInfoObject()
         {
             return InitTabInfoObject(null, TabRelativeLocation.AFTER);
@@ -291,7 +291,7 @@ namespace DotNetNuke.Web.UI
 
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
             //check whether have conflict between tab path and portal alias.
-            if(TabController.IsDuplicateWithPortalAlias(PortalSettings.Current.PortalId, tab.TabPath))
+            if (TabController.IsDuplicateWithPortalAlias(PortalSettings.Current.PortalId, tab.TabPath))
             {
                 throw new DotNetNukeException("The page path is duplicate with a site alias", DotNetNukeErrorCode.DuplicateWithAlias);
             }

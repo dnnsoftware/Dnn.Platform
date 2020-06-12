@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
     /// -----------------------------------------------------------------------------
     public partial class WebUpload : PortalModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (WebUpload));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(WebUpload));
         private readonly INavigationManager _navigationManager;
         public WebUpload()
         {
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                     switch (this.Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
-                            this._FileType = (UploadType) Enum.Parse(typeof (UploadType), this.Request.QueryString["ftype"]);
+                            this._FileType = (UploadType) Enum.Parse(typeof(UploadType), this.Request.QueryString["ftype"]);
                             break;
                     }
                 }

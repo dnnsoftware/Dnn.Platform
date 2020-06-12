@@ -134,7 +134,7 @@ namespace log4net.Util.TypeConverters
 					}
 #endif
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					throw ConversionNotSupportedException.Create(typeof(IPAddress), source, ex);
 				}

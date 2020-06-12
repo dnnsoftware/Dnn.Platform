@@ -61,7 +61,7 @@ namespace log4net.Core
 				MethodBase method = frame.GetMethod();
 				if (method != null)
 				{
-					if(method.DeclaringType != null)
+					if (method.DeclaringType != null)
 						this.m_className = method.DeclaringType.FullName;
 					this.m_method = new MethodItem(method);
 				}

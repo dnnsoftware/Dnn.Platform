@@ -156,7 +156,7 @@ namespace log4net.Util
 				{
 					return bool.Parse(argValue);
 				}
-				catch(Exception e)
+				catch (Exception e)
 				{
 					LogLog.Error(declaringType, "[" + argValue + "] is not in proper bool form.", e);
 				}
@@ -557,7 +557,7 @@ namespace log4net.Util
 			int i = 0;
 			int j, k;
 	
-			while(true) 
+			while (true) 
 			{
 				j = value.IndexOf(DELIM_START, i);
 				if (j == -1) 

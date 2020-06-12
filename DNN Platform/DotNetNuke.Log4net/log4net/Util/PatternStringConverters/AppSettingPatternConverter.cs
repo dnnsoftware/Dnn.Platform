@@ -70,7 +70,7 @@ namespace log4net.Util.PatternStringConverters
                 if (_appSettingsHashTable == null)
                 {
                     Hashtable h = new Hashtable();
-                    foreach(string key in System.Configuration.ConfigurationManager.AppSettings)
+                    foreach (string key in System.Configuration.ConfigurationManager.AppSettings)
                     {
                         h.Add(key, System.Configuration.ConfigurationManager.AppSettings[key]);
                     }

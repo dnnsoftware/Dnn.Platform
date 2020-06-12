@@ -28,7 +28,7 @@ namespace DotNetNuke.Common
         {
             if (!((argValue) is T))
             {
-                throw new ArgumentException(Localization.GetExceptionMessage("ValueMustBeOfType", "The argument '{0}' must be of type '{1}'.", argName, typeof (T).FullName));
+                throw new ArgumentException(Localization.GetExceptionMessage("ValueMustBeOfType", "The argument '{0}' must be of type '{1}'.", argName, typeof(T).FullName));
             }
         }
 

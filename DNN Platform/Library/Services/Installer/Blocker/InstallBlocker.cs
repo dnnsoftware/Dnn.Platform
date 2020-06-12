@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Installer.Blocker
 
         public void RegisterInstallBegining()
         {          
-            if(!this.fileCreated)  
+            if (!this.fileCreated)  
                 File.Create(Globals.ApplicationMapPath + installBlockerFile);
             this.fileCreated = true;
         }

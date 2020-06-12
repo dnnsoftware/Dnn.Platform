@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Content
     /// <summary>Implementation of <see cref="IAttachmentController"/>.</summary>
     public class AttachmentController : IAttachmentController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AttachmentController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AttachmentController));
         public AttachmentController()
             : this(Util.GetContentController())
         {

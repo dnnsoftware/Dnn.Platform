@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
 
             bool shouldAuthorize = this.OAuthClient.IsCurrentService() && this.OAuthClient.HaveVerificationCode();
-            if(this.Mode == AuthMode.Login)
+            if (this.Mode == AuthMode.Login)
             {
                 shouldAuthorize = shouldAuthorize || this.OAuthClient.IsCurrentUserAuthorized();
             }

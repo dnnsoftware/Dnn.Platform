@@ -187,7 +187,7 @@ namespace log4net.Util
 		private void ParseInternal(string pattern, string[] matches)
 		{
 			int offset = 0;
-			while(offset < pattern.Length)
+			while (offset < pattern.Length)
 			{
 				int i = pattern.IndexOf('%', offset);
 				if (i < 0 || i == pattern.Length - 1)
@@ -261,7 +261,7 @@ namespace log4net.Util
 						int remainingStringLength = pattern.Length - offset;
 
 						// Look for pattern
-						for(int m=0; m<matches.Length; m++)
+						for (int m=0; m<matches.Length; m++)
 						{
 							string key = matches[m];
 
@@ -342,7 +342,7 @@ namespace log4net.Util
 				{
                     pc = (PatternConverter)Activator.CreateInstance(converterInfo.Type);
 				}
-				catch(Exception createInstanceEx)
+				catch (Exception createInstanceEx)
 				{
                     LogLog.Error(declaringType, "Failed to create instance of Type [" + converterInfo.Type.FullName + "] using default constructor. Exception: " + createInstanceEx.ToString());
 				}

@@ -252,7 +252,7 @@ namespace log4net.Config
 					{
 						fullPath2ConfigFile = SystemInfo.ConfigurationFileLocation;
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "XmlConfiguratorAttribute: Exception getting ConfigurationFileLocation. Must be able to resolve ConfigurationFileLocation when ConfigFile and ConfigFileExtension properties are not set.", ex);
 					}
@@ -270,7 +270,7 @@ namespace log4net.Config
 					{
 						applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Exception getting ApplicationBaseDirectory. Must be able to resolve ApplicationBaseDirectory and AssemblyFileName when ConfigFileExtension property is set.", ex);
 					}
@@ -288,7 +288,7 @@ namespace log4net.Config
 				{
 					applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+this.m_configFile+"] will be treated as an absolute path.", ex);
 				}
@@ -356,7 +356,7 @@ namespace log4net.Config
 					{
 						systemConfigFilePath = SystemInfo.ConfigurationFileLocation;
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "XmlConfiguratorAttribute: Exception getting ConfigurationFileLocation. Must be able to resolve ConfigurationFileLocation when ConfigFile and ConfigFileExtension properties are not set.", ex);
 					}
@@ -382,7 +382,7 @@ namespace log4net.Config
 					{
 						systemConfigFilePath = SystemInfo.ConfigurationFileLocation;
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "XmlConfiguratorAttribute: Exception getting ConfigurationFileLocation. Must be able to resolve ConfigurationFileLocation when the ConfigFile property are not set.", ex);
 					}
@@ -412,7 +412,7 @@ namespace log4net.Config
 				{
 					applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. ConfigFile property path ["+this.m_configFile+"] will be treated as an absolute URI.", ex);
 				}

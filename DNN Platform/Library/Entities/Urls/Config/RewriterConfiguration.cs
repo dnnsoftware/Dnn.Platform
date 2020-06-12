@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Urls.Config
     [Serializable, XmlRoot("RewriterConfig")]
     public class RewriterConfiguration
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (RewriterConfiguration));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RewriterConfiguration));
 		private static readonly object _threadLocker = new object();
         private RewriterRuleCollection _rules;
 
@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Urls.Config
                 var config = new RewriterConfiguration {Rules = rules};
                 
 				//Create a new Xml Serializer
-				var ser = new XmlSerializer(typeof (RewriterConfiguration));
+				var ser = new XmlSerializer(typeof(RewriterConfiguration));
                 
 				//Create a FileStream for the Config file
                 var filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteUrls);

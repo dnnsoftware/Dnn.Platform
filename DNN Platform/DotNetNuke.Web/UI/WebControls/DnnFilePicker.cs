@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
 	/// </summary>
 	public class DnnFilePicker : CompositeControl, ILocalizable
 	{
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DnnFilePicker));
+		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DnnFilePicker));
 
 		#region Public Enums
 
@@ -101,7 +101,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			{
 				var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
                 //if not host tab but current edit user is a host user, then return true
-                if(!isHost && this.User != null && this.User.IsSuperUser)
+                if (!isHost && this.User != null && this.User.IsSuperUser)
                 {
                     isHost = true;
                 }
@@ -808,7 +808,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				{
 					// trying to upload a file not allowed for current filter
 					var localizedString = Localization.GetString("UploadError", this.LocalResourceFile);
-					if(String.IsNullOrEmpty(localizedString))
+					if (String.IsNullOrEmpty(localizedString))
 					{
 						localizedString = Utilities.GetLocalizedString("UploadError");
 					}

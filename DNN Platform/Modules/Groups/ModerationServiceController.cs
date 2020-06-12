@@ -28,7 +28,7 @@ namespace DotNetNuke.Modules.Groups
     public class ModerationServiceController : DnnApiController
     {
         protected INavigationManager NavigationManager { get; }
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModerationServiceController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModerationServiceController));
         private int _tabId;
         private int _moduleId;
         private int _roleId;
@@ -137,7 +137,7 @@ namespace DotNetNuke.Modules.Groups
 
                         var requireApproval = false;
 
-                        if(this._roleInfo.Settings.ContainsKey("ReviewMembers"))
+                        if (this._roleInfo.Settings.ContainsKey("ReviewMembers"))
                             requireApproval = Convert.ToBoolean(this._roleInfo.Settings["ReviewMembers"]);
 
 
@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.Groups
                 return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, exc);
             }
 
-            if(success)
+            if (success)
             {
                 return this.Request.CreateResponse(HttpStatusCode.OK, new {Result = "success"});
             }

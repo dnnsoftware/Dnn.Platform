@@ -87,7 +87,7 @@ namespace log4net.Appender
 		/// </returns>
 		public static AppenderCollection ReadOnly(AppenderCollection list)
 		{
-			if(list==null) throw new ArgumentNullException("list");
+			if (list==null) throw new ArgumentNullException("list");
 
 			return new ReadOnlyAppenderCollection(list);
 		}
@@ -538,7 +538,7 @@ namespace log4net.Appender
 				this.EnsureCapacity(this.m_count + col.Count);
 			}
 
-			foreach(object item in col)
+			foreach (object item in col)
 			{
 				this.Add((IAppender)item);
 			}

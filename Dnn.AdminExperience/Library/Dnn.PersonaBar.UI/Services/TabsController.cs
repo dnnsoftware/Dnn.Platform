@@ -17,7 +17,7 @@ namespace Dnn.PersonaBar.UI.Services
     [MenuPermission(Scope = ServiceScope.Regular)]
     public class TabsController : PersonaBarApiController
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TabsController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TabsController));
         private readonly Library.Controllers.TabsController _controller = new Library.Controllers.TabsController();
         public string LocalResourcesFile => Path.Combine("~/DesktopModules/admin/Dnn.PersonaBar/App_LocalResources/SharedResources.resx");
 

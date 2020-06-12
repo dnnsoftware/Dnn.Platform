@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Installer.Installers
     /// -----------------------------------------------------------------------------
     public class CleanupInstaller : FileInstaller
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (CleanupInstaller));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CleanupInstaller));
 		#region "Private Members"
 
         private string _fileName;

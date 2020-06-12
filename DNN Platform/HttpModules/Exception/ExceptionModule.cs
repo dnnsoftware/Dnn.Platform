@@ -19,7 +19,7 @@ namespace DotNetNuke.HttpModules.Exceptions
     /// </summary>
     public class ExceptionModule : IHttpModule
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ExceptionModule));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ExceptionModule));
         /// <summary>
         /// Gets the name of the module.
         /// </summary>
@@ -60,7 +60,7 @@ namespace DotNetNuke.HttpModules.Exceptions
         {
             try
             {
-				if(HttpContext.Current == null)
+				if (HttpContext.Current == null)
 				{
 					return;
 				}

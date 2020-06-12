@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Installer
     /// -----------------------------------------------------------------------------
     public class Installer
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Installer));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Installer));
 		#region Private Members
 
         private Stream _inputStream;

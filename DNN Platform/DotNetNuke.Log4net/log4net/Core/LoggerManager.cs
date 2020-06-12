@@ -94,7 +94,7 @@ namespace log4net.Core
 				// makes a LinkDemand which throws the exception during the JIT phase.
 				RegisterAppDomainEvents();
 			}
-			catch(System.Security.SecurityException)
+			catch (System.Security.SecurityException)
 			{
 				LogLog.Debug(declaringType, "Security Exception (ControlAppDomain LinkDemand) while trying "+
 					"to register Shutdown handler with the AppDomain. LoggerManager.Shutdown() "+
@@ -120,7 +120,7 @@ namespace log4net.Core
 				{
 					appRepositorySelectorType = SystemInfo.GetTypeFromString(appRepositorySelectorTypeName, false, true);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Exception while resolving RepositorySelector Type ["+appRepositorySelectorTypeName+"]", ex);
 				}
@@ -133,7 +133,7 @@ namespace log4net.Core
 					{
 						appRepositorySelectorObj = Activator.CreateInstance(appRepositorySelectorType);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Exception while creating RepositorySelector ["+appRepositorySelectorType.FullName+"]", ex);
 					}
@@ -480,7 +480,7 @@ namespace log4net.Core
 		/// </remarks>
 		public static void Shutdown() 
 		{
-			foreach(ILoggerRepository repository in GetAllRepositories())
+			foreach (ILoggerRepository repository in GetAllRepositories())
 			{
 				repository.Shutdown();
 			}

@@ -88,7 +88,7 @@ namespace log4net.Core
 		/// </returns>
 		public static LevelCollection ReadOnly(LevelCollection list)
 		{
-			if(list==null) throw new ArgumentNullException("list");
+			if (list==null) throw new ArgumentNullException("list");
 
 			return new ReadOnlyLevelCollection(list);
 		}
@@ -527,7 +527,7 @@ namespace log4net.Core
 				this.EnsureCapacity(this.m_count + col.Count);
 			}
 
-			foreach(object item in col)
+			foreach (object item in col)
 			{
 				this.Add((Level)item);
 			}

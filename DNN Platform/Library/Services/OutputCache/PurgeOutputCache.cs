@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.OutputCache
 {
     public class PurgeOutputCache : SchedulerClient
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PurgeOutputCache));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeOutputCache));
 
         public PurgeOutputCache(ScheduleHistoryItem objScheduleHistoryItem)
         {

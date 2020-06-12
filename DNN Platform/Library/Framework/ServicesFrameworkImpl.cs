@@ -33,7 +33,7 @@ namespace DotNetNuke.Framework
         public void RegisterAjaxAntiForgery(Page page)
         {
             var ctl = page.FindControl("ClientResourcesFormBottom");
-            if(ctl != null)
+            if (ctl != null)
             {
                 ctl.Controls.Add(new LiteralControl(AntiForgery.GetHtml().ToHtmlString()));
             }
@@ -63,7 +63,7 @@ namespace DotNetNuke.Framework
             ClientAPI.RegisterClientVariable(page, "sf_tabId", PortalSettings.Current.ActiveTab.TabID.ToString(CultureInfo.InvariantCulture), /*overwrite*/ true);
                         
             string scriptPath;
-            if(HttpContextSource.Current.IsDebuggingEnabled)
+            if (HttpContextSource.Current.IsDebuggingEnabled)
             {
                 scriptPath = "~/js/Debug/dnn.servicesframework.js";
             }

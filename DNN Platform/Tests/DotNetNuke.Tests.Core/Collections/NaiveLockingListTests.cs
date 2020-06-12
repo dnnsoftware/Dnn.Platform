@@ -117,7 +117,7 @@ namespace DotNetNuke.Tests.Core.Collections
             Assert.AreEqual(999, list[2]);
         }
 
-        [Test, ExpectedException(typeof (LockRecursionException))]
+        [Test, ExpectedException(typeof(LockRecursionException))]
         public void NoWritesWhileEnumerating()
         {
             var list = new NaiveLockingList<int> {0, 1, 2, 3};

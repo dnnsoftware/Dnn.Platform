@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.Admin.Users
     /// </remarks>
     public partial class User : UserUserControlBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (User));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(User));
 		#region Public Properties
 
         public UserCreateStatus CreateStatus { get; set; }

@@ -26,7 +26,7 @@ namespace DotNetNuke.Web.Mvp
             foreach (PropertyInfo member in typ.GetProperties(MemberBindingFlags))
             {
                 //Determine if they are attributed with a ViewState Attribute
-                ViewStateAttribute attr = member.GetCustomAttributes(typeof (ViewStateAttribute), true).OfType<ViewStateAttribute>().FirstOrDefault();
+                ViewStateAttribute attr = member.GetCustomAttributes(typeof(ViewStateAttribute), true).OfType<ViewStateAttribute>().FirstOrDefault();
                 if ((attr != null))
                 {
                     //Get object from ViewState bag
@@ -50,7 +50,7 @@ namespace DotNetNuke.Web.Mvp
             foreach (PropertyInfo member in typ.GetProperties(MemberBindingFlags))
             {
                 //Determine if they are attributed with a ViewState Attribute
-                ViewStateAttribute attr = member.GetCustomAttributes(typeof (ViewStateAttribute), true).OfType<ViewStateAttribute>().FirstOrDefault();
+                ViewStateAttribute attr = member.GetCustomAttributes(typeof(ViewStateAttribute), true).OfType<ViewStateAttribute>().FirstOrDefault();
                 if ((attr != null))
                 {
                     //Add property to ViewState bag

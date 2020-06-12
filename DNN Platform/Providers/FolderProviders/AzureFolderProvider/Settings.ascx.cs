@@ -20,7 +20,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
     ///</summary>
     public partial class Settings : FolderMappingSettingsControlBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Settings));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Settings));
 
         #region Overrided Methods
 
@@ -294,7 +294,7 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
             }
             catch (StorageException ex)
             {
-                if(ex.RequestInformation.ExtendedErrorInformation != null)
+                if (ex.RequestInformation.ExtendedErrorInformation != null)
                 { 
                     switch (ex.RequestInformation.ExtendedErrorInformation.ErrorCode)
                     {

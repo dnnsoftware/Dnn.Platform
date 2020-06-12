@@ -83,7 +83,7 @@ namespace log4net.Util
 				// char using the supplied encoding.
 				this.m_countBytes += this.Encoding.GetByteCount(new char[] { value });
 			} 
-			catch(Exception e) 
+			catch (Exception e) 
 			{
 				this.ErrorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
 			}
@@ -113,7 +113,7 @@ namespace log4net.Util
 					// char array using the supplied encoding.
 					this.m_countBytes += this.Encoding.GetByteCount(buffer, index, count);
 				} 
-				catch(Exception e) 
+				catch (Exception e) 
 				{
 					this.ErrorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
 				}
@@ -142,7 +142,7 @@ namespace log4net.Util
 					// string using the supplied encoding.
 					this.m_countBytes += this.Encoding.GetByteCount(str);
 				}
-				catch(Exception e) 
+				catch (Exception e) 
 				{
 					this.ErrorHandler.Error("Failed to write [" + str + "].", e, ErrorCode.WriteFailure);
 				}

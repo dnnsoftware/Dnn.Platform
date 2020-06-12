@@ -400,12 +400,12 @@ namespace DotNetNuke.Framework
 		public static void KeepAlive(Page page)
 		{
 			var cookieTimeout = Config.GetAuthCookieTimeout();
-			if(cookieTimeout <= 0 || page.ClientScript.IsClientScriptBlockRegistered("PageKeepAlive"))
+			if (cookieTimeout <= 0 || page.ClientScript.IsClientScriptBlockRegistered("PageKeepAlive"))
 			{
 				return;
 			}
 
-			if(cookieTimeout > 5)
+			if (cookieTimeout > 5)
 			{
 				cookieTimeout = 5; // ping server in 5 minutes to make sure the server is not IDLE.
 			}

@@ -315,9 +315,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         private DataTable GetAllSearchTypes()
         {
             var dtSearchTypes = new DataTable("SearchTypes");
-            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof (int));
-            dtSearchTypes.Columns.Add("SearchTypeName", typeof (string));
-            dtSearchTypes.Columns.Add("SearchResultClass", typeof (string));
+            var pkId = dtSearchTypes.Columns.Add("SearchTypeId", typeof(int));
+            dtSearchTypes.Columns.Add("SearchTypeName", typeof(string));
+            dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
             dtSearchTypes.PrimaryKey = new[] {pkId};
 
             //Create default Crawler

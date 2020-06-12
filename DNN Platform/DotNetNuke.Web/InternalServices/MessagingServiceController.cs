@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class MessagingServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (MessagingServiceController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
         [HttpGet]
         public HttpResponseMessage WaitTimeForNextMessage()
         {

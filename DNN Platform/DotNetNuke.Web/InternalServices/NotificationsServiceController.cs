@@ -18,7 +18,7 @@ namespace DotNetNuke.Web.InternalServices
     [DnnAuthorize]
     public class NotificationsServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (NotificationsServiceController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(NotificationsServiceController));
         
         [HttpPost]
         [ValidateAntiForgeryToken]

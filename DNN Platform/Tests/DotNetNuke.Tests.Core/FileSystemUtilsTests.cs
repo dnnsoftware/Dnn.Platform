@@ -135,7 +135,7 @@ namespace DotNetNuke.Tests.Core
             {
                 Assert.IsTrue(input == result);
             }
-            else if(string.IsNullOrWhiteSpace(input))
+            else if (string.IsNullOrWhiteSpace(input))
             {
                 Assert.IsTrue(result == string.Empty);
             }

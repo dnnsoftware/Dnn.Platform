@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
     [ToolboxData("<{0}:DateEditControl runat=server></{0}:DateEditControl>")]
     public class DateEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DateEditControl));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DateEditControl));
 		private DnnDatePicker _dateControl;
 
 		#region Protected Properties

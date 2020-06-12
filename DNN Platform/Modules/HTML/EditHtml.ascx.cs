@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.Html
                 var currentWorkflowType = default(WorkflowType);
                 if (this.ViewState["_currentWorkflowType"] != null)
                 {
-                    currentWorkflowType = (WorkflowType) Enum.Parse(typeof (WorkflowType), this.ViewState["_currentWorkflowType"].ToString());
+                    currentWorkflowType = (WorkflowType) Enum.Parse(typeof(WorkflowType), this.ViewState["_currentWorkflowType"].ToString());
                 }
 
                 return currentWorkflowType;

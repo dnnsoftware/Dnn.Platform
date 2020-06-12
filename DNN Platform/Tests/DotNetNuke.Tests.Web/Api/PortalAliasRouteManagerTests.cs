@@ -67,9 +67,9 @@ namespace DotNetNuke.Tests.Web.Api
             {
                 new PortalAliasRouteManager().GetRouteUrl(moduleFolderName, "url", count);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
-                if(e.GetType() == expectedException)
+                if (e.GetType() == expectedException)
                 {
                     Assert.Pass();
                     return;

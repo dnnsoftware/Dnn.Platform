@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if(this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
+                if (this.FolderMappingSettings.ContainsKey("SyncAllSubFolders"))
                 {
                     return bool.Parse(this.FolderMappingSettings["SyncAllSubFolders"].ToString());
                 }

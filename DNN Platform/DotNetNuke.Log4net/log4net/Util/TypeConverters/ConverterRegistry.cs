@@ -105,7 +105,7 @@ namespace log4net.Util.TypeConverters
 		{
 			if (destinationType != null && converter != null)
 			{
-				lock(s_type2converter)
+				lock (s_type2converter)
 				{
 					s_type2converter[destinationType] = converter;
 				}
@@ -148,7 +148,7 @@ namespace log4net.Util.TypeConverters
 
 			// TODO: Is destinationType required? We don't use it for anything.
 
-			lock(s_type2converter)
+			lock (s_type2converter)
 			{
 				// Lookup in the static registry
 				IConvertTo converter = s_type2converter[sourceType] as IConvertTo;
@@ -187,7 +187,7 @@ namespace log4net.Util.TypeConverters
 			// TODO: Support inheriting type converters.
 			// i.e. getting a type converter for a base of destinationType
 
-			lock(s_type2converter)
+			lock (s_type2converter)
 			{
 				// Lookup in the static registry
 				IConvertFrom converter = s_type2converter[destinationType] as IConvertFrom;
@@ -265,7 +265,7 @@ namespace log4net.Util.TypeConverters
 					// Create the type converter
 					return Activator.CreateInstance(converterType);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Cannot CreateConverterInstance of type ["+converterType.FullName+"], Exception in call to Activator.CreateInstance", ex);
 				}

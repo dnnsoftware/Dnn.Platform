@@ -649,21 +649,21 @@ namespace Dnn.ExportImport.Components.Engines
 
         private static string[] CleanUpIgnoredClasses => new[]
         {
-            typeof (ExportFile).Name,
-            typeof (ExportFolder).Name,
-            typeof (ExportFolderMapping).Name,
-            typeof (ExportFolderPermission).Name,
-            typeof (ExportPageTemplate).Name,
-            typeof (ExportPortalSetting).Name,
-            typeof (ExportPortalLanguage).Name,
-            typeof (ExportProfileProperty).Name,
-            typeof (ExportUser).Name,
-            typeof (ExportAspnetUser).Name,
-            typeof (ExportAspnetMembership).Name,
-            typeof (ExportUserAuthentication).Name,
-            typeof (ExportUserPortal).Name,
-            typeof (ExportUserProfile).Name,
-            typeof (ExportUserRole).Name
+            typeof(ExportFile).Name,
+            typeof(ExportFolder).Name,
+            typeof(ExportFolderMapping).Name,
+            typeof(ExportFolderPermission).Name,
+            typeof(ExportPageTemplate).Name,
+            typeof(ExportPortalSetting).Name,
+            typeof(ExportPortalLanguage).Name,
+            typeof(ExportProfileProperty).Name,
+            typeof(ExportUser).Name,
+            typeof(ExportAspnetUser).Name,
+            typeof(ExportAspnetMembership).Name,
+            typeof(ExportUserAuthentication).Name,
+            typeof(ExportUserPortal).Name,
+            typeof(ExportUserProfile).Name,
+            typeof(ExportUserRole).Name
         };
 
         public void AddLogsToDatabase(int jobId, ICollection<LogItem> completeLog)

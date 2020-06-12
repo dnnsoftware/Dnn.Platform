@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Status = StepStatus.Running;
 
             var installConfig = InstallController.Instance.GetInstallConfig();
-            if(installConfig == null)
+            if (installConfig == null)
             {
                 this.Status = StepStatus.Done;
                 return;
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             var modified = false;
             //save to web.config if different
-            if(appConnectionString.ToLower() != connectionString.ToLower())
+            if (appConnectionString.ToLower() != connectionString.ToLower())
             {
                 Config.UpdateConnectionString(connectionString);
                 modified = true;

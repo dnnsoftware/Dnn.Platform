@@ -103,20 +103,20 @@ namespace DotNetNuke.Web.InternalServices
 
 		private static short ReadLittleEndianInt16(BinaryReader binaryReader)
 		{
-			var bytes = new byte[sizeof (short)];
-			for (var i = 0; i < sizeof (short); i += 1)
+			var bytes = new byte[sizeof(short)];
+			for (var i = 0; i < sizeof(short); i += 1)
 			{
-				bytes[sizeof (short) - 1 - i] = binaryReader.ReadByte();
+				bytes[sizeof(short) - 1 - i] = binaryReader.ReadByte();
 			}
 			return BitConverter.ToInt16(bytes, 0);
 		}
 
 		private static ushort ReadLittleEndianUInt16(BinaryReader binaryReader)
 		{
-			var bytes = new byte[sizeof (ushort)];
-			for (var i = 0; i < sizeof (ushort); i += 1)
+			var bytes = new byte[sizeof(ushort)];
+			for (var i = 0; i < sizeof(ushort); i += 1)
 			{
-				bytes[sizeof (ushort) - 1 - i] = binaryReader.ReadByte();
+				bytes[sizeof(ushort) - 1 - i] = binaryReader.ReadByte();
 			}
 			return BitConverter.ToUInt16(bytes, 0);
 		}
@@ -124,9 +124,9 @@ namespace DotNetNuke.Web.InternalServices
 		private static int ReadLittleEndianInt32(BinaryReader binaryReader)
 		{
 			var bytes = new byte[sizeof(int)];
-			for (var i = 0; i < sizeof (int); i += 1)
+			for (var i = 0; i < sizeof(int); i += 1)
 			{
-				bytes[sizeof (int) - 1 - i] = binaryReader.ReadByte();
+				bytes[sizeof(int) - 1 - i] = binaryReader.ReadByte();
 			}
 			return BitConverter.ToInt32(bytes, 0);
 		}

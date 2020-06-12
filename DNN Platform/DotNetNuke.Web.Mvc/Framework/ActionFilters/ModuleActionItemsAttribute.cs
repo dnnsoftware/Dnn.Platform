@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
             Type type;
             string methodName;
 
-            if(controller == null)
+            if (controller == null)
             {
                 throw new InvalidOperationException("This attribute can only be applied to Controllers that implement IDnnController");
             }

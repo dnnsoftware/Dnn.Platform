@@ -832,7 +832,7 @@ namespace log4net.Core
 						{
 							this.m_data.ThreadName = SystemInfo.CurrentThreadId.ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
 						}
-						catch(System.Security.SecurityException)
+						catch (System.Security.SecurityException)
 						{
 							// This security exception will occur if the caller does not have 
 							// some undefined set of SecurityPermission flags.
@@ -917,7 +917,7 @@ namespace log4net.Core
 							this.m_data.UserName = "";
 						}
 					}
-					catch(System.Security.SecurityException)
+					catch (System.Security.SecurityException)
 					{
 						// This security exception will occur if the caller does not have 
 						// some undefined set of SecurityPermission flags.
@@ -1437,7 +1437,7 @@ namespace log4net.Core
 				PropertiesDictionary fixedProperties = new PropertiesDictionary();
 
 				// Validate properties
-				foreach(DictionaryEntry entry in flattenedProperties)
+				foreach (DictionaryEntry entry in flattenedProperties)
 				{
 					string key = entry.Key as string;
 

@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Api
 
             var providers = configuration.Properties.GetOrAdd(Key, InitValue) as ConcurrentQueue<ITabAndModuleInfoProvider>;
 
-            if(providers == null)
+            if (providers == null)
             {
                 providers = new ConcurrentQueue<ITabAndModuleInfoProvider>();
                 configuration.Properties[Key] = providers;

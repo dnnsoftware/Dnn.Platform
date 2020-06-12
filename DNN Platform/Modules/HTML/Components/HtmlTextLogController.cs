@@ -36,7 +36,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextLog(int ItemID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextLog(ItemID), typeof (HtmlTextLogInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextLog(ItemID), typeof(HtmlTextLogInfo));
         }
 
         /// -----------------------------------------------------------------------------

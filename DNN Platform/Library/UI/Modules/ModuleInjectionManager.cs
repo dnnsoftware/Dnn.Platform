@@ -16,7 +16,7 @@ namespace DotNetNuke.UI.Modules
 {
     internal class ModuleInjectionManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleInjectionManager));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInjectionManager));
         private static NaiveLockingList<IModuleInjectionFilter> _filters;
 
         public static void RegisterInjectionFilters()

@@ -466,12 +466,12 @@ namespace log4net.Appender
 
 				EventLogEntryType entryType = this.GetEntryType(loggingEvent.Level);
 
-				using(this.SecurityContext.Impersonate(this))
+				using (this.SecurityContext.Impersonate(this))
 				{
 					EventLog.WriteEntry(this.m_applicationName, eventTxt, entryType, eventID, category);
 				}
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				this.ErrorHandler.Error("Unable to write to event log [" + this.m_logName + "] using source [" + this.m_applicationName + "]", ex);
 			}

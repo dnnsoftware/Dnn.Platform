@@ -173,7 +173,7 @@ namespace log4net.Util
 				return 0;
 			}
 
-			while(offset < length)
+			while (offset < length)
 			{
 				int index = text.IndexOf(substring, offset);
 

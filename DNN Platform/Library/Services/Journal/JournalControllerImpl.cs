@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Journal
             for (var i = 0; i < role.Settings.Keys.Count; i++ )
             {
                 var key = role.Settings.Keys.ElementAt(i);
-                if(key.StartsWith("stat_"))
+                if (key.StartsWith("stat_"))
                 {
                     role.Settings[key] = "0";
                 }

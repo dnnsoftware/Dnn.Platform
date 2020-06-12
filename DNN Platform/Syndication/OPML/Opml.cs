@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     public class Opml
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Opml));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Opml));
         private DateTime _dateCreated = DateTime.MinValue;
         private DateTime _dateModified = DateTime.MinValue;
         private string _docs = string.Empty;

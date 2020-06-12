@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.UI.Validation
             [Required(ErrorMessage = "Dude, you forgot to enter a {0}")]
             public object Foo { get; set; }
 
-            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof (DataAnnotationsObjectValidatorTests))]
+            [StringLength(5, ErrorMessageResourceName = "ErrorMessage", ErrorMessageResourceType = typeof(DataAnnotationsObjectValidatorTests))]
             public string Bar { get; set; }
         }
 

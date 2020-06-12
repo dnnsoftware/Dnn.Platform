@@ -149,7 +149,7 @@ namespace DotNetNuke.Tests.Data
         {
             //Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
-            var dogType = typeof (Dog);
+            var dogType = typeof(Dog);
             var dogProperty = dogType.GetProperty(Constants.COLUMNNAME_Name);
 
             //Act

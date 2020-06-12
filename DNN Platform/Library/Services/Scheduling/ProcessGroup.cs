@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Scheduling
 {
     public class ProcessGroup
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ProcessGroup));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ProcessGroup));
         //''''''''''''''''''''''''''''''''''''''''''''''''''
         //This class represents a process group for
         //our threads to run in.

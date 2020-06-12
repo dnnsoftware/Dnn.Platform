@@ -779,7 +779,7 @@ namespace DotNetNuke.Entities.Portals
             }
             catch (IndexOutOfRangeException)
             {
-                if(Globals.Status == Globals.UpgradeStatus.None)
+                if (Globals.Status == Globals.UpgradeStatus.None)
                 {
                     //this should not happen outside of an upgrade situation
                     throw;

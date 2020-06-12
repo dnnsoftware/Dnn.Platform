@@ -34,7 +34,7 @@ namespace Dnn.Modules.Console
 	public partial class ViewConsole : PortalModuleBase
 	{
         private readonly INavigationManager _navigationManager;
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ViewConsole));
+		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ViewConsole));
 	    private ConsoleController _consoleCtrl;
 		private string _defaultSize = string.Empty;
 		private string _defaultView = string.Empty;
@@ -379,7 +379,7 @@ namespace Dnn.Modules.Console
 					IList<int> tabIdList = new List<int>();
 					tabIdList.Add(this.ConsoleTabID);
 
-                    if(this.IncludeParent)
+                    if (this.IncludeParent)
                     {
                         TabInfo consoleTab = TabController.Instance.GetTab(this.ConsoleTabID, this.PortalId);
                         if (consoleTab != null)
@@ -464,7 +464,7 @@ namespace Dnn.Modules.Console
 			else
 			{
 			    var sb = new StringBuilder();
-                if(tab.TabID == this.PortalSettings.ActiveTab.TabID)
+                if (tab.TabID == this.PortalSettings.ActiveTab.TabID)
                 {
                     sb.Append("<div class=\"active console-none \">");
                 }

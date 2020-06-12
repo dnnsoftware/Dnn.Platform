@@ -101,7 +101,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 var properties = new Dictionary<string, string>();
                 bool propertyNotFound = false;
                 var propertyAccess = new ProfilePropertyAccess(this._user);
-                foreach(ProfilePropertyDefinition property in this._user.Profile.ProfileProperties)
+                foreach (ProfilePropertyDefinition property in this._user.Profile.ProfileProperties)
                 {
                     string value = propertyAccess.GetProperty(property.PropertyName,
                                                              String.Empty,

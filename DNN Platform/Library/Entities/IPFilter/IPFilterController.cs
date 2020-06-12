@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Host
     {
         #region Private
 
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IPFilterController));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IPFilterController));
         
         private enum FilterType
         {

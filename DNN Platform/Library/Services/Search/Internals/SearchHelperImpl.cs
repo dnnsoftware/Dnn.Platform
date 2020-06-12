@@ -686,7 +686,7 @@ namespace DotNetNuke.Services.Search.Internals
             var asciiFilter = new ASCIIFoldingFilter(new WhitespaceTokenizer((TextReader)new StringReader(cleanedPhrase)));
 
             string space = string.Empty;
-            while(asciiFilter.IncrementToken())
+            while (asciiFilter.IncrementToken())
             {
                 sb.AppendFormat("{0}{1}", space ?? "", asciiFilter.GetAttribute<ITermAttribute>().Term);
                 if (string.IsNullOrEmpty(space))

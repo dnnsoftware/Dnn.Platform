@@ -89,7 +89,7 @@ namespace log4net.Util.PatternStringConverters
 					}
 				}
 			}
-			catch(System.Security.SecurityException secEx)
+			catch (System.Security.SecurityException secEx)
 			{
 				// This security exception will occur if the caller does not have 
 				// unrestricted environment permission. If this occurs the expansion 

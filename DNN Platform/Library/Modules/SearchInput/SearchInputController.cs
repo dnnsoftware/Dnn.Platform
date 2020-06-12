@@ -17,7 +17,7 @@ namespace DotNetNuke.Modules.SearchInput
     {
         public ArrayList GetSearchResultModules(int PortalID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetSearchResultModules(PortalID), typeof (SearchResultsModuleInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetSearchResultModules(PortalID), typeof(SearchResultsModuleInfo));
         }
     }
 }

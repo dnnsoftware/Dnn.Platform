@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (var item in this.GetAllItems())
                 {
                     item.CheckIsValid();
-                    if(!item.IsValid)
+                    if (!item.IsValid)
                     {
                         isValid = false;
                         break;
@@ -309,7 +309,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if(this.Tabs.Count > 0)
+            if (this.Tabs.Count > 0)
             {
                 const string scriptName = "FormEditorjQuery";
                 ClientScriptManager cs = this.Page.ClientScript;

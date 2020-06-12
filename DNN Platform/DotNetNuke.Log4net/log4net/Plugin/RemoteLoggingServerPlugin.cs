@@ -137,7 +137,7 @@ namespace log4net.Plugin
 			{
 				RemotingServices.Marshal(this.m_sink, this.m_sinkUri, typeof(IRemoteLoggingSink));		
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				LogLog.Error(declaringType, "Failed to Marshal remoting sink", ex);
 			}
@@ -231,7 +231,7 @@ namespace log4net.Plugin
 			{
 				if (events != null)
 				{
-					foreach(LoggingEvent logEvent in events)
+					foreach (LoggingEvent logEvent in events)
 					{
 						if (logEvent != null)
 						{

@@ -262,7 +262,7 @@ namespace log4net.Repository
 		virtual public void Shutdown() 
 		{
 			// Shutdown attached plugins
-			foreach(IPlugin plugin in this.PluginMap.AllPlugins)
+			foreach (IPlugin plugin in this.PluginMap.AllPlugins)
 			{
 				plugin.Shutdown();
 			}
@@ -607,7 +607,7 @@ namespace log4net.Repository
             DateTime startTimeUtc = DateTime.UtcNow;
 
             // Do buffering appenders first.  These may be forwarding to other appenders
-            foreach(log4net.Appender.IAppender appender in this.GetAppenders())
+            foreach (log4net.Appender.IAppender appender in this.GetAppenders())
             {
                 log4net.Appender.IFlushable flushable = appender as log4net.Appender.IFlushable;
                 if (flushable == null) continue;

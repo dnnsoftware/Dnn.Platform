@@ -37,7 +37,7 @@ namespace DotNetNuke.Security.Roles
     /// -----------------------------------------------------------------------------
     public class DNNRoleProvider : RoleProvider
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DNNRoleProvider));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DNNRoleProvider));
         private readonly DataProvider dataProvider = DataProvider.Instance();
 
         #region Private Methods
@@ -121,7 +121,7 @@ namespace DotNetNuke.Security.Roles
         {
             var arrRoles = CBO.FillCollection(portalId == Null.NullInteger 
                                         ? this.dataProvider.GetRoles() 
-                                        : this.dataProvider.GetPortalRoles(portalId), typeof (RoleInfo));
+                                        : this.dataProvider.GetPortalRoles(portalId), typeof(RoleInfo));
             return arrRoles;
         }
 
@@ -266,7 +266,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public override ArrayList GetUserRoles(int portalId, string userName, string roleName)
         {
-            return CBO.FillCollection(this.dataProvider.GetUserRolesByUsername(portalId, userName, roleName), typeof (UserRoleInfo));
+            return CBO.FillCollection(this.dataProvider.GetUserRolesByUsername(portalId, userName, roleName), typeof(UserRoleInfo));
         }
 
         /// -----------------------------------------------------------------------------

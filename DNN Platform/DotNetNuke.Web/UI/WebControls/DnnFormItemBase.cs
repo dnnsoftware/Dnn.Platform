@@ -325,7 +325,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         dictionary[dataField] = newValue as string;
                     }
                 }
-                else if(this.DataSource is IIndexable)
+                else if (this.DataSource is IIndexable)
                 {
                     var indexer = this.DataSource as IIndexable;
                     indexer[dataField] = newValue;

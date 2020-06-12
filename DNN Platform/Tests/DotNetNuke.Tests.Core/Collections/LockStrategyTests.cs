@@ -26,7 +26,7 @@ namespace DotNetNuke.Tests.Core.Collections
             //no exception on 2nd dispose
         }
 
-        [Test, ExpectedException(typeof (LockRecursionException))]
+        [Test, ExpectedException(typeof(LockRecursionException))]
         public virtual void DoubleReadLockThrows()
         {
             using (var strategy = this.GetLockStrategy())
@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-        [Test, ExpectedException(typeof (LockRecursionException))]
+        [Test, ExpectedException(typeof(LockRecursionException))]
         public void ReadAndWriteLockOnSameThreadThrows()
         {
             using (var strategy = this.GetLockStrategy())
@@ -56,7 +56,7 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-        [Test, ExpectedException(typeof (LockRecursionException))]
+        [Test, ExpectedException(typeof(LockRecursionException))]
         public void WriteAndReadLockOnSameThreadThrows()
         {
             using (var strategy = this.GetLockStrategy())
@@ -119,7 +119,7 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-        [Test, ExpectedException(typeof (LockRecursionException))]
+        [Test, ExpectedException(typeof(LockRecursionException))]
         public virtual void DoubleWriteLockThrows()
         {
             using (ILockStrategy strategy = this.GetLockStrategy())
@@ -134,7 +134,7 @@ namespace DotNetNuke.Tests.Core.Collections
             }
         }
 
-        [Test, ExpectedException(typeof (ObjectDisposedException))]
+        [Test, ExpectedException(typeof(ObjectDisposedException))]
         [TestCaseSource("GetObjectDisposedExceptionMethods")]
         public void MethodsThrowAfterDisposed(Action<ILockStrategy> methodCall)
         {

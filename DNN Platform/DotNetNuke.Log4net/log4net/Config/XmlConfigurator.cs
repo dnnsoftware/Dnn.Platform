@@ -148,7 +148,7 @@ namespace log4net.Config
 					InternalConfigureFromXml(repository, configElement);
 				}
 			}
-			catch(System.Configuration.ConfigurationException confEx)
+			catch (System.Configuration.ConfigurationException confEx)
 			{
 				if (confEx.BareMessage.IndexOf("Unrecognized element") >= 0)
 				{
@@ -540,14 +540,14 @@ namespace log4net.Config
 					FileStream fs = null;
 					
 					// Try hard to open the file
-					for(int retry = 5; --retry >= 0; )
+					for (int retry = 5; --retry >= 0; )
 					{
 						try
 						{
 							fs = configFile.Open(FileMode.Open, FileAccess.Read, FileShare.Read);
 							break;
 						}
-						catch(IOException ex)
+						catch (IOException ex)
 						{
 							if (retry == 0)
 							{
@@ -635,7 +635,7 @@ namespace log4net.Config
 					{
 						configRequest = WebRequest.Create(configUri);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Failed to create WebRequest for URI ["+configUri+"]", ex);
 					}
@@ -665,7 +665,7 @@ namespace log4net.Config
 								try
 								{
 									// Open stream on config URI
-									using(Stream configStream = response.GetResponseStream())
+									using (Stream configStream = response.GetResponseStream())
 									{
 										InternalConfigure(repository, configStream);
 									}
@@ -676,7 +676,7 @@ namespace log4net.Config
 								}
 							}
 						}
-						catch(Exception ex)
+						catch (Exception ex)
 						{
 							LogLog.Error(declaringType, "Failed to request config from URI ["+configUri+"]", ex);
 						}
@@ -761,7 +761,7 @@ namespace log4net.Config
 					// load the data into the document
 					doc.Load(xmlReader);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Error while loading XML configuration", ex);
 
@@ -905,7 +905,7 @@ namespace log4net.Config
 						m_repositoryName2ConfigAndWatchHandler[configFile.FullName] = handler;
                     }
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Failed to initialize configuration file watcher for file ["+configFile.FullName+"]", ex);
 				}

@@ -260,7 +260,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A Style object</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Edit Control.")]
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Edit Control.")]
 		public Style EditControlStyle { get; private set; }
 
 		/// -----------------------------------------------------------------------------
@@ -278,7 +278,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A Style object</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Error Text.")]
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Error Text.")]
 		public Style ErrorStyle { get; private set; }
 
 		/// -----------------------------------------------------------------------------
@@ -287,7 +287,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A Style object</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Help Text.")]
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Help Text.")]
 		public Style HelpStyle { get; private set; }
 
 		/// -----------------------------------------------------------------------------
@@ -296,7 +296,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A Style object</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Label Text")]
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Label Text")]
 		public Style LabelStyle { get; private set; }
 
 		/// -----------------------------------------------------------------------------
@@ -314,7 +314,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		/// <value>A Style object</value>
 		/// -----------------------------------------------------------------------------
-		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof (ExpandableObjectConverter)), Description("Set the Style for the Visibility Control")]
+		[Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Visibility Control")]
 		public Style VisibilityStyle { get; private set; }
 		
 		#endregion
@@ -593,7 +593,7 @@ namespace DotNetNuke.UI.WebControls
 				reqValidator.ControlToValidate = targetId;
 				reqValidator.Display = ValidatorDisplay.Dynamic;
 				reqValidator.ControlStyle.CopyFrom(this.ErrorStyle);
-			    if(String.IsNullOrEmpty(reqValidator.CssClass))
+			    if (String.IsNullOrEmpty(reqValidator.CssClass))
 			    {
 			        reqValidator.CssClass = "dnnFormMessage dnnFormError";
 			    }
@@ -612,7 +612,7 @@ namespace DotNetNuke.UI.WebControls
 				regExValidator.ValidationExpression = editInfo.ValidationExpression;
 				regExValidator.Display = ValidatorDisplay.Dynamic;
 				regExValidator.ControlStyle.CopyFrom(this.ErrorStyle);
-			    if(String.IsNullOrEmpty(regExValidator.CssClass))
+			    if (String.IsNullOrEmpty(regExValidator.CssClass))
 			    {
                     regExValidator.CssClass = "dnnFormMessage dnnFormError";
 			    }

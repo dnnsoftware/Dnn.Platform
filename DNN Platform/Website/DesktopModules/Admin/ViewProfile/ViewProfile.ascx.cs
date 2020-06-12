@@ -69,7 +69,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
             base.OnInit(e);
 
 			//throw 404 so that deleted profile is not reindexed
-			if(this.ProfileUser == null || this.ProfileUser.IsDeleted)
+			if (this.ProfileUser == null || this.ProfileUser.IsDeleted)
 			{
                 UrlUtils.Handle404Exception(this.Response, PortalSettings.Current);
             }
@@ -92,14 +92,14 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
 			try
 			{
-                if(Null.IsNull(this.ProfileUserId))
+                if (Null.IsNull(this.ProfileUserId))
                 {
                     this.Visible = false;
                     return;
                 }
 
                 var template = Convert.ToString(this.ModuleContext.Settings["ProfileTemplate"]);
-                if(string.IsNullOrEmpty(template))
+                if (string.IsNullOrEmpty(template))
                 {
                     template = Localization.GetString("DefaultTemplate", this.LocalResourceFile);
                 }

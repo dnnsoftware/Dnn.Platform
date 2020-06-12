@@ -130,7 +130,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 if (Directory.Exists(SearchIndexFolder))
                     Directory.Delete(SearchIndexFolder, true);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
             }

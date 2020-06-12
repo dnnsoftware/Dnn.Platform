@@ -224,7 +224,7 @@ namespace DotNetNuke.UI.ControlPanels
 										"MobilePreview",
 										this.PortalSettings.ActiveTab.TabID);
 
-			if(this.PortalSettings.EnablePopUps)
+			if (this.PortalSettings.EnablePopUps)
 			{
 				return UrlUtils.PopUpUrl(previewUrl, this, this.PortalSettings, true, false, 660, 800);
 			}
@@ -237,7 +237,7 @@ namespace DotNetNuke.UI.ControlPanels
             ArrayList panes = PortalSettings.Current.ActiveTab.Panes;
             var resultPanes = new List<string[]>();
 
-            if(panes.Count < 4 )
+            if (panes.Count < 4 )
             {
                 foreach (var p in panes)
                 {
@@ -463,14 +463,14 @@ namespace DotNetNuke.UI.ControlPanels
             }
 
             List<TabInfo> tabList;
-            if(isHostTool)
+            if (isHostTool)
             {
-                if(this._hostTabs == null) this.GetHostTabs();
+                if (this._hostTabs == null) this.GetHostTabs();
                 tabList = this._hostTabs;
             }
             else
             {
-                if(this._adminTabs == null) this.GetAdminTabs();
+                if (this._adminTabs == null) this.GetAdminTabs();
                 tabList = this._adminTabs;
             }
 
@@ -510,7 +510,7 @@ namespace DotNetNuke.UI.ControlPanels
 	            var linkClass = DotNetNukeContext.Current.Application.Name == "DNNCORP.CE" && tab.FullUrl.Contains("ProfessionalFeatures") ? "class=\"PE\"" : string.Empty;
                 if (!isRemoveBookmark)
                 {
-                    if(!isHideBookmark)
+                    if (!isHideBookmark)
 						return string.Format("<li data-tabname=\"{3}\"><a href=\"{0}\" {4}>{1}</a><a href=\"javascript:void(0)\" class=\"bookmark\" title=\"{2}\"><span></span></a></li>",
                                              tab.FullUrl,
                                              name,
@@ -541,7 +541,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             var tabs = this.AdminBaseTabs;
             var sb = new StringBuilder();
-            foreach(var tab in tabs)
+            foreach (var tab in tabs)
             {
                 var hideBookmark = this.AdminBookmarkItems.Contains(tab.TabName);
                 sb.Append(this.GetMenuItem(tab, false, hideBookmark));
@@ -595,10 +595,10 @@ namespace DotNetNuke.UI.ControlPanels
             var isHostTool = title == "host";
             var bookmarkItems = isHostTool ? this.HostBookmarkItems : this.AdminBookmarkItems;
 
-            if(bookmarkItems != null && bookmarkItems.Any())
+            if (bookmarkItems != null && bookmarkItems.Any())
             {
                 var sb = new StringBuilder();
-                foreach(var itemKey in bookmarkItems)
+                foreach (var itemKey in bookmarkItems)
                 {
                     sb.Append(this.GetMenuItem(itemKey, isHostTool, true));
                 }
@@ -648,7 +648,7 @@ namespace DotNetNuke.UI.ControlPanels
 
             if (this.PortalSettings.AllowUserUICulture)
             {
-                if(this.CurrentUICulture  == null)
+                if (this.CurrentUICulture  == null)
                 {
                     object oCulture = Personalization.GetProfile("Usability", "UICulture");
 
@@ -718,12 +718,12 @@ namespace DotNetNuke.UI.ControlPanels
         {
             string checkboxState = string.Empty;
             var cookie = this.Request.Cookies["StayInEditMode"];
-            if(cookie != null && cookie.Value == "YES")
+            if (cookie != null && cookie.Value == "YES")
             {
                 checkboxState = "checked='checked'";
             }
 
-            if(this.UserMode == PortalSettings.Mode.Layout)
+            if (this.UserMode == PortalSettings.Mode.Layout)
             {
                 checkboxState += " disabled='disabled'";
             }
@@ -954,7 +954,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             get
             {
-                if(this._hostBookmarkItems == null)
+                if (this._hostBookmarkItems == null)
                 {
                     var bookmarkItems = Personalization.GetProfile("ControlBar", "host" + this.PortalSettings.PortalId);
 

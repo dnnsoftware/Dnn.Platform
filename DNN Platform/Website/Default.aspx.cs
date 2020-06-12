@@ -60,7 +60,7 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public partial class DefaultPage : CDefault, IClientAPICallbackEventHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DefaultPage));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DefaultPage));
 
         private static readonly Regex HeaderTextRegex = new Regex("<meta([^>])+name=('|\")robots('|\")",
             RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
@@ -248,7 +248,7 @@ namespace DotNetNuke.Framework
             }
 
             //Only insert the header control if a comment is needed
-            if(!String.IsNullOrWhiteSpace(this.Comment))
+            if (!String.IsNullOrWhiteSpace(this.Comment))
                 this.Page.Header.Controls.AddAt(0, new LiteralControl(this.Comment));
 
             if (this.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())

@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Analytics.Config
     [Serializable, XmlRoot("AnalyticsConfig")]
     public class AnalyticsConfiguration
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AnalyticsConfiguration));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));
 		#region "Private Members"
 
         private AnalyticsRuleCollection _rules;
@@ -146,7 +146,7 @@ namespace DotNetNuke.Services.Analytics.Config
             if (config.Settings != null)
             {
                 //Create a new Xml Serializer
-                var ser = new XmlSerializer(typeof (AnalyticsConfiguration));
+                var ser = new XmlSerializer(typeof(AnalyticsConfiguration));
                 string filePath = "";
 
                 //Create a FileStream for the Config file

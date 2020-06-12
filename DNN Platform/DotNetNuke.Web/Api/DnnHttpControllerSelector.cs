@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Api
                 }
             }
 
-            if(matches.Count == 1)
+            if (matches.Count == 1)
             {
                 return matches.First();
             }

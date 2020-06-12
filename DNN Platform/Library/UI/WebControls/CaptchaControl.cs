@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
 	[ToolboxData("<{0}:CaptchaControl Runat=\"server\" CaptchaHeight=\"100px\" CaptchaWidth=\"300px\" />")]
 	public class CaptchaControl : WebControl, INamingContainer, IPostBackDataHandler
 	{
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (CaptchaControl));
+		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(CaptchaControl));
 
 		#region Private Constants
 
@@ -226,7 +226,7 @@ namespace DotNetNuke.UI.WebControls
 		 /// <summary>
 		 /// Gets and sets the BackGroundColor
 		 /// </summary>
-		[Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
+		[Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
 		 Description("Set the Style for the Error Message Control.")]
 		public Style ErrorStyle
 		{
@@ -289,7 +289,7 @@ namespace DotNetNuke.UI.WebControls
 		/// <summary>
 		/// Gets the Style to use for the Text Box
 		/// </summary>
-		[Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof (ExpandableObjectConverter)),
+		[Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
 		 Description("Set the Style for the Text Box Control.")]
 		public Style TextBoxStyle
 		{

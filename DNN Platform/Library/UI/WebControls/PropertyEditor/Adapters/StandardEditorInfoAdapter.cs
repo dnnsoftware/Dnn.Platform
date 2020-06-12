@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.WebControls
 
             //Get Category Field
             editInfo.Category = string.Empty;
-            object[] categoryAttributes = objProperty.GetCustomAttributes(typeof (CategoryAttribute), true);
+            object[] categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {
                 var category = (CategoryAttribute) categoryAttributes[0];
@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.WebControls
             }
             else
             {
-                object[] readOnlyAttributes = objProperty.GetCustomAttributes(typeof (IsReadOnlyAttribute), true);
+                object[] readOnlyAttributes = objProperty.GetCustomAttributes(typeof(IsReadOnlyAttribute), true);
                 if (readOnlyAttributes.Length > 0)
                 {
                     var readOnlyMode = (IsReadOnlyAttribute) readOnlyAttributes[0];
@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.WebControls
 			
             //Get Editor Field
             editInfo.Editor = "UseSystemType";
-            object[] editorAttributes = objProperty.GetCustomAttributes(typeof (EditorAttribute), true);
+            object[] editorAttributes = objProperty.GetCustomAttributes(typeof(EditorAttribute), true);
             if (editorAttributes.Length > 0)
             {
                 EditorAttribute editor = null;
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.WebControls
 			
             //Get Required Field
             editInfo.Required = false;
-            object[] requiredAttributes = objProperty.GetCustomAttributes(typeof (RequiredAttribute), true);
+            object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
             if (requiredAttributes.Length > 0)
             {
                 //The property may contain multiple edit mode types, so make sure we only use DotNetNuke editors.
@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.WebControls
 			
             //Get Css Style
             editInfo.ControlStyle = new Style();
-            object[] StyleAttributes = objProperty.GetCustomAttributes(typeof (ControlStyleAttribute), true);
+            object[] StyleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
             if (StyleAttributes.Length > 0)
             {
                 var attribute = (ControlStyleAttribute) StyleAttributes[0];
@@ -174,7 +174,7 @@ namespace DotNetNuke.UI.WebControls
 			
             //Get LabelMode Field
             editInfo.LabelMode = LabelMode.Left;
-            object[] labelModeAttributes = objProperty.GetCustomAttributes(typeof (LabelModeAttribute), true);
+            object[] labelModeAttributes = objProperty.GetCustomAttributes(typeof(LabelModeAttribute), true);
             if (labelModeAttributes.Length > 0)
             {
                 var mode = (LabelModeAttribute) labelModeAttributes[0];
@@ -186,7 +186,7 @@ namespace DotNetNuke.UI.WebControls
 
             //Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;
-            object[] regExAttributes = objProperty.GetCustomAttributes(typeof (RegularExpressionValidatorAttribute), true);
+            object[] regExAttributes = objProperty.GetCustomAttributes(typeof(RegularExpressionValidatorAttribute), true);
             if (regExAttributes.Length > 0)
             {
                 var regExAttribute = (RegularExpressionValidatorAttribute) regExAttributes[0];

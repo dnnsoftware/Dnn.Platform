@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
     [DnnAuthorize]
     public class MessagingServiceController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (MessagingServiceController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(MessagingServiceController));
         #region Public Methods
 
         [HttpGet]

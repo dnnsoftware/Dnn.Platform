@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Authentication
     /// -----------------------------------------------------------------------------
     public class AuthenticationController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AuthenticationController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AuthenticationController));
 		#region "Private Members"
 
         private static readonly DataProvider provider = DataProvider.Instance();

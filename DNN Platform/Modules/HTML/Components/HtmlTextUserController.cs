@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.Html
         /// -----------------------------------------------------------------------------
         public ArrayList GetHtmlTextUser(int UserID)
         {
-            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextUser(UserID), typeof (HtmlTextUserInfo));
+            return CBO.FillCollection(DataProvider.Instance().GetHtmlTextUser(UserID), typeof(HtmlTextUserInfo));
         }
 
         /// -----------------------------------------------------------------------------

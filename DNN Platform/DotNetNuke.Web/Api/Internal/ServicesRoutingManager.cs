@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.Api.Internal
 {
     public sealed class ServicesRoutingManager : IMapRoute
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesRoutingManager));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesRoutingManager));
         private readonly Dictionary<string, int> _moduleUsage = new Dictionary<string, int>();
         private readonly RouteCollection _routes;
         private readonly PortalAliasRouteManager _portalAliasRouteManager;
@@ -197,7 +197,7 @@ namespace DotNetNuke.Web.Api.Internal
         {
             var configValue = Config.GetSetting("EnableServicesFrameworkTracing");
 
-            if(!string.IsNullOrEmpty(configValue))
+            if (!string.IsNullOrEmpty(configValue))
             {
                 return Convert.ToBoolean(configValue);
             }
@@ -267,14 +267,14 @@ namespace DotNetNuke.Web.Api.Internal
 
         internal static bool IsValidServiceRouteMapper(Type t)
         {
-            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof (IServiceRouteMapper).IsAssignableFrom(t);
+            return t != null && t.IsClass && !t.IsAbstract && t.IsVisible && typeof(IServiceRouteMapper).IsAssignableFrom(t);
         }
 
         private Route MapHttpRouteWithNamespace(string name, string url, object defaults, object constraints, string[] namespaces)
         {
             Route route = this._routes.MapHttpRoute(name, url, defaults, constraints);
             
-            if(route.DataTokens == null)
+            if (route.DataTokens == null)
             {
                 route.DataTokens = new RouteValueDictionary();
             }

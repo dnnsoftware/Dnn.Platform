@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		public static T GetStaticFieldValue<T>(string fieldName, Type type)
 		{
 			var field = type.GetField(fieldName, BindingFlags.NonPublic | BindingFlags.Static);
-			if(field != null)
+			if (field != null)
 			{
 				return (T)field.GetValue(type);
 			}
@@ -82,7 +82,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		public static T GetPrivateInstanceFieldValue<T>(string fieldName, object source)
 		{
 			var field = source.GetType().GetField(fieldName, BindingFlags.GetField | BindingFlags.NonPublic | BindingFlags.Instance);
-			if(field != null)
+			if (field != null)
 			{
 				return (T)field.GetValue(source);
 			}

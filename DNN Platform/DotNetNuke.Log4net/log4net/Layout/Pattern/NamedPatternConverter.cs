@@ -143,7 +143,7 @@ namespace log4net.Layout.Pattern
                 }
 
                 int end = name.LastIndexOf(DOT);
-				for(int i = 1; end > 0 && i < this.m_precision; i++) 
+				for (int i = 1; end > 0 && i < this.m_precision; i++) 
 				{
                     end = name.LastIndexOf('.', end - 1);
                 }

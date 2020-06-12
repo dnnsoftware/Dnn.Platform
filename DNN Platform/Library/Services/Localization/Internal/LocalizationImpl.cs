@@ -15,7 +15,7 @@ namespace DotNetNuke.Services.Localization.Internal
     {
         public string BestCultureCodeBasedOnBrowserLanguages(IEnumerable<string> cultureCodes, string fallback)
         {
-            if(cultureCodes == null)
+            if (cultureCodes == null)
             {
                 throw new ArgumentException("cultureCodes cannot be null");
             }
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.Localization.Internal
                 if (lang.Contains('-'))
                 {
                     var match = values.FirstOrDefault(x => x == lang);
-                    if(match != null)
+                    if (match != null)
                     {
                         return match;
                     }

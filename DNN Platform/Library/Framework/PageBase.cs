@@ -43,7 +43,7 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public abstract class PageBase : Page
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (PageBase));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PageBase));
         private readonly ILog _tracelLogger = LoggerSource.Instance.GetLogger("DNN.Trace");
 
         private const string LinkItemPattern = "<(a|link|img|script|input|form|object).[^>]*(href|src|action)=(\\\"|'|)(.[^\\\"']*)(\\\"|'|)[^>]*>";

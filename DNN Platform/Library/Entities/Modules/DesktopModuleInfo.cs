@@ -557,7 +557,7 @@ namespace DotNetNuke.Entities.Modules
                             this.IsPremium = isPremium;
                             break;
                         default:
-                            if(reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }
@@ -620,7 +620,7 @@ namespace DotNetNuke.Entities.Modules
 
             // Module sharing
 
-            if(this.Shareable != ModuleSharing.Unknown)
+            if (this.Shareable != ModuleSharing.Unknown)
             {
                 writer.WriteStartElement("shareable");
                 switch (this.Shareable)

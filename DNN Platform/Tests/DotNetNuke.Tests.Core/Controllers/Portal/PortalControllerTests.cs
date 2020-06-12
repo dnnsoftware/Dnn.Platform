@@ -261,7 +261,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
         private TextReader CreateLanguageFileReader(string name, string description)
         {
-            if(description != null)
+            if (description != null)
             {
                 description = string.Format("<data name=\"PortalDescription.Text\" xml:space=\"preserve\"><value>{0}</value></data>", description);
             }
@@ -289,7 +289,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
         {
             string expected;
             expectations.TryGetValue(key, out expected);
-            if(string.IsNullOrEmpty(expected))
+            if (string.IsNullOrEmpty(expected))
             {
                 Assert.IsNullOrEmpty(value, string.Format("Checking value of " + key));
             }

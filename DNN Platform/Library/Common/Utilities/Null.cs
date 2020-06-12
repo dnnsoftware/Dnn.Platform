@@ -192,7 +192,7 @@ namespace DotNetNuke.Common.Utilities
                 default:
                     //Enumerations default to the first entry
                     Type pType = objPropertyInfo.PropertyType;
-                    if (pType.BaseType.Equals(typeof (Enum)))
+                    if (pType.BaseType.Equals(typeof(Enum)))
                     {
                         Array objEnumValues = Enum.GetValues(pType);
                         Array.Sort(objEnumValues);

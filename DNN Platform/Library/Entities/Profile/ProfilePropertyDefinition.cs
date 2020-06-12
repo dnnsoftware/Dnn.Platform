@@ -78,7 +78,7 @@ namespace DotNetNuke.Entities.Profile
         /// Gets and sets the Data Type of the Profile Property
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [Editor("DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke", typeof (EditControl))]
+        [Editor("DotNetNuke.UI.WebControls.DNNListEditControl, DotNetNuke", typeof(EditControl))]
         [List("DataType", "", ListBoundField.Id, ListBoundField.Value)]
         [IsReadOnly(true)]
         [Required(true)]

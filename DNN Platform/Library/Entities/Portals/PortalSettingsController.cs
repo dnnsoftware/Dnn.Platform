@@ -219,7 +219,7 @@ namespace DotNetNuke.Entities.Portals
             Boolean overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
 
             int crmVersion;
-            if(overridingDefaultSettings)
+            if (overridingDefaultSettings)
             {
                 int? globalVersion = new ClientResourceSettings().GetVersion();
                 crmVersion = globalVersion ?? default(int);

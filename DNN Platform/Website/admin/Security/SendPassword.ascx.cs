@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.Admin.Security
     /// </remarks>
     public partial class SendPassword : UserModuleBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendPassword));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendPassword));
         private readonly INavigationManager _navigationManager;
         public SendPassword()
         {

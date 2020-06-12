@@ -108,7 +108,7 @@ namespace DotNetNuke.Common.Utilities
             File.Copy(sFile, tmp);
 
             using (var fileContent = File.OpenRead(tmp))
-            using(var content = CreateImage(fileContent, intHeight, intWidth, fi.Extension))
+            using (var content = CreateImage(fileContent, intHeight, intWidth, fi.Extension))
             {
                 string sFileExt = fi.Extension;
                 string sFileNoExtension = Path.GetFileNameWithoutExtension(sFile);

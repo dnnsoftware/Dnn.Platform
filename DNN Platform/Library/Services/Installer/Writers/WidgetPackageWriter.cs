@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Installer.Writers
         public WidgetPackageWriter(PackageInfo package) : base(package)
         {
             string company = package.Name;
-            if(company.Contains("."))
+            if (company.Contains("."))
             {
                 company = company.Substring(0, company.IndexOf("."));
             }

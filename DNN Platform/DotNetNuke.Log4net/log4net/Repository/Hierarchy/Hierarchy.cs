@@ -240,7 +240,7 @@ namespace log4net.Repository.Hierarchy
 			{ 
 				if (this.m_root == null)
 				{
-					lock(this)
+					lock (this)
 					{
 						if (this.m_root == null)
 						{
@@ -301,7 +301,7 @@ namespace log4net.Repository.Hierarchy
 				throw new ArgumentNullException("name");
 			}
 
-			lock(this.m_ht) 
+			lock (this.m_ht) 
 			{
 				return this.m_ht[new LoggerKey(name)] as Logger;
 			}
@@ -323,12 +323,12 @@ namespace log4net.Repository.Hierarchy
 			// The accumulation in loggers is necessary because not all elements in
 			// ht are Logger objects as there might be some ProvisionNodes
 			// as well.
-			lock(this.m_ht) 
+			lock (this.m_ht) 
 			{
 				System.Collections.ArrayList loggers = new System.Collections.ArrayList(this.m_ht.Count);
 	
 				// Iterate through m_ht values
-				foreach(object node in this.m_ht.Values)
+				foreach (object node in this.m_ht.Values)
 				{
 					if (node is Logger) 
 					{
@@ -394,11 +394,11 @@ namespace log4net.Repository.Hierarchy
 			// begin by closing nested appenders
 			this.Root.CloseNestedAppenders();
 
-			lock(this.m_ht) 
+			lock (this.m_ht) 
 			{
 				ILogger[] currentLoggers = this.GetCurrentLoggers();
 
-				foreach(Logger logger in currentLoggers)
+				foreach (Logger logger in currentLoggers)
 				{
 					logger.CloseNestedAppenders();
 				}
@@ -406,7 +406,7 @@ namespace log4net.Repository.Hierarchy
 				// then, remove all appenders
 				this.Root.RemoveAllAppenders();
 
-				foreach(Logger logger in currentLoggers)
+				foreach (Logger logger in currentLoggers)
 				{
 					logger.RemoveAllAppenders();
 				}
@@ -441,11 +441,11 @@ namespace log4net.Repository.Hierarchy
 			this.Threshold = this.LevelMap.LookupWithDefault(Level.All);
 	
 			// the synchronization is needed to prevent hashtable surprises
-			lock(this.m_ht) 
+			lock (this.m_ht) 
 			{	
 				this.Shutdown(); // nested locks are OK	
 	
-				foreach(Logger l in this.GetCurrentLoggers())
+				foreach (Logger l in this.GetCurrentLoggers())
 				{
 					l.Level = null;
 					l.Additivity = true;
@@ -504,7 +504,7 @@ namespace log4net.Repository.Hierarchy
 
 			CollectAppenders(appenderList, this.Root);
 
-			foreach(Logger logger in this.GetCurrentLoggers())
+			foreach (Logger logger in this.GetCurrentLoggers())
 			{
 				CollectAppenders(appenderList, logger);
 			}
@@ -543,7 +543,7 @@ namespace log4net.Repository.Hierarchy
 		/// <param name="container"></param>
 		private static void CollectAppenders(System.Collections.ArrayList appenderList, IAppenderAttachable container)
 		{
-			foreach(Appender.IAppender appender in container.Appenders)
+			foreach (Appender.IAppender appender in container.Appenders)
 			{
 				CollectAppender(appenderList, appender);
 			}
@@ -704,7 +704,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		public void Clear() 
 		{
-			lock(this.m_ht) 
+			lock (this.m_ht) 
 			{
 				this.m_ht.Clear();
 			}
@@ -742,7 +742,7 @@ namespace log4net.Repository.Hierarchy
 			// GetEffectiveLevel() method) are possible only if variable
 			// assignments are non-atomic.
 
-			lock(this.m_ht) 
+			lock (this.m_ht) 
 			{
 				Logger logger = null;
 
@@ -846,7 +846,7 @@ namespace log4net.Repository.Hierarchy
 			bool parentFound = false;
 	
 			// if name = "w.x.y.z", loop through "w.x.y", "w.x" and "w", but not "w.x.y.z" 
-			for(int i = name.LastIndexOf('.', length-1); i >= 0; i = name.LastIndexOf('.', i-1))  
+			for (int i = name.LastIndexOf('.', length-1); i >= 0; i = name.LastIndexOf('.', i-1))  
 			{
 				string substr = name.Substring(0, i);
 
@@ -920,7 +920,7 @@ namespace log4net.Repository.Hierarchy
 		/// </remarks>
 		private static void UpdateChildren(ProvisionNode pn, Logger log) 
 		{
-			for(int i = 0; i < pn.Count; i++) 
+			for (int i = 0; i < pn.Count; i++) 
 			{
 				Logger childLogger = (Logger)pn[i];
 

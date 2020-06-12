@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Syndication
     /// </summary>
     internal class OpmlDownloadManager
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (OpmlDownloadManager));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OpmlDownloadManager));
         private const string OPML_Dir = "/OPML/";
         private static readonly OpmlDownloadManager _theManager = new OpmlDownloadManager();
 

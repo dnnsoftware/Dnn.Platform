@@ -597,7 +597,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 }
             }
 
-            if(!IsAdministratorRoleAlreadyIncluded(settings, roles))
+            if (!IsAdministratorRoleAlreadyIncluded(settings, roles))
             {
                 var adminRole = RoleController.Instance.GetRoleByName(settings.PortalId, settings.AdministratorRoleName);
                 roles.Add(adminRole);
@@ -628,7 +628,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var superUsers = UserController.GetUsers(false, true, Null.NullInteger);
             foreach (UserInfo superUser in superUsers)
             {
-                if(IsSuperUserNotIncluded(users, superUser))
+                if (IsSuperUserNotIncluded(users, superUser))
                 {
                     users.Add(superUser);
                 }

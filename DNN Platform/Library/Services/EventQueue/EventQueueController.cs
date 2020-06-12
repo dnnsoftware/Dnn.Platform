@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.EventQueue
             {
                 message = new EventMessage();
                 message.EventMessageID = Convert.ToInt32(Null.SetNull(dr["EventMessageID"], message.EventMessageID));
-                message.Priority = (MessagePriority) Enum.Parse(typeof (MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
+                message.Priority = (MessagePriority) Enum.Parse(typeof(MessagePriority), Convert.ToString(Null.SetNull(dr["Priority"], message.Priority)));
                 message.ProcessorType = Convert.ToString(Null.SetNull(dr["ProcessorType"], message.ProcessorType));
                 message.ProcessorCommand = Convert.ToString(Null.SetNull(dr["ProcessorCommand"], message.ProcessorCommand));
                 message.Body = Convert.ToString(Null.SetNull(dr["Body"], message.Body));

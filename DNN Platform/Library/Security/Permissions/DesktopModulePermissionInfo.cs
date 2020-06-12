@@ -193,7 +193,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return true;
             }
-            if (obj.GetType() != typeof (DesktopModulePermissionInfo))
+            if (obj.GetType() != typeof(DesktopModulePermissionInfo))
             {
                 return false;
             }

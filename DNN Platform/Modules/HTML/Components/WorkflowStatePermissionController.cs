@@ -135,7 +135,7 @@ namespace DotNetNuke.Security.Permissions
             if (!bFound)
             {
                 //try the database
-                WorkflowStatePermissions = new WorkflowStatePermissionCollection(CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof (WorkflowStatePermissionInfo)),
+                WorkflowStatePermissions = new WorkflowStatePermissionCollection(CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
                                                                                  StateID);
             }
 

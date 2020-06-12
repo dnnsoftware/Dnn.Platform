@@ -51,7 +51,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.ScreenResolutionHeightInPixels = browserCaps.ScreenPixelsHeight;
                 this.IsTouchScreen = false;
                 this.BrowserName = browserCaps.Browser;
-                if(browserCaps.Capabilities != null)
+                if (browserCaps.Capabilities != null)
                 { 
                     this.Capabilities = browserCaps.Capabilities.Cast<DictionaryEntry>()
                         .ToDictionary(kvp => Convert.ToString(kvp.Key), kvp => Convert.ToString(kvp.Value));

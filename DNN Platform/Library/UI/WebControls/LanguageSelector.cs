@@ -231,7 +231,7 @@ namespace DotNetNuke.UI.WebControls
 						}
 					}
 				}
-				return a.ToArray(typeof (string)) as string[];
+				return a.ToArray(typeof(string)) as string[];
 			}
 			set
 			{
@@ -367,7 +367,7 @@ namespace DotNetNuke.UI.WebControls
 					}
 				}
 			}
-			return (CultureInfo[]) a.ToArray(typeof (CultureInfo));
+			return (CultureInfo[]) a.ToArray(typeof(CultureInfo));
 		}
 		
 		#endregion

@@ -41,9 +41,9 @@ namespace DotNetNuke.Framework.Reflections
 
                 foreach (var type in types)
                 {
-                    if(type != null)
+                    if (type != null)
                     {
-                        if(predicate(type))
+                        if (predicate(type))
                         {
                             yield return type;
                         }

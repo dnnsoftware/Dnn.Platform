@@ -116,7 +116,7 @@ namespace DotNetNuke.Common.Utilities
                 while (dr.Read())
                 {
 					//Create the Object
-                    objObject = (TValue) CreateObjectFromReader(typeof (TValue), dr, false);
+                    objObject = (TValue) CreateObjectFromReader(typeof(TValue), dr, false);
                     if (keyField == "KeyID" && objObject is IHydratable)
                     {
 						//Get the value of the key field from the KeyID
@@ -125,18 +125,18 @@ namespace DotNetNuke.Common.Utilities
                     else
                     {
 						//Get the value of the key field from the DataReader
-                        if (typeof (TKey).Name == "Int32" && dr[keyField].GetType().Name == "Decimal")
+                        if (typeof(TKey).Name == "Int32" && dr[keyField].GetType().Name == "Decimal")
                         {
-                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof (TKey));
+                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], keyValue), typeof(TKey));
                         }
-                        else if (typeof (TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
+                        else if (typeof(TKey).Name.Equals("string", StringComparison.OrdinalIgnoreCase) &&
                                  dr[keyField].GetType().Name.Equals("dbnull", StringComparison.OrdinalIgnoreCase))
                         {
-                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof (TKey));
+                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
                         }
                         else
                         {
-                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof (TKey));
+                            keyValue = (TKey) Convert.ChangeType(Null.SetNull(dr[keyField], ""), typeof(TKey));
                         }
                     }
 					//add to dictionary
@@ -199,7 +199,7 @@ namespace DotNetNuke.Common.Utilities
                 while (dr.Read())
                 {
 					//Create the Object
-                    objObject = (TItem) CreateObjectFromReader(typeof (TItem), dr, false);
+                    objObject = (TItem) CreateObjectFromReader(typeof(TItem), dr, false);
 					//add to collection
                     objList.Add(objObject);
                 }
@@ -294,7 +294,7 @@ namespace DotNetNuke.Common.Utilities
                         {
 							//business object info class member data type does not match datareader member data type
 							//need to handle enumeration conversions differently than other base types
-                            if (propType.BaseType.Equals(typeof (Enum)))
+                            if (propType.BaseType.Equals(typeof(Enum)))
                             {
 								//check if value is numeric and if not convert to integer ( supports databases like Oracle )
                                 if (Globals.NumberMatchRegex.IsMatch(coloumnValue.ToString()))
@@ -308,14 +308,14 @@ namespace DotNetNuke.Common.Utilities
                                     objPropertyInfo.SetValue(hydratedObject, Enum.ToObject(propType, coloumnValue), null);
                                 }
                             }
-                            else if (propType == typeof (Guid))
+                            else if (propType == typeof(Guid))
                             {
 								//guid is not a datatype common across all databases ( ie. Oracle )
                                 objPropertyInfo.SetValue(hydratedObject,
                                                          Convert.ChangeType(new Guid(coloumnValue.ToString()), propType),
                                                          null);
                             }
-                            else if (propType == typeof (Version))
+                            else if (propType == typeof(Version))
                             {
                                 objPropertyInfo.SetValue(hydratedObject, new Version(coloumnValue.ToString()), null);
                             }
@@ -792,7 +792,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr)
         {
-            return (TObject) CreateObjectFromReader(typeof (TObject), dr, true);
+            return (TObject) CreateObjectFromReader(typeof(TObject), dr, true);
         }
 
         /// -----------------------------------------------------------------------------
@@ -805,7 +805,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static TObject FillObject<TObject>(IDataReader dr, bool closeReader)
         {
-            return (TObject) CreateObjectFromReader(typeof (TObject), dr, closeReader);
+            return (TObject) CreateObjectFromReader(typeof(TObject), dr, closeReader);
         }
 
 		#endregion
@@ -919,7 +919,7 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, PropertyInfo> GetProperties<TObject>()
         {
-            return GetObjectMapping(typeof (TObject)).Properties;
+            return GetObjectMapping(typeof(TObject)).Properties;
         }
 
         /// -----------------------------------------------------------------------------

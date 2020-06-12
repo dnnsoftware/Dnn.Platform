@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         public Quantizer(bool singlePass)
         {
             this._singlePass = singlePass;
-            this._pixelSize = Marshal.SizeOf(typeof (Color32));
+            this._pixelSize = Marshal.SizeOf(typeof(Color32));
         }
 
         /// <summary>

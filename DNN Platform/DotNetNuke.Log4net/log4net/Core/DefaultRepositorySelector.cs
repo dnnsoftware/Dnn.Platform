@@ -171,7 +171,7 @@ namespace log4net.Core
 				throw new ArgumentNullException("repositoryName");
 			}
 
-			lock(this)
+			lock (this)
 			{
 				// Lookup in map
 				ILoggerRepository rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
@@ -275,7 +275,7 @@ namespace log4net.Core
 				repositoryType = this.m_defaultRepositoryType;
 			}
 
-			lock(this)
+			lock (this)
 			{
 				// Lookup in map
 				ILoggerRepository rep = this.m_assembly2repositoryMap[repositoryAssembly] as ILoggerRepository;
@@ -374,7 +374,7 @@ namespace log4net.Core
 				repositoryType = this.m_defaultRepositoryType;
 			}
 
-			lock(this)
+			lock (this)
 			{
 				ILoggerRepository rep = null;
 
@@ -448,7 +448,7 @@ namespace log4net.Core
 		/// </remarks>
 		public bool ExistsRepository(string repositoryName)
 		{
-			lock(this)
+			lock (this)
 			{
 				return this.m_name2repositoryMap.ContainsKey(repositoryName);
 			}
@@ -465,7 +465,7 @@ namespace log4net.Core
 		/// </remarks>
 		public ILoggerRepository[] GetAllRepositories()
 		{
-			lock(this)
+			lock (this)
 			{
 				ICollection reps = this.m_name2repositoryMap.Values;
 				ILoggerRepository[] all = new ILoggerRepository[reps.Count];
@@ -509,7 +509,7 @@ namespace log4net.Core
 				throw new ArgumentNullException("repositoryTarget");
 			}
 
-			lock(this) 
+			lock (this) 
 			{
 				// Check if the alias is already set
 				if (this.m_alias2repositoryMap.Contains(repositoryAlias)) 
@@ -678,7 +678,7 @@ namespace log4net.Core
 				Array.Sort(configAttributes);
 
 				// Delegate to the attribute the job of configuring the repository
-				foreach(log4net.Config.ConfiguratorAttribute configAttr in configAttributes)
+				foreach (log4net.Config.ConfiguratorAttribute configAttr in configAttributes)
 				{
 					if (configAttr != null)
 					{
@@ -708,7 +708,7 @@ namespace log4net.Core
 					{
 						applicationBaseDirectory = SystemInfo.ApplicationBaseDirectory;
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Warn(declaringType, "Exception getting ApplicationBaseDirectory. appSettings log4net.Config path ["+repositoryConfigFile+"] will be treated as an absolute URI", ex);
 					}
@@ -773,7 +773,7 @@ namespace log4net.Core
 					{
 					    repositoryConfigUri = new Uri(repositoryConfigFilePath);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Exception while parsing log4net.Config file path ["+repositoryConfigFile+"]", ex);
 					}
@@ -826,14 +826,14 @@ namespace log4net.Core
 #endif
 			if (configAttributes != null && configAttributes.Length > 0)
 			{
-				foreach(log4net.Plugin.IPluginFactory configAttr in configAttributes)
+				foreach (log4net.Plugin.IPluginFactory configAttr in configAttributes)
 				{
 					try
 					{
 						// Create the plugin and add it to the repository
 						repository.PluginMap.Add(configAttr.CreatePlugin());
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Failed to create plugin. Attribute [" + configAttr.ToString() + "]", ex);
 					}
@@ -870,13 +870,13 @@ namespace log4net.Core
 #endif
 			if (configAttributes != null && configAttributes.Length > 0)
 			{
-				foreach(log4net.Config.AliasRepositoryAttribute configAttr in configAttributes)
+				foreach (log4net.Config.AliasRepositoryAttribute configAttr in configAttributes)
 				{
 					try
 					{
 						this.AliasRepository(configAttr.Name, repository);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Failed to alias repository [" + configAttr.Name + "]", ex);
 					}

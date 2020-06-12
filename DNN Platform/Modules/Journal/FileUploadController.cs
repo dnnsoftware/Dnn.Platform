@@ -20,7 +20,7 @@ namespace DotNetNuke.Modules.Journal
 {
     public class FileUploadController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileUploadController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileUploadController));
 
         [DnnAuthorize]
         [HttpPost]

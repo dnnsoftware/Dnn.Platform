@@ -422,7 +422,7 @@ namespace log4net.Util
 			PatternParser patternParser = new PatternParser(pattern);
 
 			// Add all the builtin patterns
-			foreach(DictionaryEntry entry in s_globalRulesRegistry)
+			foreach (DictionaryEntry entry in s_globalRulesRegistry)
 			{
                 ConverterInfo converterInfo = new ConverterInfo();
                 converterInfo.Name = (string)entry.Key;
@@ -430,7 +430,7 @@ namespace log4net.Util
                 patternParser.PatternConverters.Add(entry.Key, converterInfo);
 			}
 			// Add the instance patterns
-			foreach(DictionaryEntry entry in this.m_instanceRulesRegistry)
+			foreach (DictionaryEntry entry in this.m_instanceRulesRegistry)
 			{
 				patternParser.PatternConverters[entry.Key] = entry.Value;
 			}
@@ -457,7 +457,7 @@ namespace log4net.Util
 			PatternConverter c = this.m_head;
 
 			// loop through the chain of pattern converters
-			while(c != null) 
+			while (c != null) 
 			{
 				c.Format(writer, null);
 				c = c.Next;

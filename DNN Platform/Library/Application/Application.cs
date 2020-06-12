@@ -129,9 +129,9 @@ namespace DotNetNuke.Application
                 if (_status == ReleaseMode.None)
                 {
                     Assembly assy = Assembly.GetExecutingAssembly();
-                    if (Attribute.IsDefined(assy, typeof (AssemblyStatusAttribute)))
+                    if (Attribute.IsDefined(assy, typeof(AssemblyStatusAttribute)))
                     {
-                        Attribute attr = Attribute.GetCustomAttribute(assy, typeof (AssemblyStatusAttribute));
+                        Attribute attr = Attribute.GetCustomAttribute(assy, typeof(AssemblyStatusAttribute));
                         if (attr != null)
                         {
                             _status = ((AssemblyStatusAttribute) attr).Status;

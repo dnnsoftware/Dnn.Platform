@@ -12,7 +12,7 @@ namespace DotNetNuke.Web.Api
 {
     internal sealed class TraceWriter : ITraceWriter
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TraceWriter));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TraceWriter));
         private readonly bool _enabled;
 
         public TraceWriter(bool isTracingEnabled)
@@ -22,7 +22,7 @@ namespace DotNetNuke.Web.Api
 
         public void Trace(HttpRequestMessage request, string category, TraceLevel level, Action<TraceRecord> traceAction)
         {
-            if(!this._enabled || level == TraceLevel.Off)
+            if (!this._enabled || level == TraceLevel.Off)
             {
                 return;
             }

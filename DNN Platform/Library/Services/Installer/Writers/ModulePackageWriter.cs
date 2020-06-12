@@ -32,7 +32,7 @@ namespace DotNetNuke.Services.Installer.Writers
     /// -----------------------------------------------------------------------------
     public class ModulePackageWriter : PackageWriterBase
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModulePackageWriter));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModulePackageWriter));
 		#region "Constructors"
 
         public ModulePackageWriter(XPathNavigator manifestNav, InstallerInfo installer)
@@ -155,7 +155,7 @@ namespace DotNetNuke.Services.Installer.Writers
             {
                 try
                 {
-                    moduleControl.ControlType = (SecurityAccessLevel) TypeDescriptor.GetConverter(typeof (SecurityAccessLevel)).ConvertFromString(controlType);
+                    moduleControl.ControlType = (SecurityAccessLevel) TypeDescriptor.GetConverter(typeof(SecurityAccessLevel)).ConvertFromString(controlType);
                 }
                 catch (Exception exc)
                 {

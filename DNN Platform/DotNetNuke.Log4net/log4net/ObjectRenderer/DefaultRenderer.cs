@@ -250,7 +250,7 @@ namespace log4net.ObjectRenderer
 				if (len > 0)
 				{
 					rendererMap.FindAndRender(array.GetValue(0), writer);
-					for(int i=1; i<len; i++)
+					for (int i=1; i<len; i++)
 					{
 						writer.Write(", ");
 						rendererMap.FindAndRender(array.GetValue(i), writer);

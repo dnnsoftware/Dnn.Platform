@@ -235,13 +235,13 @@ namespace log4net.Util
 		/// </remarks>
 		protected static void SpacePad(TextWriter writer, int length) 
 		{
-			while(length >= 32) 
+			while (length >= 32) 
 			{
 				writer.Write(SPACES[5]);
 				length -= 32;
 			}
     
-			for(int i = 4; i >= 0; i--) 
+			for (int i = 4; i >= 0; i--) 
 			{	
 				if ((length & (1<<i)) != 0) 
 				{

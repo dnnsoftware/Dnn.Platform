@@ -454,7 +454,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.dnnRoleDetails.Visible = this.IsEdit && !this.User.IsSuperUser && !this.AddUser;
             this.dnnPasswordDetails.Visible = (this.IsAdmin) && !this.AddUser;
 
-            if(this.EditProfileMode)
+            if (this.EditProfileMode)
             {
                 this.adminTabNav.Visible =
                     this.dnnUserDetails.Visible =

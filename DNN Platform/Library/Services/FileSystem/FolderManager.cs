@@ -825,7 +825,7 @@ namespace DotNetNuke.Services.FileSystem
             
             if (folder.FolderPath == destinationFolder.FolderPath) return folder;
 
-            if(this.FolderExists(folder.PortalID, newFolderPath))
+            if (this.FolderExists(folder.PortalID, newFolderPath))
             {
                 throw new InvalidOperationException(string.Format(
                     Localization.Localization.GetExceptionMessage("CannotMoveFolderAlreadyExists", 
@@ -835,7 +835,7 @@ namespace DotNetNuke.Services.FileSystem
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var destinationFolderMapping = FolderMappingController.Instance.GetFolderMapping(destinationFolder.PortalID, destinationFolder.FolderMappingID);
 
-            if(!this.CanMoveBetweenFolderMappings(folderMapping, destinationFolderMapping))
+            if (!this.CanMoveBetweenFolderMappings(folderMapping, destinationFolderMapping))
             {
                 throw new InvalidOperationException(string.Format(
                     Localization.Localization.GetExceptionMessage("CannotMoveFolderBetweenFolderType", 

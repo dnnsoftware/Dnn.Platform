@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 var xProp = (PropertyInfo) x;
                 var yProp = (PropertyInfo) y;
-                object[] xCategory = xProp.GetCustomAttributes(typeof (CategoryAttribute), true);
+                object[] xCategory = xProp.GetCustomAttributes(typeof(CategoryAttribute), true);
                 string xCategoryName = string.Empty;
                 if (xCategory.Length > 0)
                 {
@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.WebControls
                 {
                     xCategoryName = CategoryAttribute.Default.Category;
                 }
-                object[] yCategory = yProp.GetCustomAttributes(typeof (CategoryAttribute), true);
+                object[] yCategory = yProp.GetCustomAttributes(typeof(CategoryAttribute), true);
                 string yCategoryName = string.Empty;
                 if (yCategory.Length > 0)
                 {

@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Log.EventLog
 {
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (LogController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
         private const int WriterLockTimeout = 10000; //milliseconds
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
 

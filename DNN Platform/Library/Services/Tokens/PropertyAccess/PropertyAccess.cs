@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Tokens
             if (CBO.GetProperties(objObject.GetType()).TryGetValue(strPropertyName, out objProperty))
             {
                 object propValue = objProperty.GetValue(objObject, null);
-                Type t = typeof (string);
+                Type t = typeof(string);
                 if (propValue != null)
                 {
                     switch (objProperty.PropertyType.Name)

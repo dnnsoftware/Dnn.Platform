@@ -141,7 +141,7 @@ namespace log4net.Core
 				throw new ArgumentNullException("repositoryName");
 			}
 
-			lock(this)
+			lock (this)
 			{
 				// Lookup in map
 				ILoggerRepository rep = this.m_name2repositoryMap[repositoryName] as ILoggerRepository;
@@ -181,7 +181,7 @@ namespace log4net.Core
 				repositoryType = this.m_defaultRepositoryType;
 			}
 
-			lock(this)
+			lock (this)
 			{
 				// This method should not throw if the default repository already exists.
 
@@ -233,7 +233,7 @@ namespace log4net.Core
 				repositoryType = this.m_defaultRepositoryType;
 			}
 
-			lock(this)
+			lock (this)
 			{
 				ILoggerRepository rep = null;
 
@@ -278,7 +278,7 @@ namespace log4net.Core
 		/// </remarks>
 		public bool ExistsRepository(string repositoryName)
 		{
-			lock(this)
+			lock (this)
 			{
 				return this.m_name2repositoryMap.ContainsKey(repositoryName);
 			}
@@ -295,7 +295,7 @@ namespace log4net.Core
 		/// </remarks>
 		public ILoggerRepository[] GetAllRepositories()
 		{
-			lock(this)
+			lock (this)
 			{
 				ICollection reps = this.m_name2repositoryMap.Values;
 				ILoggerRepository[] all = new ILoggerRepository[reps.Count];

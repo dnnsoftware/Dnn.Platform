@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:TrueFalseEditControl runat=server></{0}:TrueFalseEditControl>")]
     public class TrueFalseEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (TrueFalseEditControl));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(TrueFalseEditControl));
 		#region "Constructors"
 
         /// -----------------------------------------------------------------------------

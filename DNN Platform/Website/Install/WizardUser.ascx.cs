@@ -203,13 +203,13 @@ namespace DotNetNuke.Services.Install
         {
 			base.OnLoad(e);
 
-			if(this.IsPostBack)
+			if (this.IsPostBack)
 			{
-				if(!string.IsNullOrEmpty(this.txtPassword.Text))
+				if (!string.IsNullOrEmpty(this.txtPassword.Text))
 				{
 					this.ViewState["Password"] = this.txtPassword.Text;
 				}
-				else if(this.ViewState["Password"] != null)
+				else if (this.ViewState["Password"] != null)
 				{
 					this.txtPassword.Text = this.ViewState["Password"].ToString();
 				}

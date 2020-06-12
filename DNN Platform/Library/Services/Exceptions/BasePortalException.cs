@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Exceptions
 	/// </summary>
     public class BasePortalException : Exception
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (BasePortalException));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(BasePortalException));
 	    private string m_InnerExceptionString;
         private string m_Message;
 	    private string m_Source;

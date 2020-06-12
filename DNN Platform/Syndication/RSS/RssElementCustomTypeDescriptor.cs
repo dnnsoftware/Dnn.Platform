@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 get
                 {
-                    return typeof (RssElementCustomTypeDescriptor);
+                    return typeof(RssElementCustomTypeDescriptor);
                 }
             }
 
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Syndication
             {
                 get
                 {
-                    return typeof (string);
+                    return typeof(string);
                 }
             }
 

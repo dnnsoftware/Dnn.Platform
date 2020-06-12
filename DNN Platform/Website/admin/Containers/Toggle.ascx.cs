@@ -38,13 +38,13 @@ namespace DotNetNuke.UI.Containers.Controls
     	{
     		get
     		{
-				if(this.Parent == null || string.IsNullOrEmpty(this._target))
+				if (this.Parent == null || string.IsNullOrEmpty(this._target))
 				{
 					return string.Empty;
 				}
 
     			var targetControl = this.Parent.FindControl(this._target);
-				if(targetControl == null)
+				if (targetControl == null)
 				{
 					return string.Empty;
 				}

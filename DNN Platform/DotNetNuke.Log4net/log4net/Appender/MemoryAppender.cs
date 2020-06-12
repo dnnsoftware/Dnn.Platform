@@ -201,7 +201,7 @@ namespace log4net.Appender
         {
             lock (this.m_eventsList.SyncRoot)
             {
-                LoggingEvent[] tmp = (LoggingEvent[]) this.m_eventsList.ToArray(typeof (LoggingEvent));
+                LoggingEvent[] tmp = (LoggingEvent[]) this.m_eventsList.ToArray(typeof(LoggingEvent));
                 this.m_eventsList.Clear();
                 return tmp;
             }

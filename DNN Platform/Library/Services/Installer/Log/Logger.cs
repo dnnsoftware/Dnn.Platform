@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Installer.Log
     /// -----------------------------------------------------------------------------
     public class Logger
     {
-    	private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof (Logger));
+    	private static readonly ILog DnnLogger = LoggerSource.Instance.GetLogger(typeof(Logger));
         private readonly IList<LogEntry> _logs;
         private string _errorClass;
         private bool _hasWarnings;

@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Common.Internal
     /// </summary>
     public class DotNetNukeHttpApplication : HttpApplication
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DotNetNukeHttpApplication));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DotNetNukeHttpApplication));
 
         private void Application_Error(object sender, EventArgs eventArgs)
         {

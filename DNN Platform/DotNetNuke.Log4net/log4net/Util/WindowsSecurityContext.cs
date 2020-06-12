@@ -291,7 +291,7 @@ namespace log4net.Util
 
 			// Call LogonUser to obtain a handle to an access token.
 			IntPtr tokenHandle = IntPtr.Zero;
-			if(!LogonUser(userName, domainName, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, ref tokenHandle))
+			if (!LogonUser(userName, domainName, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, ref tokenHandle))
 			{
 				NativeError error = NativeError.GetLastError();
 				throw new Exception("Failed to LogonUser ["+userName+"] in Domain ["+domainName+"]. Error: "+ error.ToString());
@@ -299,7 +299,7 @@ namespace log4net.Util
 
 			const int SecurityImpersonation = 2;
 			IntPtr dupeTokenHandle = IntPtr.Zero;
-			if(!DuplicateToken(tokenHandle, SecurityImpersonation, ref dupeTokenHandle))
+			if (!DuplicateToken(tokenHandle, SecurityImpersonation, ref dupeTokenHandle))
 			{
 				NativeError error = NativeError.GetLastError();
 				if (tokenHandle != IntPtr.Zero)

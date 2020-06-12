@@ -64,9 +64,9 @@ namespace DotNetNuke.Web.Api
 
             var segments = portalAliasInfo.HTTPAlias.Split('/');
             
-            if(segments.Length > 1)
+            if (segments.Length > 1)
             {
-                  for(int i = 1; i < segments.Length; i++)
+                  for (int i = 1; i < segments.Length; i++)
                   {
                       var key = "prefix" + (i - 1).ToString(CultureInfo.InvariantCulture);
                       var value = segments[i];

@@ -138,7 +138,7 @@ namespace log4net.ObjectRenderer
 					{
 						this.Get(obj.GetType()).RenderObject(this, obj, writer);
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						// Exception rendering the object
 						log4net.Util.LogLog.Error(declaringType, "Exception while rendering object of type ["+obj.GetType().FullName+"]", ex);
@@ -227,7 +227,7 @@ namespace log4net.ObjectRenderer
 #if NETSTANDARD1_3
 				for (Type cur = type; cur != null; cur = cur.GetTypeInfo().BaseType)
 #else
-				for(Type cur = type; cur != null; cur = cur.BaseType)
+				for (Type cur = type; cur != null; cur = cur.BaseType)
 #endif
 				{
 					// Search the type's interfaces
@@ -265,7 +265,7 @@ namespace log4net.ObjectRenderer
 			} 
 			else 
 			{
-				foreach(Type t in type.GetInterfaces())
+				foreach (Type t in type.GetInterfaces())
 				{
 					r = this.SearchTypeAndInterfaces(t);
 					if (r != null)

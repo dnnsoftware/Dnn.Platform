@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.ControlPanel
 	public partial class AddModule : UserControlBase, IDnnRibbonBarTool
 	{
         private readonly INavigationManager _navigationManager;
-		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (AddModule));
+		private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AddModule));
         private bool _enabled = true;
 
         public AddModule()
@@ -734,7 +734,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 this.PageLst.DataValueField = "TabID";
 				this.PageLst.DataTextField = "IndentedTabName";
-                if(this.PortalSettings.PortalId == this.SelectedPortalSettings.PortalId)
+                if (this.PortalSettings.PortalId == this.SelectedPortalSettings.PortalId)
                 {
                     this.PageLst.DataSource = TabController.GetPortalTabs(portalSettings.PortalId, portalSettings.ActiveTab.TabID, true, string.Empty, true, false, false, false, true);
                 }

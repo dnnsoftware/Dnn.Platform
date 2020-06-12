@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
     /// -----------------------------------------------------------------------------    
     public class FilePermissionCheckStep : BaseInstallationStep
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FilePermissionCheckStep));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FilePermissionCheckStep));
         #region Implementation of IInstallationStep
 
         /// <summary>

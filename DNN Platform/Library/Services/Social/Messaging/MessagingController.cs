@@ -229,7 +229,7 @@ namespace DotNetNuke.Services.Social.Messaging
             {
                 var recipient = InternalMessagingController.Instance.GetMessageRecipient(message.MessageID, sender.UserID);
 
-                if(recipient == null)
+                if (recipient == null)
                 { 
                     //add sender as a recipient of the message
                     recipient = new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger };

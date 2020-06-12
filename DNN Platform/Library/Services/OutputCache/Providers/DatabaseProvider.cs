@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
                     }
 
                 	var expireTime = Convert.ToDateTime(dr["Expiration"]);
-					if(expireTime < DateTime.UtcNow)
+					if (expireTime < DateTime.UtcNow)
 					{
 						DataProvider.Instance().RemoveOutputCacheItem(tabId);
 						return false;

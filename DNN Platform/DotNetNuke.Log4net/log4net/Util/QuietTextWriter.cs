@@ -126,7 +126,7 @@ namespace log4net.Util
 			{
 				base.Write(value);
 			} 
-			catch(Exception e) 
+			catch (Exception e) 
 			{
 				this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
 			}
@@ -149,7 +149,7 @@ namespace log4net.Util
 			{
 				base.Write(buffer, index, count);
 			} 
-			catch(Exception e) 
+			catch (Exception e) 
 			{
 				this.m_errorHandler.Error("Failed to write buffer.", e, ErrorCode.WriteFailure);
 			}
@@ -170,7 +170,7 @@ namespace log4net.Util
 			{
 				base.Write(value);
 			} 
-			catch(Exception e) 
+			catch (Exception e) 
 			{
 				this.m_errorHandler.Error("Failed to write [" + value + "].", e, ErrorCode.WriteFailure);
 			}

@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.Journal
     [SupportedModules("Journal")]
     public class ServicesController : DnnApiController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ServicesController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ServicesController));
 
         private const int MentionNotificationLength = 100;
         private const string MentionNotificationSuffix = "...";

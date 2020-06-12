@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     /// ------------------------------------------------------------------------------------------------  
     public class ActivateLicenseStep : BaseInstallationStep
     {
-        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ActivateLicenseStep));
+        private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ActivateLicenseStep));
 
         public override void Execute()
         {

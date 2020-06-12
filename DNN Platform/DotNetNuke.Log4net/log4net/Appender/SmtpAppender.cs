@@ -400,7 +400,7 @@ namespace log4net.Appender
 					writer.Write(t);
 				}
 
-				for(int i = 0; i < events.Length; i++) 
+				for (int i = 0; i < events.Length; i++) 
 				{
 					// Render the event and append the text to the buffer
 					this.RenderLoggingEvent(writer, events[i]);
@@ -414,7 +414,7 @@ namespace log4net.Appender
 
 				this.SendEmail(writer.ToString());
 			} 
-			catch(Exception e) 
+			catch (Exception e) 
 			{
 				this.ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
 			}

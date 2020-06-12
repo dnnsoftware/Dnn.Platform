@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
         private void AuthenticateRequest()
         {
             this._password = this.GetPassword(this.Request);
-            if(this._password != null)
+            if (this._password != null)
             {
                 this.IsNonceStale = ! (IsNonceValid(this._request.RequestParams["nonce"]));
                 //Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))

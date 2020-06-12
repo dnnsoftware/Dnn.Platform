@@ -57,7 +57,7 @@ namespace DotNetNuke.Tests.Data
                     .Property(d => d.Age, "Age")
                     .Property(d => d.Name, "Name");
 
-            this._mappers = new Dictionary<Type, IMapper> {{typeof (Dog), dogMapper}};
+            this._mappers = new Dictionary<Type, IMapper> {{typeof(Dog), dogMapper}};
             this._mappers = new Dictionary<Type, IMapper> { { typeof(Cat), catMapper } };
         }
 

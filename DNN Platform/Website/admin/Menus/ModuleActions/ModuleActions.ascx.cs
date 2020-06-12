@@ -146,7 +146,7 @@ namespace DotNetNuke.Admin.Containers
 
                                     actions.Add(action);
 
-                                    if(String.IsNullOrEmpty(action.Url))
+                                    if (String.IsNullOrEmpty(action.Url))
                                     {
                                         this.validIDs.Add(action.ID);
                                     }
@@ -188,7 +188,7 @@ namespace DotNetNuke.Admin.Containers
         {
             base.Render(writer);
 
-            foreach(int id in this.validIDs)
+            foreach (int id in this.validIDs)
             {
                 this.Page.ClientScript.RegisterForEventValidation(this.actionButton.UniqueID, id.ToString());
             }

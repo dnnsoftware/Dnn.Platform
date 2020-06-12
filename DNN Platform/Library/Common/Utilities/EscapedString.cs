@@ -70,20 +70,20 @@ namespace DotNetNuke.Common.Utilities
         {
             var result = new List<string>();
 
-            if(String.IsNullOrEmpty(combinedString))
+            if (String.IsNullOrEmpty(combinedString))
             {
                 return result;
             }
              
             var segments = combinedString.Split(new[] {seperator});
 
-            for(int i = 0; i < segments.Length; i++)
+            for (int i = 0; i < segments.Length; i++)
             {
                 var current = segments[i];
 
-                while(current.EndsWith(EscapeSequence.ToString()))
+                while (current.EndsWith(EscapeSequence.ToString()))
                 {
-                    if(EndsInEscapeMode(current))
+                    if (EndsInEscapeMode(current))
                     {
                         i++;
                         current = current.Substring(0, current.Length - 1) + seperator + segments[i];
@@ -105,9 +105,9 @@ namespace DotNetNuke.Common.Utilities
             int escapeCount = 0;
 
             //count the number of escape chars on end of string
-            for(int i = s.Length - 1; i > -1; i--)
+            for (int i = s.Length - 1; i > -1; i--)
             {
-                if(s.Substring(i, 1) == EscapeSequence.ToString())
+                if (s.Substring(i, 1) == EscapeSequence.ToString())
                 {
                     escapeCount++;
                 }

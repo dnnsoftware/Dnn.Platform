@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Users
     [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
     public class UserOnlineController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (UserOnlineController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(UserOnlineController));
         private static readonly MembershipProvider memberProvider = MembershipProvider.Instance();
         private static readonly object Locker = new object();
         private static readonly string CacheKey = "OnlineUserList";

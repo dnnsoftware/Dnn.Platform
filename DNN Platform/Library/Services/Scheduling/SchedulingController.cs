@@ -136,7 +136,7 @@ namespace DotNetNuke.Services.Scheduling
         public static Hashtable GetScheduleItemSettings(int ScheduleID)
         {
             var h = new Hashtable();
-            using(var r = DataProvider.Instance().GetScheduleItemSettings(ScheduleID))
+            using (var r = DataProvider.Instance().GetScheduleItemSettings(ScheduleID))
             {
                 while (r.Read())
                 {

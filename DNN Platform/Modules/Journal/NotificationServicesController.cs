@@ -37,7 +37,7 @@ namespace DotNetNuke.Modules.Journal
             {
                 var notification = NotificationsController.Instance.GetNotification(postData.NotificationId);
 
-                if(notification != null && notification.Context != null && notification.Context.Contains("_"))
+                if (notification != null && notification.Context != null && notification.Context.Contains("_"))
                 {
                     //Dismiss the notification
                     NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);

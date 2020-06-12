@@ -112,9 +112,9 @@ namespace log4net.Util.PatternStringConverters
 		{
 			try 
 			{
-				lock(s_random)
+				lock (s_random)
 				{
-					for(int i=0; i<this.m_length; i++)
+					for (int i=0; i<this.m_length; i++)
 					{
 						int randValue = s_random.Next(36);
 

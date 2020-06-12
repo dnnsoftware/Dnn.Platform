@@ -266,7 +266,7 @@ namespace log4net.Layout
 			if (properties.Count > 0)
 			{
 				writer.WriteStartElement(this.m_elmProperties);
-				foreach(System.Collections.DictionaryEntry entry in properties)
+				foreach (System.Collections.DictionaryEntry entry in properties)
 				{
 					writer.WriteStartElement(this.m_elmData);
 					writer.WriteAttributeString(ATTR_NAME, Transform.MaskXmlInvalidCharacters((string)entry.Key,this.InvalidCharReplacement));

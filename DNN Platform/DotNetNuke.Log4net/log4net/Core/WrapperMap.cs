@@ -117,7 +117,7 @@ namespace log4net.Core
 				return null;
 			}
 
-			lock(this)
+			lock (this)
 			{
 				// Lookup hierarchy in map.
 				Hashtable wrappersMap = (Hashtable)this.m_repositories[logger.Repository];
@@ -214,7 +214,7 @@ namespace log4net.Core
 		/// </remarks>
 		virtual protected void RepositoryShutdown(ILoggerRepository repository)
 		{
-			lock(this)
+			lock (this)
 			{
 				// Remove the repository from map
 				this.m_repositories.Remove(repository);

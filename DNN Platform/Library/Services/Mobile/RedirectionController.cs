@@ -403,7 +403,7 @@ namespace DotNetNuke.Services.Mobile
 		/// <param name="redirection">redirection object.</param>
 		public void Save(IRedirection redirection)
 		{
-			if(redirection.Id == Null.NullInteger || redirection.SortOrder == 0)
+			if (redirection.Id == Null.NullInteger || redirection.SortOrder == 0)
 			{
 				redirection.SortOrder = this.GetRedirectionsByPortal(redirection.PortalId).Count + 1;
 			}
@@ -693,7 +693,7 @@ namespace DotNetNuke.Services.Mobile
                         }
                     }
                 }
-                if(matchCount > 0 && matchCount == redirection.MatchRules.Count)
+                if (matchCount > 0 && matchCount == redirection.MatchRules.Count)
                 {
                     match = true;
                 }

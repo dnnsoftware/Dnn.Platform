@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.Groups
                     this.txtGroupName.Visible = !roleInfo.IsSystemRole;
                     this.reqGroupName.Enabled = !roleInfo.IsSystemRole;
 
-                    if(!roleInfo.IsSystemRole)
+                    if (!roleInfo.IsSystemRole)
                         this.txtGroupName.Text = roleInfo.RoleName;
                     else
                         this.litGroupName.Text = roleInfo.RoleName;
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.Groups
                         }
                     }
 
-                    if(!roleInfo.IsSystemRole)
+                    if (!roleInfo.IsSystemRole)
                     {
                         roleInfo.RoleName = this.txtGroupName.Text;
                     }

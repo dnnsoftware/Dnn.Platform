@@ -246,15 +246,15 @@ namespace DotNetNuke.UI.WebControls
 			this.dtRolesSelection.Rows.Clear();
 
 		    //Add Roles Column
-			var col = new DataColumn("RoleId", typeof (string));
+			var col = new DataColumn("RoleId", typeof(string));
 			this.dtRolesSelection.Columns.Add(col);
 
 			//Add Roles Column
-			col = new DataColumn("RoleName", typeof (string));
+			col = new DataColumn("RoleName", typeof(string));
 			this.dtRolesSelection.Columns.Add(col);
 
 			//Add Selected Column
-			col = new DataColumn("Selected", typeof (bool));
+			col = new DataColumn("Selected", typeof(bool));
 			this.dtRolesSelection.Columns.Add(col);
 
 			this.GetRoles();

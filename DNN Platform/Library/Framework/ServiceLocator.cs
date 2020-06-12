@@ -41,7 +41,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                if(_useTestable)
+                if (_useTestable)
                 {
                     return _testableInstance;
                 }

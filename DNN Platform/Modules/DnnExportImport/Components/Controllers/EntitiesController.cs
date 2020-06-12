@@ -194,7 +194,7 @@ namespace Dnn.ExportImport.Components.Controllers
 
         private string GetSchedulerTypeFullName()
         {
-            var type = typeof (ExportImportScheduler);
+            var type = typeof(ExportImportScheduler);
             return $"{type.FullName}, {type.Assembly.GetName().Name}";
         }
     }

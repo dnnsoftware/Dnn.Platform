@@ -40,7 +40,7 @@ namespace DotNetNuke.UI
         public static T FindControl<T>(Control control, string id, bool recursive) where T : Control
         {
             T target = null;
-            if(control.Parent != null)
+            if (control.Parent != null)
             {
                 target = control.Parent.FindControl(id) as T;
 

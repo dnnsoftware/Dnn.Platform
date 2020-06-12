@@ -81,7 +81,7 @@ namespace Dnn.PersonaBar.Library.DTO
         [Obsolete("The method add for backward compatible, should remove this in future release.")]
         private void ReadLegacySettings(XmlReader reader)
         {
-            while(!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
+            while (!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
             {
                 if (reader.NodeType != XmlNodeType.Element)
                 {

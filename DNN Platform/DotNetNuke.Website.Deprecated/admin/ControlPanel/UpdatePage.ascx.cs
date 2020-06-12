@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.ControlPanel
                 TabRelativeLocation tabLocation = TabRelativeLocation.NOTSET;
                 if ((!string.IsNullOrEmpty(this.LocationLst.SelectedValue)))
                 {
-                    tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), this.LocationLst.SelectedValue);
+                    tabLocation = (TabRelativeLocation) Enum.Parse(typeof(TabRelativeLocation), this.LocationLst.SelectedValue);
                 }
 
                 TabInfo tab = this.CurrentTab;

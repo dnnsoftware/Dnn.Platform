@@ -320,7 +320,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
             //'_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
             this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
-            this.Status = (MessageStatusType) Enum.Parse(typeof (MessageStatusType), Null.SetNullString(dr["Status"]));
+            this.Status = (MessageStatusType) Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
             this.Body = Null.SetNullString(dr["Body"]);
             this.Subject = Null.SetNullString(dr["Subject"]);
             this.MessageDate = Null.SetNullDateTime(dr["Date"]);

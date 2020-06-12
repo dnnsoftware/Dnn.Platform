@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Modules
     /// -----------------------------------------------------------------------------
     public class DesktopModuleController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (DesktopModuleController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DesktopModuleController));
         #region Private Methods
 
         private static readonly DataProvider DataProvider = DataProvider.Instance();
@@ -402,7 +402,7 @@ namespace DotNetNuke.Entities.Modules
             var businessController = Reflection.CreateType(desktopModuleInfo.BusinessControllerClass);
             var controller = Reflection.CreateObject(desktopModuleInfo.BusinessControllerClass, desktopModuleInfo.BusinessControllerClass);   
 
-            desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof (IPortable));
+            desktopModuleInfo.IsPortable = businessController.GetInterfaces().Contains(typeof(IPortable));
 #pragma warning disable 0618
             desktopModuleInfo.IsSearchable = (controller is ModuleSearchBase) || businessController.GetInterfaces().Contains(typeof(ISearchable));
 #pragma warning restore 0618

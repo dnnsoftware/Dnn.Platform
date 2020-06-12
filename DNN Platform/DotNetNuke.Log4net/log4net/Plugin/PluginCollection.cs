@@ -89,7 +89,7 @@ namespace log4net.Plugin
 		/// </returns>
 		public static PluginCollection ReadOnly(PluginCollection list)
 		{
-			if(list == null) throw new ArgumentNullException("list");
+			if (list == null) throw new ArgumentNullException("list");
 
 			return new ReadOnlyPluginCollection(list);
 		}
@@ -539,7 +539,7 @@ namespace log4net.Plugin
 				this.EnsureCapacity(this.m_count + col.Count);
 			}
 
-			foreach(object item in col)
+			foreach (object item in col)
 			{
 				this.Add((IPlugin)item);
 			}

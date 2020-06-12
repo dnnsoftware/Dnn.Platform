@@ -374,7 +374,7 @@ namespace log4net.Util
 			{
 				if (this.m_frameDepth >= 0 && this.m_frameStack != null)
 				{
-					while(this.m_frameStack.Count > this.m_frameDepth)
+					while (this.m_frameStack.Count > this.m_frameDepth)
 					{
 						this.m_frameStack.Pop();
 					}

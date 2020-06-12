@@ -56,13 +56,13 @@ namespace DotNetNuke.Modules.Groups.Components
         private void RemoveRejectActionForCreatedNotification()
         {
             var notificationType = NotificationsController.Instance.GetNotificationType(Constants.GroupCreatedNotification);
-            if(notificationType == null)
+            if (notificationType == null)
             {
                 return;
             }
 
             var action = NotificationsController.Instance.GetNotificationTypeAction(notificationType.NotificationTypeId, "RejectGroup");
-            if(action == null)
+            if (action == null)
             {
                 return;
             }

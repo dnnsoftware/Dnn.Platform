@@ -321,7 +321,7 @@ namespace log4net.Appender
 			// Render the event in the callers security context
 			string renderedLoggingEvent = this.RenderLoggingEvent(loggingEvent);
 
-			using(this.m_securityContext.Impersonate(this))
+			using (this.m_securityContext.Impersonate(this))
 			{
 				// Send the message
 				int returnValue = NetMessageBufferSend(this.Server, this.Recipient, this.Sender, renderedLoggingEvent, renderedLoggingEvent.Length * Marshal.SystemDefaultCharSize);   

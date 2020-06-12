@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Utilities
                     result = (TMember)property.GetValue(instance, null);
                 }
             }
-            else if(member.MemberType == MemberTypes.Field)
+            else if (member.MemberType == MemberTypes.Field)
             {
                 var field = member as FieldInfo;
                 if (field != null)

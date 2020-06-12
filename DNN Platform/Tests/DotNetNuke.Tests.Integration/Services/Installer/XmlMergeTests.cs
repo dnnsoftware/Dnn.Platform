@@ -19,7 +19,7 @@ namespace DotNetNuke.Tests.Integration.Services.Installer
     [TestFixture]
     public class XmlMergeTests : DnnUnitTest
     {
-        private readonly Assembly _assembly = typeof (XmlMergeTests).Assembly;
+        private readonly Assembly _assembly = typeof(XmlMergeTests).Assembly;
         private const bool OutputXml = true;
 
         /// <summary>

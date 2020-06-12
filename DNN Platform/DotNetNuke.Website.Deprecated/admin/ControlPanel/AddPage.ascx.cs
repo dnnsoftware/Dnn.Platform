@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
             TabInfo selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
-            var tabLocation = (TabRelativeLocation) Enum.Parse(typeof (TabRelativeLocation), this.LocationLst.SelectedValue);
+            var tabLocation = (TabRelativeLocation) Enum.Parse(typeof(TabRelativeLocation), this.LocationLst.SelectedValue);
             TabInfo newTab = RibbonBarManager.InitTabInfoObject(selectedTab, tabLocation);
 
             newTab.TabName = this.Name.Text;

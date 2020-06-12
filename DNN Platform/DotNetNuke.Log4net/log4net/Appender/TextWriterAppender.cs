@@ -153,7 +153,7 @@ namespace log4net.Appender
 			get { return this.m_qtw; }
 			set 
 			{
-				lock(this) 
+				lock (this) 
 				{
 					this.Reset();
 					if (value != null)
@@ -243,7 +243,7 @@ namespace log4net.Appender
 		/// </remarks>
 		override protected void Append(LoggingEvent[] loggingEvents) 
 		{
-			foreach(LoggingEvent loggingEvent in loggingEvents)
+			foreach (LoggingEvent loggingEvent in loggingEvents)
 			{
 				this.RenderLoggingEvent(this.m_qtw, loggingEvent);
 			}
@@ -262,7 +262,7 @@ namespace log4net.Appender
 		/// </remarks>
 		override protected void OnClose() 
 		{
-			lock(this)
+			lock (this)
 			{
 				this.Reset();
 			}
@@ -280,7 +280,7 @@ namespace log4net.Appender
 			get { return base.ErrorHandler; }
 			set
 			{
-				lock(this)
+				lock (this)
 				{
 					if (value == null) 
 					{
@@ -346,7 +346,7 @@ namespace log4net.Appender
 				{
 					this.m_qtw.Close();
 				} 
-				catch(Exception e) 
+				catch (Exception e) 
 				{
 					this.ErrorHandler.Error("Could not close writer ["+this.m_qtw+"]", e); 
 					// do need to invoke an error handler

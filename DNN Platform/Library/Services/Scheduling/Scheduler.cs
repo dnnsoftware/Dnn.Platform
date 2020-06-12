@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Scheduling
 {
     internal static class Scheduler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Scheduler));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Scheduler));
         internal static class CoreScheduler
         {
             //This is the heart of the scheduler mechanism.
@@ -594,7 +594,7 @@ namespace DotNetNuke.Services.Scheduling
             {
 				//should do nothing if the scheduler havn't start yet.
             	var currentStatus = GetScheduleStatus();
-				if(currentStatus == ScheduleStatus.NOT_SET || currentStatus == ScheduleStatus.STOPPED)
+				if (currentStatus == ScheduleStatus.NOT_SET || currentStatus == ScheduleStatus.STOPPED)
 				{
 					return;
 				}
@@ -1318,7 +1318,7 @@ namespace DotNetNuke.Services.Scheduling
             internal static void InitializeThreadPool(bool boolDebug, int maxThreads)
             {
                 _debug = boolDebug;
-                lock (typeof (CoreScheduler))
+                lock (typeof(CoreScheduler))
                 {
                     if (!_threadPoolInitialized)
                     {

@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             get
             {
-                if(!this._lastModificationTime.HasValue)
+                if (!this._lastModificationTime.HasValue)
                 {
                     var folderMapping = FolderMappingController.Instance.GetFolderMapping(this.PortalId, this.FolderMappingID);
 

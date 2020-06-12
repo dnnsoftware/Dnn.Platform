@@ -303,7 +303,7 @@ namespace Dnn.AzureConnector.Components
             }
             catch (FormatException ex)
             {
-                if (ex.GetType() == typeof (UriFormatException))
+                if (ex.GetType() == typeof(UriFormatException))
                 {
                     throw new ConnectorArgumentException(Localization.GetString("InvalidAccountName.ErrorMessage",
                         Constants.LocalResourceFile));

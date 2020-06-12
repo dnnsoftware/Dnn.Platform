@@ -214,7 +214,7 @@ method="run" file="Generator.java" line="94"/>
 			if (properties.Count > 0)
 			{
 				writer.WriteStartElement("log4j:properties");
-				foreach(System.Collections.DictionaryEntry entry in properties)
+				foreach (System.Collections.DictionaryEntry entry in properties)
 				{
 					writer.WriteStartElement("log4j:data");
 					writer.WriteAttributeString("name", (string)entry.Key);

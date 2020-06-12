@@ -89,13 +89,13 @@ namespace log4net.Util
 				this.m_appenderArray = this.m_appenderList.ToArray();
 			}
 
-			foreach(IAppender appender in this.m_appenderArray)
+			foreach (IAppender appender in this.m_appenderArray)
 			{
 				try
 				{
 					appender.DoAppend(loggingEvent);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Failed to append to appender [" + appender.Name + "]", ex);
 				}
@@ -141,13 +141,13 @@ namespace log4net.Util
 				this.m_appenderArray = this.m_appenderList.ToArray();
 			}
 
-			foreach(IAppender appender in this.m_appenderArray)
+			foreach (IAppender appender in this.m_appenderArray)
 			{
 				try
 				{
 					CallAppend(appender, loggingEvents);
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Failed to append to appender [" + appender.Name + "]", ex);
 				}
@@ -182,7 +182,7 @@ namespace log4net.Util
 			}
 			else
 			{
-				foreach(LoggingEvent loggingEvent in loggingEvents)
+				foreach (LoggingEvent loggingEvent in loggingEvents)
 				{
 					appender.DoAppend(loggingEvent);
 				}
@@ -266,7 +266,7 @@ namespace log4net.Util
 		{
 			if (this.m_appenderList != null && name != null)
 			{
-				foreach(IAppender appender in this.m_appenderList)
+				foreach (IAppender appender in this.m_appenderList)
 				{
 					if (name == appender.Name)
 					{
@@ -289,13 +289,13 @@ namespace log4net.Util
 		{
 			if (this.m_appenderList != null) 
 			{
-				foreach(IAppender appender in this.m_appenderList)
+				foreach (IAppender appender in this.m_appenderList)
 				{
 					try
 					{
 						appender.Close();
 					}
-					catch(Exception ex)
+					catch (Exception ex)
 					{
 						LogLog.Error(declaringType, "Failed to Close appender ["+appender.Name+"]", ex);
 					}

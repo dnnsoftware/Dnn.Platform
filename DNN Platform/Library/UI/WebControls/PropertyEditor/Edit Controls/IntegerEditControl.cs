@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.WebControls
     [ToolboxData("<{0}:IntegerEditControl runat=server></{0}:IntegerEditControl>")]
     public class IntegerEditControl : EditControl
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (IntegerEditControl));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(IntegerEditControl));
 		#region "Constructors"
 
         /// -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.WebControls
                 try
                 {
 					//Try and cast the value to an Integer
-                    if(this.Value != null)
+                    if (this.Value != null)
                     {
                         Int32.TryParse(this.Value.ToString(), out intValue);
                     }

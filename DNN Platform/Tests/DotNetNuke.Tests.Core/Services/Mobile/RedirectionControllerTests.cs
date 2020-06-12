@@ -798,7 +798,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			{
 				table.Columns.Add(col);
 			}
-			table.Columns["ModuleID"].DataType = typeof (int);
+			table.Columns["ModuleID"].DataType = typeof(int);
 
 			var portalId = tabId == HomePageOnPortal0 ? Portal0 : Portal1;
 

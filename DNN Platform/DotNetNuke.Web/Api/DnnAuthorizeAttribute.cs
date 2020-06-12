@@ -76,12 +76,12 @@ namespace DotNetNuke.Web.Api
             Requires.NotNull("context", context);
 
             var identity = Thread.CurrentPrincipal.Identity;
-            if(!identity.IsAuthenticated)
+            if (!identity.IsAuthenticated)
             {
                 return false;
             }
 
-            if(this._denyRolesSplit.Any())
+            if (this._denyRolesSplit.Any())
             {
                 var currentUser = PortalController.Instance.GetCurrentPortalSettings().UserInfo;
                 if (!currentUser.IsSuperUser && this._denyRolesSplit.Any(currentUser.IsInRole))

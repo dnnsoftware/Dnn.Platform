@@ -301,10 +301,10 @@ namespace log4net.Util
 							s_hostName = Environment.MachineName;
 #endif
 						}
-						catch(InvalidOperationException)
+						catch (InvalidOperationException)
 						{
 						}
-						catch(System.Security.SecurityException)
+						catch (System.Security.SecurityException)
 						{
 							// We may get a security exception looking up the machine name
 							// You must have Unrestricted EnvironmentPermission to access resource
@@ -349,7 +349,7 @@ namespace log4net.Util
 						s_appFriendlyName = AppDomain.CurrentDomain.FriendlyName;
 #endif
 					}
-					catch(System.Security.SecurityException)
+					catch (System.Security.SecurityException)
 					{
 						// This security exception will occur if the caller does not have 
 						// some undefined set of SecurityPermission flags.
@@ -363,7 +363,7 @@ namespace log4net.Util
 							string assemblyLocation = SystemInfo.EntryAssemblyLocation;
 							s_appFriendlyName = System.IO.Path.GetFileName(assemblyLocation);
 						}
-						catch(System.Security.SecurityException)
+						catch (System.Security.SecurityException)
 						{
 							// Caller needs path discovery permission
 						}
@@ -718,7 +718,7 @@ namespace log4net.Util
 		public static Type GetTypeFromString(Assembly relativeAssembly, string typeName, bool throwOnError, bool ignoreCase)
 		{
 			// Check if the type name specifies the assembly name
-			if(typeName.IndexOf(',') == -1)
+			if (typeName.IndexOf(',') == -1)
 			{
 				//LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
 #if NETSTANDARD1_3
@@ -740,7 +740,7 @@ namespace log4net.Util
 				{
 					loadedAssemblies = AppDomain.CurrentDomain.GetAssemblies();
 				}
-				catch(System.Security.SecurityException)
+				catch (System.Security.SecurityException)
 				{
 					// Insufficient permissions to get the list of loaded assemblies
 				}
@@ -1011,7 +1011,7 @@ namespace log4net.Util
 				return ConfigurationSettings.AppSettings[key];
 #endif
 			}
-			catch(Exception ex)
+			catch (Exception ex)
 			{
 				// If an exception is thrown here then it looks like the config file does not parse correctly.
 				LogLog.Error(declaringType, "Exception while reading ConfigurationSettings. Check your .config file is well formed XML.", ex);

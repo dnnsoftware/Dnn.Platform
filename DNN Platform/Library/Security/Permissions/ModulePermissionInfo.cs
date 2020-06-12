@@ -197,7 +197,7 @@ namespace DotNetNuke.Security.Permissions
             {
                 return true;
             }
-            if (obj.GetType() != typeof (ModulePermissionInfo))
+            if (obj.GetType() != typeof(ModulePermissionInfo))
             {
                 return false;
             }

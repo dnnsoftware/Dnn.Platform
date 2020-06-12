@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Modules
     [Serializable]
     public class ModuleInfo : ContentItem, IPropertyAccess
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (ModuleInfo));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ModuleInfo));
         private string _authorizedEditRoles;
         private string _authorizedViewRoles;
         private string _cultureCode;

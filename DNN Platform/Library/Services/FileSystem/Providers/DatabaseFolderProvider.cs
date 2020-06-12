@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="content">The new content.</param>
         public static void UpdateFileContent(int fileId, byte[] content)
         {
-            if(content != null)
+            if (content != null)
             {
                 DataProvider.Instance().UpdateFileContent(fileId, content);
                 DataProvider.Instance().UpdateFileVersion(fileId, Guid.NewGuid());

@@ -105,7 +105,7 @@ namespace log4net.Util
 			}
 			set
 			{
-				lock(this.m_syncRoot)
+				lock (this.m_syncRoot)
 				{
 					PropertiesDictionary mutableProps = new PropertiesDictionary(this.m_readOnlyProperties);
 
@@ -132,7 +132,7 @@ namespace log4net.Util
 		/// </remarks>
 		public void Remove(string key)
 		{
-			lock(this.m_syncRoot)
+			lock (this.m_syncRoot)
 			{
 				if (this.m_readOnlyProperties.Contains(key))
 				{
@@ -150,7 +150,7 @@ namespace log4net.Util
 		/// </summary>
 		public void Clear()
 		{
-			lock(this.m_syncRoot)
+			lock (this.m_syncRoot)
 			{
 				this.m_readOnlyProperties = new ReadOnlyPropertiesDictionary();
 			}

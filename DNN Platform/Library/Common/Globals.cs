@@ -70,7 +70,7 @@ namespace DotNetNuke.Common
     [StandardModule]
     public sealed class Globals
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Globals));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Globals));
 
         public static readonly Regex EmailValidatorRegex = new Regex(glbEmailRegEx, RegexOptions.Compiled);
         public static readonly Regex NonAlphanumericCharacters = new Regex("[^A-Za-z0-9]", RegexOptions.Compiled | RegexOptions.CultureInvariant);
@@ -3352,7 +3352,7 @@ namespace DotNetNuke.Common
                     strLink += "&tabid=" + TabID;
                 }
                 //append portal id to query string to identity portal the click originated.
-                if(PortalId != Null.NullInteger)
+                if (PortalId != Null.NullInteger)
                 {
                     strLink += "&portalid=" + PortalId;
                 }

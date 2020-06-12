@@ -41,7 +41,7 @@ namespace DotNetNuke.Services.Mail
     /// -----------------------------------------------------------------------------
     public class SendTokenizedBulkEmail : IDisposable
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SendTokenizedBulkEmail));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SendTokenizedBulkEmail));
         #region AddressMethods enum
 
         /// <summary>
@@ -291,7 +291,7 @@ namespace DotNetNuke.Services.Mail
                 return true;
             }
 
-            if(string.IsNullOrEmpty(userLanguage))
+            if (string.IsNullOrEmpty(userLanguage))
             {
                 userLanguage = this._portalSettings.DefaultLanguage;
             }

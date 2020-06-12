@@ -319,7 +319,7 @@ namespace log4net.Appender
 			// This method will be called outside of the AppenderSkeleton DoAppend() method
 			// therefore it needs to be protected by its own lock. This will block any
 			// Appends while the buffer is flushed.
-			lock(this)
+			lock (this)
 			{
 				if (this.m_cb != null && this.m_cb.Length > 0)
 				{
@@ -334,7 +334,7 @@ namespace log4net.Appender
 								LoggingEvent[] bufferedEvents = this.m_cb.PopAll();
 								ArrayList filteredEvents = new ArrayList(bufferedEvents.Length);
 
-								foreach(LoggingEvent loggingEvent in bufferedEvents)
+								foreach (LoggingEvent loggingEvent in bufferedEvents)
 								{
 									if (this.m_lossyEvaluator.IsTriggeringEvent(loggingEvent))
 									{

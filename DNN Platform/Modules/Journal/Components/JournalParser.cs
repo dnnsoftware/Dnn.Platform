@@ -218,7 +218,7 @@ namespace DotNetNuke.Modules.Journal.Components
 			if (xLikes == null){
 				return string.Empty;
 			}
-			 foreach(XmlNode xLike in xLikes) {
+			 foreach (XmlNode xLike in xLikes) {
 				if (Convert.ToInt32(xLike.Attributes["uid"].Value) == this.CurrentUser.UserID){
 					ji.CurrentUserLikes = true;
                     isLiked = true;
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.Journal.Components
             }
             var sb = new StringBuilder();
 			sb.AppendFormat("<ul class=\"jcmt\" id=\"jcmt-{0}\">", journal.JournalId);
-            foreach(CommentInfo ci in comments) {
+            foreach (CommentInfo ci in comments) {
 				if (ci.JournalId == journal.JournalId)
 				{
 					sb.Append(this.GetCommentRow(journal, ci));

@@ -217,7 +217,7 @@ namespace log4net.Appender
 				StreamWriter writer = null;
 
 				// Impersonate to open the file
-				using(this.SecurityContext.Impersonate(this))
+				using (this.SecurityContext.Impersonate(this))
 				{
 					filePath = Path.Combine(this.m_pickupDir, SystemInfo.NewGuid().ToString("N") + this.m_fileExtension);
 					writer = File.CreateText(filePath);
@@ -229,7 +229,7 @@ namespace log4net.Appender
 				}
 				else
 				{
-					using(writer)
+					using (writer)
 					{
 						writer.WriteLine("To: " + this.m_to);
 						writer.WriteLine("From: " + this.m_from);
@@ -243,7 +243,7 @@ namespace log4net.Appender
 							writer.Write(t);
 						}
 
-						for(int i = 0; i < events.Length; i++) 
+						for (int i = 0; i < events.Length; i++) 
 						{
 							// Render the event and append the text to the buffer
 							this.RenderLoggingEvent(writer, events[i]);
@@ -260,7 +260,7 @@ namespace log4net.Appender
 					}
 				}
 			} 
-			catch(Exception e) 
+			catch (Exception e) 
 			{
 				this.ErrorHandler.Error("Error occurred while sending e-mail notification.", e);
 			}
@@ -295,7 +295,7 @@ namespace log4net.Appender
 				this.m_securityContext = SecurityContextProvider.DefaultProvider.CreateSecurityContext(this);
 			}
 
-			using(this.SecurityContext.Impersonate(this))
+			using (this.SecurityContext.Impersonate(this))
 			{
 				this.m_pickupDir = ConvertToFullPath(this.m_pickupDir.Trim());
 			}

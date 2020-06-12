@@ -188,7 +188,7 @@ namespace log4net.Appender
 				LogLog.Debug(declaringType, "Creating SocketHandler to listen on port ["+this.m_listeningPort+"]");
 				this.m_handler = new SocketHandler(this.m_listeningPort);
 			}
-			catch(Exception ex) 
+			catch (Exception ex) 
 			{
 				LogLog.Error(declaringType, "Failed to create SocketHandler", ex);
 				throw;
@@ -389,7 +389,7 @@ namespace log4net.Appender
 			/// <param name="client">client to add</param>
 			private void AddClient(SocketClient client)
 			{
-				lock(this)
+				lock (this)
 				{
 					ArrayList clientsCopy = (ArrayList)this.m_clients.Clone();
 					clientsCopy.Add(client);
@@ -403,7 +403,7 @@ namespace log4net.Appender
 			/// <param name="client">client to remove</param>
 			private void RemoveClient(SocketClient client)
 			{
-				lock(this)
+				lock (this)
 				{
 					ArrayList clientsCopy = (ArrayList)this.m_clients.Clone();
 					clientsCopy.Remove(client);

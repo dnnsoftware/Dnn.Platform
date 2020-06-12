@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Users
                 var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
                                                         .SingleOrDefault(p => String.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
-                if(property != null)
+                if (property != null)
                 {
 					var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 					if (CheckAccessLevel(portalSettings, property, accessingUser, this.user))

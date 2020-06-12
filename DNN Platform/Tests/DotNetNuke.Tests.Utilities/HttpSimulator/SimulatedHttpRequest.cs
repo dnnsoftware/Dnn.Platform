@@ -41,7 +41,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             if (host == null)
                 throw new ArgumentNullException("host", "Host cannot be null.");
 
-            if(host.Length == 0)
+            if (host.Length == 0)
                 throw new ArgumentException("Host cannot be empty.", "host");
 
             if (applicationPath == null)
@@ -112,12 +112,12 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		/// <returns>An array of header name-value pairs.</returns>
 		public override string[][] GetUnknownRequestHeaders()
 		{
-			if(this.Headers == null || this.Headers.Count == 0)
+			if (this.Headers == null || this.Headers.Count == 0)
 			{
 				return null;
 			}
 			var headersArray = new string[this.Headers.Count][];
-			for(var i = 0; i < this.Headers.Count; i++)
+			for (var i = 0; i < this.Headers.Count; i++)
 			{
 				headersArray[i] = new string[2];
 				headersArray[i][0] = this.Headers.Keys[i];

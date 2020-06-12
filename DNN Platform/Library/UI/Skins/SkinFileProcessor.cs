@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class SkinFileProcessor
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinFileProcessor));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinFileProcessor));
         #region "Private Members"
 
         private readonly string DUPLICATE_DETAIL = Util.GetLocalizedString("DuplicateSkinObject.Detail");

@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Tokens
             }
             if (propertyName.Equals("languagename", StringComparison.InvariantCultureIgnoreCase))
             {
-                if(ci.IsNeutralCulture)
+                if (ci.IsNeutralCulture)
                 {
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.EnglishName), format);
                 }
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Tokens
             }
             if (propertyName.Equals("languagenativename", StringComparison.InvariantCultureIgnoreCase))
             {
-                if(ci.IsNeutralCulture)
+                if (ci.IsNeutralCulture)
                 {
                     return PropertyAccess.FormatString(CultureInfo.CurrentCulture.TextInfo.ToTitleCase(ci.NativeName), format);
                 }
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Tokens
             }
             if (propertyName.Equals("countryname", StringComparison.InvariantCultureIgnoreCase))
             {
-                if(ci.IsNeutralCulture)
+                if (ci.IsNeutralCulture)
                 {
                     //Neutral culture do not include region information
                     return "";
@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Tokens
             }
             if (propertyName.Equals("countrynativename", StringComparison.InvariantCultureIgnoreCase))
             {
-                if(ci.IsNeutralCulture)
+                if (ci.IsNeutralCulture)
                 {
                     //Neutral culture do not include region information
                     return "";

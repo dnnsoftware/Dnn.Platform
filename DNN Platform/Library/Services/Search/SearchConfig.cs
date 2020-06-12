@@ -25,7 +25,7 @@ namespace DotNetNuke.Services.Search
     [Serializable]
     public class SearchConfig
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SearchConfig));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SearchConfig));
 		#region "Private Members"
 
         private readonly bool _SearchIncludeCommon;

@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Skins
     /// -----------------------------------------------------------------------------
     public class SkinController
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (SkinController));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SkinController));
         private const string GlobalSkinPrefix = "[G]";
         private const string PortalSystemSkinPrefix = "[S]";
         private const string PortalSkinPrefix = "[L]";
@@ -457,7 +457,7 @@ namespace DotNetNuke.UI.Skins
 					//validate file extension
                     strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
                     var extraExtensions = new List<string> {".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS"};
-                    if(Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
+                    if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                     {
                         //process embedded zip files
 						if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
@@ -476,7 +476,7 @@ namespace DotNetNuke.UI.Skins
                         }
                         else if (objZipEntry.Name.Equals(RootContainer.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                         {
-                            using(var objMemoryStream = new MemoryStream())
+                            using (var objMemoryStream = new MemoryStream())
                             {
                                 intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
                                 while (intSize > 0)

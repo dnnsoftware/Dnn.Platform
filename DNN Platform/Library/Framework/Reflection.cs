@@ -30,7 +30,7 @@ namespace DotNetNuke.Framework
     /// -----------------------------------------------------------------------------
     public class Reflection
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (Reflection));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Reflection));
 		#region Public Shared Methods
 		
         /// -----------------------------------------------------------------------------

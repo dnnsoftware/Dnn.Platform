@@ -40,7 +40,7 @@ namespace DotNetNuke.Tests.Utilities
                 TException tex = ex as TException;
                 if (tex == null)
                 {
-                    if (typeof (TException) == typeof (TargetInvocationException))
+                    if (typeof(TException) == typeof(TargetInvocationException))
                     {
                         // The only place we do special processing is TargetInvocationException, but if that's
                         // what the user expected, we don't do anything
@@ -68,11 +68,11 @@ namespace DotNetNuke.Tests.Utilities
 
             if (!thrown)
             {
-                throw new AssertionException(String.Format("Expected exception of type '{0}' was not thrown", typeof (TException).FullName));
+                throw new AssertionException(String.Format("Expected exception of type '{0}' was not thrown", typeof(TException).FullName));
             }
             else if (!matched)
             {
-                throw new AssertionException(String.Format("Expected exception of type '{0}' was thrown but did not match the configured criteria", typeof (TException).FullName));
+                throw new AssertionException(String.Format("Expected exception of type '{0}' was thrown but did not match the configured criteria", typeof(TException).FullName));
             }
         }
 

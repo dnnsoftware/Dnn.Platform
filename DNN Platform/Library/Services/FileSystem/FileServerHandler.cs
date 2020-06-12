@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.FileSystem
 {
     public class FileServerHandler : IHttpHandler
     {
-    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof (FileServerHandler));
+    	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(FileServerHandler));
         #region IHttpHandler Members
 
         /// -----------------------------------------------------------------------------
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.FileSystem
                 var objUrls = new UrlController();
                 objUrls.UpdateUrlTracking(_portalSettings.PortalId, URL, ModuleId, -1);
                 TabType UrlType = Globals.GetURLType(URL);
-                if(UrlType == TabType.Tab)
+                if (UrlType == TabType.Tab)
                 {
                     //verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)

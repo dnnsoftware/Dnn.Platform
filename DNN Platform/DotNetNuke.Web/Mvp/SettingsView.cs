@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Mvp
         {
             var value = defaultValue;
 
-            if(this.Model.ModuleSettings.ContainsKey(key))
+            if (this.Model.ModuleSettings.ContainsKey(key))
             {
                 value = this.Model.ModuleSettings[key];
             }

@@ -385,7 +385,7 @@ namespace log4net.Repository.Hierarchy
 			// Setting up a logger needs to be an atomic operation, in order
 			// to protect potential log operations while logger
 			// configuration is in progress.
-			lock(log) 
+			lock (log) 
 			{
 				bool additivity = OptionConverter.ToBoolean(loggerElement.GetAttribute(ADDITIVITY_ATTR), true);
 	
@@ -408,7 +408,7 @@ namespace log4net.Repository.Hierarchy
 		{
 			Logger root = this.m_hierarchy.Root;
 			// logger configuration needs to be atomic
-			lock(root) 
+			lock (root) 
 			{	
 				this.ParseChildrenOfLoggerElement(rootElement, root, true);
 			}
@@ -500,7 +500,7 @@ namespace log4net.Repository.Hierarchy
 					this.m_hierarchy.RendererMap.Put(SystemInfo.GetTypeFromString(renderedClassName, true, true), renderer);
 #endif
 				} 
-				catch(Exception e) 
+				catch (Exception e) 
 				{
 					LogLog.Error(declaringType, "Could not find class [" + renderedClassName + "].", e);
 				}
@@ -624,7 +624,7 @@ namespace log4net.Repository.Hierarchy
 				else if (element.HasChildNodes)
 				{
 					// Concatenate the CDATA and Text nodes together
-					foreach(XmlNode childNode in element.ChildNodes)
+					foreach (XmlNode childNode in element.ChildNodes)
 					{
 						if (childNode.NodeType == XmlNodeType.CDATA || childNode.NodeType == XmlNodeType.Text)
 						{
@@ -640,7 +640,7 @@ namespace log4net.Repository.Hierarchy
 					}
 				}
 
-				if(propertyValue != null)
+				if (propertyValue != null)
 				{
 #if !(NETCF || NETSTANDARD1_3) // NETSTANDARD1_3: System.Runtime.InteropServices.RuntimeInformation not available on desktop 4.6
 					try
@@ -652,7 +652,7 @@ namespace log4net.Repository.Hierarchy
 					    }
 						propertyValue = OptionConverter.SubstituteVariables(propertyValue, environmentVariables);
 					}
-					catch(System.Security.SecurityException)
+					catch (System.Security.SecurityException)
 					{
 						// This security exception will occur if the caller does not have 
 						// unrestricted environment permission. If this occurs the expansion 
@@ -701,7 +701,7 @@ namespace log4net.Repository.Hierarchy
 								propertyType = subType;
 							}
 						}
-						catch(Exception ex)
+						catch (Exception ex)
 						{
 							LogLog.Error(declaringType, "Failed to find type ["+subTypeString+"] set on ["+name+"]", ex);
 						}
@@ -735,7 +735,7 @@ namespace log4net.Repository.Hierarchy
 								propInfo.SetValue(target, convertedValue, BindingFlags.SetProperty, null, null, CultureInfo.InvariantCulture);
 #endif
 							}
-							catch(TargetInvocationException targetInvocationEx)
+							catch (TargetInvocationException targetInvocationEx)
 							{
 								LogLog.Error(declaringType, "Failed to set parameter [" + propInfo.Name + "] on object [" + target + "] using value [" + convertedValue + "]", targetInvocationEx.InnerException);
 							}
@@ -754,7 +754,7 @@ namespace log4net.Repository.Hierarchy
 								methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] {convertedValue}, CultureInfo.InvariantCulture);
 #endif
 							}
-							catch(TargetInvocationException targetInvocationEx)
+							catch (TargetInvocationException targetInvocationEx)
 							{
 								LogLog.Error(declaringType, "Failed to set parameter [" + name + "] on object [" + target + "] using value [" + convertedValue + "]", targetInvocationEx.InnerException);
 							}
@@ -810,7 +810,7 @@ namespace log4net.Repository.Hierarchy
 								propInfo.SetValue(target, createdObject, BindingFlags.SetProperty, null, null, CultureInfo.InvariantCulture);
 #endif
 							}
-							catch(TargetInvocationException targetInvocationEx)
+							catch (TargetInvocationException targetInvocationEx)
 							{
 								LogLog.Error(declaringType, "Failed to set parameter [" + propInfo.Name + "] on object [" + target + "] using value [" + createdObject + "]", targetInvocationEx.InnerException);
 							}
@@ -829,7 +829,7 @@ namespace log4net.Repository.Hierarchy
 								methInfo.Invoke(target, BindingFlags.InvokeMethod, null, new object[] {createdObject}, CultureInfo.InvariantCulture);
 #endif
 							}
-							catch(TargetInvocationException targetInvocationEx)
+							catch (TargetInvocationException targetInvocationEx)
 							{
 								LogLog.Error(declaringType, "Failed to set parameter [" + methInfo.Name + "] on object [" + target + "] using value [" + createdObject + "]", targetInvocationEx.InnerException);
 							}
@@ -846,7 +846,7 @@ namespace log4net.Repository.Hierarchy
 		/// <returns><c>true</c> if the element has any attributes or child elements, <c>false</c> otherwise</returns>
 		private bool HasAttributesOrElements(XmlElement element)
 		{
-			foreach(XmlNode node in element.ChildNodes)
+			foreach (XmlNode node in element.ChildNodes)
 			{
 				if (node.NodeType == XmlNodeType.Attribute || node.NodeType == XmlNodeType.Element)
 				{
@@ -899,7 +899,7 @@ namespace log4net.Repository.Hierarchy
 
 			MethodInfo[] methods = targetType.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
-			foreach(MethodInfo methInfo in methods)
+			foreach (MethodInfo methInfo in methods)
 			{
 				if (!methInfo.IsStatic)
 				{
@@ -1000,7 +1000,7 @@ namespace log4net.Repository.Hierarchy
 					objectType = SystemInfo.GetTypeFromString(objectTypeString, true, true);
 #endif
 				}
-				catch(Exception ex)
+				catch (Exception ex)
 				{
 					LogLog.Error(declaringType, "Failed to find type ["+objectTypeString+"]", ex);
 					return null;
@@ -1033,7 +1033,7 @@ namespace log4net.Repository.Hierarchy
 			{
 				createdObject = Activator.CreateInstance(objectType);
 			}
-			catch(Exception createInstanceEx)
+			catch (Exception createInstanceEx)
 			{
 				LogLog.Error(declaringType, "XmlHierarchyConfigurator: Failed to construct object of type [" + objectType.FullName + "] Exception: "+createInstanceEx.ToString());
 			}

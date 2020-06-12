@@ -277,7 +277,7 @@ namespace DotNetNuke.Services.Installer
 
         private string AdjustRootNodePathRelativeToLocationElements(XmlNode root, string rootNodePath)
         {
-            if(root.Name != "location")
+            if (root.Name != "location")
             {
                 return rootNodePath;
             }
@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Installer
             var index = rootNodePath.IndexOf("configuration");
             var adjustedPath = rootNodePath.Substring(index + "configuration".Length);
             adjustedPath = adjustedPath.TrimStart(new[] {'/'});
-            if(String.IsNullOrEmpty(adjustedPath))
+            if (String.IsNullOrEmpty(adjustedPath))
             {
                 adjustedPath = ".";
             }
@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.Installer
                 //making it tricky to decide where to apply the xml merge operations
                 var targetRoots = this.GetTargetRoots().ToList();
 
-                if(targetRoots.Count == 1)
+                if (targetRoots.Count == 1)
                 {
                     var root = targetRoots[0];
                     foreach (XmlNode node in nodes)
@@ -319,16 +319,16 @@ namespace DotNetNuke.Services.Installer
                     {
                         var hits = this.FindMatchingNodes(node, targetRoots, "path").ToList();
 
-                        if(hits.Count == 0)
+                        if (hits.Count == 0)
                         {
                             continue;
                         }
                         
-                        if(hits.Count == 1)
+                        if (hits.Count == 1)
                         {
                             changedNodes = this.ProcessNode(node, hits[0]) || changedNodes;
                         }
-                        else if(hits.Count < targetRoots.Count)
+                        else if (hits.Count < targetRoots.Count)
                         {
                             changedNodes = this.ProcessNode(node, hits[0]) || changedNodes;
                         }
@@ -364,7 +364,7 @@ namespace DotNetNuke.Services.Installer
             {
                 var rootNode = this.FindMatchingNode(targetRoot, mergeNode, pathAttributeName);
 
-                if(rootNode != null)
+                if (rootNode != null)
                 {
                     yield return targetRoot;
                 }
@@ -376,7 +376,7 @@ namespace DotNetNuke.Services.Installer
             Debug.Assert(mergeNode.Attributes != null);
 
             XmlNode matchingNode = null;
-            if(mergeNode.Attributes[pathAttributeName] != null)
+            if (mergeNode.Attributes[pathAttributeName] != null)
             {
                 string rootNodePath = mergeNode.Attributes[pathAttributeName].Value;
                 if (mergeNode.Attributes["nameSpace"] == null)
