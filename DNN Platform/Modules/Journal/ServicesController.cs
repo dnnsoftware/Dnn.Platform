@@ -38,7 +38,7 @@ namespace DotNetNuke.Modules.Journal
         private const string MentionNotificationSuffix = "...";
         private const string MentionIdentityChar = "@";
 
-        private static readonly string [] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
+        private static readonly string[] AcceptedFileExtensions = { "jpg", "png", "gif", "jpe", "jpeg", "tiff", "bmp" };
 
         #region Public Methods
         public class CreateDTO

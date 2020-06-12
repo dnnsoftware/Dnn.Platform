@@ -406,7 +406,7 @@ namespace log4net.Appender
 		{
 			try 
 			{
-				Byte [] buffer = this.m_encoding.GetBytes(this.RenderLoggingEvent(loggingEvent).ToCharArray());
+				Byte[] buffer = this.m_encoding.GetBytes(this.RenderLoggingEvent(loggingEvent).ToCharArray());
 #if NETSTANDARD1_3
 				Client.SendAsync(buffer, buffer.Length, RemoteEndPoint).Wait();
 #else

@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.SearchResults
             get { return this.Request.QueryString["Scope"] ?? string.Empty; }
         }
 
-        protected string [] SearchScope
+        protected string[] SearchScope
         {
             get
             {
