@@ -25,19 +25,19 @@ namespace DotNetNuke.Modules.Groups.Controls
     public class GroupListControl : WebControl
     {
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String ItemTemplate { get; set; }
+        public string ItemTemplate { get; set; }
 
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String HeaderTemplate { get; set; }
+        public string HeaderTemplate { get; set; }
 
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String FooterTemplate { get; set; }
+        public string FooterTemplate { get; set; }
 
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String RowHeaderTemplate { get; set; }
+        public string RowHeaderTemplate { get; set; }
 
         [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
-        public String RowFooterTemplate { get; set; }
+        public string RowFooterTemplate { get; set; }
 
         [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
@@ -143,7 +143,7 @@ namespace DotNetNuke.Modules.Groups.Controls
             this.ItemTemplate = this.ItemTemplate.Replace("[GroupViewTabId]", this.GroupViewTabId.ToString());
 
             if (roles.Count == 0)
-                output.Write(String.Format("<div class=\"dnnFormMessage dnnFormInfo\"><span>{0}</span></div>", Localization.GetString("NoGroupsFound", Constants.SharedResourcesPath)));
+                output.Write(string.Format("<div class=\"dnnFormMessage dnnFormInfo\"><span>{0}</span></div>", Localization.GetString("NoGroupsFound", Constants.SharedResourcesPath)));
 
 
             if (!string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["page"]))

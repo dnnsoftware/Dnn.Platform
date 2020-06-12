@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Mvp
                 int UserId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    UserId = Int32.Parse(this.Request.Params["UserId"]);
+                    UserId = int.Parse(this.Request.Params["UserId"]);
                 }
                 return UserId;
             }

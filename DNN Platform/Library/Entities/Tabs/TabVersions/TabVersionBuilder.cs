@@ -75,11 +75,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var tabVersion = this.GetUnPublishedVersion(tabId);
             if (tabVersion == null)
             {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
             }
             if (tabVersion.IsPublished)
             {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
             }
 
             var previousPublishVersion = this.GetCurrentVersion(tabId);
@@ -97,11 +97,11 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var tabVersion = this.GetUnPublishedVersion(tabId);
             if (tabVersion == null)
             {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabHasNotAnUnpublishedVersion", Localization.ExceptionsResourceFile), tabId));
             }
             if (tabVersion.IsPublished)
             {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionAlreadyPublished", Localization.ExceptionsResourceFile), tabId, tabVersion.Version));
             }
             this.DiscardVersion(tabId, tabVersion);
         }
@@ -147,13 +147,13 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             if (this.GetUnPublishedVersion(tabId) != null)
             {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeRolledBack_UnpublishedVersionExists", Localization.ExceptionsResourceFile), tabId, version));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeRolledBack_UnpublishedVersionExists", Localization.ExceptionsResourceFile), tabId, version));
             }
 
             var lastTabVersion = this._tabVersionController.GetTabVersions(tabId).OrderByDescending(tv => tv.Version).FirstOrDefault();
             if (lastTabVersion == null || lastTabVersion.Version == version)
             {
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeRolledBack_LastVersion", Localization.ExceptionsResourceFile), tabId, version));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeRolledBack_LastVersion", Localization.ExceptionsResourceFile), tabId, version));
             }
 
             var publishedDetails = this.GetVersionModulesDetails(tabId, lastTabVersion.Version).ToArray();
@@ -221,12 +221,12 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             catch (InvalidOperationException e)
             {
                 Services.Exceptions.Exceptions.LogException(e);
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId), e);
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId), e);
             }
             catch (SqlException sqlException)
             {
                 Services.Exceptions.Exceptions.LogException(sqlException);
-                throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId));
+                throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExistsConcurrencyProblem", Localization.ExceptionsResourceFile), tabId));
             }
         }
 
@@ -356,7 +356,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 && unpublishedVersion.Version == version)
             {
                 throw new InvalidOperationException(
-                    String.Format(
+                    string.Format(
                         Localization.GetString(
                             "TabVersionCannotBeDeleted_UnpublishedVersion",
                             Localization.ExceptionsResourceFile), tabId, version));
@@ -366,7 +366,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             if (tabVersions.Count() <= 1)
             {
                 throw new InvalidOperationException(
-                    String.Format(
+                    string.Format(
                         Localization.GetString("TabVersionCannotBeDiscarded_OnlyOneVersion", Localization.ExceptionsResourceFile),
                         tabId, version));
             }
@@ -742,7 +742,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
         private IVersionable GetVersionableController(ModuleInfo moduleInfo)
         {
-            if (String.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+            if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
             {
                 return null;
             }

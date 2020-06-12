@@ -460,10 +460,10 @@ namespace DotNetNuke.Services.Search.Internals
 
         public string StripTagsNoAttributes(string html, bool retainSpace)
         {
-            var strippedString = !String.IsNullOrEmpty(html) ? HtmlUtils.StripTags(html, retainSpace) : html;
+            var strippedString = !string.IsNullOrEmpty(html) ? HtmlUtils.StripTags(html, retainSpace) : html;
 
             // Encode and Strip again
-            strippedString = !String.IsNullOrEmpty(strippedString) ? HtmlUtils.StripTags(html, retainSpace) : html;
+            strippedString = !string.IsNullOrEmpty(strippedString) ? HtmlUtils.StripTags(html, retainSpace) : html;
 
             return strippedString;
         }

@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return Int32.MaxValue;
+                return int.MaxValue;
             }
         }
     }

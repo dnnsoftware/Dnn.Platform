@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         private string _defaultSortOrder = "ASC";
 
         private string _defaultFilterBy = "None";
-        private string _defaultFilterValue = String.Empty;
+        private string _defaultFilterValue = string.Empty;
 
         private string _defaultDisplaySearch = "Both";
         private string _defaultEnablePopUp = "false";
@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.searchField3List.Select(this.GetTabModuleSetting("SearchField3", this._defaultSearchField3));
                 this.searchField4List.Select(this.GetTabModuleSetting("SearchField4", this._defaultSearchField4));
 
-                this.ExcludeHostUsersCheckBox.Checked = Boolean.Parse(this.GetTabModuleSetting("ExcludeHostUsers", "false"));
+                this.ExcludeHostUsersCheckBox.Checked = bool.Parse(this.GetTabModuleSetting("ExcludeHostUsers", "false"));
             }
         }
 
@@ -200,17 +200,17 @@ namespace DotNetNuke.Modules.MemberDirectory
                 this.alternateItemTemplate.Text = this.GetTabModuleSetting("AlternateItemTemplate", DefaultAlternateItemTemplate);
                 this.popUpTemplate.Text = this.GetTabModuleSetting("PopUpTemplate", DefaultPopUpTemplate);
                 this.displaySearchList.Select(this.GetTabModuleSetting("DisplaySearch", this._defaultDisplaySearch));
-                this.enablePopUp.Checked = Boolean.Parse(this.GetTabModuleSetting("EnablePopUp", this._defaultEnablePopUp));
+                this.enablePopUp.Checked = bool.Parse(this.GetTabModuleSetting("EnablePopUp", this._defaultEnablePopUp));
 
                 this._filterBy = this.GetModuleSetting("FilterBy", this._defaultFilterBy);
                 this._filterValue = this.GetModuleSetting("FilterValue", this._defaultFilterValue);
-                this.propertyValue.Text = this.GetModuleSetting("FilterPropertyValue", String.Empty);
+                this.propertyValue.Text = this.GetModuleSetting("FilterPropertyValue", string.Empty);
 
                 this.sortFieldList.Select(this.GetTabModuleSetting("SortField", this._defaultSortField));
                 this.sortOrderList.Select(this.GetTabModuleSetting("SortOrder", this._defaultSortOrder));
 
                 this.pageSize.Text = this.GetTabModuleSetting("PageSize", DefaultPageSize.ToString(CultureInfo.InvariantCulture));
-                this.disablePager.Checked = Boolean.Parse(this.GetTabModuleSetting("DisablePaging", "False"));
+                this.disablePager.Checked = bool.Parse(this.GetTabModuleSetting("DisablePaging", "False"));
             }
         }
 
@@ -287,7 +287,7 @@ namespace DotNetNuke.Modules.MemberDirectory
         private ListItem AddSearchItem(string name, string resourceKey)
         {
             var text = Localization.GetString(resourceKey, this.LocalResourceFile);
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
                 text = resourceKey;
             }

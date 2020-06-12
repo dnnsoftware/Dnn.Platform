@@ -119,7 +119,7 @@ namespace DotNetNuke.Tests.Core
         private void DoTest(IEnumerable enumerable, string s)
         {
             this.CombineTest(enumerable, s);
-            this.SeperateTest(enumerable.Cast<String>(), s);
+            this.SeperateTest(enumerable.Cast<string>(), s);
         }
 
         private void SeperateTest(IEnumerable<string> expected, string data)

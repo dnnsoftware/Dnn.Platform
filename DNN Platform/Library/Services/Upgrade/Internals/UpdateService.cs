@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 {
     public class UpdateService
     {
-        private static String ApplicationVersion
+        private static string ApplicationVersion
         {
             get
             {
@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
             }
         }
 
-        private static String ApplicationName
+        private static string ApplicationName
         {
             get
             {
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
         public static StreamReader GetLanguageList()
         {
-            String url = DotNetNukeContext.Current.Application.UpgradeUrl + "/languages.aspx";
+            string url = DotNetNukeContext.Current.Application.UpgradeUrl + "/languages.aspx";
             url += "?core=" + ApplicationVersion;
             url += "&type=Framework";
             url += "&name=" + ApplicationName;
@@ -42,9 +42,9 @@ namespace DotNetNuke.Services.Upgrade.Internals
             return myResponseReader;
         }
 
-        public static String GetLanguageDownloadUrl(String cultureCode)
+        public static string GetLanguageDownloadUrl(string cultureCode)
         {
-            String url = DotNetNukeContext.Current.Application.UpgradeUrl + "/languages.aspx";
+            string url = DotNetNukeContext.Current.Application.UpgradeUrl + "/languages.aspx";
             url += "?core=" + ApplicationVersion;
             url += "&type=Framework";
             url += "&name=" + ApplicationName;

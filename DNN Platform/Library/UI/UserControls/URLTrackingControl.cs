@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     if (this.Request.QueryString["mid"] != null)
                     {
-                        Int32.TryParse(this.Request.QueryString["mid"], out moduleID);
+                        int.TryParse(this.Request.QueryString["mid"], out moduleID);
                     }
                 }
                 return moduleID;
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.UserControls
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLTrackingControl.ascx";
                 }
@@ -153,7 +153,7 @@ namespace DotNetNuke.UI.UserControls
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
                 {
-                    if (!String.IsNullOrEmpty(this._URL))
+                    if (!string.IsNullOrEmpty(this._URL))
                     {
                         this.lblLogURL.Text = this.URL; // saved for loading Log grid
                         TabType URLType = Globals.GetURLType(this._URL);
@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.UserControls
                         UrlTrackingInfo objUrlTracking = objUrls.GetUrlTracking(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID);
                         if (objUrlTracking != null)
                         {
-                            if (String.IsNullOrEmpty(this._FormattedURL))
+                            if (string.IsNullOrEmpty(this._FormattedURL))
                             {
                                 this.lblURL.Text = Globals.LinkClick(this.URL, this.PortalSettings.ActiveTab.TabID, this.ModuleID, false);
                                 if (!this.lblURL.Text.StartsWith("http") && !this.lblURL.Text.StartsWith("mailto"))
@@ -190,7 +190,7 @@ namespace DotNetNuke.UI.UserControls
                             if (objUrlTracking.TrackClicks)
                             {
                                 this.pnlTrack.Visible = true;
-                                if (String.IsNullOrEmpty(this._TrackingURL))
+                                if (string.IsNullOrEmpty(this._TrackingURL))
                                 {
                                     if (!this.URL.StartsWith("http"))
                                     {
@@ -234,12 +234,12 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 string strStartDate = this.txtStartDate.Text;
-                if (!String.IsNullOrEmpty(strStartDate))
+                if (!string.IsNullOrEmpty(strStartDate))
                 {
                     strStartDate = strStartDate + " 00:00";
                 }
                 string strEndDate = this.txtEndDate.Text;
-                if (!String.IsNullOrEmpty(strEndDate))
+                if (!string.IsNullOrEmpty(strEndDate))
                 {
                     strEndDate = strEndDate + " 23:59";
                 }

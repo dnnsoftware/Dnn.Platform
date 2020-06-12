@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Gets a value indicating if the collection contains keys that are not null.
         /// </summary>
-        public Boolean HasKeys
+        public bool HasKeys
         {
             get
             {
@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        public bool Contains(String key)
+        public bool Contains(string key)
         {
             return this.Dictionary.Contains(key);
         }
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Portals
         /// <summary>
         /// Adds an entry to the collection.
         /// </summary>
-        public void Add(String key, PortalAliasInfo value)
+        public void Add(string key, PortalAliasInfo value)
         {
             this.Dictionary.Add(key, value);
         }

@@ -262,18 +262,18 @@ namespace DotNetNuke.Entities.Urls
                 // the rawuserid is just the string representation of the userid from the path.
                 // It should be considered 'untrusted' until cleaned up,
                 // converted to an int and checked against the database
-                if (!String.IsNullOrEmpty(rawUserId) && Int32.TryParse(rawUserId, out userId))
+                if (!string.IsNullOrEmpty(rawUserId) && int.TryParse(rawUserId, out userId))
                 {
                     bool doReplacement = false;
-                    string urlName = String.Empty;
+                    string urlName = string.Empty;
 
                     // Get the User
                     var user = UserController.GetUserById(portalSettings.PortalId, userId);
 
-                    if (user != null && !String.IsNullOrEmpty(user.VanityUrl))
+                    if (user != null && !string.IsNullOrEmpty(user.VanityUrl))
                     {
                         doReplacement = true;
-                        urlName = (!String.IsNullOrEmpty(settings.VanityUrlPrefix)) ? String.Format("{0}/{1}", settings.VanityUrlPrefix, user.VanityUrl) : user.VanityUrl;
+                        urlName = (!string.IsNullOrEmpty(settings.VanityUrlPrefix)) ? string.Format("{0}/{1}", settings.VanityUrlPrefix, user.VanityUrl) : user.VanityUrl;
                         urlWasChanged = true;
                     }
 

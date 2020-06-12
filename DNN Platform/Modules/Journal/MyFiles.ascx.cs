@@ -42,7 +42,7 @@ namespace DotNetNuke.Modules.Journal {
             } catch {
                 message = string.Format(Localization.GetString("SaveFileError"), this.fileUp.PostedFile.FileName);
             }
-            if (String.IsNullOrEmpty(message) && fi != null) {
+            if (string.IsNullOrEmpty(message) && fi != null) {
                 this.litOut.Text = "<script type=\"text/javascript\">var fileInfo=" + JsonExtensionsWeb.ToJsonString(fi) + ";alert(fileInfo.FileName);</script>";
 
             } else {

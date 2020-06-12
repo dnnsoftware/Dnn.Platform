@@ -42,21 +42,21 @@ namespace DotNetNuke.Services.UserProfile
             var size = "";
             try
             {
-                if (!String.IsNullOrEmpty(context.Request.QueryString["userid"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["userid"]))
                 {
                     userId = Convert.ToInt32(context.Request.QueryString["userid"]);
                 }
 
-                if (!String.IsNullOrEmpty(context.Request.QueryString["w"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["w"]))
                 {
                     width = Convert.ToInt32(context.Request.QueryString["w"]);
                 }
 
-                if (!String.IsNullOrEmpty(context.Request.QueryString["h"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["h"]))
                 {
                     height = Convert.ToInt32(context.Request.QueryString["h"]);
                 }
-                if (!String.IsNullOrEmpty(context.Request.QueryString["size"]))
+                if (!string.IsNullOrEmpty(context.Request.QueryString["size"]))
                 {
                     size = context.Request.QueryString["size"];
                 }
@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.UserProfile
                 size = "xl";
             }
             // set a default if unprocessed
-            if (String.IsNullOrEmpty(size))
+            if (string.IsNullOrEmpty(size))
             {
                 height = 32;
                 width = 32;

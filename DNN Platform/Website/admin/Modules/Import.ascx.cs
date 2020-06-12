@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var strMessage = "";
             if (this.Module != null)
             {
-                if (!String.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
+                if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
                 {
                     try
                     {
@@ -84,7 +84,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             {
                                 strMessage = Localization.GetString("NotValidXml", this.LocalResourceFile);
                             }
-                            if (String.IsNullOrEmpty(strMessage))
+                            if (string.IsNullOrEmpty(strMessage))
                             {
                                 var strType = xmlDoc.DocumentElement.GetAttribute("type");
                                 if (strType == Globals.CleanName(this.Module.DesktopModule.ModuleName) || strType == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
@@ -136,7 +136,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             if (this.Request.QueryString["moduleid"] != null)
             {
-                Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
             }
 
             // Verify that the current user has access to edit this module
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 if (this.Module != null)
                 {
                     var strMessage = this.ImportModule();
-                    if (String.IsNullOrEmpty(strMessage))
+                    if (string.IsNullOrEmpty(strMessage))
                     {
                         this.Response.Redirect(this.ReturnURL, true);
                     }

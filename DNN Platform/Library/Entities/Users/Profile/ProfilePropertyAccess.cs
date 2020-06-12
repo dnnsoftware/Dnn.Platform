@@ -82,7 +82,7 @@ namespace DotNetNuke.Entities.Users
             {
                 var profile = this.user.Profile;
                 var property = profile.ProfileProperties.Cast<ProfilePropertyDefinition>()
-                                                        .SingleOrDefault(p => String.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
+                                                        .SingleOrDefault(p => string.Equals(p.PropertyName, propertyName, StringComparison.CurrentCultureIgnoreCase));
 
                 if (property != null)
                 {
@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Users
         public static string GetRichValue(ProfilePropertyDefinition property, string formatString, CultureInfo formatProvider)
         {
             string result = "";
-            if (!String.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.InvariantCultureIgnoreCase))
+            if (!string.IsNullOrEmpty(property.PropertyValue) || DisplayDataType(property).Equals("image", StringComparison.InvariantCultureIgnoreCase))
             {
                 switch (DisplayDataType(property).ToLowerInvariant())
                 {
@@ -220,9 +220,9 @@ namespace DotNetNuke.Entities.Users
                     case "image":
                         // File is stored as a FileID
                         int fileID;
-                        if (Int32.TryParse(property.PropertyValue, out fileID) && fileID > 0)
+                        if (int.TryParse(property.PropertyValue, out fileID) && fileID > 0)
                         {
-                            result = Globals.LinkClick(String.Format("fileid={0}", fileID), Null.NullInteger, Null.NullInteger);
+                            result = Globals.LinkClick(string.Format("fileid={0}", fileID), Null.NullInteger, Null.NullInteger);
                         }
                         else
                         {

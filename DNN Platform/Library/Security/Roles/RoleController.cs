@@ -226,10 +226,10 @@ namespace DotNetNuke.Security.Roles
 
         public void ClearRoleCache(int portalId)
         {
-            DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, portalId));
+            DataCache.RemoveCache(string.Format(DataCache.RolesCacheKey, portalId));
             if (portalId != Null.NullInteger)
             {
-                DataCache.RemoveCache(String.Format(DataCache.RolesCacheKey, Null.NullInteger));
+                DataCache.RemoveCache(string.Format(DataCache.RolesCacheKey, Null.NullInteger));
             }
         }
 
@@ -299,7 +299,7 @@ namespace DotNetNuke.Security.Roles
 
         public IList<RoleInfo> GetRoles(int portalId)
         {
-            var cacheKey = String.Format(DataCache.RolesCacheKey, portalId);
+            var cacheKey = string.Format(DataCache.RolesCacheKey, portalId);
             return CBO.GetCachedObject<IList<RoleInfo>>(
                 new CacheItemArgs(cacheKey, DataCache.RolesCacheTimeOut, DataCache.RolesCachePriority),
                                                                     c => provider.GetRoles(portalId).Cast<RoleInfo>().ToList());

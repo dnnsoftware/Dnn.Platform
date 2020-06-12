@@ -44,11 +44,11 @@ namespace DotNetNuke.UI.Containers
             try
             {
                 // public attributes
-                if (!String.IsNullOrEmpty(this.BorderWidth))
+                if (!string.IsNullOrEmpty(this.BorderWidth))
                 {
                     this.imgIcon.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
-                if (!String.IsNullOrEmpty(this.CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.imgIcon.CssClass = this.CssClass;
                 }

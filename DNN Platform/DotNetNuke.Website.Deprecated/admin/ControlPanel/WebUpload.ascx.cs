@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
             var folders = FolderManager.Instance.GetFolders(this.FolderPortalID, "ADD", user.UserID);
             this.ddlFolders.Services.Parameters.Add("permission", "ADD");
-            if (!String.IsNullOrEmpty(this.DestinationFolder))
+            if (!string.IsNullOrEmpty(this.DestinationFolder))
             {
                 this.ddlFolders.SelectedFolder = folders.SingleOrDefault(f => f.FolderPath == this.DestinationFolder);
             }
@@ -262,7 +262,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 string strHost = Localization.GetString("HostRoot", this.LocalResourceFile);
                 string strPortal = Localization.GetString("PortalRoot", this.LocalResourceFile);
 
-                this.maxSizeWarningLabel.Text = String.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), Config.GetMaxUploadSize() / (1024 * 1024));
+                this.maxSizeWarningLabel.Text = string.Format(Localization.GetString("FileSizeRestriction", this.LocalResourceFile), Config.GetMaxUploadSize() / (1024 * 1024));
 
                 if (!this.Page.IsPostBack)
                 {
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 // Get localized Strings
                 Localization.GetString("InvalidExt", this.LocalResourceFile);
                 var strFileName = Path.GetFileName(postedFile.FileName);
-                if (!String.IsNullOrEmpty(postedFile.FileName))
+                if (!string.IsNullOrEmpty(postedFile.FileName))
                 {
                     switch (this.FileType)
                     {
@@ -361,9 +361,9 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 {
                     this.tblLogs.Visible = true;
                 }
-                else if (String.IsNullOrEmpty(strMessage))
+                else if (string.IsNullOrEmpty(strMessage))
                 {
-                    Skin.AddModuleMessage(this, String.Format(Localization.GetString("FileUploadSuccess", this.LocalResourceFile), strFileName), ModuleMessage.ModuleMessageType.GreenSuccess);
+                    Skin.AddModuleMessage(this, string.Format(Localization.GetString("FileUploadSuccess", this.LocalResourceFile), strFileName), ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
                 else
                 {
@@ -385,7 +385,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdReturn_Click(Object sender, EventArgs e)
+        private void cmdReturn_Click(object sender, EventArgs e)
         {
             this.Response.Redirect(this.ReturnURL(), true);
         }

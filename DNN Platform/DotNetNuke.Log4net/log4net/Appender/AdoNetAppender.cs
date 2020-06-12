@@ -658,7 +658,7 @@ namespace log4net.Appender
             }
 
 #if NET_2_0
-            if (!String.IsNullOrEmpty(this.ConnectionStringName))
+            if (!string.IsNullOrEmpty(this.ConnectionStringName))
             {
                 ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings[this.ConnectionStringName];
                 if (settings != null)

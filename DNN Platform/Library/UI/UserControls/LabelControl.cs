@@ -184,7 +184,7 @@ namespace DotNetNuke.UI.UserControls
             base.OnPreRender(e);
 
             // get the localised text
-            if (String.IsNullOrEmpty(this.ResourceKey))
+            if (string.IsNullOrEmpty(this.ResourceKey))
             {
                 // Set Resource Key to the ID of the control
                 this.ResourceKey = this.ID;
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.UserControls
             }
 
             // Set Help Key to the Resource Key plus ".Help"
-            if (String.IsNullOrEmpty(this.HelpKey))
+            if (string.IsNullOrEmpty(this.HelpKey))
             {
                 this.HelpKey = this.ResourceKey + ".Help";
             }
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.UserControls
             }
 
             // find the reference control in the parents Controls collection
-            if (!String.IsNullOrEmpty(this.ControlName))
+            if (!string.IsNullOrEmpty(this.ControlName))
             {
                 var c = this.Parent.FindControl(this.ControlName);
                 var clientId = this.ControlName;

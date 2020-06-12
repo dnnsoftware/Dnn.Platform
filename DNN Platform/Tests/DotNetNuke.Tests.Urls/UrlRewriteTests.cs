@@ -66,15 +66,15 @@ namespace DotNetNuke.Tests.Urls
 
         private string ReplaceTokens(Dictionary<string, string> testFields, string url, string tabId)
         {
-            var defaultAlias = testFields.GetValue("DefaultAlias", String.Empty);
-            var httpAlias = testFields.GetValue("Alias", String.Empty);
+            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
+            var httpAlias = testFields.GetValue("Alias", string.Empty);
             var tabName = testFields["Page Name"];
-            var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
-            var homeTabId = testFields.GetValue("HomeTabId", String.Empty);
+            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
+            var homeTabId = testFields.GetValue("HomeTabId", string.Empty);
 
-            var userName = testFields.GetValue("UserName", String.Empty);
-            string userId = String.Empty;
-            if (!String.IsNullOrEmpty(userName))
+            var userName = testFields.GetValue("UserName", string.Empty);
+            string userId = string.Empty;
+            if (!string.IsNullOrEmpty(userName))
             {
                 var user = UserController.GetUserByName(this.PortalId, userName);
                 if (user != null)
@@ -125,7 +125,7 @@ namespace DotNetNuke.Tests.Urls
             this.UpdateTabName(this._tabId, "About Us");
             this.UpdateTabSkin(this._tabId, "[G]Skins/Xcillion/Inner.ascx");
 
-            if (!String.IsNullOrEmpty(this._securePageName))
+            if (!string.IsNullOrEmpty(this._securePageName))
             {
                 var tab = TabController.Instance.GetTabByName(this._securePageName, this.PortalId);
                 if (tab != null)
@@ -173,7 +173,7 @@ namespace DotNetNuke.Tests.Urls
 
             // Add Portal Aliases
             var aliasController = PortalAliasController.Instance;
-            TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
                             {
                                 string[] fields = line.Split(',');
                                 var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
@@ -187,7 +187,7 @@ namespace DotNetNuke.Tests.Urls
                                     PortalAliasController.Instance.AddPortalAlias(alias);
                                 }
                             });
-            TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Users"), (line, header) =>
                                 {
                                     string[] fields = line.Split(',');
 
@@ -201,13 +201,13 @@ namespace DotNetNuke.Tests.Urls
             base.TestFixtureTearDown();
 
             var aliasController = PortalAliasController.Instance;
-            TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
                             {
                                 string[] fields = line.Split(',');
                                 var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
                                 PortalAliasController.Instance.DeletePortalAlias(alias);
                             });
-            TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Users"), (line, header) =>
                             {
                                 string[] fields = line.Split(',');
 
@@ -232,11 +232,11 @@ namespace DotNetNuke.Tests.Urls
 
         private void ExecuteTestForTab(TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
         {
-            var httpAlias = testFields.GetValue("Alias", String.Empty);
+            var httpAlias = testFields.GetValue("Alias", string.Empty);
             var scheme = testFields["Scheme"];
             var url = testFields["Test Url"];
             var result = testFields["Expected Url"];
-            var expectedStatus = Int32.Parse(testFields["Status"]);
+            var expectedStatus = int.Parse(testFields["Status"]);
             var redirectUrl = testFields.GetValue("Final Url");
             var redirectReason = testFields.GetValue("RedirectReason");
 
@@ -270,7 +270,7 @@ namespace DotNetNuke.Tests.Urls
             {
                 case 200:
                     // Test expected rewrite path
-                    if (!String.IsNullOrEmpty(expectedResult))
+                    if (!string.IsNullOrEmpty(expectedResult))
                     {
                         Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
                     }
@@ -359,7 +359,7 @@ namespace DotNetNuke.Tests.Urls
 
             string deletedTabHandling = testFields.GetValue("DeletedTabHandling");
 
-            if (!String.IsNullOrEmpty(deletedTabHandling))
+            if (!string.IsNullOrEmpty(deletedTabHandling))
             {
                 switch (deletedTabHandling)
                 {
@@ -415,7 +415,7 @@ namespace DotNetNuke.Tests.Urls
 
             string forceLowerCaseRegex = testFields.GetValue("ForceLowerCaseRegex");
 
-            if (!String.IsNullOrEmpty(forceLowerCaseRegex))
+            if (!string.IsNullOrEmpty(forceLowerCaseRegex))
             {
                 settings.ForceLowerCaseRegex = forceLowerCaseRegex;
             }
@@ -431,7 +431,7 @@ namespace DotNetNuke.Tests.Urls
 
             string regexSetting = testFields["Setting"];
             string regexValue = testFields["Value"];
-            if (!String.IsNullOrEmpty(regexValue))
+            if (!string.IsNullOrEmpty(regexValue))
             {
                 switch (regexSetting)
                 {
@@ -479,7 +479,7 @@ namespace DotNetNuke.Tests.Urls
 
             string testPageName = testFields.GetValue("TestPageName");
             TabInfo tab = null;
-            if (!String.IsNullOrEmpty(testPageName))
+            if (!string.IsNullOrEmpty(testPageName))
             {
                 var tabName = testFields["Page Name"];
                 tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
@@ -492,7 +492,7 @@ namespace DotNetNuke.Tests.Urls
 
             string autoAscii = testFields.GetValue("AutoAscii");
 
-            if (!String.IsNullOrEmpty(autoAscii))
+            if (!string.IsNullOrEmpty(autoAscii))
             {
                 settings.AutoAsciiConvert = Convert.ToBoolean(autoAscii);
             }
@@ -511,7 +511,7 @@ namespace DotNetNuke.Tests.Urls
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
 
             string replaceSpaceWith = testFields.GetValue("ReplaceSpaceWith");
-            if (!String.IsNullOrEmpty(replaceSpaceWith))
+            if (!string.IsNullOrEmpty(replaceSpaceWith))
             {
                 settings.ReplaceSpaceWith = replaceSpaceWith;
             }
@@ -547,7 +547,7 @@ namespace DotNetNuke.Tests.Urls
 
             string language = testFields["Language"].Trim();
             string skin = testFields["Skin"].Trim();
-            if (!String.IsNullOrEmpty(language))
+            if (!string.IsNullOrEmpty(language))
             {
                 this._customLocale = new Locale { Code = language, Fallback = "en-US" };
                 this._customLocale.Text = CultureInfo.GetCultureInfo(this._customLocale.Code).NativeName;
@@ -571,7 +571,7 @@ namespace DotNetNuke.Tests.Urls
                     PortalID = this.PortalId,
                     IsPrimary = true
                 };
-                if (!(String.IsNullOrEmpty(language) && String.IsNullOrEmpty(skin)))
+                if (!(string.IsNullOrEmpty(language) && string.IsNullOrEmpty(skin)))
                 {
                     alias.CultureCode = language;
                     alias.Skin = skin;
@@ -596,11 +596,11 @@ namespace DotNetNuke.Tests.Urls
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", testFields["TestName"], this.PortalId);
             settings.DeletedTabHandlingType = DeletedTabHandlingType.Do301RedirectToPortalHome;
 
-            var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
-            var userName = testFields.GetValue("UserName", String.Empty);
-            var redirectOld = testFields.GetValue("RedirectOldProfileUrl", String.Empty);
+            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
+            var userName = testFields.GetValue("UserName", string.Empty);
+            var redirectOld = testFields.GetValue("RedirectOldProfileUrl", string.Empty);
 
-            if (!String.IsNullOrEmpty(userName))
+            if (!string.IsNullOrEmpty(userName))
             {
                 var user = UserController.GetUserByName(this.PortalId, userName);
                 if (user != null)
@@ -610,7 +610,7 @@ namespace DotNetNuke.Tests.Urls
                 }
             }
 
-            if (!String.IsNullOrEmpty(redirectOld))
+            if (!string.IsNullOrEmpty(redirectOld))
             {
                 settings.RedirectOldProfileUrl = Convert.ToBoolean(redirectOld);
             }
@@ -648,7 +648,7 @@ namespace DotNetNuke.Tests.Urls
         [TestCaseSource(typeof(UrlTestFactoryClass), "UrlRewrite_JiraTests")]
         public void AdvancedUrlRewriter_JiraTests(Dictionary<string, string> testFields)
         {
-            var testName = testFields.GetValue("Test File", String.Empty);
+            var testName = testFields.GetValue("Test File", string.Empty);
 
             var settings = UrlTestFactoryClass.GetSettings("UrlRewrite", "Jira_Tests", testName + ".csv", this.PortalId);
             var dictionary = UrlTestFactoryClass.GetDictionary("UrlRewrite", "Jira_Tests", testName + "_dic.csv");
@@ -659,7 +659,7 @@ namespace DotNetNuke.Tests.Urls
                 switch (keyValuePair.Key)
                 {
                     case "HomeTabId":
-                        homeTabId = this.UpdateHomeTab(Int32.Parse(keyValuePair.Value));
+                        homeTabId = this.UpdateHomeTab(int.Parse(keyValuePair.Value));
                         break;
                     default:
                         break;

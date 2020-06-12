@@ -322,7 +322,7 @@ namespace DotNetNuke.Modules.Admin.Users
             if (this.Request.IsAuthenticated != true) return;
 
             bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
-            var message = String.Empty;
+            var message = string.Empty;
             if (canSend)
             {
                 // Get the Membership Information from the property editors
@@ -402,7 +402,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// cmdUnlock_Click runs when the Unlock Account Button is clicked
         /// </summary>
         /// -----------------------------------------------------------------------------
-        private void cmdUnLock_Click(Object sender, EventArgs e)
+        private void cmdUnLock_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {

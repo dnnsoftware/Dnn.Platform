@@ -1418,7 +1418,7 @@ namespace Dnn.ExportImport.Components.Services
             foreach (var tabId in referenceTabs)
             {
                 var localTab = localTabs.FirstOrDefault(t => t.TabID == tabId);
-                if (localTab != null && Int32.TryParse(localTab.Url, out int urlTabId))
+                if (localTab != null && int.TryParse(localTab.Url, out int urlTabId))
                 {
                     var exportTab = exportTabs.FirstOrDefault(t => t.TabId == urlTabId);
                     if (exportTab != null && exportTab.LocalId.HasValue)

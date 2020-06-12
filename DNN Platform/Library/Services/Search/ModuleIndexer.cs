@@ -327,7 +327,7 @@ namespace DotNetNuke.Services.Search
                     {
                         // Check if the business controller is in the Hashtable
                         var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
-                        if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
+                        if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
                         {
                             // If nothing create a new instance
                             if (controller == null)

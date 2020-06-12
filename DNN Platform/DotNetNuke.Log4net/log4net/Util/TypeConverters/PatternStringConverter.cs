@@ -60,7 +60,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="targetType"/> is
-        /// assignable from a <see cref="String"/> type.
+        /// assignable from a <see cref="string"/> type.
         /// </para>
         /// </remarks>
         public bool CanConvertTo(Type targetType)
@@ -77,7 +77,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Uses the <see cref="M:PatternString.Format()"/> method to convert the
-        /// <see cref="PatternString"/> argument to a <see cref="String"/>.
+        /// <see cref="PatternString"/> argument to a <see cref="string"/>.
         /// </para>
         /// </remarks>
         /// <exception cref="ConversionNotSupportedException">
@@ -107,7 +107,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="sourceType"/> is
-        /// the <see cref="String"/> type.
+        /// the <see cref="string"/> type.
         /// </para>
         /// </remarks>
         public bool CanConvertFrom(System.Type sourceType)
@@ -123,7 +123,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Creates and returns a new <see cref="PatternString"/> using
-        /// the <paramref name="source"/> <see cref="String"/> as the
+        /// the <paramref name="source"/> <see cref="string"/> as the
         /// <see cref="PatternString.ConversionPattern"/>.
         /// </para>
         /// </remarks>

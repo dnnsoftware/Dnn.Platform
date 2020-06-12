@@ -21,7 +21,7 @@ namespace DotNetNuke.Tests.UI.WatiN.Utilities
 
             using (RunspaceInvoke invoker = new RunspaceInvoke())
             {
-                invoker.Invoke(String.Format("Set-ExecutionPolicy {0}", executionPolicy));
+                invoker.Invoke(string.Format("Set-ExecutionPolicy {0}", executionPolicy));
                 Command myCommand = new Command(scriptPath);
                 for (int i = 0; i < parameters.Length; i++)
                 {

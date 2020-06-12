@@ -17,11 +17,11 @@ namespace DotNetNuke.Data.PetaPoco
 
         public FluentMapper(string tablePrefix)
         {
-            this.CacheKey = String.Empty;
+            this.CacheKey = string.Empty;
             this.CachePriority = CacheItemPriority.Default;
             this.CacheTimeOut = 0;
             this.Mappings = new Dictionary<string, FluentColumnMap>();
-            this.Scope = String.Empty;
+            this.Scope = string.Empty;
             this.TableInfo = new TableInfo();
             this._tablePrefix = tablePrefix;
         }

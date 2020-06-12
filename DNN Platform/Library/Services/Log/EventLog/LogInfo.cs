@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Log.EventLog
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
             {
                 reader.ReadStartElement("LogProperties");
-                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !String.IsNullOrEmpty(reader.LocalName))
+                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
                 {
                     this.LogProperties.ReadXml(reader);
                 }

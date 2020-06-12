@@ -120,7 +120,7 @@ namespace DotNetNuke.Common.Lists
                 cacheKey,
                                                                         DataCache.ListsCacheTimeOut,
                                                                         DataCache.ListsCachePriority),
-                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, String.Empty, portalId)));
+                c => CBO.FillCollection<ListEntryInfo>(DataProvider.Instance().GetListEntriesByListName(listName, string.Empty, portalId)));
         }
 
         #endregion

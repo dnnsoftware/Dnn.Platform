@@ -68,25 +68,25 @@ namespace DotNetNuke.Tests.Utilities
 
             if (!thrown)
             {
-                throw new AssertionException(String.Format("Expected exception of type '{0}' was not thrown", typeof(TException).FullName));
+                throw new AssertionException(string.Format("Expected exception of type '{0}' was not thrown", typeof(TException).FullName));
             }
             else if (!matched)
             {
-                throw new AssertionException(String.Format("Expected exception of type '{0}' was thrown but did not match the configured criteria", typeof(TException).FullName));
+                throw new AssertionException(string.Format("Expected exception of type '{0}' was thrown but did not match the configured criteria", typeof(TException).FullName));
             }
         }
 
         public static void ThrowsArgNull(string paramName, Action act)
         {
-            Throws<ArgumentNullException>(act, ex => String.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
+            Throws<ArgumentNullException>(act, ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
         }
 
         public static void ThrowsArgNullOrEmpty(string paramName, Action act)
         {
             Throws<ArgumentException>(
-                String.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
+                string.Format("Argument cannot be null or an empty string{1}Parameter name: {0}", paramName, Environment.NewLine),
                                       act,
-                                      ex => String.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
+                                      ex => string.Equals(ex.ParamName, paramName, StringComparison.Ordinal));
         }
     }
 }

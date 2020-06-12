@@ -85,7 +85,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 else
                     this.registerLink.Visible = false;
 
-                if (!String.IsNullOrEmpty(this.CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.registerLink.CssClass = this.CssClass;
                     this.enhancedRegisterLink.CssClass = this.CssClass;
@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (this.PortalSettings.UserRegistration != (int)Globals.PortalRegistrationType.NoRegistration)
                     {
-                        if (!String.IsNullOrEmpty(this.Text))
+                        if (!string.IsNullOrEmpty(this.Text))
                         {
                             if (this.Text.IndexOf("src=") != -1)
                             {
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.Skins.Controls
                             this.registerLink.Visible = false;
                         }
 
-                        this.registerLink.NavigateUrl = !String.IsNullOrEmpty(this.URL)
+                        this.registerLink.NavigateUrl = !string.IsNullOrEmpty(this.URL)
                                             ? this.URL
                                             : Globals.RegisterURL(HttpUtility.UrlEncode(this._navigationManager.NavigateURL()), Null.NullString);
                         this.enhancedRegisterLink.NavigateUrl = this.registerLink.NavigateUrl;

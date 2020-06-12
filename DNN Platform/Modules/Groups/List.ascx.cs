@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Groups
             }
 
 
-            if (!String.IsNullOrEmpty(this.GroupListTemplate))
+            if (!string.IsNullOrEmpty(this.GroupListTemplate))
             {
                 this.ctlGroupList.ItemTemplate = this.GroupListTemplate;
             }

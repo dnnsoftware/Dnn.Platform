@@ -93,14 +93,14 @@ namespace DotNetNuke.Modules.Admin.Sales
                             dblAmount = double.Parse(strValue);
                             break;
                         case "item_number": // get the RoleID
-                            intRoleID = Int32.Parse(strValue);
+                            intRoleID = int.Parse(strValue);
                             // RoleInfo objRole = objRoles.GetRole(intRoleID, intPortalID);
                             break;
                         case "item_name": // get the product description
 //                            strDescription = strValue;
                             break;
                         case "custom": // get the UserID
-                            intUserID = Int32.Parse(strValue);
+                            intUserID = int.Parse(strValue);
                             break;
                         case "email": // get the email
 //                            strEmail = strValue;
@@ -118,7 +118,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     string strPayPalURL;
 
                     // Sandbox mode
-                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].Equals("true", StringComparison.InvariantCultureIgnoreCase))
+                    if (settings.ContainsKey("paypalsandbox") && !string.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].Equals("true", StringComparison.InvariantCultureIgnoreCase))
                     {
                         strPayPalURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?";
                     }

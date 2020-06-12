@@ -32,7 +32,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
             this.OAuthVersion = "2.0";
 
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
 
         #endregion
@@ -50,7 +50,7 @@ namespace DotNetNuke.Authentication.Facebook.Components
 
         protected override string GetToken(string responseText)
         {
-            string authToken = String.Empty;
+            string authToken = string.Empty;
             if (!string.IsNullOrEmpty(responseText))
             {
                 var dictionary = Json.Deserialize<IDictionary<string, object>>(responseText);

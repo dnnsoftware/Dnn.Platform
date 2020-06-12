@@ -92,7 +92,7 @@ namespace DotNetNuke.Services.Exceptions
 
                     objExceptionInfo.Method = "N/A - Reflection Permission required";
                 }
-                if (!String.IsNullOrEmpty(sf.GetFileName()))
+                if (!string.IsNullOrEmpty(sf.GetFileName()))
                 {
                     objExceptionInfo.FileName = sf.GetFileName();
                     objExceptionInfo.FileColumnNumber = sf.GetFileColumnNumber();
@@ -385,7 +385,7 @@ namespace DotNetNuke.Services.Exceptions
                 // publish the exception
                 var objExceptionLog = new ExceptionLogController();
                 objExceptionLog.AddLog(lex);
-                if (!String.IsNullOrEmpty(URL))
+                if (!string.IsNullOrEmpty(URL))
                 {
                     // redirect
                     if (URL.IndexOf("error=terminate") != -1)

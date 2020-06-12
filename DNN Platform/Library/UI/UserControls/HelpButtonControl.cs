@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.UserControls
                 this.imgHelp.AlternateText = HtmlUtils.Clean(value, false);
 
                 // hide the help icon if the help text is ""
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     this.imgHelp.Visible = false;
                 }
@@ -139,13 +139,13 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
-                if (String.IsNullOrEmpty(this._HelpKey))
+                if (string.IsNullOrEmpty(this._HelpKey))
                 {
                     // Set Help Key to the Resource Key plus ".Help"
                     this._HelpKey = this._ResourceKey + ".Help";
                 }
                 string helpText = Localization.GetString(this._HelpKey, this);
-                if (!String.IsNullOrEmpty(helpText))
+                if (!string.IsNullOrEmpty(helpText))
                 {
                     this.HelpText = helpText;
                 }

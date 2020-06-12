@@ -230,7 +230,7 @@ namespace DotNetNuke.UI.UserControls
             try
             {
                 // set the resourcekey attribute to the label
-                if (!String.IsNullOrEmpty(this.ResourceKey))
+                if (!string.IsNullOrEmpty(this.ResourceKey))
                 {
                     this.lblTitle.Attributes["resourcekey"] = this.ResourceKey;
                 }

@@ -164,7 +164,7 @@ namespace DotNetNuke.Entities.Users
                 if (this._membership == null)
                 {
                     this._membership = new UserMembership(this);
-                    if ((this.Username != null) && (!String.IsNullOrEmpty(this.Username)))
+                    if ((this.Username != null) && (!string.IsNullOrEmpty(this.Username)))
                     {
                         UserController.GetUserMembership(this);
                     }
@@ -440,7 +440,7 @@ namespace DotNetNuke.Entities.Users
             {
                 return false;
             }
-            if (String.IsNullOrEmpty(this._administratorRoleName))
+            if (string.IsNullOrEmpty(this._administratorRoleName))
             {
                 PortalInfo ps = PortalController.Instance.GetPortal(accessingUser.PortalID);
                 this._administratorRoleName = ps.AdministratorRoleName;

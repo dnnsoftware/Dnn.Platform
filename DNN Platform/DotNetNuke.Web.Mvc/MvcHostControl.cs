@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.Mvc
 
         public MvcHostControl()
         {
-            this._controlKey = String.Empty;
+            this._controlKey = string.Empty;
         }
 
         public MvcHostControl(string controlKey)
@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.Mvc
 
             // Check if the MVC Module overrides the base ModuleApplication class.
             var businessControllerClass = desktopModule.BusinessControllerClass;
-            if (!String.IsNullOrEmpty(businessControllerClass))
+            if (!string.IsNullOrEmpty(businessControllerClass))
             {
                 var moduleApplicationType = Reflection.CreateType(businessControllerClass);
                 if (moduleApplicationType != null)
@@ -118,9 +118,9 @@ namespace DotNetNuke.Web.Mvc
 
             var queryString = httpContext.Request.QueryString;
 
-            if (String.IsNullOrEmpty(this._controlKey))
+            if (string.IsNullOrEmpty(this._controlKey))
             {
-                this._controlKey = queryString.GetValueOrDefault("ctl", String.Empty);
+                this._controlKey = queryString.GetValueOrDefault("ctl", string.Empty);
             }
 
             var moduleId = Null.NullInteger;
@@ -129,7 +129,7 @@ namespace DotNetNuke.Web.Mvc
                 int.TryParse(queryString["moduleid"], out moduleId);
             }
 
-            if (moduleId != this.ModuleContext.ModuleId && String.IsNullOrEmpty(this._controlKey))
+            if (moduleId != this.ModuleContext.ModuleId && string.IsNullOrEmpty(this._controlKey))
             {
                 // Set default routeData for module that is not the "selected" module
                 routeData = defaultRouteData;

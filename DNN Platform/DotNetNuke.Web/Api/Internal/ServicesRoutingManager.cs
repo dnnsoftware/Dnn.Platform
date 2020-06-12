@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Api.Internal
 
         public IList<Route> MapHttpRoute(string moduleFolderName, string routeName, string url, object defaults, object constraints, string[] namespaces)
         {
-            if (namespaces == null || namespaces.Length == 0 || String.IsNullOrEmpty(namespaces[0]))
+            if (namespaces == null || namespaces.Length == 0 || string.IsNullOrEmpty(namespaces[0]))
             {
                 throw new ArgumentException(Localization.GetExceptionMessage(
                     "ArgumentCannotBeNullOrEmpty",

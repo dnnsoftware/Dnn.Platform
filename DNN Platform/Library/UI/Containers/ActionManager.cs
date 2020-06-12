@@ -271,7 +271,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         public void GetClientScriptURL(ModuleAction action, WebControl control)
         {
-            if (!String.IsNullOrEmpty(action.ClientScript))
+            if (!string.IsNullOrEmpty(action.ClientScript))
             {
                 string Script = action.ClientScript;
                 int JSPos = Script.IndexOf("javascript:", StringComparison.InvariantCultureIgnoreCase);
@@ -321,7 +321,7 @@ namespace DotNetNuke.UI.Containers
         {
             bool bProcessed = true;
             int nid = 0;
-            if (Int32.TryParse(id, out nid))
+            if (int.TryParse(id, out nid))
             {
                 bProcessed = this.ProcessAction(this.ActionControl.ModuleControl.ModuleContext.Actions.GetActionByID(nid));
             }
@@ -380,7 +380,7 @@ namespace DotNetNuke.UI.Containers
                     this.Translate(action);
                     break;
                 default: // custom action
-                    if (!String.IsNullOrEmpty(action.Url) && action.UseActionEvent == false)
+                    if (!string.IsNullOrEmpty(action.Url) && action.UseActionEvent == false)
                     {
                         this.DoAction(action);
                     }

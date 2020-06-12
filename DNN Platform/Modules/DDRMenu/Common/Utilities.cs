@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             }
             else
             {
-                result = String.Format("\"{0}\"", obj.ToString().Replace("\"", "\\\""));
+                result = string.Format("\"{0}\"", obj.ToString().Replace("\"", "\\\""));
             }
 
             return result;

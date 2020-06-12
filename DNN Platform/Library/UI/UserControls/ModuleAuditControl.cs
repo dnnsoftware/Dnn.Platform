@@ -42,10 +42,10 @@ namespace DotNetNuke.UI.UserControls
 
         public ModuleAuditControl()
         {
-            this.LastModifiedDate = String.Empty;
-            this.LastModifiedByUser = String.Empty;
-            this.CreatedByUser = String.Empty;
-            this.CreatedDate = String.Empty;
+            this.LastModifiedDate = string.Empty;
+            this.LastModifiedByUser = string.Empty;
+            this.CreatedByUser = string.Empty;
+            this.CreatedDate = string.Empty;
         }
 
         public string CreatedDate { private get; set; }

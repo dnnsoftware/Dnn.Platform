@@ -26,7 +26,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.UserId = Null.NullInteger;
             if (this.Context.Request.QueryString["userticket"] != null)
             {
-                this.UserId = Int32.Parse(UrlUtils.DecryptParameter(this.Context.Request.QueryString["userticket"]));
+                this.UserId = int.Parse(UrlUtils.DecryptParameter(this.Context.Request.QueryString["userticket"]));
             }
             this.ctlProfile.ID = "Profile";
             this.ctlProfile.UserId = this.UserId;

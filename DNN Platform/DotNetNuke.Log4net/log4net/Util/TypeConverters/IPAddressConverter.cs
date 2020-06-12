@@ -49,7 +49,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="sourceType"/> is
-        /// the <see cref="String"/> type.
+        /// the <see cref="string"/> type.
         /// </para>
         /// </remarks>
         public bool CanConvertFrom(Type sourceType)
@@ -65,7 +65,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Uses the <see cref="IPAddress.Parse"/> method to convert the
-        /// <see cref="String"/> argument to an <see cref="IPAddress"/>.
+        /// <see cref="string"/> argument to an <see cref="IPAddress"/>.
         /// If that fails then the string is resolved as a DNS hostname.
         /// </para>
         /// </remarks>

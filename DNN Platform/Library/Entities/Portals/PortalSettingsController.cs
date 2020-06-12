@@ -216,7 +216,7 @@ namespace DotNetNuke.Entities.Portals
             portalSettings.Registration = new RegistrationSettings(settings);
 
             var clientResourcesSettings = new ClientResourceSettings();
-            Boolean overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
+            bool overridingDefaultSettings = clientResourcesSettings.IsOverridingDefaultSettingsEnabled();
 
             int crmVersion;
             if (overridingDefaultSettings)
@@ -313,14 +313,14 @@ namespace DotNetNuke.Entities.Portals
             if (Globals.IsAdminSkin())
             {
                 // DNN-6170 ensure skin value is culture specific
-                activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
+                activeTab.SkinSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
                     Host.Host.DefaultAdminSkin, portalSettings.CultureCode)) ? portalSettings.DefaultAdminSkin : PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
                     Host.Host.DefaultAdminSkin, portalSettings.CultureCode);
             }
-            else if (String.IsNullOrEmpty(activeTab.SkinSrc))
+            else if (string.IsNullOrEmpty(activeTab.SkinSrc))
             {
                 // DNN-6170 ensure skin value is culture specific
-                activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
+                activeTab.SkinSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultPortalSkin : PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode);
             }
@@ -329,13 +329,13 @@ namespace DotNetNuke.Entities.Portals
 
             if (Globals.IsAdminSkin())
             {
-                activeTab.ContainerSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
+                activeTab.ContainerSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
                     Host.Host.DefaultAdminContainer, portalSettings.CultureCode)) ? portalSettings.DefaultAdminContainer : PortalController.GetPortalSetting("DefaultAdminContainer", portalSettings.PortalId,
                     Host.Host.DefaultAdminContainer, portalSettings.CultureCode);
             }
-            else if (String.IsNullOrEmpty(activeTab.ContainerSrc))
+            else if (string.IsNullOrEmpty(activeTab.ContainerSrc))
             {
-                activeTab.ContainerSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
+                activeTab.ContainerSrc = string.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
                     Host.Host.DefaultPortalContainer, portalSettings.CultureCode)) ? portalSettings.DefaultPortalContainer : PortalController.GetPortalSetting("DefaultPortalContainer", portalSettings.PortalId,
                     Host.Host.DefaultPortalContainer, portalSettings.CultureCode);
             }

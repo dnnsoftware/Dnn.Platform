@@ -76,7 +76,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             var strMessage = "";
             if (this.Module != null)
             {
-                if (!String.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
+                if (!string.IsNullOrEmpty(this.Module.DesktopModule.BusinessControllerClass) && this.Module.DesktopModule.IsPortable)
                 {
                     try
                     {
@@ -102,7 +102,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                             XmlTextWriter xw = new XmlTextWriter(sw);
                             moduleNode.WriteTo(xw);
                             var content = sw.ToString();
-                            if (!String.IsNullOrEmpty(content))
+                            if (!string.IsNullOrEmpty(content))
                             {
                                 // remove invalid chars in content -> DNN 26810: Handled by ModuleController.SerializeModule
                                 // content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
             if (this.Request.QueryString["moduleid"] != null)
             {
-                Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
             }
             if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "EXPORT", this.Module))
             {
@@ -195,7 +195,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (this.Request.QueryString["moduleid"] != null)
                 {
-                    Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
+                    int.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
                 }
                 if (!this.Page.IsPostBack)
                 {
@@ -220,7 +220,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             try
             {
                 IFolderInfo folder = null;
-                if (this.cboFolders.SelectedItem != null && !String.IsNullOrEmpty(this.txtFile.Text))
+                if (this.cboFolders.SelectedItem != null && !string.IsNullOrEmpty(this.txtFile.Text))
                 {
                     folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
                 }
@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     var strFile = "content." + CleanName(this.Module.DesktopModule.ModuleName) + "." + CleanName(this.txtFile.Text) + ".export";
                     var strMessage = this.ExportModule(this.ModuleId, strFile, folder);
-                    if (String.IsNullOrEmpty(strMessage))
+                    if (string.IsNullOrEmpty(strMessage))
                     {
                         this.Response.Redirect(this.ReturnURL, true);
                     }

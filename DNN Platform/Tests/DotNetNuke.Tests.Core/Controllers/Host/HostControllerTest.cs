@@ -57,7 +57,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
 
             this._mockData = MockComponentProvider.CreateDataProvider();
             this._mockData.Setup(c => c.GetHostSettings()).Returns(this._hostSettingsTable.CreateDataReader());
-            this._mockData.Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            this._mockData.Setup(c => c.GetProviderPath()).Returns(string.Empty);
 
 
             DataCache.ClearCache();
@@ -88,7 +88,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
                 conf.Key = row["SettingName"].ToString();
                 conf.Value = row["SettingValue"].ToString();
                 bool IsSecure;
-                Boolean.TryParse(row["SettingIsSecure"].ToString(), out IsSecure);
+                bool.TryParse(row["SettingIsSecure"].ToString(), out IsSecure);
                 conf.IsSecure = IsSecure;
                 expectedDic.Add(conf.Key, conf);
             }
@@ -405,7 +405,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [TestCase("Double_8_U")]
         public void HostController_GetDouble_If_Key_Exists(string key)
         {
-            Double s = HostController.Instance.GetDouble(key);
+            double s = HostController.Instance.GetDouble(key);
             Assert.AreEqual(s.ToString(), this.GetValue(key));
             Assert.AreEqual(HostController.Instance.GetDouble(key, 54.54).ToString(), this.GetValue(key));
         }

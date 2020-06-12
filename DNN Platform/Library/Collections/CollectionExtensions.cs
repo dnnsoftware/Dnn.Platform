@@ -32,9 +32,9 @@ namespace DotNetNuke.Collections
         /// <param name="pairsSeparator">The separator used to separate each key-value pair</param>
         /// <param name="pairSeparator">The separator used between the each key and value</param>
         /// <returns>Dictionary with a string key and a string value</returns>
-        public static Dictionary<String, String> CreateDictionaryFromString(string stringOfPairs, char pairsSeparator, char pairSeparator)
+        public static Dictionary<string, string> CreateDictionaryFromString(string stringOfPairs, char pairsSeparator, char pairSeparator)
         {
-            var dictionary = new Dictionary<String, String>();
+            var dictionary = new Dictionary<string, string>();
             if (!string.IsNullOrEmpty(stringOfPairs))
             {
                 var pairs = stringOfPairs.Split(pairsSeparator);
@@ -67,9 +67,9 @@ namespace DotNetNuke.Collections
         /// <param name="pairsSeparator">The separator to use between key-value pairs</param>
         /// <param name="pairSeparator">The separator to use between each key and value</param>
         /// <returns>The dictionary's contents as a <see cref="string" /></returns>
-        public static string DictionaryToString(this Dictionary<String, String> dictionary, string pairsSeparator, string pairSeparator)
+        public static string DictionaryToString(this Dictionary<string, string> dictionary, string pairsSeparator, string pairSeparator)
         {
-            return String.Join(pairsSeparator, dictionary.Select(pair => pair.Key + pairSeparator + pair.Value));
+            return string.Join(pairsSeparator, dictionary.Select(pair => pair.Key + pairSeparator + pair.Value));
         }
 
         /// <summary>

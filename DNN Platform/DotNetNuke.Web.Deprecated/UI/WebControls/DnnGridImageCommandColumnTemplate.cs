@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (this.EditMode == ImageCommandColumnEditMode.URL)
                     {
                         var hypLink = new HyperLink { ToolTip = this.Text };
-                        if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
+                        if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var img = new Image { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL };
                             hypLink.Controls.Add(img);
@@ -175,11 +175,11 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
+                        if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                         {
                             var colIcon = new ImageButton
                                 { ImageUrl = this.DesignMode ? this.ImageURL.Replace("~/", "../../") : this.ImageURL, ToolTip = this.Text };
-                            if (!String.IsNullOrEmpty(this.OnClickJs))
+                            if (!string.IsNullOrEmpty(this.OnClickJs))
                             {
                                 ClientAPI.AddButtonConfirm(colIcon, this.OnClickJs);
                             }
@@ -187,10 +187,10 @@ namespace DotNetNuke.Web.UI.WebControls
                             colIcon.DataBinding += this.ItemDataBinding;
                             container.Controls.Add(colIcon);
                         }
-                        if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
+                        if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                         {
                             var colLink = new LinkButton { ToolTip = this.Text };
-                            if (!String.IsNullOrEmpty(this.OnClickJs))
+                            if (!string.IsNullOrEmpty(this.OnClickJs))
                             {
                                 ClientAPI.AddButtonConfirm(colLink, this.OnClickJs);
                             }
@@ -223,7 +223,7 @@ namespace DotNetNuke.Web.UI.WebControls
         ///     <param name="container">The parent container (DataGridItem)</param>
         private bool GetIsVisible(GridItem container)
         {
-            if (!String.IsNullOrEmpty(this.VisibleField))
+            if (!string.IsNullOrEmpty(this.VisibleField))
             {
                 return Convert.ToBoolean(DataBinder.Eval(container.DataItem, this.VisibleField));
             }
@@ -239,7 +239,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private int GetValue(GridItem container)
         {
             int keyValue = Null.NullInteger;
-            if (!String.IsNullOrEmpty(this.KeyField))
+            if (!string.IsNullOrEmpty(this.KeyField))
             {
                 keyValue = Convert.ToInt32(DataBinder.Eval(container.DataItem, this.KeyField));
             }
@@ -263,7 +263,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 var hypLink = (HyperLink)sender;
                 container = (GridItem)hypLink.NamingContainer;
                 keyValue = this.GetValue(container);
-                if (!String.IsNullOrEmpty(this.NavigateURLFormatString))
+                if (!string.IsNullOrEmpty(this.NavigateURLFormatString))
                 {
                     hypLink.NavigateUrl = string.Format(this.NavigateURLFormatString, keyValue);
                 }
@@ -275,7 +275,7 @@ namespace DotNetNuke.Web.UI.WebControls
             else
             {
                 // Bind Image Button
-                if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
+                if (!string.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
                     var colIcon = (ImageButton)sender;
                     container = (GridItem)colIcon.NamingContainer;
@@ -283,7 +283,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     colIcon.CommandArgument = keyValue.ToString(CultureInfo.InvariantCulture);
                     colIcon.Visible = this.GetIsVisible(container);
                 }
-                if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
+                if (!string.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
                     // Bind Link Button
                     var colLink = (LinkButton)sender;

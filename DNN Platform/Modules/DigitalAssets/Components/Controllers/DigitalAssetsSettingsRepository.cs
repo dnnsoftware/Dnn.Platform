@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         internal bool SettingExists(int moduleId, string settingName)
         {
-            return !String.IsNullOrEmpty(this.GetSettingByKey(moduleId, settingName));
+            return !string.IsNullOrEmpty(this.GetSettingByKey(moduleId, settingName));
         }
 
         internal void SetDefaultFilterCondition(int moduleId)

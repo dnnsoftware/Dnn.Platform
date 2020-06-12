@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                     this.Log.AddInfo(string.Format(Util.MODULE_UnRegistered, tempDesktopModule.ModuleName));
                     // remove admin/host pages
-                    if (!String.IsNullOrEmpty(tempDesktopModule.AdminPage))
+                    if (!string.IsNullOrEmpty(tempDesktopModule.AdminPage))
                     {
                         string tabPath = "//Admin//" + tempDesktopModule.AdminPage;
 
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Installer.Installers
                         }
 
                     }
-                    if (!String.IsNullOrEmpty(tempDesktopModule.HostPage))
+                    if (!string.IsNullOrEmpty(tempDesktopModule.HostPage))
                     {
                         Upgrade.Upgrade.RemoveHostPage(tempDesktopModule.HostPage);
                         this.Log.AddInfo(string.Format(Util.MODULE_HostPageRemoved, tempDesktopModule.HostPage));
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Installer.Installers
             // Add Event Message
             if (this._eventMessage != null)
             {
-                if (!String.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
+                if (!string.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
                 {
                     this._eventMessage.Attributes.Set("desktopModuleID", this._desktopModule.DesktopModuleID.ToString());
                     EventQueueController.SendMessage(this._eventMessage, "Application_Start");
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             // Add DesktopModule to all portals
-            if (!String.IsNullOrEmpty(this._desktopModule.AdminPage))
+            if (!string.IsNullOrEmpty(this._desktopModule.AdminPage))
             {
                 foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                 {
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             // Add host items
-            if (this._desktopModule.Page != null && !String.IsNullOrEmpty(this._desktopModule.HostPage))
+            if (this._desktopModule.Page != null && !string.IsNullOrEmpty(this._desktopModule.HostPage))
             {
                 bool createdNewPage = false, addedNewModule = false;
                 DesktopModuleController.AddDesktopModulePageToPortal(this._desktopModule, this._desktopModule.HostPage, Null.NullInteger, ref createdNewPage, ref addedNewModule);

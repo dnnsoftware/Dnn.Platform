@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             return FolderPermissionController.Instance.CanAddFolder(folder);
         }
 
-        protected void OnExportClick(Object sender, EventArgs e)
+        protected void OnExportClick(object sender, EventArgs e)
         {
             try
             {

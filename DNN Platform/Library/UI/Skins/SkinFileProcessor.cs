@@ -475,7 +475,7 @@ namespace DotNetNuke.UI.Skins
                 string ControlName = Token + m.Groups["instance"].Value;
 
                 // if the token has an instance name, use it to look for the corresponding attributes
-                string AttributeNode = Token + (String.IsNullOrEmpty(m.Groups["instance"].Value) ? "" : ":" + m.Groups["instance"].Value);
+                string AttributeNode = Token + (string.IsNullOrEmpty(m.Groups["instance"].Value) ? "" : ":" + m.Groups["instance"].Value);
 
                 this.Messages += SkinController.FormatMessage(TOKEN_PROC, "[" + AttributeNode + "]", 2, false);
 
@@ -505,7 +505,7 @@ namespace DotNetNuke.UI.Skins
                             // process each token attribute
                             foreach (XmlNode xmlSkinAttribute in xmlSkinAttributeRoot.SelectNodes(".//Settings/Setting"))
                             {
-                                if (!String.IsNullOrEmpty(xmlSkinAttribute.SelectSingleNode("Value").InnerText))
+                                if (!string.IsNullOrEmpty(xmlSkinAttribute.SelectSingleNode("Value").InnerText))
                                 {
                                     // append the formatted attribute to the inner contents of the control statement
                                     this.Messages += SkinController.FormatMessage(
@@ -795,7 +795,7 @@ namespace DotNetNuke.UI.Skins
                         {
                             // create the skin object user control tag
                             SkinControl = "dnn:" + Token + " runat=\"server\" ";
-                            if (!String.IsNullOrEmpty(ControlName))
+                            if (!string.IsNullOrEmpty(ControlName))
                             {
                                 SkinControl += "id=\"" + ControlName + "\" ";
                             }
@@ -815,7 +815,7 @@ namespace DotNetNuke.UI.Skins
                         else
                         {
                             SkinControl = "div runat=\"server\" ";
-                            if (!String.IsNullOrEmpty(ControlName))
+                            if (!string.IsNullOrEmpty(ControlName))
                             {
                                 SkinControl += "id=\"" + ControlName + "\" ";
                             }

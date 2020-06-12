@@ -32,7 +32,7 @@ namespace DotNetNuke.Modules.SearchResults
             {
                 if (this.Page.IsPostBack == false)
                 {
-                    if (!String.IsNullOrEmpty(Convert.ToString(this.Settings["LinkTarget"])))
+                    if (!string.IsNullOrEmpty(Convert.ToString(this.Settings["LinkTarget"])))
                     {
                         this.comboBoxLinkTarget.SelectedValue = Convert.ToString(this.Settings["LinkTarget"]);
                     }

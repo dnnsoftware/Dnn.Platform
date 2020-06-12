@@ -37,12 +37,12 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.lblDate.CssClass = this.CssClass;
             }
             var user = UserController.Instance.GetCurrentUserInfo();
-            this.lblDate.Text = !String.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
+            this.lblDate.Text = !string.IsNullOrEmpty(this.DateFormat) ? user.LocalTime().ToString(this.DateFormat) : user.LocalTime().ToLongDateString();
         }
     }
 }

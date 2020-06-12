@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.ControlPanel
                 TabInfo selectedTab = null;
                 if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
                 {
-                    int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
+                    int selectedTabID = int.Parse(this.PageLst.SelectedValue);
                     selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
                 }
 

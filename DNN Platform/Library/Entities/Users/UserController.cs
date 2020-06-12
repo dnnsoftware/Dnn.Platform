@@ -167,7 +167,7 @@ namespace DotNetNuke.Entities.Users
                         {
                             FolderID = userFolder.FolderID,
                             UserID = user.UserID,
-                            RoleID = Int32.Parse(Globals.glbRoleNothing),
+                            RoleID = int.Parse(Globals.glbRoleNothing),
                             AllowAccess = true
                         };
 
@@ -396,11 +396,11 @@ namespace DotNetNuke.Entities.Users
             }
             if (settings["Registration_RegistrationFields"] == null)
             {
-                settings["Registration_RegistrationFields"] = String.Empty;
+                settings["Registration_RegistrationFields"] = string.Empty;
             }
             if (settings["Registration_ExcludeTerms"] == null)
             {
-                settings["Registration_ExcludeTerms"] = String.Empty;
+                settings["Registration_ExcludeTerms"] = string.Empty;
             }
             if (settings["Registration_RequireUniqueDisplayName"] == null)
             {
@@ -1850,7 +1850,7 @@ namespace DotNetNuke.Entities.Users
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (GetCurrentUserInternal().IsInRole(portalSettings.AdministratorRoleName))
             {
-                string resetPassword = ResetPassword(user, String.Empty);
+                string resetPassword = ResetPassword(user, string.Empty);
                 return ChangePassword(user, resetPassword, newPassword);
             }
             return false;
@@ -1860,7 +1860,7 @@ namespace DotNetNuke.Entities.Users
         {
             if (System.Web.Security.Membership.ValidateUser(user.Username, oldPassword))
             {
-                string resetPassword = ResetPassword(user, String.Empty);
+                string resetPassword = ResetPassword(user, string.Empty);
                 return ChangePassword(user, resetPassword, newPassword);
             }
             return false;
@@ -2039,7 +2039,7 @@ namespace DotNetNuke.Entities.Users
             user.PortalID = portalId;
 
             // clear the cache so that can get original info from database.
-            DataCache.RemoveCache(String.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
+            DataCache.RemoveCache(string.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
             var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
             var oldProfile = oldUser.Profile; // access the profile property to reload data from database.
 
@@ -2166,7 +2166,7 @@ namespace DotNetNuke.Entities.Users
                 isValid = false;
             }
             // Validate Regex
-            if (!String.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
+            if (!string.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
             {
                 isValid = Regex.IsMatch(password, MembershipProviderConfig.PasswordStrengthRegularExpression);
             }

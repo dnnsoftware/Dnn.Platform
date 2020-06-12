@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Sales
 
                 if (this.Request.QueryString["RoleID"] != null)
                 {
-                    this.RoleID = Int32.Parse(this.Request.QueryString["RoleID"]);
+                    this.RoleID = int.Parse(this.Request.QueryString["RoleID"]);
                 }
                 if (this.Page.IsPostBack == false)
                 {
@@ -138,7 +138,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             }
         }
 
-        private void cmdPurchase_Click(Object sender, EventArgs e)
+        private void cmdPurchase_Click(object sender, EventArgs e)
         {
             try
             {
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             }
         }
 
-        private void cmdCancel_Click(Object sender, EventArgs e)
+        private void cmdCancel_Click(object sender, EventArgs e)
         {
             try
             {

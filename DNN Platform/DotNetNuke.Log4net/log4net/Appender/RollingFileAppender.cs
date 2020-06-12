@@ -409,7 +409,7 @@ namespace log4net.Appender
         /// <para>
         /// If you have the option to set the maximum file size programmatically
         /// consider using the <see cref="MaxFileSize"/> property instead as this
-        /// allows you to set the size in bytes as a <see cref="Int64"/>.
+        /// allows you to set the size in bytes as a <see cref="long"/>.
         /// </para>
         /// </remarks>
         public string MaximumFileSize

@@ -81,8 +81,8 @@ namespace DotNetNuke.Services.Authentication.OAuth
             this.Mode = mode;
 
             this.CallbackUri = this.Mode == AuthMode.Login
-                                    ? new Uri(Globals.LoginURL(String.Empty, false))
-                                    : new Uri(Globals.RegisterURL(String.Empty, String.Empty));
+                                    ? new Uri(Globals.LoginURL(string.Empty, false))
+                                    : new Uri(Globals.RegisterURL(string.Empty, string.Empty));
         }
 
         #region Protected Properties
@@ -91,7 +91,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         protected virtual string UserGuidKey
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected string APIKey { get; set; }
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             this.ExchangeCodeForToken();
 
-            return String.IsNullOrEmpty(this.AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
+            return string.IsNullOrEmpty(this.AuthToken) ? AuthorisationResult.Denied : AuthorisationResult.Authorized;
         }
 
         private string ComputeHash(HashAlgorithm hashAlgorithm, string data)
@@ -256,12 +256,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
             parameters.Add(new QueryParameter(OAuthCodeKey, this.VerificationCode));
 
             // DNN-6265 Support for OAuth V2 optional parameter
-            if (!String.IsNullOrEmpty(this.APIResource))
+            if (!string.IsNullOrEmpty(this.APIResource))
             {
                 parameters.Add(new QueryParameter("resource", this.APIResource));
             }
 
-            string responseText = this.ExecuteWebRequest(this.TokenMethod, this.TokenEndpoint, parameters.ToNormalizedString(), String.Empty);
+            string responseText = this.ExecuteWebRequest(this.TokenMethod, this.TokenEndpoint, parameters.ToNormalizedString(), string.Empty);
 
             this.AuthToken = this.GetToken(responseText);
             this.AuthTokenExpiry = this.GetExpiry(responseText);
@@ -300,13 +300,13 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string nonce = this.GenerateNonce();
             string timeStamp = this.GenerateTimeStamp();
 
-            string verifier = (uri == this.TokenEndpoint) ? this.OAuthVerifier : String.Empty;
+            string verifier = (uri == this.TokenEndpoint) ? this.OAuthVerifier : string.Empty;
             // Generate Signature
             string sig = this.GenerateSignature(
                 uri,
                                             this.AuthToken,
                                             this.TokenSecret,
-                                            String.Empty,
+                                            string.Empty,
                                             verifier,
                                             method.ToString(),
                                             timeStamp,
@@ -330,7 +330,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 headerParameters.Add(new QueryParameter(OAuthVerifierKey, this.OAuthVerifier));
             }
 
-            string ret = this.ExecuteWebRequest(method, uri, String.Empty, headerParameters.ToAuthorizationString());
+            string ret = this.ExecuteWebRequest(method, uri, string.Empty, headerParameters.ToAuthorizationString());
 
             return ret;
         }
@@ -349,7 +349,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 // request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 
-                if (!String.IsNullOrEmpty(this.OAuthHeaderCode))
+                if (!string.IsNullOrEmpty(this.OAuthHeaderCode))
                 {
                     byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret);
                     string Api64Encoded = System.Convert.ToBase64String(API64);
@@ -357,7 +357,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                     request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded);
                 }
 
-                if (!String.IsNullOrEmpty(parameters))
+                if (!string.IsNullOrEmpty(parameters))
                 {
                     Stream dataStream = request.GetRequestStream();
                     dataStream.Write(byteArray, 0, byteArray.Length);
@@ -370,7 +370,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             }
 
             // Add Headers
-            if (!String.IsNullOrEmpty(authHeader))
+            if (!string.IsNullOrEmpty(authHeader))
             {
                 request.Headers.Add(HttpRequestHeader.Authorization, authHeader);
             }
@@ -506,10 +506,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             string sig = this.GenerateSignature(
                 this.RequestTokenEndpoint,
-                                            String.Empty,
-                                            String.Empty,
+                                            string.Empty,
+                                            string.Empty,
                                             this.CallbackUri.OriginalString,
-                                            String.Empty,
+                                            string.Empty,
                                             this.RequestTokenMethod.ToString(),
                                             timeStamp,
                                             nonce,
@@ -527,7 +527,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                            new QueryParameter(OAuthVersionKey, this.OAuthVersion)
                                        };
 
-            string ret = this.ExecuteWebRequest(this.RequestTokenMethod, new Uri(outUrl), String.Empty, headerParameters.ToAuthorizationString());
+            string ret = this.ExecuteWebRequest(this.RequestTokenMethod, new Uri(outUrl), string.Empty, headerParameters.ToAuthorizationString());
 
             return ret;
         }
@@ -680,10 +680,10 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (objUserInfo == null || string.IsNullOrEmpty(objUserInfo.Profile.GetPropertyValue("PreferredTimeZone")))
             {
-                if (String.IsNullOrEmpty(user.TimeZoneInfo))
+                if (string.IsNullOrEmpty(user.TimeZoneInfo))
                 {
                     int timeZone;
-                    if (Int32.TryParse(user.Timezone, out timeZone))
+                    if (int.TryParse(user.Timezone, out timeZone))
                     {
                         var timeZoneInfo = Localization.Localization.ConvertLegacyTimeZoneOffsetToTimeZoneInfo(timeZone);
 
@@ -702,7 +702,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (this.Mode == AuthMode.Login)
             {
-                this.SaveTokenCookie(String.Empty);
+                this.SaveTokenCookie(string.Empty);
             }
 
             onAuthenticated(eventArgs);
@@ -748,7 +748,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         public virtual TUserData GetCurrentUser<TUserData>() where TUserData : UserData
         {
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
 
             if (!this.IsCurrentUserAuthorized())
             {
@@ -758,7 +758,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             var accessToken = string.IsNullOrEmpty(this.AccessToken) ? "access_token=" + this.AuthToken : this.AccessToken + "=" + this.AuthToken;
             string responseText = (this.OAuthVersion == "1.0")
                             ? this.ExecuteAuthorizedRequest(HttpMethod.GET, this.MeGraphEndpoint)
-                            : this.ExecuteWebRequest(HttpMethod.GET, this.GenerateRequestUri(this.MeGraphEndpoint.ToString(), accessToken), null, String.Empty);
+                            : this.ExecuteWebRequest(HttpMethod.GET, this.GenerateRequestUri(this.MeGraphEndpoint.ToString(), accessToken), null, string.Empty);
             var user = Json.Deserialize<TUserData>(responseText);
             return user;
         }
@@ -771,12 +771,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
         public bool IsCurrentService()
         {
             string service = HttpContext.Current.Request.Params["state"];
-            return !String.IsNullOrEmpty(service) && service == this.Service;
+            return !string.IsNullOrEmpty(service) && service == this.Service;
         }
 
-        public Boolean IsCurrentUserAuthorized()
+        public bool IsCurrentUserAuthorized()
         {
-            return !String.IsNullOrEmpty(this.AuthToken);
+            return !string.IsNullOrEmpty(this.AuthToken);
         }
 
         public void RemoveToken()
@@ -807,7 +807,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 }
                 else
                 {
-                    result.Append('%' + String.Format("{0:X2}", (int)symbol));
+                    result.Append('%' + string.Format("{0:X2}", (int)symbol));
                 }
             }
 

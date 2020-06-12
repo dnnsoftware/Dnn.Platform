@@ -285,7 +285,7 @@ namespace DotNetNuke.Services.Installer
             var index = rootNodePath.IndexOf("configuration");
             var adjustedPath = rootNodePath.Substring(index + "configuration".Length);
             adjustedPath = adjustedPath.TrimStart(new[] { '/' });
-            if (String.IsNullOrEmpty(adjustedPath))
+            if (string.IsNullOrEmpty(adjustedPath))
             {
                 adjustedPath = ".";
             }
@@ -670,7 +670,7 @@ namespace DotNetNuke.Services.Installer
                     }
 
                     this.TargetConfig = Config.Load(this.TargetFileName);
-                    if (String.IsNullOrEmpty(targetProductName) || targetProductName == "All")
+                    if (string.IsNullOrEmpty(targetProductName) || targetProductName == "All")
                     {
                         isAppliedToProduct = true;
                     }

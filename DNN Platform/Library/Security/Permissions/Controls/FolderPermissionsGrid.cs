@@ -123,7 +123,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Call base class to load base properties
             this.ParsePermissionKeys(objFolderPermission, settings);
-            if (String.IsNullOrEmpty(settings[2]))
+            if (string.IsNullOrEmpty(settings[2]))
             {
                 objFolderPermission.FolderPermissionID = -1;
             }
@@ -141,7 +141,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
-                var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
                 if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
@@ -342,7 +342,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this.FolderPermissions = new FolderPermissionCollection();
                     string state = Convert.ToString(myState[2]);
-                    if (!String.IsNullOrEmpty(state))
+                    if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);

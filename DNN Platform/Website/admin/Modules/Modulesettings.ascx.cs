@@ -229,7 +229,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         private IEnumerable GetFilteredProviders<T>(Dictionary<string, T> providerList, string keyFilter)
         {
-            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, String.Empty) select new { filteredkey, provider.Key };
+            var providers = from provider in providerList let filteredkey = provider.Key.Replace(keyFilter, string.Empty) select new { filteredkey, provider.Key };
 
             return providers;
         }
@@ -292,7 +292,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
         protected string GetInstalledOnSite(object dataItem)
         {
-            string returnValue = String.Empty;
+            string returnValue = string.Empty;
             var tab = dataItem as TabInfo;
             if (tab != null)
             {
@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 // get ModuleId
                 if (this.Request.QueryString["ModuleId"] != null)
                 {
-                    this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
+                    this._moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
                 }
                 if (this.Module.ContentItemId == Null.NullInteger && this.Module.ModuleID != Null.NullInteger)
                 {
@@ -368,10 +368,10 @@ namespace DotNetNuke.Modules.Admin.Modules
                             this.hlSpecificSettings.Text = Localization.GetString(
                                 "ControlTitle_settings",
                                 settingsControl.LocalResourceFile);
-                            if (String.IsNullOrEmpty(this.hlSpecificSettings.Text))
+                            if (string.IsNullOrEmpty(this.hlSpecificSettings.Text))
                             {
                                 this.hlSpecificSettings.Text =
-                                    String.Format(
+                                    string.Format(
                                         Localization.GetString("ControlTitle_settings", this.LocalResourceFile),
                                         this.Module.DesktopModule.FriendlyName);
                             }
@@ -508,7 +508,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             this.ShowCacheRows();
         }
 
-        protected void OnDeleteClick(Object sender, EventArgs e)
+        protected void OnDeleteClick(object sender, EventArgs e)
         {
             try
             {
@@ -521,7 +521,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             }
         }
 
-        protected void OnInheritPermissionsChanged(Object sender, EventArgs e)
+        protected void OnInheritPermissionsChanged(object sender, EventArgs e)
         {
             this.dgPermissions.InheritViewPermissionsFromTab = this.chkInheritPermissions.Checked;
         }
@@ -553,8 +553,8 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Module.Color = this.txtColor.Text;
                     this.Module.Border = this.txtBorder.Text;
                     this.Module.IconFile = this.ctlIcon.Url;
-                    this.Module.CacheTime = !String.IsNullOrEmpty(this.txtCacheDuration.Text)
-                                            ? Int32.Parse(this.txtCacheDuration.Text)
+                    this.Module.CacheTime = !string.IsNullOrEmpty(this.txtCacheDuration.Text)
+                                            ? int.Parse(this.txtCacheDuration.Text)
                                             : 0;
                     this.Module.CacheMethod = this.cboCacheProvider.SelectedValue;
                     this.Module.TabID = this.TabId;
@@ -592,7 +592,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         ModuleController.Instance.UpdateTabModuleSetting(this.Module.TabModuleID, "AllowIndex", this.chkAllowIndex.Checked.ToString());
                     }
 
-                    switch (Int32.Parse(this.cboVisibility.SelectedItem.Value))
+                    switch (int.Parse(this.cboVisibility.SelectedItem.Value))
                     {
                         case 0:
                             this.Module.Visibility = VisibilityState.Maximized;
@@ -675,7 +675,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     // Check if the Module is to be Moved to a new Tab
                     if (!this.chkAllTabs.Checked)
                     {
-                        var newTabId = Int32.Parse(this.cboTab.SelectedValue);
+                        var newTabId = int.Parse(this.cboTab.SelectedValue);
                         if (this.TabId != newTabId)
                         {
                             // First check if there already is an instance of the module on the target page

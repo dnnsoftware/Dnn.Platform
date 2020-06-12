@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.hypDotNetNuke.CssClass = this.CssClass;
             }

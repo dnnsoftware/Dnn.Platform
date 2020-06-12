@@ -746,7 +746,7 @@ namespace log4net.Repository.Hierarchy
             {
                 Logger logger = null;
 
-                Object node = this.m_ht[key];
+                object node = this.m_ht[key];
                 if (node == null)
                 {
                     logger = factory.CreateLogger(this, name);
@@ -851,7 +851,7 @@ namespace log4net.Repository.Hierarchy
                 string substr = name.Substring(0, i);
 
                 LoggerKey key = new LoggerKey(substr); // simple constructor
-                Object node = this.m_ht[key];
+                object node = this.m_ht[key];
                 // Create a provision node for a future parent.
                 if (node == null)
                 {

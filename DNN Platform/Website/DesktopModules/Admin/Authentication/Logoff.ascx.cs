@@ -105,12 +105,12 @@ namespace DotNetNuke.Modules.Admin.Authentication
             }
         }
 
-        protected void UserLogOff(Object sender, EventArgs e)
+        protected void UserLogOff(object sender, EventArgs e)
         {
             this.DoLogoff();
         }
 
-        protected void UserRedirect(Object sender, EventArgs e)
+        protected void UserRedirect(object sender, EventArgs e)
         {
             this.Redirect();
         }

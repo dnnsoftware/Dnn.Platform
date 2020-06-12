@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
         public MvcHtmlString AntiForgeryToken()
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
-            return new MvcHtmlString(String.Empty);
+            return new MvcHtmlString(string.Empty);
         }
 
         internal HtmlHelper HtmlHelper { get; set; }

@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.UserProfile
                 // try UserId
                 if (!string.IsNullOrEmpty(context.Request.QueryString["UserId"]))
                 {
-                    UserId = Int32.Parse(context.Request.QueryString["UserId"]);
+                    UserId = int.Parse(context.Request.QueryString["UserId"]);
                     if (UserController.GetUserById(PortalId, UserId) == null)
                     {
                         // The user cannot be found (potential DOS)
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.UserProfile
                     string user = context.Request.QueryString["User"];
                     if (!string.IsNullOrEmpty(user))
                     {
-                        if (!Int32.TryParse(user, out UserId))
+                        if (!int.TryParse(user, out UserId))
                         {
                             // User is not an integer, so try it as a name
                             UserId = GetUserId(user, PortalId);

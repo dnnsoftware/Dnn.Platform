@@ -225,7 +225,7 @@ namespace DotNetNuke.Entities.Urls
                         if (customTabAlias == false)
                         {
                             int tabId;
-                            if (!String.IsNullOrEmpty(querystringCol["TabId"]))
+                            if (!string.IsNullOrEmpty(querystringCol["TabId"]))
                             {
                                 tabId = Convert.ToInt32(querystringCol["TabId"]);
                                 result.Action = ActionType.CheckFor301;
@@ -348,7 +348,7 @@ namespace DotNetNuke.Entities.Urls
         private static bool CheckTabPath(string tabKeyVal, UrlAction result, FriendlyUrlSettings settings, SharedDictionary<string, string> tabDict, ref string newUrl)
         {
             bool found;
-            string userParam = String.Empty;
+            string userParam = string.Empty;
             string tabLookUpKey = tabKeyVal;
             using (tabDict.GetReadLock())
             {
@@ -394,7 +394,7 @@ namespace DotNetNuke.Entities.Urls
                             string profilePagePath = TabPathHelper.GetFriendlyUrlTabPath(profilePage, options, Guid.NewGuid());
 
                             // modify lookup key;
-                            tabLookUpKey = tabLookUpKey.Replace("::" + String.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), "::" + profilePagePath.TrimStart('/').ToLowerInvariant());
+                            tabLookUpKey = tabLookUpKey.Replace("::" + string.Format("{0}/{1}", settings.VanityUrlPrefix, vanityUrl), "::" + profilePagePath.TrimStart('/').ToLowerInvariant());
 
                             using (tabDict.GetReadLock())
                             {
@@ -440,7 +440,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                 }
 
-                if (!String.IsNullOrEmpty(userParam))
+                if (!string.IsNullOrEmpty(userParam))
                 {
                     newUrl = newUrl + "&" + userParam;
                 }
@@ -548,14 +548,14 @@ namespace DotNetNuke.Entities.Urls
                 {
                     case "tabid":
                         int tabidtemp;
-                        if (Int32.TryParse(val, out tabidtemp))
+                        if (int.TryParse(val, out tabidtemp))
                         {
                             result.TabId = tabidtemp;
                         }
                         break;
                     case "portalid":
                         int pid;
-                        if (Int32.TryParse(val, out pid))
+                        if (int.TryParse(val, out pid))
                         {
                             result.PortalId = pid;
                         }
@@ -665,7 +665,7 @@ namespace DotNetNuke.Entities.Urls
                 // }
                 // else
                 // {
-                    if (String.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
+                    if (string.IsNullOrEmpty(settings.DoNotRewriteRegex) ||
                         (!Regex.IsMatch(requestedPath, settings.DoNotRewriteRegex,
                             RegexOptions.IgnoreCase | RegexOptions.CultureInvariant)))
                     {
@@ -1224,7 +1224,7 @@ namespace DotNetNuke.Entities.Urls
                 // resource found
                 string appPath = Globals.ApplicationMapPath + "\\default.aspx";
                 bool isDefaultAspxPath = false;
-                if (String.Compare(physicalPath, appPath, StringComparison.OrdinalIgnoreCase) != 0)
+                if (string.Compare(physicalPath, appPath, StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     string aliasQs;
                     if (AdvancedUrlRewriter.CheckForChildPortalRootUrl(fullUrl, result, out aliasQs))
@@ -1458,7 +1458,7 @@ namespace DotNetNuke.Entities.Urls
             // we should be checking that the tab path matches //Admin//pagename or //admin
             // in this way we should avoid partial matches (ie //Administrators
             if (tabPath.StartsWith("//" + adminPageName + "//", StringComparison.CurrentCultureIgnoreCase)
-                || String.Compare(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase) == 0)
+                || string.Compare(tabPath, "//" + adminPageName, StringComparison.OrdinalIgnoreCase) == 0)
             {
                 return true;
             }
@@ -1665,7 +1665,7 @@ namespace DotNetNuke.Entities.Urls
                                 // if we are looking for a userid parameter in this querystring, check for a match
                                 if (userIdParm != null)
                                 {
-                                    if (String.Compare(keyName, userIdParm, StringComparison.OrdinalIgnoreCase) == 0)
+                                    if (string.Compare(keyName, userIdParm, StringComparison.OrdinalIgnoreCase) == 0)
                                     {
                                         isUserParm = true;
                                     }
@@ -1742,7 +1742,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         string rawTabId = tabMatch.Groups["tabid"].Value;
                         int tabId;
-                        if (Int32.TryParse(rawTabId, out tabId))
+                        if (int.TryParse(rawTabId, out tabId))
                         {
                             if (rewriteActions.ContainsKey(tabId))
                             {

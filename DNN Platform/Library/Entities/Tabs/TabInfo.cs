@@ -406,7 +406,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             get
             {
-                if (String.IsNullOrEmpty(this.TabPath)) return this.TabName;
+                if (string.IsNullOrEmpty(this.TabPath)) return this.TabName;
 
                 var key = Thread.CurrentThread.CurrentUICulture.ToString();
                 string localizedTabName;
@@ -415,7 +415,7 @@ namespace DotNetNuke.Entities.Tabs
                     this._localizedTabNameDictionary.TryGetValue(key, out localizedTabName);
                 }
 
-                if (String.IsNullOrEmpty(localizedTabName))
+                if (string.IsNullOrEmpty(localizedTabName))
                 {
                     using (this._localizedTabNameDictionary.GetWriteLock())
                     {
@@ -536,7 +536,7 @@ namespace DotNetNuke.Entities.Tabs
                     this._fullUrlDictionary.TryGetValue(key, out fullUrl);
                 }
 
-                if (String.IsNullOrEmpty(fullUrl))
+                if (string.IsNullOrEmpty(fullUrl))
                 {
                     using (this._fullUrlDictionary.GetWriteLock())
                     {
@@ -839,11 +839,11 @@ namespace DotNetNuke.Entities.Tabs
 
         private void IconFileGetter(ref string iconFile, string iconRaw)
         {
-            if ((!String.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
+            if ((!string.IsNullOrEmpty(iconRaw) && iconRaw.StartsWith("~")) || this.PortalID == Null.NullInteger)
             {
                 iconFile = iconRaw;
             }
-            else if (iconFile == null && !String.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
+            else if (iconFile == null && !string.IsNullOrEmpty(iconRaw) && this.PortalID != Null.NullInteger)
             {
                 IFileInfo fileInfo;
                 if (iconRaw.StartsWith("FileID=", StringComparison.InvariantCultureIgnoreCase))

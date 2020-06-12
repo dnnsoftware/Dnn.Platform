@@ -45,7 +45,7 @@ namespace Dnn.Module.ModuleCreator
                 var moduleControlId = Null.NullInteger;
                 if (this.Request.QueryString["ctlid"] != null)
                 {
-                    moduleControlId = Int32.Parse(this.Request.QueryString["ctlid"]);
+                    moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
                 }
                 return moduleControlId;
             }

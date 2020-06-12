@@ -78,7 +78,7 @@ namespace DotNetNuke.Tests.Utilities
 
         private static void InstallComponents()
         {
-            Globals.ServerName = String.IsNullOrEmpty(Config.GetSetting("ServerName"))
+            Globals.ServerName = string.IsNullOrEmpty(Config.GetSetting("ServerName"))
                                 ? Dns.GetHostName()
                                 : Config.GetSetting("ServerName");
 
@@ -124,7 +124,7 @@ namespace DotNetNuke.Tests.Utilities
             var provider = ComponentFactory.GetComponent<TAbstract>();
             if (provider == null)
             {
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                 {
                     ComponentFactory.RegisterComponentInstance<TAbstract>(new TConcrete());
                 }

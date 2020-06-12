@@ -232,7 +232,7 @@ namespace DotNetNuke.UI.WebControls
                 if (this.ValueField == ListBoundField.Id)
                 {
                     // Integer type field
-                    this.Value = Int32.Parse(value);
+                    this.Value = int.Parse(value);
                 }
                 else
                 {

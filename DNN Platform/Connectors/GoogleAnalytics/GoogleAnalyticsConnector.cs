@@ -81,7 +81,7 @@ namespace DNN.Connectors.GoogleAnalytics
         {
             IDictionary<string, string> config = this.GetConfig(portalId);
 
-            return config.ContainsKey("TrackingID") && !String.IsNullOrEmpty(config["TrackingID"]);
+            return config.ContainsKey("TrackingID") && !string.IsNullOrEmpty(config["TrackingID"]);
 
         }
 
@@ -199,7 +199,7 @@ namespace DNN.Connectors.GoogleAnalytics
                     anonymizeIp = values["AnonymizeIp"] != null ? values["AnonymizeIp"].ToLowerInvariant().Trim() : string.Empty;
                     trackUserId = values["TrackUserId"] != null ? values["TrackUserId"].ToLowerInvariant().Trim() : string.Empty;
 
-                    if (String.IsNullOrEmpty(trackingID))
+                    if (string.IsNullOrEmpty(trackingID))
                     {
                         isValid = false;
                         customErrorMessage = Localization.GetString("TrackingCodeFormat.ErrorMessage", Constants.LocalResourceFile);

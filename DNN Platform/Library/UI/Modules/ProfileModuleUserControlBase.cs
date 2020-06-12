@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.Modules
             {
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    return Int32.Parse(this.Request.Params["UserId"]);
+                    return int.Parse(this.Request.Params["UserId"]);
                 }
 
                 return UserController.Instance.GetCurrentUserInfo().UserID;

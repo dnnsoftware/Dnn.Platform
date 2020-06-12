@@ -846,7 +846,7 @@ namespace log4net.Util
 
 
         /// <summary>
-        /// Parse a string into an <see cref="Int32"/> value
+        /// Parse a string into an <see cref="int"/> value
         /// </summary>
         /// <param name="s">the string to parse</param>
         /// <param name="val">out param where the parsed value is placed</param>
@@ -878,7 +878,7 @@ namespace log4net.Util
             try
             {
                 double doubleVal;
-                if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
+                if (double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
                 {
                     val = Convert.ToInt32(doubleVal);
                     return true;
@@ -894,7 +894,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Parse a string into an <see cref="Int64"/> value
+        /// Parse a string into an <see cref="long"/> value
         /// </summary>
         /// <param name="s">the string to parse</param>
         /// <param name="val">out param where the parsed value is placed</param>
@@ -926,7 +926,7 @@ namespace log4net.Util
             try
             {
                 double doubleVal;
-                if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
+                if (double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
                 {
                     val = Convert.ToInt64(doubleVal);
                     return true;
@@ -942,7 +942,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Parse a string into an <see cref="Int16"/> value
+        /// Parse a string into an <see cref="short"/> value
         /// </summary>
         /// <param name="s">the string to parse</param>
         /// <param name="val">out param where the parsed value is placed</param>
@@ -974,7 +974,7 @@ namespace log4net.Util
             try
             {
                 double doubleVal;
-                if (Double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
+                if (double.TryParse(s, System.Globalization.NumberStyles.Integer, System.Globalization.CultureInfo.InvariantCulture, out doubleVal))
                 {
                     val = Convert.ToInt16(doubleVal);
                     return true;
@@ -1101,14 +1101,14 @@ namespace log4net.Util
         /// <param name="a">The one string.</param>
         /// <param name="b">The other string.</param>
         /// <returns><c>true</c> if the strings are equal, <c>false</c> otherwise.</returns>
-        public static Boolean EqualsIgnoringCase(String a, String b)
+        public static bool EqualsIgnoringCase(string a, string b)
         {
 #if NET_1_0 || NET_1_1 || NETCF_1_0
             return string.Compare(a, b, true, System.Globalization.CultureInfo.InvariantCulture) == 0
 #elif NETSTANDARD1_3
             return CultureInfo.InvariantCulture.CompareInfo.Compare(a, b, CompareOptions.IgnoreCase) == 0;
 #else // >= .NET-2.0
-            return String.Equals(a, b, StringComparison.OrdinalIgnoreCase);
+            return string.Equals(a, b, StringComparison.OrdinalIgnoreCase);
 #endif
         }
 

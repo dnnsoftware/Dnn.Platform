@@ -156,9 +156,9 @@ namespace DotNetNuke.UI.WebControls
             if (postedHours != "12" || this.is24HourClock)
             {
                 int hours = 0;
-                if (Int32.TryParse(postedHours, out hours)) postedValue = postedValue.AddHours(hours);
+                if (int.TryParse(postedHours, out hours)) postedValue = postedValue.AddHours(hours);
             }
-            postedValue = postedValue.AddMinutes(Int32.Parse(postedMinutes));
+            postedValue = postedValue.AddMinutes(int.Parse(postedMinutes));
             if (!this.is24HourClock && postedAMPM.Equals("PM"))
             {
                 postedValue = postedValue.AddHours(12);

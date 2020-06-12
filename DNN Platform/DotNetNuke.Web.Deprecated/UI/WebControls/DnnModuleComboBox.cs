@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.Filter == null)
             {
                 portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                    .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || String.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
+                    .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || string.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
                     .OrderBy(c => c.Key);
             }
             else
@@ -136,7 +136,7 @@ namespace DotNetNuke.Web.UI.WebControls
                      where portMods.Value.DesktopModuleID.ToString() == item.Value
                      select pkgs.IconFile).FirstOrDefault();
 
-                item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+                item.ImageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             }
         }
 
@@ -156,7 +156,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                    where tabMods.Value.ModuleID.ToString() == item.Value
                                    select pkgs.IconFile).FirstOrDefault();
 
-                item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+                item.ImageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             }
         }
 

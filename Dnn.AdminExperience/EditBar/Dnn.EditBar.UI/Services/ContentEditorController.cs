@@ -154,7 +154,7 @@ namespace Dnn.EditBar.UI.Services
                      where portMods.Value.DesktopModuleID == moduleId
                      select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 

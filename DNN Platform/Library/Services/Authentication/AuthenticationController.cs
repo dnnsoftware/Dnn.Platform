@@ -84,7 +84,7 @@ namespace DotNetNuke.Services.Authentication
         {
             UserAuthenticationInfo userAuth = GetUserAuthentication(userID);
 
-            if (userAuth == null || String.IsNullOrEmpty(userAuth.AuthenticationType))
+            if (userAuth == null || string.IsNullOrEmpty(userAuth.AuthenticationType))
             {
                 EventLogController.Instance.AddLog(
                     "userID/authenticationType",
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Authentication
                 cookie = Response.Cookies.Get("authentication");
                 if (cookie == null)
                 {
-                    if (!String.IsNullOrEmpty(value))
+                    if (!string.IsNullOrEmpty(value))
                     {
                         cookie = new HttpCookie("authentication", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
                         if (CreatePersistentCookie)
@@ -376,7 +376,7 @@ namespace DotNetNuke.Services.Authentication
                 else
                 {
                     cookie.Value = value;
-                    if (!String.IsNullOrEmpty(value))
+                    if (!string.IsNullOrEmpty(value))
                     {
                         if (CreatePersistentCookie)
                         {

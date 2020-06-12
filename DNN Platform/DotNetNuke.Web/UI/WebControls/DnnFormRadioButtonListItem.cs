@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                     this._radioButtonList.DataBind();
                 }
-                if (String.IsNullOrEmpty(selectedValue))
+                if (string.IsNullOrEmpty(selectedValue))
                 {
                     selectedValue = this.DefaultValue;
                 }

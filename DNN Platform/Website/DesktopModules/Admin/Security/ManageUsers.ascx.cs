@@ -89,7 +89,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
-                    if (String.IsNullOrEmpty(_RedirectURL))
+                    if (string.IsNullOrEmpty(_RedirectURL))
                     {
                         // redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
@@ -111,7 +111,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return this._navigationManager.NavigateURL(this.TabId, "", !String.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : "");
+                return this._navigationManager.NavigateURL(this.TabId, "", !string.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : "");
             }
         }
 

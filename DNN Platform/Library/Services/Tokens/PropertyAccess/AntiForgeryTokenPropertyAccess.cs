@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Tokens
         {
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

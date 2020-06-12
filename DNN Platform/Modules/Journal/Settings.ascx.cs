@@ -97,7 +97,7 @@ namespace DotNetNuke.Modules.Journal {
                         li.Selected = true;
                     }
                     if (this.Settings.ContainsKey(Constants.JournalFilters)) {
-                        if (String.IsNullOrEmpty(this.Settings[Constants.JournalFilters].ToString())) {
+                        if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilters].ToString())) {
                             foreach (ListItem li in this.chkJournalFilters.Items) {
                                 li.Selected = true;
                             }

@@ -939,7 +939,7 @@ namespace DotNetNuke.Entities.Urls
                 && leading.Length <= path.Length && leading != "")
             {
                 string start = path.Substring(0, leading.Length);
-                if (String.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
+                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
                 {
                     // not leading with this
                     path = leading + path;
@@ -954,7 +954,7 @@ namespace DotNetNuke.Entities.Urls
                 && leading.Length <= path.Length && leading != "")
             {
                 string start = path.Substring(0, leading.Length);
-                if (String.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     // matches start, take leading off
                     path = path.Substring(leading.Length);

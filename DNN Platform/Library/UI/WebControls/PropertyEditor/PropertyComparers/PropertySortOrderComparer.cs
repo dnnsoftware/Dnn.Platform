@@ -23,7 +23,7 @@ namespace DotNetNuke.UI.WebControls
                 var xProp = (PropertyInfo)x;
                 var yProp = (PropertyInfo)y;
                 object[] xSortOrder = xProp.GetCustomAttributes(typeof(SortOrderAttribute), true);
-                Int32 xSortOrderValue;
+                int xSortOrderValue;
                 if (xSortOrder.Length > 0)
                 {
                     xSortOrderValue = ((SortOrderAttribute)xSortOrder[0]).Order;
@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.WebControls
                     xSortOrderValue = SortOrderAttribute.DefaultOrder;
                 }
                 object[] ySortOrder = yProp.GetCustomAttributes(typeof(SortOrderAttribute), true);
-                Int32 ySortOrderValue;
+                int ySortOrderValue;
                 if (ySortOrder.Length > 0)
                 {
                     ySortOrderValue = ((SortOrderAttribute)ySortOrder[0]).Order;

@@ -110,7 +110,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 cloneModule.EndDate = DateTime.MaxValue;
             }
-            if (String.IsNullOrEmpty(cloneModule.ContainerSrc))
+            if (string.IsNullOrEmpty(cloneModule.ContainerSrc))
             {
                 cloneModule.ContainerSrc = tab.ContainerSrc;
             }

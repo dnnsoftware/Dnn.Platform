@@ -113,7 +113,7 @@ namespace DotNetNuke.Web.UI.WebControls
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/URLControl.ascx";
                 }
@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else if (this.Request.QueryString["mid"] != null)
                 {
-                    Int32.TryParse(this.Request.QueryString["mid"], out myMid);
+                    int.TryParse(this.Request.QueryString["mid"], out myMid);
                 }
                 return myMid;
             }
@@ -475,7 +475,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         break;
                     case "M":
-                        if (!String.IsNullOrEmpty(this.txtUser.Text))
+                        if (!string.IsNullOrEmpty(this.txtUser.Text))
                         {
                             UserInfo objUser = UserController.GetCachedUser(this._objPortal.PortalID, this.txtUser.Text);
                             if (objUser != null)
@@ -513,7 +513,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                if (value != null && !String.IsNullOrEmpty(value.Trim()))
+                if (value != null && !string.IsNullOrEmpty(value.Trim()))
                 {
                     this.ViewState["UrlType"] = value;
                     if (this.IsTrackingViewState)
@@ -532,7 +532,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             set
             {
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     this.cboUrls.Width = Unit.Parse(value);
                     this.txtUrl.Width = Unit.Parse(value);
@@ -560,7 +560,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             string _Url = Convert.ToString(this.ViewState["Url"]);
             string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
-            if (!String.IsNullOrEmpty(_Url))
+            if (!string.IsNullOrEmpty(_Url))
             {
                 var objUrls = new UrlController();
                 string TrackingUrl = _Url;
@@ -627,7 +627,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                if (!String.IsNullOrEmpty(_Urltype))
+                if (!string.IsNullOrEmpty(_Urltype))
                 {
                     this.optType.ClearSelection();
                     if (this.optType.Items.FindByValue(_Urltype) != null)
@@ -751,7 +751,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             if (this.optType.Items.Count > 0)
             {
-                if (!String.IsNullOrEmpty(strCurrent))
+                if (!string.IsNullOrEmpty(strCurrent))
                 {
                     if (this.optType.Items.FindByValue(strCurrent) != null)
                     {
@@ -783,7 +783,7 @@ namespace DotNetNuke.Web.UI.WebControls
             if (this.optType.Items.Count > 0)
             {
                 this.optType.ClearSelection();
-                if (!String.IsNullOrEmpty(_Urltype))
+                if (!string.IsNullOrEmpty(_Urltype))
                 {
                     if (this.optType.Items.FindByValue(_Urltype) != null)
                     {
@@ -810,7 +810,7 @@ namespace DotNetNuke.Web.UI.WebControls
             string _Url = Convert.ToString(this.ViewState["Url"]);
             string _Urltype = Convert.ToString(this.ViewState["UrlType"]);
             var objUrls = new UrlController();
-            if (!String.IsNullOrEmpty(_Urltype))
+            if (!string.IsNullOrEmpty(_Urltype))
             {
                 // load listitems
                 switch (this.optType.SelectedItem.Value)
@@ -851,11 +851,11 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.FileRow.Visible = false;
                         this.UserRow.Visible = false;
                         this.ImagesRow.Visible = false;
-                        if (String.IsNullOrEmpty(this.txtUrl.Text))
+                        if (string.IsNullOrEmpty(this.txtUrl.Text))
                         {
                             this.txtUrl.Text = _Url;
                         }
-                        if (String.IsNullOrEmpty(this.txtUrl.Text))
+                        if (string.IsNullOrEmpty(this.txtUrl.Text))
                         {
                             this.txtUrl.Text = "http://";
                         }
@@ -883,7 +883,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         if (!string.IsNullOrEmpty(_Url))
                         {
                             PortalSettings _settings = PortalController.Instance.GetCurrentPortalSettings();
-                            var tabId = Int32.Parse(_Url);
+                            var tabId = int.Parse(_Url);
                             var page = TabController.Instance.GetTab(tabId, _settings.PortalId);
                             this.cboTabs.SelectedPage = page;
                         }
@@ -933,7 +933,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.FileRow.Visible = false;
                         this.UserRow.Visible = true;
                         this.ImagesRow.Visible = false;
-                        if (String.IsNullOrEmpty(this.txtUser.Text))
+                        if (string.IsNullOrEmpty(this.txtUser.Text))
                         {
                             this.txtUser.Text = _Url;
                         }
@@ -982,7 +982,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if ((this.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(Int32.Parse(this.Request.QueryString["pid"]));
+                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
@@ -1082,7 +1082,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this._doChangeURL = false;
         }
 
-        protected void optType_SelectedIndexChanged(Object sender, EventArgs e)
+        protected void optType_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Type changed, render the correct control set
             this.ViewState["UrlType"] = this.optType.SelectedItem.Value;

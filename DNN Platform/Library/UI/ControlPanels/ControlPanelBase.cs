@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.ControlPanels
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" + this.ID;
                 }
@@ -275,7 +275,7 @@ namespace DotNetNuke.UI.ControlPanels
                 objModule.PortalID = this.PortalSettings.PortalId;
                 objModule.TabID = this.PortalSettings.ActiveTab.TabID;
                 objModule.ModuleOrder = position;
-                if (String.IsNullOrEmpty(title))
+                if (string.IsNullOrEmpty(title))
                 {
                     objModule.ModuleTitle = objModuleDefinition.FriendlyName;
                 }

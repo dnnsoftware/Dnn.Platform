@@ -50,7 +50,7 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (String.IsNullOrEmpty(this._errorClass))
+                if (string.IsNullOrEmpty(this._errorClass))
                 {
                     this._errorClass = "NormalRed";
                 }
@@ -80,7 +80,7 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (String.IsNullOrEmpty(this._highlightClass))
+                if (string.IsNullOrEmpty(this._highlightClass))
                 {
                     this._highlightClass = "NormalBold";
                 }
@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.Installer.Log
         {
             get
             {
-                if (String.IsNullOrEmpty(this._normalClass))
+                if (string.IsNullOrEmpty(this._normalClass))
                 {
                     this._normalClass = "Normal";
                 }

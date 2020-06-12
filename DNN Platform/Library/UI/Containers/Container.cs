@@ -246,7 +246,7 @@ namespace DotNetNuke.UI.Containers
             var adminMessage = Null.NullString;
             if (viewRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
                             && (moduleEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase)
-                                    || String.IsNullOrEmpty(moduleEditRoles))
+                                    || string.IsNullOrEmpty(moduleEditRoles))
                             && pageEditRoles.Equals(this.PortalSettings.AdministratorRoleName, StringComparison.InvariantCultureIgnoreCase))
             {
                 adminMessage = Localization.GetString("ModuleVisibleAdministrator.Text");
@@ -275,7 +275,7 @@ namespace DotNetNuke.UI.Containers
         private void ProcessFooter()
         {
             // inject the footer
-            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Footer))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Footer))
             {
                 var footer = new Literal { Text = this.ModuleConfiguration.Footer };
                 this.ContentPane.Controls.Add(footer);
@@ -301,7 +301,7 @@ namespace DotNetNuke.UI.Containers
             }
 
             // inject the header
-            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Header))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
                 var header = new Literal { Text = this.ModuleConfiguration.Header };
                 this.ContentPane.Controls.Add(header);
@@ -375,7 +375,7 @@ namespace DotNetNuke.UI.Containers
                 string folderName = this.ModuleConfiguration.DesktopModule.FolderName;
 
                 string stylesheet = "";
-                if (String.IsNullOrEmpty(folderName) == false)
+                if (string.IsNullOrEmpty(folderName) == false)
                 {
                     if (controlSrc.EndsWith(".mvc"))
                     {
@@ -398,7 +398,7 @@ namespace DotNetNuke.UI.Containers
 
         private void SetAlignment()
         {
-            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Alignment))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Alignment))
             {
                 if (this.ContentPane.Attributes["class"] != null)
                 {
@@ -413,7 +413,7 @@ namespace DotNetNuke.UI.Containers
 
         private void SetBackground()
         {
-            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Color))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Color))
             {
                 this.ContentPane.Style["background-color"] = this.ModuleConfiguration.Color;
             }
@@ -421,12 +421,12 @@ namespace DotNetNuke.UI.Containers
 
         private void SetBorder()
         {
-            if (!String.IsNullOrEmpty(this.ModuleConfiguration.Border))
+            if (!string.IsNullOrEmpty(this.ModuleConfiguration.Border))
             {
-                this.ContentPane.Style["border-top"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
-                this.ContentPane.Style["border-bottom"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
-                this.ContentPane.Style["border-right"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
-                this.ContentPane.Style["border-left"] = String.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-top"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-bottom"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-right"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
+                this.ContentPane.Style["border-left"] = string.Format("{0}px #000000 solid", this.ModuleConfiguration.Border);
             }
         }
 

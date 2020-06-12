@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Modules
 
         private static void AddContent(XmlNode nodeModule, ModuleInfo module)
         {
-            if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
+            if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && module.DesktopModule.IsPortable)
             {
                 try
                 {
@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Modules
                     if (controller != null)
                     {
                         string content = Convert.ToString(controller.ExportModule(module.ModuleID));
-                        if (!String.IsNullOrEmpty(content))
+                        if (!string.IsNullOrEmpty(content))
                         {
                             content = XmlUtils.RemoveInvalidXmlCharacters(content);
 
@@ -205,7 +205,7 @@ namespace DotNetNuke.Entities.Modules
         {
             foreach (var tab in TabController.Instance.GetTabsByModuleID(moduleId).Values)
             {
-                string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
+                string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tab.TabID);
                 DataCache.RemoveCache(cacheKey);
             }
         }
@@ -371,7 +371,7 @@ namespace DotNetNuke.Entities.Modules
             module.IsShareableViewOnly = XmlUtils.GetNodeValueBoolean(nodeModule, "isshareableviewonly", true);
             module.StartDate = XmlUtils.GetNodeValueDate(nodeModule, "startdate", Null.NullDate);
             module.EndDate = XmlUtils.GetNodeValueDate(nodeModule, "enddate", Null.NullDate);
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule, "containersrc", "")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule, "containersrc", "")))
             {
                 module.ContainerSrc = XmlUtils.GetNodeValue(nodeModule, "containersrc", "");
             }
@@ -494,7 +494,7 @@ namespace DotNetNuke.Entities.Modules
                 string version = nodeModule.SelectSingleNode("content").Attributes["version"].Value;
                 string content = nodeModule.SelectSingleNode("content").InnerXml;
                 content = content.Substring(9, content.Length - 12);
-                if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !String.IsNullOrEmpty(content))
+                if (!string.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass) && !string.IsNullOrEmpty(content))
                 {
                     var portal = PortalController.Instance.GetPortal(PortalId);
 
@@ -571,7 +571,7 @@ namespace DotNetNuke.Entities.Modules
 
         internal Hashtable GetModuleSettings(int moduleId, int tabId)
         {
-            string cacheKey = String.Format(DataCache.ModuleSettingsCacheKey, tabId);
+            string cacheKey = string.Format(DataCache.ModuleSettingsCacheKey, tabId);
 
             var moduleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
@@ -610,7 +610,7 @@ namespace DotNetNuke.Entities.Modules
 
         internal Hashtable GetTabModuleSettings(int tabmoduleId, int tabId)
         {
-            string cacheKey = String.Format(DataCache.TabModuleSettingsCacheKey, tabId);
+            string cacheKey = string.Format(DataCache.TabModuleSettingsCacheKey, tabId);
 
             var tabModuleSettings = CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
@@ -1102,7 +1102,7 @@ namespace DotNetNuke.Entities.Modules
 
             // Clone Module
             ModuleInfo destinationModule = sourceModule.Clone();
-            if (!String.IsNullOrEmpty(toPaneName))
+            if (!string.IsNullOrEmpty(toPaneName))
             {
                 destinationModule.PaneName = toPaneName;
             }
@@ -1116,14 +1116,14 @@ namespace DotNetNuke.Entities.Modules
             destinationModule.LocalizedVersionGuid = Guid.NewGuid();
 
             // Figure out the DefaultLanguage Guid
-            if (!String.IsNullOrEmpty(sourceModule.CultureCode) && sourceModule.CultureCode == portal.DefaultLanguage && destinationModule.CultureCode != sourceModule.CultureCode &&
-                !String.IsNullOrEmpty(destinationModule.CultureCode))
+            if (!string.IsNullOrEmpty(sourceModule.CultureCode) && sourceModule.CultureCode == portal.DefaultLanguage && destinationModule.CultureCode != sourceModule.CultureCode &&
+                !string.IsNullOrEmpty(destinationModule.CultureCode))
             {
                 // Tab is localized so set Default language Guid reference
                 destinationModule.DefaultLanguageGuid = sourceModule.UniqueId;
             }
-            else if (!String.IsNullOrEmpty(sourceModule.CultureCode) && sourceModule.CultureCode != portal.DefaultLanguage && destinationModule.CultureCode != sourceModule.CultureCode &&
-                     !String.IsNullOrEmpty(destinationModule.CultureCode))
+            else if (!string.IsNullOrEmpty(sourceModule.CultureCode) && sourceModule.CultureCode != portal.DefaultLanguage && destinationModule.CultureCode != sourceModule.CultureCode &&
+                     !string.IsNullOrEmpty(destinationModule.CultureCode))
             {
                 // tab is localized, but the source is not in the default language (it was on a single culture page)
                 // this wires up all the connections
@@ -1649,7 +1649,7 @@ namespace DotNetNuke.Entities.Modules
                     clonemodules[module.ModuleDefinition.FriendlyName] = module;
 
                     // set module caching settings
-                    Int32 timeOut = DataCache.ModuleCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
+                    int timeOut = DataCache.ModuleCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
 
                     // cache module dictionary
                     if (timeOut > 0)
@@ -2307,7 +2307,7 @@ namespace DotNetNuke.Entities.Modules
 
             // Create dummy pane node for private DeserializeModule method
             var docPane = new XmlDocument { XmlResolver = null };
-            docPane.LoadXml(String.Format("<pane><name>{0}</name></pane>", module.PaneName));
+            docPane.LoadXml(string.Format("<pane><name>{0}</name></pane>", module.PaneName));
 
             // Create ModuleInfo of Xml
             ModuleInfo sourceModule = DeserializeModule(nodeModule, docPane.DocumentElement, portalId, tabId, moduleDefinition.ModuleDefID);
@@ -2361,7 +2361,7 @@ namespace DotNetNuke.Entities.Modules
             DeserializeTabModuleSettings(nodeTabModuleSettings, module);
 
             // deserialize Content (if included)
-            if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")))
+            if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")))
             {
                 GetModuleContent(nodeModule, module.ModuleID, tabId, portalId);
             }
@@ -2440,7 +2440,7 @@ namespace DotNetNuke.Entities.Modules
                     if (!ParsedLocalizedModuleGuid.ContainsKey(oldGuid))
                         ParsedLocalizedModuleGuid.Add(oldGuid, module.UniqueId.ToString());
 
-                    if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")) && !isInstance)
+                    if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeModule.CreateNavigator(), "content")) && !isInstance)
                     {
                         GetModuleContent(nodeModule, intModuleId, tabId, portalId);
                     }

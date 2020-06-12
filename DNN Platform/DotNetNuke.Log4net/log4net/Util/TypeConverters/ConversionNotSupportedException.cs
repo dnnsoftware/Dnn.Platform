@@ -73,7 +73,7 @@ namespace log4net.Util.TypeConverters
         /// with the specified message.
         /// </para>
         /// </remarks>
-        public ConversionNotSupportedException(String message) : base(message)
+        public ConversionNotSupportedException(string message) : base(message)
         {
         }
 
@@ -88,7 +88,7 @@ namespace log4net.Util.TypeConverters
         /// with the specified message and inner exception.
         /// </para>
         /// </remarks>
-        public ConversionNotSupportedException(String message, Exception innerException) : base(message, innerException)
+        public ConversionNotSupportedException(string message, Exception innerException) : base(message, innerException)
         {
         }
 

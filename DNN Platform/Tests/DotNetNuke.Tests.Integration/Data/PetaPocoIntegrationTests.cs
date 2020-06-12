@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Data
                                 Name = Constants.PETAPOCO_InsertDogName
                             };
 
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
@@ -166,7 +166,7 @@ namespace DotNetNuke.Tests.Data
                                 Name = Constants.PETAPOCO_DeleteDogName
                             };
 
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
@@ -298,7 +298,7 @@ namespace DotNetNuke.Tests.Data
             DataUtil.SetUpDatabase(Constants.PETAPOCO_RecordCount);
 
             Dog dog;
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 
@@ -363,7 +363,7 @@ namespace DotNetNuke.Tests.Data
                             };
 
             // Act
-            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, String.Empty, this._mappers))
+            using (var dataContext = new PetaPocoDataContext(ConnectionStringName, string.Empty, this._mappers))
             {
                 IRepository<Dog> dogRepository = dataContext.GetRepository<Dog>();
 

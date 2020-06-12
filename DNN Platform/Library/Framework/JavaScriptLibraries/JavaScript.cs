@@ -42,7 +42,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// </summary>
         /// <param name="jsname">script identifier</param>
         /// <returns></returns>
-        public static bool IsInstalled(String jsname)
+        public static bool IsInstalled(string jsname)
         {
             JavaScriptLibrary library = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName.Equals(jsname, StringComparison.OrdinalIgnoreCase));
             return library != null;
@@ -66,10 +66,10 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// </summary>
         /// <param name="jsname">the library name</param>
         /// <returns></returns>
-        public static string Version(String jsname)
+        public static string Version(string jsname)
         {
             JavaScriptLibrary library = GetHighestVersionLibrary(jsname);
-            return library != null ? Convert.ToString(library.Version) : String.Empty;
+            return library != null ? Convert.ToString(library.Version) : string.Empty;
         }
 
         /// <summary>Requests a script to be added to the page</summary>
@@ -135,7 +135,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
 
             // this should only occur if packages are incorrect or a RequestRegistration call has a typo
-            LogCollision(String.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
+            LogCollision(string.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
         }
 
         /// <summary>
@@ -216,7 +216,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             else
             {
                 // this will only occur if a specific library is requested and not available
-                LogCollision(String.Format("Missing Library request - {0} : {1}", jsname, version));
+                LogCollision(string.Format("Missing Library request - {0} : {1}", jsname, version));
             }
         }
 
@@ -269,7 +269,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             return finalScripts;
         }
 
-        private static JavaScriptLibrary GetHighestVersionLibrary(String jsname)
+        private static JavaScriptLibrary GetHighestVersionLibrary(string jsname)
         {
             if (Globals.Status == Globals.UpgradeStatus.Install) // if in install process, then do not use JSL but all use the legacy versions.
             {
@@ -300,7 +300,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 }
 
                 // cdn enabled but jsl does not have one defined
-                if (!String.IsNullOrEmpty(js.CDNPath))
+                if (!string.IsNullOrEmpty(js.CDNPath))
                 {
                     var cdnPath = js.CDNPath;
                     if (cdnPath.StartsWith("//"))
@@ -325,7 +325,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return "DnnBodyProvider";
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         private static IEnumerable<string> GetScriptVersions()
@@ -404,7 +404,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     "~/Resources/Shared/Scripts/jquery/jquery.iframe-transport.js");
             }
 
-            if (Host.CdnEnabled && !String.IsNullOrEmpty(jsl.ObjectName))
+            if (Host.CdnEnabled && !string.IsNullOrEmpty(jsl.ObjectName))
             {
                 string pagePortion;
                 switch (jsl.PreferredScriptLocation)

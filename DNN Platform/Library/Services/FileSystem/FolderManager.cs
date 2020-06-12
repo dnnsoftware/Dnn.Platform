@@ -185,7 +185,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private IFolderInfo GetParentFolder(int portalId, string folderPath)
         {
-            if (!String.IsNullOrEmpty(folderPath))
+            if (!string.IsNullOrEmpty(folderPath))
             {
                 var parentFolderPath = folderPath.Substring(0, folderPath.Substring(0, folderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
                 return this.GetFolder(portalId, parentFolderPath);
@@ -338,7 +338,7 @@ namespace DotNetNuke.Services.FileSystem
             var defaultMappedPath = folderMapping.FolderMappingSettings[DefaultMappedPathSetting];
             if (defaultMappedPath == null)
             {
-                return String.Empty;
+                return string.Empty;
             }
             return defaultMappedPath.ToString();
         }
@@ -467,7 +467,7 @@ namespace DotNetNuke.Services.FileSystem
                 if (FolderProvider.Instance(parentFolderMapping.FolderProviderType).SupportsMappedPaths)
                 {
                     folderMapping = parentFolderMapping;
-                    mappedPath = String.IsNullOrEmpty(parentFolder.FolderPath) ? PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath)
+                    mappedPath = string.IsNullOrEmpty(parentFolder.FolderPath) ? PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath)
                                                                             : PathUtils.Instance.FormatFolderPath(parentFolder.MappedPath + folderPath.Replace(parentFolder.FolderPath, string.Empty));
                 }
                 else if (!FolderProvider.Instance(folderMapping.FolderProviderType).SupportsMappedPaths)
@@ -1065,7 +1065,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <param name="permission">Used as base class for FolderPermissionInfo when there is no read permission already defined.</param>
         public virtual void AddAllUserReadPermission(IFolderInfo folder, PermissionInfo permission)
         {
-            var roleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var roleId = int.Parse(Globals.glbRoleAllUsers);
 
             var folderPermission =
                 (from FolderPermissionInfo p in folder.FolderPermissions
@@ -1098,7 +1098,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             Requires.NotNull("folder", folder);
 
-            if (String.IsNullOrEmpty(folder.FolderPath)) return;
+            if (string.IsNullOrEmpty(folder.FolderPath)) return;
 
             var parentFolderPath = folder.FolderPath.Substring(0, folder.FolderPath.Substring(0, folder.FolderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
 
@@ -1246,7 +1246,7 @@ namespace DotNetNuke.Services.FileSystem
             var rootFolder = PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.Root);
 #pragma warning restore 612,618
 
-            var folderPath = PathUtils.Instance.FormatFolderPath(String.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
+            var folderPath = PathUtils.Instance.FormatFolderPath(string.Format(DefaultUsersFoldersPath + "/{0}", rootFolder));
 
             if (!this.FolderExists(portalId, folderPath))
             {
@@ -1254,7 +1254,7 @@ namespace DotNetNuke.Services.FileSystem
             }
 
 #pragma warning disable 612,618
-            folderPath = PathUtils.Instance.FormatFolderPath(String.Concat(folderPath, PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
+            folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, PathUtils.Instance.GetUserFolderPathElement(user.UserID, PathUtils.UserFolderElement.SubFolder)));
 #pragma warning restore 612,618
 
             if (!this.FolderExists(portalId, folderPath))
@@ -1262,7 +1262,7 @@ namespace DotNetNuke.Services.FileSystem
                 this.AddFolder(folderMapping, folderPath);
             }
 
-            folderPath = PathUtils.Instance.FormatFolderPath(String.Concat(folderPath, user.UserID.ToString(CultureInfo.InvariantCulture)));
+            folderPath = PathUtils.Instance.FormatFolderPath(string.Concat(folderPath, user.UserID.ToString(CultureInfo.InvariantCulture)));
 
             if (!this.FolderExists(portalId, folderPath))
             {
@@ -1278,7 +1278,7 @@ namespace DotNetNuke.Services.FileSystem
                         {
                             FolderID = folder.FolderID,
                             UserID = user.UserID,
-                            RoleID = Int32.Parse(Globals.glbRoleNothing),
+                            RoleID = int.Parse(Globals.glbRoleNothing),
                             AllowAccess = true
                         };
 
@@ -1548,7 +1548,7 @@ namespace DotNetNuke.Services.FileSystem
                         FolderMappingID = -1,
                         FolderPath = relativePath,
                         ExistsInFileSystem = true,
-                        MappedPath = String.Empty
+                        MappedPath = string.Empty
                     };
 
                     fileSystemFolders.Add(relativePath, item);
@@ -1584,7 +1584,7 @@ namespace DotNetNuke.Services.FileSystem
                         FolderMappingID = -1,
                         FolderPath = PathUtils.Instance.GetRelativePath(portalId, dir),
                         ExistsInFileSystem = true,
-                        MappedPath = String.Empty
+                        MappedPath = string.Empty
                     };
 
                     result.Add(item.FolderPath, item);
@@ -1634,9 +1634,9 @@ namespace DotNetNuke.Services.FileSystem
             while (stack.Count > 0)
             {
                 var mappedPath = stack.Pop();
-                var relativePath = String.IsNullOrEmpty(mappedPath)
-                                        ? String.Empty
-                                        : String.IsNullOrEmpty(baseMappedPath)
+                var relativePath = string.IsNullOrEmpty(mappedPath)
+                                        ? string.Empty
+                                        : string.IsNullOrEmpty(baseMappedPath)
                                             ? mappedPath
                                             : RegexUtils.GetCachedRegex(Regex.Escape(baseMappedPath)).Replace(mappedPath, string.Empty, 1);
 
@@ -1805,7 +1805,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         existingItem.FolderMappingID = item.FolderMappingID;
                     }
-                    if (String.IsNullOrEmpty(existingItem.MappedPath))
+                    if (string.IsNullOrEmpty(existingItem.MappedPath))
                     {
                         existingItem.MappedPath = item.MappedPath;
                     }
@@ -2118,7 +2118,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual void UpdateParentFolder(int portalId, string folderPath)
         {
-            if (!String.IsNullOrEmpty(folderPath))
+            if (!string.IsNullOrEmpty(folderPath))
             {
                 var parentFolderPath = folderPath.Substring(0, folderPath.Substring(0, folderPath.Length - 1).LastIndexOf("/", StringComparison.Ordinal) + 1);
                 var objFolder = this.GetFolder(portalId, parentFolderPath);
@@ -2216,7 +2216,7 @@ namespace DotNetNuke.Services.FileSystem
         {
             public int Compare(string x, string y)
             {
-                return String.Compare(x.ToLowerInvariant(), y.ToLowerInvariant(), StringComparison.Ordinal);
+                return string.Compare(x.ToLowerInvariant(), y.ToLowerInvariant(), StringComparison.Ordinal);
             }
         }
 

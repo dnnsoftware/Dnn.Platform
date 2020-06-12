@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.Skins
             get
             {
                 string fileRoot;
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = this.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/SkinControl.ascx";
                 }
@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.Skins
             {
                 if (this.Request.QueryString["pid"] != null && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    this._objPortal = PortalController.Instance.GetPortal(Int32.Parse(this.Request.QueryString["pid"]));
+                    this._objPortal = PortalController.Instance.GetPortal(int.Parse(this.Request.QueryString["pid"]));
                 }
                 else
                 {
@@ -194,13 +194,13 @@ namespace DotNetNuke.UI.Skins
                     this.ViewState["SkinSrc"] = this._SkinSrc;
 
                     // set width of control
-                    if (!String.IsNullOrEmpty(this._Width))
+                    if (!string.IsNullOrEmpty(this._Width))
                     {
                         this.cboSkin.Width = Unit.Parse(this._Width);
                     }
 
                     // set selected skin
-                    if (!String.IsNullOrEmpty(this._SkinSrc))
+                    if (!string.IsNullOrEmpty(this._SkinSrc))
                     {
                         switch (this._SkinSrc.Substring(0, 3))
                         {
@@ -245,7 +245,7 @@ namespace DotNetNuke.UI.Skins
 
         protected void cmdPreview_Click(object sender, EventArgs e)
         {
-            if (!String.IsNullOrEmpty(this.SkinSrc))
+            if (!string.IsNullOrEmpty(this.SkinSrc))
             {
                 string strType = this.SkinRoot.Substring(0, this.SkinRoot.Length - 1);
 

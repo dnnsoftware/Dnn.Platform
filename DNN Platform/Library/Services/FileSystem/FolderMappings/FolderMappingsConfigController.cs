@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.FileSystem
                     {
                         Name = XmlUtils.GetAttributeValue(settingNode.CreateNavigator(), "name"),
                         Value = settingNode.InnerText,
-                        Encrypt = !String.IsNullOrEmpty(encryptValue) && Boolean.Parse(encryptValue)
+                        Encrypt = !string.IsNullOrEmpty(encryptValue) && bool.Parse(encryptValue)
                     });
                 }
                 folderType.Settings = settings;

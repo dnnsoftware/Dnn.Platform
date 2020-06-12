@@ -550,7 +550,7 @@ namespace DotNetNuke.UI.WebControls
                     Graphics g;
                     Brush b = new SolidBrush(Color.LightGray);
                     Brush b1 = new SolidBrush(Color.Black);
-                    if (String.IsNullOrEmpty(backgroundImage))
+                    if (string.IsNullOrEmpty(backgroundImage))
                     {
                         bmp = CreateImage(width, height);
                     }
@@ -562,7 +562,7 @@ namespace DotNetNuke.UI.WebControls
 
                     // Create Text
                     GraphicsPath textPath = CreateText(text, width, height, g);
-                    if (String.IsNullOrEmpty(backgroundImage))
+                    if (string.IsNullOrEmpty(backgroundImage))
                     {
                         g.FillPath(b, textPath);
                     }
@@ -758,7 +758,7 @@ namespace DotNetNuke.UI.WebControls
             // Render image <img> Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Src, this.GetUrl());
             writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
-            if (!String.IsNullOrEmpty(this.ToolTip))
+            if (!string.IsNullOrEmpty(this.ToolTip))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Alt, this.ToolTip);
             }
@@ -770,7 +770,7 @@ namespace DotNetNuke.UI.WebControls
             writer.RenderEndTag();
 
             // Render Help Text
-            if (!String.IsNullOrEmpty(this.Text))
+            if (!string.IsNullOrEmpty(this.Text))
             {
                 writer.RenderBeginTag(HtmlTextWriterTag.Div);
                 writer.Write(this.Text);
@@ -783,7 +783,7 @@ namespace DotNetNuke.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Style, "width:" + this.Width);
             writer.AddAttribute(HtmlTextWriterAttribute.Maxlength, this._CaptchaText.Length.ToString());
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
-            if (!String.IsNullOrEmpty(this.AccessKey))
+            if (!string.IsNullOrEmpty(this.AccessKey))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Accesskey, this.AccessKey);
             }

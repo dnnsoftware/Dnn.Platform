@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         // Gets a value indicating if the collection contains keys that are not null.
-        public Boolean HasKeys
+        public bool HasKeys
         {
             get
             {
@@ -70,13 +70,13 @@ namespace DotNetNuke.Services.Localization
         }
 
         // Adds an entry to the collection.
-        public void Add(String key, Object value)
+        public void Add(string key, object value)
         {
             this.BaseAdd(key, value);
         }
 
         // Removes an entry with the specified key from the collection.
-        public void Remove(String key)
+        public void Remove(string key)
         {
             this.BaseRemove(key);
         }

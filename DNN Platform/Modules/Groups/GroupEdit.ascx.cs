@@ -51,7 +51,7 @@ namespace DotNetNuke.Modules.Groups
                     {
                         if (roleInfo.CreatedByUserID != this.UserInfo.UserID)
                         {
-                            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, "", false, new String[] { "groupid=" + this.GroupId.ToString() }));
+                            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, "", false, new string[] { "groupid=" + this.GroupId.ToString() }));
                         }
                     }
 
@@ -82,7 +82,7 @@ namespace DotNetNuke.Modules.Groups
         }
         private void Cancel_Click(object sender, EventArgs e)
         {
-            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, "", false, new String[] { "groupid=" + this.GroupId.ToString() }));
+            this.Response.Redirect(this.ModuleContext.NavigateUrl(this.TabId, "", false, new string[] { "groupid=" + this.GroupId.ToString() }));
         }
 
         private void Save_Click(object sender, EventArgs e)
@@ -153,7 +153,7 @@ namespace DotNetNuke.Modules.Groups
 
                 }
 
-                this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "", new String[] { "groupid=" + this.GroupId.ToString() }));
+                this.Response.Redirect(this._navigationManager.NavigateURL(this.TabId, "", new string[] { "groupid=" + this.GroupId.ToString() }));
             }
         }
     }

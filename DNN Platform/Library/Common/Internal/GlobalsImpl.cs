@@ -83,7 +83,7 @@ namespace DotNetNuke.Common.Internal
             // Binary, else '?' isn't taken literally; only interested in one (left) string
             string uri = requestedUri.ToString();
             string hostHeader = Config.GetSetting("HostHeader");
-            if (!String.IsNullOrEmpty(hostHeader))
+            if (!string.IsNullOrEmpty(hostHeader))
             {
                 uri = uri.ToLowerInvariant().Replace(hostHeader.ToLowerInvariant(), "");
             }
@@ -124,7 +124,7 @@ namespace DotNetNuke.Common.Internal
                             }
                         }
                         // non of the exclusionary names found
-                        domainName.Append((!String.IsNullOrEmpty(domainName.ToString()) ? "/" : "") + url[queryIndex]);
+                        domainName.Append((!string.IsNullOrEmpty(domainName.ToString()) ? "/" : "") + url[queryIndex]);
                         break;
                 }
                 if (needExit)

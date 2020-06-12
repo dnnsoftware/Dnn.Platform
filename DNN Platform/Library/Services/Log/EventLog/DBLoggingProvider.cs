@@ -45,11 +45,11 @@ namespace DotNetNuke.Services.Log.EventLog
             for (i = 0; i <= arr.Count - 1; i++)
             {
                 var logTypeConfigInfo = (LogTypeConfigInfo)arr[i];
-                if (String.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypeKey))
                 {
                     logTypeConfigInfo.LogTypeKey = "*";
                 }
-                if (String.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
+                if (string.IsNullOrEmpty(logTypeConfigInfo.LogTypePortalID))
                 {
                     logTypeConfigInfo.LogTypePortalID = "*";
                 }

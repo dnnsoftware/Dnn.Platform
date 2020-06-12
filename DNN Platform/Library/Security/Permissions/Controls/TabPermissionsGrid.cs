@@ -124,7 +124,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Call base class to load base properties
             this.ParsePermissionKeys(objTabPermission, Settings);
-            if (String.IsNullOrEmpty(Settings[2]))
+            if (string.IsNullOrEmpty(Settings[2]))
             {
                 objTabPermission.TabPermissionID = -1;
             }
@@ -143,7 +143,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
-                var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
                 if (this.IsImplicitRole(PortalSettings.Current.PortalId, roleID))
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
@@ -318,7 +318,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._TabPermissions = new TabPermissionCollection();
                     string state = Convert.ToString(myState[2]);
-                    if (!String.IsNullOrEmpty(state))
+                    if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);

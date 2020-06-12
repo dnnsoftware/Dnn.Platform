@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Urls
                         parameters.Add(parameter);
                     }
                 }
-                queryString = String.Join("&", parameters);
+                queryString = string.Join("&", parameters);
 
             }
 
@@ -58,7 +58,7 @@ namespace DotNetNuke.Entities.Urls
         internal static string ResolveUrl(string appPath, string url)
         {
             // String is Empty, just return Url
-            if (String.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
             {
                 return url;
             }
@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Urls
 
         static internal bool OmitFromRewriteProcessing(string localPath)
         {
-            var omitSettings = String.Empty;
+            var omitSettings = string.Empty;
             if (Globals.Status == Globals.UpgradeStatus.None)
             {
                 omitSettings = HostController.Instance.GetString("OmitFromRewriteProcessing");

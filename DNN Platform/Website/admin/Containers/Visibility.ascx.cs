@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (!String.IsNullOrEmpty(this.minIcon))
+                if (!string.IsNullOrEmpty(this.minIcon))
                 {
                     return this.ModulePath + this.minIcon;
                 }
@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-                if (!String.IsNullOrEmpty(this.MaxIcon))
+                if (!string.IsNullOrEmpty(this.MaxIcon))
                 {
                     return this.ModulePath + this.MaxIcon;
                 }
@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.Containers
                 if (!this.Page.IsPostBack)
                 {
                     // public attributes
-                    if (!String.IsNullOrEmpty(this.BorderWidth))
+                    if (!string.IsNullOrEmpty(this.BorderWidth))
                     {
                         this.cmdVisibility.BorderWidth = Unit.Parse(this.BorderWidth);
                     }
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        private void cmdVisibility_Click(Object sender, EventArgs e)
+        private void cmdVisibility_Click(object sender, EventArgs e)
         {
             try
             {

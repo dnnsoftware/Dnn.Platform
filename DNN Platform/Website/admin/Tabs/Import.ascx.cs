@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         return;
                     }
 
-                    var positionTabId = Int32.Parse(this.cboPositionTab.SelectedItem.Value);
+                    var positionTabId = int.Parse(this.cboPositionTab.SelectedItem.Value);
 
                     if (this.rbInsertPosition.SelectedValue == "After" && positionTabId > Null.NullInteger)
                     {
@@ -294,7 +294,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
             this.BindBeforeAfterTabControls();
         }
 
-        protected void OnTemplateIndexChanged(Object sender, EventArgs e)
+        protected void OnTemplateIndexChanged(object sender, EventArgs e)
         {
             try
             {
@@ -306,7 +306,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     {
                         xmldoc.Load(fileContent);
                         var node = xmldoc.SelectSingleNode("//portal/description");
-                        if (node != null && !String.IsNullOrEmpty(node.InnerXml))
+                        if (node != null && !string.IsNullOrEmpty(node.InnerXml))
                         {
                             this.lblTemplateDescription.Visible = true;
                             this.lblTemplateDescription.Text = this.Server.HtmlDecode(node.InnerXml);

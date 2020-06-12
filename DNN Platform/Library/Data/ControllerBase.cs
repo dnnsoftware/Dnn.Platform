@@ -41,7 +41,7 @@ namespace DotNetNuke.Data
             // Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), string.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 
@@ -98,7 +98,7 @@ namespace DotNetNuke.Data
             // Argument Contract
             Requires.NotNull(entity);
 
-            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
+            var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), string.Empty);
             Requires.PropertyNotNull(entity, primaryKey);
             Requires.PropertyNotNegative(entity, primaryKey);
 

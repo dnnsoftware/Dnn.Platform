@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         {
             Requires.NotNegative("portalId", portalId);
             return
-                Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, Boolean.FalseString));
+                Convert.ToBoolean(PortalController.GetPortalSetting("TabVersionsEnabled", portalId, bool.FalseString));
         }
 
         public bool IsVersioningEnabled(int portalId, int tabId)

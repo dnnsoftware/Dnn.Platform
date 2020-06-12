@@ -34,7 +34,7 @@ namespace DotNetNuke.Authentication.Google.Components
 
             this.OAuthVersion = "2.0";
 
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
 
         #endregion

@@ -190,7 +190,7 @@ namespace DotNetNuke.Entities.Modules
                         this.HelpURL = reader.ReadElementContentAsString();
                         break;
                     case "supportsPopUps":
-                        this.SupportsPopUps = Boolean.Parse(reader.ReadElementContentAsString());
+                        this.SupportsPopUps = bool.Parse(reader.ReadElementContentAsString());
                         break;
                     case "viewOrder":
                         string elementvalue = reader.ReadElementContentAsString();
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Modules
                         }
                         break;
                     default:
-                        if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                        if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                         {
                             reader.ReadElementContentAsString();
                         }

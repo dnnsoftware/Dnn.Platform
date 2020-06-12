@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Utilities
                 result += s + seperator;
             }
 
-            return String.IsNullOrEmpty(result) ? "" : result.Substring(0, result.Length - 1);
+            return string.IsNullOrEmpty(result) ? "" : result.Substring(0, result.Length - 1);
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var result = new List<string>();
 
-            if (String.IsNullOrEmpty(combinedString))
+            if (string.IsNullOrEmpty(combinedString))
             {
                 return result;
             }

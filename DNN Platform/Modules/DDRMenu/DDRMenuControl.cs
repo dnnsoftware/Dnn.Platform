@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.DDRMenu
         public override bool EnableViewState { get { return false; } set { } }
 
         internal MenuNode RootNode { get; set; }
-        internal Boolean SkipLocalisation { get; set; }
+        internal bool SkipLocalisation { get; set; }
         internal Settings MenuSettings { get; set; }
 
         public delegate void MenuClickEventHandler(string id);

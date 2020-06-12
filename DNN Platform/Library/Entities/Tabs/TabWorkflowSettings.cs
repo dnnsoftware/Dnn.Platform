@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Tabs
                 return false;
             }
 
-            return Convert.ToBoolean(PortalController.GetPortalSetting(TabWorkflowEnableKey, portalId, Boolean.FalseString));
+            return Convert.ToBoolean(PortalController.GetPortalSetting(TabWorkflowEnableKey, portalId, bool.FalseString));
         }
         #endregion
 

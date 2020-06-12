@@ -22,9 +22,9 @@ namespace DotNetNuke.Services.Authentication.OAuth
         {
             if (x.Name == y.Name)
             {
-                return String.CompareOrdinal(x.Value, y.Value);
+                return string.CompareOrdinal(x.Value, y.Value);
             }
-            return String.CompareOrdinal(x.Name, y.Name);
+            return string.CompareOrdinal(x.Name, y.Name);
         }
 
         #endregion

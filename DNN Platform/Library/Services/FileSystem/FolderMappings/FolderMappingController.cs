@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public List<FolderMappingInfo> GetFolderMappings(int portalId)
         {
-            var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
+            var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
             return CBO.GetCachedObject<List<FolderMappingInfo>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.FileSystem
 
         private static void ClearFolderMappingCache(int portalId)
         {
-            var cacheKey = String.Format(DataCache.FolderMappingCacheKey, portalId);
+            var cacheKey = string.Format(DataCache.FolderMappingCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
         }
 

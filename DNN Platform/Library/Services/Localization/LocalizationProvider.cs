@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Localization
             string defaultLanguage = portalSettings.DefaultLanguage;
             string fallbackLanguage = Localization.SystemLocale;
             Locale targetLocale = LocaleController.Instance.GetLocale(locale);
-            if (!String.IsNullOrEmpty(targetLocale.Fallback))
+            if (!string.IsNullOrEmpty(targetLocale.Fallback))
             {
                 fallbackLanguage = targetLocale.Fallback;
             }
@@ -298,7 +298,7 @@ namespace DotNetNuke.Services.Localization
                                     var selectSingleNode = nav.SelectSingleNode("value");
                                     if (selectSingleNode != null)
                                     {
-                                        resources[nav.GetAttribute("name", String.Empty)] = selectSingleNode.Value;
+                                        resources[nav.GetAttribute("name", string.Empty)] = selectSingleNode.Value;
                                     }
                                 }
                             }
@@ -361,7 +361,7 @@ namespace DotNetNuke.Services.Localization
             language = language.ToLowerInvariant();
             if (resourceFileRoot != null)
             {
-                if (language == Localization.SystemLocale.ToLowerInvariant() || String.IsNullOrEmpty(language))
+                if (language == Localization.SystemLocale.ToLowerInvariant() || string.IsNullOrEmpty(language))
                 {
                     switch (resourceFileRoot.Substring(resourceFileRoot.Length - 5, 5).ToLowerInvariant())
                     {
@@ -400,7 +400,7 @@ namespace DotNetNuke.Services.Localization
             }
             else
             {
-                if (language == Localization.SystemLocale.ToLowerInvariant() || String.IsNullOrEmpty(language))
+                if (language == Localization.SystemLocale.ToLowerInvariant() || string.IsNullOrEmpty(language))
                 {
                     resourceFile = Localization.SharedResourceFile;
                 }
@@ -471,13 +471,13 @@ namespace DotNetNuke.Services.Localization
             }
 
             // Set the userLanguage if not passed in
-            if (String.IsNullOrEmpty(userLanguage))
+            if (string.IsNullOrEmpty(userLanguage))
             {
                 userLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
             }
 
             // Default the userLanguage to the defaultLanguage if not set
-            if (String.IsNullOrEmpty(userLanguage))
+            if (string.IsNullOrEmpty(userLanguage))
             {
                 userLanguage = defaultLanguage;
             }
@@ -495,11 +495,11 @@ namespace DotNetNuke.Services.Localization
                 Logger.Error(ex);
             }
 
-            if (userLocale != null && !String.IsNullOrEmpty(userLocale.Fallback))
+            if (userLocale != null && !string.IsNullOrEmpty(userLocale.Fallback))
             {
                 fallbackLanguage = userLocale.Fallback;
             }
-            if (String.IsNullOrEmpty(resourceFile))
+            if (string.IsNullOrEmpty(resourceFile))
             {
                 resourceFile = Localization.SharedResourceFile;
             }
@@ -553,7 +553,7 @@ namespace DotNetNuke.Services.Localization
             // Local resource files are either named ~/... or <ApplicationPath>/...
             // The following logic creates a cachekey of /....
             string cacheKey = resourceFileName.Replace("~/", "/").ToLowerInvariant();
-            if (!String.IsNullOrEmpty(Globals.ApplicationPath))
+            if (!string.IsNullOrEmpty(Globals.ApplicationPath))
             {
                 if (Globals.ApplicationPath != "/portals")
                 {

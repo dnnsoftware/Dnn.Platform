@@ -35,7 +35,7 @@ namespace DotNetNuke.Security
         /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different</param>
         /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000</param>
         /// <returns></returns>
-        public static String EncryptAES(String plainText, String passPhrase, String salt, int iterations = 1000)
+        public static string EncryptAES(string plainText, string passPhrase, string salt, int iterations = 1000)
         {
             VerifyAesSettings(passPhrase, salt);
 
@@ -43,9 +43,9 @@ namespace DotNetNuke.Security
             using (var aesProvider = new AesCryptoServiceProvider())
             {
                 var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations);
-                Byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
-                Byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
-                Byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
+                byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
+                byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
+                byte[] plainTextBytes = Encoding.UTF8.GetBytes(plainText);
 
                 aesProvider.KeySize = 256;
                 aesProvider.Padding = PaddingMode.ISO10126;
@@ -57,7 +57,7 @@ namespace DotNetNuke.Security
                 {
                     cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
                     cryptoStream.FlushFinalBlock();
-                    Byte[] cipherTextBytes = memStream.ToArray();
+                    byte[] cipherTextBytes = memStream.ToArray();
 
                     memStream.Close();
                     cryptoStream.Close();
@@ -86,16 +86,16 @@ namespace DotNetNuke.Security
         /// <param name="salt">a salt value to ensure ciphertext using the same text/password is different</param>
         /// <param name="iterations">number of iterations to derive the key (higher is slower but more secure) - optional parameter with a default of 1000</param>
         /// <returns></returns>
-        public static String DecryptAES(String encryptedText, String passPhrase, String salt, int iterations = 1000)
+        public static string DecryptAES(string encryptedText, string passPhrase, string salt, int iterations = 1000)
         {
             VerifyAesSettings(passPhrase, salt);
 
-            Byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
+            byte[] saltBytes = Encoding.ASCII.GetBytes(salt);
             var aesProvider = new AesCryptoServiceProvider();
             var derivedBytes = new Rfc2898DeriveBytes(passPhrase, saltBytes, iterations);
-            Byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
-            Byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
-            Byte[] cipherTextBytes = Convert.FromBase64String(encryptedText);
+            byte[] derivedKey = derivedBytes.GetBytes(32); // 256 bits
+            byte[] derivedInitVector = derivedBytes.GetBytes(16); // 128 bits
+            byte[] cipherTextBytes = Convert.FromBase64String(encryptedText);
 
             aesProvider.KeySize = 256;
             aesProvider.Padding = PaddingMode.ISO10126;
@@ -105,8 +105,8 @@ namespace DotNetNuke.Security
             using (var memStream = new MemoryStream(cipherTextBytes))
             using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
             {
-                var plainTextBytes = new Byte[cipherTextBytes.Length];
-                Int32 byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+                var plainTextBytes = new byte[cipherTextBytes.Length];
+                int byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
 
                 memStream.Close();
                 cryptoStream.Close();

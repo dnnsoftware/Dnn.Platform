@@ -363,7 +363,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     portalId = -1;
                 }
-                if (!String.IsNullOrEmpty(searchText))
+                if (!string.IsNullOrEmpty(searchText))
                 {
                     return this.SearchPagesInternal(portalId, searchText, sortOrder, includeDisabled, includeAllTypes, includeActive, includeHostPages, roles).Children.Select(node => node.Data);
                 }
@@ -404,7 +404,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             Func<TabInfo, bool> searchFunc;
-            if (String.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(searchText))
             {
                 searchFunc = page => true;
             }
@@ -481,7 +481,7 @@ namespace DotNetNuke.Web.InternalServices
             }
 
             Func<TabInfo, bool> searchFunc;
-            if (String.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(searchText))
             {
                 searchFunc = page => true;
             }
@@ -659,7 +659,7 @@ namespace DotNetNuke.Web.InternalServices
             foreach (var openedNodeChild in openedNode.Children)
             {
                 var portalIdString = openedNodeChild.Data.Id;
-                var treeNodeChild = treeNode.Children.Find(child => String.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
+                var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
                 if (treeNodeChild == null)
                 {
                     continue;
@@ -698,7 +698,7 @@ namespace DotNetNuke.Web.InternalServices
                 foreach (var openedNodeChild in openedNode.Children)
                 {
                     var portalIdString = openedNodeChild.Data.Id;
-                    var treeNodeChild = treeNode.Children.Find(child => String.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, portalIdString, StringComparison.InvariantCultureIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -727,7 +727,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 foreach (var openedNodeChild in openedNode.Children)
                 {
-                    var treeNodeChild = treeNode.Children.Find(child => String.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -970,7 +970,7 @@ namespace DotNetNuke.Web.InternalServices
             {
                 foreach (var openedNodeChild in openedNode.Children)
                 {
-                    var treeNodeChild = treeNode.Children.Find(child => String.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
+                    var treeNodeChild = treeNode.Children.Find(child => string.Equals(child.Data.Key, openedNodeChild.Data.Id, StringComparison.InvariantCultureIgnoreCase));
                     if (treeNodeChild == null)
                     {
                         continue;
@@ -1161,7 +1161,7 @@ namespace DotNetNuke.Web.InternalServices
         private IEnumerable<IFolderInfo> GetFolderDescendants(IFolderInfo parentFolder, string searchText, string permission)
         {
             Func<IFolderInfo, bool> searchFunc;
-            if (String.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(searchText))
             {
                 searchFunc = folder => true;
             }
@@ -1183,7 +1183,7 @@ namespace DotNetNuke.Web.InternalServices
                 portalId = this.GetActivePortalId();
             }
             Func<IFolderInfo, bool> searchFunc;
-            if (String.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(searchText))
             {
                 searchFunc = folder => true;
             }
@@ -1273,7 +1273,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             Func<IFileInfo, bool> searchFunc;
             var filterList = string.IsNullOrEmpty(filter) ? null : filter.ToLowerInvariant().Split(',').ToList();
-            if (String.IsNullOrEmpty(searchText))
+            if (string.IsNullOrEmpty(searchText))
             {
                 searchFunc = f => filterList == null || filterList.Contains(f.Extension.ToLowerInvariant());
             }

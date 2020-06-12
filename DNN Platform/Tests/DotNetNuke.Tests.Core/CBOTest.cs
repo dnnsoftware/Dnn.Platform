@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         {
             var cboTable = new DataTable("CBOTable");
             var colValue = Guid.NewGuid().ToString();
-            cboTable.Columns.Add("StringProp", typeof(String));
+            cboTable.Columns.Add("StringProp", typeof(string));
             cboTable.Rows.Add(colValue);
 
             // Assert.AreEqual(12, moq.Object["TestColumn"]);
@@ -123,7 +123,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             var cboTable = new DataTable("CBOTable");
             var colValue = true;
 
-            cboTable.Columns.Add("BitProp", typeof(Boolean));
+            cboTable.Columns.Add("BitProp", typeof(bool));
             cboTable.Rows.Add(colValue);
 
 
@@ -191,9 +191,9 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         public int IntProp { get; set; }
         public string StringProp { get; set; }
         public DateTime DateTimeProp { get; set; }
-        public Byte[] ByteArrayProp { get; set; }
+        public byte[] ByteArrayProp { get; set; }
         public Array ArrayProp { get; set; }
-        public Boolean BitProp { get; set; }
+        public bool BitProp { get; set; }
         public decimal DecimalProp { get; set; }
     }
 }

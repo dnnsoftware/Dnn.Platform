@@ -59,7 +59,7 @@ namespace log4net.Layout
         /// </para>
         /// <para>
         /// If the caller does not have a <see cref="TextWriter"/> and prefers the
-        /// event to be formatted as a <see cref="String"/> then the following
+        /// event to be formatted as a <see cref="string"/> then the following
         /// code can be used to format the event into a <see cref="StringWriter"/>.
         /// </para>
         /// <code lang="C#">

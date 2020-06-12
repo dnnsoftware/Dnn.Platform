@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.ControlPanels
                     this.Request.IsLocal, this.Request.IsSecureConnection);
                 if (upgradeIndicator == null)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
                 return this.GetUpgradeIndicatorButton(upgradeIndicator);
             }
@@ -791,7 +791,7 @@ namespace DotNetNuke.UI.ControlPanels
             this.CategoryList.DataBind();
             if (!this.IsPostBack)
             {
-                this.CategoryList.Select(!String.IsNullOrEmpty(this.BookmarkedModuleKeys) ? this.BookmarkModuleCategory : "All", false);
+                this.CategoryList.Select(!string.IsNullOrEmpty(this.BookmarkedModuleKeys) ? this.BookmarkModuleCategory : "All", false);
             }
         }
 

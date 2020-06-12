@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
-            Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
+            Assert.AreEqual(string.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
         }
 
         [Test]
@@ -175,7 +175,7 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var baseRepo = repo as RepositoryBase<CacheableDog>;
-            Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<CacheableDog>, string>(baseRepo, "Scope"));
+            Assert.AreEqual(string.Empty, Util.GetPrivateMember<RepositoryBase<CacheableDog>, string>(baseRepo, "Scope"));
         }
 
         [Test]
@@ -215,7 +215,7 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             var repo = new FakeRepository<Dog>();
-            repo.Initialize(String.Empty);
+            repo.Initialize(string.Empty);
 
             // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
@@ -286,7 +286,7 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             var repo = new FakeRepository<Dog>();
-            repo.Initialize(String.Empty);
+            repo.Initialize(string.Empty);
 
             // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
@@ -314,7 +314,7 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             var repo = new FakeRepository<Cat>();
-            repo.Initialize(String.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
+            repo.Initialize(string.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
 
             // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
@@ -342,11 +342,11 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             var repo = new FakeRepository<Dog>();
-            repo.Initialize(String.Empty);
+            repo.Initialize(string.Empty);
 
             // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
-            Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
+            Assert.AreEqual(string.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
         }
 
         [Test]
@@ -360,7 +360,7 @@ namespace DotNetNuke.Tests.Data
 
             // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
-            Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
+            Assert.AreEqual(string.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
         }
 
         [Test]
@@ -370,7 +370,7 @@ namespace DotNetNuke.Tests.Data
 
             // Act
             var repo = new FakeRepository<Cat>();
-            repo.Initialize(String.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
+            repo.Initialize(string.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
 
             // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
@@ -417,7 +417,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Delete_Clears_Cache_If_Cacheable_And_Scoped()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
             mockCache.Setup(c => c.GetItem(cacheKey)).Returns(new List<CacheableCat>());
@@ -589,7 +589,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Get_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
@@ -658,7 +658,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Get_Overload_Calls_GetAllByScopeInternal_If_Cacheable_And_Cache_Expired()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
@@ -680,7 +680,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Get_Overload_Does_Not_Call_GetAllByScopeInternal_If_Cacheable_And_Cache_Valid()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
@@ -807,7 +807,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_GetById_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
@@ -956,7 +956,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_GetPage_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
@@ -1025,7 +1025,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_GetPage_Overload_Calls_GetAllByScopeInternal_If_Cacheable_And_Cache_Expired()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("0");
@@ -1038,7 +1038,7 @@ namespace DotNetNuke.Tests.Data
                                     .Returns(new List<CacheableCat>());
 
             var mockData = MockComponentProvider.CreateDataProvider();
-            mockData.Setup(d => d.GetProviderPath()).Returns(String.Empty);
+            mockData.Setup(d => d.GetProviderPath()).Returns(string.Empty);
 
             // Act
             var cats = mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount);
@@ -1051,7 +1051,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_GetPage_Overload_Does_Not_Call_GetAllByScopeInternal_If_Cacheable_And_Cache_Valid()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
@@ -1095,7 +1095,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Insert_Clears_Cache_If_Cacheable_And_Scoped()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
             mockCache.Setup(c => c.GetItem(cacheKey)).Returns(new List<CacheableCat>());
@@ -1164,7 +1164,7 @@ namespace DotNetNuke.Tests.Data
         public void RepositoryBase_Update_Clears_Cache_If_Cacheable_And_Scoped()
         {
             // Arrange
-            var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
+            var cacheKey = CachingProvider.GetCacheKey(string.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
             mockCache.Setup(c => c.GetItem(cacheKey)).Returns(new List<CacheableCat>());

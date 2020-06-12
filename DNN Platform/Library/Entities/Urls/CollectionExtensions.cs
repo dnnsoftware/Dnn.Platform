@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Urls
                                 int rulePortalId = -1;
                                 if (portalIdRaw != null)
                                 {
-                                    Int32.TryParse(portalIdRaw, out rulePortalId);
+                                    int.TryParse(portalIdRaw, out rulePortalId);
                                 }
                                 // 807 : if portal specific then import all regardless of portal id specified
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
@@ -136,7 +136,7 @@ namespace DotNetNuke.Entities.Urls
                                 int rulePortalId = -1;
                                 if (portalIdRaw != null)
                                 {
-                                    Int32.TryParse(portalIdRaw, out rulePortalId);
+                                    int.TryParse(portalIdRaw, out rulePortalId);
                                 }
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
                                 // if portal specific, all rules are assumed to belong to the portal
@@ -237,7 +237,7 @@ namespace DotNetNuke.Entities.Urls
                                 int actionCount = 0;
                                 if (portalIdRaw != null)
                                 {
-                                    Int32.TryParse(portalIdRaw, out rulePortalId);
+                                    int.TryParse(portalIdRaw, out rulePortalId);
                                 }
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalId == -1 || portalSpecific)
                                 {
@@ -307,12 +307,12 @@ namespace DotNetNuke.Entities.Urls
         {
             var dictionary = new Dictionary<string, string>();
 
-            if (!String.IsNullOrEmpty(delimitedString))
+            if (!string.IsNullOrEmpty(delimitedString))
             {
                 var pairs = delimitedString.Split(pairSeparator);
                 foreach (string pair in pairs)
                 {
-                    if (!String.IsNullOrEmpty(pair))
+                    if (!string.IsNullOrEmpty(pair))
                     {
                         var chars = pair.Split(separator);
                         dictionary[chars[0]] = chars[1];

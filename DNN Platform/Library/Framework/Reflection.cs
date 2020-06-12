@@ -148,10 +148,10 @@ namespace DotNetNuke.Framework
 
             // get the provider configuration based on the type
             ProviderConfiguration objProviderConfiguration = ProviderConfiguration.GetProviderConfiguration(ObjectProviderType);
-            if (!String.IsNullOrEmpty(ObjectNamespace) && !String.IsNullOrEmpty(ObjectAssemblyName))
+            if (!string.IsNullOrEmpty(ObjectNamespace) && !string.IsNullOrEmpty(ObjectAssemblyName))
             {
                 // if both the Namespace and AssemblyName are provided then we will construct an "assembly qualified typename" - ie. "NameSpace.ClassName, AssemblyName"
-                if (String.IsNullOrEmpty(ObjectProviderName))
+                if (string.IsNullOrEmpty(ObjectProviderName))
                 {
                     // dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider )
                     TypeName = ObjectNamespace + "." + objProviderConfiguration.DefaultProvider + ", " + ObjectAssemblyName + (fixAssemblyName ? "." + objProviderConfiguration.DefaultProvider : string.Empty);
@@ -165,9 +165,9 @@ namespace DotNetNuke.Framework
             else
             {
                 // if only the Namespace is provided then we will construct an "full typename" - ie. "NameSpace.ClassName"
-                if (!String.IsNullOrEmpty(ObjectNamespace))
+                if (!string.IsNullOrEmpty(ObjectNamespace))
                 {
-                    if (String.IsNullOrEmpty(ObjectProviderName))
+                    if (string.IsNullOrEmpty(ObjectProviderName))
                     {
                         // dynamically create the typename from the constants ( this enables private assemblies to share the same configuration as the base provider )
                         TypeName = ObjectNamespace + "." + objProviderConfiguration.DefaultProvider;
@@ -181,7 +181,7 @@ namespace DotNetNuke.Framework
                 else
                 {
                     // if neither Namespace or AssemblyName are provided then we will get the typename from the default provider
-                    if (String.IsNullOrEmpty(ObjectProviderName))
+                    if (string.IsNullOrEmpty(ObjectProviderName))
                     {
                         // get the typename of the default Provider from web.config
                         TypeName = ((Provider)objProviderConfiguration.Providers[objProviderConfiguration.DefaultProvider]).Type;
@@ -268,7 +268,7 @@ namespace DotNetNuke.Framework
 
         public static Type CreateType(string TypeName, string CacheKey, bool UseCache, bool IgnoreErrors)
         {
-            if (String.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(CacheKey))
             {
                 CacheKey = TypeName;
             }

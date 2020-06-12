@@ -20,12 +20,12 @@ namespace DotNetNuke.UI.Modules
 
         public override Control CreateModuleControl(TemplateControl containerControl, ModuleInfo moduleConfiguration)
         {
-            return this.CreateControl(containerControl, String.Empty, moduleConfiguration.ModuleControl.ControlSrc);
+            return this.CreateControl(containerControl, string.Empty, moduleConfiguration.ModuleControl.ControlSrc);
         }
 
         public override Control CreateSettingsControl(TemplateControl containerControl, ModuleInfo moduleConfiguration, string controlSrc)
         {
-            return this.CreateControl(containerControl, String.Empty, controlSrc);
+            return this.CreateControl(containerControl, string.Empty, controlSrc);
         }
     }
 }

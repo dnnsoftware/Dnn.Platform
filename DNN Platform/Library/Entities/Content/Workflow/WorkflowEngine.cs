@@ -427,7 +427,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             result = result.Replace("[STATE]", state != null ? state.StateName : "");
             result = result.Replace("[WORKFLOW]", workflow.WorkflowName);
             result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : "");
-            result = result.Replace("[COMMENT]", !String.IsNullOrEmpty(comment) ? comment : "");
+            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : "");
             return result;
         }
 

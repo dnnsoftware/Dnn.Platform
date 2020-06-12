@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
             // Look for a module control
-            string controlKey = routeValues.ContainsKey("ctl") ? (string)routeValues["ctl"] : String.Empty;
+            string controlKey = routeValues.ContainsKey("ctl") ? (string)routeValues["ctl"] : string.Empty;
 
             List<string> additionalParams = (from routeValue in routeValues
                                              where !ExcludedRouteValues.Split(',').ToList().Contains(routeValue.Key.ToLowerInvariant())
@@ -38,14 +38,14 @@ namespace DotNetNuke.Web.Mvc.Routing
                                              .ToList();
 
             string url;
-            if (String.IsNullOrEmpty(controlKey))
+            if (string.IsNullOrEmpty(controlKey))
             {
                 additionalParams.Insert(0, "moduleId=" + moduleContext.Configuration.ModuleID);
                 url = this.NavigationManager.NavigateURL("", additionalParams.ToArray());
             }
             else
             {
-                url = moduleContext.EditUrl(String.Empty, String.Empty, controlKey, additionalParams.ToArray());
+                url = moduleContext.EditUrl(string.Empty, string.Empty, controlKey, additionalParams.ToArray());
             }
 
             return url;
@@ -54,7 +54,7 @@ namespace DotNetNuke.Web.Mvc.Routing
         public override RouteData GetRouteData(HttpContextBase httpContext, ModuleControlInfo moduleControl)
         {
             var segments = moduleControl.ControlSrc.Replace(".mvc", "").Split('/');
-            string routeNamespace = String.Empty;
+            string routeNamespace = string.Empty;
             string routeControllerName;
             string routeActionName;
             if (segments.Length == 3)
@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.Mvc.Routing
                     }
                 }
             }
-            if (!String.IsNullOrEmpty(routeNamespace))
+            if (!string.IsNullOrEmpty(routeNamespace))
             {
                 routeData.DataTokens.Add("namespaces", new string[] { routeNamespace });
             }

@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.Skins
         public static string FormatSkinPath(string skinSrc)
         {
             string strSkinSrc = skinSrc;
-            if (!String.IsNullOrEmpty(strSkinSrc))
+            if (!string.IsNullOrEmpty(strSkinSrc))
             {
                 strSkinSrc = strSkinSrc.Substring(0, strSkinSrc.LastIndexOf("/") + 1);
             }
@@ -233,7 +233,7 @@ namespace DotNetNuke.UI.Skins
         public static string FormatSkinSrc(string skinSrc, PortalSettings portalSettings)
         {
             string strSkinSrc = skinSrc;
-            if (!String.IsNullOrEmpty(strSkinSrc))
+            if (!string.IsNullOrEmpty(strSkinSrc))
             {
                 switch (strSkinSrc.Substring(0, 3).ToLowerInvariant())
                 {

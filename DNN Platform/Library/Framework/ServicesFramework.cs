@@ -21,7 +21,7 @@ namespace DotNetNuke.Framework
         public static string GetServiceFrameworkRoot()
         {
             var portalSettings = PortalSettings.Current;
-            if (portalSettings == null) return String.Empty;
+            if (portalSettings == null) return string.Empty;
             var path = portalSettings.PortalAlias.HTTPAlias;
             var index = path.IndexOf('/');
             if (index > 0)

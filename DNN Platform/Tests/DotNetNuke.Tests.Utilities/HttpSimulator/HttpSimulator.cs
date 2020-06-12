@@ -210,7 +210,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             private int _timeout = 30; // minutes
             private const bool _isNewSession = true;
             private readonly HttpStaticObjectsCollection _staticObjects = new HttpStaticObjectsCollection();
-            private readonly object _syncRoot = new Object();
+            private readonly object _syncRoot = new object();
 
             /// <summary>
             /// Ends the current session.
@@ -659,7 +659,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         #region --- Text Manipulation Methods for slashes ---
         protected static string NormalizeSlashes(string s)
         {
-            if (String.IsNullOrEmpty(s) || s == "/")
+            if (string.IsNullOrEmpty(s) || s == "/")
                 return "/";
 
             s = s.Replace(@"\", "/");
@@ -685,7 +685,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         protected static string StripTrailingBackSlashes(string s)
         {
-            return String.IsNullOrEmpty(s) ? string.Empty : Regex.Replace(s, @"(.*)\\*$", "$1", RegexOptions.RightToLeft);
+            return string.IsNullOrEmpty(s) ? string.Empty : Regex.Replace(s, @"(.*)\\*$", "$1", RegexOptions.RightToLeft);
         }
 
         #endregion

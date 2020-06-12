@@ -529,7 +529,7 @@ namespace DotNetNuke.Services.Search.Internals
             var strippedString = html;
             var emptySpace = retainSpace ? " " : "";
 
-            if (!String.IsNullOrEmpty(strippedString))
+            if (!string.IsNullOrEmpty(strippedString))
             {
                 // Remove all opening HTML Tags with no attributes
                 strippedString = StripOpeningTagsRegex.Replace(strippedString, emptySpace);
@@ -537,7 +537,7 @@ namespace DotNetNuke.Services.Search.Internals
                 strippedString = StripClosingTagsRegex.Replace(strippedString, emptySpace);
             }
 
-            if (!String.IsNullOrEmpty(strippedString))
+            if (!string.IsNullOrEmpty(strippedString))
             {
                 var list = new List<string>();
 

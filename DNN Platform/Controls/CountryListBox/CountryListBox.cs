@@ -86,13 +86,13 @@ namespace DotNetNuke.UI.WebControls
             if (!this.Page.IsPostBack)
             {
                 // If GeoIPFile is not provided, assume they put it in BIN.
-                if (String.IsNullOrEmpty(this._GeoIPFile))
+                if (string.IsNullOrEmpty(this._GeoIPFile))
                 {
                     this._GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
                 }
                 this.EnsureChildControls();
                 // Check to see if a TestIP is specified
-                if (!String.IsNullOrEmpty(this._TestIP))
+                if (!string.IsNullOrEmpty(this._TestIP))
                 {
                     // TestIP is specified, let's use it
                     IP = this._TestIP;
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.WebControls
 
                 // Check to see if the request is a localhost request
                 // and see if the LocalhostCountryCode is specified
-                if (IsLocal && !String.IsNullOrEmpty(this._LocalhostCountryCode))
+                if (IsLocal && !string.IsNullOrEmpty(this._LocalhostCountryCode))
                 {
                     // Bing the data
                     base.OnDataBinding(e);

@@ -90,23 +90,23 @@ namespace DotNetNuke.UI.ControlPanel
 
         #region Event Handlers
 
-        protected void AddNewOrExisting_OnClick(Object sender, EventArgs e)
+        protected void AddNewOrExisting_OnClick(object sender, EventArgs e)
         {
             this.LoadAllLists();
         }
 
-        protected void PaneLstSelectedIndexChanged(Object sender, EventArgs e)
+        protected void PaneLstSelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadPositionList();
             this.LoadPaneModulesList();
         }
 
-        protected void PageLstSelectedIndexChanged(Object sender, EventArgs e)
+        protected void PageLstSelectedIndexChanged(object sender, EventArgs e)
         {
             this.LoadModuleList();
         }
 
-        protected void PositionLstSelectedIndexChanged(Object sender, EventArgs e)
+        protected void PositionLstSelectedIndexChanged(object sender, EventArgs e)
         {
             this.PaneModulesLst.Enabled = this.PositionLst.SelectedValue == "ABOVE" || this.PositionLst.SelectedValue == "BELOW";
         }

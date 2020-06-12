@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
         /// <summary>
         /// Time when Content was last modified (in Utc)
         /// </summary>
-        public String DisplayModifiedTime { get; set; }
+        public string DisplayModifiedTime { get; set; }
 
         /// <summary>
         /// Author profile URL

@@ -25,7 +25,7 @@ namespace DotNetNuke.ExtensionPoints
             base.OnInit(e);
             var extensionPointManager = new ExtensionPointManager();
 
-            if (!String.IsNullOrEmpty(this.Name))
+            if (!string.IsNullOrEmpty(this.Name))
             {
                 var extension = extensionPointManager.GetUserControlExtensionPointFirstByPriority(this.Module, this.Name);
                 this.LoadControl(extension);

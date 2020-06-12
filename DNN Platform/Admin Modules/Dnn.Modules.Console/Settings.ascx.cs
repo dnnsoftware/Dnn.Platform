@@ -216,7 +216,7 @@ namespace Dnn.Modules.Console
                         var tabPath = (item.FindControl("tabPath") as HiddenField).Value;
                         var visibility = (item.FindControl("tabVisibility") as DnnComboBox).SelectedValue;
 
-                        var key = String.Format("TabVisibility{0}", tabPath.Replace("//", "-"));
+                        var key = string.Format("TabVisibility{0}", tabPath.Replace("//", "-"));
                         ModuleController.Instance.UpdateModuleSetting(this.ModuleId, key, visibility);
                     }
                 }
@@ -248,7 +248,7 @@ namespace Dnn.Modules.Console
             this.BindTabs(this.ParentTab.SelectedItemValueAsInt, this.IncludeParent.Checked);
         }
 
-        void tabs_ItemDataBound(Object Sender, RepeaterItemEventArgs e)
+        void tabs_ItemDataBound(object Sender, RepeaterItemEventArgs e)
         {
 
             if (e.Item.ItemType == ListItemType.Item || e.Item.ItemType == ListItemType.AlternatingItem)
@@ -282,7 +282,7 @@ namespace Dnn.Modules.Console
                 tabLabel.Text = tab.TabName;
                 tabPathField.Value = tab.TabPath;
 
-                var key = String.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
+                var key = string.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
                 this.SelectDropDownListItem(ref visibilityDropDown, key);
             }
         }

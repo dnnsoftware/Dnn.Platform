@@ -149,7 +149,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -177,7 +177,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -228,7 +228,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -257,7 +257,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -344,7 +344,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -372,7 +372,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -443,7 +443,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -471,7 +471,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -542,7 +542,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>
@@ -570,7 +570,7 @@ namespace DotNetNuke.Instrumentation
         /// <param name = "args">An Object array containing zero or more objects to format</param>
         /// <remarks>
         ///   <para>
-        ///     The message is formatted using the <see cref = "String.Format(IFormatProvider, string, object[])" /> method. See
+        ///     The message is formatted using the <see cref = "string.Format(IFormatProvider, string, object[])" /> method. See
         ///     <c>String.Format</c> for details of the syntax of the format string and the behavior
         ///     of the formatting.
         ///   </para>

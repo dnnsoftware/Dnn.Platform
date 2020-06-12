@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.Journal
             var originalSecuritySet =
                 journalItem.SecuritySet = (journalItem.SecuritySet ?? string.Empty).ToUpperInvariant();
 
-            if (String.IsNullOrEmpty(journalItem.SecuritySet))
+            if (string.IsNullOrEmpty(journalItem.SecuritySet))
             {
                 journalItem.SecuritySet = "E,";
             }
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Journal
 
                 if (role != null && !role.IsPublic)
                 {
-                    journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", String.Empty).Replace("C,", String.Empty);
+                    journalItem.SecuritySet = journalItem.SecuritySet.Replace("E,", string.Empty).Replace("C,", string.Empty);
                 }
             }
 
@@ -298,20 +298,20 @@ namespace DotNetNuke.Services.Journal
 
             string xml = null;
             var portalSecurity = PortalSecurity.Instance;
-            if (!String.IsNullOrEmpty(journalItem.Title))
+            if (!string.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
             }
-            if (!String.IsNullOrEmpty(journalItem.Summary))
+            if (!string.IsNullOrEmpty(journalItem.Summary))
             {
                 journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
-            if (!String.IsNullOrEmpty(journalItem.Body))
+            if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
 
-            if (!String.IsNullOrEmpty(journalItem.Body))
+            if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 var xDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xnode = xDoc.CreateElement("items");
@@ -330,19 +330,19 @@ namespace DotNetNuke.Services.Journal
             }
             if (journalItem.ItemData != null)
             {
-                if (!String.IsNullOrEmpty(journalItem.ItemData.Title))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
                 {
                     journalItem.ItemData.Title = portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
                 }
-                if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
                     journalItem.ItemData.Description = portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
-                if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
                     journalItem.ItemData.Url = portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
                 }
-                if (!String.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
                 {
                     journalItem.ItemData.ImageUrl = portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
                 }
@@ -415,19 +415,19 @@ namespace DotNetNuke.Services.Journal
             }
             string xml = null;
             var portalSecurity = PortalSecurity.Instance;
-            if (!String.IsNullOrEmpty(journalItem.Title))
+            if (!string.IsNullOrEmpty(journalItem.Title))
             {
                 journalItem.Title = portalSecurity.InputFilter(journalItem.Title, PortalSecurity.FilterFlag.NoMarkup);
             }
-            if (!String.IsNullOrEmpty(journalItem.Summary))
+            if (!string.IsNullOrEmpty(journalItem.Summary))
             {
                 journalItem.Summary = portalSecurity.InputFilter(journalItem.Summary, PortalSecurity.FilterFlag.NoScripting);
             }
-            if (!String.IsNullOrEmpty(journalItem.Body))
+            if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 journalItem.Body = portalSecurity.InputFilter(journalItem.Body, PortalSecurity.FilterFlag.NoScripting);
             }
-            if (!String.IsNullOrEmpty(journalItem.Body))
+            if (!string.IsNullOrEmpty(journalItem.Body))
             {
                 var xDoc = new XmlDocument { XmlResolver = null };
                 XmlElement xnode = xDoc.CreateElement("items");
@@ -446,20 +446,20 @@ namespace DotNetNuke.Services.Journal
             }
             if (journalItem.ItemData != null)
             {
-                if (!String.IsNullOrEmpty(journalItem.ItemData.Title))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Title))
                 {
                     journalItem.ItemData.Title = portalSecurity.InputFilter(journalItem.ItemData.Title, PortalSecurity.FilterFlag.NoMarkup);
                 }
-                if (!String.IsNullOrEmpty(journalItem.ItemData.Description))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Description))
                 {
                     journalItem.ItemData.Description =
                         portalSecurity.InputFilter(journalItem.ItemData.Description, PortalSecurity.FilterFlag.NoScripting);
                 }
-                if (!String.IsNullOrEmpty(journalItem.ItemData.Url))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.Url))
                 {
                     journalItem.ItemData.Url = portalSecurity.InputFilter(journalItem.ItemData.Url, PortalSecurity.FilterFlag.NoScripting);
                 }
-                if (!String.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
+                if (!string.IsNullOrEmpty(journalItem.ItemData.ImageUrl))
                 {
                     journalItem.ItemData.ImageUrl = portalSecurity.InputFilter(journalItem.ItemData.ImageUrl, PortalSecurity.FilterFlag.NoScripting);
                 }
@@ -687,7 +687,7 @@ namespace DotNetNuke.Services.Journal
         public void SaveComment(CommentInfo comment)
         {
             var portalSecurity = PortalSecurity.Instance;
-            if (!String.IsNullOrEmpty(comment.Comment))
+            if (!string.IsNullOrEmpty(comment.Comment))
             {
                 comment.Comment =
                     portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
@@ -742,7 +742,7 @@ namespace DotNetNuke.Services.Journal
         {
             return CBO.GetCachedObject<IEnumerable<JournalTypeInfo>>(
                                             new CacheItemArgs(
-                                                String.Format(DataCache.JournalTypesCacheKey, portalId),
+                                                string.Format(DataCache.JournalTypesCacheKey, portalId),
                                                                 DataCache.JournalTypesTimeOut,
                                                                 DataCache.JournalTypesCachePriority,
                                                                 portalId),

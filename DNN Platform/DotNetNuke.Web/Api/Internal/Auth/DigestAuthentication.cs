@@ -82,21 +82,21 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         private string GenerateUnhashedDigest()
         {
-            string a1 = String.Format("{0}:{1}:{2}", this._request.RequestParams["username"].Replace("\\\\", "\\"),
+            string a1 = string.Format("{0}:{1}:{2}", this._request.RequestParams["username"].Replace("\\\\", "\\"),
                                       this._request.RequestParams["realm"], this._password);
             string ha1 = CreateMd5HashBinHex(a1);
-            string a2 = String.Format("{0}:{1}", this._request.HttpMethod, this._request.RequestParams["uri"]);
+            string a2 = string.Format("{0}:{1}", this._request.HttpMethod, this._request.RequestParams["uri"]);
             string ha2 = CreateMd5HashBinHex(a2);
             string unhashedDigest;
             if (this._request.RequestParams["qop"] != null)
             {
-                unhashedDigest = String.Format("{0}:{1}:{2}:{3}:{4}:{5}", ha1, this._request.RequestParams["nonce"],
+                unhashedDigest = string.Format("{0}:{1}:{2}:{3}:{4}:{5}", ha1, this._request.RequestParams["nonce"],
                                                this._request.RequestParams["nc"], this._request.RequestParams["cnonce"],
                                                this._request.RequestParams["qop"], ha2);
             }
             else
             {
-                unhashedDigest = String.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
+                unhashedDigest = string.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
             }
             // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return unhashedDigest;
@@ -110,7 +110,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             string ha1 = "";
             for (int i = 0; i <= 15; i++)
             {
-                ha1 += String.Format("{0:x02}", bha1[i]);
+                ha1 += string.Format("{0:x02}", bha1[i]);
             }
             return ha1;
         }

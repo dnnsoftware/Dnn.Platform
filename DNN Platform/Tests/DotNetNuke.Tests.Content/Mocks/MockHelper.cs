@@ -330,7 +330,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             {
                 for (int i = 0; i < Constants.CONTENT_MetaDataCount; i++)
                 {
-                    table.Rows.Add(new object[] { String.Format("{0} {1}", Constants.CONTENT_ValidMetaDataName, i), Constants.CONTENT_ValidMetaDataValue });
+                    table.Rows.Add(new object[] { string.Format("{0} {1}", Constants.CONTENT_ValidMetaDataName, i), Constants.CONTENT_ValidMetaDataValue });
                 }
 
                 return table.CreateDataReader();

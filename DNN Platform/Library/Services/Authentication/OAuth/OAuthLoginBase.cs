@@ -17,7 +17,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
     {
         protected virtual string AuthSystemApplicationName
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected OAuthClientBase OAuthClient { get; set; }

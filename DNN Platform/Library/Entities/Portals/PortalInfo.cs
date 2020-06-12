@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Portals
         /// <remarks><seealso cref="HomeSystemDirectoryMapPath"></seealso></remarks>
         [XmlElement("homesystemdirectory")]
         public string HomeSystemDirectory {
-            get { return String.Format("{0}-System", this.HomeDirectory); }
+            get { return string.Format("{0}-System", this.HomeDirectory); }
         }
 
         /// <summary>
@@ -684,7 +684,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
+                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeDirectory.Replace("/", "\\"));
             }
         }
 
@@ -699,7 +699,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                return String.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
+                return string.Format("{0}\\{1}\\", Globals.ApplicationMapPath, this.HomeSystemDirectory.Replace("/", "\\"));
             }
         }
 

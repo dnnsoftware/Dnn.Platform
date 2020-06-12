@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Admin.Users
             string answer = "";
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && !this.IsAdmin)
             {
-                if (String.IsNullOrEmpty(this.txtAnswer.Text))
+                if (string.IsNullOrEmpty(this.txtAnswer.Text))
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     return;
@@ -344,7 +344,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 UserController.ResetPasswordToken(this.User, Entities.Host.Host.AdminMembershipResetLinkValidity);
 
                 bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
-                var message = String.Empty;
+                var message = string.Empty;
                 var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
                 if (canSend)
                 {
@@ -380,7 +380,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 // send fresh resettoken copy
                 bool canSend = UserController.ResetPasswordToken(this.User, true);
 
-                var message = String.Empty;
+                var message = string.Empty;
                 var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
                 if (canSend)
                 {
@@ -444,7 +444,7 @@ namespace DotNetNuke.Modules.Admin.Users
             LogController.Instance.AddLog(log);
         }
 
-        private void cmdUpdate_Click(Object sender, EventArgs e)
+        private void cmdUpdate_Click(object sender, EventArgs e)
         {
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || !this.UseCaptcha)
             {
@@ -467,7 +467,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
 
                 // 3. Check old Password is Provided
-                if (!this.IsAdmin && String.IsNullOrEmpty(this.txtOldPassword.Text))
+                if (!this.IsAdmin && string.IsNullOrEmpty(this.txtOldPassword.Text))
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordMissing));
                     return;
@@ -575,17 +575,17 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 return;
             }
-            if (String.IsNullOrEmpty(this.txtQAPassword.Text))
+            if (string.IsNullOrEmpty(this.txtQAPassword.Text))
             {
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordInvalid));
                 return;
             }
-            if (String.IsNullOrEmpty(this.txtEditQuestion.Text))
+            if (string.IsNullOrEmpty(this.txtEditQuestion.Text))
             {
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordQuestion));
                 return;
             }
-            if (String.IsNullOrEmpty(this.txtEditAnswer.Text))
+            if (string.IsNullOrEmpty(this.txtEditAnswer.Text))
             {
                 this.OnPasswordQuestionAnswerUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                 return;

@@ -142,32 +142,32 @@ namespace DotNetNuke.Services.Syndication
                 var opmlDoc = new XmlDocument { XmlResolver = null };
                 XmlElement outlineNode = opmlDoc.CreateElement("outline");
 
-                if (!String.IsNullOrEmpty(this.Title))
+                if (!string.IsNullOrEmpty(this.Title))
                 {
                     outlineNode.SetAttribute("title", this.Title);
                 }
 
-                if (!String.IsNullOrEmpty(this.Description))
+                if (!string.IsNullOrEmpty(this.Description))
                 {
                     outlineNode.SetAttribute("description", this.Description);
                 }
 
-                if (!String.IsNullOrEmpty(this.Text))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     outlineNode.SetAttribute("text", this.Text);
                 }
 
-                if (!String.IsNullOrEmpty(this.Type))
+                if (!string.IsNullOrEmpty(this.Type))
                 {
                     outlineNode.SetAttribute("type", this.Type);
                 }
 
-                if (!String.IsNullOrEmpty(this.Language))
+                if (!string.IsNullOrEmpty(this.Language))
                 {
                     outlineNode.SetAttribute("language", this.Language);
                 }
 
-                if (!String.IsNullOrEmpty(this.Category))
+                if (!string.IsNullOrEmpty(this.Category))
                 {
                     outlineNode.SetAttribute("category", this.Category);
                 }

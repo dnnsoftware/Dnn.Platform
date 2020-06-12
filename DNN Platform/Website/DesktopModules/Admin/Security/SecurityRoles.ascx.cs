@@ -76,9 +76,9 @@ namespace DotNetNuke.Modules.Admin.Security
             get
             {
                 string _ReturnURL;
-                var FilterParams = new string[String.IsNullOrEmpty(this.Request.QueryString["filterproperty"]) ? 2 : 3];
+                var FilterParams = new string[string.IsNullOrEmpty(this.Request.QueryString["filterproperty"]) ? 2 : 3];
 
-                if (String.IsNullOrEmpty(this.Request.QueryString["filterProperty"]))
+                if (string.IsNullOrEmpty(this.Request.QueryString["filterProperty"]))
                 {
                     FilterParams.SetValue("filter=" + this.Request.QueryString["filter"], 0);
                     FilterParams.SetValue("currentpage=" + this.Request.QueryString["currentpage"], 1);
@@ -130,7 +130,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         this._User = UserController.GetUserById(this.PortalId, this.UserId);
                     }
-                    else if (this.UsersControl == UsersControl.TextBox && !String.IsNullOrEmpty(this.txtUsers.Text))
+                    else if (this.UsersControl == UsersControl.TextBox && !string.IsNullOrEmpty(this.txtUsers.Text))
                     {
                         this._User = UserController.GetUserByName(this.PortalId, this.txtUsers.Text);
                     }
@@ -510,13 +510,13 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (this.Request.QueryString["RoleId"] != null)
             {
-                this.RoleId = Int32.Parse(this.Request.QueryString["RoleId"]);
+                this.RoleId = int.Parse(this.Request.QueryString["RoleId"]);
             }
             if (this.Request.QueryString["UserId"] != null)
             {
                 int userId;
                 // Use Int32.MaxValue as invalid UserId
-                this.UserId = Int32.TryParse(this.Request.QueryString["UserId"], out userId) ? userId : Int32.MaxValue;
+                this.UserId = int.TryParse(this.Request.QueryString["UserId"], out userId) ? userId : int.MaxValue;
             }
 
             this.CurrentPage = 1;
@@ -590,8 +590,8 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             if ((this.cboUsers.SelectedItem != null) && (this.cboRoles.SelectedItem != null))
             {
-                this.SelectedUserID = Int32.Parse(this.cboUsers.SelectedItem.Value);
-                this.GetDates(this.SelectedUserID, Int32.Parse(this.cboRoles.SelectedItem.Value));
+                this.SelectedUserID = int.Parse(this.cboUsers.SelectedItem.Value);
+                this.GetDates(this.SelectedUserID, int.Parse(this.cboRoles.SelectedItem.Value));
             }
             this.BindGrid();
         }
@@ -610,7 +610,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
-            if (!String.IsNullOrEmpty(this.txtUsers.Text))
+            if (!string.IsNullOrEmpty(this.txtUsers.Text))
             {
                 // validate username
                 UserInfo objUser = UserController.GetUserByName(this.PortalId, this.txtUsers.Text);
@@ -637,7 +637,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void cboRoles_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.GetDates(this.UserId, Int32.Parse(this.cboRoles.SelectedItem.Value));
+            this.GetDates(this.UserId, int.Parse(this.cboRoles.SelectedItem.Value));
             this.BindGrid();
         }
 
@@ -648,7 +648,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        private void cmdAdd_Click(Object sender, EventArgs e)
+        private void cmdAdd_Click(object sender, EventArgs e)
         {
             if (PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName) == false)
             {
@@ -751,11 +751,11 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.RoleId == Null.NullInteger)
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, String.Format(Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteRoleFromUser.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
                     else
                     {
-                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, String.Format(Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
+                        ClientAPI.AddButtonConfirm(cmdDeleteUserRole, string.Format(Localization.GetString("DeleteUsersFromRole.Text", this.LocalResourceFile), role.FullName, role.RoleName));
                     }
                     cmdDeleteUserRole.Attributes.Add("roleId", role.RoleID.ToString());
                     cmdDeleteUserRole.Attributes.Add("userId", role.UserID.ToString());

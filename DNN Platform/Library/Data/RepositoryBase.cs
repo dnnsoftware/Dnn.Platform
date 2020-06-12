@@ -51,7 +51,7 @@ namespace DotNetNuke.Data
 
             if (this.IsCacheable)
             {
-                this.CacheArgs.CacheKey = String.Format(this.CacheArgs.CacheKey, scopeValue);
+                this.CacheArgs.CacheKey = string.Format(this.CacheArgs.CacheKey, scopeValue);
             }
 
             return this.IsCacheable
@@ -120,7 +120,7 @@ namespace DotNetNuke.Data
             if (this.IsCacheable)
             {
                 DataCache.RemoveCache(this.IsScoped
-                                          ? String.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
+                                          ? string.Format(this.CacheArgs.CacheKey, this.GetScopeValue<object>(item))
                                           : this.CacheArgs.CacheKey);
             }
         }
@@ -128,7 +128,7 @@ namespace DotNetNuke.Data
         private void InitializeInternal()
         {
             var type = typeof(T);
-            this.Scope = String.Empty;
+            this.Scope = string.Empty;
             this.IsCacheable = false;
             this.IsScoped = false;
             this.CacheArgs = null;
@@ -139,15 +139,15 @@ namespace DotNetNuke.Data
                 this.Scope = scopeAttribute.Scope;
             }
 
-            this.IsScoped = !String.IsNullOrEmpty(this.Scope);
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
 
             var cacheableAttribute = DataUtil.GetAttribute<CacheableAttribute>(type);
             if (cacheableAttribute != null)
             {
                 this.IsCacheable = true;
-                var cacheKey = !String.IsNullOrEmpty(cacheableAttribute.CacheKey)
+                var cacheKey = !string.IsNullOrEmpty(cacheableAttribute.CacheKey)
                                 ? cacheableAttribute.CacheKey
-                                : String.Format("OR_{0}", type.Name);
+                                : string.Format("OR_{0}", type.Name);
                 var cachePriority = cacheableAttribute.CachePriority;
                 var cacheTimeOut = cacheableAttribute.CacheTimeOut;
 
@@ -225,8 +225,8 @@ namespace DotNetNuke.Data
         public void Initialize(string cacheKey, int cacheTimeOut = 20, CacheItemPriority cachePriority = CacheItemPriority.Default, string scope = "")
         {
             this.Scope = scope;
-            this.IsScoped = !String.IsNullOrEmpty(this.Scope);
-            this.IsCacheable = !String.IsNullOrEmpty(cacheKey);
+            this.IsScoped = !string.IsNullOrEmpty(this.Scope);
+            this.IsCacheable = !string.IsNullOrEmpty(cacheKey);
             if (this.IsCacheable)
             {
                 if (this.IsScoped)

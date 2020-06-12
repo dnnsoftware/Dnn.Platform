@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             if (this.Filter == null)
             {
                 portalModulesList = DesktopModuleController.GetPortalDesktopModules(PortalSettings.Current.PortalId)
-                    .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || String.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
+                    .Where((kvp) => kvp.Value.DesktopModule.Category == "Uncategorised" || string.IsNullOrEmpty(kvp.Value.DesktopModule.Category))
                     .OrderBy(c => c.Key);
             }
             else

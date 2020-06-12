@@ -167,7 +167,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 strScript = strScript.Substring(1);
             }
             string strSQLExceptions = DataProvider.Instance().ExecuteScript(strScript);
-            if (!String.IsNullOrEmpty(strSQLExceptions))
+            if (!string.IsNullOrEmpty(strSQLExceptions))
             {
                 if (this.Package.InstallerInfo.IsLegacyMode)
                 {

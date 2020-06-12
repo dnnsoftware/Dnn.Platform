@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             // Arrange
             var propertyName = testFields["PropertyName"];
             var settingName = testFields["SettingName"];
-            var isHostDefault = Boolean.Parse(testFields["IsHostDefault"]);
+            var isHostDefault = bool.Parse(testFields["IsHostDefault"]);
             var defaultValue = testFields["DefaultValue"];
             var controller = new PortalSettingsController();
             var settings = new PortalSettings() { PortalId = ValidPortalId, CultureCode = Null.NullString };
@@ -77,11 +77,11 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings[s1]);
             mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
-                            .Returns((string s, bool b) => Boolean.Parse(hostSettings[s]));
+                            .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
             mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
-                            .Returns((string s, int i) => Int32.Parse(hostSettings[s]));
+                            .Returns((string s, int i) => int.Parse(hostSettings[s]));
             mockHostController.Setup(c => c.GetInteger(It.IsAny<string>()))
-                            .Returns((string s) => Int32.Parse(hostSettings[s]));
+                            .Returns((string s) => int.Parse(hostSettings[s]));
             HostController.RegisterInstance(mockHostController.Object);
 
             if (isHostDefault)
@@ -131,9 +131,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings[s1]);
             mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
-                            .Returns((string s, bool b) => Boolean.Parse(hostSettings[s]));
+                            .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
             mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
-                            .Returns((string s, int i) => Int32.Parse(hostSettings[s]));
+                            .Returns((string s, int i) => int.Parse(hostSettings[s]));
             HostController.RegisterInstance(mockHostController.Object);
 
             // Act
@@ -172,9 +172,9 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
             mockHostController.Setup(c => c.GetString(It.IsAny<string>(), It.IsAny<string>()))
                             .Returns((string s1, string s2) => hostSettings[s1]);
             mockHostController.Setup(c => c.GetBoolean(It.IsAny<string>(), It.IsAny<bool>()))
-                            .Returns((string s, bool b) => Boolean.Parse(hostSettings[s]));
+                            .Returns((string s, bool b) => bool.Parse(hostSettings[s]));
             mockHostController.Setup(c => c.GetInteger(It.IsAny<string>(), It.IsAny<int>()))
-                            .Returns((string s, int i) => Int32.Parse(hostSettings[s]));
+                            .Returns((string s, int i) => int.Parse(hostSettings[s]));
             HostController.RegisterInstance(mockHostController.Object);
 
             // Act

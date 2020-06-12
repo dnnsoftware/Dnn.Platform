@@ -222,7 +222,7 @@ namespace DotNetNuke.Entities.Modules
                     {
                         int userId;
                         // Use Int32.MaxValue as invalid UserId
-                        _UserId = Int32.TryParse(this.Request.QueryString["userid"], out userId) ? userId : Int32.MaxValue;
+                        _UserId = int.TryParse(this.Request.QueryString["userid"], out userId) ? userId : int.MaxValue;
                         this.ViewState["UserId"] = _UserId;
                     }
                 }
@@ -307,7 +307,7 @@ namespace DotNetNuke.Entities.Modules
             // Set default countr
             string country = Null.NullString;
             country = this.LookupCountry();
-            if (!String.IsNullOrEmpty(country))
+            if (!string.IsNullOrEmpty(country))
             {
                 ListController listController = new ListController();
                 var listitem = listController.GetListEntryInfo("Country", country);
@@ -458,11 +458,11 @@ namespace DotNetNuke.Entities.Modules
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
                 {
-                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !String.IsNullOrEmpty(strMessage));
+                    this.AddLocalizedModuleMessage(string.Format(Localization.GetString("SendMail.Error", Localization.SharedResourceFile), strMessage), message, !string.IsNullOrEmpty(strMessage));
                 }
                 else
                 {
-                    this.AddLocalizedModuleMessage(strMessage, message, !String.IsNullOrEmpty(strMessage));
+                    this.AddLocalizedModuleMessage(strMessage, message, !string.IsNullOrEmpty(strMessage));
                 }
             }
             else

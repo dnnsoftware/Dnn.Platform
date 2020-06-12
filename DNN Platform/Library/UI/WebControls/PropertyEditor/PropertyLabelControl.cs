@@ -278,7 +278,7 @@ namespace DotNetNuke.UI.WebControls
             if (this.DataSource != null)
             {
                 this.EnsureChildControls();
-                if (!String.IsNullOrEmpty(this.DataField))
+                if (!string.IsNullOrEmpty(this.DataField))
                 {
                     // DataBind the Label (via the Resource Key)
                     var dataRow = (DataRowView)this.DataSource;

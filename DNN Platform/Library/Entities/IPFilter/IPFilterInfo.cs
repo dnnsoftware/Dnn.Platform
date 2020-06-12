@@ -42,8 +42,8 @@ namespace DotNetNuke.Entities.Host
 
         public IPFilterInfo()
         {
-            this.IPAddress = String.Empty;
-            this.SubnetMask = String.Empty;
+            this.IPAddress = string.Empty;
+            this.SubnetMask = string.Empty;
             this.RuleType = -1;
         }
 

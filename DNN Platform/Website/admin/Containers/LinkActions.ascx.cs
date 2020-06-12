@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.Containers
         protected override void OnPreRender(EventArgs e)
         {
             base.OnPreRender(e);
-            if (String.IsNullOrEmpty(this._itemSeparator))
+            if (string.IsNullOrEmpty(this._itemSeparator))
             {
                 this._itemSeparator = "&nbsp;&nbsp;";
             }

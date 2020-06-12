@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.DDRMenu
             }
             returnUrl = HttpUtility.UrlEncode(returnUrl);
 
-            return Globals.LoginURL(returnUrl, !String.IsNullOrEmpty(request.QueryString["override"]));
+            return Globals.LoginURL(returnUrl, !string.IsNullOrEmpty(request.QueryString["override"]));
         }
 
         public static string GetUserUrl()

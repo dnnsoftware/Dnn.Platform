@@ -521,7 +521,7 @@ namespace DotNetNuke.Services.Syndication
         private static string ParseElement(XmlElement node, string attribute)
         {
             string attrValue = node.GetAttribute(attribute);
-            return !String.IsNullOrEmpty(attrValue) ? attrValue : string.Empty;
+            return !string.IsNullOrEmpty(attrValue) ? attrValue : string.Empty;
         }
     }
 }

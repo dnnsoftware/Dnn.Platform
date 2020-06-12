@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnLoad(e);
             string strCssClass;
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 strCssClass = this.CssClass;
             }
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 strCssClass = "SkinObject";
             }
             string strSeparator = string.Empty;
-            if (!String.IsNullOrEmpty(this.Separator))
+            if (!string.IsNullOrEmpty(this.Separator))
             {
                 if (this.Separator.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Skins.Controls
             strLinks = this.BuildLinks(this.Level, strSeparator, strCssClass);
 
             // Render links, even if nothing is returned with the currently set level
-            if (String.IsNullOrEmpty(strLinks) && this.ForceLinks)
+            if (string.IsNullOrEmpty(strLinks) && this.ForceLinks)
             {
                 strLinks = this.BuildLinks("", strSeparator, strCssClass);
             }
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.Skins.Controls
         private string ProcessLink(string sLink, int iLinksLength)
         {
             // wrap in a div if set to vertical
-            if (String.IsNullOrEmpty(sLink))
+            if (string.IsNullOrEmpty(sLink))
             {
                 return "";
             }
@@ -207,7 +207,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 sLink = string.Concat("<div>", this.Separator, sLink, "</div>");
             }
-            else if (!String.IsNullOrEmpty(this.Separator) && iLinksLength > 0)
+            else if (!string.IsNullOrEmpty(this.Separator) && iLinksLength > 0)
             {
                 // If not vertical, then render the separator
                 sLink = string.Concat(this.Separator, sLink);

@@ -96,7 +96,7 @@ namespace DotNetNuke.Modules.Admin.Security
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
-                    if (String.IsNullOrEmpty(_RedirectURL))
+                    if (string.IsNullOrEmpty(_RedirectURL))
                     {
                         // redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
@@ -148,9 +148,9 @@ namespace DotNetNuke.Modules.Admin.Security
         private void GetUser()
         {
             ArrayList arrUsers;
-            if (this.ShowEmailField && !String.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (String.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
+            if (this.ShowEmailField && !string.IsNullOrEmpty(this.txtEmail.Text.Trim()) && (string.IsNullOrEmpty(this.txtUsername.Text.Trim()) || this.divUsername.Visible == false))
             {
-                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, Int32.MaxValue, ref this._userCount);
+                arrUsers = UserController.GetUsersByEmail(this.PortalSettings.PortalId, this.txtEmail.Text, 0, int.MaxValue, ref this._userCount);
                 if (arrUsers != null && arrUsers.Count == 1)
                 {
                     this._user = (UserInfo)arrUsers[0];
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </summary>
         /// <remarks>
         /// </remarks>
-        protected void OnSendPasswordClick(Object sender, EventArgs e)
+        protected void OnSendPasswordClick(object sender, EventArgs e)
         {
             // pretty much alwasy display the same message to avoid hinting on the existance of a user name
             var message = Localization.GetString("PasswordSent", this.LocalResourceFile);
@@ -244,12 +244,12 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if ((this.UseCaptcha && this.ctlCaptcha.IsValid) || (!this.UseCaptcha))
             {
-                if (String.IsNullOrEmpty(this.txtUsername.Text.Trim()))
+                if (string.IsNullOrEmpty(this.txtUsername.Text.Trim()))
                 {
                     // No UserName provided
                     if (this.ShowEmailField)
                     {
-                        if (String.IsNullOrEmpty(this.txtEmail.Text.Trim()))
+                        if (string.IsNullOrEmpty(this.txtEmail.Text.Trim()))
                         {
                             // No email address either (cannot retrieve password)
                             canSend = false;

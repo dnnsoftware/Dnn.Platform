@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.EventQueue.Config
 
         private void Deserialize(string configXml)
         {
-            if (!String.IsNullOrEmpty(configXml))
+            if (!string.IsNullOrEmpty(configXml))
             {
                 var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.LoadXml(configXml);

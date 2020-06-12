@@ -9,14 +9,14 @@ namespace DotNetNuke.Web.DDRMenu
 {
     public class ModuleBase : PortalModuleBase
     {
-        protected String GetStringSetting(String name, String defaultValue)
+        protected string GetStringSetting(string name, string defaultValue)
         {
             var result = this.Request.QueryString[name];
-            if (String.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
             {
-                result = (String)this.Settings[name];
+                result = (string)this.Settings[name];
             }
-            if (String.IsNullOrEmpty(result))
+            if (string.IsNullOrEmpty(result))
             {
                 result = defaultValue;
             }
@@ -33,28 +33,28 @@ namespace DotNetNuke.Web.DDRMenu
             return result;
         }
 
-        protected String GetStringSetting(String name)
+        protected string GetStringSetting(string name)
         {
             return this.GetStringSetting(name, "");
         }
 
-        protected Int32 GetIntSetting(String name, Int32 defaultValue)
+        protected int GetIntSetting(string name, int defaultValue)
         {
             return Convert.ToInt32(this.GetStringSetting(name, defaultValue.ToString()));
         }
 
-        protected Int32 GetIntSetting(String name)
+        protected int GetIntSetting(string name)
         {
             return this.GetIntSetting(name, 0);
         }
 
-        protected Boolean GetBoolSetting(String name, Boolean defaultValue)
+        protected bool GetBoolSetting(string name, bool defaultValue)
         {
             var result = this.GetStringSetting(name);
             return (result == "") ? defaultValue : Convert.ToBoolean(result);
         }
 
-        protected Boolean GetBoolSetting(String name)
+        protected bool GetBoolSetting(string name)
         {
             return this.GetBoolSetting(name, false);
         }

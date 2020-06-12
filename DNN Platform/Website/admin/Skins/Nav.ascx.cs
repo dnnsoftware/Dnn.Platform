@@ -33,7 +33,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 var objSkins = new SkinController();
 
                 // image for right facing arrow
-                if (!String.IsNullOrEmpty(this.IndicateChildImageSub))
+                if (!string.IsNullOrEmpty(this.IndicateChildImageSub))
                 {
                     strRightArrow = this.IndicateChildImageSub;
                 }
@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 // image for down facing arrow
-                if (!String.IsNullOrEmpty(this.IndicateChildImageRoot))
+                if (!string.IsNullOrEmpty(this.IndicateChildImageRoot))
                 {
                     strDownArrow = this.IndicateChildImageRoot;
                 }
@@ -53,81 +53,81 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
 
                 // Set correct image path for all separator images
-                if (!String.IsNullOrEmpty(this.SeparatorHTML))
+                if (!string.IsNullOrEmpty(this.SeparatorHTML))
                 {
                     this.SeparatorHTML = this.FixImagePath(this.SeparatorHTML);
                 }
 
-                if (!String.IsNullOrEmpty(this.SeparatorLeftHTML))
+                if (!string.IsNullOrEmpty(this.SeparatorLeftHTML))
                 {
                     this.SeparatorLeftHTML = this.FixImagePath(this.SeparatorLeftHTML);
                 }
 
-                if (!String.IsNullOrEmpty(this.SeparatorRightHTML))
+                if (!string.IsNullOrEmpty(this.SeparatorRightHTML))
                 {
                     this.SeparatorRightHTML = this.FixImagePath(this.SeparatorRightHTML);
                 }
-                if (!String.IsNullOrEmpty(this.SeparatorLeftHTMLBreadCrumb))
+                if (!string.IsNullOrEmpty(this.SeparatorLeftHTMLBreadCrumb))
                 {
                     this.SeparatorLeftHTMLBreadCrumb = this.FixImagePath(this.SeparatorLeftHTMLBreadCrumb);
                 }
 
-                if (!String.IsNullOrEmpty(this.SeparatorRightHTMLBreadCrumb))
+                if (!string.IsNullOrEmpty(this.SeparatorRightHTMLBreadCrumb))
                 {
                     this.SeparatorRightHTMLBreadCrumb = this.FixImagePath(this.SeparatorRightHTMLBreadCrumb);
                 }
 
-                if (!String.IsNullOrEmpty(this.SeparatorLeftHTMLActive))
+                if (!string.IsNullOrEmpty(this.SeparatorLeftHTMLActive))
                 {
                     this.SeparatorLeftHTMLActive = this.FixImagePath(this.SeparatorLeftHTMLActive);
                 }
 
-                if (!String.IsNullOrEmpty(this.SeparatorRightHTMLActive))
+                if (!string.IsNullOrEmpty(this.SeparatorRightHTMLActive))
                 {
                     this.SeparatorRightHTMLActive = this.FixImagePath(this.SeparatorRightHTMLActive);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeLeftHTMLBreadCrumbRoot))
+                if (!string.IsNullOrEmpty(this.NodeLeftHTMLBreadCrumbRoot))
                 {
                     this.NodeLeftHTMLBreadCrumbRoot = this.FixImagePath(this.NodeLeftHTMLBreadCrumbRoot);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeRightHTMLBreadCrumbRoot))
+                if (!string.IsNullOrEmpty(this.NodeRightHTMLBreadCrumbRoot))
                 {
                     this.NodeRightHTMLBreadCrumbRoot = this.FixImagePath(this.NodeRightHTMLBreadCrumbRoot);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeLeftHTMLBreadCrumbSub))
+                if (!string.IsNullOrEmpty(this.NodeLeftHTMLBreadCrumbSub))
                 {
                     this.NodeLeftHTMLBreadCrumbSub = this.FixImagePath(this.NodeLeftHTMLBreadCrumbSub);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeRightHTMLBreadCrumbSub))
+                if (!string.IsNullOrEmpty(this.NodeRightHTMLBreadCrumbSub))
                 {
                     this.NodeRightHTMLBreadCrumbSub = this.FixImagePath(this.NodeRightHTMLBreadCrumbSub);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeLeftHTMLRoot))
+                if (!string.IsNullOrEmpty(this.NodeLeftHTMLRoot))
                 {
                     this.NodeLeftHTMLRoot = this.FixImagePath(this.NodeLeftHTMLRoot);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeRightHTMLRoot))
+                if (!string.IsNullOrEmpty(this.NodeRightHTMLRoot))
                 {
                     this.NodeRightHTMLRoot = this.FixImagePath(this.NodeRightHTMLRoot);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeLeftHTMLSub))
+                if (!string.IsNullOrEmpty(this.NodeLeftHTMLSub))
                 {
                     this.NodeLeftHTMLSub = this.FixImagePath(this.NodeLeftHTMLSub);
                 }
 
-                if (!String.IsNullOrEmpty(this.NodeRightHTMLSub))
+                if (!string.IsNullOrEmpty(this.NodeRightHTMLSub))
                 {
                     this.NodeRightHTMLSub = this.FixImagePath(this.NodeRightHTMLSub);
                 }
 
-                if (String.IsNullOrEmpty(this.PathImage))
+                if (string.IsNullOrEmpty(this.PathImage))
                 {
                     this.PathImage = this.PortalSettings.HomeDirectory;
                 }

@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Urls
 
         internal FriendlyUrlProviderBase(NameValueCollection attributes)
         {
-            if (!String.IsNullOrEmpty(attributes["urlFormat"]))
+            if (!string.IsNullOrEmpty(attributes["urlFormat"]))
             {
                 switch (attributes["urlFormat"].ToLowerInvariant())
                 {

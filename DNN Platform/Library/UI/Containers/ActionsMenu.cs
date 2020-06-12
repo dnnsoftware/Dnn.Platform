@@ -204,7 +204,7 @@ namespace DotNetNuke.UI.Containers
         /// -----------------------------------------------------------------------------
         private void ProcessNodes(DNNNode objParent)
         {
-            if (!String.IsNullOrEmpty(objParent.JSFunction))
+            if (!string.IsNullOrEmpty(objParent.JSFunction))
             {
                 objParent.JSFunction = string.Format("if({0}){{{1}}};", objParent.JSFunction, this.Page.ClientScript.GetPostBackEventReference(this.ProviderControl.NavigationControl, objParent.ID));
             }

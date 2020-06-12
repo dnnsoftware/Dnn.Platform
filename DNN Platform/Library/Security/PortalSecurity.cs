@@ -203,7 +203,7 @@ namespace DotNetNuke.Security
         {
             var roleParts = roleName.Split(':');
             int result;
-            if (roleParts.Length > 1 && Int32.TryParse(roleParts[1], out result))
+            if (roleParts.Length > 1 && int.TryParse(roleParts[1], out result))
             {
                 return result;
             }
@@ -214,7 +214,7 @@ namespace DotNetNuke.Security
         {
             roleAllowed = null;
             // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
-            if (!String.IsNullOrEmpty(roleName))
+            if (!string.IsNullOrEmpty(roleName))
             {
                 // Deny permission
                 if (roleName.StartsWith("!"))
@@ -261,7 +261,7 @@ namespace DotNetNuke.Security
             var hexString = new StringBuilder();
             foreach (var b in bytes)
             {
-                hexString.Append(String.Format("{0:X2}", b));
+                hexString.Append(string.Format("{0:X2}", b));
             }
             return hexString.ToString();
         }
@@ -330,7 +330,7 @@ namespace DotNetNuke.Security
         /// -----------------------------------------------------------------------------
         private string FormatDisableScripting(string strInput)
         {
-            return String.IsNullOrWhiteSpace(strInput)
+            return string.IsNullOrWhiteSpace(strInput)
                 ? strInput
                 : FilterStrings(strInput);
         }
@@ -460,7 +460,7 @@ namespace DotNetNuke.Security
             var tempInput = userInput;
             if ((filterType & FilterFlag.NoAngleBrackets) == FilterFlag.NoAngleBrackets)
             {
-                var removeAngleBrackets = Config.GetSetting("RemoveAngleBrackets") != null && Boolean.Parse(Config.GetSetting("RemoveAngleBrackets"));
+                var removeAngleBrackets = Config.GetSetting("RemoveAngleBrackets") != null && bool.Parse(Config.GetSetting("RemoveAngleBrackets"));
                 if (removeAngleBrackets)
                 {
                     tempInput = FormatAngleBrackets(tempInput);
@@ -706,7 +706,7 @@ namespace DotNetNuke.Security
                 var domain = domainCookie.Value;
 
                 // Create a new Cookie
-                var str = String.Empty;
+                var str = string.Empty;
                 if (HttpContext.Current.Request.Browser["supportsEmptyStringInCookieValue"] == "false")
                 {
                     str = "NoCookie";
@@ -864,7 +864,7 @@ namespace DotNetNuke.Security
 
         public static string GetCookieDomain(int portalId)
         {
-            string cookieDomain = String.Empty;
+            string cookieDomain = string.Empty;
             if (PortalController.IsMemberOfPortalGroup(portalId))
             {
                 // set cookie domain for portal group
@@ -878,7 +878,7 @@ namespace DotNetNuke.Security
                     cookieDomain = @group.AuthenticationDomain;
                 }
 
-                if (String.IsNullOrEmpty(cookieDomain))
+                if (string.IsNullOrEmpty(cookieDomain))
                 {
                     cookieDomain = FormsAuthentication.CookieDomain;
                 }
@@ -915,7 +915,7 @@ namespace DotNetNuke.Security
                 // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
                 foreach (string role in roles.Split(new[] { ';' }))
                 {
-                    if (!String.IsNullOrEmpty(role))
+                    if (!string.IsNullOrEmpty(role))
                     {
                         // Deny permission
                         if (role.StartsWith("!"))

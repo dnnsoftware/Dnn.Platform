@@ -21,7 +21,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             Requires.NotNull("context", context);
             Requires.NotNull("writer", writer);
 
-            if (String.IsNullOrEmpty(this.ViewName))
+            if (string.IsNullOrEmpty(this.ViewName))
             {
                 this.ViewName = context.RouteData.GetRequiredString("action");
             }

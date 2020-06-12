@@ -24,7 +24,7 @@ namespace DotNetNuke.Web.DDRMenu
                     base.OnPreRender(e);
 
                     var menuStyle = this.GetStringSetting("MenuStyle");
-                    if (String.IsNullOrEmpty(menuStyle))
+                    if (string.IsNullOrEmpty(menuStyle))
                     {
                         this.menu = null;
                         return;
@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.DDRMenu
                                        };
 
                     MenuNode rootNode = null;
-                    if (String.IsNullOrEmpty(menuSettings.NodeXmlPath))
+                    if (string.IsNullOrEmpty(menuSettings.NodeXmlPath))
                     {
                         rootNode =
                             new MenuNode(

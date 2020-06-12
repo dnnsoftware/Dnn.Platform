@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Modules
                 }
 
                 bool val;
-                Boolean.TryParse(setting.ToString(), out val);
+                bool.TryParse(setting.ToString(), out val);
                 return val;
             }
         }

@@ -180,7 +180,7 @@ namespace DotNetNuke.UI.Containers
         protected void ProcessAction(string ActionID)
         {
             int output;
-            if (Int32.TryParse(ActionID, out output))
+            if (int.TryParse(ActionID, out output))
             {
                 ModuleAction action = this.Actions.GetActionByID(output);
                 if (action != null)

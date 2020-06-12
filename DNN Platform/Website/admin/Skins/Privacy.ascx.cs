@@ -50,11 +50,11 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(this.CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.hypPrivacy.CssClass = this.CssClass;
                 }
-                if (!String.IsNullOrEmpty(this.Text))
+                if (!string.IsNullOrEmpty(this.Text))
                 {
                     this.hypPrivacy.Text = this.Text;
                 }

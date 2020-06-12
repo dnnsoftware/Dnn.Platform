@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 Type type = this.DataSource.GetType();
                 IList<PropertyInfo> props = new List<PropertyInfo>(type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static));
-                return !String.IsNullOrEmpty(this.DataMember)
+                return !string.IsNullOrEmpty(this.DataMember)
                            ? props.SingleOrDefault(p => p.Name == this.DataMember)
                            : props.SingleOrDefault(p => p.Name == this.DataField);
             }
@@ -136,7 +136,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void AddValidators(string controlId)
         {
-            var value = this.Value as String;
+            var value = this.Value as string;
             this.Validators.Clear();
 
             // Add Validators
@@ -150,7 +150,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.Validators.Add(requiredValidator);
             }
 
-            if (!String.IsNullOrEmpty(this.ValidationExpression))
+            if (!string.IsNullOrEmpty(this.ValidationExpression))
             {
                 var regexValidator = new RegularExpressionValidator
                                          {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                              ErrorMessage = this.ResourceKey + this.ValidationMessageSuffix,
                                              ValidationExpression = this.ValidationExpression
                                          };
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     regexValidator.IsValid = Regex.IsMatch(value, this.ValidationExpression);
                     this.IsValid = regexValidator.IsValid;
@@ -199,7 +199,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.CssClass = "dnnFormItem";
             this.CssClass += (this.FormMode == DnnFormMode.Long) ? "" : " dnnFormShort";
 
-            if (String.IsNullOrEmpty(this.ResourceKey))
+            if (string.IsNullOrEmpty(this.ResourceKey))
             {
                 this.ResourceKey = this.DataField;
             }
@@ -250,16 +250,16 @@ namespace DotNetNuke.Web.UI.WebControls
             var dictionary = this.DataSource as IDictionary;
             if (dictionary != null)
             {
-                if (!String.IsNullOrEmpty(dataField) && dictionary.Contains(dataField))
+                if (!string.IsNullOrEmpty(dataField) && dictionary.Contains(dataField))
                 {
                     value = dictionary[dataField];
                 }
             }
             else
             {
-                if (!String.IsNullOrEmpty(dataField))
+                if (!string.IsNullOrEmpty(dataField))
                 {
-                    if (String.IsNullOrEmpty(this.DataMember))
+                    if (string.IsNullOrEmpty(this.DataMember))
                     {
                         if (this.Property != null && this.Property.GetValue(this.DataSource, null) != null)
                         {
@@ -306,7 +306,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                if (!String.IsNullOrEmpty(this.DataField))
+                if (!string.IsNullOrEmpty(this.DataField))
                 {
                     this.UpdateDataSourceInternal(null, this._value, this.DataField);
                 }
@@ -332,7 +332,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    if (String.IsNullOrEmpty(this.DataMember))
+                    if (string.IsNullOrEmpty(this.DataMember))
                     {
                         if (this.Property != null)
                         {

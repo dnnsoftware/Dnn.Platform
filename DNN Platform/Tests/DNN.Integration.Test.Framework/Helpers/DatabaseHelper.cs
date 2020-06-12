@@ -103,7 +103,7 @@ namespace DNN.Integration.Test.Framework.Helpers
                     {
                         while (reader.Read())
                         {
-                            var values = new ExpandoObject() as IDictionary<string, Object>;
+                            var values = new ExpandoObject() as IDictionary<string, object>;
                             for (var i = 0; i < reader.FieldCount; i++)
                             {
                                 values.Add(reader.GetName(i), reader.GetValue(i));

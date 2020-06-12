@@ -62,7 +62,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 rewritePath = origRewritePath;
                 // allow for additional qs parameters
-                if (!String.IsNullOrEmpty(redirect.QueryString))
+                if (!string.IsNullOrEmpty(redirect.QueryString))
                 {
                     rewritePath += redirect.QueryString.StartsWith("&") ? redirect.QueryString : "&" + redirect.QueryString;
                 }
@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 // check the culture of the redirect to see if it either doesn't match the alias or needs to specify
                 // the language when requested
-                if (!String.IsNullOrEmpty(redirect.CultureCode) && redirect.CultureCode != "Default")
+                if (!string.IsNullOrEmpty(redirect.CultureCode) && redirect.CultureCode != "Default")
                 {
                     // 806 : specify duplicates where the alias culture doesn't match the redirect culture
                     // so that redirect to the best match between alias culture and redirect culture
@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Urls
                     RewriteController.AddLanguageCodeToRewritePath(ref redirectedRewritePath, redirect.CultureCode);
                 }
                 // now add the custom redirect to the tab dictionary
-                if (String.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)
+                if (string.Compare(httpAlias, redirectAlias, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     AddToTabDict(
                         tabIndex,
@@ -477,12 +477,12 @@ namespace DotNetNuke.Entities.Urls
         {
             string rewritePath = "";
             int tabPathDepth = 0;
-            bool customAliasUsedAndNotCurrent = !String.IsNullOrEmpty(customHttpAlias) && customHttpAlias != httpAlias;
+            bool customAliasUsedAndNotCurrent = !string.IsNullOrEmpty(customHttpAlias) && customHttpAlias != httpAlias;
 
             // 592 : check the permanent redirect value
             // 736 : 5.5 changes : track tab culture code
             string cultureCode = tab.CultureCode;
-            if (String.IsNullOrEmpty(cultureCode))
+            if (string.IsNullOrEmpty(cultureCode))
             {
                 cultureCode = aliasCulture;
             }
@@ -574,7 +574,7 @@ namespace DotNetNuke.Entities.Urls
                 if (!isDeleted)
                 // if it is deleted, we don't care if the spaces were replaced, or anything else, just take care in deleted handling
                 {
-                    string replaceSpaceWith = String.Empty;
+                    string replaceSpaceWith = string.Empty;
                     if (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                     {
                         replaceSpaceWith = settings.ReplaceSpaceWith;

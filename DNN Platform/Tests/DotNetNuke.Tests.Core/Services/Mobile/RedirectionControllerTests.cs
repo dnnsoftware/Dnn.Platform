@@ -437,13 +437,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             var mobileUrlForPage3 = this._redirectionController.GetMobileSiteUrl(Portal0, Page3);
 
             // First Page returns link to first url
-            Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage1), mobileUrlForPage1);
+            Assert.AreEqual(string.Format("{0}?nomo=0", redirectUrlPage1), mobileUrlForPage1);
 
             // Second Page returns link to second url
-            Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage2), mobileUrlForPage2);
+            Assert.AreEqual(string.Format("{0}?nomo=0", redirectUrlPage2), mobileUrlForPage2);
 
             // Third Page returns link to first url - as this is the first found url and third page has no redirect defined
-            Assert.AreEqual(mobileUrlForPage3, String.Format("{0}?nomo=0", redirectUrlPage1));
+            Assert.AreEqual(mobileUrlForPage3, string.Format("{0}?nomo=0", redirectUrlPage1));
         }
 
         // [Test]

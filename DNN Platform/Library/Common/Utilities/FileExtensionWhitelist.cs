@@ -10,7 +10,7 @@ namespace DotNetNuke.Common.Utilities
 {
     public class FileExtensionWhitelist
     {
-        private readonly List<String> _extensions;
+        private readonly List<string> _extensions;
 
         /// <summary>
         /// Initializes a new instance of the FileExtensionWhiteList class.
@@ -48,7 +48,7 @@ namespace DotNetNuke.Common.Utilities
         /// The list of extensions in the whitelist.
         /// </summary>
         /// <remarks>All extensions are lowercase and prefixed with a '.'</remarks>
-        public IEnumerable<String> AllowedExtensions
+        public IEnumerable<string> AllowedExtensions
         {
             get
             {
@@ -61,7 +61,7 @@ namespace DotNetNuke.Common.Utilities
         /// </summary>
         /// <param name="extension">The file extension with or without preceding '.'</param>
         /// <returns>True if extension is in whitelist or whitelist is empty.  False otherwise.</returns>
-        public bool IsAllowedExtension(String extension)
+        public bool IsAllowedExtension(string extension)
         {
             return this.IsAllowedExtension(extension, null);
         }

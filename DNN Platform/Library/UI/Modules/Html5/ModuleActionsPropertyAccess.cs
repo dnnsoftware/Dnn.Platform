@@ -49,13 +49,13 @@ namespace DotNetNuke.UI.Modules.Html5
 
         protected override string ProcessToken(ModuleActionDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            var title = (!String.IsNullOrEmpty(model.TitleKey) && !String.IsNullOrEmpty(model.LocalResourceFile))
+            var title = (!string.IsNullOrEmpty(model.TitleKey) && !string.IsNullOrEmpty(model.LocalResourceFile))
                                 ? Localization.GetString(model.TitleKey, model.LocalResourceFile)
                                 : model.Title;
 
             SecurityAccessLevel securityAccessLevel = SecurityAccessLevel.View;
 
-            if (!String.IsNullOrEmpty(model.SecurityAccessLevel))
+            if (!string.IsNullOrEmpty(model.SecurityAccessLevel))
             {
                 switch (model.SecurityAccessLevel)
                 {
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.Modules.Html5
 
             this._moduleActions.Add(moduleAction);
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

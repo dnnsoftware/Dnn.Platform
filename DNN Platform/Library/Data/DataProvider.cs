@@ -115,7 +115,7 @@ namespace DotNetNuke.Data
         {
             get
             {
-                return !String.IsNullOrEmpty(this.Settings["upgradeConnectionString"])
+                return !string.IsNullOrEmpty(this.Settings["upgradeConnectionString"])
                                         ? this.Settings["upgradeConnectionString"]
                                         : this.ConnectionString;
             }
@@ -327,7 +327,7 @@ namespace DotNetNuke.Data
         public virtual string GetProviderPath()
         {
             string path = this.ProviderPath;
-            if (!String.IsNullOrEmpty(path))
+            if (!string.IsNullOrEmpty(path))
             {
                 path = HostingEnvironment.MapPath(path);
 
@@ -380,7 +380,7 @@ namespace DotNetNuke.Data
                             bError = false;
                             break;
                         }
-                        string filteredMessage = String.Empty;
+                        string filteredMessage = string.Empty;
                         switch (sqlError.Number)
                         {
                             case 17:

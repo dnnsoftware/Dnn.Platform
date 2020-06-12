@@ -127,7 +127,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     string unlocalizedText = this.Text;
                     this.Text = Utilities.GetLocalizedStringFromParent(unlocalizedText, this);
-                    if (String.IsNullOrEmpty(this.Text))
+                    if (string.IsNullOrEmpty(this.Text))
                     {
                         this.Text = unlocalizedText;
                     }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     if (string.IsNullOrEmpty(this.ToolTip))
                     {
                         this.ToolTip = Utilities.GetLocalizedStringFromParent(unlocalizedText + ".ToolTip", this);
-                        if (String.IsNullOrEmpty(this.ToolTip))
+                        if (string.IsNullOrEmpty(this.ToolTip))
                         {
                             this.ToolTip = unlocalizedText;
                         }

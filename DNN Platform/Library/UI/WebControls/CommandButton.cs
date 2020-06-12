@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 this.EnsureChildControls();
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     this.icon.Attributes.Remove("onclick");
                     this.link.Attributes.Remove("onclick");
@@ -273,7 +273,7 @@ namespace DotNetNuke.UI.WebControls
             set
             {
                 this.EnsureChildControls();
-                if (String.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     this.icon.Attributes.Remove("resourcekey");
                     this.link.Attributes.Remove("resourcekey");
@@ -351,7 +351,7 @@ namespace DotNetNuke.UI.WebControls
         protected override void CreateChildControls()
         {
             this.Controls.Clear();
-            if (String.IsNullOrEmpty(this.CssClass))
+            if (string.IsNullOrEmpty(this.CssClass))
             {
                 this.CssClass = "CommandButton";
             }
@@ -370,7 +370,7 @@ namespace DotNetNuke.UI.WebControls
             this.link.Click += this.RaiseClick;
             this.link.Command += this.RaiseCommand;
             this.Controls.Add(this.link);
-            if (this.DisplayIcon && !String.IsNullOrEmpty(this.ImageUrl))
+            if (this.DisplayIcon && !string.IsNullOrEmpty(this.ImageUrl))
             {
                 this.icon.EnableViewState = this.EnableViewState;
             }

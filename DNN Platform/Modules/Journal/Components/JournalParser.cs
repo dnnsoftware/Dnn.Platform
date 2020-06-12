@@ -144,8 +144,8 @@ namespace DotNetNuke.Modules.Journal.Components
 
                 bool isLiked = false;
                 ctl.LikeList = this.GetLikeListHTML(ji, ref isLiked);
-                ctl.LikeLink = String.Empty;
-                ctl.CommentLink = String.Empty;
+                ctl.LikeLink = string.Empty;
+                ctl.CommentLink = string.Empty;
 
                 ctl.AuthorNameLink = "<a href=\"" + this.NavigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=" + ji.JournalAuthor.Id }) + "\">" + ji.JournalAuthor.Name + "</a>";
                 if (this.CurrentUser.UserID > 0 && !this.isUnverifiedUser)
@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.Journal.Components
         internal string GetJournalTemplate(string journalType, JournalItem ji)
         {
             string template = Localization.GetString("journal_" + journalType, ResxPath);
-            if (String.IsNullOrEmpty(template))
+            if (string.IsNullOrEmpty(template))
             {
                 template = Localization.GetString("journal_generic", ResxPath);
             }

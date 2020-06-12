@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Analytics
                 }
             }
 
-            if (String.IsNullOrEmpty(trackingId))
+            if (string.IsNullOrEmpty(trackingId))
             {
                 return "";
             }
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Analytics
             }
 
             scriptTemplate = scriptTemplate.Replace("[TRACKING_ID]", trackingId);
-            if (!String.IsNullOrEmpty(urlParameter))
+            if (!string.IsNullOrEmpty(urlParameter))
             {
                 scriptTemplate = scriptTemplate.Replace("[PAGE_URL]", urlParameter);
             }

@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             LookupScriptValues(ctl, out grantImagePath, out denyImagePath, out nullImagePath, out lockImagePath, out grantAltText, out denyAltText, out nullAltText);
 
             string script =
-                    String.Format(
+                    string.Format(
                         @"jQuery(document).ready(
                             function() {{
                                 var images = {{ 'True': '{0}', 'False': '{1}', 'Null': '{2}' }};
@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.WebControls.Internal
                 cssClass += " view";
             }
 
-            if (!String.IsNullOrEmpty(this.PermissionKey) && !this.IsView && !this.IsFullControl)
+            if (!string.IsNullOrEmpty(this.PermissionKey) && !this.IsView && !this.IsFullControl)
             {
                 cssClass += " " + this.PermissionKey.ToLowerInvariant();
             }

@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var template = Upgrade.FindBestTemplate(portal.TemplateFileName, culture);
             UserInfo userInfo;
 
-            if (!String.IsNullOrEmpty(portal.AdminUserName))
+            if (!string.IsNullOrEmpty(portal.AdminUserName))
                 userInfo = Upgrade.CreateUserInfo(portal.AdminFirstName, portal.AdminLastName, portal.AdminUserName, portal.AdminPassword, email);
             else
                 userInfo = Upgrade.CreateUserInfo(installConfig.SuperUser.FirstName, installConfig.SuperUser.LastName, installConfig.SuperUser.UserName, installConfig.SuperUser.Password, installConfig.SuperUser.Email);
@@ -134,7 +134,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
 
             // Create Folder Mappings config
-            if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+            if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
             {
                 FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
             }

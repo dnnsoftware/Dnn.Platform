@@ -112,7 +112,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             // Call base class to load base properties
             this.ParsePermissionKeys(objDesktopModulePermission, Settings);
-            if (String.IsNullOrEmpty(Settings[2]))
+            if (string.IsNullOrEmpty(Settings[2]))
             {
                 objDesktopModulePermission.DesktopModulePermissionID = -1;
             }
@@ -241,7 +241,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 {
                     this._DesktopModulePermissions = new DesktopModulePermissionCollection();
                     string state = Convert.ToString(myState[2]);
-                    if (!String.IsNullOrEmpty(state))
+                    if (!string.IsNullOrEmpty(state))
                     {
                         // First Break the String into individual Keys
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);

@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.Skins
                 if (literal != null)
                 {
                     // Check  if the literal control is just whitespace - if so we can collapse panes
-                    if (String.IsNullOrEmpty(HtmlUtils.StripWhiteSpace(literal.Text, false)))
+                    if (string.IsNullOrEmpty(HtmlUtils.StripWhiteSpace(literal.Text, false)))
                     {
                         canCollapsePane = true;
                     }
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.Skins
             HttpCookie cookie = request.Cookies["_ContainerSrc" + this.PortalSettings.PortalId];
             if (cookie != null)
             {
-                if (!String.IsNullOrEmpty(cookie.Value))
+                if (!string.IsNullOrEmpty(cookie.Value))
                 {
                     container = this.LoadContainerByPath(SkinController.FormatSkinSrc(cookie.Value + ".ascx", this.PortalSettings));
                 }
@@ -261,7 +261,7 @@ namespace DotNetNuke.UI.Skins
             int previewModuleId = -1;
             if (request.QueryString["ModuleId"] != null)
             {
-                Int32.TryParse(request.QueryString["ModuleId"], out previewModuleId);
+                int.TryParse(request.QueryString["ModuleId"], out previewModuleId);
             }
 
             // load user container ( based on cookie )
@@ -346,7 +346,7 @@ namespace DotNetNuke.UI.Skins
                 if (container == null)
                 {
                     containerSrc = module.ContainerSrc;
-                    if (!String.IsNullOrEmpty(containerSrc))
+                    if (!string.IsNullOrEmpty(containerSrc))
                     {
                         containerSrc = SkinController.FormatSkinSrc(containerSrc, this.PortalSettings);
                         container = this.LoadContainerByPath(containerSrc);
@@ -357,7 +357,7 @@ namespace DotNetNuke.UI.Skins
                 if (container == null)
                 {
                     containerSrc = this.PortalSettings.ActiveTab.ContainerSrc;
-                    if (!String.IsNullOrEmpty(containerSrc))
+                    if (!string.IsNullOrEmpty(containerSrc))
                     {
                         containerSrc = SkinController.FormatSkinSrc(containerSrc, this.PortalSettings);
                         container = this.LoadContainerByPath(containerSrc);
@@ -411,7 +411,7 @@ namespace DotNetNuke.UI.Skins
 
         private bool IsVesionableModule(ModuleInfo moduleInfo)
         {
-             if (String.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
+             if (string.IsNullOrEmpty(moduleInfo.DesktopModule.BusinessControllerClass))
             {
                 return false;
             }
@@ -439,7 +439,7 @@ namespace DotNetNuke.UI.Skins
             string classFormatString = "DnnModule DnnModule-{0} DnnModule-{1}";
             string sanitizedModuleName = Null.NullString;
 
-            if (!String.IsNullOrEmpty(module.DesktopModule.ModuleName))
+            if (!string.IsNullOrEmpty(module.DesktopModule.ModuleName))
             {
                 sanitizedModuleName = Globals.CreateValidClass(module.DesktopModule.ModuleName, false);
             }
@@ -449,7 +449,7 @@ namespace DotNetNuke.UI.Skins
                 classFormatString += " DnnVersionableControl";
             }
 
-            this._containerWrapperControl.Attributes["class"] = String.Format(classFormatString, sanitizedModuleName, module.ModuleID);
+            this._containerWrapperControl.Attributes["class"] = string.Format(classFormatString, sanitizedModuleName, module.ModuleID);
 
             try
             {

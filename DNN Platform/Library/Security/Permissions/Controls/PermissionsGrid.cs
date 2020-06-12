@@ -70,13 +70,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         #endregion
 
         #region private Properties
-        private int unAuthUsersRoleId = Int32.Parse(Globals.glbRoleUnauthUser);
+        private int unAuthUsersRoleId = int.Parse(Globals.glbRoleUnauthUser);
         private int UnAuthUsersRoleId
         {
             get { return this.unAuthUsersRoleId; }
         }
 
-        private int allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+        private int allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
         private int AllUsersRoleId
         {
             get
@@ -528,9 +528,9 @@ namespace DotNetNuke.Security.Permissions.Controls
                 templateCol.ItemTemplate = columnTemplate;
 
                 var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
-                                                            : (!String.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
+                                                            : (!string.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
                                                                                                     : "");
-                templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
+                templateCol.HeaderText = !string.IsNullOrEmpty(locName) ? locName : permission.PermissionName;
                 templateCol.HeaderStyle.Wrap = true;
                 grid.Columns.Add(templateCol);
             }
@@ -801,7 +801,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             if (item.ItemType == ListItemType.Item || item.ItemType == ListItemType.AlternatingItem || item.ItemType == ListItemType.SelectedItem)
             {
-                var roleID = Int32.Parse(((DataRowView)item.DataItem)[0].ToString());
+                var roleID = int.Parse(((DataRowView)item.DataItem)[0].ToString());
                 if (roleID == PortalSettings.Current.AdministratorRoleId || roleID == this.AllUsersRoleId || roleID == PortalSettings.Current.RegisteredRoleId)
                 {
                     var actionImage = item.Controls.Cast<Control>().Last().Controls[0] as ImageButton;
@@ -1227,7 +1227,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// </summary>
         protected virtual void RoleGroupsSelectedIndexChanged(object sender, EventArgs e)
         {
-            this.FillSelectRoleComboBox(Int32.Parse(this.cboRoleGroups.SelectedValue));
+            this.FillSelectRoleComboBox(int.Parse(this.cboRoleGroups.SelectedValue));
         }
 
         /// <summary>
@@ -1260,7 +1260,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             this.UpdatePermissions();
             int selectedRoleId;
-            if (!Int32.TryParse(this.roleField.Value, out selectedRoleId))
+            if (!int.TryParse(this.roleField.Value, out selectedRoleId))
             {
                 // Role not selected
                 this.SetErrorMessage("InvalidRoleId");

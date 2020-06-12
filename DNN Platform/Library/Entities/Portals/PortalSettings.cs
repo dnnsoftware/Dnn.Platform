@@ -462,7 +462,7 @@ namespace DotNetNuke.Entities.Portals
             get
             {
                 var setting = Convert.ToString(Personalization.GetProfile("Usability", "ControlPanelVisible" + this.PortalId));
-                return String.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
+                return string.IsNullOrEmpty(setting) ? this.DefaultControlPanelVisibility : Convert.ToBoolean(setting);
             }
         }
 
@@ -482,7 +482,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     return alias.HTTPAlias;
                 }
-                return String.Empty;
+                return string.Empty;
             }
         }
 

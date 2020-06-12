@@ -83,7 +83,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             }
 
 
-            String domainName;
+            string domainName;
             this.RewriteUrl(app, out domainName);
 
             // blank DomainName indicates RewriteUrl couldn't locate a current portal
@@ -105,7 +105,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // get TabId from querystring ( this is mandatory for maintaining portal context for child portals )
             if (!string.IsNullOrEmpty(request.QueryString["tabid"]))
             {
-                if (!Int32.TryParse(request.QueryString["tabid"], out tabId))
+                if (!int.TryParse(request.QueryString["tabid"], out tabId))
                 {
                     tabId = Null.NullInteger;
                     parsingError = true;
@@ -115,7 +115,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // get PortalId from querystring ( this is used for host menu options as well as child portal navigation )
             if (!string.IsNullOrEmpty(request.QueryString["portalid"]))
             {
-                if (!Int32.TryParse(request.QueryString["portalid"], out portalId))
+                if (!int.TryParse(request.QueryString["portalid"], out portalId))
                 {
                     portalId = Null.NullInteger;
                     parsingError = true;
@@ -172,7 +172,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     {
                         // get the alias from the tabid, but only if it is for a tab in that domain
                         portalAlias = PortalAliasController.GetPortalAliasByTab(tabId, domainName);
-                        if (String.IsNullOrEmpty(portalAlias))
+                        if (string.IsNullOrEmpty(portalAlias))
                         {
                             // if the TabId is not for the correct domain
                             // see if the correct domain can be found and redirect it
@@ -198,7 +198,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                 }
 
                 // else use the domain name
-                if (String.IsNullOrEmpty(portalAlias))
+                if (string.IsNullOrEmpty(portalAlias))
                 {
                     portalAlias = domainName;
                 }
@@ -273,7 +273,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
 
                 // manage page URL redirects - that reach here because they bypass the built-in navigation
                 // ie Spiders, saved favorites, hand-crafted urls etc
-                if (!String.IsNullOrEmpty(portalSettings.ActiveTab.Url) && request.QueryString["ctl"] == null &&
+                if (!string.IsNullOrEmpty(portalSettings.ActiveTab.Url) && request.QueryString["ctl"] == null &&
                     request.QueryString["fileticket"] == null)
                 {
                     // Target Url
@@ -324,7 +324,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     }
 
                     // if a protocol switch is necessary
-                    if (!String.IsNullOrEmpty(strURL))
+                    if (!string.IsNullOrEmpty(strURL))
                     {
                         if (strURL.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -375,7 +375,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
         // Note these formerly lived in the 'UrlRewriteModule.cs' class
         private string FormatDomain(string url, string replaceDomain, string withDomain)
         {
-            if (!String.IsNullOrEmpty(replaceDomain) && !String.IsNullOrEmpty(withDomain))
+            if (!string.IsNullOrEmpty(replaceDomain) && !string.IsNullOrEmpty(withDomain))
             {
                 if (url.IndexOf(replaceDomain, StringComparison.Ordinal) != -1)
                 {
@@ -395,7 +395,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             portalAlias = "";
 
             // determine portal alias looking for longest possible match
-            String myAlias = Globals.GetDomainName(app.Request, true);
+            string myAlias = Globals.GetDomainName(app.Request, true);
             PortalAliasInfo objPortalAlias;
             do
             {
@@ -424,7 +424,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
             // save and remove the querystring as it gets added back on later
             // path parameter specifications will take precedence over querystring parameters
             string strQueryString = "";
-            if (!String.IsNullOrEmpty(app.Request.Url.Query))
+            if (!string.IsNullOrEmpty(app.Request.Url.Query))
             {
                 strQueryString = request.QueryString.ToString();
                 requestedPath = requestedPath.Replace(app.Request.Url.Query, "");
@@ -490,7 +490,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                                         if (parameterIndex < splitParameters.Length - 1)
                                         {
                                             parameterIndex += 1;
-                                            if (!String.IsNullOrEmpty(splitParameters[parameterIndex].Trim()))
+                                            if (!string.IsNullOrEmpty(splitParameters[parameterIndex].Trim()))
                                             {
                                                 parameterValue = splitParameters[parameterIndex].Trim();
                                             }
@@ -509,7 +509,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     break; // exit as soon as it processes the first match
                 }
             }
-            if (!String.IsNullOrEmpty(strQueryString))
+            if (!string.IsNullOrEmpty(strQueryString))
             {
                 // add querystring parameters back to SendTo
                 string[] parameters = strQueryString.Split('&');
@@ -563,7 +563,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                     url = app.Request.Url.Host + app.Request.Url.LocalPath;
                 }
 
-                if (!String.IsNullOrEmpty(myAlias))
+                if (!string.IsNullOrEmpty(myAlias))
                 {
                     if (objPortalAlias != null)
                     {
@@ -586,7 +586,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         Dictionary<string, Locale> dicLocales = LocaleController.Instance.GetLocales(portalID);
                         if (dicLocales.Count > 1)
                         {
-                            String[] splitUrl = app.Request.Url.ToString().Split('/');
+                            string[] splitUrl = app.Request.Url.ToString().Split('/');
 
                             foreach (string culturePart in splitUrl)
                             {
@@ -627,7 +627,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                             {
                                 sendToUrl = sendToUrl + "&language=" + cultureCode;
                             }
-                            if (!String.IsNullOrEmpty(app.Request.Url.Query))
+                            if (!string.IsNullOrEmpty(app.Request.Url.Query))
                             {
                                 sendToUrl = sendToUrl + "&" + app.Request.Url.Query.TrimStart('?');
                             }
@@ -772,7 +772,7 @@ namespace DotNetNuke.HttpModules.UrlRewrite
                         {
                             if (kvp.Value.IsDeleted == false && kvp.Value.TabPath.ToLowerInvariant() == tabPath)
                             {
-                                if (!String.IsNullOrEmpty(app.Request.Url.Query))
+                                if (!string.IsNullOrEmpty(app.Request.Url.Query))
                                 {
                                     RewriterUtils.RewriteUrl(
                                         app.Context,

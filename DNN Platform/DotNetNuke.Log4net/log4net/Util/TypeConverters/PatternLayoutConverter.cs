@@ -56,7 +56,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Returns <c>true</c> if the <paramref name="sourceType"/> is
-        /// the <see cref="String"/> type.
+        /// the <see cref="string"/> type.
         /// </para>
         /// </remarks>
         public bool CanConvertFrom(System.Type sourceType)
@@ -72,7 +72,7 @@ namespace log4net.Util.TypeConverters
         /// <remarks>
         /// <para>
         /// Creates and returns a new <see cref="PatternLayout"/> using
-        /// the <paramref name="source"/> <see cref="String"/> as the
+        /// the <paramref name="source"/> <see cref="string"/> as the
         /// <see cref="PatternLayout.ConversionPattern"/>.
         /// </para>
         /// </remarks>

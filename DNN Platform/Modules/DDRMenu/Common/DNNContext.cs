@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
             {
                 return _ModuleFolder ??
                        (_ModuleFolder =
-                        String.Format(
+                        string.Format(
                             "~/DesktopModules/{0}/", DesktopModuleController.GetDesktopModuleByModuleName(ModuleName, PortalSettings.Current.PortalId).FolderName));
             }
         }

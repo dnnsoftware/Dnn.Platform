@@ -65,7 +65,7 @@ namespace DotNetNuke.Web.Common.Internal
             Logger.InfoFormat("Application Starting ({0})", Globals.ElapsedSinceAppStart); // just to start the timer
 
             var name = Config.GetSetting("ServerName");
-            Globals.ServerName = String.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
+            Globals.ServerName = string.IsNullOrEmpty(name) ? Dns.GetHostName() : name;
 
             Globals.DependencyProvider = new LazyServiceProvider();
             var startup = new Startup();
@@ -122,7 +122,7 @@ namespace DotNetNuke.Web.Common.Internal
             var provider = ComponentFactory.GetComponent<TAbstract>();
             if (provider == null)
             {
-                if (String.IsNullOrEmpty(name))
+                if (string.IsNullOrEmpty(name))
                 {
                     ComponentFactory.RegisterComponentInstance<TAbstract>(new TConcrete());
                 }

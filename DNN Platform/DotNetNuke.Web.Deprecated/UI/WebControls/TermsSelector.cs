@@ -121,7 +121,7 @@ namespace DotNetNuke.Web.UI.WebControls
             base.OnPreRender(e);
             if (this.Terms != null)
             {
-                this.Attributes.Add("SelectedTerms", String.Join(",", this.Terms.Select(t => t.TermId.ToString()).ToArray()));
+                this.Attributes.Add("SelectedTerms", string.Join(",", this.Terms.Select(t => t.TermId.ToString()).ToArray()));
             }
             this.Attributes.Add("IncludeSystemVocabularies", this.IncludeSystemVocabularies.ToString().ToLowerInvariant());
             this.Attributes.Add("IncludeTags", this.IncludeTags.ToString().ToLowerInvariant());

@@ -75,8 +75,8 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                string regex = String.Empty;
-                if (!String.IsNullOrEmpty(this.PortalSettings.Registration.ExcludeTerms))
+                string regex = string.Empty;
+                if (!string.IsNullOrEmpty(this.PortalSettings.Registration.ExcludeTerms))
                 {
                     regex = @"^(?:(?!" + this.PortalSettings.Registration.ExcludeTerms.Replace(" ", "").Replace(",", "|") + @").)*$\r?\n?";
                 }
@@ -123,25 +123,25 @@ namespace DotNetNuke.Modules.Admin.Users
             if (this.PortalSettings.Registration.RegistrationFormType == 0)
             {
                 // DisplayName
-                if (String.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
+                if (string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
                 {
-                    this.AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+                    this.AddField("DisplayName", string.Empty, true, string.Empty, TextBoxMode.SingleLine);
                 }
                 else
                 {
-                    this.AddField("FirstName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
-                    this.AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
+                    this.AddField("FirstName", string.Empty, true, string.Empty, TextBoxMode.SingleLine);
+                    this.AddField("LastName", string.Empty, true, string.Empty, TextBoxMode.SingleLine);
                 }
 
                 // Email
-                this.AddField("Email", String.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+                this.AddField("Email", string.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
 
                 // UserName
                 if (!this.PortalSettings.Registration.UseEmailAsUserName)
                 {
 
-                    this.AddField("Username", String.Empty, true,
-                            String.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator) ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
+                    this.AddField("Username", string.Empty, true,
+                            string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator) ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
                             TextBoxMode.SingleLine);
                 }
 
@@ -159,8 +159,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 // Password Q&A
                 if (MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
-                    this.AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
-                    this.AddField("PasswordAnswer", "Membership", true, String.Empty, TextBoxMode.SingleLine);
+                    this.AddField("PasswordQuestion", "Membership", true, string.Empty, TextBoxMode.SingleLine);
+                    this.AddField("PasswordAnswer", "Membership", true, string.Empty, TextBoxMode.SingleLine);
                 }
 
                 if (this.PortalSettings.Registration.RequireValidProfile)
@@ -196,15 +196,15 @@ namespace DotNetNuke.Modules.Admin.Users
                     switch (trimmedField)
                     {
                         case "Username":
-                            this.AddField("Username", String.Empty, true, String.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
+                            this.AddField("Username", string.Empty, true, string.IsNullOrEmpty(this.PortalSettings.Registration.UserNameValidator)
                                                                 ? this.ExcludeTerms : this.PortalSettings.Registration.UserNameValidator,
                                                                         TextBoxMode.SingleLine);
                             break;
                         case "DisplayName":
-                            this.AddField(trimmedField, String.Empty, true, this.ExcludeTerms, TextBoxMode.SingleLine);
+                            this.AddField(trimmedField, string.Empty, true, this.ExcludeTerms, TextBoxMode.SingleLine);
                             break;
                         case "Email":
-                            this.AddField("Email", String.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
+                            this.AddField("Email", string.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
                             break;
                         case "Password":
                             this.AddPasswordStrengthField(trimmedField, "Membership", true);
@@ -214,7 +214,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             break;
                         case "PasswordQuestion":
                         case "PasswordAnswer":
-                            this.AddField(trimmedField, "Membership", true, String.Empty, TextBoxMode.SingleLine);
+                            this.AddField(trimmedField, "Membership", true, string.Empty, TextBoxMode.SingleLine);
                             break;
                         default:
                             ProfilePropertyDefinition property = this.User.Profile.GetProperty(trimmedField);
@@ -300,7 +300,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.ctlCaptcha.Text = Localization.GetString("CaptchaText", this.LocalResourceFile);
             }
 
-            if (this.PortalSettings.Registration.UseAuthProviders && String.IsNullOrEmpty(this.AuthenticationType))
+            if (this.PortalSettings.Registration.UseAuthProviders && string.IsNullOrEmpty(this.AuthenticationType))
             {
                 foreach (AuthenticationLoginBase authLoginControl in this._loginControls)
                 {
@@ -380,7 +380,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 Required = required,
                 TextMode = textMode
             };
-            if (!String.IsNullOrEmpty(regexValidator))
+            if (!string.IsNullOrEmpty(regexValidator))
             {
                 formItem.ValidationExpression = regexValidator;
             }
@@ -451,7 +451,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 DnnFormEditControlItem formItem = new DnnFormEditControlItem
                 {
                     ID = property.PropertyName,
-                    ResourceKey = String.Format("ProfileProperties_{0}", property.PropertyName),
+                    ResourceKey = string.Format("ProfileProperties_{0}", property.PropertyName),
                     LocalResourceFile = "~/DesktopModules/Admin/Security/App_LocalResources/Profile.ascx.resx",
                     ValidationMessageSuffix = ".Validation",
                     ControlType = EditorInfo.GetEditor(property.DataType),
@@ -461,11 +461,11 @@ namespace DotNetNuke.Modules.Admin.Users
                     Required = property.Required
                 };
                 // To check if the property has a deafult value
-                if (!String.IsNullOrEmpty(property.DefaultValue))
+                if (!string.IsNullOrEmpty(property.DefaultValue))
                 {
                     formItem.Value = property.DefaultValue;
                 }
-                if (!String.IsNullOrEmpty(property.ValidationExpression))
+                if (!string.IsNullOrEmpty(property.ValidationExpression))
                 {
                     formItem.ValidationExpression = property.ValidationExpression;
                 }
@@ -507,7 +507,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.captchaRow.Visible = false;
 
                     // Assocate alternate Login with User and proceed with Login
-                    if (!String.IsNullOrEmpty(this.AuthenticationType))
+                    if (!string.IsNullOrEmpty(this.AuthenticationType))
                     {
                         AuthenticationController.AddUserAuthentication(this.User.UserID, this.AuthenticationType, this.UserToken);
                     }
@@ -607,7 +607,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (this.PortalSettings.Registration.UseEmailAsUserName)
                 {
                     this.User.Username = this.User.Email;
-                    if (String.IsNullOrEmpty(this.User.DisplayName))
+                    if (string.IsNullOrEmpty(this.User.DisplayName))
                     {
                         this.User.DisplayName = this.User.Email.Substring(0, this.User.Email.IndexOf("@", StringComparison.Ordinal));
                     }
@@ -622,7 +622,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         this.CreateStatus = UserCreateStatus.InvalidPassword;
                     }
 
-                    if (this.PortalSettings.Registration.RequirePasswordConfirm && String.IsNullOrEmpty(this.AuthenticationType))
+                    if (this.PortalSettings.Registration.RequirePasswordConfirm && string.IsNullOrEmpty(this.AuthenticationType))
                     {
                         if (this.User.Membership.Password != this.User.Membership.PasswordConfirm)
                         {
@@ -641,28 +641,28 @@ namespace DotNetNuke.Modules.Admin.Users
             else
             {
                 // Set Username to Email
-                if (String.IsNullOrEmpty(this.User.Username))
+                if (string.IsNullOrEmpty(this.User.Username))
                 {
                     this.User.Username = this.User.Email;
                 }
 
                 // Set DisplayName
-                if (String.IsNullOrEmpty(this.User.DisplayName))
+                if (string.IsNullOrEmpty(this.User.DisplayName))
                 {
-                    this.User.DisplayName = String.IsNullOrEmpty(this.User.FirstName + " " + this.User.LastName)
+                    this.User.DisplayName = string.IsNullOrEmpty(this.User.FirstName + " " + this.User.LastName)
                                            ? this.User.Email.Substring(0, this.User.Email.IndexOf("@", StringComparison.Ordinal))
                                            : this.User.FirstName + " " + this.User.LastName;
                 }
 
                 // Random Password
-                if (String.IsNullOrEmpty(this.User.Membership.Password))
+                if (string.IsNullOrEmpty(this.User.Membership.Password))
                 {
                     // Generate a random password for the user
                     this.User.Membership.Password = UserController.GeneratePassword();
                 }
 
                 // Password Confirm
-                if (!String.IsNullOrEmpty(this.User.Membership.PasswordConfirm))
+                if (!string.IsNullOrEmpty(this.User.Membership.PasswordConfirm))
                 {
                     if (this.User.Membership.Password != this.User.Membership.PasswordConfirm)
                     {
@@ -690,7 +690,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     this.CreateStatus = UserCreateStatus.InvalidUserName;
                 }
-                if (!String.IsNullOrEmpty(this.User.DisplayName))
+                if (!string.IsNullOrEmpty(this.User.DisplayName))
                 {
                     if (!portalSecurity.ValidateInput(this.User.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                     {
@@ -795,7 +795,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                     }
                 }
-                if (String.IsNullOrEmpty(redirectUrl))
+                if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page
                     redirectUrl = this._navigationManager.NavigateURL();
@@ -860,7 +860,7 @@ namespace DotNetNuke.Modules.Admin.Users
             // Generate a random password for the user
             this.User.Membership.Password = UserController.GeneratePassword();
 
-            if (!String.IsNullOrEmpty(this.User.Email))
+            if (!string.IsNullOrEmpty(this.User.Email))
             {
                 this.CreateUser();
             }

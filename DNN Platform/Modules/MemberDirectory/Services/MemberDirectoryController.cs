@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
         private static void AddSearchTerm(ref string propertyNames, ref string propertyValues, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
             {
                 propertyNames += name + ",";
 
@@ -94,8 +94,8 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
             var portalId = this.PortalSettings.PortalId;
             var isAdmin = this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
 
-            var filterBy = GetSetting(this.ActiveModule.ModuleSettings, "FilterBy", String.Empty);
-            var filterValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterValue", String.Empty);
+            var filterBy = GetSetting(this.ActiveModule.ModuleSettings, "FilterBy", string.Empty);
+            var filterValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterValue", string.Empty);
 
             if (filterBy == "Group" && filterValue == "-1" && groupId > 0)
             {
@@ -115,9 +115,9 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
 
             var sortOrder = GetSetting(this.ActiveModule.TabModuleSettings, "SortOrder", "ASC");
 
-            var excludeHostUsers = Boolean.Parse(GetSetting(this.ActiveModule.TabModuleSettings, "ExcludeHostUsers", "false"));
+            var excludeHostUsers = bool.Parse(GetSetting(this.ActiveModule.TabModuleSettings, "ExcludeHostUsers", "false"));
             var isBasicSearch = false;
-            if (String.IsNullOrEmpty(propertyNames))
+            if (string.IsNullOrEmpty(propertyNames))
             {
                 isBasicSearch = true;
                 AddSearchTerm(ref propertyNames, ref propertyValues, "DisplayName", searchTerm);
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                 case "Group":
                     if (groupId == -1)
                     {
-                        groupId = Int32.Parse(filterValue);
+                        groupId = int.Parse(filterValue);
                     }
                     if (this.CanViewGroupMembers(portalId, groupId))
                     {
@@ -149,12 +149,12 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                     break;
                 case "Relationship":
                     users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,
-                                                                           Int32.Parse(filterValue), isAdmin, pageIndex, pageSize,
+                                                                           int.Parse(filterValue), isAdmin, pageIndex, pageSize,
                                                                            sortField, sortOrder == "ASC",
                                                                            propertyNames, propertyValues);
                     break;
                 case "ProfileProperty":
-                    var propertyValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterPropertyValue", String.Empty);
+                    var propertyValue = GetSetting(this.ActiveModule.ModuleSettings, "FilterPropertyValue", string.Empty);
                     AddSearchTerm(ref propertyNames, ref propertyValues, filterValue, propertyValue);
 
                     users = UserController.Instance.GetUsersAdvancedSearch(portalId, this.PortalSettings.UserId, userId, -1,

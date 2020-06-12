@@ -164,11 +164,11 @@ namespace DotNetNuke.Tests.Web.Mvp
             var context = new ModuleInstanceContext { Configuration = new ModuleInfo() };
             for (int i = 1; i <= _moduleSettingCount; i++)
             {
-                context.Configuration.ModuleSettings.Add(String.Format(_moduleSettingName, i), String.Format(_moduleSettingValue, i));
+                context.Configuration.ModuleSettings.Add(string.Format(_moduleSettingName, i), string.Format(_moduleSettingValue, i));
             }
             for (int i = 1; i <= _tabModuleSettingCount; i++)
             {
-                context.Configuration.TabModuleSettings.Add(String.Format(_tabModuleSettingName, i), String.Format(_tabModuleSettingValue, i));
+                context.Configuration.TabModuleSettings.Add(string.Format(_tabModuleSettingName, i), string.Format(_tabModuleSettingValue, i));
             }
 
             return context;

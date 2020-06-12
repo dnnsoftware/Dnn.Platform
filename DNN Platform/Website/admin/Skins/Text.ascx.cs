@@ -30,13 +30,13 @@ namespace DotNetNuke.UI.Skins.Controls
             string strText = this.ShowText;
 
             // load resources
-            if (!String.IsNullOrEmpty(this.ResourceKey))
+            if (!string.IsNullOrEmpty(this.ResourceKey))
             {
                 // localization
                 string strFile = Path.GetFileName(this.Server.MapPath(this.PortalSettings.ActiveTab.SkinSrc));
                 strFile = this.PortalSettings.ActiveTab.SkinPath + Localization.LocalResourceDirectory + "/" + strFile;
                 string strLocalization = Localization.GetString(this.ResourceKey, strFile);
-                if (!String.IsNullOrEmpty(strLocalization))
+                if (!string.IsNullOrEmpty(strLocalization))
                 {
                     strText = strLocalization;
                 }
@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 strText = tr.ReplaceEnvironmentTokens(strText);
             }
             this.lblText.Text = strText;
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.lblText.CssClass = this.CssClass;
             }

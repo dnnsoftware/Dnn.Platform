@@ -25,28 +25,28 @@ namespace DotNetNuke.Entities.Profile
 
         public ProfileVisibility(int portalId, string extendedVisibility) : this()
         {
-            if (!String.IsNullOrEmpty(extendedVisibility))
+            if (!string.IsNullOrEmpty(extendedVisibility))
             {
                 var relationshipController = new RelationshipController();
 
                 var lists = extendedVisibility.Split(';');
 
-                if (!String.IsNullOrEmpty(lists[0].Substring(2).TrimEnd(',')))
+                if (!string.IsNullOrEmpty(lists[0].Substring(2).TrimEnd(',')))
                 {
                     var roles = lists[0].Substring(2).TrimEnd(',').Split(',');
                     foreach (var role in roles)
                     {
-                        int roleId = Int32.Parse(role);
+                        int roleId = int.Parse(role);
                         RoleInfo userRole = RoleController.Instance.GetRole(portalId, r => r.RoleID == roleId);
                         this.RoleVisibilities.Add(userRole);
                     }
                 }
-                if (!String.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
+                if (!string.IsNullOrEmpty(lists[1].Substring(2).TrimEnd(',')))
                 {
                     var relationships = lists[1].Substring(2).TrimEnd(',').Split(',');
                     foreach (var relationship in relationships)
                     {
-                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(Int32.Parse(relationship));
+                        Relationship userRelationship = RelationshipController.Instance.GetRelationship(int.Parse(relationship));
                         this.RelationshipVisibilities.Add(userRelationship);
                     }
                 }
@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Profile
                 return sb.ToString();
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                         redirectUrl = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                     }
                 }
-                if (String.IsNullOrEmpty(redirectUrl))
+                if (string.IsNullOrEmpty(redirectUrl))
                 {
                     // redirect to current page
                     redirectUrl = this._navigationManager.NavigateURL();

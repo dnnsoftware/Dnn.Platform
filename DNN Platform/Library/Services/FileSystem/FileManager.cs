@@ -395,7 +395,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 PortalId = folder.PortalID,
                 FileName = fileName,
-                Extension = (!String.IsNullOrEmpty(extension)) ? extension.Replace(".", "") : String.Empty,
+                Extension = (!string.IsNullOrEmpty(extension)) ? extension.Replace(".", "") : string.Empty,
                 Width = Null.NullInteger,
                 Height = Null.NullInteger,
                 ContentType = contentType,
@@ -407,7 +407,7 @@ namespace DotNetNuke.Services.FileSystem
                 EnablePublishPeriod = false,
                 ContentItemID = oldFile != null ? oldFile.ContentItemID : Null.NullInteger,
                 Title = oldFile != null ? oldFile.Title : Null.NullString,
-                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : String.Empty
+                SHA1Hash = oldFile != null ? oldFile.SHA1Hash : string.Empty
             };
 
             try

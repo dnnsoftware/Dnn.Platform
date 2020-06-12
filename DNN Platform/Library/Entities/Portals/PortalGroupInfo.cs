@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Portals
         {
             get
             {
-                string portalName = String.Empty;
+                string portalName = string.Empty;
                 if (this.MasterPortalId > -1)
                 {
                     var portal = PortalController.Instance.GetPortal(this.MasterPortalId);

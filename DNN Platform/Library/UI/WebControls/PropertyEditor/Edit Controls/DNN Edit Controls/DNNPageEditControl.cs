@@ -90,8 +90,8 @@ namespace DotNetNuke.UI.WebControls
                 // Not really sure how to get a good TabID and ModuleID but it's only for tracking so not to concerned
                 int tabID = 0;
                 int moduleID = 0;
-                Int32.TryParse(this.Page.Request.QueryString["tabid"], out tabID);
-                Int32.TryParse(this.Page.Request.QueryString["mid"], out moduleID);
+                int.TryParse(this.Page.Request.QueryString["tabid"], out tabID);
+                int.TryParse(this.Page.Request.QueryString["mid"], out moduleID);
 
                 string url = Globals.LinkClick(this.StringValue, tabID, moduleID, true);
                 this.ControlStyle.AddAttributesToRender(writer);

@@ -90,7 +90,7 @@ namespace DotNetNuke.Web.Api.Auth
             }
 
             string authorization = request?.Headers.Authorization.Parameter;
-            if (String.IsNullOrEmpty(authorization))
+            if (string.IsNullOrEmpty(authorization))
             {
                 return null;
             }

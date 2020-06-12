@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(this.CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.hypHostName.CssClass = this.CssClass;
                 }

@@ -32,9 +32,9 @@ namespace DotNetNuke.Entities.Urls
             : base(attributes)
         {
             // Read the attributes for this provider
-            this._includePageName = String.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
-            this._regexMatch = !String.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
-            this._fileExtension = !String.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
+            this._includePageName = string.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
+            this._regexMatch = !string.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
+            this._fileExtension = !string.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
         }
 
         #region Public Properties
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         matchString = httpAlias;
                     }
-                    if (String.IsNullOrEmpty(matchString))
+                    if (string.IsNullOrEmpty(matchString))
                     {
                         // Manage the special case where original url contains the alias as
                         // http://www.domain.com/Default.aspx?alias=www.domain.com/child"
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    if (String.IsNullOrEmpty(matchString))
+                    if (string.IsNullOrEmpty(matchString))
                     {
                         // Manage the special case of child portals
                         // http://www.domain.com/child/default.aspx
@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
 
-                    if (String.IsNullOrEmpty(matchString))
+                    if (string.IsNullOrEmpty(matchString))
                     {
                         // manage the case where the current hostname is www.domain.com and the portalalias is domain.com
                         // (this occurs when www.domain.com is not listed as portal alias for the portal, but domain.com is)
@@ -154,7 +154,7 @@ namespace DotNetNuke.Entities.Urls
                     matchString = httpAlias;
                 }
             }
-            if (!String.IsNullOrEmpty(matchString))
+            if (!string.IsNullOrEmpty(matchString))
             {
                 if (path.IndexOf("~", StringComparison.Ordinal) != -1)
                 {
@@ -217,7 +217,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     if (pair.Length > 1)
                     {
-                        if (!String.IsNullOrEmpty(pair[1]))
+                        if (!string.IsNullOrEmpty(pair[1]))
                         {
                             if (Regex.IsMatch(pair[1], this._regexMatch) == false)
                             {
@@ -244,7 +244,7 @@ namespace DotNetNuke.Entities.Urls
                             else
                             {
                                 // Rewrite into URL, contains only alphanumeric and the % or space
-                                if (String.IsNullOrEmpty(queryStringSpecialChars))
+                                if (string.IsNullOrEmpty(queryStringSpecialChars))
                                 {
                                     queryStringSpecialChars = pair[0] + "=" + pair[1];
                                 }
@@ -263,7 +263,7 @@ namespace DotNetNuke.Entities.Urls
                     friendlyPath = friendlyPath + pathToAppend;
                 }
             }
-            if (!String.IsNullOrEmpty(queryStringSpecialChars))
+            if (!string.IsNullOrEmpty(queryStringSpecialChars))
             {
                 return this.AddPage(friendlyPath, pageName) + "?" + queryStringSpecialChars;
             }

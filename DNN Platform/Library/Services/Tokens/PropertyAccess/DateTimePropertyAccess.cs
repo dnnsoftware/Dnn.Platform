@@ -35,13 +35,13 @@ namespace DotNetNuke.Services.Tokens
                     }
                     return TimeZoneInfo.ConvertTime(DateTime.Now, userTimeZone).ToString(format, formatProvider);
                 case "system":
-                    if (format == String.Empty)
+                    if (format == string.Empty)
                     {
                         format = "g";
                     }
                     return DateTime.Now.ToString(format, formatProvider);
                 case "utc":
-                    if (format == String.Empty)
+                    if (format == string.Empty)
                     {
                         format = "g";
                     }

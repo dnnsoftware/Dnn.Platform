@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Admin.Security
         {
             get
             {
-                return this.ViewState["ResetToken"] != null ? this.Request.QueryString["resetToken"] : String.Empty;
+                return this.ViewState["ResetToken"] != null ? this.Request.QueryString["resetToken"] : string.Empty;
             }
             set
             {
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
             string errorMessage;
-            string answer = String.Empty;
+            string answer = string.Empty;
             if (MembershipProviderConfig.RequiresQuestionAndAnswer)
             {
                 answer = this.txtAnswer.Text;
@@ -295,7 +295,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
-                if (String.IsNullOrEmpty(redirectURL))
+                if (string.IsNullOrEmpty(redirectURL))
                 {
                     if (this.PortalSettings.RegisterTabId != -1 && this.PortalSettings.HomeTabId != -1)
                     {

@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.Tokens
                 foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
                 {
                     string strObjectName = currentMatch.Result("${object}");
-                    if (!String.IsNullOrEmpty(strObjectName))
+                    if (!string.IsNullOrEmpty(strObjectName))
                     {
                         if (strObjectName == "[")
                         {

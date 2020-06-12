@@ -469,7 +469,7 @@ namespace DotNetNuke.UI.WebControls
             if (this.ShowRequired && editInfo.Required && (editInfo.EditMode == PropertyEditorMode.Edit || (editInfo.Required && string.IsNullOrEmpty(strValue))))
             {
                 img = new Image();
-                if (String.IsNullOrEmpty(this.RequiredUrl) || this.RequiredUrl == Null.NullString)
+                if (string.IsNullOrEmpty(this.RequiredUrl) || this.RequiredUrl == Null.NullString)
                 {
                     img.ImageUrl = "~/images/required.gif";
                 }
@@ -593,7 +593,7 @@ namespace DotNetNuke.UI.WebControls
                 reqValidator.ControlToValidate = targetId;
                 reqValidator.Display = ValidatorDisplay.Dynamic;
                 reqValidator.ControlStyle.CopyFrom(this.ErrorStyle);
-                if (String.IsNullOrEmpty(reqValidator.CssClass))
+                if (string.IsNullOrEmpty(reqValidator.CssClass))
                 {
                     reqValidator.CssClass = "dnnFormMessage dnnFormError";
                 }
@@ -604,7 +604,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Add Regular Expression Validators
-            if (!String.IsNullOrEmpty(editInfo.ValidationExpression))
+            if (!string.IsNullOrEmpty(editInfo.ValidationExpression))
             {
                 var regExValidator = new RegularExpressionValidator();
                 regExValidator.ID = editInfo.Name + "_RegEx";
@@ -612,7 +612,7 @@ namespace DotNetNuke.UI.WebControls
                 regExValidator.ValidationExpression = editInfo.ValidationExpression;
                 regExValidator.Display = ValidatorDisplay.Dynamic;
                 regExValidator.ControlStyle.CopyFrom(this.ErrorStyle);
-                if (String.IsNullOrEmpty(regExValidator.CssClass))
+                if (string.IsNullOrEmpty(regExValidator.CssClass))
                 {
                     regExValidator.CssClass = "dnnFormMessage dnnFormError";
                 }
@@ -773,7 +773,7 @@ namespace DotNetNuke.UI.WebControls
         {
             base.OnPreRender(e);
 
-            if (String.IsNullOrEmpty(this.CssClass))
+            if (string.IsNullOrEmpty(this.CssClass))
             {
                 this.CssClass = "dnnFormItem";
             }

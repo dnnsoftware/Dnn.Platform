@@ -86,14 +86,14 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
 
         private string[] SplitString(string original)
         {
-            if (String.IsNullOrEmpty(original))
+            if (string.IsNullOrEmpty(original))
             {
                 return new string[0];
             }
 
             IEnumerable<string> split = from piece in original.Split(',')
                                         let trimmed = piece.Trim()
-                                        where !String.IsNullOrEmpty(trimmed)
+                                        where !string.IsNullOrEmpty(trimmed)
                                         select trimmed;
             return split.ToArray();
         }

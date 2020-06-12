@@ -738,7 +738,7 @@ namespace DotNetNuke.Services.Upgrade
                         {
                             foreach (ModuleControlInfo control in definition.ModuleControls.Values)
                             {
-                                if (!String.IsNullOrEmpty(control.ControlKey))
+                                if (!string.IsNullOrEmpty(control.ControlKey))
                                 {
                                     control.SupportsPopUps = true;
                                     ModuleControlController.SaveModuleControl(control, false);
@@ -809,7 +809,7 @@ namespace DotNetNuke.Services.Upgrade
             if (writeFeedback)
             {
                 string resourcesFile = Path.GetFileName(scriptFile);
-                if (!String.IsNullOrEmpty(resourcesFile))
+                if (!string.IsNullOrEmpty(resourcesFile))
                 {
                     HtmlUtils.WriteScriptSuccessError(HttpContext.Current.Response, string.IsNullOrEmpty(exceptions), resourcesFile.Replace("." + DefaultProvider, ".log.resources"));
                 }
@@ -908,7 +908,7 @@ namespace DotNetNuke.Services.Upgrade
                 // exceptions += InstallMemberRoleProviderScript(providerPath, "InstallRoles", writeFeedback);
             }
 
-            if (String.IsNullOrEmpty(exceptions))
+            if (string.IsNullOrEmpty(exceptions))
             {
                 DnnInstallLogger.InstallLogInfo(Localization.Localization.GetString("LogEnd", Localization.Localization.GlobalResourceFile) + "InstallMemberRoleProvider");
             }
@@ -1690,7 +1690,7 @@ namespace DotNetNuke.Services.Upgrade
                     string defaultPageTemplatePath = string.Format("{0}Templates\\Default.page.template", portal.HomeDirectoryMapPath);
                     if (File.Exists(defaultPageTemplatePath))
                     {
-                        File.Move(defaultPageTemplatePath, String.Format("{0}Templates\\Default_old.page.template", portal.HomeDirectoryMapPath));
+                        File.Move(defaultPageTemplatePath, string.Format("{0}Templates\\Default_old.page.template", portal.HomeDirectoryMapPath));
                     }
 
                     // Update Default profile template in every portal
@@ -1847,7 +1847,7 @@ namespace DotNetNuke.Services.Upgrade
                             if (permission.PermissionKey.Equals("READ", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 // Add All Users Read Access to the folder
-                                int roleId = Int32.Parse(Globals.glbRoleAllUsers);
+                                int roleId = int.Parse(Globals.glbRoleAllUsers);
                                 if (!folder.FolderPermissions.Contains(permission.PermissionKey, folder.FolderID, roleId, Null.NullInteger))
                                 {
                                     var folderPermission = new FolderPermissionInfo(permission) { FolderID = folder.FolderID, UserID = Null.NullInteger, RoleID = roleId, AllowAccess = true };
@@ -2540,8 +2540,8 @@ namespace DotNetNuke.Services.Upgrade
                 entry.ListName = listName + "-" + portal.PortalID;
                 listController.AddListEntry(entry);
 
-                var defaultAlias = PortalController.GetPortalSetting("DefaultPortalAlias", portal.PortalID, String.Empty);
-                if (!String.IsNullOrEmpty(defaultAlias))
+                var defaultAlias = PortalController.GetPortalSetting("DefaultPortalAlias", portal.PortalID, string.Empty);
+                if (!string.IsNullOrEmpty(defaultAlias))
                 {
                     foreach (var alias in PortalAliasController.Instance.GetPortalAliasesByPortalId(portal.PortalID).Where(alias => alias.HTTPAlias == defaultAlias))
                     {
@@ -3988,13 +3988,13 @@ namespace DotNetNuke.Services.Upgrade
             Upgrade.GetInstallTemplate(installTemplate);
             // Parse the root node
             XmlNode rootNode = installTemplate.SelectSingleNode("//dotnetnuke");
-            String currentCulture = "";
+            string currentCulture = "";
             if (rootNode != null)
             {
                 currentCulture = XmlUtils.GetNodeValue(rootNode.CreateNavigator(), "installCulture");
             }
 
-            if (String.IsNullOrEmpty(currentCulture))
+            if (string.IsNullOrEmpty(currentCulture))
             {
                 currentCulture = Localization.Localization.SystemLocale;
             }
@@ -5765,7 +5765,7 @@ namespace DotNetNuke.Services.Upgrade
                 }
                 catch (Exception ex)
                 {
-                    exceptions += String.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
+                    exceptions += string.Format("Error: {0}{1}", ex.Message + ex.StackTrace, Environment.NewLine);
                     Exceptions.Exceptions.LogException(ex);
                 }
                 finally
@@ -5923,7 +5923,7 @@ namespace DotNetNuke.Services.Upgrade
                 url += "&id=" + Host.GUID;
                 if (packageType.Equals(DotNetNukeContext.Current.Application.Type, StringComparison.OrdinalIgnoreCase))
                 {
-                    if (!String.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
+                    if (!string.IsNullOrEmpty(HostController.Instance.GetString("NewsletterSubscribeEmail")))
                     {
                         url += "&email=" + HttpUtility.UrlEncode(HostController.Instance.GetString("NewsletterSubscribeEmail"));
                     }

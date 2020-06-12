@@ -827,7 +827,7 @@ namespace DotNetNuke.Common
                 {
                     return "jpg,jpeg,jpe,gif,bmp,png,svg,ico";
                 }
-                return String.Join(",", listEntries.Select(l => l.Value));
+                return string.Join(",", listEntries.Select(l => l.Value));
             }
         }
 
@@ -892,7 +892,7 @@ namespace DotNetNuke.Common
             }
 
             // split variable columns
-            if (!String.IsNullOrEmpty(VariableColumns))
+            if (!string.IsNullOrEmpty(VariableColumns))
             {
                 arrVariableColumns = VariableColumns.Split(',');
                 // add varible columns to table
@@ -928,7 +928,7 @@ namespace DotNetNuke.Common
                         row[arrField[0]] = result[arrField[0]];
                     }
                     // initialize variable column values
-                    if (!String.IsNullOrEmpty(VariableColumns))
+                    if (!string.IsNullOrEmpty(VariableColumns))
                     {
                         for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
                         {
@@ -947,7 +947,7 @@ namespace DotNetNuke.Common
                     intKeyColumn = Convert.ToInt32(result[KeyColumn]);
                 }
                 // assign pivot column value
-                if (!String.IsNullOrEmpty(FieldTypeColumn))
+                if (!string.IsNullOrEmpty(FieldTypeColumn))
                 {
                     FieldType = result[FieldTypeColumn].ToString();
                 }
@@ -974,7 +974,7 @@ namespace DotNetNuke.Common
                                     row[result[FieldColumn].ToString()] = decimal.Parse(result[StringValueColumn].ToString(), Culture);
                                     break;
                                 case "System.Int32":
-                                    row[result[FieldColumn].ToString()] = Int32.Parse(result[StringValueColumn].ToString(), Culture);
+                                    row[result[FieldColumn].ToString()] = int.Parse(result[StringValueColumn].ToString(), Culture);
                                     break;
                                 default:
                                     row[result[FieldColumn].ToString()] = result[StringValueColumn];
@@ -1099,7 +1099,7 @@ namespace DotNetNuke.Common
         public static string GetApplicationName()
         {
             string appName;
-            if (HttpContext.Current.Items["ApplicationName"] == null || String.IsNullOrEmpty(HttpContext.Current.Items["ApplicationName"].ToString()))
+            if (HttpContext.Current.Items["ApplicationName"] == null || string.IsNullOrEmpty(HttpContext.Current.Items["ApplicationName"].ToString()))
             {
                 PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 if (_PortalSettings == null)
@@ -1135,7 +1135,7 @@ namespace DotNetNuke.Common
             var objProvider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
             // Get the Object Qualifier frm the Provider Configuration
             string _objectQualifier = objProvider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_") == false)
+            if (!string.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_") == false)
             {
                 _objectQualifier += "_";
             }
@@ -1452,7 +1452,7 @@ namespace DotNetNuke.Common
                     strDomainName = arrPortalAlias[intAlias];
                 }
             }
-            if (String.IsNullOrEmpty(strDomainName))
+            if (string.IsNullOrEmpty(strDomainName))
             {
                 strDomainName = arrPortalAlias[0];
             }
@@ -1630,47 +1630,47 @@ namespace DotNetNuke.Common
             string strAddress = "";
             if (Unit != null)
             {
-                if (!String.IsNullOrEmpty(Unit.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Unit.ToString().Trim()))
                 {
                     strAddress += ", " + Unit;
                 }
             }
             if (Street != null)
             {
-                if (!String.IsNullOrEmpty(Street.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Street.ToString().Trim()))
                 {
                     strAddress += ", " + Street;
                 }
             }
             if (City != null)
             {
-                if (!String.IsNullOrEmpty(City.ToString().Trim()))
+                if (!string.IsNullOrEmpty(City.ToString().Trim()))
                 {
                     strAddress += ", " + City;
                 }
             }
             if (Region != null)
             {
-                if (!String.IsNullOrEmpty(Region.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Region.ToString().Trim()))
                 {
                     strAddress += ", " + Region;
                 }
             }
             if (Country != null)
             {
-                if (!String.IsNullOrEmpty(Country.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Country.ToString().Trim()))
                 {
                     strAddress += ", " + Country;
                 }
             }
             if (PostalCode != null)
             {
-                if (!String.IsNullOrEmpty(PostalCode.ToString().Trim()))
+                if (!string.IsNullOrEmpty(PostalCode.ToString().Trim()))
                 {
                     strAddress += ", " + PostalCode;
                 }
             }
-            if (!String.IsNullOrEmpty(strAddress.Trim()))
+            if (!string.IsNullOrEmpty(strAddress.Trim()))
             {
                 strAddress = strAddress.Substring(2);
             }
@@ -1810,7 +1810,7 @@ namespace DotNetNuke.Common
         /// </example>
         public static string GetMediumDate(string strDate)
         {
-            if (!String.IsNullOrEmpty(strDate))
+            if (!string.IsNullOrEmpty(strDate))
             {
                 DateTime datDate = Convert.ToDateTime(strDate);
                 string strYear = datDate.Year.ToString();
@@ -1828,7 +1828,7 @@ namespace DotNetNuke.Common
         /// <returns>short date content of the input.</returns>
         public static string GetShortDate(string strDate)
         {
-            if (!String.IsNullOrEmpty(strDate))
+            if (!string.IsNullOrEmpty(strDate))
             {
                 DateTime datDate = Convert.ToDateTime(strDate);
                 string strYear = datDate.Year.ToString();
@@ -1875,10 +1875,10 @@ namespace DotNetNuke.Common
                 int ModuleID = -1;
                 if (HttpContext.Current.Request.QueryString["mid"] != null)
                 {
-                    Int32.TryParse(HttpContext.Current.Request.QueryString["mid"], out ModuleID);
+                    int.TryParse(HttpContext.Current.Request.QueryString["mid"], out ModuleID);
                 }
-                _IsAdminSkin = (!String.IsNullOrEmpty(ControlKey) && ControlKey != "view" && ModuleID != -1) ||
-                               (!String.IsNullOrEmpty(ControlKey) && AdminKeys.IndexOf(ControlKey) != -1 && ModuleID == -1);
+                _IsAdminSkin = (!string.IsNullOrEmpty(ControlKey) && ControlKey != "view" && ModuleID != -1) ||
+                               (!string.IsNullOrEmpty(ControlKey) && AdminKeys.IndexOf(ControlKey) != -1 && ModuleID == -1);
             }
             return _IsAdminSkin;
         }
@@ -2029,7 +2029,7 @@ namespace DotNetNuke.Common
             int tLen;
             string strURL;
             var sbBuff = new StringBuilder("");
-            if (!String.IsNullOrEmpty(strHTML))
+            if (!string.IsNullOrEmpty(strHTML))
             {
                 tLen = strToken.Length + 2;
                 string _UploadDirectory = strUploadDirectory.ToLowerInvariant();
@@ -2331,11 +2331,11 @@ namespace DotNetNuke.Common
         public static string CleanFileName(string FileName, string BadChars, string ReplaceChar)
         {
             string strFileName = FileName;
-            if (String.IsNullOrEmpty(BadChars))
+            if (string.IsNullOrEmpty(BadChars))
             {
                 BadChars = ":/\\?*|" + ((char)34) + ((char)39) + ((char)9);
             }
-            if (String.IsNullOrEmpty(ReplaceChar))
+            if (string.IsNullOrEmpty(ReplaceChar))
             {
                 ReplaceChar = "_";
             }
@@ -2506,7 +2506,7 @@ namespace DotNetNuke.Common
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (HttpContext.Current.Request.IsAuthenticated)
             {
-                if (String.IsNullOrEmpty(Message))
+                if (string.IsNullOrEmpty(Message))
                 {
                     // redirect to access denied page
                     strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied");
@@ -2533,7 +2533,7 @@ namespace DotNetNuke.Common
         /// <returns>The formatted URL</returns>
         public static string AddHTTP(string strURL)
         {
-            if (!String.IsNullOrEmpty(strURL))
+            if (!string.IsNullOrEmpty(strURL))
             {
                 if (strURL.IndexOf("mailto:") == -1 && strURL.IndexOf("://") == -1 && strURL.IndexOf("~") == -1 && strURL.IndexOf("\\\\") == -1)
                 {
@@ -2613,7 +2613,7 @@ namespace DotNetNuke.Common
             {
                 strURL += "?helpculture=";
             }
-            if (!String.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
+            if (!string.IsNullOrEmpty(Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant()))
             {
                 strURL += Thread.CurrentThread.CurrentUICulture.ToString().ToLowerInvariant();
             }
@@ -2621,11 +2621,11 @@ namespace DotNetNuke.Common
             {
                 strURL += objPortalSettings.DefaultLanguage.ToLowerInvariant();
             }
-            if (!String.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(Name))
             {
                 strURL += "&helpmodule=" + HttpUtility.UrlEncode(Name);
             }
-            if (!String.IsNullOrEmpty(Version))
+            if (!string.IsNullOrEmpty(Version))
             {
                 strURL += "&helpversion=" + HttpUtility.UrlEncode(Version);
             }
@@ -2756,7 +2756,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static TabType GetURLType(string URL)
         {
-            if (String.IsNullOrEmpty(URL))
+            if (string.IsNullOrEmpty(URL))
             {
                 return TabType.Normal;
             }
@@ -2793,7 +2793,7 @@ namespace DotNetNuke.Common
             switch (urlType)
             {
                 case TabType.File:
-                    if (Int32.TryParse(url.Replace("FileID=", ""), out intId))
+                    if (int.TryParse(url.Replace("FileID=", ""), out intId))
                     {
                         var objFile = FileManager.Instance.GetFile(intId);
                         if (objFile == null)
@@ -2809,7 +2809,7 @@ namespace DotNetNuke.Common
                     }
                     break;
                 case TabType.Member:
-                    if (Int32.TryParse(url.Replace("UserID=", ""), out intId))
+                    if (int.TryParse(url.Replace("UserID=", ""), out intId))
                     {
                         if (UserController.GetUserById(portalSettings.PortalId, intId) == null)
                         {
@@ -2824,7 +2824,7 @@ namespace DotNetNuke.Common
                     }
                     break;
                 case TabType.Tab:
-                    if (Int32.TryParse(url, out intId))
+                    if (int.TryParse(url, out intId))
                     {
                         if (TabController.Instance.GetTab(intId, portalSettings.PortalId, false) == null)
                         {
@@ -3115,7 +3115,7 @@ namespace DotNetNuke.Common
             var navigationManager = DependencyProvider.GetRequiredService<INavigationManager>();
             string strURL;
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            string extraParams = String.Empty;
+            string extraParams = string.Empty;
             if (!string.IsNullOrEmpty(returnURL))
             {
                 extraParams = string.Concat("returnurl=", returnURL);
@@ -3148,7 +3148,7 @@ namespace DotNetNuke.Common
         public static string ResolveUrl(string url)
         {
             // String is Empty, just return Url
-            if (String.IsNullOrEmpty(url))
+            if (string.IsNullOrEmpty(url))
             {
                 return url;
             }
@@ -3244,7 +3244,7 @@ namespace DotNetNuke.Common
         {
             if (HashObject != null)
             {
-                if (!String.IsNullOrEmpty(HashObject.ToString()))
+                if (!string.IsNullOrEmpty(HashObject.ToString()))
                 {
                     return Convert.ToString(HashObject);
                 }
@@ -3295,7 +3295,7 @@ namespace DotNetNuke.Common
         /// <returns>Formatted url.</returns>
         public static string LinkClick(string Link, int TabID, int ModuleID, bool TrackClicks, string ContentType)
         {
-            return LinkClick(Link, TabID, ModuleID, TrackClicks, !String.IsNullOrEmpty(ContentType));
+            return LinkClick(Link, TabID, ModuleID, TrackClicks, !string.IsNullOrEmpty(ContentType));
         }
 
         /// <summary>
@@ -3344,7 +3344,7 @@ namespace DotNetNuke.Common
                         strLink += "&hf=1";
                     }
                 }
-                if (String.IsNullOrEmpty(strLink))
+                if (string.IsNullOrEmpty(strLink))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?link=" + HttpUtility.UrlEncode(Link);
                 }
@@ -3436,7 +3436,7 @@ namespace DotNetNuke.Common
         {
             var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.LoadXml(Content);
-            if (String.IsNullOrEmpty(ContentType))
+            if (string.IsNullOrEmpty(ContentType))
             {
                 return xmlDoc.DocumentElement;
             }
@@ -3490,7 +3490,7 @@ namespace DotNetNuke.Common
             {
                 string FileName = Path.GetFileName(objModuleControl.ControlSrc);
                 string LocalResourceFile = objModuleControl.ControlSrc.Replace(FileName, Localization.LocalResourceDirectory + "/" + FileName);
-                if (!String.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, LocalResourceFile)))
+                if (!string.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, LocalResourceFile)))
                 {
                     helpText = Localization.GetString(ModuleActionType.HelpText, LocalResourceFile);
                 }
@@ -3604,7 +3604,7 @@ namespace DotNetNuke.Common
         public static Hashtable DeserializeHashTableBase64(string Source)
         {
             Hashtable objHashTable;
-            if (!String.IsNullOrEmpty(Source))
+            if (!string.IsNullOrEmpty(Source))
             {
                 byte[] bits = Convert.FromBase64String(Source);
                 using (var mem = new MemoryStream(bits))

@@ -191,15 +191,15 @@ namespace DotNetNuke.Common.Utilities
         {
             string connectionString = "";
             // First check if connection string is specified in <connectionstrings> (ASP.NET 2.0 / DNN v4.x)
-            if (!String.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
             {
                 // ASP.NET 2 version connection string (in <connectionstrings>)
                 // This will be for new v4.x installs or upgrades from v4.x
                 connectionString = WebConfigurationManager.ConnectionStrings[name].ConnectionString;
             }
-            if (String.IsNullOrEmpty(connectionString))
+            if (string.IsNullOrEmpty(connectionString))
             {
-                if (!String.IsNullOrEmpty(name))
+                if (!string.IsNullOrEmpty(name))
                 {
                     // Next check if connection string is specified in <appsettings> (ASP.NET 1.1 / DNN v3.x)
                     // This will accomodate upgrades from v3.x
@@ -351,7 +351,7 @@ namespace DotNetNuke.Common.Utilities
         public static string GetDataBaseOwner()
         {
             string databaseOwner = GetDefaultProvider("data").Attributes["databaseOwner"];
-            if (!String.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
+            if (!string.IsNullOrEmpty(databaseOwner) && databaseOwner.EndsWith(".") == false)
             {
                 databaseOwner += ".";
             }
@@ -411,7 +411,7 @@ namespace DotNetNuke.Common.Utilities
         {
             Provider provider = GetDefaultProvider("data");
             string objectQualifier = provider.Attributes["objectQualifier"];
-            if (!String.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
+            if (!string.IsNullOrEmpty(objectQualifier) && objectQualifier.EndsWith("_") == false)
             {
                 objectQualifier += "_";
             }
@@ -447,7 +447,7 @@ namespace DotNetNuke.Common.Utilities
         public static int GetPersistentCookieTimeout()
         {
             int persistentCookieTimeout = 0;
-            if (!String.IsNullOrEmpty(GetSetting("PersistentCookieTimeout")))
+            if (!string.IsNullOrEmpty(GetSetting("PersistentCookieTimeout")))
             {
                 persistentCookieTimeout = int.Parse(GetSetting("PersistentCookieTimeout"));
             }
@@ -513,7 +513,7 @@ namespace DotNetNuke.Common.Utilities
             var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.Load(Globals.ApplicationMapPath + "\\" + filename);
             // test for namespace added by Web Admin Tool
-            if (!String.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
+            if (!string.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
             {
                 // remove namespace
                 string strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", "");

@@ -668,7 +668,7 @@ namespace DotNetNuke.UI.UserControls
                     switch (this._countryData.ToLowerInvariant())
                     {
                         case "text":
-                            if (String.IsNullOrEmpty(this._country))
+                            if (string.IsNullOrEmpty(this._country))
                             {
                                 this.cboCountry.SelectedIndex = 0;
                             }
@@ -696,7 +696,7 @@ namespace DotNetNuke.UI.UserControls
                         switch (this._regionData.ToLowerInvariant())
                         {
                             case "text":
-                                if (String.IsNullOrEmpty(this._region))
+                                if (string.IsNullOrEmpty(this._region))
                                 {
                                     this.cboRegion.SelectedIndex = 0;
                                 }

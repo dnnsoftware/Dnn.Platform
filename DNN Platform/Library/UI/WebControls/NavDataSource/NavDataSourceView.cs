@@ -19,7 +19,7 @@ namespace DotNetNuke.UI.WebControls
 
         public NavDataSourceView(string viewPath)
         {
-            if (String.IsNullOrEmpty(viewPath))
+            if (string.IsNullOrEmpty(viewPath))
             {
                 this.m_sKey = "";
             }
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
             var objPages = new NavDataPageHierarchicalEnumerable();
             DNNNodeCollection objNodes;
             objNodes = Navigation.GetNavigationNodes(this.m_sNamespace);
-            if (!String.IsNullOrEmpty(this.m_sKey))
+            if (!string.IsNullOrEmpty(this.m_sKey))
             {
                 objNodes = objNodes.FindNodeByKey(this.m_sKey).DNNNodes;
             }

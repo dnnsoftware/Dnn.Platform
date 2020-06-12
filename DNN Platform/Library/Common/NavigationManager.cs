@@ -170,7 +170,7 @@ namespace DotNetNuke.Common
         public string NavigateURL(int tabID, bool isSuperTab, IPortalSettings settings, string controlKey, string language, string pageName, params string[] additionalParameters)
         {
             string url = tabID == Null.NullInteger ? Globals.ApplicationURL() : Globals.ApplicationURL(tabID);
-            if (!String.IsNullOrEmpty(controlKey))
+            if (!string.IsNullOrEmpty(controlKey))
             {
                 url += "&ctl=" + controlKey;
             }
@@ -223,7 +223,7 @@ namespace DotNetNuke.Common
 
             if (Host.UseFriendlyUrls || Config.GetFriendlyUrlProvider() == "advanced")
             {
-                if (String.IsNullOrEmpty(pageName))
+                if (string.IsNullOrEmpty(pageName))
                 {
                     pageName = Globals.glbDefaultPage;
                 }

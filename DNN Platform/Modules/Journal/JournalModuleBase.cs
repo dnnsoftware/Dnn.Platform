@@ -29,7 +29,7 @@ namespace DotNetNuke.Modules.Journal {
                 if (!this.Settings.ContainsKey(Constants.JournalFilterMode)) {
                     return JournalMode.Auto;
                 } else {
-                    if (String.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString())) {
+                    if (string.IsNullOrEmpty(this.Settings[Constants.JournalFilterMode].ToString())) {
                         return JournalMode.Auto;
                     } else {
                         return (JournalMode)Convert.ToInt16(this.Settings[Constants.JournalFilterMode].ToString());
@@ -41,8 +41,8 @@ namespace DotNetNuke.Modules.Journal {
         public int GroupId {
             get {
                 int groupId = -1;
-                if (!String.IsNullOrEmpty(this.Request.QueryString["groupid"])) {
-                    if (Int32.TryParse(this.Request.QueryString["groupid"], out groupId)) {
+                if (!string.IsNullOrEmpty(this.Request.QueryString["groupid"])) {
+                    if (int.TryParse(this.Request.QueryString["groupid"], out groupId)) {
                         return groupId;
                     } else {
                         return -1;
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Journal {
                     return true;
                 } else
                 {
-                    if (String.IsNullOrEmpty(this.Settings[Constants.JournalEditorEnabled].ToString()))
+                    if (string.IsNullOrEmpty(this.Settings[Constants.JournalEditorEnabled].ToString()))
                     {
                         return true;
                     } else

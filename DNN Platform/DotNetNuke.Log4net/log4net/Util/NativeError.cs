@@ -274,7 +274,7 @@ namespace log4net.Util
             ref IntPtr lpSource,
             int dwMessageId,
             int dwLanguageId,
-            ref String lpBuffer,
+            ref string lpBuffer,
             int nSize,
             IntPtr Arguments);
 

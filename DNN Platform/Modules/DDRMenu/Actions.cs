@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.DDRMenu
                 }
             }
 
-            if (!String.IsNullOrEmpty(dnnNode.JSFunction))
+            if (!string.IsNullOrEmpty(dnnNode.JSFunction))
             {
                 dnnNode.JSFunction = string.Format(
                     "if({0}){{{1}}};",

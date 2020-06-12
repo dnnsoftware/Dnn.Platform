@@ -142,7 +142,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Get the Name of the property
             editInfo.Name = string.Empty;
-            if (!String.IsNullOrEmpty(NameDataField))
+            if (!string.IsNullOrEmpty(NameDataField))
             {
                 property = this.DataSource.GetType().GetProperty(NameDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
             editInfo.Category = string.Empty;
 
             // Get Category Field
-            if (!String.IsNullOrEmpty(CategoryDataField))
+            if (!string.IsNullOrEmpty(CategoryDataField))
             {
                 property = this.DataSource.GetType().GetProperty(CategoryDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -166,7 +166,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Value Field
             editInfo.Value = string.Empty;
-            if (!String.IsNullOrEmpty(ValueDataField))
+            if (!string.IsNullOrEmpty(ValueDataField))
             {
                 property = this.DataSource.GetType().GetProperty(ValueDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Get the type of the property
             editInfo.Type = "System.String";
-            if (!String.IsNullOrEmpty(TypeDataField))
+            if (!string.IsNullOrEmpty(TypeDataField))
             {
                 property = this.DataSource.GetType().GetProperty(TypeDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Editor Field
             editInfo.Editor = "DotNetNuke.UI.WebControls.TextEditControl, DotNetNuke";
-            if (!String.IsNullOrEmpty(EditorDataField))
+            if (!string.IsNullOrEmpty(EditorDataField))
             {
                 property = this.DataSource.GetType().GetProperty(EditorDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -202,7 +202,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Required Field
             editInfo.Required = false;
-            if (!String.IsNullOrEmpty(RequiredDataField))
+            if (!string.IsNullOrEmpty(RequiredDataField))
             {
                 property = this.DataSource.GetType().GetProperty(RequiredDataField);
                 if (!((property == null) || (property.GetValue(this.DataSource, null) == null)))
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.WebControls
                                              {
                                                  VisibilityMode = UserVisibilityMode.AllUsers
                                              };
-            if (!String.IsNullOrEmpty(VisibilityDataField))
+            if (!string.IsNullOrEmpty(VisibilityDataField))
             {
                 property = this.DataSource.GetType().GetProperty(VisibilityDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -234,7 +234,7 @@ namespace DotNetNuke.UI.WebControls
 
             // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;
-            if (!String.IsNullOrEmpty(ValidationExpressionDataField))
+            if (!string.IsNullOrEmpty(ValidationExpressionDataField))
             {
                 property = this.DataSource.GetType().GetProperty(ValidationExpressionDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))
@@ -244,7 +244,7 @@ namespace DotNetNuke.UI.WebControls
             }
 
             // Get Length Field
-            if (!String.IsNullOrEmpty(MaxLengthDataField))
+            if (!string.IsNullOrEmpty(MaxLengthDataField))
             {
                 property = this.DataSource.GetType().GetProperty(MaxLengthDataField);
                 if (!(property == null || (property.GetValue(this.DataSource, null) == null)))

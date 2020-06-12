@@ -186,7 +186,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             int tabID;
 
-            if (Int32.TryParse(tab, out tabID))
+            if (int.TryParse(tab, out tabID))
             {
                 var result = new List<ModuleDefDTO>();
                 if (tabID > 0)
@@ -554,7 +554,7 @@ namespace DotNetNuke.Web.InternalServices
                      where portMods.Value.DesktopModuleID == moduleId
                      select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 
@@ -572,7 +572,7 @@ namespace DotNetNuke.Web.InternalServices
                                where tabMods.Value.ModuleID == moduleId
                                select pkgs.IconFile).FirstOrDefault();
 
-            imageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            imageUrl = string.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
             return System.Web.VirtualPathUtility.ToAbsolute(imageUrl);
         }
 

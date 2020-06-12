@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Syndication
             }
             this.Channel["title"] = this.Settings.PortalName;
             this.Channel["link"] = Globals.AddHTTP(Globals.GetDomainName(this.Request));
-            if (!String.IsNullOrEmpty(this.Settings.Description))
+            if (!string.IsNullOrEmpty(this.Settings.Description))
             {
                 this.Channel["description"] = this.Settings.Description;
             }

@@ -356,7 +356,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 licenseConfig.WebServer = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "webServer");
                 licenseConfig.LicenseType = XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "licenseType");
 
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial")))
                 {
                     licenseConfig.TrialRequest = bool.Parse(XmlUtils.GetNodeValue(licenseNode.CreateNavigator(), "trial"));
                 }
@@ -389,7 +389,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
                 }
             }
             var folderMappingsNode = installTemplate.SelectSingleNode("//dotnetnuke/" + FolderMappingsConfigController.Instance.ConfigNode);
-            installConfig.FolderMappingsSettings = (folderMappingsNode != null) ? folderMappingsNode.InnerXml : String.Empty;
+            installConfig.FolderMappingsSettings = (folderMappingsNode != null) ? folderMappingsNode.InnerXml : string.Empty;
 
             // Parse the portals node
             XmlNodeList portalsNode = installTemplate.SelectNodes("//dotnetnuke/portals/portal");
@@ -525,7 +525,7 @@ namespace DotNetNuke.Services.Upgrade.Internals
 
                 string installFolder = HttpContext.Current.Server.MapPath("~/Install/language");
                 // no need to download english, always there
-                if (cultureCode != "en-us" && String.IsNullOrEmpty(downloadUrl) != true)
+                if (cultureCode != "en-us" && string.IsNullOrEmpty(downloadUrl) != true)
                 {
                     var newCulture = new CultureInfo(cultureCode);
                     Thread.CurrentThread.CurrentCulture = newCulture;

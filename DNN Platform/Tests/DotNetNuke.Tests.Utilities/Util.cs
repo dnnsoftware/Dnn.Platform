@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static string GetFileName(string testFilesFolder, string fileName)
         {
-            string fullName = String.Format("{0}\\{1}", testFilesFolder, fileName);
+            string fullName = string.Format("{0}\\{1}", testFilesFolder, fileName);
             if (!fullName.ToLowerInvariant().EndsWith(".csv") && !fullName.ToLowerInvariant().EndsWith(".sql"))
             {
                 fullName += ".csv";
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static string ReadStream(string testFilesFolder, string fileName)
         {
-            string text = String.Empty;
+            string text = string.Empty;
             Stream stream = GetFileStream(testFilesFolder, fileName);
             if (stream != null)
             {
@@ -101,14 +101,14 @@ namespace DotNetNuke.Tests.Utilities
 
         public static void ReadStream(string testFilesFolder, string fileName, Action<string, string> onReadLine)
         {
-            string text = String.Empty;
+            string text = string.Empty;
             var stream = GetFileStream(testFilesFolder, fileName);
             if (stream != null)
             {
                 using (var reader = new StreamReader(GetFileStream(testFilesFolder, fileName)))
                 {
                     string line;
-                    string header = String.Empty;
+                    string header = string.Empty;
                     int count = 0;
                     while ((line = reader.ReadLine()) != null)
                     {

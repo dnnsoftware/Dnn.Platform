@@ -36,13 +36,13 @@ namespace DotNetNuke.Web.DDRMenu
             }
             catch (Exception exc)
             {
-                throw new ApplicationException(String.Format("Couldn't load menu style '{0}': {1}", menuStyle, exc));
+                throw new ApplicationException(string.Format("Couldn't load menu style '{0}': {1}", menuStyle, exc));
             }
         }
 
         private Settings menuSettings;
         internal MenuNode RootNode { get; set; }
-        internal Boolean SkipLocalisation { get; set; }
+        internal bool SkipLocalisation { get; set; }
         public TemplateDefinition TemplateDef { get; set; }
 
         private HttpContext currentContext;
@@ -68,27 +68,27 @@ namespace DotNetNuke.Web.DDRMenu
             this.TemplateDef.AddTemplateArguments(this.menuSettings.TemplateArguments, true);
             this.TemplateDef.AddClientOptions(this.menuSettings.ClientOptions, true);
 
-            if (!String.IsNullOrEmpty(this.menuSettings.NodeXmlPath))
+            if (!string.IsNullOrEmpty(this.menuSettings.NodeXmlPath))
             {
                 this.LoadNodeXml();
             }
-            if (!String.IsNullOrEmpty(this.menuSettings.NodeSelector))
+            if (!string.IsNullOrEmpty(this.menuSettings.NodeSelector))
             {
                 this.ApplyNodeSelector();
             }
-            if (!String.IsNullOrEmpty(this.menuSettings.IncludeNodes))
+            if (!string.IsNullOrEmpty(this.menuSettings.IncludeNodes))
             {
                 this.FilterNodes(this.menuSettings.IncludeNodes, false);
             }
-            if (!String.IsNullOrEmpty(this.menuSettings.ExcludeNodes))
+            if (!string.IsNullOrEmpty(this.menuSettings.ExcludeNodes))
             {
                 this.FilterNodes(this.menuSettings.ExcludeNodes, true);
             }
-            if (String.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
+            if (string.IsNullOrEmpty(this.menuSettings.NodeXmlPath) && !this.SkipLocalisation)
             {
                 new Localiser(this.HostPortalSettings.PortalId).LocaliseNode(this.RootNode);
             }
-            if (!String.IsNullOrEmpty(this.menuSettings.NodeManipulator))
+            if (!string.IsNullOrEmpty(this.menuSettings.NodeManipulator))
             {
                 this.ApplyNodeManipulator();
             }
@@ -343,12 +343,12 @@ namespace DotNetNuke.Web.DDRMenu
 
         protected string MapPath(string path)
         {
-            return String.IsNullOrEmpty(path) ? "" : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
+            return string.IsNullOrEmpty(path) ? "" : Path.GetFullPath(this.CurrentContext.Server.MapPath(path));
         }
 
         private static List<string> SplitAndTrim(string str)
         {
-            return new List<String>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
+            return new List<string>(str.Split(',')).ConvertAll(s => s.Trim().ToLowerInvariant());
         }
     }
 }

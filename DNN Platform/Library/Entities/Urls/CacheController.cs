@@ -186,7 +186,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
-                if (String.IsNullOrEmpty(result))
+                if (string.IsNullOrEmpty(result))
                 {
                     // nothing matching found : now just looking for the root path
                     filePath = rootPath + fileName;
@@ -825,7 +825,7 @@ namespace DotNetNuke.Entities.Urls
                             // check for correct, default language code in portal object
                             string portalCultureCode = pi.CultureCode;
                             if (portalCultureCode != null &&
-                                String.CompareOrdinal(portalCultureCode, pi.DefaultLanguage) != 0)
+                                string.CompareOrdinal(portalCultureCode, pi.DefaultLanguage) != 0)
                             {
                                 // portal culture code and default culture code are not the same.
                                 // this means we will get the incorrect home page tab id

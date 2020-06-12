@@ -159,7 +159,7 @@ namespace DotNetNuke.Modules.Journal {
                 }
             }
 
-            if (!String.IsNullOrEmpty(this.Request.QueryString["userId"]))
+            if (!string.IsNullOrEmpty(this.Request.QueryString["userId"]))
             {
                 this.ctlJournalList.ProfileId = Convert.ToInt32(this.Request.QueryString["userId"]);
                 if (!this.UserInfo.IsSuperUser && !isAdmin && this.ctlJournalList.ProfileId != this.UserId)
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.Journal {
 
                 this.ProfilePage = this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, string.Empty, new[] { "userId=xxx" });
 
-                if (!String.IsNullOrEmpty(this.Request.QueryString["userId"]))
+                if (!string.IsNullOrEmpty(this.Request.QueryString["userId"]))
                 {
                     this.Pid = Convert.ToInt32(this.Request.QueryString["userId"]);
                     this.ctlJournalList.ProfileId = this.Pid;

@@ -67,7 +67,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             {
                 if (!lastTabVersion.IsPublished && !isPublished)
                 {
-                    throw new InvalidOperationException(String.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
+                    throw new InvalidOperationException(string.Format(Localization.GetString("TabVersionCannotBeCreated_UnpublishedVersionAlreadyExists", Localization.ExceptionsResourceFile)));
                 }
                 newVersion = lastTabVersion.Version + 1;
             }

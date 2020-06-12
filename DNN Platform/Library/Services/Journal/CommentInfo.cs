@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Journal {
             this.Comment = Null.SetNullString(dr["Comment"]);
             this.DateCreated = Null.SetNullDateTime(dr["DateCreated"]);
             this.DateUpdated = Null.SetNullDateTime(dr["DateUpdated"]);
-            if (!String.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"]))) {
+            if (!string.IsNullOrEmpty(Null.SetNullString(dr["CommentXML"]))) {
                 this.CommentXML = new XmlDocument { XmlResolver = null };
                 this.CommentXML.LoadXml(dr["CommentXML"].ToString());
             }

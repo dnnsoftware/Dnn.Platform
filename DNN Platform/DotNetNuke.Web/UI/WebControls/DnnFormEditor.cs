@@ -160,7 +160,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     parentControl.Controls.Add(panel);
 
                     var resourceKey = section.ResourceKey;
-                    if (String.IsNullOrEmpty(resourceKey))
+                    if (string.IsNullOrEmpty(resourceKey))
                     {
                         resourceKey = section.ID;
                     }
@@ -183,7 +183,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 foreach (DnnFormTab formTab in this.Tabs)
                 {
                     var resourceKey = formTab.ResourceKey;
-                    if (String.IsNullOrEmpty(resourceKey))
+                    if (string.IsNullOrEmpty(resourceKey))
                     {
                         resourceKey = formTab.ID;
                     }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             foreach (DnnFormItemBase item in items)
             {
-                if (String.IsNullOrEmpty(item.LocalResourceFile))
+                if (string.IsNullOrEmpty(item.LocalResourceFile))
                 {
                     item.LocalResourceFile = this.LocalResourceFile;
                 }

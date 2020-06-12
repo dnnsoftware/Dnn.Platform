@@ -472,7 +472,7 @@ namespace DotNetNuke.UI.Skins.Controls
             if (this.AutoSearchDelayInMilliSecond == 0) this.AutoSearchDelayInMilliSecond = 400;
             this.PortalId = this.PortalSettings.ActiveTab.IsSuperTab ? this.PortalSettings.PortalId : -1;
 
-            if (!String.IsNullOrEmpty(this.Submit))
+            if (!string.IsNullOrEmpty(this.Submit))
             {
                 if (this.Submit.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
@@ -486,7 +486,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             this.cmdSearch.Text = this.Submit;
             this.cmdSearchNew.Text = this.Submit;
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.WebRadioButton.CssClass = this.CssClass;
                 this.SiteRadioButton.CssClass = this.CssClass;

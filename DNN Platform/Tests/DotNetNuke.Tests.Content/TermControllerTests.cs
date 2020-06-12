@@ -35,7 +35,7 @@ namespace DotNetNuke.Tests.Content
         public void SetUp()
         {
             Mock<IVocabularyController> vocabularyController = MockHelper.CreateMockVocabularyController();
-            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
             // Register MockCachingProvider
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
         }
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Content
             termController.AddTerm(term);
 
             // Assert
-            this.mockCache.Verify(cache => cache.Remove(String.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
+            this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
 
         #endregion
@@ -327,7 +327,7 @@ namespace DotNetNuke.Tests.Content
             termController.DeleteTerm(term);
 
             // Assert
-            this.mockCache.Verify(cache => cache.Remove(String.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
+            this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
 
         #endregion
@@ -460,7 +460,7 @@ namespace DotNetNuke.Tests.Content
         {
             // Arrange
             var mockDataService = new Mock<IDataService>();
-            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
             var termController = new TermController(mockDataService.Object);
 
             // Act, Arrange
@@ -476,7 +476,7 @@ namespace DotNetNuke.Tests.Content
                 Constants.TERM_ValidCountForVocabulary1,
                                                                                                                                             v => Constants.TERM_ValidVocabulary1,
                                                                                                                                             c => Constants.TERM_ValidContent1));
-            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
 
             var termController = new TermController(mockDataService.Object);
 
@@ -644,7 +644,7 @@ namespace DotNetNuke.Tests.Content
             termController.UpdateTerm(term);
 
             // Assert
-            this.mockCache.Verify(cache => cache.Remove(String.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
+            this.mockCache.Verify(cache => cache.Remove(string.Format(Constants.TERM_CacheKey, Constants.VOCABULARY_ValidVocabularyId)));
         }
 
         #endregion

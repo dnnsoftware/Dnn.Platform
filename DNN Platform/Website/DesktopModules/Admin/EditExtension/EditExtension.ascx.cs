@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 var packageID = Null.NullInteger;
                 if (this.Request.QueryString["PackageID"] != null)
                 {
-                    packageID = Int32.Parse(this.Request.QueryString["PackageID"]);
+                    packageID = int.Parse(this.Request.QueryString["PackageID"]);
                 }
                 return packageID;
             }

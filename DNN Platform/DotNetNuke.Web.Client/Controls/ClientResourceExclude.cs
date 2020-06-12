@@ -25,7 +25,7 @@ namespace DotNetNuke.Web.Client.Controls
             if (loader != null)
             {
                 ClientDependencyInclude ctlToRemove = null;
-                if (!String.IsNullOrEmpty(this.Name))
+                if (!string.IsNullOrEmpty(this.Name))
                 {
                     foreach (ClientDependencyInclude ctl in loader.Controls)
                     {

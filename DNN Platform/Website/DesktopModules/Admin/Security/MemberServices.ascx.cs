@@ -414,7 +414,7 @@ namespace DotNetNuke.Modules.Admin.Security
             // Get the RSVP code
             string code = this.txtRSVPCode.Text;
             bool rsvpCodeExists = false;
-            if (!String.IsNullOrEmpty(code))
+            if (!string.IsNullOrEmpty(code))
             {
                 // Parse the roles
                 foreach (RoleInfo objRole in RoleController.Instance.GetRoles(this.PortalSettings.PortalId))

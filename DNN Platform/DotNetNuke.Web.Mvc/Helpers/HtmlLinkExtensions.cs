@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
             TagBuilder tagBuilder = new TagBuilder("a")
             {
-                InnerHtml = (!String.IsNullOrEmpty(linkText)) ? HttpUtility.HtmlEncode(linkText) : String.Empty
+                InnerHtml = (!string.IsNullOrEmpty(linkText)) ? HttpUtility.HtmlEncode(linkText) : string.Empty
             };
             tagBuilder.MergeAttributes(htmlAttributes);
             tagBuilder.MergeAttribute("href", url);

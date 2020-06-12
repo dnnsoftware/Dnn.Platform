@@ -36,13 +36,13 @@ namespace DotNetNuke.UI.Modules.Html5
             string returnValue = string.Empty;
 
             string resourceFile = model.LocalResourceFile;
-            if (String.IsNullOrEmpty(resourceFile))
+            if (string.IsNullOrEmpty(resourceFile))
             {
                 var fileName = Path.GetFileName(this._html5File);
                 var path = this._html5File.Replace(fileName, "");
                 resourceFile = Path.Combine(path, Localization.LocalResourceDirectory + "/", Path.ChangeExtension(fileName, "resx"));
             }
-            if (!String.IsNullOrEmpty(model.Key))
+            if (!string.IsNullOrEmpty(model.Key))
             {
                 returnValue = Localization.GetString(model.Key, resourceFile);
             }

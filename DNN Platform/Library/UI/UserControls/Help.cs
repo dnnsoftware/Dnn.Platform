@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.UserControls
 
             if (this.Request.QueryString["ctlid"] != null)
             {
-                moduleControlId = Int32.Parse(this.Request.QueryString["ctlid"]);
+                moduleControlId = int.Parse(this.Request.QueryString["ctlid"]);
             }
             else if (Host.EnableModuleOnLineHelp)
             {
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.UserControls
                 {
                     string fileName = Path.GetFileName(objModuleControl.ControlSrc);
                     string localResourceFile = objModuleControl.ControlSrc.Replace(fileName, Localization.LocalResourceDirectory + "/" + fileName);
-                    if (!String.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, localResourceFile)))
+                    if (!string.IsNullOrEmpty(Localization.GetString(ModuleActionType.HelpText, localResourceFile)))
                     {
                         this.lblHelp.Text = Localization.GetString(ModuleActionType.HelpText, localResourceFile);
                     }
@@ -124,7 +124,7 @@ namespace DotNetNuke.UI.UserControls
         /// </summary>
         /// <remarks>
         /// </remarks>
-        protected void cmdCancel_Click(Object sender, EventArgs e)
+        protected void cmdCancel_Click(object sender, EventArgs e)
         {
             try
             {

@@ -43,7 +43,7 @@ namespace DotNetNuke.Framework
                 {
                     strPermissions += ", " + AspNetHostingPermission;
                 }
-                if (!String.IsNullOrEmpty(strPermissions))
+                if (!string.IsNullOrEmpty(strPermissions))
                 {
                     strPermissions = strPermissions.Substring(2);
                 }
@@ -137,11 +137,11 @@ namespace DotNetNuke.Framework
         public static bool HasPermissions(string permissions, ref string permission)
         {
             bool _HasPermission = true;
-            if (!String.IsNullOrEmpty(permissions))
+            if (!string.IsNullOrEmpty(permissions))
             {
                 foreach (string per in (permissions + ";").Split(Convert.ToChar(";")))
                 {
-                    if (!String.IsNullOrEmpty(per.Trim()))
+                    if (!string.IsNullOrEmpty(per.Trim()))
                     {
                         permission = per;
                         switch (permission)

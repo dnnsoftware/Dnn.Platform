@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                         string cultureKey = redirect.CultureCode.ToLowerInvariant();
                         var locales = LocaleController.Instance.GetLocales(portalId).Values;
-                        if (String.IsNullOrEmpty(cultureKey))
+                        if (string.IsNullOrEmpty(cultureKey))
                         {
                             // Add entry for each culture
                             foreach (Locale locale in locales)

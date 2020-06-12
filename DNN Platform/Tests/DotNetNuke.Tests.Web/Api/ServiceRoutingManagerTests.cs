@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.Web.Api
             // including the assembly with object ensures that the assignabliity is done correctly
             var assembliesToReflect = new IAssembly[2];
             assembliesToReflect[0] = new AssemblyWrapper(this.GetType().Assembly);
-            assembliesToReflect[1] = new AssemblyWrapper(typeof(Object).Assembly);
+            assembliesToReflect[1] = new AssemblyWrapper(typeof(object).Assembly);
 
             assemblyLocator.Setup(x => x.Assemblies).Returns(assembliesToReflect);
 

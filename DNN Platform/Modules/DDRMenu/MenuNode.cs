@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.DDRMenu
             this.Text = dnnNode.Text;
             this.Url = (dnnNode.ClickAction == eClickAction.PostBack)
                     ? "postback:" + dnnNode.ID
-                    : String.IsNullOrEmpty(dnnNode.JSFunction) ? dnnNode.NavigateURL : "javascript:" + dnnNode.JSFunction;
+                    : string.IsNullOrEmpty(dnnNode.JSFunction) ? dnnNode.NavigateURL : "javascript:" + dnnNode.JSFunction;
             this.Enabled = dnnNode.Enabled;
             this.Selected = dnnNode.Selected;
             this.Breadcrumb = dnnNode.BreadCrumb;
@@ -205,7 +205,7 @@ namespace DotNetNuke.Web.DDRMenu
         private string ApplyContextToImagePath(string imagePath, string defaultImagePath)
         {
             var result = imagePath;
-            if (!String.IsNullOrEmpty(result))
+            if (!string.IsNullOrEmpty(result))
             {
                 if (result.StartsWith("~", StringComparison.InvariantCultureIgnoreCase))
                     result = Globals.ResolveUrl(result);
@@ -300,7 +300,7 @@ namespace DotNetNuke.Web.DDRMenu
                             case "root":
                                 break;
                             default:
-                                throw new XmlException(String.Format("Unexpected element '{0}'", reader.Name));
+                                throw new XmlException(string.Format("Unexpected element '{0}'", reader.Name));
                         }
                         break;
                     case XmlNodeType.EndElement:
@@ -345,7 +345,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private static void AddXmlAttribute(XmlWriter writer, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
                 writer.WriteAttributeString(name, value);
         }
 
@@ -361,7 +361,7 @@ namespace DotNetNuke.Web.DDRMenu
 
         private static void AddXmlElement(XmlWriter writer, string name, string value)
         {
-            if (!String.IsNullOrEmpty(value))
+            if (!string.IsNullOrEmpty(value))
                 writer.WriteElementString(name, value);
         }
     }

@@ -39,11 +39,11 @@ namespace DotNetNuke.UI
             int moduleId = -1;
             if (request.QueryString["mid"] != null)
             {
-                Int32.TryParse(request.QueryString["mid"], out moduleId);
+                int.TryParse(request.QueryString["mid"], out moduleId);
             }
             if (request.QueryString["moduleid"] != null && (key.Equals("module", StringComparison.InvariantCultureIgnoreCase) || key.Equals("help", StringComparison.InvariantCultureIgnoreCase)))
             {
-                Int32.TryParse(request.QueryString["moduleid"], out moduleId);
+                int.TryParse(request.QueryString["moduleid"], out moduleId);
             }
 
             return moduleId;
@@ -132,7 +132,7 @@ namespace DotNetNuke.UI
             {
                 isLegacyUi = !(settings.EnablePopUps && !request.Browser.Crawler && request.Browser.EcmaScriptVersion >= new Version(1, 0));
 
-                if (!isLegacyUi && !String.IsNullOrEmpty(key))
+                if (!isLegacyUi && !string.IsNullOrEmpty(key))
                 {
                     var slaveModule = GetSlaveModule(moduleId, key, settings.ActiveTab.TabID);
                     if (slaveModule != null)

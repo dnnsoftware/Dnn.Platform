@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                 // check to see if a url
                 // was passed in for an icon
-                if (!String.IsNullOrEmpty(this.IconImage))
+                if (!string.IsNullOrEmpty(this.IconImage))
                 {
                     strMessage += this.Text;
                     this.dnnSkinMessage.CssClass = "dnnFormMessage dnnFormWarning";
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 this.lblMessage.Text = strMessage;
 
-                if (!String.IsNullOrEmpty(this.Heading))
+                if (!string.IsNullOrEmpty(this.Heading))
                 {
                     this.lblHeading.Visible = true;
                     this.lblHeading.Text = this.Heading;

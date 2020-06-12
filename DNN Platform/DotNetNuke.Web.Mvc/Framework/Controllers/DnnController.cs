@@ -64,7 +64,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
 
         protected internal RedirectToRouteResult RedirectToDefaultRoute()
         {
-            return new DnnRedirecttoRouteResult(String.Empty, String.Empty, String.Empty, null, false);
+            return new DnnRedirecttoRouteResult(string.Empty, string.Empty, string.Empty, null, false);
         }
 
         public ActionResult ResultOfLastExecute

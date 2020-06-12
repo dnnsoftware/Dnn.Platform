@@ -133,7 +133,7 @@ namespace log4net.Util
         /// </remarks>
         public string[] GetKeys()
         {
-            string[] keys = new String[this.InnerHashtable.Count];
+            string[] keys = new string[this.InnerHashtable.Count];
             this.InnerHashtable.Keys.CopyTo(keys, 0);
             return keys;
         }

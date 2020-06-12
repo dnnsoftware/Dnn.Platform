@@ -16,7 +16,7 @@ namespace DotNetNuke.Common.Lists
     [Serializable]
     public class ListInfo : BaseEntityInfo
     {
-        public ListInfo() : this(String.Empty) { }
+        public ListInfo() : this(string.Empty) { }
 
         public ListInfo(string Name)
         {

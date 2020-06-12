@@ -354,7 +354,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 ArrayList portals = PortalController.GetPortalsByUser(this.User.UserID);
                 if (portals.Count > 1)
                 {
-                    this.numSites.Text = String.Format(Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
+                    this.numSites.Text = string.Format(Localization.GetString("UpdateUserName", this.LocalResourceFile), portals.Count.ToString());
                     this.cboSites.Visible = true;
                     this.cboSites.DataSource = portals;
                     this.cboSites.DataTextField = "PortalName";
@@ -489,7 +489,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdDelete_Click runs when the delete Button is clicked
         /// </summary>
-        private void cmdDelete_Click(Object sender, EventArgs e)
+        private void cmdDelete_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -508,7 +508,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdRestore_Click(Object sender, EventArgs e)
+        private void cmdRestore_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -528,7 +528,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
         }
 
-        private void cmdRemove_Click(Object sender, EventArgs e)
+        private void cmdRemove_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {
@@ -551,7 +551,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <summary>
         /// cmdUpdate_Click runs when the Update Button is clicked
         /// </summary>
-        private void cmdUpdate_Click(Object sender, EventArgs e)
+        private void cmdUpdate_Click(object sender, EventArgs e)
         {
             if (this.IsUserOrAdmin == false)
             {

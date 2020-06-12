@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Host
         {
             this.IISAppName = Globals.IISAppName;
             this.ServerName = Globals.ServerName;
-            this.ServerGroup = String.Empty;
+            this.ServerGroup = string.Empty;
             this.CreatedDate = created;
             this.LastActivityDate = lastactivity;
             this.Enabled = true;

@@ -137,7 +137,7 @@ namespace DotNetNuke.Common.Utilities
                                 string[] values = coll.GetValues(i);
                                 for (int j = 0; j <= values.GetUpperBound(0); j++)
                                 {
-                                    if (!String.IsNullOrEmpty(returnValue))
+                                    if (!string.IsNullOrEmpty(returnValue))
                                     {
                                         returnValue += "&";
                                     }
@@ -226,21 +226,21 @@ namespace DotNetNuke.Common.Utilities
             }
 
             var delimiter = popUpUrl.Contains("?") ? "&" : "?";
-            var popUpScriptFormat = String.Empty;
+            var popUpScriptFormat = string.Empty;
 
             // create a the querystring for use on a Response.Redirect
             if (responseRedirect)
             {
                 popUpScriptFormat = "{0}{1}popUp=true";
-                popUpUrl = String.Format(popUpScriptFormat, popUpUrl, delimiter);
+                popUpUrl = string.Format(popUpScriptFormat, popUpUrl, delimiter);
             }
             else
             {
                 if (!popUpUrl.Contains("dnnModal.show"))
                 {
                     popUpScriptFormat = "dnnModal.show('{0}{1}popUp=true',/*showReturn*/{2},{3},{4},{5},'{6}')";
-                    closingUrl = (closingUrl != Null.NullString) ? closingUrl : String.Empty;
-                    popUpUrl = "javascript:" + String.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
+                    closingUrl = (closingUrl != Null.NullString) ? closingUrl : string.Empty;
+                    popUpUrl = "javascript:" + string.Format(popUpScriptFormat, popUpUrl, delimiter, onClickEvent.ToString().ToLowerInvariant(), windowHeight, windowWidth, refresh.ToString().ToLower(), closingUrl);
                 }
                 else
                 {
@@ -262,7 +262,7 @@ namespace DotNetNuke.Common.Utilities
             return popUpUrl;
         }
 
-        public static string ClosePopUp(Boolean refresh, string url, bool onClickEvent)
+        public static string ClosePopUp(bool refresh, string url, bool onClickEvent)
         {
             var closePopUpStr = "dnnModal.closePopUp({0}, {1})";
             closePopUpStr = "javascript:" + string.Format(closePopUpStr, refresh.ToString().ToLowerInvariant(), "'" + url + "'");

@@ -327,7 +327,7 @@ namespace DotNetNuke.Security.Roles
 
         private string GetRoleGroupsCacheKey(int portalId)
         {
-            return String.Format(DataCache.RoleGroupsCacheKey, portalId);
+            return string.Format(DataCache.RoleGroupsCacheKey, portalId);
         }
 
         /// -----------------------------------------------------------------------------

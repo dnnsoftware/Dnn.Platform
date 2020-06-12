@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.WebControls
             }
             set
             {
-                int setValue = Int32.Parse(value);
+                int setValue = int.Parse(value);
                 this.Value = setValue;
             }
         }
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.WebControls
                     // Try and cast the value to an Integer
                     if (this.Value != null)
                     {
-                        Int32.TryParse(this.Value.ToString(), out intValue);
+                        int.TryParse(this.Value.ToString(), out intValue);
                     }
                 }
                 catch (Exception exc)

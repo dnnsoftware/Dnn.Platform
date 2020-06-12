@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         internal static bool TryGetUrlVersion(out int versionInt)
         {
             var version = GetTabVersionQueryStringValue();
-            if (String.IsNullOrEmpty(version))
+            if (string.IsNullOrEmpty(version))
             {
                 versionInt = Null.NullInteger;
                 return false;

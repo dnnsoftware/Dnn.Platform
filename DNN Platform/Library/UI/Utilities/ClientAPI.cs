@@ -206,7 +206,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     case MinMaxPersistanceType.None:
                         AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
-                        if (!String.IsNullOrEmpty(strMinIconLoc))
+                        if (!string.IsNullOrEmpty(strMinIconLoc))
                         {
                             AddAttribute(objButton, "max_icon", strMaxIconLoc);
                             AddAttribute(objButton, "min_icon", strMinIconLoc);
@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.Utilities
                         break;
                     case MinMaxPersistanceType.Page:
                         AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
-                        if (!String.IsNullOrEmpty(strMinIconLoc))
+                        if (!string.IsNullOrEmpty(strMinIconLoc))
                         {
                             AddAttribute(objButton, "max_icon", strMaxIconLoc);
                             AddAttribute(objButton, "min_icon", strMinIconLoc);
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.Utilities
                         if (EnableClientPersonalization(strPersonalizationNamingCtr, strPersonalizationKey, objButton.Page))
                         {
                             AddAttribute(objButton, "onclick", "if (__dnn_SectionMaxMin(this,  '" + objContent.ClientID + "')) return false;");
-                            if (!String.IsNullOrEmpty(strMinIconLoc))
+                            if (!string.IsNullOrEmpty(strMinIconLoc))
                             {
                                 AddAttribute(objButton, "max_icon", strMaxIconLoc);
                                 AddAttribute(objButton, "min_icon", strMinIconLoc);
@@ -266,7 +266,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     objContent.Visible = true;
                 }
-                if (!String.IsNullOrEmpty(strMinIconLoc))
+                if (!string.IsNullOrEmpty(strMinIconLoc))
                 {
                     SetMinMaxProperties(objButton, strMinIconLoc, Localization.GetString("Minimize"), Localization.GetString("Minimize"));
                 }
@@ -281,7 +281,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     objContent.Visible = false;
                 }
-                if (!String.IsNullOrEmpty(strMaxIconLoc))
+                if (!string.IsNullOrEmpty(strMaxIconLoc))
                 {
                     SetMinMaxProperties(objButton, strMaxIconLoc, Localization.GetString("Maximize"), Localization.GetString("Maximize"));
                 }
@@ -355,7 +355,7 @@ namespace DotNetNuke.UI.Utilities
                 {
                     case MinMaxPersistanceType.Page:
                         string sExpanded = ClientAPI.GetClientVariable(objButton.Page, objButton.ClientID + ":exp");
-                        if (!String.IsNullOrEmpty(sExpanded))
+                        if (!string.IsNullOrEmpty(sExpanded))
                         {
                             return sExpanded == "1" ? true : false;
                         }
@@ -437,7 +437,7 @@ namespace DotNetNuke.UI.Utilities
         {
             if (objControl is HtmlControl)
             {
-                if (!String.IsNullOrEmpty(strValue))
+                if (!string.IsNullOrEmpty(strValue))
                 {
                     ((HtmlControl)objControl).Style.Add(strName, strValue);
                 }
@@ -448,7 +448,7 @@ namespace DotNetNuke.UI.Utilities
             }
             else if (objControl is WebControl)
             {
-                if (!String.IsNullOrEmpty(strValue))
+                if (!string.IsNullOrEmpty(strValue))
                 {
                     ((WebControl)objControl).Style.Add(strName, strValue);
                 }

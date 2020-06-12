@@ -40,22 +40,22 @@ namespace DotNetNuke.UI.Skins.Controls
             base.OnLoad(e);
             try
             {
-                if (!String.IsNullOrEmpty(this.BorderWidth))
+                if (!string.IsNullOrEmpty(this.BorderWidth))
                 {
                     this.imgLogo.BorderWidth = Unit.Parse(this.BorderWidth);
                 }
-                if (!String.IsNullOrEmpty(this.CssClass))
+                if (!string.IsNullOrEmpty(this.CssClass))
                 {
                     this.imgLogo.CssClass = this.CssClass;
                 }
                 bool logoVisible = false;
-                if (!String.IsNullOrEmpty(this.PortalSettings.LogoFile))
+                if (!string.IsNullOrEmpty(this.PortalSettings.LogoFile))
                 {
                     var fileInfo = this.GetLogoFileInfo();
                     if (fileInfo != null)
                     {
                         string imageUrl = FileManager.Instance.GetUrl(fileInfo);
-                        if (!String.IsNullOrEmpty(imageUrl))
+                        if (!string.IsNullOrEmpty(imageUrl))
                         {
                             this.imgLogo.ImageUrl = imageUrl;
                             logoVisible = true;
@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private IFileInfo GetLogoFileInfo()
         {
-            string cacheKey = String.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
+            string cacheKey = string.Format(DataCache.PortalCacheKey, this.PortalSettings.PortalId, this.PortalSettings.CultureCode) + "LogoFile";
             var file = CBO.GetCachedObject<FileInfo>(
                 new CacheItemArgs(cacheKey, DataCache.PortalCacheTimeOut, DataCache.PortalCachePriority),
                                                     this.GetLogoFileInfoCallBack);

@@ -368,7 +368,7 @@ namespace log4net.Appender
                 // Message. The message goes after the tag/identity
                 string message = this.RenderLoggingEvent(loggingEvent);
 
-                Byte[] buffer;
+                byte[] buffer;
                 int i = 0;
                 char c;
 

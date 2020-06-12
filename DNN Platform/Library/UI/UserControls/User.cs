@@ -270,7 +270,7 @@ namespace DotNetNuke.UI.UserControls
                     this.txtConfirm.Text = this._Confirm;
                     this.txtWebsite.Text = this._Website;
                     this.txtIM.Text = this._IM;
-                    if (!String.IsNullOrEmpty(this._ControlColumnWidth))
+                    if (!string.IsNullOrEmpty(this._ControlColumnWidth))
                     {
                         this.txtFirstName.Width = Unit.Parse(this._ControlColumnWidth);
                         this.txtLastName.Width = Unit.Parse(this._ControlColumnWidth);

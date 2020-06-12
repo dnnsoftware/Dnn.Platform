@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Tabs
 
         public bool IsTabPublished(int tabID, int portalID)
         {
-            var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
             var tab = TabController.Instance.GetTab(tabID, portalID);
 
             var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Tabs
         #region private Methods
         private void PublishTabInternal(TabInfo tab)
         {
-            var allUsersRoleId = Int32.Parse(Globals.glbRoleAllUsers);
+            var allUsersRoleId = int.Parse(Globals.glbRoleAllUsers);
 
             var existPermission = this.GetAlreadyPermission(tab, "VIEW", allUsersRoleId);
             if (existPermission != null)

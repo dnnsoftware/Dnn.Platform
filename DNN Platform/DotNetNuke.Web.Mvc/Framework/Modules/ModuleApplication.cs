@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
                 moduleController.ModuleContext = context.ModuleContext;
 
-                moduleController.LocalResourceFile = String.Format(
+                moduleController.LocalResourceFile = string.Format(
                     "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                                                     context.ModuleContext.Configuration.DesktopModule.FolderName,
                                                     Localization.LocalResourceDirectory,

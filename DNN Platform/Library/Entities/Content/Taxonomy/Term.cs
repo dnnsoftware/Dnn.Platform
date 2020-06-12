@@ -61,7 +61,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
         private string _name;
         private int? _parentTermId;
         private int _right;
-        private readonly List<string> _synonyms = new List<String>();
+        private readonly List<string> _synonyms = new List<string>();
         private int _termId;
         private Vocabulary _vocabulary;
         private int _vocabularyId;

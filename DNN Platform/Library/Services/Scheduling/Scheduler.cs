@@ -661,13 +661,13 @@ namespace DotNetNuke.Services.Scheduling
                     return;
                 }
 
-                bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
+                bool runningInAGroup = !string.IsNullOrEmpty(thisServer.ServerGroup);
 
                 var serverGroupServers = ServerGroupServers(thisServer);
 
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
-                    if (runningInAGroup && String.IsNullOrEmpty(scheduleItem.Servers))
+                    if (runningInAGroup && string.IsNullOrEmpty(scheduleItem.Servers))
                     {
                         scheduleItem.Servers = serverGroupServers;
                     }
@@ -697,14 +697,14 @@ namespace DotNetNuke.Services.Scheduling
                     return;
                 }
 
-                bool runningInAGroup = !String.IsNullOrEmpty(thisServer.ServerGroup);
+                bool runningInAGroup = !string.IsNullOrEmpty(thisServer.ServerGroup);
 
                 var serverGroupServers = ServerGroupServers(thisServer);
 
 
                 foreach (ScheduleItem scheduleItem in schedule)
                 {
-                    if (runningInAGroup && String.IsNullOrEmpty(scheduleItem.Servers))
+                    if (runningInAGroup && string.IsNullOrEmpty(scheduleItem.Servers))
                     {
                         scheduleItem.Servers = serverGroupServers;
                     }

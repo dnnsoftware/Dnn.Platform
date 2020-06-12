@@ -67,11 +67,11 @@ namespace DotNetNuke.Modules.Admin.Modules
             // get ModuleId
             if (this.Request.QueryString["ModuleId"] != null)
             {
-                this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
+                this._moduleId = int.Parse(this.Request.QueryString["ModuleId"]);
             }
 
             // Verify that the current user has access to edit this module
-            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, String.Empty, this.Module))
+            if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, string.Empty, this.Module))
             {
                 this.Response.Redirect(Globals.AccessDeniedURL(), true);
             }

@@ -53,7 +53,7 @@ namespace DotNetNuke.Framework
         public void RegisterAjaxScript(Page page)
         {
             var path = ServicesFramework.GetServiceFrameworkRoot();
-            if (String.IsNullOrEmpty(path))
+            if (string.IsNullOrEmpty(path))
             {
                 return;
             }

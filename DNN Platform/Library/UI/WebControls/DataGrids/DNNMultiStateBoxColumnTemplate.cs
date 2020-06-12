@@ -220,7 +220,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public void InstantiateIn(Control container)
         {
-            if (!String.IsNullOrEmpty(this.Text))
+            if (!string.IsNullOrEmpty(this.Text))
             {
                 container.Controls.Add(new LiteralControl(this.Text + "<br/>"));
             }
@@ -249,7 +249,7 @@ namespace DotNetNuke.UI.WebControls
         {
             var box = (DNNMultiStateBox)sender;
             var container = (DataGridItem)box.NamingContainer;
-            if (!String.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
+            if (!string.IsNullOrEmpty(this.DataField) && this.ItemType != ListItemType.Header)
             {
                 if (this.DesignMode)
                 {
@@ -264,7 +264,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 box.SelectedStateKey = this.SelectedStateKey;
             }
-            if (!String.IsNullOrEmpty(this.EnabledField))
+            if (!string.IsNullOrEmpty(this.EnabledField))
             {
                 if (this.DesignMode)
                 {

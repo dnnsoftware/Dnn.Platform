@@ -11,7 +11,7 @@ namespace DotNetNuke.Tests.Urls
     {
         public static string GetValue(this Dictionary<string, string> dic, string key)
         {
-            return GetValue(dic, key, String.Empty);
+            return GetValue(dic, key, string.Empty);
         }
 
         public static string GetValue(this Dictionary<string, string> dic, string key, string defaultValue)

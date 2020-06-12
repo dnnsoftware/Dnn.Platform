@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Authentication
         public UserAuthenticatedEventArgs(UserInfo user, string token, UserLoginStatus status, string type)
         {
             this.Profile = new NameValueCollection();
-            this.Message = String.Empty;
+            this.Message = string.Empty;
             this.AutoRegister = false;
             this.Authenticated = true;
             this.User = user;

@@ -180,7 +180,7 @@ namespace DotNetNuke.Entities.Profile
             if (definitions == null)
             {
                 // definitions caching settings
-                Int32 timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
+                int timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
 
                 // Get the List from the database
                 definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));

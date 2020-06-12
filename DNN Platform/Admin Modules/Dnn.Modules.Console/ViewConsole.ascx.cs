@@ -91,7 +91,7 @@ namespace Dnn.Modules.Console
         {
             get
             {
-                return this.Settings.ContainsKey("ConsoleWidth") ? this.Settings["ConsoleWidth"].ToString() : String.Empty;
+                return this.Settings.ContainsKey("ConsoleWidth") ? this.Settings["ConsoleWidth"].ToString() : string.Empty;
             }
         }
 
@@ -142,7 +142,7 @@ namespace Dnn.Modules.Console
                 var groupId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["GroupId"]))
                 {
-                    groupId = Int32.Parse(this.Request.Params["GroupId"]);
+                    groupId = int.Parse(this.Request.Params["GroupId"]);
                 }
                 return groupId;
             }
@@ -171,7 +171,7 @@ namespace Dnn.Modules.Console
                 var userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = Int32.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"]);
                 }
                 return userId;
             }
@@ -203,7 +203,7 @@ namespace Dnn.Modules.Console
 
             if (canShowTab)
             {
-                var key = String.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
+                var key = string.Format("TabVisibility{0}", tab.TabPath.Replace("//", "-"));
                 var visibility = this.Settings.ContainsKey(key) ? this.Settings[key].ToString() : "AllUsers";
 
                 switch (visibility)

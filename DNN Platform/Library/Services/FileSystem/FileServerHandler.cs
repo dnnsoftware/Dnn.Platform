@@ -48,13 +48,13 @@ namespace DotNetNuke.Services.FileSystem
                 // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
-                    Int32.TryParse(context.Request.QueryString["tabid"], out TabId);
+                    int.TryParse(context.Request.QueryString["tabid"], out TabId);
                 }
 
                 // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
-                    Int32.TryParse(context.Request.QueryString["mid"], out ModuleId);
+                    int.TryParse(context.Request.QueryString["mid"], out ModuleId);
                 }
             }
             catch (Exception)
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.FileSystem
                     URL = ""; // restrict direct access by FileID
                 }
             }
-            if (!String.IsNullOrEmpty(URL))
+            if (!string.IsNullOrEmpty(URL))
             {
                 URL = URL.Replace(@"\", @"/");
 

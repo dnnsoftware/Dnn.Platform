@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             result = result.Replace("[STATE]", state != null ? state.StateName : "");
             result = result.Replace("[WORKFLOW]", workflow != null ? workflow.WorkflowName : "");
             result = result.Replace("[CONTENT]", item != null ? item.ContentTitle : "");
-            result = result.Replace("[COMMENT]", !String.IsNullOrEmpty(comment) ? comment : "");
+            result = result.Replace("[COMMENT]", !string.IsNullOrEmpty(comment) ? comment : "");
 
             return result;
         }
@@ -116,7 +116,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             if (!this.IsWorkflowCompleted(workflow, item))
             {
                 var currentState = this.GetWorkflowStateByID(item.StateID);
-                if (!String.IsNullOrEmpty(comment))
+                if (!string.IsNullOrEmpty(comment))
                 {
                     this.AddWorkflowCommentLog(item, comment, userID);
                 }
@@ -149,7 +149,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var currentState = this.GetWorkflowStateByID(item.StateID);
             if ((this.GetFirstWorkflowStateID(workflow) != currentState.StateID) && (this.GetLastWorkflowStateID(workflow) != currentState.StateID))
             {
-                if (!String.IsNullOrEmpty(comment))
+                if (!string.IsNullOrEmpty(comment))
                 {
                     this.AddWorkflowCommentLog(item, comment, userID);
                 }

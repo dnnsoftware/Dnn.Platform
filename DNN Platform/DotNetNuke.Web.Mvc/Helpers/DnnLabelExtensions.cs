@@ -99,7 +99,7 @@ namespace DotNetNuke.Web.Mvc.Helpers
 
         public static MvcHtmlString LabelHelper(HtmlHelper html, string htmlFieldName, string labelText, string helpText = null, IDictionary<string, object> htmlAttributes = null)
         {
-            if (String.IsNullOrEmpty(labelText))
+            if (string.IsNullOrEmpty(labelText))
             {
                 return MvcHtmlString.Empty;
             }

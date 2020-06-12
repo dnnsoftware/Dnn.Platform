@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static void ElementsMatch<TExpected, TActual>(IEnumerable<TExpected> expected, IEnumerable<TActual> actual, Func<TExpected, TActual, bool> matcher)
         {
-            ElementsMatch(expected, actual, matcher, String.Empty, new string[0]);
+            ElementsMatch(expected, actual, matcher, string.Empty, new string[0]);
         }
 
         public static void ElementsMatch<TExpected, TActual>(IEnumerable<TExpected> expected, IEnumerable<TActual> actual, Func<TExpected, TActual, bool> matcher, string message)

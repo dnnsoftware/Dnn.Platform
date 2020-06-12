@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.Cache
         /// <exception cref="ArgumentException">cache key is empty.</exception>
         public static string CleanCacheKey(string CacheKey)
         {
-            if (String.IsNullOrEmpty(CacheKey))
+            if (string.IsNullOrEmpty(CacheKey))
             {
                 throw new ArgumentException("Argument cannot be null or an empty string", "CacheKey");
             }
@@ -263,18 +263,18 @@ namespace DotNetNuke.Services.Cache
             {
                 // At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
-                this.RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
-                this.RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
+                this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, defaultLocale);
             }
             else
             {
                 foreach (Locale portalLocale in LocaleController.Instance.GetLocales(portalId).Values)
                 {
-                    this.RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
+                    this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, portalLocale.Code), clearRuntime);
                     this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, portalLocale.Code);
                 }
-                this.RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
+                this.RemoveCacheKey(string.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
                 this.RemoveFormattedCacheKey(DataCache.PortalSettingsCacheKey, clearRuntime, portalId, Null.NullString);
             }
             if (cascade)
@@ -295,8 +295,8 @@ namespace DotNetNuke.Services.Cache
             this.ClearDesktopModuleCacheInternal(portalId, clearRuntime);
             this.ClearTabCacheInternal(portalId, clearRuntime);
 
-            this.RemoveCacheKey(String.Format(DataCache.RolesCacheKey, portalId), clearRuntime);
-            this.RemoveCacheKey(String.Format(DataCache.JournalTypesCacheKey, portalId), clearRuntime);
+            this.RemoveCacheKey(string.Format(DataCache.RolesCacheKey, portalId), clearRuntime);
+            this.RemoveCacheKey(string.Format(DataCache.JournalTypesCacheKey, portalId), clearRuntime);
         }
 
         private void ClearTabCacheInternal(int portalId, bool clearRuntime)

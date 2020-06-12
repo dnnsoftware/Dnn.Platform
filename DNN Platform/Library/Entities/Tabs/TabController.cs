@@ -305,7 +305,7 @@ namespace DotNetNuke.Entities.Tabs
         private void ClearTabSettingsCache(int tabId)
         {
             var portalId = GetPortalId(tabId, -1);
-            string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
+            string cacheKey = string.Format(DataCache.TabSettingsCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
 
             // aslo clear the settings from tab object in cache.
@@ -325,7 +325,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 var domainRoot = TestableGlobals.Instance.AddHTTP(settings.PortalAlias.HTTPAlias);
 
-                if (!String.IsNullOrEmpty(domainRoot))
+                if (!string.IsNullOrEmpty(domainRoot))
                 {
                     var url = TestableGlobals.Instance.NavigateURL(tab.TabID);
 
@@ -339,7 +339,7 @@ namespace DotNetNuke.Entities.Tabs
                         PortalAliasId = -1,
                         PortalAliasUsage = PortalAliasUsageType.Default,
                         Url = url,
-                        QueryString = String.Empty,
+                        QueryString = string.Empty,
                         CultureCode = tab.CultureCode,
                         HttpStatus = "301",
                         IsSystem = true
@@ -444,10 +444,10 @@ namespace DotNetNuke.Entities.Tabs
         private static void DeserializeTabUrls(XmlNode nodeTabUrl, TabUrlInfo objTabUrl)
         {
             objTabUrl.SeqNum = XmlUtils.GetAttributeValueAsInteger(nodeTabUrl.CreateNavigator(), "SeqNum", 0);
-            objTabUrl.Url = String.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url")) ? "/" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url");
+            objTabUrl.Url = string.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url")) ? "/" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "Url");
             objTabUrl.QueryString = XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "QueryString");
             objTabUrl.CultureCode = XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "CultureCode");
-            objTabUrl.HttpStatus = String.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "HttpStatus")) ? "200" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "HttpStatus");
+            objTabUrl.HttpStatus = string.IsNullOrEmpty(XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "HttpStatus")) ? "200" : XmlUtils.GetAttributeValue(nodeTabUrl.CreateNavigator(), "HttpStatus");
             objTabUrl.IsSystem = XmlUtils.GetAttributeValueAsBoolean(nodeTabUrl.CreateNavigator(), "IsSystem", true);
             objTabUrl.PortalAliasId = Null.NullInteger;
             objTabUrl.PortalAliasUsage = PortalAliasUsageType.Default;
@@ -616,7 +616,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private Dictionary<int, Hashtable> GetTabSettingsByPortal(int portalId)
         {
-            string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
+            string cacheKey = string.Format(DataCache.TabSettingsCacheKey, portalId);
             return CBO.GetCachedObject<Dictionary<int, Hashtable>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -1059,7 +1059,7 @@ namespace DotNetNuke.Entities.Tabs
             ContentType contentType = ContentType.Tab;
 
             IContentController contentController = Util.GetContentController();
-            tab.Content = String.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
+            tab.Content = string.IsNullOrEmpty(tab.Title) ? tab.TabName : tab.Title;
             if (contentType != null)
             {
                 tab.ContentTypeId = contentType.ContentTypeId;
@@ -1206,7 +1206,7 @@ namespace DotNetNuke.Entities.Tabs
                                EventLogController.EventLogType.TABURL_DELETED);
             if (clearCache)
             {
-                DataCache.RemoveCache(String.Format(DataCache.TabUrlCacheKey, portalId));
+                DataCache.RemoveCache(string.Format(DataCache.TabUrlCacheKey, portalId));
                 CacheController.ClearCustomAliasesCache();
                 var tab = this.GetTab(tabUrl.TabId, portalId);
                 tab.ClearTabUrls();
@@ -1931,7 +1931,7 @@ namespace DotNetNuke.Entities.Tabs
 
             if (clearCache)
             {
-                DataCache.RemoveCache(String.Format(DataCache.TabUrlCacheKey, portalId));
+                DataCache.RemoveCache(string.Format(DataCache.TabUrlCacheKey, portalId));
                 CacheController.ClearCustomAliasesCache();
                 this.ClearCache(portalId);
                 var tab = this.GetTab(tabUrl.TabId, portalId);
@@ -2320,7 +2320,7 @@ namespace DotNetNuke.Entities.Tabs
                                              Hashtable modules)
         {
             string tabName = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "name");
-            if (!String.IsNullOrEmpty(tabName))
+            if (!string.IsNullOrEmpty(tabName))
             {
                 if (tab == null)
                 {
@@ -2362,17 +2362,17 @@ namespace DotNetNuke.Entities.Tabs
                 DeserializeTabSettings(tabNode.SelectNodes("tabsettings/tabsetting"), tab);
 
                 // set tab skin and container
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", "")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", "")))
                 {
                     tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", "");
                 }
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", "")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "containersrc", "")))
                 {
                     tab.ContainerSrc = XmlUtils.GetNodeValue(tabNode, "containersrc", "");
                 }
 
                 tabName = tab.TabName;
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent")))
                 {
                     if (tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent")] != null)
                     {
@@ -2399,7 +2399,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
 
-                if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")))
+                if (!string.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")))
                 {
                     if (tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")] != null)
                     {
@@ -2860,7 +2860,7 @@ namespace DotNetNuke.Entities.Tabs
                 case TabType.Tab:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
                     // Get the tab being linked to
-                    TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
+                    TabInfo tempTab = TabController.Instance.GetTab(int.Parse(tab.Url), tab.PortalID, false);
                     if (tempTab != null)
                     {
                         urlNode.InnerXml = tempTab.TabPath;
@@ -2868,7 +2868,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case TabType.File:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "File"));
-                    IFileInfo file = FileManager.Instance.GetFile(Int32.Parse(tab.Url.Substring(7)));
+                    IFileInfo file = FileManager.Instance.GetFile(int.Parse(tab.Url.Substring(7)));
                     urlNode.InnerXml = file.RelativePath;
                     break;
                 case TabType.Url:

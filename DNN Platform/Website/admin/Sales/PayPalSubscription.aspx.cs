@@ -64,10 +64,10 @@ namespace DotNetNuke.Modules.Admin.Sales
                 }
                 Dictionary<string, string> settings = PortalController.Instance.GetPortalSettings(this.PortalSettings.PortalId);
                 string strPayPalURL;
-                if (intUserID != -1 && intRoleId != -1 && !String.IsNullOrEmpty(strProcessorUserId))
+                if (intUserID != -1 && intRoleId != -1 && !string.IsNullOrEmpty(strProcessorUserId))
                 {
                     // Sandbox mode
-                    if (settings.ContainsKey("paypalsandbox") && !String.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].ToLowerInvariant() == "true")
+                    if (settings.ContainsKey("paypalsandbox") && !string.IsNullOrEmpty(settings["paypalsandbox"]) && settings["paypalsandbox"].ToLowerInvariant() == "true")
                     {
                         strPayPalURL = "https://www.sandbox.paypal.com/cgi-bin/webscr?";
                     }
@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                             {
                                 ListEntryInfo colList = ctlList.GetListEntryInfo("Region", objUserInfo.Profile.Region);
                                 strPayPalURL += "&address1=" +
-                                                Globals.HTTPPOSTEncode(Convert.ToString(!String.IsNullOrEmpty(objUserInfo.Profile.Unit) ? objUserInfo.Profile.Unit + " " : "") +
+                                                Globals.HTTPPOSTEncode(Convert.ToString(!string.IsNullOrEmpty(objUserInfo.Profile.Unit) ? objUserInfo.Profile.Unit + " " : "") +
                                                                        objUserInfo.Profile.Street);
                                 strPayPalURL += "&city=" + Globals.HTTPPOSTEncode(objUserInfo.Profile.City);
                                 strPayPalURL += "&state=" + Globals.HTTPPOSTEncode(colList.Value);

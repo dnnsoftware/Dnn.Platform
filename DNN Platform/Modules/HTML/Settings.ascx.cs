@@ -156,13 +156,13 @@ namespace DotNetNuke.Modules.Html
                 switch (this.rblApplyTo.SelectedValue)
                 {
                     case "Module":
-                        htmlTextController.UpdateWorkflow(this.ModuleId, this.rblApplyTo.SelectedValue, Int32.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
+                        htmlTextController.UpdateWorkflow(this.ModuleId, this.rblApplyTo.SelectedValue, int.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
                         break;
                     case "Page":
-                        htmlTextController.UpdateWorkflow(this.TabId, this.rblApplyTo.SelectedValue, Int32.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
+                        htmlTextController.UpdateWorkflow(this.TabId, this.rblApplyTo.SelectedValue, int.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
                         break;
                     case "Site":
-                        htmlTextController.UpdateWorkflow(this.PortalId, this.rblApplyTo.SelectedValue, Int32.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
+                        htmlTextController.UpdateWorkflow(this.PortalId, this.rblApplyTo.SelectedValue, int.Parse(this.cboWorkflow.SelectedValue), this.chkReplace.Checked);
                         break;
                 }
 

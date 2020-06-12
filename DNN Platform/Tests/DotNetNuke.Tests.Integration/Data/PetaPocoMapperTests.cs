@@ -53,7 +53,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoMapper_Maps_TableName_To_Plural_Of_ObjectName()
         {
             // Arrange
-            var mapper = new PetaPocoMapper(String.Empty);
+            var mapper = new PetaPocoMapper(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoMapper_Maps_TableName_To_Attribute()
         {
             // Arrange
-            var mapper = new PetaPocoMapper(String.Empty);
+            var mapper = new PetaPocoMapper(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Person));
@@ -105,7 +105,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoMapper_Sets_PrimaryKey_To_Attribute()
         {
             // Arrange
-            var mapper = new PetaPocoMapper(String.Empty);
+            var mapper = new PetaPocoMapper(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Person));
@@ -118,7 +118,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoMapper_Sets_PrimaryKey_To_ID_If_No_Attribute()
         {
             // Arrange
-            var mapper = new PetaPocoMapper(String.Empty);
+            var mapper = new PetaPocoMapper(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
@@ -131,7 +131,7 @@ namespace DotNetNuke.Tests.Data
         public void PetaPocoMapper_Sets_AutoIncrement_To_True()
         {
             // Arrange
-            var mapper = new PetaPocoMapper(String.Empty);
+            var mapper = new PetaPocoMapper(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Dog));

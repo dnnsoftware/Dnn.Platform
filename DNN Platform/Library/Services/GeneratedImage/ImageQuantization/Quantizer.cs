@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 for (int col = 0; col < width; col++)
                 {
                     this.InitialQuantizePixel(new Color32(pSourcePixel));
-                    pSourcePixel = (IntPtr)((Int64)pSourcePixel + this._pixelSize);
+                    pSourcePixel = (IntPtr)((long)pSourcePixel + this._pixelSize);
                 }   // Now I have the pixel, call the FirstPassQuantize function...
 
                 // Add the stride to the source row

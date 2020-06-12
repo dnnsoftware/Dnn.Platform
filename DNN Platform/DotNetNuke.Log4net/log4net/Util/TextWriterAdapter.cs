@@ -136,7 +136,7 @@ namespace log4net.Util
         /// Gets or sets the line terminator string used by the TextWriter
         /// </para>
         /// </remarks>
-        override public String NewLine
+        override public string NewLine
         {
             get { return this.m_writer.NewLine; }
             set { this.m_writer.NewLine = value; }
@@ -235,7 +235,7 @@ namespace log4net.Util
         /// Writes a string to the wrapped TextWriter
         /// </para>
         /// </remarks>
-        override public void Write(String value)
+        override public void Write(string value)
         {
             this.m_writer.Write(value);
         }

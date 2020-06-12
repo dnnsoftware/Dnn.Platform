@@ -35,7 +35,7 @@ namespace DotNetNuke.Entities.Urls
                 foreach (string rawTabId in rawTabids)
                 {
                     int tabId;
-                    if (Int32.TryParse(rawTabId, out tabId))
+                    if (int.TryParse(rawTabId, out tabId))
                     {
                         tabIds.Add(tabId);
                     }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Entities.Urls
                     // loop through all specified tab names
                     foreach (string tabName in tabNames.Split(';'))
                     {
-                        if (String.Compare(tabName, "default.aspx", StringComparison.OrdinalIgnoreCase) == 0)
+                        if (string.Compare(tabName, "default.aspx", StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             // default.aspx is marked with a -2 tabid
                             tabIds.Add(-2);

@@ -42,7 +42,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void AppendElement(ref XmlDocument objDoc, XmlNode objNode, string attName, string attValue, bool includeIfEmpty, bool cdata)
         {
-            if (String.IsNullOrEmpty(attValue) && !includeIfEmpty)
+            if (string.IsNullOrEmpty(attValue) && !includeIfEmpty)
             {
                 return;
             }
@@ -154,7 +154,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var hashTable = new Hashtable();
 
-            if (!String.IsNullOrEmpty(xmlSource))
+            if (!string.IsNullOrEmpty(xmlSource))
             {
                 try
                 {
@@ -282,7 +282,7 @@ namespace DotNetNuke.Common.Utilities
         /// </remarks>
         public static string GetNodeValue(XmlNode objNode, string nodeName)
         {
-            return GetNodeValue(objNode, nodeName, String.Empty);
+            return GetNodeValue(objNode, nodeName, string.Empty);
         }
 
         /// -----------------------------------------------------------------------------
@@ -303,7 +303,7 @@ namespace DotNetNuke.Common.Utilities
             if (objNode[nodeName] != null)
             {
                 strValue = objNode[nodeName].InnerText;
-                if (String.IsNullOrEmpty(strValue) && !String.IsNullOrEmpty(defaultValue))
+                if (string.IsNullOrEmpty(strValue) && !string.IsNullOrEmpty(defaultValue))
                 {
                     strValue = defaultValue;
                 }

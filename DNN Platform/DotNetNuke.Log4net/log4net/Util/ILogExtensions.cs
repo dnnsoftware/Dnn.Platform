@@ -223,7 +223,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -258,7 +258,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -294,7 +294,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -330,7 +330,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -367,7 +367,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -559,7 +559,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -594,7 +594,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -630,7 +630,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -666,7 +666,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -703,7 +703,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -895,7 +895,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -930,7 +930,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -966,7 +966,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1002,7 +1002,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1039,7 +1039,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1231,7 +1231,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1266,7 +1266,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1302,7 +1302,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1338,7 +1338,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1375,7 +1375,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1567,7 +1567,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1602,7 +1602,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1638,7 +1638,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1674,7 +1674,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>
@@ -1711,7 +1711,7 @@ namespace log4net.Util
         /// <remarks>
         /// <para>
         /// The message is formatted using the <c>String.Format</c> method. See
-        /// <see cref="String.Format(string, object[])"/> for details of the syntax of the format string and the behavior
+        /// <see cref="string.Format(string, object[])"/> for details of the syntax of the format string and the behavior
         /// of the formatting.
         /// </para>
         /// <para>

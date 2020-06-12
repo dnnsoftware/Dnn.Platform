@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.Api
 
             string output = message.ToString();
 
-            if (!String.IsNullOrEmpty(output))
+            if (!string.IsNullOrEmpty(output))
             {
                 switch (rec.Level)
                 {

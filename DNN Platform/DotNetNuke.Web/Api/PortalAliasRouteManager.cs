@@ -145,7 +145,7 @@ namespace DotNetNuke.Web.Api
         {
             string appPath = TestableGlobals.Instance.ApplicationPath;
 
-            if (String.IsNullOrEmpty(appPath))
+            if (string.IsNullOrEmpty(appPath))
             {
                 return aliases;
             }

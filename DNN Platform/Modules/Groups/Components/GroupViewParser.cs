@@ -64,7 +64,7 @@ namespace DotNetNuke.Modules.Groups.Components
             if (isOwner)
             {
 
-                this.Template = this.Template.Replace("[GROUPEDITBUTTON]", String.Format(editUrl, this.GroupEditUrl));
+                this.Template = this.Template.Replace("[GROUPEDITBUTTON]", string.Format(editUrl, this.GroupEditUrl));
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsNotOwner", false);
                 this.Template = Utilities.ParseTokenWrapper(this.Template, "IsOwner", true);
             }
@@ -92,9 +92,9 @@ namespace DotNetNuke.Modules.Groups.Components
 
             this.Template = Utilities.ParseTokenWrapper(this.Template, "AllowJoin", this.RoleInfo.IsPublic);
 
-            this.Template = this.Template.Replace("[GROUPEDITBUTTON]", String.Empty);
+            this.Template = this.Template.Replace("[GROUPEDITBUTTON]", string.Empty);
 
-            var url = this.NavigationManager.NavigateURL(this.GroupViewTabId, "", new String[] { "groupid=" + this.RoleInfo.RoleID.ToString() });
+            var url = this.NavigationManager.NavigateURL(this.GroupViewTabId, "", new string[] { "groupid=" + this.RoleInfo.RoleID.ToString() });
 
             this.Template = Utilities.ParseTokenWrapper(this.Template, "IsPendingMember", membershipPending);
             this.Template = this.Template.Replace("[groupviewurl]", url);

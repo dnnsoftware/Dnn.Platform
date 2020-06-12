@@ -52,7 +52,7 @@ namespace DotNetNuke.Data.PetaPoco
             // Make sure that the sql Condition contains an ORDER BY Clause
             if (!sqlCondition.ToUpperInvariant().Contains("ORDER BY"))
             {
-                sqlCondition = String.Format("{0} ORDER BY {1}", sqlCondition, this._mapper.GetTableInfo(typeof(T)).PrimaryKey);
+                sqlCondition = string.Format("{0} ORDER BY {1}", sqlCondition, this._mapper.GetTableInfo(typeof(T)).PrimaryKey);
             }
             Page<T> petaPocoPage = this._database.Page<T>(pageIndex + 1, pageSize, DataUtil.ReplaceTokens(sqlCondition), args);
 
@@ -73,12 +73,12 @@ namespace DotNetNuke.Data.PetaPoco
 
         protected override IEnumerable<T> GetInternal()
         {
-            return this._database.Fetch<T>(String.Empty);
+            return this._database.Fetch<T>(string.Empty);
         }
 
         protected override IPagedList<T> GetPageInternal(int pageIndex, int pageSize)
         {
-            return this.Find(pageIndex, pageSize, String.Empty);
+            return this.Find(pageIndex, pageSize, string.Empty);
         }
 
         protected override IEnumerable<T> GetByScopeInternal(object propertyValue)
@@ -108,7 +108,7 @@ namespace DotNetNuke.Data.PetaPoco
 
         private string GetScopeSql()
         {
-            return String.Format("WHERE {0} = @0", DataUtil.GetColumnName(typeof(T), this.Scope));
+            return string.Format("WHERE {0} = @0", DataUtil.GetColumnName(typeof(T), this.Scope));
         }
     }
 }

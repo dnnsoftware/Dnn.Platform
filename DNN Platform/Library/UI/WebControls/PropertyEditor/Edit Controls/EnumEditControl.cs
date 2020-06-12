@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.WebControls
             }
             set
             {
-                int setValue = Int32.Parse(value);
+                int setValue = int.Parse(value);
                 this.Value = setValue;
             }
         }
@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            Int32 propValue = Convert.ToInt32(this.Value);
+            int propValue = Convert.ToInt32(this.Value);
             Array enumValues = Enum.GetValues(this.EnumType);
 
             // Render the Select Tag
@@ -147,7 +147,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderViewMode(HtmlTextWriter writer)
         {
-            Int32 propValue = Convert.ToInt32(this.Value);
+            int propValue = Convert.ToInt32(this.Value);
             string enumValue = Enum.Format(this.EnumType, propValue, "G");
 
             this.ControlStyle.AddAttributesToRender(writer);

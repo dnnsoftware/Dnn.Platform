@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
             // Read the configuration specific information for this provider
             var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
 
-            if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
+            if (!string.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
             {
                 switch (objProvider.Attributes["urlFormat"].ToLowerInvariant())
                 {
@@ -65,7 +65,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
                     break;
             }
 
-            string extensions = !String.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
+            string extensions = !string.IsNullOrEmpty(objProvider.Attributes["validExtensions"]) ? objProvider.Attributes["validExtensions"] : ".aspx";
             this._validExtensions = extensions.Split(',');
         }
 

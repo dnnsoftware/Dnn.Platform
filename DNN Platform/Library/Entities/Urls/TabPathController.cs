@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Urls
                                                        int defaultHomeTabId)
         {
             int homeTabId = defaultHomeTabId;
-            if (String.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
+            if (string.Compare(defaultCulture, cultureCode, StringComparison.OrdinalIgnoreCase) != 0)
             {
                 // not the default culture, so there could be a different home page for the different cultulre in 5.5+ builds
                 var cultureLocale = new Locale { Code = cultureCode, Fallback = cultureCode, Text = cultureCode };
@@ -326,7 +326,7 @@ namespace DotNetNuke.Entities.Urls
                     {
                         // check if this tab belongs to the default language, in which case it is already the default language tab
                         string cultureCode = tab.CultureCode;
-                        if (String.Compare(cultureCode, portalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase) == 0)
+                        if (string.Compare(cultureCode, portalSettings.DefaultLanguage, StringComparison.OrdinalIgnoreCase) == 0)
                         {
                             // get the localized versions and see if this matches
                             Dictionary<string, TabInfo> localizedTabs = tab.LocalizedTabs;
@@ -383,7 +383,7 @@ namespace DotNetNuke.Entities.Urls
                 }
             }
             string result = sb.ToString();
-            replacedDiacritic = String.CompareOrdinal(tabPath, result) != 0;
+            replacedDiacritic = string.CompareOrdinal(tabPath, result) != 0;
             return sb.ToString();
         }
 

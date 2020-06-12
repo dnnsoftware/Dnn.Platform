@@ -39,13 +39,13 @@ namespace DotNetNuke.Web.UI.WebControls
             return dnnGridColumn;
         }
 
-        private String _HeaderText;
+        private string _HeaderText;
 
         public override string HeaderText
         {
             get
             {
-                if (String.IsNullOrEmpty(base.HeaderText))
+                if (string.IsNullOrEmpty(base.HeaderText))
                     base.HeaderText = Localization.GetString(string.Format("{0}.Header", this._HeaderText), DotNetNuke.Web.UI.Utilities.GetLocalResourceFile(this.Owner.OwnerGrid.Parent));
                 return base.HeaderText;
             }
@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        public String setHeaderText
+        public string setHeaderText
         {
             set
             {

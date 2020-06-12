@@ -13,7 +13,7 @@ namespace DotNetNuke.Tests.Utilities
     {
         public static void TextFilesAreEqual(string expectedFile, string actualFile)
         {
-            TextFilesAreEqual(expectedFile, actualFile, String.Empty);
+            TextFilesAreEqual(expectedFile, actualFile, string.Empty);
         }
 
         public static void TextFilesAreEqual(string expectedFile, string actualFile, string message)
@@ -25,7 +25,7 @@ namespace DotNetNuke.Tests.Utilities
 
         public static void BinaryFilesAreEqual(string expectedFile, string actualFile)
         {
-            BinaryFilesAreEqual(expectedFile, actualFile, String.Empty);
+            BinaryFilesAreEqual(expectedFile, actualFile, string.Empty);
         }
 
         public static void BinaryFilesAreEqual(string expectedFile, string actualFile, string message)

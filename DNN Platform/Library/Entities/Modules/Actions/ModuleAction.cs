@@ -192,8 +192,8 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             get
             {
-                string controlKey = String.Empty;
-                if (!String.IsNullOrEmpty(this.Url))
+                string controlKey = string.Empty;
+                if (!string.IsNullOrEmpty(this.Url))
                 {
                     int startIndex = this.Url.IndexOf("/ctl/");
                     int endIndex = -1;

@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
     /// -----------------------------------------------------------------------------
     public class TypeDependency : DependencyBase
     {
-        private string _missingDependentType = String.Empty;
+        private string _missingDependentType = string.Empty;
         private string _dependentTypes;
 
         public override string ErrorMessage
@@ -38,11 +38,11 @@ namespace DotNetNuke.Services.Installer.Dependencies
             get
             {
                 bool isValid = true;
-                if (!String.IsNullOrEmpty(this._dependentTypes))
+                if (!string.IsNullOrEmpty(this._dependentTypes))
                 {
                     foreach (string dependentType in (this._dependentTypes + ";").Split(';'))
                     {
-                        if (!String.IsNullOrEmpty(dependentType.Trim()))
+                        if (!string.IsNullOrEmpty(dependentType.Trim()))
                         {
                             if (Reflection.CreateType(dependentType, true) == null)
                             {

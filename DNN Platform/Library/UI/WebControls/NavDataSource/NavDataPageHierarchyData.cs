@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                if (String.IsNullOrEmpty(this.m_objNode.Image) || this.m_objNode.Image.StartsWith("/"))
+                if (string.IsNullOrEmpty(this.m_objNode.Image) || this.m_objNode.Image.StartsWith("/"))
                 {
                     return this.m_objNode.Image;
                 }

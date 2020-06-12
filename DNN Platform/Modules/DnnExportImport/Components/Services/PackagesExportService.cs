@@ -155,7 +155,7 @@ namespace Dnn.ExportImport.Components.Services
             return new ExportPackage { PackageFileName = fileName, PackageName = packageName, PackageType = packageType, Version = version };
         }
 
-        private void ProcessImportModulePackage(ExportPackage exportPackage, String tempFolder, CollisionResolution collisionResolution)
+        private void ProcessImportModulePackage(ExportPackage exportPackage, string tempFolder, CollisionResolution collisionResolution)
         {
             try
             {

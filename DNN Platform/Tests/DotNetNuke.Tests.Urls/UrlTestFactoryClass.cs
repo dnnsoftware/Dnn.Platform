@@ -16,7 +16,7 @@ namespace DotNetNuke.Tests.Urls
     {
         private static void GetTestsWithAliases(string testType, string testName, ArrayList testData)
         {
-            TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
             {
                 string[] fields = line.Split(',');
                 GetTests(fields[1].Trim(), fields[0].Trim(), testType, testName, testData);
@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Urls
             try
             {
                 // Read Test File Data
-                TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
+                TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
                             {
                                 var fieldList = new Dictionary<string, string>();
                                 fieldList["TestName"] = testName;
@@ -45,7 +45,7 @@ namespace DotNetNuke.Tests.Urls
                                 }
 
                                 string name = testName + "_";
-                                if (!String.IsNullOrEmpty(testPrefix))
+                                if (!string.IsNullOrEmpty(testPrefix))
                                 {
                                     name += testPrefix + "_";
                                 }
@@ -75,7 +75,7 @@ namespace DotNetNuke.Tests.Urls
             var settings = new FriendlyUrlSettings(portalId);
 
             // Read Test Settings
-            TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
             {
                 string[] fields = line.Split(',');
                 string key = fields[0].Trim();
@@ -111,7 +111,7 @@ namespace DotNetNuke.Tests.Urls
             var dictionary = new Dictionary<string, string>();
 
             // Read Test Settings
-            TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
             {
                 string[] fields = line.Split(',');
                 string key = fields[0].Trim();
@@ -321,7 +321,7 @@ namespace DotNetNuke.Tests.Urls
                 var testData = new ArrayList();
 
                 GetTestsWithAliases("UrlRewrite", "PrimaryPortalAlias", testData);
-                GetTests(String.Empty, String.Empty, "UrlRewrite", "PrimaryPortalAlias_Default", testData);
+                GetTests(string.Empty, string.Empty, "UrlRewrite", "PrimaryPortalAlias_Default", testData);
 
                 return testData;
             }

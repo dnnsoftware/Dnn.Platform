@@ -46,7 +46,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             var _globals = new Mock<IGlobals>();
             var _cbo = new Mock<ICBO>();
 
-            _mockData.Setup(m => m.GetProviderPath()).Returns(String.Empty);
+            _mockData.Setup(m => m.GetProviderPath()).Returns(string.Empty);
 
             TestableGlobals.SetTestableInstance(_globals.Object);
             CBO.SetTestableInstance(_cbo.Object);

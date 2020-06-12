@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     {
                         logInfo.LogServerName = "NA";
                     }
-                    if (String.IsNullOrEmpty(logInfo.LogUserName))
+                    if (string.IsNullOrEmpty(logInfo.LogUserName))
                     {
                         if (HttpContext.Current != null)
                         {
@@ -185,7 +185,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     }
 
                     // Get portal name if name isn't set
-                    if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
+                    if (logInfo.LogPortalID != Null.NullInteger && string.IsNullOrEmpty(logInfo.LogPortalName))
                     {
                         logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
                     }
@@ -214,8 +214,8 @@ namespace DotNetNuke.Services.Log.EventLog
                                                 NotificationThreshold = 1,
                                                 NotificationThresholdTime = 1,
                                                 NotificationThresholdTimeType = LogTypeConfigInfo.NotificationThresholdTimeTypes.Seconds,
-                                                MailFromAddress = String.Empty,
-                                                MailToAddress = String.Empty
+                                                MailFromAddress = string.Empty,
+                                                MailToAddress = string.Empty
                                             };
                         this.AddLogTypeConfigInfo(logTypeConfigInfo);
                     }

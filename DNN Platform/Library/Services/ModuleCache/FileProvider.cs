@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         private static int GetCachedItemCount(int tabModuleId)
         {
-            return Directory.GetFiles(GetCacheFolder(), String.Format("*{0}", DataFileExtension)).Length;
+            return Directory.GetFiles(GetCacheFolder(), string.Format("*{0}", DataFileExtension)).Length;
         }
 
         private static string GetCachedOutputFileName(int tabModuleId, string cacheKey)
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.ModuleCache
             {
                 if (!FileSystemUtils.DeleteFileWithWait(File, 100, 200))
                 {
-                    filesNotDeleted.Append(String.Format("{0};", File));
+                    filesNotDeleted.Append(string.Format("{0};", File));
                 }
                 else
                 {
@@ -153,7 +153,7 @@ namespace DotNetNuke.Services.ModuleCache
             }
             if (filesNotDeleted.Length > 0)
             {
-                throw new IOException(String.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
             }
         }
 
@@ -216,14 +216,14 @@ namespace DotNetNuke.Services.ModuleCache
                 string cacheFolder = GetCacheFolder(portalId);
                 if (Directory.Exists(cacheFolder) && IsPathInApplication(cacheFolder))
                 {
-                    foreach (string File in Directory.GetFiles(cacheFolder, String.Format("*{0}", AttribFileExtension)))
+                    foreach (string File in Directory.GetFiles(cacheFolder, string.Format("*{0}", AttribFileExtension)))
                     {
                         if (this.IsFileExpired(File))
                         {
                             string fileToDelete = File.Replace(AttribFileExtension, DataFileExtension);
                             if (!FileSystemUtils.DeleteFileWithWait(fileToDelete, 100, 200))
                             {
-                                filesNotDeleted.Append(String.Format("{0};", fileToDelete));
+                                filesNotDeleted.Append(string.Format("{0};", fileToDelete));
                             }
                             else
                             {
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.ModuleCache
                 }
                 if (filesNotDeleted.Length > 0)
                 {
-                    throw new IOException(String.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
+                    throw new IOException(string.Format("Deleted {0} files, however, some files are locked.  Could not delete the following files: {1}", i, filesNotDeleted));
                 }
             }
             catch (Exception ex)

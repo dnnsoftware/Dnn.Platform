@@ -455,7 +455,7 @@ namespace log4net.Appender
 
             // Create and configure the smtp client
             SmtpClient smtpClient = new SmtpClient();
-            if (!String.IsNullOrEmpty(this.m_smtpHost))
+            if (!string.IsNullOrEmpty(this.m_smtpHost))
             {
                 smtpClient.Host = this.m_smtpHost;
             }
@@ -480,15 +480,15 @@ namespace log4net.Appender
                 mailMessage.BodyEncoding = this.m_bodyEncoding;
                 mailMessage.From = new MailAddress(this.m_from);
                 mailMessage.To.Add(this.m_to);
-                if (!String.IsNullOrEmpty(this.m_cc))
+                if (!string.IsNullOrEmpty(this.m_cc))
                 {
                     mailMessage.CC.Add(this.m_cc);
                 }
-                if (!String.IsNullOrEmpty(this.m_bcc))
+                if (!string.IsNullOrEmpty(this.m_bcc))
                 {
                     mailMessage.Bcc.Add(this.m_bcc);
                 }
-                if (!String.IsNullOrEmpty(this.m_replyTo))
+                if (!string.IsNullOrEmpty(this.m_replyTo))
                 {
                     // .NET 4.0 warning CS0618: 'System.Net.Mail.MailMessage.ReplyTo' is obsolete:
                     // 'ReplyTo is obsoleted for this type.  Please use ReplyToList instead which can accept multiple addresses. http://go.microsoft.com/fwlink/?linkid=14202'

@@ -420,7 +420,7 @@ namespace Dnn.Module.ModuleCreator
         {
             if (this.UserInfo.IsSuperUser)
             {
-                if (!String.IsNullOrEmpty(this.txtOwner.Text) && !String.IsNullOrEmpty(this.txtModule.Text) && this.cboTemplate.SelectedIndex > 0 && !String.IsNullOrEmpty(this.txtControl.Text))
+                if (!string.IsNullOrEmpty(this.txtOwner.Text) && !string.IsNullOrEmpty(this.txtModule.Text) && this.cboTemplate.SelectedIndex > 0 && !string.IsNullOrEmpty(this.txtControl.Text))
                 {
                     HostController.Instance.Update("Owner", this.txtOwner.Text, false);
                     if (this.CreateModuleDefinition())

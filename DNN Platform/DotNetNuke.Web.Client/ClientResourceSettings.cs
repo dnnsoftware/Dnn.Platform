@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Client
         ///
         /// </summary>
         /// <returns></returns>
-        public Boolean IsOverridingDefaultSettingsEnabled()
+        public bool IsOverridingDefaultSettingsEnabled()
         {
             var portalVersion = GetIntegerSetting(PortalSettingsDictionaryKey, VersionKey);
             var overrideDefaultSettings = GetBooleanSetting(PortalSettingsDictionaryKey, OverrideDefaultSettingsKey);

@@ -228,7 +228,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
                 // replace language parameter in querystring, to make sure that user will see page in correct language
                 if (this.UserId != -1 && this.User != null)
                 {
-                    if (!String.IsNullOrEmpty(this.User.Profile.PreferredLocale)
+                    if (!string.IsNullOrEmpty(this.User.Profile.PreferredLocale)
                             && this.User.Profile.PreferredLocale != CultureInfo.CurrentCulture.Name
                             && this.LocaleEnabled(this.User.Profile.PreferredLocale))
                     {

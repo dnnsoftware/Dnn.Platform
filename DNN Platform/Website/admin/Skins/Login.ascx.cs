@@ -87,7 +87,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         this.loginGroup.Visible = true;
                     }
 
-                    if (!String.IsNullOrEmpty(this.CssClass))
+                    if (!string.IsNullOrEmpty(this.CssClass))
                     {
                         this.loginLink.CssClass = this.CssClass;
                         this.enhancedLoginLink.CssClass = this.CssClass;
@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                     if (this.Request.IsAuthenticated)
                     {
-                        if (!String.IsNullOrEmpty(this.LogoffText))
+                        if (!string.IsNullOrEmpty(this.LogoffText))
                         {
                             if (this.LogoffText.IndexOf("src=") != -1)
                             {
@@ -116,7 +116,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                     else
                     {
-                        if (!String.IsNullOrEmpty(this.Text))
+                        if (!string.IsNullOrEmpty(this.Text))
                         {
                             if (this.Text.IndexOf("src=") != -1)
                             {

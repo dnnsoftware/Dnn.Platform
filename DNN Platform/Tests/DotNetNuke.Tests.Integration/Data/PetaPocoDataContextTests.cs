@@ -58,8 +58,8 @@ namespace DotNetNuke.Tests.Data
             // Arrange
 
             // Act, Assert
-            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(String.Empty));
-            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(String.Empty, tablePrefix));
+            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(string.Empty));
+            Assert.Throws<ArgumentException>(() => new PetaPocoDataContext(string.Empty, tablePrefix));
         }
 
         [Test]

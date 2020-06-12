@@ -98,7 +98,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                             break;
                     }
 
-                    if (!String.IsNullOrEmpty(resolvedPath))
+                    if (!string.IsNullOrEmpty(resolvedPath))
                     {
                         var sep = resolvedPath.LastIndexOf('/');
                         var dirName = resolvedPath.Substring(0, sep + 1);
@@ -108,7 +108,7 @@ namespace DotNetNuke.Web.DDRMenu.DNNCommon
                         mappedDir = mappedDir.Remove(mappedDir.Length - 1);
                         if (Directory.Exists(mappedDir))
                         {
-                            if (String.IsNullOrEmpty(fileName))
+                            if (string.IsNullOrEmpty(fileName))
                                 return resolvedPath.Replace('\\', '/');
 
                             var matches = Directory.GetFileSystemEntries(mappedDir, fileName);

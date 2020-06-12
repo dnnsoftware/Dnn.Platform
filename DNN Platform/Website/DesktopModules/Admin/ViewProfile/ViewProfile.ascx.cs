@@ -110,7 +110,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     if (this.IncludeButton && this.IsUser)
                     {
-                        string editHyperLink = String.Format("<a href=\"{0}\" class=\"dnnPrimaryAction\">{1}</a>", profileUrl, this.LocalizeString("Edit"));
+                        string editHyperLink = string.Format("<a href=\"{0}\" class=\"dnnPrimaryAction\">{1}</a>", profileUrl, this.LocalizeString("Edit"));
                         template = template.Replace("[BUTTON:EDITPROFILE]", editHyperLink);
                     }
                     this.buttonPanel.Visible = false;
@@ -124,7 +124,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     if (this.IsUser)
                     {
-                        string editHyperLink = String.Format("<a href=\"{0}\" class=\"dnnSecondaryAction\">{1}</a>", profileUrl, this.LocalizeString("Edit"));
+                        string editHyperLink = string.Format("<a href=\"{0}\" class=\"dnnSecondaryAction\">{1}</a>", profileUrl, this.LocalizeString("Edit"));
                         template = template.Replace("[HYPERLINK:EDITPROFILE]", editHyperLink);
                     }
                 }
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 {
                     if (this.IsUser)
                     {
-                        string editHyperLink = String.Format("<a href=\"{0}\" class=\"dnnSecondaryAction\">{1}</a>", editUrl, this.LocalizeString("MyAccount"));
+                        string editHyperLink = string.Format("<a href=\"{0}\" class=\"dnnSecondaryAction\">{1}</a>", editUrl, this.LocalizeString("MyAccount"));
                         template = template.Replace("[HYPERLINK:MYACCOUNT]", editHyperLink);
                     }
                     this.buttonPanel.Visible = false;
@@ -173,7 +173,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                     var displayDataType = ProfilePropertyAccess.DisplayDataType(property).ToLowerInvariant();
                     string value = propertyAccess.GetProperty(
                         property.PropertyName,
-                                                              String.Empty,
+                                                              string.Empty,
                                                               Thread.CurrentThread.CurrentUICulture,
                                                               this.ModuleContext.PortalSettings.UserInfo,
                                                               Scope.DefaultSettings,
@@ -204,7 +204,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                 string email = (this.ProfileUserId == this.ModuleContext.PortalSettings.UserId
                                 || this.ModuleContext.PortalSettings.UserInfo.IsInRole(this.ModuleContext.PortalSettings.AdministratorRoleName))
                                    ? this.ProfileUser.Email
-                                   : String.Empty;
+                                   : string.Empty;
 
                 sb.Append("self.Email = ko.observable('");
                 email = Localization.GetSafeJSString(this.Server.HtmlDecode(email));

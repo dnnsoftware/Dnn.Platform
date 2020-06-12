@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual string GetHashCode(IFileInfo file)
         {
-            var currentHashCode = String.Empty;
+            var currentHashCode = string.Empty;
             using (var fileContent = this.GetFileStream(file))
             {
                 currentHashCode = this.GetHashCode(file, fileContent);

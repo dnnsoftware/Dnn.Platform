@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.Skins
         {
             if (control != null)
             {
-                if (!String.IsNullOrEmpty(message))
+                if (!string.IsNullOrEmpty(message))
                 {
                     var messagePlaceHolder = ControlUtilities.FindControl<PlaceHolder>(control, "MessagePlaceHolder", true);
                     if (messagePlaceHolder != null)
@@ -208,7 +208,7 @@ namespace DotNetNuke.UI.Skins
 
         private static void AddPageMessage(Control control, string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconSrc)
         {
-            if (!String.IsNullOrEmpty(message))
+            if (!string.IsNullOrEmpty(message))
             {
                 Control contentPane = FindControlRecursive(control, Globals.glbDefaultPane);
 
@@ -536,7 +536,7 @@ namespace DotNetNuke.UI.Skins
             this.Panes.TryGetValue(Globals.glbDefaultPane.ToLowerInvariant(), out pane);
             slaveModule.PaneName = Globals.glbDefaultPane;
             slaveModule.ContainerSrc = this.PortalSettings.ActiveTab.ContainerSrc;
-            if (String.IsNullOrEmpty(slaveModule.ContainerSrc))
+            if (string.IsNullOrEmpty(slaveModule.ContainerSrc))
             {
                 slaveModule.ContainerSrc = this.PortalSettings.DefaultPortalContainer;
             }
@@ -892,7 +892,7 @@ namespace DotNetNuke.UI.Skins
 
             // attempt to find and load a popup skin from the assigned skinned source
             string skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
-            if (!String.IsNullOrEmpty(skinSource))
+            if (!string.IsNullOrEmpty(skinSource))
             {
                 skinSource = SkinController.FormatSkinSrc(SkinController.FormatSkinPath(skinSource) + "popUpSkin.ascx", page.PortalSettings);
 
@@ -942,7 +942,7 @@ namespace DotNetNuke.UI.Skins
                 HttpCookie skinCookie = page.Request.Cookies["_SkinSrc" + page.PortalSettings.PortalId];
                 if (skinCookie != null)
                 {
-                    if (!String.IsNullOrEmpty(skinCookie.Value))
+                    if (!string.IsNullOrEmpty(skinCookie.Value))
                     {
                         skinSource = SkinController.FormatSkinSrc(skinCookie.Value + ".ascx", page.PortalSettings);
                         skin = LoadSkin(page, skinSource);
@@ -957,7 +957,7 @@ namespace DotNetNuke.UI.Skins
                 // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
                 skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId,
                     Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
-                if (!String.IsNullOrEmpty(skinSource))
+                if (!string.IsNullOrEmpty(skinSource))
                 {
                     skinSource = SkinController.FormatSkinSrc(skinSource, page.PortalSettings);
                     skin = LoadSkin(page, skinSource);

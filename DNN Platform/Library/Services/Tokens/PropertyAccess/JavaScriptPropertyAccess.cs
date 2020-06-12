@@ -45,9 +45,9 @@ namespace DotNetNuke.Services.Tokens
 
         protected override string ProcessToken(JavaScriptDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            if (String.IsNullOrEmpty(model.JsName))
+            if (string.IsNullOrEmpty(model.JsName))
             {
-                if (String.IsNullOrEmpty(model.Path))
+                if (string.IsNullOrEmpty(model.Path))
                 {
                     throw new ArgumentException("If the jsname property is not specified then the JavaScript token must specify a path or property.");
                 }
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Tokens
                 {
                     model.Priority = (int)FileOrder.Js.DefaultPriority;
                 }
-                if (String.IsNullOrEmpty(model.Provider))
+                if (string.IsNullOrEmpty(model.Provider))
                 {
                     ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority);
                 }
@@ -64,13 +64,13 @@ namespace DotNetNuke.Services.Tokens
                     ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, model.Provider);
                 }
             }
-            else if (!String.IsNullOrEmpty(model.Path))
+            else if (!string.IsNullOrEmpty(model.Path))
             {
                 if (model.Priority == 0)
                 {
                     model.Priority = (int)FileOrder.Js.DefaultPriority;
                 }
-                if (String.IsNullOrEmpty(model.Provider))
+                if (string.IsNullOrEmpty(model.Provider))
                 {
                     ClientResourceManager.RegisterScript(this._page, model.Path, model.Priority, "", model.JsName, model.Version);
                 }
@@ -83,11 +83,11 @@ namespace DotNetNuke.Services.Tokens
             {
                 Version version = null;
                 SpecificVersion specific = SpecificVersion.Latest;
-                if (!String.IsNullOrEmpty(model.Version))
+                if (!string.IsNullOrEmpty(model.Version))
                 {
                     version = new Version(model.Version);
 
-                    if (!String.IsNullOrEmpty(model.Specific))
+                    if (!string.IsNullOrEmpty(model.Specific))
                     {
                         switch (model.Specific)
                         {
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Tokens
                 JavaScript.RequestRegistration(model.JsName, version, specific);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

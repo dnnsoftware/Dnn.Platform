@@ -93,7 +93,7 @@ namespace DotNetNuke.Services.Sitemap
         /// </remarks>
         public void BuildSiteMap(TextWriter output)
         {
-            int cacheDays = Int32.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.PortalSettings.PortalId, "1"));
+            int cacheDays = int.Parse(PortalController.GetPortalSetting("SitemapCacheDays", this.PortalSettings.PortalId, "1"));
             bool cached = cacheDays > 0;
 
             if (cached && this.CacheIsValid())

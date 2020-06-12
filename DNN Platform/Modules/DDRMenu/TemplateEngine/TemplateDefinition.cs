@@ -90,13 +90,13 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                 foreach (XmlElement scriptElt in elt.GetElementsByTagName("script"))
                                 {
                                     var jsObject = scriptElt.GetAttribute("jsObject");
-                                    var scriptPath = String.IsNullOrEmpty(scriptElt.InnerText.Trim())
+                                    var scriptPath = string.IsNullOrEmpty(scriptElt.InnerText.Trim())
                                                         ? ""
                                                         : Globals.ResolveUrl(GetResolvedPath(scriptElt, resolver));
-                                    if (String.IsNullOrEmpty(jsObject))
+                                    if (string.IsNullOrEmpty(jsObject))
                                     {
                                         var jsLibraryName = scriptElt.GetAttribute("name");
-                                        if (!String.IsNullOrEmpty(jsLibraryName))
+                                        if (!string.IsNullOrEmpty(jsLibraryName))
                                         {
                                             SpecificVersion specificityTemp;
                                             SpecificVersion? specificity = null;
@@ -118,7 +118,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                         continue;
                                     }
 
-                                    if (String.IsNullOrEmpty(scriptPath))
+                                    if (string.IsNullOrEmpty(scriptPath))
                                     {
                                         // support legacy named jsObjects that map to libraries
                                         if (jsObject.Equals("jQuery"))
@@ -139,7 +139,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                     }
 
                                     var script = CreateScript(jsObject, scriptPath);
-                                    if (!String.IsNullOrEmpty(script))
+                                    if (!string.IsNullOrEmpty(script))
                                     {
                                         baseDef.ScriptKeys.Add(jsObject);
                                         baseDef.Scripts.Add(jsObject, script);
@@ -159,7 +159,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                                     var optionName = optionElt.GetAttribute("name");
                                     var optionType = optionElt.GetAttribute("type");
                                     var optionValue = optionElt.GetAttribute("value");
-                                    if (String.IsNullOrEmpty(optionType))
+                                    if (string.IsNullOrEmpty(optionType))
                                     {
                                         optionType = "passthrough";
                                     }
@@ -203,7 +203,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
                 if (baseDef.Processor == null)
                 {
-                    throw new ApplicationException(String.Format("Can't find processor for manifest {0}", manifestPath));
+                    throw new ApplicationException(string.Format("Can't find processor for manifest {0}", manifestPath));
                 }
 
                 cache.Insert(manifestPath, baseDef, new CacheDependency(new[] { manifestPath, baseDef.TemplatePath }));
@@ -231,7 +231,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
 
             jsObject = jsObject ?? "";
 
-            if (String.IsNullOrEmpty(scriptPath))
+            if (string.IsNullOrEmpty(scriptPath))
             {
                 switch (jsObject)
                 {
@@ -239,23 +239,23 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                         scriptPath = "";
                         break;
                     default:
-                        throw new ApplicationException(String.Format("Can't deduce script path for JavaScript object '{0}'", jsObject));
+                        throw new ApplicationException(string.Format("Can't deduce script path for JavaScript object '{0}'", jsObject));
                 }
             }
 
             if (jsObject == "DDRjQuery")
             {
-                result = String.IsNullOrEmpty(scriptPath)
+                result = string.IsNullOrEmpty(scriptPath)
                             ? @"<script type=""text/javascript"">DDRjQuery=window.DDRjQuery||jQuery;</script>"
-                            : String.Format(
+                            : string.Format(
                                 @"<script type=""text/javascript"">if (!window.DDRjQuery) {{if (window.jQuery && (jQuery.fn.jquery>=""1.3"")) DDRjQuery=jQuery; else document.write(unescape('%3Cscript src=""{0}"" type=""text/javascript""%3E%3C/script%3E'));}}</script><script type=""text/javascript"">if (!window.DDRjQuery) DDRjQuery=jQuery.noConflict(true);</script>",
                                 scriptPath);
             }
             else
             {
-                result = String.IsNullOrEmpty(scriptPath)
+                result = string.IsNullOrEmpty(scriptPath)
                             ? ""
-                            : String.Format(
+                            : string.Format(
                                 @"<script type=""text/javascript"">if (!({0})) document.write(unescape('%3Cscript src=""{1}"" type=""text/javascript""%3E%3C/script%3E'));</script>",
                                 GetObjectCheckScript(jsObject),
                                 scriptPath);
@@ -268,13 +268,13 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
         {
             var objectParts = jsObject.Split('.');
             var objectToCheck = new StringBuilder("window");
-            var objectsToCheck = new List<String>();
+            var objectsToCheck = new List<string>();
             foreach (var part in objectParts)
             {
                 objectToCheck.AppendFormat(".{0}", part);
                 objectsToCheck.Add(objectToCheck.ToString());
             }
-            return String.Join(" && ", objectsToCheck.ToArray());
+            return string.Join(" && ", objectsToCheck.ToArray());
         }
 
         public TemplateDefinition Clone()
@@ -369,7 +369,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 }
             }
 
-            var headContent = String.IsNullOrEmpty(this.TemplateHeadPath) ? "" : Utilities.CachedFileContent(this.TemplateHeadPath);
+            var headContent = string.IsNullOrEmpty(this.TemplateHeadPath) ? "" : Utilities.CachedFileContent(this.TemplateHeadPath);
             var expandedHead = RegexLinks.Replace(headContent, "$1" + DNNContext.Current.ActiveTab.SkinPath + "$3");
             page.Header.Controls.Add(new LiteralControl(expandedHead));
         }

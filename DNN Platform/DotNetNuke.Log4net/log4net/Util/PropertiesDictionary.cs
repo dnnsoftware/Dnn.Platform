@@ -205,7 +205,7 @@ namespace log4net.Util
         /// <param name="value">the value to store for the key</param>
         /// <remarks>
         /// <para>
-        /// Store a value for the specified <see cref="String"/> <paramref name="key"/>.
+        /// Store a value for the specified <see cref="string"/> <paramref name="key"/>.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">Thrown if the <paramref name="key"/> is not a string</exception>
@@ -243,7 +243,7 @@ namespace log4net.Util
         /// </value>
         /// <remarks>
         /// <para>
-        /// Get or set a value for the specified <see cref="String"/> <paramref name="key"/>.
+        /// Get or set a value for the specified <see cref="string"/> <paramref name="key"/>.
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentException">Thrown if the <paramref name="key"/> is not a string</exception>

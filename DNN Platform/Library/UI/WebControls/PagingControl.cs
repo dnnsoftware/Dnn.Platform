@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return String.IsNullOrEmpty(this._CSSClassLinkActive) ? "" : this._CSSClassLinkActive;
+                return string.IsNullOrEmpty(this._CSSClassLinkActive) ? "" : this._CSSClassLinkActive;
             }
             set
             {
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return String.IsNullOrEmpty(this._CSSClassLinkInactive) ? "" : this._CSSClassLinkInactive;
+                return string.IsNullOrEmpty(this._CSSClassLinkInactive) ? "" : this._CSSClassLinkInactive;
             }
             set
             {
@@ -64,7 +64,7 @@ namespace DotNetNuke.UI.WebControls
         {
             get
             {
-                return String.IsNullOrEmpty(this._CSSClassPagingStatus) ? "" : this._CSSClassPagingStatus;
+                return string.IsNullOrEmpty(this._CSSClassPagingStatus) ? "" : this._CSSClassPagingStatus;
             }
             set
             {
@@ -178,9 +178,9 @@ namespace DotNetNuke.UI.WebControls
             switch (this.Mode)
             {
                 case PagingControlMode.URL:
-                    return !String.IsNullOrEmpty(this.QuerystringParams)
-                               ? (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams))
-                               : (!String.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID));
+                    return !string.IsNullOrEmpty(this.QuerystringParams)
+                               ? (!string.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams, "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID, "", this.QuerystringParams))
+                               : (!string.IsNullOrEmpty(CurrentPage) ? TestableGlobals.Instance.NavigateURL(this.TabID, "", "currentpage=" + CurrentPage) : TestableGlobals.Instance.NavigateURL(this.TabID));
                 default:
                     return this.Page.ClientScript.GetPostBackClientHyperlink(this, "Page_" + CurrentPage, false);
             }
@@ -279,7 +279,7 @@ namespace DotNetNuke.UI.WebControls
             this.cellDisplayLinks = new TableCell();
             // cellDisplayStatus.CssClass = "Normal";
             // cellDisplayLinks.CssClass = "Normal";
-            this.tablePageNumbers.CssClass = String.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
+            this.tablePageNumbers.CssClass = string.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
             var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
             this.PageNumbers = new Repeater();
             var I = new PageNumberLinkTemplate(this);

@@ -247,7 +247,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             if (string.IsNullOrEmpty(folderProviderType)) return;
 
             var settingsControlVirtualPath = FolderProvider.Instance(folderProviderType).GetSettingsControlVirtualPath();
-            if (String.IsNullOrEmpty(settingsControlVirtualPath)) return;
+            if (string.IsNullOrEmpty(settingsControlVirtualPath)) return;
 
             var settingsControl = this.LoadControl(settingsControlVirtualPath);
             if (settingsControl == null || !(settingsControl is FolderMappingSettingsControlBase)) return;

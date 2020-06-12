@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.EventQueue
                     {
                         log.AddProperty(key, message.Attributes[key]);
                     }
-                    if (!String.IsNullOrEmpty(message.ExceptionMessage))
+                    if (!string.IsNullOrEmpty(message.ExceptionMessage))
                     {
                         log.AddProperty("ExceptionMessage", message.ExceptionMessage);
                     }

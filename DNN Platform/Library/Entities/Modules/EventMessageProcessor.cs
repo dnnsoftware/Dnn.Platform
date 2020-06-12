@@ -109,8 +109,8 @@ namespace DotNetNuke.Entities.Modules
 
                     foreach (PortalInfo portal in PortalController.Instance.GetPortals())
                     {
-                        DataCache.RemoveCache(String.Format(DataCache.DesktopModuleCacheKey, portal.PortalID));
-                        DataCache.RemoveCache(String.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalID));
+                        DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, portal.PortalID));
+                        DataCache.RemoveCache(string.Format(DataCache.PortalDesktopModuleCacheKey, portal.PortalID));
                     }
                 }
             }

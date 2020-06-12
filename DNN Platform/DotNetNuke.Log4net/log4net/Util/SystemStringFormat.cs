@@ -49,8 +49,8 @@ namespace log4net.Util
         /// Initialise the <see cref="SystemStringFormat"/>
         /// </summary>
         /// <param name="provider">An <see cref="System.IFormatProvider"/> that supplies culture-specific formatting information.</param>
-        /// <param name="format">A <see cref="System.String"/> containing zero or more format items.</param>
-        /// <param name="args">An <see cref="System.Object"/> array containing zero or more objects to format.</param>
+        /// <param name="format">A <see cref="string"/> containing zero or more format items.</param>
+        /// <param name="args">An <see cref="object"/> array containing zero or more objects to format.</param>
         public SystemStringFormat(IFormatProvider provider, string format, params object[] args)
         {
             this.m_provider = provider;
@@ -72,16 +72,16 @@ namespace log4net.Util
         #region StringFormat
 
         /// <summary>
-        /// Replaces the format item in a specified <see cref="System.String"/> with the text equivalent
-        /// of the value of a corresponding <see cref="System.Object"/> instance in a specified array.
+        /// Replaces the format item in a specified <see cref="string"/> with the text equivalent
+        /// of the value of a corresponding <see cref="object"/> instance in a specified array.
         /// A specified parameter supplies culture-specific formatting information.
         /// </summary>
         /// <param name="provider">An <see cref="System.IFormatProvider"/> that supplies culture-specific formatting information.</param>
-        /// <param name="format">A <see cref="System.String"/> containing zero or more format items.</param>
-        /// <param name="args">An <see cref="System.Object"/> array containing zero or more objects to format.</param>
+        /// <param name="format">A <see cref="string"/> containing zero or more format items.</param>
+        /// <param name="args">An <see cref="object"/> array containing zero or more objects to format.</param>
         /// <returns>
-        /// A copy of format in which the format items have been replaced by the <see cref="System.String"/>
-        /// equivalent of the corresponding instances of <see cref="System.Object"/> in args.
+        /// A copy of format in which the format items have been replaced by the <see cref="string"/>
+        /// equivalent of the corresponding instances of <see cref="object"/> in args.
         /// </returns>
         /// <remarks>
         /// <para>
@@ -106,7 +106,7 @@ namespace log4net.Util
                 }
 
                 // Try to format the string
-                return String.Format(provider, format, args);
+                return string.Format(provider, format, args);
             }
             catch (Exception ex)
             {
@@ -198,7 +198,7 @@ namespace log4net.Util
         /// <summary>
         /// Dump an object to a string
         /// </summary>
-        private static void RenderObject(Object obj, StringBuilder buffer)
+        private static void RenderObject(object obj, StringBuilder buffer)
         {
             if (obj == null)
             {

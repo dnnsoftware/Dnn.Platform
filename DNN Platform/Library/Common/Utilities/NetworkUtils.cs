@@ -119,7 +119,7 @@ namespace DotNetNuke.Common.Utils
         /// <returns>Classless Inter-Domain Routing</returns>
         public static string FormatAsCidr(string startIP, string subnetMask)
         {
-            if (String.IsNullOrEmpty(subnetMask))
+            if (string.IsNullOrEmpty(subnetMask))
             {
                 return startIP;
             }
@@ -224,7 +224,7 @@ namespace DotNetNuke.Common.Utils
                 }
 
                 // handle case where we are matching on a single IP
-                if (String.IsNullOrEmpty(subnetmask)) if (currentIP == startIP) return true;
+                if (string.IsNullOrEmpty(subnetmask)) if (currentIP == startIP) return true;
 
                 // handle case where we have to build a CIDR, convert to an IP range and compare
                 string cidr = FormatAsCidr(startIP, subnetmask);

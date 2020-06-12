@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.Localization
             set
             {
                 _defaultKeyName = value;
-                if (String.IsNullOrEmpty(_defaultKeyName))
+                if (string.IsNullOrEmpty(_defaultKeyName))
                 {
                     _defaultKeyName = "resourcekey";
                 }
@@ -484,7 +484,7 @@ namespace DotNetNuke.Services.Localization
                     }
 
                     var alias = GetValidLanguageURL(portalId, httpAlias, locale.Code.ToLowerInvariant());
-                    if (!String.IsNullOrEmpty(alias))
+                    if (!string.IsNullOrEmpty(alias))
                     {
                         var newAlias = new PortalAliasInfo(currentAlias)
                             {
@@ -513,7 +513,7 @@ namespace DotNetNuke.Services.Localization
                     modifiedLocale += counter.ToString(CultureInfo.InvariantCulture);
                 }
 
-                alias = String.Format("{0}/{1}", httpAlias, modifiedLocale);
+                alias = string.Format("{0}/{1}", httpAlias, modifiedLocale);
 
                 var tab = TabController.Instance.GetTabByName(modifiedLocale, portalId);
                 isValid = tab == null;
@@ -548,7 +548,7 @@ namespace DotNetNuke.Services.Localization
                 // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portalID, language.LanguageId, false);
             }
-            DataCache.RemoveCache(String.Format(DataCache.LocalesCacheKey, portalID));
+            DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portalID));
         }
 
         public static void AddLanguageToPortals(int languageID)
@@ -558,7 +558,7 @@ namespace DotNetNuke.Services.Localization
                 // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
 
-                DataCache.RemoveCache(String.Format(DataCache.LocalesCacheKey, portal.PortalID));
+                DataCache.RemoveCache(string.Format(DataCache.LocalesCacheKey, portal.PortalID));
             }
         }
 
@@ -758,7 +758,7 @@ namespace DotNetNuke.Services.Localization
                 return string.Format(defaultValue, @params);
             }
             var content = GetString(key, ExceptionsResourceFile);
-            return string.Format(String.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
+            return string.Format(string.IsNullOrEmpty(content) ? defaultValue : GetString(key, ExceptionsResourceFile), @params);
         }
 
         #endregion
@@ -949,7 +949,7 @@ namespace DotNetNuke.Services.Localization
         private static CultureInfo GetCultureFromPortal(PortalSettings portalSettings)
         {
             CultureInfo culture = null;
-            if (!String.IsNullOrEmpty(portalSettings.DefaultLanguage))
+            if (!string.IsNullOrEmpty(portalSettings.DefaultLanguage))
             {
                 // As the portal default language can never be disabled, we know this language is available and enabled
                 culture = new CultureInfo(portalSettings.DefaultLanguage);
@@ -1006,7 +1006,7 @@ namespace DotNetNuke.Services.Localization
         internal static CultureInfo GetCultureFromString(int portalId, string language)
         {
             CultureInfo culture = null;
-            if (!String.IsNullOrEmpty(language))
+            if (!string.IsNullOrEmpty(language))
             {
                 if (LocaleController.Instance.IsEnabled(ref language, portalId))
                     culture = new CultureInfo(language);
@@ -1495,9 +1495,9 @@ namespace DotNetNuke.Services.Localization
             try
             {
                 string strMessageValue = GetString(messageName, resourceFile, portalSettings, strLanguage);
-                if (!String.IsNullOrEmpty(strMessageValue))
+                if (!string.IsNullOrEmpty(strMessageValue))
                 {
-                    if (String.IsNullOrEmpty(customCaption))
+                    if (string.IsNullOrEmpty(customCaption))
                     {
                         customCaption = "Custom";
                     }
@@ -1673,9 +1673,9 @@ namespace DotNetNuke.Services.Localization
                 // we should be checking that the tab path matches //Admin//pagename or //admin
                 // in this way we should avoid partial matches (ie //Administrators
                 if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||
-                    String.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
+                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
                     PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Host//", StringComparison.CurrentCultureIgnoreCase) ||
-                    String.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase) == 0)
+                    string.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Host", StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     isAdminPage = true;
                 }
@@ -1707,7 +1707,7 @@ namespace DotNetNuke.Services.Localization
                 if (!string.IsNullOrEmpty(col.HeaderText))
                 {
                     localizedText = GetString(col.HeaderText + ".Header", resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         col.HeaderText = localizedText;
                     }
@@ -1718,28 +1718,28 @@ namespace DotNetNuke.Services.Localization
 
                     // Edit Text - maintained for backward compatibility
                     localizedText = GetString(editCol.EditText + ".EditText", resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         editCol.EditText = localizedText;
                     }
 
                     // Edit Text
                     localizedText = GetString(editCol.EditText, resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         editCol.EditText = localizedText;
                     }
 
                     // Cancel Text
                     localizedText = GetString(editCol.CancelText, resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         editCol.CancelText = localizedText;
                     }
 
                     // Update Text
                     localizedText = GetString(editCol.UpdateText, resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         editCol.UpdateText = localizedText;
                     }
@@ -1750,7 +1750,7 @@ namespace DotNetNuke.Services.Localization
 
                     // Edit Text
                     localizedText = GetString(buttonCol.Text, resourceFile);
-                    if (!String.IsNullOrEmpty(localizedText))
+                    if (!string.IsNullOrEmpty(localizedText))
                     {
                         buttonCol.Text = localizedText;
                     }
@@ -1863,7 +1863,7 @@ namespace DotNetNuke.Services.Localization
                                 PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
 
                                 // Fix PortalSettings for the rest of this request
-                                var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == String.Empty);
+                                var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == string.Empty);
                                 if (newDefaultAlias != null)
                                 {
                                     var settings = PortalController.Instance.GetCurrentPortalSettings();
@@ -1956,7 +1956,7 @@ namespace DotNetNuke.Services.Localization
                 HttpCookie cookie = response.Cookies.Get("language");
                 if (cookie == null)
                 {
-                    if (!String.IsNullOrEmpty(value))
+                    if (!string.IsNullOrEmpty(value))
                     {
                         cookie = new HttpCookie("language", value) { Path = !string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/" };
                         response.Cookies.Add(cookie);
@@ -1965,7 +1965,7 @@ namespace DotNetNuke.Services.Localization
                 else
                 {
                     cookie.Value = value;
-                    if (!String.IsNullOrEmpty(value))
+                    if (!string.IsNullOrEmpty(value))
                     {
                         response.Cookies.Set(cookie);
                     }

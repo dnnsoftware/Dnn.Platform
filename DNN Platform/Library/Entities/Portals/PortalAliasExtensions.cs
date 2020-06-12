@@ -17,12 +17,12 @@ namespace DotNetNuke.Entities.Portals
         public static bool ContainsAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string httpAlias)
         {
             return aliases.Where(alias => alias.PortalID == portalId || portalId == -1)
-                            .Any(alias => String.Compare(alias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0);
+                            .Any(alias => string.Compare(alias.HTTPAlias, httpAlias, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         public static bool ContainsSpecificSkins(this IEnumerable<PortalAliasInfo> aliases)
         {
-            return aliases.Any(alias => !String.IsNullOrEmpty(alias.Skin));
+            return aliases.Any(alias => !string.IsNullOrEmpty(alias.Skin));
         }
 
         public static Dictionary<string, string> GetAliasesAndCulturesForPortalId(this IEnumerable<PortalAliasInfo> aliases, int portalId)
@@ -105,14 +105,14 @@ namespace DotNetNuke.Entities.Portals
             {
                 // try to find exact match
                 foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
-                                                         (String.Compare(a.CultureCode, cultureCode,
+                                                         (string.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias == result.HttpAlias);
                 if (foundAlias == null) // let us try again using Startswith() to find matching Hosts
                 {
                     foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
-                                                         (String.Compare(a.CultureCode, cultureCode,
+                                                         (string.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Portals
             if (foundAlias == null)
             {
                 foundAlias = aliasList.Where(a => a.BrowserType == browserType
-                                            && (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
+                                            && (string.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || string.IsNullOrEmpty(a.CultureCode))
                                             && a.PortalID == portalId)
                     .OrderByDescending(a => a.IsPrimary)
                     .ThenByDescending(a => a.CultureCode)
@@ -133,7 +133,7 @@ namespace DotNetNuke.Entities.Portals
             // START DNN-4882
             if (foundAlias == null)
             {
-                foundAlias = aliasList.Where(a => (String.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || String.IsNullOrEmpty(a.CultureCode))
+                foundAlias = aliasList.Where(a => (string.Compare(a.CultureCode, cultureCode, StringComparison.OrdinalIgnoreCase) == 0 || string.IsNullOrEmpty(a.CultureCode))
                                            && a.PortalID == portalId)
                        .OrderByDescending(a => a.IsPrimary)
                        .ThenByDescending(a => a.CultureCode)
@@ -187,7 +187,7 @@ namespace DotNetNuke.Entities.Portals
         public static string GetCultureByPortalIdAndAlias(this IEnumerable<PortalAliasInfo> aliases, int portalId, string alias)
         {
             return (from cpa in aliases
-                    where cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0
+                    where cpa.PortalID == portalId && string.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0
                     select cpa.CultureCode)
                     .FirstOrDefault();
         }
@@ -199,7 +199,7 @@ namespace DotNetNuke.Entities.Portals
             skin = "";
             foreach (var cpa in aliases)
             {
-                if (cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0)
+                if (cpa.PortalID == portalId && string.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0)
                 {
                     // this is a match
                     culture = cpa.CultureCode;

@@ -59,7 +59,7 @@ namespace log4net.Repository.Hierarchy
         /// the string key to optimize comparisons.
         /// </para>
         /// <note>
-        /// The Compact Framework 1.0 the <see cref="String.Intern"/>
+        /// The Compact Framework 1.0 the <see cref="string.Intern"/>
         /// method does not work. On the Compact Framework
         /// the string keys are not interned nor are they
         /// compared by reference.

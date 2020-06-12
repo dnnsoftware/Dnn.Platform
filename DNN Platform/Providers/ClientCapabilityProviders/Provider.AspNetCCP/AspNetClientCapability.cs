@@ -133,7 +133,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         /// <returns>Device related capabilities with property names and values converted to strings.</returns>
         private static IDictionary<string, string> GetCapabilities(IDictionary<string, string> properties)
         {
-            return properties.Keys.ToDictionary(key => key, key => String.Join(Constants.ValueSeperator, properties[key].ToArray()));
+            return properties.Keys.ToDictionary(key => key, key => string.Join(Constants.ValueSeperator, properties[key].ToArray()));
         }
 
         /// <summary>

@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Mail
                             case "0": // anonymous
                                 break;
                             case "1": // basic
-                                if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
+                                if (!string.IsNullOrEmpty(smtpUsername) && !string.IsNullOrEmpty(smtpPassword))
                                 {
                                     smtpClient.UseDefaultCredentials = false;
                                     smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
@@ -308,7 +308,7 @@ namespace DotNetNuke.Services.Mail
                         custom = new ArrayList
                         {
                             HttpContext.Current.Server.HtmlEncode(HttpContext.Current.Server.UrlEncode(user.Username)),
-                            HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", String.Empty, null,
+                            HttpContext.Current.Server.UrlEncode(user.GetProperty("verificationcode", string.Empty, null,
                                 user, Scope.SystemMessages, ref propertyNotFound))
                         };
                     }
@@ -347,7 +347,7 @@ namespace DotNetNuke.Services.Mail
             body = Localize.GetSystemMessage(locale, settings, body, user, Localize.GlobalResourceFile, custom, "", settings.AdministratorId);
 
             var fromUser = (UserController.GetUserByEmail(settings.PortalId, settings.Email) != null) ?
-                String.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
+                string.Format("{0} < {1} >", UserController.GetUserByEmail(settings.PortalId, settings.Email).DisplayName, settings.Email) : settings.Email;
             SendEmail(fromUser, UserController.GetUserById(settings.PortalId, toUser).Email, subject, body);
 
             return Null.NullString;
@@ -375,7 +375,7 @@ namespace DotNetNuke.Services.Mail
                                       string smtpUsername, string smtpPassword)
         {
             MailFormat bodyFormat = MailFormat.Text;
-            if (!String.IsNullOrEmpty(bodyType))
+            if (!string.IsNullOrEmpty(bodyType))
             {
                 switch (bodyType.ToLowerInvariant())
                 {
@@ -500,7 +500,7 @@ namespace DotNetNuke.Services.Mail
                                       string body, string[] attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
             var attachmentList = (from attachment in attachments
-                                  where !String.IsNullOrEmpty(attachment)
+                                  where !string.IsNullOrEmpty(attachment)
                                   select new Attachment(attachment))
                                   .ToList();
 
@@ -590,19 +590,19 @@ namespace DotNetNuke.Services.Mail
                 mailMessage.Sender = new MailAddress(mailSender);
             }
 
-            if (!String.IsNullOrEmpty(mailTo))
+            if (!string.IsNullOrEmpty(mailTo))
             {
                 // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 mailTo = mailTo.Replace(";", ",");
                 mailMessage.To.Add(mailTo);
             }
-            if (!String.IsNullOrEmpty(cc))
+            if (!string.IsNullOrEmpty(cc))
             {
                 // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 cc = cc.Replace(";", ",");
                 mailMessage.CC.Add(cc);
             }
-            if (!String.IsNullOrEmpty(bcc))
+            if (!string.IsNullOrEmpty(bcc))
             {
                 // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 bcc = bcc.Replace(";", ",");

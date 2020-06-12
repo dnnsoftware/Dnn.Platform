@@ -221,7 +221,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
 
             // Add Event Message
-            if (this._eventMessage != null && !String.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
+            if (this._eventMessage != null && !string.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
             {
                 this._eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
                 EventQueueController.SendMessage(this._eventMessage, "Application_Start");
@@ -380,14 +380,14 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Package.Description = Util.ReadElement(manifestNav, "description");
 
             XPathNavigator foldernameNav = null;
-            this.Package.FolderName = String.Empty;
+            this.Package.FolderName = string.Empty;
             switch (this.Package.PackageType)
             {
                 case "Module":
                     // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                     // To ensure that FolderName is DesktopModules...
                     var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
-                    if (!String.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                    if (!string.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
                 case "Auth_System":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/files");
@@ -404,7 +404,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 default:
                     // copied from "Module" without the extra OR condition
                     folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/resourceFiles", "basePath", "DesktopModules");
-                    if (!String.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
+                    if (!string.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
             }
 
@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     else
                     {
-                        this.Package.IconFile = (String.IsNullOrEmpty(this.Package.FolderName) ? "" : this.Package.FolderName + "/") + iconFileNav.Value;
+                        this.Package.IconFile = (string.IsNullOrEmpty(this.Package.FolderName) ? "" : this.Package.FolderName + "/") + iconFileNav.Value;
                         this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
                     }
                 }

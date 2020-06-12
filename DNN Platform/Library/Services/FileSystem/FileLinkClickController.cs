@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.FileSystem
             var portalId = file.PortalId;
             var linkClickPortalSettigns = this.GetPortalSettingsForLinkClick(portalId);
 
-            return TestableGlobals.Instance.LinkClick(String.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
+            return TestableGlobals.Instance.LinkClick(string.Format("fileid={0}", file.FileId), Null.NullInteger, Null.NullInteger, true, false, portalId, linkClickPortalSettigns.EnableUrlLanguage, linkClickPortalSettigns.PortalGUID);
         }
 
         public int GetFileIdFromLinkClick(NameValueCollection queryParams)

@@ -109,7 +109,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
             var culture = new CultureInfo(cultureName);
 
-            string expected = String.Empty;
+            string expected = string.Empty;
 
             switch (propertyName)
             {
@@ -154,7 +154,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
              var culture = new CultureInfo(cultureName);
 
 
-             string expected = String.Empty;
+             string expected = string.Empty;
 
              switch (propertyName)
              {
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             var accessingUser = new UserInfo { Profile = userProfile };
             var culture = CultureInfo.InvariantCulture;
 
-            string expected = String.Empty;
+            string expected = string.Empty;
 
             switch (propertyName)
             {

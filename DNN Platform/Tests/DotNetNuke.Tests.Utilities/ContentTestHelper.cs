@@ -94,32 +94,32 @@ namespace DotNetNuke.Tests.Utilities
 
         public static string GetContent(int i)
         {
-            return String.Format(String.Format(Constants.CONTENT_ValidContentFormat, i));
+            return string.Format(string.Format(Constants.CONTENT_ValidContentFormat, i));
         }
 
         public static string GetContentKey(int i)
         {
-            return String.Format(String.Format(Constants.CONTENT_ValidContentKeyFormat, i));
+            return string.Format(string.Format(Constants.CONTENT_ValidContentKeyFormat, i));
         }
 
         public static string GetContentType(int i)
         {
-            return String.Format(Constants.CONTENTTYPE_ValidContentTypeFormat, i);
+            return string.Format(Constants.CONTENTTYPE_ValidContentTypeFormat, i);
         }
 
         public static string GetScopeType(int i)
         {
-            return String.Format(Constants.SCOPETYPE_ValidScopeTypeFormat, i);
+            return string.Format(Constants.SCOPETYPE_ValidScopeTypeFormat, i);
         }
 
         public static string GetTermName(int i)
         {
-            return String.Format(Constants.TERM_ValidNameFormat, i);
+            return string.Format(Constants.TERM_ValidNameFormat, i);
         }
 
         public static string GetVocabularyName(int i)
         {
-            return String.Format(Constants.VOCABULARY_ValidNameFormat, i);
+            return string.Format(Constants.VOCABULARY_ValidNameFormat, i);
         }
     }
 }

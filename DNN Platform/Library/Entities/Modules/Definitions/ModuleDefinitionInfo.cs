@@ -79,7 +79,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         {
             get
             {
-                if (String.IsNullOrEmpty(this._definitionName))
+                if (string.IsNullOrEmpty(this._definitionName))
                 {
                     return this.FriendlyName;
                 }
@@ -213,7 +213,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                             this.DefinitionName = reader.ReadElementContentAsString();
                             break;
                         default:
-                            if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }

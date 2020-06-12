@@ -604,7 +604,7 @@ namespace DotNetNuke.UI.WebControls
             string[] arrGroups = null;
 
             this.Controls.Clear();
-            if (!String.IsNullOrEmpty(this.Groups))
+            if (!string.IsNullOrEmpty(this.Groups))
             {
                 arrGroups = this.Groups.Split(',');
             }
@@ -869,7 +869,7 @@ namespace DotNetNuke.UI.WebControls
                 // editors are updated
                 this.DataBind();
             }
-            if (String.IsNullOrEmpty(this.CssClass))
+            if (string.IsNullOrEmpty(this.CssClass))
             {
                 this.CssClass = "dnnForm";
             }

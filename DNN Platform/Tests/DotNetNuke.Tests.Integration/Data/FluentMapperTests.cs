@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Maps_TableName_To_Value_Provided()
         {
             // Arrange
-            var mapper = new FluentMapper<Dog>(String.Empty);
+            var mapper = new FluentMapper<Dog>(string.Empty);
             mapper.TableName(Constants.TABLENAME_Dog);
 
             // Act
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Does_Not_Map_TableName_To_Attribute()
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
             mapper.TableName(Constants.TABLENAME_Dog);
 
             // Act
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Sets_TableName_To_Null_If_Not_Provided()
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Person));
@@ -100,7 +100,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Sets_PrimaryKey_To_Provided_Value()
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
             mapper.PrimaryKey(Constants.TABLENAME_Key);
 
             // Act
@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Does_Not_Set_PrimaryKey_To_Attribute()
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
             mapper.PrimaryKey(Constants.TABLENAME_Key);
 
             // Act
@@ -128,7 +128,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Sets_PrimaryKey_To_Null_If_Not_Provided()
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Person));
@@ -141,7 +141,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Sets_AutoIncrement_To_False()
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
 
             // Act
             var ti = mapper.GetTableInfo(typeof(Person));
@@ -155,7 +155,7 @@ namespace DotNetNuke.Tests.Data
         public void FluentMapper_Sets_AutoIncrement_To_Value_Provided(bool autoIncrement)
         {
             // Arrange
-            var mapper = new FluentMapper<Person>(String.Empty);
+            var mapper = new FluentMapper<Person>(string.Empty);
             mapper.PrimaryKey("ID", autoIncrement);
 
             // Act

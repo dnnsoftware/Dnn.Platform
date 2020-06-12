@@ -58,7 +58,7 @@ namespace DotNetNuke.Web.UI.WebControls
             link.Attributes.Add("aria-label", "Help");
             this.Controls.Add(link);
 
-            if (!String.IsNullOrEmpty(toolTipText))
+            if (!string.IsNullOrEmpty(toolTipText))
             {
                 // CssClass += "dnnLabel";
 

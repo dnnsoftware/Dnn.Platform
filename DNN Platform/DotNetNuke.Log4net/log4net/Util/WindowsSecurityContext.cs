@@ -327,7 +327,7 @@ namespace log4net.Util
         #region Native Method Stubs
 
         [DllImport("advapi32.dll", SetLastError=true)]
-        private static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
+        private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
         [DllImport("kernel32.dll", CharSet=CharSet.Auto)]
         private extern static bool CloseHandle(IntPtr handle);

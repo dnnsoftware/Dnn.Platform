@@ -868,7 +868,7 @@ namespace DNN.Integration.Test.Framework
                              where p.GetValue(query, null) != null
                              select p.Name + "=" + HttpUtility.UrlEncode(p.GetValue(query, null).ToString());
 
-            return String.Join("&", properties.ToArray());
+            return string.Join("&", properties.ToArray());
         }
 
         public HttpResponseMessage GetContent(

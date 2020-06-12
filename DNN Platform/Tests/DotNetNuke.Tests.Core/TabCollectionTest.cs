@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             tabCollection.Add(new TabInfo { TabName = "TestName3", PortalID = 1, TabID = 3 });
 
             // Act
-            var tab = tabCollection.WithTabName(String.Empty);
+            var tab = tabCollection.WithTabName(string.Empty);
 
             // Assert
             Assert.IsNull(tab);

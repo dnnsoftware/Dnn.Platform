@@ -219,7 +219,7 @@ namespace DotNetNuke.Entities.Urls
                                         if (tabIdNext)
                                         {
                                             // changes the tabid of page, effects a page redirect along with a parameter redirect
-                                            Int32.TryParse(parmPart, out tabId);
+                                            int.TryParse(parmPart, out tabId);
                                             parms = parms.Replace("tabid/" + tabId.ToString(), "");
                                             // remove the tabid/xx from the path
                                             break; // that's it, we're finished

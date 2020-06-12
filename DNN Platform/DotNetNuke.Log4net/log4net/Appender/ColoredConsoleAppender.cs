@@ -554,27 +554,27 @@ namespace log4net.Appender
 // IntPtr reserved);
 
         // private const UInt32 STD_INPUT_HANDLE = unchecked((UInt32)(-10));
-        private const UInt32 STD_OUTPUT_HANDLE = unchecked((UInt32)(-11));
-        private const UInt32 STD_ERROR_HANDLE = unchecked((UInt32)(-12));
+        private const uint STD_OUTPUT_HANDLE = unchecked((uint)(-11));
+        private const uint STD_ERROR_HANDLE = unchecked((uint)(-12));
 
         [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Auto)]
         private static extern IntPtr GetStdHandle(
-            UInt32 type);
+            uint type);
 
         [StructLayout(LayoutKind.Sequential)]
         private struct COORD
         {
-            public UInt16 x;
-            public UInt16 y;
+            public ushort x;
+            public ushort y;
         }
 
         [StructLayout(LayoutKind.Sequential)]
         private struct SMALL_RECT
         {
-            public UInt16 Left;
-            public UInt16 Top;
-            public UInt16 Right;
-            public UInt16 Bottom;
+            public ushort Left;
+            public ushort Top;
+            public ushort Right;
+            public ushort Bottom;
         }
 
         [StructLayout(LayoutKind.Sequential)]

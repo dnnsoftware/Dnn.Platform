@@ -199,7 +199,7 @@ namespace DotNetNuke.Entities.Modules
             get
             {
                 Term term = (from Term t in this.Terms select t).FirstOrDefault();
-                return (term != null) ? term.Name : String.Empty;
+                return (term != null) ? term.Name : string.Empty;
             }
             set
             {
@@ -548,16 +548,16 @@ namespace DotNetNuke.Entities.Modules
                             break;
                         case "isAdmin":
                             bool isAdmin;
-                            Boolean.TryParse(reader.ReadElementContentAsString(), out isAdmin);
+                            bool.TryParse(reader.ReadElementContentAsString(), out isAdmin);
                             this.IsAdmin = isAdmin;
                             break;
                         case "isPremium":
                             bool isPremium;
-                            Boolean.TryParse(reader.ReadElementContentAsString(), out isPremium);
+                            bool.TryParse(reader.ReadElementContentAsString(), out isPremium);
                             this.IsPremium = isPremium;
                             break;
                         default:
-                            if (reader.NodeType == XmlNodeType.Element && !String.IsNullOrEmpty(reader.Name))
+                            if (reader.NodeType == XmlNodeType.Element && !string.IsNullOrEmpty(reader.Name))
                             {
                                 reader.ReadElementContentAsString();
                             }

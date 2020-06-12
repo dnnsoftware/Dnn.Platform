@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                                                     ? settings.ReplaceSpaceWith
-                                                    : String.Empty,
+                                                    : string.Empty,
                     SpaceEncoding = settings.SpaceEncodingValue,
                     MaxUrlPathLength = 200,
                     ConvertDiacriticChars = settings.AutoAsciiConvert,
@@ -86,8 +86,8 @@ namespace DotNetNuke.Entities.Urls
                     LogTypeKey = EventLogController.EventLogType.PAGE_NOT_FOUND_404.ToString(),
                     LogPortalID = (result.PortalAlias != null) ? result.PortalId : -1
                 };
-            log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : String.Empty));
-            log.LogProperties.Add(new LogDetailInfo("PortalAlias",  (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : String.Empty));
+            log.LogProperties.Add(new LogDetailInfo("TabId", (result.TabId > 0) ? result.TabId.ToString() : string.Empty));
+            log.LogProperties.Add(new LogDetailInfo("PortalAlias",  (result.PortalAlias != null) ? result.PortalAlias.HTTPAlias : string.Empty));
             log.LogProperties.Add(new LogDetailInfo("OriginalUrl",  result.RawUrl));
 
             if (request != null)

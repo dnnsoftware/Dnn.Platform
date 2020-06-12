@@ -149,12 +149,12 @@ namespace DotNetNuke.UI.UserControls
                 if (!this.Page.IsPostBack)
                 {
                     // set dimensions of control
-                    if (!String.IsNullOrEmpty(this._ListBoxWidth))
+                    if (!string.IsNullOrEmpty(this._ListBoxWidth))
                     {
                         this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
                         this.lstAssigned.Width = Unit.Parse(this._ListBoxWidth);
                     }
-                    if (!String.IsNullOrEmpty(this._ListBoxHeight))
+                    if (!string.IsNullOrEmpty(this._ListBoxHeight))
                     {
                         this.lstAvailable.Height = Unit.Parse(this._ListBoxHeight);
                         this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);

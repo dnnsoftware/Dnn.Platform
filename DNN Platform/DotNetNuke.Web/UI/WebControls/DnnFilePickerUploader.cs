@@ -31,7 +31,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private int? _portalId = null;
 
         private string _fileFilter;
-        private string _folderPath = String.Empty;
+        private string _folderPath = string.Empty;
         private bool _folderPathSet = false;
 
         #endregion

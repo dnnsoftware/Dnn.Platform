@@ -510,12 +510,12 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
 
         private static string GetName(int i)
         {
-            return String.Format(String.Format(Constants.PORTALGROUP_ValidNameFormat, i));
+            return string.Format(string.Format(Constants.PORTALGROUP_ValidNameFormat, i));
         }
 
         private static string GetDescription(int i)
         {
-            return String.Format(String.Format(Constants.PORTALGROUP_ValidDescriptionFormat, i));
+            return string.Format(string.Format(Constants.PORTALGROUP_ValidDescriptionFormat, i));
         }
 
         private static PortalGroupInfo CreateValidPortalGroup()

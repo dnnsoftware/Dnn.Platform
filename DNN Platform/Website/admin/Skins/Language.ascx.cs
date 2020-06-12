@@ -352,7 +352,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 if (this.ShowMenu)
                 {
-                    if (!String.IsNullOrEmpty(this.CssClass))
+                    if (!string.IsNullOrEmpty(this.CssClass))
                     {
                         this.selectCulture.CssClass = this.CssClass;
                     }

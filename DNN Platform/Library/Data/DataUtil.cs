@@ -99,7 +99,7 @@ namespace DotNetNuke.Data
             Type modelType = typeof(TEntity);
 
             // Get the primary key
-            var primaryKeyName = GetPrimaryKeyProperty(modelType, String.Empty);
+            var primaryKeyName = GetPrimaryKeyProperty(modelType, string.Empty);
 
             return GetPropertyValue<TEntity, TProperty>(item, primaryKeyName);
         }
@@ -140,7 +140,7 @@ namespace DotNetNuke.Data
 
         internal static string GetTableName(Type type)
         {
-            return GetTableName(type, String.Empty);
+            return GetTableName(type, string.Empty);
         }
 
         internal static string GetTableName(Type type, string defaultName)
@@ -159,7 +159,7 @@ namespace DotNetNuke.Data
         internal static string ReplaceTokens(string sql)
         {
             var isSqlCe = DataProvider.Instance().Settings.GetValueOrDefault("isSqlCe", false);
-            return sql.Replace("{databaseOwner}", isSqlCe ? String.Empty : DataProvider.Instance().DatabaseOwner)
+            return sql.Replace("{databaseOwner}", isSqlCe ? string.Empty : DataProvider.Instance().DatabaseOwner)
                         .Replace("{objectQualifier}", DataProvider.Instance().ObjectQualifier);
         }
     }

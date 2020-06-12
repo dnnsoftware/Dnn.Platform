@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Cryptography
         public override string EncryptParameter(string message, string passphrase)
         {
             string value;
-            if (!String.IsNullOrEmpty(passphrase))
+            if (!string.IsNullOrEmpty(passphrase))
             {
                 // convert key to 16 characters for simplicity
                 if (passphrase.Length < 16)

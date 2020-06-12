@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 // Ensure DesktopModule Cache is cleared
-                DataCache.RemoveCache(String.Format(DataCache.DesktopModuleCacheKey, Null.NullInteger));
+                DataCache.RemoveCache(string.Format(DataCache.DesktopModuleCacheKey, Null.NullInteger));
 
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this._desktopModuleName, Null.NullInteger);
                 if (desktopModule != null)

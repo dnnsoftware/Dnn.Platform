@@ -68,7 +68,7 @@ namespace DotNetNuke.Framework
             {
                 if (Globals.Status != Globals.UpgradeStatus.None)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
                 return Host.jQueryUrl;
@@ -88,7 +88,7 @@ namespace DotNetNuke.Framework
             {
                 if (Globals.Status != Globals.UpgradeStatus.None)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
                 return Host.jQueryMigrateUrl;
@@ -108,7 +108,7 @@ namespace DotNetNuke.Framework
             {
                 if (Globals.Status != Globals.UpgradeStatus.None)
                 {
-                    return String.Empty;
+                    return string.Empty;
                 }
 
                 return Host.jQueryUIUrl;

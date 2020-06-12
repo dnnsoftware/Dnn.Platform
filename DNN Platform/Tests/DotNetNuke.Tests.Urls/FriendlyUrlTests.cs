@@ -63,7 +63,7 @@ namespace DotNetNuke.Tests.Urls
 
             // Add Portal Aliases
             var aliasController = PortalAliasController.Instance;
-            TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
                             var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
@@ -77,7 +77,7 @@ namespace DotNetNuke.Tests.Urls
                                 PortalAliasController.Instance.AddPortalAlias(alias);
                             }
                         });
-            TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Users"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
 
@@ -117,13 +117,13 @@ namespace DotNetNuke.Tests.Urls
             base.TestFixtureTearDown();
 
             var aliasController = PortalAliasController.Instance;
-            TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Aliases"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
                             var alias = aliasController.GetPortalAlias(fields[0], this.PortalId);
                             PortalAliasController.Instance.DeletePortalAlias(alias);
                         });
-            TestUtil.ReadStream(String.Format("{0}", "Users"), (line, header) =>
+            TestUtil.ReadStream(string.Format("{0}", "Users"), (line, header) =>
                         {
                             string[] fields = line.Split(',');
 
@@ -157,13 +157,13 @@ namespace DotNetNuke.Tests.Urls
         private void ExecuteTestForTab(string test, TabInfo tab, FriendlyUrlSettings settings, Dictionary<string, string> testFields)
         {
             var httpAlias = testFields["Alias"];
-            var defaultAlias = testFields.GetValue("DefaultAlias", String.Empty);
+            var defaultAlias = testFields.GetValue("DefaultAlias", string.Empty);
             var tabName = testFields["Page Name"];
             var scheme = testFields["Scheme"];
             var parameters = testFields["Params"];
             var result = testFields["Expected Url"];
             var customPage = testFields.GetValue("Custom Page Name", _defaultPage);
-            string vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
+            string vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
 
             var httpAliasFull = scheme + httpAlias + "/";
             var expectedResult = result.Replace("{alias}", httpAlias)
@@ -174,13 +174,13 @@ namespace DotNetNuke.Tests.Urls
                                         .Replace("{defaultPage}", _defaultPage);
 
 
-            if (!String.IsNullOrEmpty(parameters) && !parameters.StartsWith("&"))
+            if (!string.IsNullOrEmpty(parameters) && !parameters.StartsWith("&"))
             {
                 parameters = "&" + parameters;
             }
 
-            var userName = testFields.GetValue("UserName", String.Empty);
-            if (!String.IsNullOrEmpty(userName))
+            var userName = testFields.GetValue("UserName", string.Empty);
+            if (!string.IsNullOrEmpty(userName))
             {
                 var user = UserController.GetUserByName(this.PortalId, userName);
                 if (user != null)
@@ -251,7 +251,7 @@ namespace DotNetNuke.Tests.Urls
 
             string spaceEncoding = testFields.GetValue("SpaceEncoding");
 
-            if (!String.IsNullOrEmpty(spaceEncoding))
+            if (!string.IsNullOrEmpty(spaceEncoding))
             {
                 settings.SpaceEncodingValue = spaceEncoding;
             }
@@ -268,7 +268,7 @@ namespace DotNetNuke.Tests.Urls
             string pageExtensionUsageType = testFields.GetValue("PageExtensionUsageType");
             string pageExtension = testFields.GetValue("PageExtension");
 
-            if (!String.IsNullOrEmpty(pageExtension))
+            if (!string.IsNullOrEmpty(pageExtension))
             {
                 settings.PageExtension = pageExtension;
             }
@@ -298,7 +298,7 @@ namespace DotNetNuke.Tests.Urls
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", "PrimaryPortalAlias", this.PortalId);
 
             string language = testFields["Language"].Trim();
-            if (!String.IsNullOrEmpty(language))
+            if (!string.IsNullOrEmpty(language))
             {
                 this._customLocale = new Locale { Code = language, Fallback = "en-US" };
                 this._customLocale.Text = CultureInfo.GetCultureInfo(this._customLocale.Code).NativeName;
@@ -333,7 +333,7 @@ namespace DotNetNuke.Tests.Urls
 
             string regexSetting = testFields["Setting"];
             string regexValue = testFields["Value"];
-            if (!String.IsNullOrEmpty(regexValue))
+            if (!string.IsNullOrEmpty(regexValue))
             {
                 switch (regexSetting)
                 {
@@ -381,7 +381,7 @@ namespace DotNetNuke.Tests.Urls
 
             string testPageName = testFields.GetValue("TestPageName");
             TabInfo tab = null;
-            if (!String.IsNullOrEmpty(testPageName))
+            if (!string.IsNullOrEmpty(testPageName))
             {
                 var tabName = testFields["Page Name"];
                 tab = TabController.Instance.GetTabByName(tabName, this.PortalId);
@@ -394,7 +394,7 @@ namespace DotNetNuke.Tests.Urls
 
             string autoAscii = testFields.GetValue("AutoAscii");
 
-            if (!String.IsNullOrEmpty(autoAscii))
+            if (!string.IsNullOrEmpty(autoAscii))
             {
                 settings.AutoAsciiConvert = Convert.ToBoolean(autoAscii);
             }
@@ -411,7 +411,7 @@ namespace DotNetNuke.Tests.Urls
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
             string replaceSpaceWith = testFields.GetValue("ReplaceSpaceWith");
-            if (!String.IsNullOrEmpty(replaceSpaceWith))
+            if (!string.IsNullOrEmpty(replaceSpaceWith))
             {
                 settings.ReplaceSpaceWith = replaceSpaceWith;
             }
@@ -425,15 +425,15 @@ namespace DotNetNuke.Tests.Urls
         {
             var settings = UrlTestFactoryClass.GetSettings("FriendlyUrl", testFields["TestName"], this.PortalId);
 
-            var vanityUrl = testFields.GetValue("VanityUrl", String.Empty);
-            var userName = testFields.GetValue("UserName", String.Empty);
-            var vanityUrlPrefix = testFields.GetValue("VanityUrlPrefix", String.Empty);
-            if (!String.IsNullOrEmpty(vanityUrlPrefix))
+            var vanityUrl = testFields.GetValue("VanityUrl", string.Empty);
+            var userName = testFields.GetValue("UserName", string.Empty);
+            var vanityUrlPrefix = testFields.GetValue("VanityUrlPrefix", string.Empty);
+            if (!string.IsNullOrEmpty(vanityUrlPrefix))
             {
                 settings.VanityUrlPrefix = vanityUrlPrefix;
             }
 
-            if (!String.IsNullOrEmpty(userName))
+            if (!string.IsNullOrEmpty(userName))
             {
                 var user = UserController.GetUserByName(this.PortalId, userName);
                 if (user != null)
@@ -453,7 +453,7 @@ namespace DotNetNuke.Tests.Urls
 
             string forceLowerCaseRegex = testFields.GetValue("ForceLowerCaseRegex");
 
-            if (!String.IsNullOrEmpty(forceLowerCaseRegex))
+            if (!string.IsNullOrEmpty(forceLowerCaseRegex))
             {
                 settings.ForceLowerCaseRegex = forceLowerCaseRegex;
             }

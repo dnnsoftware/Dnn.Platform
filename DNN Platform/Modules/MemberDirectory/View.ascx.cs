@@ -75,7 +75,7 @@ namespace DotNetNuke.Modules.MemberDirectory
                 int groupId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["GroupId"]))
                 {
-                    groupId = Int32.Parse(this.Request.Params["GroupId"]);
+                    groupId = int.Parse(this.Request.Params["GroupId"]);
                 }
                 return groupId;
             }

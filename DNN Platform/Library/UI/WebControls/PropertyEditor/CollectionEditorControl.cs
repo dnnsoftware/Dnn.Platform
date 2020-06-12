@@ -194,7 +194,7 @@ namespace DotNetNuke.UI.WebControls
             string _Category = Null.NullString;
 
             // Get Category Field
-            if (!String.IsNullOrEmpty(this.CategoryDataField))
+            if (!string.IsNullOrEmpty(this.CategoryDataField))
             {
                 objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
@@ -218,7 +218,7 @@ namespace DotNetNuke.UI.WebControls
             foreach (object obj in arrObjects)
             {
                 // Get Category Field
-                if (!String.IsNullOrEmpty(this.CategoryDataField))
+                if (!string.IsNullOrEmpty(this.CategoryDataField))
                 {
                     objProperty = obj.GetType().GetProperty(this.CategoryDataField);
                     if (!((objProperty == null) || (objProperty.GetValue(obj, null) == null)))

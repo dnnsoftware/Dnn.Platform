@@ -68,7 +68,7 @@ namespace DotNetNuke.Tests.Urls
 
         internal static string GetEmbeddedFileName(string fileName)
         {
-            string fullName = String.Format("{0}.{1}", EmbeddedFilePath, fileName);
+            string fullName = string.Format("{0}.{1}", EmbeddedFilePath, fileName);
             if (!fullName.ToLowerInvariant().EndsWith(".csv"))
             {
                 fullName += ".csv";
@@ -86,7 +86,7 @@ namespace DotNetNuke.Tests.Urls
         {
             string replaceCharWithChar = testFields.GetValue("ReplaceChars");
 
-            if (!String.IsNullOrEmpty(replaceCharWithChar))
+            if (!string.IsNullOrEmpty(replaceCharWithChar))
             {
                 string[] pairs = replaceCharWithChar.Split(';');
                 foreach (string pair in pairs)

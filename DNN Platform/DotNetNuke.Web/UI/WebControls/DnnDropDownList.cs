@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 if (this.SelectedItem != null && !string.IsNullOrEmpty(this.SelectedItem.Value))
                 {
                     int valueAsInt;
-                    var parsed = Int32.TryParse(this.SelectedItem.Value, out valueAsInt);
+                    var parsed = int.TryParse(this.SelectedItem.Value, out valueAsInt);
                     return parsed ? valueAsInt : Null.NullInteger;
                 }
                 return Null.NullInteger;

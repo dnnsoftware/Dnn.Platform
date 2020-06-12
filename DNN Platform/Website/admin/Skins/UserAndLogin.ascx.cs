@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.messages.Text = unreadMessages.ToString(CultureInfo.InvariantCulture);
                     this.messages.ToolTip = unreadMessages == 1
                                         ? this.LocalizeString("OneMessage")
-                                        : String.Format(this.LocalizeString("MessageCount"), unreadMessages);
+                                        : string.Format(this.LocalizeString("MessageCount"), unreadMessages);
                     this.messages.Visible = true;
                 }
 

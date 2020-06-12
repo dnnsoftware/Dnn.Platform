@@ -380,7 +380,7 @@ namespace DotNetNuke.Services.Installer.Packages
                             {
                                 var doc = new XPathDocument(new StringReader(manifest));
                                 XPathNavigator rootNav = doc.CreateNavigator().SelectSingleNode("dotnetnuke");
-                                string packageType = String.Empty;
+                                string packageType = string.Empty;
                                 if (rootNav.Name == "dotnetnuke")
                                 {
                                     packageType = XmlUtils.GetAttributeValue(rootNav, "type");
@@ -410,7 +410,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                     package.IsSystemPackage = XmlUtils.GetAttributeValueAsBoolean(nav, "isSystem", false);
                                     package.Version = new Version(XmlUtils.GetAttributeValue(nav, "version"));
                                     package.FriendlyName = XmlUtils.GetNodeValue(nav, "friendlyName");
-                                    if (String.IsNullOrEmpty(package.FriendlyName))
+                                    if (string.IsNullOrEmpty(package.FriendlyName))
                                     {
                                         package.FriendlyName = package.Name;
                                     }
@@ -424,7 +424,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                             // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
                                             // To ensure that FolderName is DesktopModules...
                                             var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
-                                            if (!String.IsNullOrEmpty(folderNameValue)) package.FolderName = folderNameValue.Replace('\\', '/');
+                                            if (!string.IsNullOrEmpty(folderNameValue)) package.FolderName = folderNameValue.Replace('\\', '/');
                                             break;
                                         case "Auth_System":
                                             foldernameNav = nav.SelectSingleNode("components/component/files");
@@ -457,7 +457,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                             }
                                             else
                                             {
-                                                package.IconFile = (String.IsNullOrEmpty(package.FolderName) ? "" : package.FolderName + "/") + iconFileNav.Value;
+                                                package.IconFile = (string.IsNullOrEmpty(package.FolderName) ? "" : package.FolderName + "/") + iconFileNav.Value;
                                                 package.IconFile = (!package.IconFile.StartsWith("~/")) ? "~/" + package.IconFile : package.IconFile;
                                             }
                                         }
@@ -499,7 +499,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         internal static string GetSpecificFolderName(XPathNavigator manifestNav, string xpath, string elementName, string startWith)
         {
-            string result = String.Empty;
+            string result = string.Empty;
             var foldernameNav = manifestNav.Select(xpath);
 
             if (foldernameNav != null)
@@ -507,7 +507,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 while (foldernameNav.MoveNext())
                 {
                     var elementValue = Util.ReadElement(foldernameNav.Current, elementName);
-                    if (!String.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
+                    if (!string.IsNullOrEmpty(elementValue) && elementValue.StartsWith(startWith))
                     {
                         result = elementValue;
                         break;

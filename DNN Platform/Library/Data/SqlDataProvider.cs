@@ -83,7 +83,7 @@ namespace DotNetNuke.Data
             foreach (string statement in sqlStatements)
             {
                 var sql = statement.Trim();
-                if (!String.IsNullOrEmpty(sql))
+                if (!string.IsNullOrEmpty(sql))
                 {
 
                     // script dynamic substitution

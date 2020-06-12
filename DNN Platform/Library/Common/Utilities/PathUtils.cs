@@ -60,7 +60,7 @@ namespace DotNetNuke.Common.Utilities
         {
             // Can not call trim on folderpath since folder passed in might have a legit space
             // at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test"
-            if (String.IsNullOrEmpty(folderPath) || String.IsNullOrEmpty(folderPath.Trim()))
+            if (string.IsNullOrEmpty(folderPath) || string.IsNullOrEmpty(folderPath.Trim()))
             {
                 return "";
             }
@@ -178,7 +178,7 @@ namespace DotNetNuke.Common.Utilities
 
             var fullPath = Path.Combine(Path.Combine(rootFolder, subFolder), user.UserID.ToString(CultureInfo.InvariantCulture));
 
-            return String.Format("Users/{0}/", fullPath.Replace("\\", "/"));
+            return string.Format("Users/{0}/", fullPath.Replace("\\", "/"));
         }
 
         /// <summary>
@@ -188,7 +188,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>True if the folderPath is a default protected folder. False otherwise.</returns>
         public virtual bool IsDefaultProtectedPath(string folderPath)
         {
-            return String.IsNullOrEmpty(folderPath) ||
+            return string.IsNullOrEmpty(folderPath) ||
                    folderPath.Equals("skins", StringComparison.InvariantCultureIgnoreCase) ||
                    folderPath.Equals("containers", StringComparison.InvariantCultureIgnoreCase) ||
                    folderPath.StartsWith("skins/", StringComparison.InvariantCultureIgnoreCase) ||
@@ -244,7 +244,7 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The original string minus the trailing slash.</returns>
         public virtual string RemoveTrailingSlash(string source)
         {
-            if (String.IsNullOrEmpty(source))
+            if (string.IsNullOrEmpty(source))
             {
                 return "";
             }

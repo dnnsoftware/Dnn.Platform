@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     var attribValue = attributeNav.Value;
                     if (attribName == "upgradeVersionsList")
                     {
-                        if (!String.IsNullOrEmpty(attribValue))
+                        if (!string.IsNullOrEmpty(attribValue))
                         {
                             string[] upgradeVersions = attribValue.Split(',');
                             attribValue = "";

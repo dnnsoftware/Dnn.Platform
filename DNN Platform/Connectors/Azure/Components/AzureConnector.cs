@@ -133,7 +133,7 @@ namespace Dnn.AzureConnector.Components
             var azureAccountKey = values[Constants.AzureAccountKey];
             var azureContainerName = values.ContainsKey(Constants.AzureContainerName) ? values[Constants.AzureContainerName] : string.Empty;
 
-            var emptyFields = String.IsNullOrEmpty(azureAccountKey) && String.IsNullOrEmpty(azureAccountName);
+            var emptyFields = string.IsNullOrEmpty(azureAccountKey) && string.IsNullOrEmpty(azureAccountName);
 
             validated = true;
             if (emptyFields)

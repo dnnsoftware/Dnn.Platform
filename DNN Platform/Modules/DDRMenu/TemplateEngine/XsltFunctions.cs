@@ -92,7 +92,7 @@ namespace DotNetNuke.Web.DDRMenu.TemplateEngine
                 }
             }
 
-            if (String.IsNullOrEmpty(resolvedFile))
+            if (string.IsNullOrEmpty(resolvedFile))
             {
                 resolvedFile = "~/" + resourceFile;
             }

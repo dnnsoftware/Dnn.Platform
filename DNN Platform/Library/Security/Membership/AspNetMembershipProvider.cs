@@ -387,7 +387,7 @@ namespace DotNetNuke.Security.Membership
         private static UserInfo FillUserAndProfile(int portalId, IDataReader dr)
         {
             UserInfo user = null;
-            bool bContinue = String.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase);
+            bool bContinue = string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase);
 
             // Ensure the data reader returned is valid
             if (bContinue)
@@ -861,7 +861,7 @@ namespace DotNetNuke.Security.Membership
                 {
                     createStatus = UserCreateStatus.InvalidUserName;
                 }
-                if (!String.IsNullOrEmpty(user.DisplayName))
+                if (!string.IsNullOrEmpty(user.DisplayName))
                 {
                     if (!portalSecurity.ValidateInput(user.DisplayName, PortalSecurity.FilterFlag.NoProfanity))
                     {
@@ -1162,7 +1162,7 @@ namespace DotNetNuke.Security.Membership
         public override UserInfo GetUserByVanityUrl(int portalId, string vanityUrl)
         {
             UserInfo user = null;
-            if (!String.IsNullOrEmpty(vanityUrl))
+            if (!string.IsNullOrEmpty(vanityUrl))
             {
                 IDataReader dr = this._dataProvider.GetUserByVanityUrl(portalId, vanityUrl);
                 user = FillUserInfo(portalId, dr, true);
@@ -1183,7 +1183,7 @@ namespace DotNetNuke.Security.Membership
         public override UserInfo GetUserByPasswordResetToken(int portalId, string resetToken)
         {
             UserInfo user = null;
-            if (!String.IsNullOrEmpty(resetToken))
+            if (!string.IsNullOrEmpty(resetToken))
             {
                 IDataReader dr = this._dataProvider.GetUserByPasswordResetToken(portalId, resetToken);
                 user = FillUserInfo(portalId, dr, true);
@@ -1760,7 +1760,7 @@ namespace DotNetNuke.Security.Membership
 
             bool updatePassword = user.Membership.UpdatePassword;
             bool isApproved = user.Membership.Approved;
-            if (String.IsNullOrEmpty(displayName))
+            if (string.IsNullOrEmpty(displayName))
             {
                 displayName = firstName + " " + lastName;
             }
@@ -1880,7 +1880,7 @@ namespace DotNetNuke.Security.Membership
                 {
 
                     // Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
-                    if (this._socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
+                    if (this._socialAuthProviders.Contains(authType) && string.IsNullOrEmpty(verificationCode))
                     {
                         if (PortalController.Instance.GetCurrentPortalSettings().UserRegistration ==
                             (int)Globals.PortalRegistrationType.PublicRegistration)

@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.ViewState["SkinControlBorder"] = value;
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     this.ControlContainer.Style.Add("border-top", value);
                     this.ControlContainer.Style.Add("border-bottom", value);
@@ -84,7 +84,7 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.ViewState["SkinControlHeight"] = value;
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     this.ControlContainer.Style.Add("height", value);
                 }
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.Skins
             set
             {
                 this.ViewState["SkinControlWidth"] = value;
-                if (!String.IsNullOrEmpty(value))
+                if (!string.IsNullOrEmpty(value))
                 {
                     this.ControlContainer.Style.Add("width", value);
                 }

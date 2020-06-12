@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.DDRMenu
                             TemplateArguments = this.TemplateArguments
                         });
 
-                    if (String.IsNullOrEmpty(this.NodeXmlPath))
+                    if (string.IsNullOrEmpty(this.NodeXmlPath))
                     {
                         this.menu.RootNode =
                             new MenuNode(

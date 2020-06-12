@@ -95,7 +95,7 @@ namespace DotNetNuke.UI.Internals
         private IFileInfo GetFileInfo()
         {
             var path = this.GetSettingPath();
-            if (!String.IsNullOrEmpty(path))
+            if (!string.IsNullOrEmpty(path))
             {
                 return FileManager.Instance.GetFile(this._portalId, path);
             }

@@ -66,7 +66,7 @@ namespace Dnn.PersonaBar.Library.Prompt
                 {
                     if (this.IsBoolean<T>())
                     {
-                        value = this.Flag<Boolean>(flag, true);
+                        value = this.Flag<bool>(flag, true);
                     }
                     else
                     {
@@ -181,7 +181,7 @@ namespace Dnn.PersonaBar.Library.Prompt
             return tc.ConvertFrom(retVal);
         }
 
-        private Boolean IsBoolean<T>()
+        private bool IsBoolean<T>()
         {
             return typeof(T) == typeof(bool?);
         }

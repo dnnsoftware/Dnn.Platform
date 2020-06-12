@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Log.EventLog
             using (XmlReader reader = XmlReader.Create(new StringReader(content)))
             {
                 reader.ReadStartElement("LogProperties");
-                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !String.IsNullOrEmpty(reader.LocalName))
+                if (reader.ReadState != ReadState.EndOfFile && reader.NodeType != XmlNodeType.None && !string.IsNullOrEmpty(reader.LocalName))
                 {
                     this.ReadXml(reader);
                 }

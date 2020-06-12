@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Containers
             }
         }
 
-        private void Page_Load(Object sender, EventArgs e)
+        private void Page_Load(object sender, EventArgs e)
         {
             this.cmdGo.Attributes.Add("onclick", "if (cmdGo_OnClick(dnn.dom.getById('" + this.Control.NavigationControl.ClientID + "')) == false) return false;");
         }
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.Containers
 
         private void ProcessNodes(DNNNode objParent)
         {
-            if (!String.IsNullOrEmpty(objParent.JSFunction))
+            if (!string.IsNullOrEmpty(objParent.JSFunction))
             {
                 ClientAPI.RegisterClientVariable(this.Page, "__dnn_CSAction_" + this.Control.NavigationControl.ClientID + "_" + objParent.ID, objParent.JSFunction, true);
             }

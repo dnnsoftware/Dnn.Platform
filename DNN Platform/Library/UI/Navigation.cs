@@ -110,7 +110,7 @@ namespace DotNetNuke.UI
                             else
                             {
                                 node.NavigateURL = action.Url;
-                                if (action.UseActionEvent == false && !String.IsNullOrEmpty(node.NavigateURL))
+                                if (action.UseActionEvent == false && !string.IsNullOrEmpty(node.NavigateURL))
                                 {
                                     node.ClickAction = eClickAction.Navigate;
                                     if (action.NewWindow)
@@ -190,7 +190,7 @@ namespace DotNetNuke.UI
                         break;
                 }
                 bool newWindow = false;
-                if (objTab.TabSettings["LinkNewWindow"] != null && Boolean.TryParse((string)objTab.TabSettings["LinkNewWindow"], out newWindow) && newWindow)
+                if (objTab.TabSettings["LinkNewWindow"] != null && bool.TryParse((string)objTab.TabSettings["LinkNewWindow"], out newWindow) && newWindow)
                 {
                     objNode.Target = "_blank";
                 }

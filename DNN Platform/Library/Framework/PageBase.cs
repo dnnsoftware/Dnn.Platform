@@ -142,7 +142,7 @@ namespace DotNetNuke.Framework
             {
                 string fileRoot;
                 var page = this.Request.ServerVariables["SCRIPT_NAME"].Split('/');
-                if (String.IsNullOrEmpty(this._localResourceFile))
+                if (string.IsNullOrEmpty(this._localResourceFile))
                 {
                     fileRoot = string.Concat(this.TemplateSourceDirectory, "/", Localization.LocalResourceDirectory, "/", page[page.GetUpperBound(0)], ".resx");
                 }
@@ -515,7 +515,7 @@ namespace DotNetNuke.Framework
                     if (key != null)
                     {
                         var value = Localization.GetString(key, resourceFileRoot);
-                        if (!String.IsNullOrEmpty(value))
+                        if (!string.IsNullOrEmpty(value))
                         {
                             listControl.Items[i].Text = value;
                         }

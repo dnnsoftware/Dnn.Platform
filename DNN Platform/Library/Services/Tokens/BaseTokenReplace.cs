@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Tokens
             foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
             {
                 string objectName = currentMatch.Result("${object}");
-                if (!String.IsNullOrEmpty(objectName))
+                if (!string.IsNullOrEmpty(objectName))
                 {
                     if (objectName == "[")
                     {
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Tokens
                     string format = currentMatch.Result("${format}");
                     string ifEmptyReplacment = currentMatch.Result("${ifEmpty}");
                     string conversion = this.replacedTokenValue(objectName, propertyName, format);
-                    if (!String.IsNullOrEmpty(ifEmptyReplacment) && String.IsNullOrEmpty(conversion))
+                    if (!string.IsNullOrEmpty(ifEmptyReplacment) && string.IsNullOrEmpty(conversion))
                     {
                         conversion = ifEmptyReplacment;
                     }

@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Tabs
 
         // This is used to provide a culture based set of tabs
         [NonSerialized]
-        private readonly Dictionary<String, List<TabInfo>> _localizedTabs;
+        private readonly Dictionary<string, List<TabInfo>> _localizedTabs;
 
         #region Constructors
 

@@ -517,7 +517,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     if (ModulePermissionController.HasModuleAccess(action.Secure, "CONTENT", this.Configuration))
                     {
-                        if (String.IsNullOrEmpty(action.Icon))
+                        if (string.IsNullOrEmpty(action.Icon))
                         {
                             action.Icon = "edit.gif";
                         }

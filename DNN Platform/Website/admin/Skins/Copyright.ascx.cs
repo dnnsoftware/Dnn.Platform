@@ -25,11 +25,11 @@ namespace DotNetNuke.UI.Skins.Controls
         protected override void OnLoad(EventArgs e)
         {
             base.OnLoad(e);
-            if (!String.IsNullOrEmpty(this.CssClass))
+            if (!string.IsNullOrEmpty(this.CssClass))
             {
                 this.lblCopyright.CssClass = this.CssClass;
             }
-            if (!String.IsNullOrEmpty(this.PortalSettings.FooterText))
+            if (!string.IsNullOrEmpty(this.PortalSettings.FooterText))
             {
                 this.lblCopyright.Text = this.PortalSettings.FooterText.Replace("[year]", DateTime.Now.ToString("yyyy"));
             }

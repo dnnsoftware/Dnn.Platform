@@ -245,7 +245,7 @@ namespace DotNetNuke.Common.Utilities
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public static bool DeleteFileWithWait(string fileName, Int16 waitInMilliseconds, Int16 maxAttempts)
+        public static bool DeleteFileWithWait(string fileName, short waitInMilliseconds, short maxAttempts)
         {
             fileName = FixPath(fileName);
             if (!File.Exists(fileName))
@@ -442,7 +442,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static void DeleteFilesRecursive(string strRoot, string filter)
         {
-            if (!String.IsNullOrEmpty(strRoot))
+            if (!string.IsNullOrEmpty(strRoot))
             {
                 strRoot = FixPath(strRoot);
                 if (Directory.Exists(strRoot))

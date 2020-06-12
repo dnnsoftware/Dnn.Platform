@@ -159,7 +159,7 @@ namespace DotNetNuke.Services.Installer
             get
             {
                 string ext = System.IO.Path.GetExtension(this.Name);
-                if (String.IsNullOrEmpty(ext))
+                if (string.IsNullOrEmpty(ext))
                 {
                     return "";
                 }

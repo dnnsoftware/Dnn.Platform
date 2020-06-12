@@ -246,7 +246,7 @@ namespace DotNetNuke.Common.Utilities
             string formatWebsite = "";
             if (Website != DBNull.Value)
             {
-                if (!String.IsNullOrEmpty(Website.ToString().Trim()))
+                if (!string.IsNullOrEmpty(Website.ToString().Trim()))
                 {
                     if (Website.ToString().IndexOf(".", StringComparison.Ordinal) > -1)
                     {
@@ -513,7 +513,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="indent">The indent for this feedback message</param>
         /// <param name="message">The feedback message</param>
         /// -----------------------------------------------------------------------------
-        public static void WriteFeedback(HttpResponse response, Int32 indent, string message)
+        public static void WriteFeedback(HttpResponse response, int indent, string message)
         {
             WriteFeedback(response, indent, message, true);
         }
@@ -529,7 +529,7 @@ namespace DotNetNuke.Common.Utilities
         /// <param name="message">The feedback message</param>
         /// <param name="showtime">Show the timespan before the message</param>
         /// -----------------------------------------------------------------------------
-        public static void WriteFeedback(HttpResponse response, Int32 indent, string message, bool showtime)
+        public static void WriteFeedback(HttpResponse response, int indent, string message, bool showtime)
         {
             try
             {

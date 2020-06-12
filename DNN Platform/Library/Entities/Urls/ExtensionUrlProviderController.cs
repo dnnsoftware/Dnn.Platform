@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Urls
 
         private static void ClearCache(int portalId)
         {
-            var cacheKey = String.Format("ExtensionUrlProviders_{0}", portalId);
+            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
             DataCache.RemoveCache(cacheKey);
         }
 
@@ -277,7 +277,7 @@ namespace DotNetNuke.Entities.Urls
                     if (!string.IsNullOrEmpty(customPath))
                     {
                         // was customPath any different to friendlyUrlPath?
-                        if (String.CompareOrdinal(customPath, friendlyUrlPath) != 0)
+                        if (string.CompareOrdinal(customPath, friendlyUrlPath) != 0)
                         {
                             wasChanged = true;
                             changedPath = customPath.Trim();
@@ -485,7 +485,7 @@ namespace DotNetNuke.Entities.Urls
         /// <remarks>Note : similar copy for UI purposes in ConfigurationController.cs</remarks>
         public static List<ExtensionUrlProvider> GetModuleProviders(int portalId)
         {
-            var cacheKey = String.Format("ExtensionUrlProviders_{0}", portalId);
+            var cacheKey = string.Format("ExtensionUrlProviders_{0}", portalId);
             var moduleProviders = CBO.GetCachedObject<List<ExtensionUrlProvider>>(
                 new CacheItemArgs(
                 cacheKey,
@@ -571,7 +571,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 PunctuationReplacement = (settings.ReplaceSpaceWith != FriendlyUrlSettings.ReplaceSpaceWithNothing)
                                                 ? settings.ReplaceSpaceWith
-                                                : String.Empty,
+                                                : string.Empty,
                 SpaceEncoding = settings.SpaceEncodingValue,
                 MaxUrlPathLength = 200,
                 ConvertDiacriticChars = settings.AutoAsciiConvert,

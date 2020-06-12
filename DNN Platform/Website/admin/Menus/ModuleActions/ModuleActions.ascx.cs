@@ -146,7 +146,7 @@ namespace DotNetNuke.Admin.Containers
 
                                     actions.Add(action);
 
-                                    if (String.IsNullOrEmpty(action.Url))
+                                    if (string.IsNullOrEmpty(action.Url))
                                     {
                                         this.validIDs.Add(action.ID);
                                     }

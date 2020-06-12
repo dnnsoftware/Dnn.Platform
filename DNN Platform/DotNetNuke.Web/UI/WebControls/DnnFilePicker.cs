@@ -178,7 +178,7 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 if ((this.Page.Request.QueryString["pid"] != null) && (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID) || UserController.Instance.GetCurrentUserInfo().IsSuperUser))
                 {
-                    return Int32.Parse(this.Page.Request.QueryString["pid"]);
+                    return int.Parse(this.Page.Request.QueryString["pid"]);
                 }
                 if (!this.IsHost)
                 {
@@ -258,7 +258,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     var fileId = Null.NullInteger;
                     if (this._cboFiles.SelectedItem != null)
                     {
-                        fileId = Int32.Parse(this._cboFiles.SelectedItem.Value);
+                        fileId = int.Parse(this._cboFiles.SelectedItem.Value);
                     }
                     this.ViewState["FileID"] = fileId;
                 }
@@ -733,7 +733,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    this.FileID = Int32.Parse(this._cboFiles.SelectedItem.Value);
+                    this.FileID = int.Parse(this._cboFiles.SelectedItem.Value);
                 }
 
                 if (this._cboFolders.Items.Count > 1 && this.ShowFolders)
@@ -808,7 +808,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     // trying to upload a file not allowed for current filter
                     var localizedString = Localization.GetString("UploadError", this.LocalResourceFile);
-                    if (String.IsNullOrEmpty(localizedString))
+                    if (string.IsNullOrEmpty(localizedString))
                     {
                         localizedString = Utilities.GetLocalizedString("UploadError");
                     }

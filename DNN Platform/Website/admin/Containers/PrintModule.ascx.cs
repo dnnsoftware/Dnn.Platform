@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.Containers
             if (this.ModuleContext.Configuration.DisplayPrint)
             {
                 var ModuleActionIcon = new ImageButton();
-                if (!String.IsNullOrEmpty(this.PrintIcon))
+                if (!string.IsNullOrEmpty(this.PrintIcon))
                 {
                 ModuleActionIcon.ImageUrl = this.ModuleContext.Configuration.ContainerPath.Substring(0, this.ModuleContext.Configuration.ContainerPath.LastIndexOf("/") + 1) + this.PrintIcon;
                 }

@@ -161,7 +161,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
                                     if (!DotNetNuke.Entities.Host.Host.UseFriendlyUrls)
                                     {
-                                        if (!String.IsNullOrEmpty(returnValue))
+                                        if (!string.IsNullOrEmpty(returnValue))
                                         {
                                             returnValue += "&";
                                         }
@@ -179,7 +179,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                     {
                                         for (int j = 0; j <= arrValues.GetUpperBound(0); j++)
                                         {
-                                            if (!String.IsNullOrEmpty(returnValue))
+                                            if (!string.IsNullOrEmpty(returnValue))
                                             {
                                                 returnValue += "&";
                                             }

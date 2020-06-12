@@ -385,7 +385,7 @@ namespace Dnn.EditBar.UI.Controllers
 
         private string GetPanesClientIds(IEnumerable<IEnumerable<string>> panelCliendIdCollection)
         {
-            return string.Join(";", panelCliendIdCollection.Select(x => String.Join(",", x)));
+            return string.Join(";", panelCliendIdCollection.Select(x => string.Join(",", x)));
         }
 
         private void RegisterLocalResources()
@@ -476,7 +476,7 @@ namespace Dnn.EditBar.UI.Controllers
                     var tabId = this.PortalSettings.ActiveTab.TabID;
                     int moduleId;
                     if (pendingData.StartsWith("module-")
-                        && Int32.TryParse(pendingData.Substring(7), out moduleId))
+                        && int.TryParse(pendingData.Substring(7), out moduleId))
                     {
                         var module = ModuleController.Instance.GetModule(moduleId, tabId, false);
                         if (module != null)

@@ -53,12 +53,12 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected virtual string FileNotFoundMessage
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected virtual string ObjectCacheKey
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected virtual int ObjectCacheTimeout
@@ -68,7 +68,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected virtual string ListObjectsCacheKey
         {
-            get { return String.Empty; }
+            get { return string.Empty; }
         }
 
         protected virtual int ListObjectsCacheTimeout
@@ -103,7 +103,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         protected static bool GetBooleanSetting(FolderMappingInfo folderMapping, string settingName)
         {
-            return Boolean.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
+            return bool.Parse(folderMapping.FolderMappingSettings[settingName].ToString());
         }
 
         protected static int GetIntegerSetting(FolderMappingInfo folderMapping, string settingName, int defaultValue)
@@ -167,10 +167,10 @@ namespace DotNetNuke.Providers.FolderProviders.Components
 
         public virtual void ClearCache(int folderMappingId)
         {
-            var cacheKey = String.Format(this.ListObjectsCacheKey, folderMappingId);
+            var cacheKey = string.Format(this.ListObjectsCacheKey, folderMappingId);
             DataCache.RemoveCache(cacheKey);
             // Clear cached objects
-            DataCache.ClearCache(String.Format(this.ObjectCacheKey, folderMappingId, String.Empty));
+            DataCache.ClearCache(string.Format(this.ObjectCacheKey, folderMappingId, string.Empty));
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 throw new FileNotFoundException(this.FileNotFoundMessage, file.RelativePath);
             }
-            return (item.Size == file.Size) ? item.HashCode : String.Empty;
+            return (item.Size == file.Size) ? item.HashCode : string.Empty;
         }
 
         public override string GetHashCode(IFileInfo file, Stream fileContent)
@@ -502,7 +502,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             {
                 return this.GetHashCode(file);
             }
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

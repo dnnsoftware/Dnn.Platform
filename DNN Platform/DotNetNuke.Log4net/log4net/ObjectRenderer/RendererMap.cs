@@ -92,7 +92,7 @@ namespace log4net.ObjectRenderer
         public string FindAndRender(object obj)
         {
             // Optimisation for strings
-            string strData = obj as String;
+            string strData = obj as string;
             if (strData != null)
             {
                 return strData;
@@ -186,7 +186,7 @@ namespace log4net.ObjectRenderer
         /// with the type of the object parameter.
         /// </param>
         /// </remarks>
-        public IObjectRenderer Get(Object obj)
+        public IObjectRenderer Get(object obj)
         {
             if (obj == null)
             {

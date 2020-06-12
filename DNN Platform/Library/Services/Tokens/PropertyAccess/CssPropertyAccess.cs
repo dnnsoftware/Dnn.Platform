@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Tokens
 
         protected override string ProcessToken(StylesheetDto model, UserInfo accessingUser, Scope accessLevel)
         {
-            if (String.IsNullOrEmpty(model.Path))
+            if (string.IsNullOrEmpty(model.Path))
             {
                 throw new ArgumentException("The Css token must specify a path or property.");
             }
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 model.Priority = (int)FileOrder.Css.DefaultPriority;
             }
-            if (String.IsNullOrEmpty(model.Provider))
+            if (string.IsNullOrEmpty(model.Provider))
             {
                 ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority);
             }
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Tokens
                 ClientResourceManager.RegisterStyleSheet(this._page, model.Path, model.Priority, model.Provider);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

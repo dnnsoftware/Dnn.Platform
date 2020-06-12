@@ -116,7 +116,7 @@ namespace DotNetNuke.Services.ClientCapability
         /// <returns>The base 64 string.</returns>
         private static string Base64UrlDecode(string encodedValue)
         {
-            if (String.IsNullOrEmpty(encodedValue)) return null;
+            if (string.IsNullOrEmpty(encodedValue)) return null;
             encodedValue = encodedValue.Replace('+', '-').Replace('/', '_').Replace("=", string.Empty).Trim();
             return encodedValue;
         }

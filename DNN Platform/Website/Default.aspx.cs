@@ -107,7 +107,7 @@ namespace DotNetNuke.Framework
                     var attr = new StringBuilder();
                     foreach (string attributeName in this.HtmlAttributes.Keys)
                     {
-                        if ((!String.IsNullOrEmpty(attributeName)) && (this.HtmlAttributes[attributeName] != null))
+                        if ((!string.IsNullOrEmpty(attributeName)) && (this.HtmlAttributes[attributeName] != null))
                         {
                             string attributeValue = this.HtmlAttributes[attributeName];
                             if (attributeValue.IndexOf(",") > 0)
@@ -197,7 +197,7 @@ namespace DotNetNuke.Framework
             PortalSettingsController.Instance().ConfigureActiveTab(this.PortalSettings);
 
             // redirect to a specific tab based on name
-            if (!String.IsNullOrEmpty(this.Request.QueryString["tabname"]))
+            if (!string.IsNullOrEmpty(this.Request.QueryString["tabname"]))
             {
                 TabInfo tab = TabController.Instance.GetTabByName(this.Request.QueryString["TabName"], this.PortalSettings.PortalId);
                 if (tab != null)
@@ -249,7 +249,7 @@ namespace DotNetNuke.Framework
             }
 
             // Only insert the header control if a comment is needed
-            if (!String.IsNullOrWhiteSpace(this.Comment))
+            if (!string.IsNullOrWhiteSpace(this.Comment))
                 this.Page.Header.Controls.AddAt(0, new LiteralControl(this.Comment));
 
             if (this.PortalSettings.ActiveTab.PageHeadText != Null.NullString && !Globals.IsAdminControl())
@@ -278,7 +278,7 @@ namespace DotNetNuke.Framework
                         case ".mvc":
                             var segments = slaveModule.ModuleControl.ControlSrc.Replace(".mvc", "").Split('/');
 
-                            control.LocalResourceFile = String.Format(
+                            control.LocalResourceFile = string.Format(
                                 "~/DesktopModules/MVC/{0}/{1}/{2}.resx",
                                 slaveModule.DesktopModule.FolderName,
                                 Localization.LocalResourceDirectory,
@@ -472,7 +472,7 @@ namespace DotNetNuke.Framework
         {
             string headerLink = FavIcon.GetHeaderLink(this.PortalSettings.PortalId);
 
-            if (!String.IsNullOrEmpty(headerLink))
+            if (!string.IsNullOrEmpty(headerLink))
             {
                 this.Page.Header.Controls.Add(new Literal { Text = headerLink });
             }
@@ -531,7 +531,7 @@ namespace DotNetNuke.Framework
 
         private IFileInfo GetBackgroundFileInfo()
         {
-            string cacheKey = String.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
+            string cacheKey = string.Format(Common.Utilities.DataCache.PortalCacheKey, this.PortalSettings.PortalId, "BackgroundFile");
             var file = CBO.GetCachedObject<Services.FileSystem.FileInfo>(
                 new CacheItemArgs(cacheKey, Common.Utilities.DataCache.PortalCacheTimeOut, Common.Utilities.DataCache.PortalCachePriority),
                                                     this.GetBackgroundFileInfoCallBack);
@@ -711,7 +711,7 @@ namespace DotNetNuke.Framework
 
             this.ManageInstallerFiles();
 
-            if (!String.IsNullOrEmpty(this.ScrollTop.Value))
+            if (!string.IsNullOrEmpty(this.ScrollTop.Value))
             {
                 DNNClientAPI.SetScrollTop(this.Page);
                 this.ScrollTop.Value = this.ScrollTop.Value;
@@ -727,7 +727,7 @@ namespace DotNetNuke.Framework
             if (!UrlUtils.InPopUp())
             {
                 this.MetaGenerator.Content = this.Generator;
-                this.MetaGenerator.Visible = !String.IsNullOrEmpty(this.Generator);
+                this.MetaGenerator.Visible = !string.IsNullOrEmpty(this.Generator);
                 this.MetaAuthor.Content = this.PortalSettings.PortalName;
                 /*
                  * Never show to be html5 compatible and stay backward compatible
@@ -736,9 +736,9 @@ namespace DotNetNuke.Framework
                  * MetaCopyright.Visible = (!String.IsNullOrEmpty(Copyright));
                  */
                 this.MetaKeywords.Content = this.KeyWords;
-                this.MetaKeywords.Visible = !String.IsNullOrEmpty(this.KeyWords);
+                this.MetaKeywords.Visible = !string.IsNullOrEmpty(this.KeyWords);
                 this.MetaDescription.Content = this.Description;
-                this.MetaDescription.Visible = !String.IsNullOrEmpty(this.Description);
+                this.MetaDescription.Visible = !string.IsNullOrEmpty(this.Description);
             }
             this.Page.Header.Title = this.Title;
             if (!string.IsNullOrEmpty(this.PortalSettings.AddCompatibleHttpHeader) && !this.HeaderIsWritten)

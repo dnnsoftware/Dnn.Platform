@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Api
 
             string controllerName = this.GetControllerName(request);
             IEnumerable<string> namespaces = this.GetNameSpaces(request);
-            if (namespaces == null || !namespaces.Any() || String.IsNullOrEmpty(controllerName))
+            if (namespaces == null || !namespaces.Any() || string.IsNullOrEmpty(controllerName))
             {
                 throw new HttpResponseException(request.CreateErrorResponse(
                     HttpStatusCode.NotFound,

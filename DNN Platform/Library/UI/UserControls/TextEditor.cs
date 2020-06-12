@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.UserControls
         {
             get
             {
-                return this.ViewState["DefaultMode"] == null || String.IsNullOrEmpty(this.ViewState["DefaultMode"].ToString()) ? "RICH" : this.ViewState["DefaultMode"].ToString();
+                return this.ViewState["DefaultMode"] == null || string.IsNullOrEmpty(this.ViewState["DefaultMode"].ToString()) ? "RICH" : this.ViewState["DefaultMode"].ToString();
             }
             set
             {
@@ -110,16 +110,16 @@ namespace DotNetNuke.UI.UserControls
                 }
 
                 // If no Preference Check if Viewstate has been saved
-                if (String.IsNullOrEmpty(strMode))
+                if (string.IsNullOrEmpty(strMode))
                 {
-                    if (this.ViewState["DesktopMode"] != null && !String.IsNullOrEmpty(this.ViewState["DesktopMode"].ToString()))
+                    if (this.ViewState["DesktopMode"] != null && !string.IsNullOrEmpty(this.ViewState["DesktopMode"].ToString()))
                     {
                         strMode = Convert.ToString(this.ViewState["DesktopMode"]);
                     }
                 }
 
                 // Finally if still no value Use default
-                if (String.IsNullOrEmpty(strMode))
+                if (string.IsNullOrEmpty(strMode))
                 {
                     strMode = this.DefaultMode;
                 }
@@ -321,7 +321,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.Mode = this.OptView.SelectedItem.Value;
             }
-            if (!String.IsNullOrEmpty(this.Mode))
+            if (!string.IsNullOrEmpty(this.Mode))
             {
                 this.OptView.Items.FindByValue(this.Mode).Selected = true;
             }
@@ -335,7 +335,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.TextRenderMode = this.OptRender.SelectedItem.Value;
             }
-            if (!String.IsNullOrEmpty(this.TextRenderMode))
+            if (!string.IsNullOrEmpty(this.TextRenderMode))
             {
                 this.OptRender.Items.FindByValue(this.TextRenderMode).Selected = true;
             }
@@ -357,7 +357,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        private static string RemoveBaseTags(String strInput)
+        private static string RemoveBaseTags(string strInput)
         {
             return Globals.BaseTagRegex.Replace(strInput, " ");
         }
@@ -458,7 +458,7 @@ namespace DotNetNuke.UI.UserControls
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        protected void OptRenderSelectedIndexChanged(Object sender, EventArgs e)
+        protected void OptRenderSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptRender.SelectedIndex != -1)
             {
@@ -478,7 +478,7 @@ namespace DotNetNuke.UI.UserControls
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        protected void OptViewSelectedIndexChanged(Object sender, EventArgs e)
+        protected void OptViewSelectedIndexChanged(object sender, EventArgs e)
         {
             if (this.OptView.SelectedIndex != -1)
             {

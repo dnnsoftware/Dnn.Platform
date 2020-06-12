@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Search
         /// <summary>
         /// Add an element of the specified <see cref="SearchCriteria">SearchCriteria</see> to the collection at the designated index.
         /// </summary>
-        /// <param name="index">An <see cref="System.Int32">Integer</see> to indicate the location to add the object to the collection.</param>
+        /// <param name="index">An <see cref="int">Integer</see> to indicate the location to add the object to the collection.</param>
         /// <param name="value">An object of type <see cref="SearchCriteria">SearchCriteria</see> to add to the collection.</param>
         public void Insert(int index, SearchCriteria value)
         {

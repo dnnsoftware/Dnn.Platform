@@ -40,7 +40,7 @@ namespace DotNetNuke.Modules.CoreMessaging
                 var userId = Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.Request.Params["UserId"]))
                 {
-                    userId = Int32.Parse(this.Request.Params["UserId"]);
+                    userId = int.Parse(this.Request.Params["UserId"]);
                 }
                 return userId;
             }

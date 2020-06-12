@@ -496,7 +496,7 @@ namespace DotNetNuke.Services.Search.Internals
                         analyzer = Reflection.CreateInstance(analyzerType) as Analyzer;
                         if (analyzer == null)
                         {
-                            throw new ArgumentException(String.Format(
+                            throw new ArgumentException(string.Format(
                                 Localization.Localization.GetExceptionMessage("InvalidAnalyzerClass", "The class '{0}' cannot be created because it's invalid or is not an analyzer, will use default analyzer."),
                                 customAnalyzerType));
                         }

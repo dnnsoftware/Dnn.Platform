@@ -86,18 +86,18 @@ namespace DotNetNuke.Web.DDRMenu
 
         public static string ToSettingString(List<ClientOption> clientOptions)
         {
-            return String.Join("\r\n", clientOptions.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
+            return string.Join("\r\n", clientOptions.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
         }
 
         public static string ToSettingString(List<TemplateArgument> templateArguments)
         {
-            return String.Join("\r\n", templateArguments.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
+            return string.Join("\r\n", templateArguments.ConvertAll(o => o.Name + "=" + o.Value).ToArray());
         }
 
         private static IEnumerable<string> SplitIntoStrings(string fullString)
         {
             var strings = new List<string>(fullString.Split('\r', '\n'));
-            strings.RemoveAll(String.IsNullOrEmpty);
+            strings.RemoveAll(string.IsNullOrEmpty);
             return strings;
         }
     }

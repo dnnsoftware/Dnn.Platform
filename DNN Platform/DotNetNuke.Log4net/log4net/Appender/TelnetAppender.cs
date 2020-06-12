@@ -279,7 +279,7 @@ namespace log4net.Appender
                 /// Write a string to the client
                 /// </para>
                 /// </remarks>
-                public void Send(String message)
+                public void Send(string message)
                 {
                     this.m_writer.Write(message);
                     this.m_writer.Flush();
@@ -364,7 +364,7 @@ namespace log4net.Appender
             /// Sends a string message to each of the connected clients
             /// </para>
             /// </remarks>
-            public void Send(String message)
+            public void Send(string message)
             {
                 ArrayList localClients = this.m_clients;
 

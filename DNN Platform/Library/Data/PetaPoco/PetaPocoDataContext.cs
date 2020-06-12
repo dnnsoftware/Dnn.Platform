@@ -24,12 +24,12 @@ namespace DotNetNuke.Data.PetaPoco
         #region Constructors
 
         public PetaPocoDataContext()
-            : this(ConfigurationManager.ConnectionStrings[0].Name, String.Empty)
+            : this(ConfigurationManager.ConnectionStrings[0].Name, string.Empty)
         {
         }
 
         public PetaPocoDataContext(string connectionStringName)
-            : this(connectionStringName, String.Empty, new Dictionary<Type, IMapper>())
+            : this(connectionStringName, string.Empty, new Dictionary<Type, IMapper>())
         {
         }
 

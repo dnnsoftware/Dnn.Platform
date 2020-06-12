@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Exceptions
             }
 
             int statusCode;
-            Int32.TryParse(status, out statusCode);
+            int.TryParse(status, out statusCode);
 
             if (statusCode > -1)
             {
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Exceptions
             base.OnLoad(e);
 
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            if (portalSettings != null && !String.IsNullOrEmpty(portalSettings.LogoFile))
+            if (portalSettings != null && !string.IsNullOrEmpty(portalSettings.LogoFile))
             {
                 IFileInfo fileInfo = FileManager.Instance.GetFile(portalSettings.PortalId, portalSettings.LogoFile);
                 if (fileInfo != null)

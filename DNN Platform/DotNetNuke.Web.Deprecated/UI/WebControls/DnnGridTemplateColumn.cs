@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public override void InitializeCell(TableCell cell, int columnIndex, GridItem inItem)
         {
             base.InitializeCell(cell, columnIndex, inItem);
-            if (inItem is GridHeaderItem && this.HeaderTemplate == null && !String.IsNullOrEmpty(this.HeaderText))
+            if (inItem is GridHeaderItem && this.HeaderTemplate == null && !string.IsNullOrEmpty(this.HeaderText))
             {
                 cell.Text = Localization.GetString(string.Format("{0}.Header", this.HeaderText), this.LocalResourceFile);
             }

@@ -165,7 +165,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._folderInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFolderPath);
             this._folderInfo.Setup(fi => fi.FolderMappingID).Returns(Constants.FOLDER_ValidFolderMappingID);
 
-            this._mockData.Setup(c => c.GetProviderPath()).Returns(String.Empty);
+            this._mockData.Setup(c => c.GetProviderPath()).Returns(string.Empty);
 
             var fileContent = new MemoryStream();
 

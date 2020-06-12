@@ -96,9 +96,9 @@ namespace DotNetNuke.Modules.Admin.Users
             get
             {
                 string returnURL;
-                var filterParams = new string[String.IsNullOrEmpty(this.Request.QueryString["filterproperty"]) ? 1 : 2];
+                var filterParams = new string[string.IsNullOrEmpty(this.Request.QueryString["filterproperty"]) ? 1 : 2];
 
-                if (String.IsNullOrEmpty(this.Request.QueryString["filterProperty"]))
+                if (string.IsNullOrEmpty(this.Request.QueryString["filterProperty"]))
                 {
                     filterParams.SetValue("filter=" + this.Request.QueryString["filter"], 0);
                 }
@@ -406,7 +406,7 @@ namespace DotNetNuke.Modules.Admin.Users
         public string DisplayDefaultVisibility(ProfilePropertyDefinition definition)
         {
             string retValue = Null.NullString;
-            if (!String.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
+            if (!string.IsNullOrEmpty(definition.DefaultVisibility.ToString()))
             {
                 retValue = this.LocalizeString(definition.DefaultVisibility.ToString()) ?? definition.DefaultVisibility.ToString();
             }

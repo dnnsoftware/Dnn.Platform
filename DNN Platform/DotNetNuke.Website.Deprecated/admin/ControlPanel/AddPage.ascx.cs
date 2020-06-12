@@ -72,7 +72,7 @@ namespace DotNetNuke.UI.ControlPanel
 
         protected void CmdAddPageClick(object sender, EventArgs e)
         {
-            int selectedTabID = Int32.Parse(this.PageLst.SelectedValue);
+            int selectedTabID = int.Parse(this.PageLst.SelectedValue);
             TabInfo selectedTab = TabController.Instance.GetTab(selectedTabID, PortalSettings.ActiveTab.PortalID, false);
             var tabLocation = (TabRelativeLocation)Enum.Parse(typeof(TabRelativeLocation), this.LocationLst.SelectedValue);
             TabInfo newTab = RibbonBarManager.InitTabInfoObject(selectedTab, tabLocation);

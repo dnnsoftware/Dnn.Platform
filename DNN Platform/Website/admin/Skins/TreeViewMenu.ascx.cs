@@ -376,7 +376,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private void ProcessNodes(DNNNode objParent)
         {
-            if (!String.IsNullOrEmpty(objParent.Image))
+            if (!string.IsNullOrEmpty(objParent.Image))
             {
             }
             else if (objParent.HasNodes) // imagepath applied in provider...
@@ -402,51 +402,51 @@ namespace DotNetNuke.UI.Skins.Controls
         /// -----------------------------------------------------------------------------
         private void InitializeTree()
         {
-            if (String.IsNullOrEmpty(this.PathImage))
+            if (string.IsNullOrEmpty(this.PathImage))
             {
                 this.PathImage = this.PortalSettings.HomeDirectory;
             }
-            if (String.IsNullOrEmpty(this.PathSystemImage))
+            if (string.IsNullOrEmpty(this.PathSystemImage))
             {
                 this.PathSystemImage = this.ResolveUrl("~/images/");
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageRoot))
+            if (string.IsNullOrEmpty(this.IndicateChildImageRoot))
             {
                 this.IndicateChildImageRoot = this.ResolveUrl(this.NodeExpandImage);
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageSub))
+            if (string.IsNullOrEmpty(this.IndicateChildImageSub))
             {
                 this.IndicateChildImageSub = this.ResolveUrl(this.NodeExpandImage);
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageExpandedRoot))
+            if (string.IsNullOrEmpty(this.IndicateChildImageExpandedRoot))
             {
                 this.IndicateChildImageExpandedRoot = this.ResolveUrl(this.NodeCollapseImage);
             }
-            if (String.IsNullOrEmpty(this.IndicateChildImageExpandedSub))
+            if (string.IsNullOrEmpty(this.IndicateChildImageExpandedSub))
             {
                 this.IndicateChildImageExpandedSub = this.ResolveUrl(this.NodeCollapseImage);
             }
-            if (String.IsNullOrEmpty(this.CSSNode))
+            if (string.IsNullOrEmpty(this.CSSNode))
             {
                 this.CSSNode = this.NodeChildCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeRoot))
+            if (string.IsNullOrEmpty(this.CSSNodeRoot))
             {
                 this.CSSNodeRoot = this.NodeCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeHover))
+            if (string.IsNullOrEmpty(this.CSSNodeHover))
             {
                 this.CSSNodeHover = this.NodeOverCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeSelectedRoot))
+            if (string.IsNullOrEmpty(this.CSSNodeSelectedRoot))
             {
                 this.CSSNodeSelectedRoot = this.NodeSelectedCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSNodeSelectedSub))
+            if (string.IsNullOrEmpty(this.CSSNodeSelectedSub))
             {
                 this.CSSNodeSelectedSub = this.NodeSelectedCssClass;
             }
-            if (String.IsNullOrEmpty(this.CSSControl))
+            if (string.IsNullOrEmpty(this.CSSControl))
             {
                 this.CSSControl = this.TreeCssClass;
             }
@@ -475,48 +475,48 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.BuildTree(null, false);
 
                     // Main Table Properties
-                    if (!String.IsNullOrEmpty(this.Width))
+                    if (!string.IsNullOrEmpty(this.Width))
                     {
                         this.tblMain.Width = this.Width;
                     }
 
-                    if (!String.IsNullOrEmpty(this.CssClass))
+                    if (!string.IsNullOrEmpty(this.CssClass))
                     {
                         this.tblMain.Attributes.Add("class", this.CssClass);
                     }
 
                     // Header Properties
-                    if (!String.IsNullOrEmpty(this.HeaderCssClass))
+                    if (!string.IsNullOrEmpty(this.HeaderCssClass))
                     {
                         this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
                     }
 
-                    if (!String.IsNullOrEmpty(this.HeaderTextCssClass))
+                    if (!string.IsNullOrEmpty(this.HeaderTextCssClass))
                     {
                         this.lblHeader.CssClass = this.HeaderTextCssClass;
                     }
 
                     // Header Text (if set)
-                    if (!String.IsNullOrEmpty(this.HeaderText))
+                    if (!string.IsNullOrEmpty(this.HeaderText))
                     {
                         this.lblHeader.Text = this.HeaderText;
                     }
 
                     // ResourceKey overrides if found
-                    if (!String.IsNullOrEmpty(this.ResourceKey))
+                    if (!string.IsNullOrEmpty(this.ResourceKey))
                     {
                         string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
-                        if (!String.IsNullOrEmpty(strHeader))
+                        if (!string.IsNullOrEmpty(strHeader))
                         {
                             this.lblHeader.Text = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
                         }
                     }
 
                     // If still not set get default key
-                    if (String.IsNullOrEmpty(this.lblHeader.Text))
+                    if (string.IsNullOrEmpty(this.lblHeader.Text))
                     {
                         string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
-                        if (!String.IsNullOrEmpty(strHeader))
+                        if (!string.IsNullOrEmpty(strHeader))
                         {
                             this.lblHeader.Text = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
                         }
@@ -528,7 +528,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.tblHeader.Visible = this.IncludeHeader;
 
                     // Main Panel Properties
-                    if (!String.IsNullOrEmpty(this.BodyCssClass))
+                    if (!string.IsNullOrEmpty(this.BodyCssClass))
                     {
                         this.cellBody.Attributes.Add("class", this.BodyCssClass);
                     }

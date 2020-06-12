@@ -95,7 +95,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
         public static void AddConfiguration()
         {
             var configPath = HostingEnvironment.MapPath("~/web.config");
-            if (!String.IsNullOrEmpty(configPath))
+            if (!string.IsNullOrEmpty(configPath))
             {
                 var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(configPath);
@@ -201,7 +201,7 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
             var configPath = HostingEnvironment.MapPath("~/web.config");
             var installed = false;
 
-            if (!String.IsNullOrEmpty(configPath))
+            if (!string.IsNullOrEmpty(configPath))
             {
                 var xmlDoc = new XmlDocument { XmlResolver = null };
                 xmlDoc.Load(configPath);

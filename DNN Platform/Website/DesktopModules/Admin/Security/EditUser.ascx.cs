@@ -91,7 +91,7 @@ namespace DotNetNuke.Modules.Admin.Users
                             _RedirectURL = string.Concat(baseURL, "?returnurl", HttpUtility.UrlEncode(returnURL));
                         }
                     }
-                    if (String.IsNullOrEmpty(_RedirectURL))
+                    if (string.IsNullOrEmpty(_RedirectURL))
                     {
                         // redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
@@ -113,7 +113,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             get
             {
-                return this._navigationManager.NavigateURL(this.TabId, "", !String.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : "");
+                return this._navigationManager.NavigateURL(this.TabId, "", !string.IsNullOrEmpty(this.UserFilter) ? this.UserFilter : "");
             }
         }
 
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 if (showVanityUrl)
                 {
                     this.VanityUrlRow.Visible = true;
-                    if (String.IsNullOrEmpty(this.User.VanityUrl))
+                    if (string.IsNullOrEmpty(this.User.VanityUrl))
                     {
                         // Clean Display Name
                         bool modified;
@@ -244,13 +244,13 @@ namespace DotNetNuke.Modules.Admin.Users
                         var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.User.DisplayName, options, out modified);
                         var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified).ToLowerInvariant();
 
-                        this.VanityUrlAlias.Text = String.Format("{0}/{1}/", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix);
+                        this.VanityUrlAlias.Text = string.Format("{0}/{1}/", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix);
                         this.VanityUrlTextBox.Text = uniqueUrl;
                         this.ShowVanityUrl = true;
                     }
                     else
                     {
-                        this.VanityUrl.Text = String.Format("{0}/{1}/{2}", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, this.User.VanityUrl);
+                        this.VanityUrl.Text = string.Format("{0}/{1}/{2}", this.PortalSettings.PortalAlias.HTTPAlias, urlSettings.VanityUrlPrefix, this.User.VanityUrl);
                         this.ShowVanityUrl = false;
                     }
                 }

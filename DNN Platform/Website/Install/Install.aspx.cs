@@ -69,10 +69,10 @@ namespace DotNetNuke.Services.Install
 
             string installationDate = Config.GetSetting("InstallationDate");
 
-            if (installationDate == null || String.IsNullOrEmpty(installationDate))
+            if (installationDate == null || string.IsNullOrEmpty(installationDate))
             {
                 string strError = Config.UpdateMachineKey();
-                if (String.IsNullOrEmpty(strError))
+                if (string.IsNullOrEmpty(strError))
                 {
                     // send a new request to the application to initiate step 2
                     this.Response.Redirect(HttpContext.Current.Request.RawUrl, true);
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Install
 
                         var installConfig = InstallController.Instance.GetInstallConfig();
                         // Create Folder Mappings config
-                        if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
+                        if (!string.IsNullOrEmpty(installConfig.FolderMappingsSettings))
                         {
                             FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
                         }
@@ -142,8 +142,8 @@ namespace DotNetNuke.Services.Install
                         var licenseConfig = installConfig.License;
                         bool IsProOrEnterprise = File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Professional.dll")) ||
                                                   File.Exists(HttpContext.Current.Server.MapPath("~\\bin\\DotNetNuke.Enterprise.dll"));
-                        if (IsProOrEnterprise && licenseConfig != null && !String.IsNullOrEmpty(licenseConfig.AccountEmail) &&
-                            !String.IsNullOrEmpty(licenseConfig.InvoiceNumber))
+                        if (IsProOrEnterprise && licenseConfig != null && !string.IsNullOrEmpty(licenseConfig.AccountEmail) &&
+                            !string.IsNullOrEmpty(licenseConfig.InvoiceNumber))
                         {
                             Upgrade.Upgrade.ActivateLicense();
                         }

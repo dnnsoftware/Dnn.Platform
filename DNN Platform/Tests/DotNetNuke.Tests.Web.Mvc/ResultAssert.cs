@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Web.Mvc
 
         public static void IsView(ActionResult result, string viewName)
         {
-            IsView(result, viewName, String.Empty, new RouteValueDictionary());
+            IsView(result, viewName, string.Empty, new RouteValueDictionary());
         }
 
         public static void IsView(ActionResult result, string viewName, string masterName, RouteValueDictionary expectedViewData)
@@ -44,9 +44,9 @@ namespace DotNetNuke.Tests.Web.Mvc
 
         private static void StringsEqualOrBothNullOrEmpty(string expected, string actual)
         {
-            if (String.IsNullOrEmpty(expected))
+            if (string.IsNullOrEmpty(expected))
             {
-                Assert.IsTrue(String.IsNullOrEmpty(actual));
+                Assert.IsTrue(string.IsNullOrEmpty(actual));
             }
             else
             {

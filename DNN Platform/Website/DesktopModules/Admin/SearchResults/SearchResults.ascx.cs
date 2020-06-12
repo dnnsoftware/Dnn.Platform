@@ -71,7 +71,7 @@ namespace DotNetNuke.Modules.SearchResults
                 }
 
                 int pageIndex;
-                if (Int32.TryParse(this.Request.QueryString["Page"], out pageIndex))
+                if (int.TryParse(this.Request.QueryString["Page"], out pageIndex))
                 {
                     return pageIndex;
                 }
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.SearchResults
                 }
 
                 int pageSize;
-                if (Int32.TryParse(this.Request.QueryString["Size"], out pageSize))
+                if (int.TryParse(this.Request.QueryString["Size"], out pageSize))
                 {
                     return pageSize;
                 }
@@ -109,7 +109,7 @@ namespace DotNetNuke.Modules.SearchResults
                 }
 
                 int sortOption;
-                if (Int32.TryParse(this.Request.QueryString["Sort"], out sortOption))
+                if (int.TryParse(this.Request.QueryString["Sort"], out sortOption))
                 {
                     return sortOption;
                 }

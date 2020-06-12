@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.DDRMenu.Localisation
                 var modules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
                 foreach (var moduleKeyPair in modules)
                 {
-                    if (!String.IsNullOrEmpty(moduleKeyPair.Value.BusinessControllerClass))
+                    if (!string.IsNullOrEmpty(moduleKeyPair.Value.BusinessControllerClass))
                     {
                         try
                         {

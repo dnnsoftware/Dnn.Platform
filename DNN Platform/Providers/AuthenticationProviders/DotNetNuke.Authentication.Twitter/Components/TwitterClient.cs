@@ -28,7 +28,7 @@ namespace DotNetNuke.Authentication.Twitter.Components
 
             this.OAuthVersion = "1.0";
 
-            this.LoadTokenCookie(String.Empty);
+            this.LoadTokenCookie(string.Empty);
         }
     }
 }

@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Groups
             this._roleId = -1;
             this._memberId = -1;
             this._roleInfo = null;
-            if (!String.IsNullOrEmpty(key))
+            if (!string.IsNullOrEmpty(key))
             {
                 string[] keys = key.Split(':');
                 this._tabId = Convert.ToInt32(keys[0]);
