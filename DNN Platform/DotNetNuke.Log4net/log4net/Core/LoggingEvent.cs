@@ -205,7 +205,8 @@ namespace log4net.Core
     /// </para>
     /// </remarks>
     /// <author>Nicko Cadell</author>
-    [Flags] public enum FixFlags
+    [Flags]
+    public enum FixFlags
     {
         /// <summary>
         /// Fix the MDC

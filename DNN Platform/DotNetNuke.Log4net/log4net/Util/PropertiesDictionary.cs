@@ -44,7 +44,8 @@ namespace log4net.Util
 #if NETCF
 	public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, IDictionary
 #else
-    [Serializable] public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, ISerializable, IDictionary
+    [Serializable]
+    public sealed class PropertiesDictionary : ReadOnlyPropertiesDictionary, ISerializable, IDictionary
 #endif
     {
 

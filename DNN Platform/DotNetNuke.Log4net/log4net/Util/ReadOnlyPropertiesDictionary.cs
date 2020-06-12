@@ -48,7 +48,8 @@ namespace log4net.Util
 #if NETCF
 	public class ReadOnlyPropertiesDictionary : IDictionary
 #else
-    [Serializable] public class ReadOnlyPropertiesDictionary : ISerializable, IDictionary
+    [Serializable]
+    public class ReadOnlyPropertiesDictionary : ISerializable, IDictionary
 #endif
     {
 
