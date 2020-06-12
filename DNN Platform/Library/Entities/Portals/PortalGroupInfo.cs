@@ -40,10 +40,10 @@ namespace DotNetNuke.Entities.Portals
             }
         }
 
-        [Required()]
+        [Required]
         public string PortalGroupDescription { get; set; }
 
-        [Required()]
+        [Required]
         public string PortalGroupName { get; set; }
 
         public int KeyID

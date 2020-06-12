@@ -393,7 +393,7 @@ namespace DotNetNuke.Services.Install
             IsAuthenticated = false;
         }
 
-        [System.Web.Services.WebMethod()]
+        [System.Web.Services.WebMethod]
         public static Tuple<bool, string> ValidateInput(Dictionary<string, string> accountInfo)
         {
             string errorMsg;
@@ -431,7 +431,7 @@ namespace DotNetNuke.Services.Install
             return result;
         }
 
-        [System.Web.Services.WebMethod()]
+        [System.Web.Services.WebMethod]
         public static void RunUpgrade(Dictionary<string, string> accountInfo)
         {
             string errorMsg;
@@ -449,7 +449,7 @@ namespace DotNetNuke.Services.Install
             }
         }
 
-        [System.Web.Services.WebMethod()]
+        [System.Web.Services.WebMethod]
         public static object GetInstallationLog(int startRow)
         {
             if (IsAuthenticated == false) return string.Empty;

@@ -64,7 +64,7 @@ namespace Dnn.PersonaBar.Users.Tests
             Assert.IsFalse(result.IsError);
         }
 
-        [TestCase()]
+        [TestCase]
         public void Run_GetUserByUserNameWithValidCommand_ShouldSuccessResponse()
         {
             // Arrange

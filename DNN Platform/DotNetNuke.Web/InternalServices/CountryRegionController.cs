@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.InternalServices
     public class CountryRegionController : DnnApiController
     {
 
-        [HttpGet()]
+        [HttpGet]
         public HttpResponseMessage Countries()
         {
             var searchString = (HttpContext.Current.Request.Params["SearchString"] ?? string.Empty).NormalizeString();
@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.InternalServices
             public string Value;
         }
 
-        [HttpGet()]
+        [HttpGet]
         public HttpResponseMessage Regions(int country)
         {
             List<Region> res = new List<Region>();
