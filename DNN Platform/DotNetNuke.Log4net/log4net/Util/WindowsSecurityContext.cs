@@ -317,10 +317,10 @@ namespace log4net.Util
         private static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
         [DllImport("kernel32.dll", CharSet=CharSet.Auto)]
-        private extern static bool CloseHandle(IntPtr handle);
+        private static extern bool CloseHandle(IntPtr handle);
 
         [DllImport("advapi32.dll", CharSet=CharSet.Auto, SetLastError=true)]
-        private extern static bool DuplicateToken(IntPtr ExistingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr DuplicateTokenHandle);
+        private static extern bool DuplicateToken(IntPtr ExistingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr DuplicateTokenHandle);
 
 
 

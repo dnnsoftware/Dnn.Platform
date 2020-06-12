@@ -63,7 +63,7 @@ namespace log4net.Layout.Pattern
         /// then all the properties are written as key value pairs.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             if (this.Option != null)
             {

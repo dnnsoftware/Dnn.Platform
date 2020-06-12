@@ -125,7 +125,7 @@ namespace log4net.Filter
         /// <see cref="FilterDecision.Deny"/> is returned.
         /// </para>
         /// </remarks>
-        override public FilterDecision Decide(LoggingEvent loggingEvent)
+        public override FilterDecision Decide(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {

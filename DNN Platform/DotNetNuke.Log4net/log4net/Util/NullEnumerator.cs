@@ -123,6 +123,6 @@ namespace log4net.Util
         /// <summary>
         /// The singleton instance of the <see cref="NullEnumerator" />.
         /// </summary>
-        private readonly static NullEnumerator s_instance = new NullEnumerator();
+        private static readonly NullEnumerator s_instance = new NullEnumerator();
     }
 }

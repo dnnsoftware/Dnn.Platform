@@ -271,7 +271,7 @@ namespace log4net.Appender
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions()
+        public override void ActivateOptions()
         {
             try
             {
@@ -374,7 +374,7 @@ namespace log4net.Appender
         /// There is a limit of 32K characters for an event log message
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
             // Write the resulting string to the event log system
             int eventID = this.m_eventId;
@@ -475,7 +475,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }
@@ -493,7 +493,7 @@ namespace log4net.Appender
         /// <see cref="Level"/> this is a one way mapping. There is
         /// a loss of information during the conversion.
         /// </remarks>
-        virtual protected EventLogEntryType GetEntryType(Level level)
+        protected virtual EventLogEntryType GetEntryType(Level level)
         {
             // see if there is a specified lookup.
             Level2EventLogEntryType entryType = this.m_levelMapping.Lookup(level) as Level2EventLogEntryType;
@@ -597,7 +597,7 @@ namespace log4net.Appender
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(EventLogAppender);
+        private static readonly Type declaringType = typeof(EventLogAppender);
 
         /// <summary>
         /// The maximum size supported by default.
@@ -611,7 +611,7 @@ namespace log4net.Appender
         /// the event log! See: System.Diagnostics.EventLogInternal.InternalWriteEvent()
         /// for the use of the 32766 max size.
         /// </remarks>
-        private readonly static int MAX_EVENTLOG_MESSAGE_SIZE_DEFAULT = 32766;
+        private static readonly int MAX_EVENTLOG_MESSAGE_SIZE_DEFAULT = 32766;
 
         /// <summary>
         /// The maximum size supported by a windows operating system that is vista
@@ -642,7 +642,7 @@ namespace log4net.Appender
         /// terminator of #0#0, as we cannot see the source of ReportEvent (though we could use an API monitor to examine the
         /// buffer, given enough time).
         /// </remarks>
-        private readonly static int MAX_EVENTLOG_MESSAGE_SIZE_VISTA_OR_NEWER = 31839 - 2;
+        private static readonly int MAX_EVENTLOG_MESSAGE_SIZE_VISTA_OR_NEWER = 31839 - 2;
 
         /// <summary>
         /// The maximum size that the operating system supports for
@@ -653,7 +653,7 @@ namespace log4net.Appender
         /// to the operating system event log and eventually truncate a string
         /// that exceeds the limits.
         /// </remarks>
-        private readonly static int MAX_EVENTLOG_MESSAGE_SIZE = GetMaxEventLogMessageSize();
+        private static readonly int MAX_EVENTLOG_MESSAGE_SIZE = GetMaxEventLogMessageSize();
 
         /// <summary>
         /// This method determines the maximum event log message size allowed for

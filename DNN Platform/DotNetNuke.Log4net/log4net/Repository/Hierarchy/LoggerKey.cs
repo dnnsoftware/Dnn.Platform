@@ -86,7 +86,7 @@ namespace log4net.Repository.Hierarchy
         /// Returns the cached hashcode.
         /// </para>
         /// </remarks>
-        override public int GetHashCode()
+        public override int GetHashCode()
         {
             return this.m_hashCache;
         }
@@ -104,7 +104,7 @@ namespace log4net.Repository.Hierarchy
         /// Compares the references of the interned strings.
         /// </para>
         /// </remarks>
-        override public bool Equals(object obj)
+        public override bool Equals(object obj)
         {
             // Compare reference type of this against argument
             if (((object)this) == obj)

@@ -201,7 +201,7 @@ namespace log4net.Appender
         /// Sends the contents of the cyclic buffer as an e-mail message.
         /// </para>
         /// </remarks>
-        override protected void SendBuffer(LoggingEvent[] events)
+        protected override void SendBuffer(LoggingEvent[] events)
         {
             // Note: this code already owns the monitor for this
             // appender. This frees us from needing to synchronize again.
@@ -278,7 +278,7 @@ namespace log4net.Appender
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions()
+        public override void ActivateOptions()
         {
             base.ActivateOptions();
 
@@ -302,7 +302,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

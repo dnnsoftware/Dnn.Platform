@@ -74,7 +74,7 @@ namespace log4net.Appender
         /// It is a programming error to append to a closed appender.
         /// </para>
         /// </remarks>
-        override protected void OnClose()
+        protected override void OnClose()
         {
             // Remove all the attached appenders
             lock (this)
@@ -100,7 +100,7 @@ namespace log4net.Appender
         /// Forwards the events to the attached appenders.
         /// </para>
         /// </remarks>
-        override protected void SendBuffer(LoggingEvent[] events)
+        protected override void SendBuffer(LoggingEvent[] events)
         {
             // Pass the logging event on to the attached appenders
             if (this.m_appenderAttachedImpl != null)
@@ -122,7 +122,7 @@ namespace log4net.Appender
         /// appenders, then it won't be added again.
         /// </para>
         /// </remarks>
-        virtual public void AddAppender(IAppender newAppender)
+        public virtual void AddAppender(IAppender newAppender)
         {
             if (newAppender == null)
             {
@@ -149,7 +149,7 @@ namespace log4net.Appender
         /// <returns>
         /// A collection of the appenders in this appender.
         /// </returns>
-        virtual public AppenderCollection Appenders
+        public virtual AppenderCollection Appenders
         {
             get
             {
@@ -179,7 +179,7 @@ namespace log4net.Appender
         /// Get the named appender attached to this buffering appender.
         /// </para>
         /// </remarks>
-        virtual public IAppender GetAppender(string name)
+        public virtual IAppender GetAppender(string name)
         {
             lock (this)
             {
@@ -200,7 +200,7 @@ namespace log4net.Appender
         /// This is useful when re-reading configuration information.
         /// </para>
         /// </remarks>
-        virtual public void RemoveAllAppenders()
+        public virtual void RemoveAllAppenders()
         {
             lock (this)
             {
@@ -222,7 +222,7 @@ namespace log4net.Appender
         /// If you are discarding the appender you must call
         /// <see cref="IAppender.Close"/> on the appender removed.
         /// </remarks>
-        virtual public IAppender RemoveAppender(IAppender appender)
+        public virtual IAppender RemoveAppender(IAppender appender)
         {
             lock (this)
             {
@@ -244,7 +244,7 @@ namespace log4net.Appender
         /// If you are discarding the appender you must call
         /// <see cref="IAppender.Close"/> on the appender removed.
         /// </remarks>
-        virtual public IAppender RemoveAppender(string name)
+        public virtual IAppender RemoveAppender(string name)
         {
             lock (this)
             {

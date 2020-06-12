@@ -12,7 +12,7 @@ using DotNetNuke.Entities.Host;
 
 namespace DotNetNuke.Modules.Journal {
     public partial class MyFiles : PortalModuleBase {
-        override protected void OnInit(EventArgs e) {
+        protected override void OnInit(EventArgs e) {
             this.InitializeComponent();
             base.OnInit(e);
         }

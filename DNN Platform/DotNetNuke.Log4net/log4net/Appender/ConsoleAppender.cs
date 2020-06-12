@@ -116,7 +116,7 @@ namespace log4net.Appender
         /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
         /// </para>
         /// </remarks>
-        virtual public string Target
+        public virtual string Target
         {
             get { return this.m_writeToErrorStream ? ConsoleError : ConsoleOut; }
             set
@@ -148,7 +148,7 @@ namespace log4net.Appender
         /// The format of the output will depend on the appender's layout.
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
 #if NETCF_1_0
 			// Write to the output stream
@@ -176,7 +176,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

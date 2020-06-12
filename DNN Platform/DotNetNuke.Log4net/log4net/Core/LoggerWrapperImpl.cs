@@ -67,7 +67,7 @@ namespace log4net.Core
         /// the log events.
         /// </para>
         /// </remarks>
-        virtual public ILogger Logger
+        public virtual ILogger Logger
         {
             get { return this.m_logger; }
         }

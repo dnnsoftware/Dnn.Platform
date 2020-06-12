@@ -51,7 +51,7 @@ namespace log4net.Layout.Pattern
         /// and the <see cref="LoggingEvent.StartTime"/>.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             writer.Write(TimeDifferenceInMillis(LoggingEvent.StartTimeUtc, loggingEvent.TimeStampUtc).ToString(System.Globalization.NumberFormatInfo.InvariantInfo));
         }

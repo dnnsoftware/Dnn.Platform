@@ -121,7 +121,7 @@ namespace log4net.Plugin
 #if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
-        override public void Attach(ILoggerRepository repository)
+        public override void Attach(ILoggerRepository repository)
         {
             base.Attach(repository);
 
@@ -150,7 +150,7 @@ namespace log4net.Plugin
 #if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
-        override public void Shutdown()
+        public override void Shutdown()
         {
             // Stops the sink from receiving messages
             RemotingServices.Disconnect(this.m_sink);
@@ -171,7 +171,7 @@ namespace log4net.Plugin
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(RemoteLoggingServerPlugin);
+        private static readonly Type declaringType = typeof(RemoteLoggingServerPlugin);
 
 
         /// <summary>

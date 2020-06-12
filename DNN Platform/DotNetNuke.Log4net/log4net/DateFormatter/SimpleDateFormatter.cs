@@ -70,7 +70,7 @@ namespace log4net.DateFormatter
         /// the <see cref="M:DateTime.ToString(string, IFormatProvider)"/> method to format the date.
         /// </para>
         /// </remarks>
-        virtual public void FormatDate(DateTime dateToFormat, TextWriter writer)
+        public virtual void FormatDate(DateTime dateToFormat, TextWriter writer)
         {
             writer.Write(dateToFormat.ToString(this.m_formatString, System.Globalization.DateTimeFormatInfo.InvariantInfo));
         }

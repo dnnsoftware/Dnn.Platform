@@ -339,7 +339,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

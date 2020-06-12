@@ -1148,6 +1148,6 @@ namespace log4net.Repository.Hierarchy
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(XmlHierarchyConfigurator);
+        private static readonly Type declaringType = typeof(XmlHierarchyConfigurator);
     }
 }

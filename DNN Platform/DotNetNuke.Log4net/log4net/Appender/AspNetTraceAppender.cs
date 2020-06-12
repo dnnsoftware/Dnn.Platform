@@ -83,7 +83,7 @@ namespace log4net.Appender
         /// (<see cref="TraceContext"/>).
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
             // check if log4net is running in the context of an ASP.NET application
             if (HttpContext.Current != null)
@@ -112,7 +112,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

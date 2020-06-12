@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Urls
             return appPath + url.Substring(1);
         }
 
-        static internal bool OmitFromRewriteProcessing(string localPath)
+        internal static bool OmitFromRewriteProcessing(string localPath)
         {
             var omitSettings = string.Empty;
             if (Globals.Status == Globals.UpgradeStatus.None)

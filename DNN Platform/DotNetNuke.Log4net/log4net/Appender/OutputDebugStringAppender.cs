@@ -79,7 +79,7 @@ namespace log4net.Appender
 #elif !NETCF
         [System.Security.Permissions.SecurityPermission(System.Security.Permissions.SecurityAction.Demand, UnmanagedCode = true)]
 #endif
-        override protected void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
 #if NETSTANDARD1_3
 			if (!RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
@@ -100,7 +100,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

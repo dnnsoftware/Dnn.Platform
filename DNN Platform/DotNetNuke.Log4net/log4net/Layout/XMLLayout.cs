@@ -184,7 +184,7 @@ namespace log4net.Layout
         /// Builds a cache of the element names
         /// </para>
         /// </remarks>
-        override public void ActivateOptions()
+        public override void ActivateOptions()
         {
             base.ActivateOptions();
 
@@ -213,7 +213,7 @@ namespace log4net.Layout
         /// to write the <see cref="LoggingEvent"/> to the <see cref="XmlWriter"/>.
         /// </para>
         /// </remarks>
-        override protected void FormatXml(XmlWriter writer, LoggingEvent loggingEvent)
+        protected override void FormatXml(XmlWriter writer, LoggingEvent loggingEvent)
         {
             writer.WriteStartElement(this.m_elmEvent);
             writer.WriteAttributeString(ATTR_LOGGER, loggingEvent.LoggerName);

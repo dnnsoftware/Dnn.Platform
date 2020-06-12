@@ -29,7 +29,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
         private class DateUtilsTestable : DateUtils
         {
-            public new static TimeZoneInfo GetDatabaseDateTimeOffset()
+            public static new TimeZoneInfo GetDatabaseDateTimeOffset()
             {
                 var timeZoneId = "UTC";
                 return TimeZoneInfo.CreateCustomTimeZone(timeZoneId, new TimeSpan(0, 0, 0), timeZoneId, timeZoneId);

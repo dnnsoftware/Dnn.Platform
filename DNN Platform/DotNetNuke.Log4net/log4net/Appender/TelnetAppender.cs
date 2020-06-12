@@ -81,7 +81,7 @@ namespace log4net.Appender
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(TelnetAppender);
+        private static readonly Type declaringType = typeof(TelnetAppender);
 
 
         /// <summary>

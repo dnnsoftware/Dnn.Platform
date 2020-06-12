@@ -48,7 +48,7 @@ namespace log4net.ObjectRenderer
     /// <author>Gert Driesen</author>
     public class RendererMap
     {
-        private readonly static Type declaringType = typeof(RendererMap);
+        private static readonly Type declaringType = typeof(RendererMap);
         private System.Collections.Hashtable m_map;
         private System.Collections.Hashtable m_cache = new System.Collections.Hashtable();
 

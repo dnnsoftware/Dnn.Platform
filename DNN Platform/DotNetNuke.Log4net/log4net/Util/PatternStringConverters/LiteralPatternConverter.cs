@@ -87,7 +87,7 @@ namespace log4net.Util.PatternStringConverters
         /// to the output <paramref name="writer"/>.
         /// </para>
         /// </remarks>
-        override public void Format(TextWriter writer, object state)
+        public override void Format(TextWriter writer, object state)
         {
             writer.Write(this.Option);
         }
@@ -102,7 +102,7 @@ namespace log4net.Util.PatternStringConverters
         /// This method is not used.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, object state)
+        protected override void Convert(TextWriter writer, object state)
         {
             throw new InvalidOperationException("Should never get here because of the overridden Format method");
         }

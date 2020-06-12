@@ -125,11 +125,11 @@ namespace log4net
         /// <summary>
         /// The thread context properties instance
         /// </summary>
-        private readonly static ThreadContextProperties s_properties = new ThreadContextProperties();
+        private static readonly ThreadContextProperties s_properties = new ThreadContextProperties();
 
         /// <summary>
         /// The thread context stacks instance
         /// </summary>
-        private readonly static ThreadContextStacks s_stacks = new ThreadContextStacks(s_properties);
+        private static readonly ThreadContextStacks s_stacks = new ThreadContextStacks(s_properties);
     }
 }

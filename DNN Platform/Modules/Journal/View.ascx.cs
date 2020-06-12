@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.Journal {
             this._navigationManager = this.DependencyProvider.GetRequiredService<INavigationManager>();
         }
 
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
             JavaScript.RequestRegistration(CommonJs.jQueryFileUpload);

@@ -70,7 +70,7 @@ namespace DotNetNuke.Modules.CoreMessaging
             }
         }
 
-        override protected void OnInit(EventArgs e)
+        protected override void OnInit(EventArgs e)
         {
             if (!this.Request.IsAuthenticated)
             {

@@ -162,7 +162,7 @@ namespace log4net.Layout.Pattern
         /// The <see cref="LoggingEvent.TimeStamp"/> passed is in the local time zone.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             try
             {
@@ -182,6 +182,6 @@ namespace log4net.Layout.Pattern
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(DatePatternConverter);
+        private static readonly Type declaringType = typeof(DatePatternConverter);
     }
 }

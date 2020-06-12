@@ -72,9 +72,9 @@ namespace DotNetNuke.Services.Search.Internals
         // If weighted sum of Likes, Comment and Weight is the number below, Document gets a boost of 1.0
         internal const int DefaultDocumentBoostScale = 1000;
 
-        internal readonly static string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
+        internal static readonly string[] FieldsNeedAnalysis = { TitleTag, SubjectTag, CommentsTag, AuthorNameTag, StatusTag, CategoryTag };
 
-        internal readonly static string[] KeyWordSearchFields = { TitleTag,
+        internal static readonly string[] KeyWordSearchFields = { TitleTag,
                                                                 Tag,
                                                                 DescriptionTag,
                                                                 BodyTag,

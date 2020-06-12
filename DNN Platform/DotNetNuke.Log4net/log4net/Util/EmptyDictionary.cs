@@ -324,6 +324,6 @@ namespace log4net.Util
         /// <summary>
         /// The singleton instance of the empty dictionary.
         /// </summary>
-        private readonly static EmptyDictionary s_instance = new EmptyDictionary();
+        private static readonly EmptyDictionary s_instance = new EmptyDictionary();
     }
 }

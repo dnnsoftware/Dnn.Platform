@@ -280,7 +280,7 @@ namespace log4net.Util.TypeConverters
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(ConverterRegistry);
+        private static readonly Type declaringType = typeof(ConverterRegistry);
 
         /// <summary>
         /// Mapping from <see cref="Type" /> to type converter.

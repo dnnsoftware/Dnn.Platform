@@ -49,7 +49,7 @@ namespace log4net.Layout.Pattern
         /// Returns the <see cref="LocationInfo.ClassName"/> of the <paramref name="loggingEvent"/>.
         /// </para>
         /// </remarks>
-        override protected string GetFullyQualifiedName(LoggingEvent loggingEvent)
+        protected override string GetFullyQualifiedName(LoggingEvent loggingEvent)
         {
             return loggingEvent.LocationInformation.ClassName;
         }

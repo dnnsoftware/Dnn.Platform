@@ -862,7 +862,7 @@ namespace log4net.Core
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(LoggerManager);
+        private static readonly Type declaringType = typeof(LoggerManager);
 
         /// <summary>
         /// Initialize the default repository selector

@@ -138,7 +138,7 @@ namespace log4net.Appender
 #if NET_4_0 || MONO_4_0
         [System.Security.SecuritySafeCritical]
 #endif
-        override public void ActivateOptions()
+        public override void ActivateOptions()
         {
             base.ActivateOptions();
 
@@ -168,7 +168,7 @@ namespace log4net.Appender
         /// the events will block in the thread pool manager until a thread is available.
         /// </remarks>
         /// <param name="events">The events to send.</param>
-        override protected void SendBuffer(LoggingEvent[] events)
+        protected override void SendBuffer(LoggingEvent[] events)
         {
             // Setup for an async send
             this.BeginAsyncSend();
@@ -202,7 +202,7 @@ namespace log4net.Appender
         /// exit the runtime limits the time that a <see cref="AppDomain.ProcessExit"/>
         /// event handler is allowed to run for.</para>
         /// </remarks>
-        override protected void OnClose()
+        protected override void OnClose()
         {
             base.OnClose();
 

@@ -110,7 +110,7 @@ namespace log4net.Layout.Pattern
         /// Return the fully qualified <c>'.'</c> (dot/period) separated string.
         /// </para>
         /// </remarks>
-        abstract protected string GetFullyQualifiedName(LoggingEvent loggingEvent);
+        protected abstract string GetFullyQualifiedName(LoggingEvent loggingEvent);
 
         /// <summary>
         /// Convert the pattern to the rendered message
@@ -121,7 +121,7 @@ namespace log4net.Layout.Pattern
         /// Render the <see cref="GetFullyQualifiedName"/> to the precision
         /// specified by the <see cref="PatternConverter.Option"/> property.
         /// </remarks>
-        sealed override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected sealed override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             string name = this.GetFullyQualifiedName(loggingEvent);
             if (this.m_precision <= 0 || name == null || name.Length < 2)
@@ -163,7 +163,7 @@ namespace log4net.Layout.Pattern
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(NamedPatternConverter);
+        private static readonly Type declaringType = typeof(NamedPatternConverter);
 
         private const string DOT = ".";
     }

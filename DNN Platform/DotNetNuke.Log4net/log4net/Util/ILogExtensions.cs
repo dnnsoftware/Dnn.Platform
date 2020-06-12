@@ -54,7 +54,7 @@ namespace log4net.Util
         /// <summary>
         /// The fully qualified type of the Logger class.
         /// </summary>
-        private readonly static Type declaringType = typeof(ILogExtensions);
+        private static readonly Type declaringType = typeof(ILogExtensions);
 
 
 

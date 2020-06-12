@@ -120,7 +120,7 @@ namespace log4net.Filter
         /// the result will be <see cref="FilterDecision.Neutral"/>.
         /// </para>
         /// </remarks>
-        override public FilterDecision Decide(LoggingEvent loggingEvent)
+        public override FilterDecision Decide(LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {

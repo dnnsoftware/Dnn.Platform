@@ -138,7 +138,7 @@ namespace log4net.Appender
         /// Writes the logging event to the <see cref="System.Diagnostics.Trace"/> system.
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
             // Write the string to the Trace system
             //
@@ -169,7 +169,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

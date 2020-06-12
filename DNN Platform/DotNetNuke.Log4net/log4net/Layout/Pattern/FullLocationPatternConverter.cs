@@ -49,7 +49,7 @@ namespace log4net.Layout.Pattern
         /// Writes the <see cref="LocationInfo.FullInfo"/> to the output writer.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             writer.Write(loggingEvent.LocationInformation.FullInfo);
         }

@@ -159,7 +159,7 @@ namespace log4net.Util
         /// Writes a string to the output.
         /// </para>
         /// </remarks>
-        override public void Write(string value)
+        public override void Write(string value)
         {
             try
             {
@@ -179,7 +179,7 @@ namespace log4net.Util
         /// Closes the underlying output writer.
         /// </para>
         /// </remarks>
-        override public void Close()
+        public override void Close()
         {
             this.m_closed = true;
             base.Close();

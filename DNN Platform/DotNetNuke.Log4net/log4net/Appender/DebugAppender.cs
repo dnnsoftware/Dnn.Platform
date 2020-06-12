@@ -130,7 +130,7 @@ namespace log4net.Appender
         /// is called.
         /// </para>
         /// </remarks>
-        override protected void Append(LoggingEvent loggingEvent)
+        protected override void Append(LoggingEvent loggingEvent)
         {
             // Write the string to the Debug system
             System.Diagnostics.Debug.Write(this.RenderLoggingEvent(loggingEvent), loggingEvent.LoggerName);
@@ -153,7 +153,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }

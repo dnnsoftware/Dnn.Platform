@@ -53,7 +53,7 @@ namespace log4net.Layout.Pattern
         /// the output <paramref name="writer"/>.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             writer.Write(loggingEvent.Identity);
         }

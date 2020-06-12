@@ -72,7 +72,7 @@ namespace log4net.DateFormatter
         /// This method will only be called at most once per second.
         /// </para>
         /// </remarks>
-        override protected void FormatDateWithoutMillis(DateTime dateToFormat, StringBuilder buffer)
+        protected override void FormatDateWithoutMillis(DateTime dateToFormat, StringBuilder buffer)
         {
             int day = dateToFormat.Day;
             if (day < 10)

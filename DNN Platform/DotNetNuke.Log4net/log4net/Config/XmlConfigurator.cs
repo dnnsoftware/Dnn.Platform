@@ -93,7 +93,7 @@ namespace log4net.Config
 		/// </remarks>
 		/// <param name="repository">The repository to configure.</param>
 #endif
-        static public ICollection Configure(ILoggerRepository repository)
+        public static ICollection Configure(ILoggerRepository repository)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -107,7 +107,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        static private void InternalConfigure(ILoggerRepository repository)
+        private static void InternalConfigure(ILoggerRepository repository)
         {
             LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using .config file section");
 
@@ -198,7 +198,7 @@ namespace log4net.Config
 		/// </para>
 		/// </remarks>
 #endif
-        static public ICollection Configure()
+        public static ICollection Configure()
         {
             return Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
         }
@@ -213,7 +213,7 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         /// <param name="element">The element to parse.</param>
-        static public ICollection Configure(XmlElement element)
+        public static ICollection Configure(XmlElement element)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -316,7 +316,7 @@ namespace log4net.Config
 		/// </code>
 		/// </remarks>
 #endif
-        static public ICollection Configure(FileInfo configFile)
+        public static ICollection Configure(FileInfo configFile)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -342,7 +342,7 @@ namespace log4net.Config
         /// The <see cref="System.Net.WebRequest"/> must support the URI scheme specified.
         /// </para>
         /// </remarks>
-        static public ICollection Configure(Uri configUri)
+        public static ICollection Configure(Uri configUri)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -371,7 +371,7 @@ namespace log4net.Config
         /// Note that this method will NOT close the stream parameter.
         /// </para>
         /// </remarks>
-        static public ICollection Configure(Stream configStream)
+        public static ICollection Configure(Stream configStream)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -397,7 +397,7 @@ namespace log4net.Config
         /// </remarks>
         /// <param name="repository">The repository to configure.</param>
         /// <param name="element">The element to parse.</param>
-        static public ICollection Configure(ILoggerRepository repository, XmlElement element)
+        public static ICollection Configure(ILoggerRepository repository, XmlElement element)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -504,7 +504,7 @@ namespace log4net.Config
 		/// </code>
 		/// </remarks>
 #endif
-        static public ICollection Configure(ILoggerRepository repository, FileInfo configFile)
+        public static ICollection Configure(ILoggerRepository repository, FileInfo configFile)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -518,7 +518,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        static private void InternalConfigure(ILoggerRepository repository, FileInfo configFile)
+        private static void InternalConfigure(ILoggerRepository repository, FileInfo configFile)
         {
             LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using file [" + configFile + "]");
 
@@ -593,7 +593,7 @@ namespace log4net.Config
         /// The <see cref="System.Net.WebRequest"/> must support the URI scheme specified.
         /// </para>
         /// </remarks>
-        static public ICollection Configure(ILoggerRepository repository, Uri configUri)
+        public static ICollection Configure(ILoggerRepository repository, Uri configUri)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -607,7 +607,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        static private void InternalConfigure(ILoggerRepository repository, Uri configUri)
+        private static void InternalConfigure(ILoggerRepository repository, Uri configUri)
         {
             LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using URI [" + configUri + "]");
 
@@ -697,7 +697,7 @@ namespace log4net.Config
         /// Note that this method will NOT close the stream parameter.
         /// </para>
         /// </remarks>
-        static public ICollection Configure(ILoggerRepository repository, Stream configStream)
+        public static ICollection Configure(ILoggerRepository repository, Stream configStream)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -711,7 +711,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        static private void InternalConfigure(ILoggerRepository repository, Stream configStream)
+        private static void InternalConfigure(ILoggerRepository repository, Stream configStream)
         {
             LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using stream");
 
@@ -812,7 +812,7 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         /// <seealso cref="M:Configure(FileInfo)"/>
-        static public ICollection ConfigureAndWatch(FileInfo configFile)
+        public static ICollection ConfigureAndWatch(FileInfo configFile)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -852,7 +852,7 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         /// <seealso cref="M:Configure(FileInfo)"/>
-        static public ICollection ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
+        public static ICollection ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
         {
             ArrayList configurationMessages = new ArrayList();
 
@@ -866,7 +866,7 @@ namespace log4net.Config
             return configurationMessages;
         }
 
-        static private void InternalConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
+        private static void InternalConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
         {
             LogLog.Debug(declaringType, "configuring repository [" + repository.Name + "] using file [" + configFile + "] watching for file updates");
 
@@ -1075,7 +1075,7 @@ namespace log4net.Config
         /// to load the configuration from an <see cref="XmlElement"/>.
         /// </para>
         /// </remarks>
-        static private void InternalConfigureFromXml(ILoggerRepository repository, XmlElement element)
+        private static void InternalConfigureFromXml(ILoggerRepository repository, XmlElement element)
         {
             if (element == null)
             {
@@ -1115,7 +1115,7 @@ namespace log4net.Config
         /// ConfigAndWatchHandler to dispose of its FileSystemWatcher when a repository is
         /// reconfigured.
         /// </summary>
-        private readonly static Hashtable m_repositoryName2ConfigAndWatchHandler = new Hashtable();
+        private static readonly Hashtable m_repositoryName2ConfigAndWatchHandler = new Hashtable();
 
         /// <summary>
         /// The fully qualified type of the XmlConfigurator class.
@@ -1124,7 +1124,7 @@ namespace log4net.Config
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(XmlConfigurator);
+        private static readonly Type declaringType = typeof(XmlConfigurator);
     }
 }
 

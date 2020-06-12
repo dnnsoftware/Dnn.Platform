@@ -103,7 +103,7 @@ namespace log4net.Core
         /// called.
         /// </para>
         /// </remarks>
-        virtual public ILoggerWrapper GetWrapper(ILogger logger)
+        public virtual ILoggerWrapper GetWrapper(ILogger logger)
         {
             // If the logger is null then the corresponding wrapper is null
             if (logger == null)
@@ -180,7 +180,7 @@ namespace log4net.Core
         /// can be overridden in a subclass.
         /// </para>
         /// </remarks>
-        virtual protected ILoggerWrapper CreateNewWrapperObject(ILogger logger)
+        protected virtual ILoggerWrapper CreateNewWrapperObject(ILogger logger)
         {
             if (this.m_createWrapperHandler != null)
             {
@@ -202,7 +202,7 @@ namespace log4net.Core
         /// and their wrappers generated for this repository.
         /// </para>
         /// </remarks>
-        virtual protected void RepositoryShutdown(ILoggerRepository repository)
+        protected virtual void RepositoryShutdown(ILoggerRepository repository)
         {
             lock (this)
             {

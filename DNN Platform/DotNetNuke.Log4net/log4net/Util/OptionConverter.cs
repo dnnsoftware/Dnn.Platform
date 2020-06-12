@@ -655,7 +655,7 @@ namespace log4net.Util
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(OptionConverter);
+        private static readonly Type declaringType = typeof(OptionConverter);
 
         private const string DELIM_START = "${";
         private const char DELIM_STOP = '}';

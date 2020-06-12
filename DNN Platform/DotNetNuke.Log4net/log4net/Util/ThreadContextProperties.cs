@@ -80,7 +80,7 @@ namespace log4net.Util
         /// Gets or sets the value of a property
         /// </para>
         /// </remarks>
-        override public object this[string key]
+        public override object this[string key]
         {
             get
             {

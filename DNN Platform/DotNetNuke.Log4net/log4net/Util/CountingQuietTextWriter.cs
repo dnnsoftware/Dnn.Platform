@@ -127,7 +127,7 @@ namespace log4net.Util
         /// the number of bytes written.
         /// </para>
         /// </remarks>
-        override public void Write(string str)
+        public override void Write(string str)
         {
             if (str != null && str.Length > 0)
             {

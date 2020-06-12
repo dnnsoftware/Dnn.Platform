@@ -119,7 +119,7 @@ namespace log4net.Appender
         /// implementation for the <see cref="ErrorHandler"/> property.
         /// </para>
         /// </remarks>
-        virtual public IErrorHandler ErrorHandler
+        public virtual IErrorHandler ErrorHandler
         {
             get { return this.m_errorHandler; }
             set
@@ -150,7 +150,7 @@ namespace log4net.Appender
         /// and so all Filters on this Appender are available through the result.
         /// </para>
         /// </remarks>
-        virtual public IFilter FilterHead
+        public virtual IFilter FilterHead
         {
             get { return this.m_headFilter; }
         }
@@ -165,7 +165,7 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         /// <seealso cref="RequiresLayout"/>
-        virtual public ILayout Layout
+        public virtual ILayout Layout
         {
             get { return this.m_layout; }
             set { this.m_layout = value; }
@@ -189,7 +189,7 @@ namespace log4net.Appender
         /// <see cref="ActivateOptions"/> must be called again.
         /// </para>
         /// </remarks>
-        virtual public void ActivateOptions()
+        public virtual void ActivateOptions()
         {
         }
 
@@ -470,7 +470,7 @@ namespace log4net.Appender
         /// </list>
         /// </para>
         /// </remarks>
-        virtual protected bool FilterEvent(LoggingEvent loggingEvent)
+        protected virtual bool FilterEvent(LoggingEvent loggingEvent)
         {
             if (!this.IsAsSevereAsThreshold(loggingEvent.Level))
             {
@@ -513,7 +513,7 @@ namespace log4net.Appender
         /// back of the filter chain.
         /// </para>
         /// </remarks>
-        virtual public void AddFilter(IFilter filter)
+        public virtual void AddFilter(IFilter filter)
         {
             if (filter == null)
             {
@@ -539,7 +539,7 @@ namespace log4net.Appender
         /// Clears the filter list for this appender.
         /// </para>
         /// </remarks>
-        virtual public void ClearFilters()
+        public virtual void ClearFilters()
         {
             this.m_headFilter = this.m_tailFilter = null;
         }
@@ -559,7 +559,7 @@ namespace log4net.Appender
         /// <c>true</c> if the <paramref name="level"/> meets the <see cref="Threshold"/>
         /// requirements of this appender.
         /// </returns>
-        virtual protected bool IsAsSevereAsThreshold(Level level)
+        protected virtual bool IsAsSevereAsThreshold(Level level)
         {
             return (this.m_threshold == null) || level >= this.m_threshold;
         }
@@ -577,7 +577,7 @@ namespace log4net.Appender
         /// It is a programming error to append to a closed appender.
         /// </para>
         /// </remarks>
-        virtual protected void OnClose()
+        protected virtual void OnClose()
         {
             // Do nothing by default
         }
@@ -600,7 +600,7 @@ namespace log4net.Appender
         /// override the <see cref="M:PreAppendCheck()"/> method.
         /// </para>
         /// </remarks>
-        abstract protected void Append(LoggingEvent loggingEvent);
+        protected abstract void Append(LoggingEvent loggingEvent);
 
         /// <summary>
         /// Append a bulk array of logging events.
@@ -616,7 +616,7 @@ namespace log4net.Appender
         /// override this method in addition to <see cref="M:Append(LoggingEvent)"/>.
         /// </para>
         /// </remarks>
-        virtual protected void Append(LoggingEvent[] loggingEvents)
+        protected virtual void Append(LoggingEvent[] loggingEvents)
         {
             foreach (LoggingEvent loggingEvent in loggingEvents)
             {
@@ -642,7 +642,7 @@ namespace log4net.Appender
         /// </para>
         /// </remarks>
         /// <returns><c>true</c> if the call to <see cref="M:Append(LoggingEvent)"/> should proceed.</returns>
-        virtual protected bool PreAppendCheck()
+        protected virtual bool PreAppendCheck()
         {
             if ((this.m_layout == null) && this.RequiresLayout)
             {
@@ -763,7 +763,7 @@ namespace log4net.Appender
         /// <returns>
         /// <c>true</c> if the appender requires a layout object, otherwise <c>false</c>.
         /// </returns>
-        virtual protected bool RequiresLayout
+        protected virtual bool RequiresLayout
         {
             get { return false; }
         }
@@ -884,6 +884,6 @@ namespace log4net.Appender
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(AppenderSkeleton);
+        private static readonly Type declaringType = typeof(AppenderSkeleton);
     }
 }

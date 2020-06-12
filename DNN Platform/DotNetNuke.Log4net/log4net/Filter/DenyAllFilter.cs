@@ -65,7 +65,7 @@ namespace log4net.Filter
         /// as any further filters will be ignored!
         /// </para>
         /// </remarks>
-        override public FilterDecision Decide(LoggingEvent loggingEvent)
+        public override FilterDecision Decide(LoggingEvent loggingEvent)
         {
             return FilterDecision.Deny;
         }

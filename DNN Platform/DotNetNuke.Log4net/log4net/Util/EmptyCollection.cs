@@ -165,6 +165,6 @@ namespace log4net.Util
         /// <summary>
         /// The singleton instance of the empty collection.
         /// </summary>
-        private readonly static EmptyCollection s_instance = new EmptyCollection();
+        private static readonly EmptyCollection s_instance = new EmptyCollection();
     }
 }

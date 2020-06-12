@@ -82,7 +82,7 @@ namespace log4net.Util
         /// This method does nothing.
         /// </para>
         /// </remarks>
-        override public void Close()
+        public override void Close()
         {
             // do nothing
         }

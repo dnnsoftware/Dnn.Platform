@@ -100,7 +100,7 @@ namespace log4net.Config
         /// Sets this as the default security context provider <see cref="SecurityContextProvider.DefaultProvider"/>.
         /// </para>
         /// </remarks>
-        override public void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository)
+        public override void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository)
         {
             if (this.m_providerType == null)
             {
@@ -134,7 +134,7 @@ namespace log4net.Config
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(SecurityContextProviderAttribute);
+        private static readonly Type declaringType = typeof(SecurityContextProviderAttribute);
     }
 }
 

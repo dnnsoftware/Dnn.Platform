@@ -1162,7 +1162,7 @@ namespace log4net.Util
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(SystemInfo);
+        private static readonly Type declaringType = typeof(SystemInfo);
 
         /// <summary>
         /// Cache the host name for the current machine

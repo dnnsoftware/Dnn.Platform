@@ -112,7 +112,7 @@ namespace log4net.Repository
         /// stored by the <see cref="IRepositorySelector"/>.
         /// </para>
         /// </remarks>
-        virtual public string Name
+        public virtual string Name
         {
             get { return this.m_name; }
             set { this.m_name = value; }
@@ -129,7 +129,7 @@ namespace log4net.Repository
         /// The threshold for all events in this repository
         /// </para>
         /// </remarks>
-        virtual public Level Threshold
+        public virtual Level Threshold
         {
             get { return this.m_threshold; }
             set
@@ -162,7 +162,7 @@ namespace log4net.Repository
         /// <see cref="IObjectRenderer"/> objects.
         /// </para>
         /// </remarks>
-        virtual public RendererMap RendererMap
+        public virtual RendererMap RendererMap
         {
             get { return this.m_rendererMap; }
         }
@@ -179,7 +179,7 @@ namespace log4net.Repository
         /// that have been attached to this repository.
         /// </para>
         /// </remarks>
-        virtual public PluginMap PluginMap
+        public virtual PluginMap PluginMap
         {
             get { return this.m_pluginMap; }
         }
@@ -197,7 +197,7 @@ namespace log4net.Repository
         /// this repository.
         /// </para>
         /// </remarks>
-        virtual public LevelMap LevelMap
+        public virtual LevelMap LevelMap
         {
             get { return this.m_levelMap; }
         }
@@ -213,7 +213,7 @@ namespace log4net.Repository
         /// its reference, otherwise returns <c>null</c>.
         /// </para>
         /// </remarks>
-        abstract public ILogger Exists(string name);
+        public abstract ILogger Exists(string name);
 
         /// <summary>
         /// Returns all the currently defined loggers in the repository
@@ -224,7 +224,7 @@ namespace log4net.Repository
         /// Returns all the currently defined loggers in the repository as an Array.
         /// </para>
         /// </remarks>
-        abstract public ILogger[] GetCurrentLoggers();
+        public abstract ILogger[] GetCurrentLoggers();
 
         /// <summary>
         /// Return a new logger instance
@@ -241,7 +241,7 @@ namespace log4net.Repository
         /// then linked with its existing ancestors as well as children.
         /// </para>
         /// </remarks>
-        abstract public ILogger GetLogger(string name);
+        public abstract ILogger GetLogger(string name);
 
         /// <summary>
         /// Shutdown the repository
@@ -253,7 +253,7 @@ namespace log4net.Repository
         /// listeners and all attached plugins of the shutdown event.
         /// </para>
         /// </remarks>
-        virtual public void Shutdown()
+        public virtual void Shutdown()
         {
             // Shutdown attached plugins
             foreach (IPlugin plugin in this.PluginMap.AllPlugins)
@@ -281,7 +281,7 @@ namespace log4net.Repository
         /// block all logging until it is completed.
         /// </para>
         /// </remarks>
-        virtual public void ResetConfiguration()
+        public virtual void ResetConfiguration()
         {
             // Clear internal data structures
             this.m_rendererMap.Clear();
@@ -313,7 +313,7 @@ namespace log4net.Repository
         /// that logger is then responsible for logging the event.
         /// </para>
         /// </remarks>
-        abstract public void Log(LoggingEvent logEvent);
+        public abstract void Log(LoggingEvent logEvent);
 
         /// <summary>
         /// Flag indicates if this repository has been configured.
@@ -326,7 +326,7 @@ namespace log4net.Repository
         /// Flag indicates if this repository has been configured.
         /// </para>
         /// </remarks>
-        virtual public bool Configured
+        public virtual bool Configured
         {
             get { return this.m_configured; }
             set { this.m_configured = value; }
@@ -336,7 +336,7 @@ namespace log4net.Repository
         /// Contains a list of internal messages captures during the
         /// last configuration.
         /// </summary>
-        virtual public ICollection ConfigurationMessages
+        public virtual ICollection ConfigurationMessages
         {
             get { return this.m_configurationMessages; }
             set { this.m_configurationMessages = value; }
@@ -417,7 +417,7 @@ namespace log4net.Repository
         /// Returns all the Appenders that are configured as an Array.
         /// </para>
         /// </remarks>
-        abstract public log4net.Appender.IAppender[] GetAppenders();
+        public abstract log4net.Appender.IAppender[] GetAppenders();
 
 
 
@@ -428,7 +428,7 @@ namespace log4net.Repository
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(LoggerRepositorySkeleton);
+        private static readonly Type declaringType = typeof(LoggerRepositorySkeleton);
 
         private void AddBuiltinLevels()
         {
@@ -471,7 +471,7 @@ namespace log4net.Repository
         /// Adds an object renderer for a specific class.
         /// </para>
         /// </remarks>
-        virtual public void AddRenderer(Type typeToRender, IObjectRenderer rendererInstance)
+        public virtual void AddRenderer(Type typeToRender, IObjectRenderer rendererInstance)
         {
             if (typeToRender == null)
             {

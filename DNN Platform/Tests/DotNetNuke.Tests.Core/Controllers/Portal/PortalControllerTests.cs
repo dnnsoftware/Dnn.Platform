@@ -44,7 +44,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Portal
                                                                                     };
 
         private const string StaticName = "Static";
-        readonly static string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
+        static readonly string CultureCode = Thread.CurrentThread.CurrentCulture.Name;
         private static readonly string StaticPath = MakePath(StaticName);
         const string StaticDescription = "An description from a template file";
         private static readonly Dictionary<string, string> StaticExpectations = new Dictionary<string, string>

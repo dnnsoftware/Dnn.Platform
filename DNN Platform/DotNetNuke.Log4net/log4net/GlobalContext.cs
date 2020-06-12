@@ -92,6 +92,6 @@ namespace log4net
         /// <summary>
         /// The global context properties instance
         /// </summary>
-        private readonly static GlobalContextProperties s_properties = new GlobalContextProperties();
+        private static readonly GlobalContextProperties s_properties = new GlobalContextProperties();
     }
 }

@@ -73,7 +73,7 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         }
 
-        static internal string PrepareURL(string url) {
+        internal static string PrepareURL(string url) {
             url = url.Trim();
             if (!url.StartsWith("http")) {
                 url = "http://" + url;
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Journal.Components {
 
         }
 
-        static internal LinkInfo GetLinkData(string URL) {
+        internal static LinkInfo GetLinkData(string URL) {
             string sPage = GetPageFromURL(ref URL, string.Empty, string.Empty);
             LinkInfo link = new LinkInfo();
             if (string.IsNullOrEmpty(sPage)) {
@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             }
             return link;
         }
-        static internal string GetPageFromURL(ref string url, string username, string password) {
+        internal static string GetPageFromURL(ref string url, string username, string password) {
 
             url = PrepareURL(url);
             HttpWebRequest objWebRequest = default(HttpWebRequest);

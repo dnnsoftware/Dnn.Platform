@@ -25,7 +25,7 @@ namespace DotNetNuke.Modules.Journal {
     /// </summary>
     /// -----------------------------------------------------------------------------
     public partial class Edit : JournalModuleBase {
-        override protected void OnInit(EventArgs e) {
+        protected override void OnInit(EventArgs e) {
             this.InitializeComponent();
             base.OnInit(e);
         }

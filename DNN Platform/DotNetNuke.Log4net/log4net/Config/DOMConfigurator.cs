@@ -74,7 +74,7 @@ namespace log4net.Config
         /// <c>log4net</c> that contains the configuration data.
         /// </remarks>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v11.0.0.")]
-        static public void Configure()
+        public static void Configure()
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()));
         }
@@ -95,7 +95,7 @@ namespace log4net.Config
         /// </remarks>
         /// <param name="repository">The repository to configure.</param>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(ILoggerRepository repository)
+        public static void Configure(ILoggerRepository repository)
         {
             XmlConfigurator.Configure(repository);
         }
@@ -112,7 +112,7 @@ namespace log4net.Config
         /// </remarks>
         /// <param name="element">The element to parse.</param>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(XmlElement element)
+        public static void Configure(XmlElement element)
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()), element);
         }
@@ -131,7 +131,7 @@ namespace log4net.Config
         /// <param name="repository">The repository to configure.</param>
         /// <param name="element">The element to parse.</param>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(ILoggerRepository repository, XmlElement element)
+        public static void Configure(ILoggerRepository repository, XmlElement element)
         {
             XmlConfigurator.Configure(repository, element);
         }
@@ -179,7 +179,7 @@ namespace log4net.Config
         /// </code>
         /// </remarks>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(FileInfo configFile)
+        public static void Configure(FileInfo configFile)
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()), configFile);
         }
@@ -202,7 +202,7 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(Stream configStream)
+        public static void Configure(Stream configStream)
         {
             XmlConfigurator.Configure(LogManager.GetRepository(Assembly.GetCallingAssembly()), configStream);
         }
@@ -252,7 +252,7 @@ namespace log4net.Config
         /// </code>
         /// </remarks>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(ILoggerRepository repository, FileInfo configFile)
+        public static void Configure(ILoggerRepository repository, FileInfo configFile)
         {
             XmlConfigurator.Configure(repository, configFile);
         }
@@ -278,7 +278,7 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         [Obsolete("Use XmlConfigurator.Configure instead of DOMConfigurator.Configure. Scheduled removal in v10.0.0.")]
-        static public void Configure(ILoggerRepository repository, Stream configStream)
+        public static void Configure(ILoggerRepository repository, Stream configStream)
         {
             XmlConfigurator.Configure(repository, configStream);
         }
@@ -312,7 +312,7 @@ namespace log4net.Config
         /// </remarks>
         /// <seealso cref="M:Configure(FileInfo)"/>
         [Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch. Scheduled removal in v10.0.0.")]
-        static public void ConfigureAndWatch(FileInfo configFile)
+        public static void ConfigureAndWatch(FileInfo configFile)
         {
             XmlConfigurator.ConfigureAndWatch(LogManager.GetRepository(Assembly.GetCallingAssembly()), configFile);
         }
@@ -344,7 +344,7 @@ namespace log4net.Config
         /// </remarks>
         /// <seealso cref="M:Configure(FileInfo)"/>
         [Obsolete("Use XmlConfigurator.ConfigureAndWatch instead of DOMConfigurator.ConfigureAndWatch. Scheduled removal in v10.0.0.")]
-        static public void ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
+        public static void ConfigureAndWatch(ILoggerRepository repository, FileInfo configFile)
         {
             XmlConfigurator.ConfigureAndWatch(repository, configFile);
         }

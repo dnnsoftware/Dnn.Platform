@@ -66,7 +66,7 @@ namespace log4net.Layout.Pattern
         /// </para>
         /// </remarks>
         /// <seealso cref="DatePatternConverter"/>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             try
             {
@@ -86,6 +86,6 @@ namespace log4net.Layout.Pattern
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(UtcDatePatternConverter);
+        private static readonly Type declaringType = typeof(UtcDatePatternConverter);
     }
 }

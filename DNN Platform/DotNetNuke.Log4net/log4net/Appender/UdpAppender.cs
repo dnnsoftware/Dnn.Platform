@@ -424,7 +424,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }
@@ -439,7 +439,7 @@ namespace log4net.Appender
         /// and unmanaged resources associated with the <see cref="UdpAppender" />.
         /// </para>
         /// </remarks>
-        override protected void OnClose()
+        protected override void OnClose()
         {
             base.OnClose();
 

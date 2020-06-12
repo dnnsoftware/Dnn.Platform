@@ -82,7 +82,7 @@ namespace log4net.Util
         /// Should be overridden by any classes that need to initialise based on their options
         /// </para>
         /// </remarks>
-        virtual public void ActivateOptions()
+        public virtual void ActivateOptions()
         {
             // default implementation is to do nothing
         }

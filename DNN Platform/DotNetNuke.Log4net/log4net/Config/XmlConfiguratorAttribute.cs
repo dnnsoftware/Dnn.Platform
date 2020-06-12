@@ -195,7 +195,7 @@ namespace log4net.Config
         /// </para>
         /// </remarks>
         /// <exception cref="ArgumentOutOfRangeException">The <paramref name="targetRepository" /> does not extend <see cref="Hierarchy"/>.</exception>
-        override public void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository)
+        public override void Configure(Assembly sourceAssembly, ILoggerRepository targetRepository)
         {
             IList configurationMessages = new ArrayList();
 
@@ -454,7 +454,7 @@ namespace log4net.Config
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(XmlConfiguratorAttribute);
+        private static readonly Type declaringType = typeof(XmlConfiguratorAttribute);
     }
 }
 

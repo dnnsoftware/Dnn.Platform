@@ -56,7 +56,7 @@ namespace log4net.Layout.Pattern
         /// The <see cref="PropertyPatternConverter"/> should be used instead.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             // Write the value for the specified key
             WriteObject(writer, loggingEvent.Repository, loggingEvent.LookupProperty("NDC"));

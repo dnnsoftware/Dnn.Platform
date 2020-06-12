@@ -73,7 +73,7 @@ namespace log4net.Layout
         /// This method does nothing as options become effective immediately.
         /// </para>
         /// </remarks>
-        override public void ActivateOptions()
+        public override void ActivateOptions()
         {
             // nothing to do.
         }
@@ -91,7 +91,7 @@ namespace log4net.Layout
         /// The exception string is retrieved from <see cref="M:LoggingEvent.GetExceptionString()"/>.
         /// </para>
         /// </remarks>
-        override public void Format(TextWriter writer, LoggingEvent loggingEvent)
+        public override void Format(TextWriter writer, LoggingEvent loggingEvent)
         {
             if (loggingEvent == null)
             {

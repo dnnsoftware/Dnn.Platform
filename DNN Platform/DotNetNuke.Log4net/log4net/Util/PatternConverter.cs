@@ -127,7 +127,7 @@ namespace log4net.Util
         /// convert conversion specifiers in the appropriate way.
         /// </para>
         /// </remarks>
-        abstract protected void Convert(TextWriter writer, object state);
+        protected abstract void Convert(TextWriter writer, object state);
 
 
 
@@ -161,7 +161,7 @@ namespace log4net.Util
         /// apply those formattings before writing the output.
         /// </para>
         /// </remarks>
-        virtual public void Format(TextWriter writer, object state)
+        public virtual void Format(TextWriter writer, object state)
         {
             if (this.m_min < 0 && this.m_max == int.MaxValue)
             {

@@ -379,7 +379,7 @@ namespace log4net.Appender
         /// Sends the contents of the cyclic buffer as an e-mail message.
         /// </summary>
         /// <param name="events">The logging events to send.</param>
-        override protected void SendBuffer(LoggingEvent[] events)
+        protected override void SendBuffer(LoggingEvent[] events)
         {
             // Note: this code already owns the monitor for this
             // appender. This frees us from needing to synchronize again.
@@ -424,7 +424,7 @@ namespace log4net.Appender
         /// This appender requires a <see cref="Layout"/> to be set.
         /// </para>
         /// </remarks>
-        override protected bool RequiresLayout
+        protected override bool RequiresLayout
         {
             get { return true; }
         }
@@ -435,7 +435,7 @@ namespace log4net.Appender
         /// Send the email message
         /// </summary>
         /// <param name="messageBody">the body text to include in the mail</param>
-        virtual protected void SendEmail(string messageBody)
+        protected virtual void SendEmail(string messageBody)
         {
 #if NET_2_0 || MONO_2_0
             // .NET 2.0 has a new API for SMTP email System.Net.Mail

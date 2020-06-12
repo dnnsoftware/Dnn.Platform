@@ -86,7 +86,7 @@ namespace log4net.Layout.Pattern
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(StackTracePatternConverter);
+        private static readonly Type declaringType = typeof(StackTracePatternConverter);
     }
 }
 #endif

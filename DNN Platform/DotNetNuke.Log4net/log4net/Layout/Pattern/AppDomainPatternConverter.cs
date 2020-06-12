@@ -50,7 +50,7 @@ namespace log4net.Layout.Pattern
         /// Writes the <see cref="LoggingEvent.Domain"/> to the output <paramref name="writer"/>.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             writer.Write(loggingEvent.Domain);
         }

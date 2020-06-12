@@ -306,7 +306,7 @@ namespace log4net.Core
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(CompactRepositorySelector);
+        private static readonly Type declaringType = typeof(CompactRepositorySelector);
 
 
         /// <summary>

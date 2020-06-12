@@ -175,7 +175,7 @@ namespace log4net.Core
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(StackFrameItem);
+        private static readonly Type declaringType = typeof(StackFrameItem);
 
         /// <summary>
         /// When location information is not available the constant

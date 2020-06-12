@@ -51,7 +51,7 @@ namespace log4net.Layout.Pattern
         /// to write out the event message.
         /// </para>
         /// </remarks>
-        override protected void Convert(TextWriter writer, LoggingEvent loggingEvent)
+        protected override void Convert(TextWriter writer, LoggingEvent loggingEvent)
         {
             loggingEvent.WriteRenderedMessage(writer);
         }

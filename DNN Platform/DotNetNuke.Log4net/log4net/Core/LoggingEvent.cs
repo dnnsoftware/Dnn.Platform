@@ -331,7 +331,7 @@ namespace log4net.Core
         : ISerializable
 #endif
     {
-        private readonly static Type declaringType = typeof(LoggingEvent);
+        private static readonly Type declaringType = typeof(LoggingEvent);
 
 
         /// <summary>

@@ -84,7 +84,7 @@ namespace log4net.Util
         /// Get or set the property value for the <paramref name="key"/> specified.
         /// </para>
         /// </remarks>
-        override public object this[string key]
+        public override object this[string key]
         {
             get
             {
@@ -246,7 +246,7 @@ namespace log4net.Util
         /// Used by the internal logger to record the Type of the
         /// log message.
         /// </remarks>
-        private readonly static Type declaringType = typeof(LogicalThreadContextProperties);
+        private static readonly Type declaringType = typeof(LogicalThreadContextProperties);
     }
 }
 

@@ -53,7 +53,7 @@ namespace log4net.DateFormatter
         /// reused if it is needed again during the same second.
         /// </para>
         /// </remarks>
-        virtual protected void FormatDateWithoutMillis(DateTime dateToFormat, StringBuilder buffer)
+        protected virtual void FormatDateWithoutMillis(DateTime dateToFormat, StringBuilder buffer)
         {
             int hour = dateToFormat.Hour;
             if (hour < 10)
@@ -99,7 +99,7 @@ namespace log4net.DateFormatter
         /// rather than <see cref="FormatDate"/>.
         /// </para>
         /// </remarks>
-        virtual public void FormatDate(DateTime dateToFormat, TextWriter writer)
+        public virtual void FormatDate(DateTime dateToFormat, TextWriter writer)
         {
                     lock (s_lastTimeStrings)
             {

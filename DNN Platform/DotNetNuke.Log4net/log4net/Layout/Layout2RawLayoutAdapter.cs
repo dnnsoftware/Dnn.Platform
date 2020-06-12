@@ -79,7 +79,7 @@ namespace log4net.Layout
         /// the constructor to perform the formatting.
         /// </para>
         /// </remarks>
-        virtual public object Format(LoggingEvent loggingEvent)
+        public virtual object Format(LoggingEvent loggingEvent)
         {
             StringWriter writer = new StringWriter(System.Globalization.CultureInfo.InvariantCulture);
             this.m_layout.Format(writer, loggingEvent);
