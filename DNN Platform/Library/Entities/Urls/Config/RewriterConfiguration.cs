@@ -17,7 +17,8 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Entities.Urls.Config
 {
-    [Serializable, XmlRoot("RewriterConfig")]
+    [Serializable]
+    [XmlRoot("RewriterConfig")]
     public class RewriterConfiguration
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RewriterConfiguration));

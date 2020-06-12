@@ -103,7 +103,8 @@ namespace DotNetNuke.UI.Skins
 
 
         // JH - 2/5/07 - support for custom attributes
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public List<CustomAttribute> CustomAttributes
         {
             get

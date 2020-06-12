@@ -18,7 +18,8 @@ using DotNetNuke.Services.Log.EventLog;
 
 namespace DotNetNuke.Services.Analytics.Config
 {
-    [Serializable, XmlRoot("AnalyticsConfig")]
+    [Serializable]
+    [XmlRoot("AnalyticsConfig")]
     public class AnalyticsConfiguration
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(AnalyticsConfiguration));

@@ -127,7 +127,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// When this method returns, contains the 32-bit signed integer value equivalent to the number contained in
         /// SelectedItem.Value, if the conversion succeeded, or Null.NullInteger if the conversion failed.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int SelectedItemValueAsInt
         {
             get

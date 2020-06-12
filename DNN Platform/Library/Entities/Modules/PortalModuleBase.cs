@@ -62,7 +62,8 @@ namespace DotNetNuke.Entities.Modules
             this.DependencyProvider = Globals.DependencyProvider;
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleActionCollection Actions
         {
             get
@@ -75,7 +76,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Control ContainerControl
         {
             get
@@ -113,7 +115,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public bool IsEditable
         {
             get
@@ -122,7 +125,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public ModuleInfo ModuleConfiguration
         {
             get
@@ -135,7 +139,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int PortalId
         {
             get
@@ -144,7 +149,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TabId
         {
             get
@@ -153,7 +159,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int TabModuleId
         {
             get
@@ -166,7 +173,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int ModuleId
         {
             get
@@ -179,7 +187,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserInfo UserInfo
         {
             get
@@ -188,7 +197,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int UserId
         {
             get
@@ -197,7 +207,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalAliasInfo PortalAlias
         {
             get
@@ -206,7 +217,8 @@ namespace DotNetNuke.Entities.Modules
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Hashtable Settings
         {
             get
@@ -320,37 +332,43 @@ namespace DotNetNuke.Entities.Modules
                 this._tracelLogger.Debug($"PortalModuleBase.OnLoad End (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleId:{this.ModuleId}): {this.GetType()}");
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl()
         {
             return this.ModuleContext.EditUrl();
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string ControlKey)
         {
             return this.ModuleContext.EditUrl(ControlKey);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue)
         {
             return this.ModuleContext.EditUrl(KeyName, KeyValue);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue, string ControlKey)
         {
             return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(string KeyName, string KeyValue, string ControlKey, params string[] AdditionalParameters)
         {
             return this.ModuleContext.EditUrl(KeyName, KeyValue, ControlKey, AdditionalParameters);
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public string EditUrl(int TabID, string ControlKey, bool PageRedirect, params string[] AdditionalParameters)
         {
             return this.ModuleContext.NavigateUrl(TabID, ControlKey, PageRedirect, AdditionalParameters);

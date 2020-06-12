@@ -38,7 +38,8 @@ namespace DotNetNuke.Entities
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public int CreatedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -47,7 +48,8 @@ namespace DotNetNuke.Entities
         /// </summary>
         /// <returns>A DateTime</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public DateTime CreatedOnDate { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -56,7 +58,8 @@ namespace DotNetNuke.Entities
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public int LastModifiedByUserID { get; internal set; }
 
         /// -----------------------------------------------------------------------------
@@ -65,7 +68,8 @@ namespace DotNetNuke.Entities
         /// </summary>
         /// <returns>A DateTime</returns>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), XmlIgnore]
+        [Browsable(false)]
+        [XmlIgnore]
         public DateTime LastModifiedOnDate { get; private set; }
 
         /// -----------------------------------------------------------------------------

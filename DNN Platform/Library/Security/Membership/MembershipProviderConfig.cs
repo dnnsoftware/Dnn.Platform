@@ -49,7 +49,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(8), Category("Password")]
+        [SortOrder(8)]
+        [Category("Password")]
         public static int MaxInvalidPasswordAttempts
         {
             get
@@ -68,7 +69,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(5), Category("Password")]
+        [SortOrder(5)]
+        [Category("Password")]
         public static int MinNonAlphanumericCharacters
         {
             get
@@ -87,7 +89,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>An Integer.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(4), Category("Password")]
+        [SortOrder(4)]
+        [Category("Password")]
         public static int MinPasswordLength
         {
             get
@@ -106,7 +109,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(9), Category("Password")]
+        [SortOrder(9)]
+        [Category("Password")]
         public static int PasswordAttemptWindow
         {
             get
@@ -125,7 +129,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A PasswordFormat enumeration.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(1), Category("Password")]
+        [SortOrder(1)]
+        [Category("Password")]
         public static PasswordFormat PasswordFormat
         {
             get
@@ -144,7 +149,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(3), Category("Password")]
+        [SortOrder(3)]
+        [Category("Password")]
         public static bool PasswordResetEnabled
         {
             get
@@ -163,7 +169,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(2), Category("Password")]
+        [SortOrder(2)]
+        [Category("Password")]
         public static bool PasswordRetrievalEnabled
         {
             get
@@ -189,7 +196,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A String.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(7), Category("Password")]
+        [SortOrder(7)]
+        [Category("Password")]
         public static string PasswordStrengthRegularExpression
         {
             get
@@ -208,7 +216,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(6), Category("Password")]
+        [SortOrder(6)]
+        [Category("Password")]
         public static bool RequiresQuestionAndAnswer
         {
             get
@@ -227,7 +236,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>A Boolean.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(0), Category("User")]
+        [SortOrder(0)]
+        [Category("User")]
         public static bool RequiresUniqueEmail
         {
             get

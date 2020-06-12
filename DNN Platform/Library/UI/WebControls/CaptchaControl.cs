@@ -83,7 +83,8 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the BackGroundColor
         /// </summary>
-        [Category("Appearance"), Description("The Background Color to use for the Captcha Image.")]
+        [Category("Appearance")]
+        [Description("The Background Color to use for the Captcha Image.")]
         public Color BackGroundColor
         {
             get
@@ -99,7 +100,8 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the BackGround Image
         /// </summary>
-        [Category("Appearance"), Description("A Background Image to use for the Captcha Image.")]
+        [Category("Appearance")]
+        [Description("A Background Image to use for the Captcha Image.")]
         public string BackGroundImage
         {
             get
@@ -115,7 +117,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the list of characters
         /// </summary>
-        [Category("Behavior"), DefaultValue(CHARS_DEFAULT), Description("Characters used to render CAPTCHA text. A character will be picked randomly from the string.")]
+        [Category("Behavior")]
+        [DefaultValue(CHARS_DEFAULT)]
+        [Description("Characters used to render CAPTCHA text. A character will be picked randomly from the string.")]
         public string CaptchaChars
         {
             get
@@ -131,7 +135,8 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the height of the Captcha image
         /// </summary>
-        [Category("Appearance"), Description("Height of Captcha Image.")]
+        [Category("Appearance")]
+        [Description("Height of Captcha Image.")]
         public Unit CaptchaHeight
         {
             get
@@ -147,7 +152,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the length of the Captcha string
         /// </summary>
-        [Category("Behavior"), DefaultValue(LENGTH_DEFAULT), Description("Number of CaptchaChars used in the CAPTCHA text")]
+        [Category("Behavior")]
+        [DefaultValue(LENGTH_DEFAULT)]
+        [Description("Number of CaptchaChars used in the CAPTCHA text")]
         public int CaptchaLength
         {
             get
@@ -163,7 +170,8 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the width of the Captcha image
         /// </summary>
-        [Category("Appearance"), Description("Width of Captcha Image.")]
+        [Category("Appearance")]
+        [Description("Width of Captcha Image.")]
         public Unit CaptchaWidth
         {
             get
@@ -195,14 +203,19 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the ErrorMessage to display if the control is invalid
         /// </summary>
-        [Category("Behavior"), Description("The Error Message to display if invalid."), DefaultValue("")]
+        [Category("Behavior")]
+        [Description("The Error Message to display if invalid.")]
+        [DefaultValue("")]
         public string ErrorMessage { get; set; }
 
-         /// <summary>
-         /// Gets and sets the BackGroundColor
-         /// </summary>
-        [Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
-         Description("Set the Style for the Error Message Control.")]
+        /// <summary>
+        /// Gets and sets the BackGroundColor
+        /// </summary>
+        [Browsable(true)]
+        [Category("Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Error Message Control.")]
         public Style ErrorStyle
         {
             get
@@ -214,7 +227,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the Expiration time in seconds
         /// </summary>
-        [Category("Behavior"), Description("The duration of time (seconds) a user has before the challenge expires."), DefaultValue(EXPIRATION_DEFAULT)]
+        [Category("Behavior")]
+        [Description("The duration of time (seconds) a user has before the challenge expires.")]
+        [DefaultValue(EXPIRATION_DEFAULT)]
         public int Expiration
         {
             get
@@ -230,7 +245,8 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets whether the control is valid
         /// </summary>
-        [Category("Validation"), Description("Returns True if the user was CAPTCHA validated after a postback.")]
+        [Category("Validation")]
+        [Description("Returns True if the user was CAPTCHA validated after a postback.")]
         public bool IsValid
         {
             get
@@ -242,7 +258,9 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the Url to use to render the control
         /// </summary>
-        [Category("Behavior"), Description("The URL used to render the image to the client."), DefaultValue(RENDERURL_DEFAULT)]
+        [Category("Behavior")]
+        [Description("The URL used to render the image to the client.")]
+        [DefaultValue(RENDERURL_DEFAULT)]
         public string RenderUrl
         {
             get
@@ -258,14 +276,19 @@ namespace DotNetNuke.UI.WebControls
         /// <summary>
         /// Gets and sets the Help Text to use
         /// </summary>
-        [Category("Captcha"), DefaultValue("Enter the code shown above:"), Description("Instructional text displayed next to CAPTCHA image.")]
+        [Category("Captcha")]
+        [DefaultValue("Enter the code shown above:")]
+        [Description("Instructional text displayed next to CAPTCHA image.")]
         public string Text { get; set; }
 
         /// <summary>
         /// Gets the Style to use for the Text Box
         /// </summary>
-        [Browsable(true), Category("Appearance"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
-         Description("Set the Style for the Text Box Control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Text Box Control.")]
         public Style TextBoxStyle
         {
             get

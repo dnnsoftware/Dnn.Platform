@@ -21,7 +21,9 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public bool Expanded { get; set; }
 
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<DnnFormItemBase> Items { get; private set; }
 
         public string ResourceKey { get; set; }

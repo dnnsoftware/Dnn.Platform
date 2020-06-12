@@ -93,7 +93,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Control.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the Control.")]
         public string DataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -245,7 +248,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Edit Control.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Edit Control.")]
         public Style EditControlStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -254,7 +262,9 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Appearance"), Description("Set the Width for the Edit Control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("Set the Width for the Edit Control.")]
         public Unit EditControlWidth { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -263,7 +273,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Error Text.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Error Text.")]
         public Style ErrorStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -272,7 +287,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Help Text.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Help Text.")]
         public Style HelpStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -281,7 +301,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Label Text")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Label Text")]
         public Style LabelStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -290,7 +315,9 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Appearance"), Description("Set the Width for the Label Control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("Set the Width for the Label Control.")]
         public Unit LabelWidth { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -299,7 +326,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty), TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Visibility Control")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
         public event PropertyChangedEventHandler ItemAdded;

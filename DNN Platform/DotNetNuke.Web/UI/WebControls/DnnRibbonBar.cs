@@ -22,7 +22,9 @@ namespace DotNetNuke.Web.UI.WebControls
             Utilities.ApplySkin(control, string.Empty, "RibbonBar", "RibbonBar");
         }
 
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public DnnRibbonBarGroupCollection Groups
         {
             get

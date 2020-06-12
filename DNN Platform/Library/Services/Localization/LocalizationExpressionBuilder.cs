@@ -15,7 +15,8 @@ using System.Web.UI.Design;
 
 namespace DotNetNuke.Services.Localization
 {
-    [ExpressionPrefix("dnnLoc"), ExpressionEditor("DotNetNuke.Services.Localization.LocalizationExpressionBuilderEditor")]
+    [ExpressionPrefix("dnnLoc")]
+    [ExpressionEditor("DotNetNuke.Services.Localization.LocalizationExpressionBuilderEditor")]
     public class LocalizationExpressionBuilder : ExpressionBuilder
     {
         public override bool SupportsEvaluate

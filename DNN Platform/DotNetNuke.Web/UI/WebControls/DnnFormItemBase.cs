@@ -117,7 +117,9 @@ namespace DotNetNuke.Web.UI.WebControls
             }
         }
 
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public List<IValidator> Validators { get; private set; }
 
         public string ValidationExpression { get; set; }

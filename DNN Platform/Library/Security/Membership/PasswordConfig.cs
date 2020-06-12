@@ -31,7 +31,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>An integer.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(0), Category("Password")]
+        [SortOrder(0)]
+        [Category("Password")]
         public static int PasswordExpiry
         {
             get
@@ -51,7 +52,8 @@ namespace DotNetNuke.Security.Membership
         /// </summary>
         /// <returns>An integer.</returns>
         /// -----------------------------------------------------------------------------
-        [SortOrder(1), Category("Password")]
+        [SortOrder(1)]
+        [Category("Password")]
         public static int PasswordExpiryReminder
         {
             get

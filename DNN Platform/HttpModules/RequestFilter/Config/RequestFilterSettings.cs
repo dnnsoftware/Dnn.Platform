@@ -18,7 +18,8 @@ using DotNetNuke.Services.Cache;
 
 namespace DotNetNuke.HttpModules.RequestFilter
 {
-    [Serializable, XmlRoot("RewriterConfig")]
+    [Serializable]
+    [XmlRoot("RewriterConfig")]
     public class RequestFilterSettings
     {
         private const string RequestFilterConfig = "RequestFilter.Config";

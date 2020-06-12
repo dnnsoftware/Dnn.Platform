@@ -65,7 +65,9 @@ namespace DotNetNuke.Entities.Users
         /// Gets and sets the Display Name
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [SortOrder(3), Required(true), MaxLength(128)]
+        [SortOrder(3)]
+        [Required(true)]
+        [MaxLength(128)]
         public string DisplayName { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -73,7 +75,10 @@ namespace DotNetNuke.Entities.Users
         /// Gets and sets the Email Address
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [SortOrder(4), MaxLength(256), Required(true), RegularExpressionValidator(Globals.glbEmailRegEx)]
+        [SortOrder(4)]
+        [MaxLength(256)]
+        [Required(true)]
+        [RegularExpressionValidator(Globals.glbEmailRegEx)]
         public string Email { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -81,7 +86,8 @@ namespace DotNetNuke.Entities.Users
         /// Gets and sets the First Name
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [SortOrder(1), MaxLength(50)]
+        [SortOrder(1)]
+        [MaxLength(50)]
         public string FirstName
         {
             get { return this.Profile.FirstName; }
@@ -134,7 +140,8 @@ namespace DotNetNuke.Entities.Users
         /// Gets and sets the Last Name
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [SortOrder(2), MaxLength(50)]
+        [SortOrder(2)]
+        [MaxLength(50)]
         public string LastName
         {
             get { return this.Profile.LastName; }
@@ -277,7 +284,10 @@ namespace DotNetNuke.Entities.Users
         /// Gets and sets the User Name
         /// </summary>
         /// -----------------------------------------------------------------------------
-        [SortOrder(0), MaxLength(100), IsReadOnly(true), Required(true)]
+        [SortOrder(0)]
+        [MaxLength(100)]
+        [IsReadOnly(true)]
+        [Required(true)]
         public string Username { get; set; }
 
         public string VanityUrl { get; set; }

@@ -377,19 +377,22 @@ namespace DotNetNuke.Common.Lists
             this.ClearEntriesCache(entry.ListName, entry.PortalID);
         }
 
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string) instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName)
         {
             return this.GetListEntryInfoCollection(listName, string.Empty, Null.NullInteger);
         }
 
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey)
         {
             return this.GetListEntryInfoCollection(listName, parentKey, Null.NullInteger);
         }
 
-        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+        [Obsolete("Obsoleted in 6.0.1 use IEnumerable<ListEntryInfo> GetListEntryInfoXXX(string, string, int) instead. Scheduled removal in v10.0.0.")]
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public ListEntryInfoCollection GetListEntryInfoCollection(string listName, string parentKey, int portalId)
         {
             var items = this.GetListEntryInfoItems(listName, parentKey, portalId);

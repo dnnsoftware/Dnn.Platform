@@ -29,7 +29,8 @@ namespace DotNetNuke.Framework
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get

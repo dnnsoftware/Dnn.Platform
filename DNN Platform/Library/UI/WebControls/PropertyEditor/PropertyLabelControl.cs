@@ -57,7 +57,10 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and Sets the Caption Text if no ResourceKey is provided
         /// </summary>
         /// <value>A string representing the Caption</value>
-        [Browsable(true), Category("Appearance"), DefaultValue("Property"), Description("Enter Caption for the control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [DefaultValue("Property")]
+        [Description("Enter Caption for the control.")]
         public string Caption
         {
             get
@@ -97,7 +100,10 @@ namespace DotNetNuke.UI.WebControls
         /// Text is value of the Label Text if no ResourceKey is provided
         /// </summary>
         /// <value>A string representing the Text</value>
-        [Browsable(true), Category("Appearance"), DefaultValue(""), Description("Enter Help Text for the control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [DefaultValue("")]
+        [Description("Enter Help Text for the control.")]
         public string HelpText
         {
             get
@@ -121,7 +127,10 @@ namespace DotNetNuke.UI.WebControls
         /// is the label help text, Control.ErrorMessage is the Validation Error Message for the
         /// control
         /// </remarks>
-        [Browsable(true), Category("Localization"), DefaultValue(""), Description("Enter the Resource key for the control.")]
+        [Browsable(true)]
+        [Category("Localization")]
+        [DefaultValue("")]
+        [Description("Enter the Resource key for the control.")]
         public string ResourceKey
         {
             get
@@ -140,7 +149,10 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Browsable(true), Category("Behavior"), DefaultValue(false), Description("Set whether the Help icon is displayed.")]
+        [Browsable(true)]
+        [Category("Behavior")]
+        [DefaultValue(false)]
+        [Description("Set whether the Help icon is displayed.")]
         public bool ShowHelp
         {
             get
@@ -160,7 +172,10 @@ namespace DotNetNuke.UI.WebControls
         /// Gets and sets the value of the Field that is bound to the Label
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Label's Text property.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the Label's Text property.")]
         public string DataField { get; set; }
 
         /// <summary>
@@ -178,8 +193,11 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
-         Description("Set the Style for the Help Text.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Help Text.")]
         public Style HelpStyle
         {
             get
@@ -195,8 +213,11 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)),
-         Description("Set the Style for the Label Text")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Label Text")]
         public Style LabelStyle
         {
             get

@@ -13,7 +13,8 @@ using DotNetNuke.Instrumentation;
 namespace DotNetNuke.Common.Lists
 {
     [Serializable]
-    [Obsolete("Obsoleted in 6.0.1.  Replaced by using generic collections of ListEntryInfo objects. Scheduled removal in v10.0.0."), EditorBrowsable(EditorBrowsableState.Never)]
+    [Obsolete("Obsoleted in 6.0.1.  Replaced by using generic collections of ListEntryInfo objects. Scheduled removal in v10.0.0.")]
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class ListEntryInfoCollection : CollectionBase
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(ListEntryInfoCollection));

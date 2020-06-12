@@ -33,49 +33,57 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         /// Gets or sets the template for displaying the header section of a DnnMemberListControl object.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string HeaderTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for the row header.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowHeaderTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for displaying an item in a DnnMemberListControl object.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string ItemTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for the row footer.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowFooterTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for displaying the alternating row headers in a DnnMemberListControl object.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string AlternatingRowHeaderTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for displaying the alternating items in a DnnMemberListControl object.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string AlternatingItemTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for displaying the alternating row footers in a DnnMemberListControl object.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string AlternatingRowFooterTemplate { get; set; }
 
         /// <summary>
         /// Gets or sets the template for displaying the footer section of a DnnMemberListControl object.
         /// </summary>
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string FooterTemplate { get; set; }
 
 

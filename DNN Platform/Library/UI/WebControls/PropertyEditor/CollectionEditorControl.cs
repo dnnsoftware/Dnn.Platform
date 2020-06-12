@@ -54,7 +54,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Category of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Category.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the Category.")]
         public string CategoryDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -63,7 +66,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Editor Type of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Editor Type.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the Editor Type.")]
         public string EditorDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -72,7 +78,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the length.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that determines the length.")]
         public string LengthDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -81,7 +90,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the Label's Text property.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the Label's Text property.")]
         public string NameDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -90,7 +102,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines whether an item is required.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that determines whether an item is required.")]
         public string RequiredDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -99,7 +114,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Type.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the EditControl's Type.")]
         public string TypeDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -109,7 +127,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Expression DynamicContentValidator.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the EditControl's Expression DynamicContentValidator.")]
         public string ValidationExpressionDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -118,7 +139,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that is data bound to the EditControl's Value property.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that is data bound to the EditControl's Value property.")]
         public string ValueDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -127,7 +151,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines whether the item is visble.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that determines whether the item is visble.")]
         public string VisibleDataField { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -136,7 +163,10 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Data"), DefaultValue(""), Description("Enter the name of the field that determines the visibility.")]
+        [Browsable(true)]
+        [Category("Data")]
+        [DefaultValue("")]
+        [Description("Enter the name of the field that determines the visibility.")]
         public string VisibilityDataField { get; set; }
 
         private Hashtable GetFieldNames()

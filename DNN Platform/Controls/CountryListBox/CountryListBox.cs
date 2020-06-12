@@ -21,7 +21,9 @@ namespace DotNetNuke.UI.WebControls
         private string _LocalhostCountryCode;
         private string _TestIP;
 
-        [Bindable(true), Category("Caching"), DefaultValue(true)]
+        [Bindable(true)]
+        [Category("Caching")]
+        [DefaultValue(true)]
         public bool CacheGeoIPData
         {
             get
@@ -38,7 +40,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Appearance")]
+        [DefaultValue("")]
         public string GeoIPFile
         {
             get
@@ -51,7 +55,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Appearance")]
+        [DefaultValue("")]
         public string TestIP
         {
             get
@@ -64,7 +70,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Appearance"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Appearance")]
+        [DefaultValue("")]
         public string LocalhostCountryCode
         {
             get

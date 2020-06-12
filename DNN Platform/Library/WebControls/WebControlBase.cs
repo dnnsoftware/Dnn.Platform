@@ -66,7 +66,8 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get

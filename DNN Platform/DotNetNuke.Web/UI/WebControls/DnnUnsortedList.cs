@@ -32,7 +32,8 @@ namespace DotNetNuke.Web.UI.WebControls
             return new TypedControlCollection<DnnUnsortedListItem>(this);
         }
 
-        [PersistenceMode(PersistenceMode.InnerDefaultProperty), MergableProperty(false)]
+        [PersistenceMode(PersistenceMode.InnerDefaultProperty)]
+        [MergableProperty(false)]
         public virtual UniformControlCollection<DnnUnsortedList, DnnUnsortedListItem> ListItems
         {
             get

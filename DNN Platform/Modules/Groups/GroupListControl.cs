@@ -24,22 +24,28 @@ namespace DotNetNuke.Modules.Groups.Controls
 
     public class GroupListControl : WebControl
     {
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string ItemTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string HeaderTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string FooterTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowHeaderTemplate { get; set; }
 
-        [DefaultValue(""), PersistenceMode(PersistenceMode.InnerProperty)]
+        [DefaultValue("")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
         public string RowFooterTemplate { get; set; }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings PortalSettings
         {
             get

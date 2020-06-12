@@ -456,7 +456,8 @@ namespace DotNetNuke.Entities.Tabs
             }
         }
 
-        [XmlArray("tabpermissions"), XmlArrayItem("permission")]
+        [XmlArray("tabpermissions")]
+        [XmlArrayItem("permission")]
         public TabPermissionCollection TabPermissions
         {
             get

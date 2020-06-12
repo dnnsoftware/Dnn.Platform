@@ -97,8 +97,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Available List Box.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Available List Box.")]
         public Style AvailableListBoxStyle
         {
             get
@@ -113,8 +117,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Button.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Button.")]
         public Style ButtonStyle
         {
             get
@@ -129,8 +137,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Container.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Container.")]
         public TableStyle ContainerStyle
         {
             get
@@ -145,8 +157,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Header.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Header.")]
         public Style HeaderStyle
         {
             get
@@ -161,8 +177,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty),
-         TypeConverter(typeof(ExpandableObjectConverter)), Description("Set the Style for the Selected List Box.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [Description("Set the Style for the Selected List Box.")]
         public Style SelectedListBoxStyle
         {
             get

@@ -49,7 +49,8 @@ namespace DotNetNuke.Web.UI.WebControls
         /// <summary>
         /// Gets the selected Folder in the control, or selects the Folder in the control.
         /// </summary>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IFileInfo SelectedFile
         {
             get

@@ -260,7 +260,8 @@ namespace DotNetNuke.Entities.Modules
         /// The setter still exists to preserve binary compatibility without the obsolete attribute since c# will not allow only a setter to be obsolete.
         /// </remarks>
         /// </summary>
-        [XmlArray("modulepermissions"), XmlArrayItem("permission")]
+        [XmlArray("modulepermissions")]
+        [XmlArrayItem("permission")]
         public ModulePermissionCollection ModulePermissions
         {
             get

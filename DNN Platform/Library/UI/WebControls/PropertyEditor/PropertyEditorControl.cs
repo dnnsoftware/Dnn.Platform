@@ -91,7 +91,8 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>The DataSource object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(false), Category("Data")]
+        [Browsable(false)]
+        [Category("Data")]
         public object DataSource { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -225,7 +226,9 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A collection of FieldEditorControl objects</value>
         /// -----------------------------------------------------------------------------
-        [Category("Behavior"), PersistenceMode(PersistenceMode.InnerProperty), DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [Category("Behavior")]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
         public ArrayList Fields { get; private set; }
 
 
@@ -235,7 +238,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Edit Control.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Edit Control.")]
         public Style EditControlStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -244,7 +252,9 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Appearance"), Description("Set the Width for the Edit Control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("Set the Width for the Edit Control.")]
         public Unit EditControlWidth { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -253,7 +263,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Error Text.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Error Text.")]
         public Style ErrorStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -262,7 +277,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Group Header Control.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Group Header Control.")]
         public Style GroupHeaderStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -271,10 +291,17 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A boolean</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Appearance"), Description("Set whether to include a rule <hr> in the Group Header.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("Set whether to include a rule <hr> in the Group Header.")]
         public bool GroupHeaderIncludeRule { get; set; }
 
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Help Text.")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Help Text.")]
         public Style HelpStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -283,7 +310,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Label Text")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Label Text")]
         public Style ItemStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -292,7 +324,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Label Text")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Label Text")]
         public Style LabelStyle { get; private set; }
 
         /// -----------------------------------------------------------------------------
@@ -301,7 +338,9 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Appearance"), Description("Set the Width for the Label Control.")]
+        [Browsable(true)]
+        [Category("Appearance")]
+        [Description("Set the Width for the Label Control.")]
         public Unit LabelWidth { get; set; }
 
         /// -----------------------------------------------------------------------------
@@ -310,7 +349,12 @@ namespace DotNetNuke.UI.WebControls
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
-        [Browsable(true), Category("Styles"), DesignerSerializationVisibility(DesignerSerializationVisibility.Content), TypeConverter(typeof(ExpandableObjectConverter)), PersistenceMode(PersistenceMode.InnerProperty), Description("Set the Style for the Visibility Control")]
+        [Browsable(true)]
+        [Category("Styles")]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Content)]
+        [TypeConverter(typeof(ExpandableObjectConverter))]
+        [PersistenceMode(PersistenceMode.InnerProperty)]
+        [Description("Set the Style for the Visibility Control")]
         public Style VisibilityStyle { get; private set; }
 
         public event PropertyChangedEventHandler ItemAdded;

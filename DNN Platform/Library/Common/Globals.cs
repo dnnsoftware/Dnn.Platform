@@ -2912,7 +2912,8 @@ namespace DotNetNuke.Common
         /// Gets the URL to the current page.
         /// </summary>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL()
         {
@@ -2924,7 +2925,8 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="tabID">The tab ID.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID)
         {
@@ -2937,7 +2939,8 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <param name="isSuperTab">if set to <c>true</c> the page is a "super-tab," i.e. a host-level page.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab)
         {
@@ -2949,7 +2952,8 @@ namespace DotNetNuke.Common
         /// </summary>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey)
         {
@@ -2962,7 +2966,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters, in <c>"key=value"</c> format.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(string controlKey, params string[] additionalParameters)
         {
@@ -2975,7 +2980,8 @@ namespace DotNetNuke.Common
         /// <param name="tabID">The tab ID.</param>
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey)
         {
@@ -2989,7 +2995,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, string controlKey, params string[] additionalParameters)
         {
@@ -3004,7 +3011,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {
@@ -3020,7 +3028,8 @@ namespace DotNetNuke.Common
         /// <param name="controlKey">The control key, or <see cref="string.Empty"/> or <c>null</c>.</param>
         /// <param name="additionalParameters">Any additional parameters.</param>
         /// <returns>Formatted URL.</returns>
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         [Obsolete("Deprecated in Platform 9.4.2. Scheduled removal in v11.0.0.")]
         public static string NavigateURL(int tabID, bool isSuperTab, PortalSettings settings, string controlKey, params string[] additionalParameters)
         {

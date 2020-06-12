@@ -24,21 +24,24 @@ namespace DotNetNuke.Modules.Journal.Controls {
     [DefaultProperty("Text")]
     [ToolboxData("<{0}:JournalListControl runat=server></{0}:JournalListControl>")]
     public class JournalListControl : WebControl {
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public PortalSettings portalSettings {
             get {
                 return PortalController.Instance.GetCurrentPortalSettings();
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public UserInfo userInfo {
             get {
                 return UserController.Instance.GetCurrentUserInfo();
             }
         }
 
-        [Browsable(false), DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
+        [Browsable(false)]
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public int JournalId
         {
             get

@@ -65,7 +65,8 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this.SetupHostController();
         }
 
-        [Test, TestCaseSource(typeof(TestCaseFactory), "TestCases")]
+        [Test]
+        [TestCaseSource(typeof(TestCaseFactory), "TestCases")]
         public void GetTabVersions_Verify_User_Preferred_TimeZone(string userPreferredTimeZone, DateTime expectedDateTime)
         {
 

@@ -31,7 +31,9 @@ namespace DotNetNuke.UI.WebControls
         protected TableCell cellDisplayStatus;
         protected Table tablePageNumbers;
 
-        [Bindable(true), Category("Behavior"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("")]
         public string CSSClassLinkActive
         {
             get
@@ -44,7 +46,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("")]
         public string CSSClassLinkInactive
         {
             get
@@ -57,7 +61,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("")]
         public string CSSClassPagingStatus
         {
             get
@@ -70,7 +76,9 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("1")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("1")]
         public int CurrentPage { get; set; }
 
         public PagingControlMode Mode
@@ -85,16 +93,24 @@ namespace DotNetNuke.UI.WebControls
             }
         }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("10")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("10")]
         public int PageSize { get; set; }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("")]
         public string QuerystringParams { get; set; }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("-1")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("-1")]
         public int TabID { get; set; }
 
-        [Bindable(true), Category("Behavior"), DefaultValue("0")]
+        [Bindable(true)]
+        [Category("Behavior")]
+        [DefaultValue("0")]
         public int TotalRecords { get; set; }
 
         public void RaisePostBackEvent(string eventArgument)
