@@ -29,7 +29,7 @@ namespace DotNetNuke.UI.Modules
             }
         }
 
-        private static IEnumerable<IModuleInjectionFilter>  GetFilters()
+        private static IEnumerable<IModuleInjectionFilter> GetFilters()
         {
             var typeLocator = new TypeLocator();
             IEnumerable<Type> types = typeLocator.GetAllMatchingTypes(IsValidModuleInjectionFilter);

@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
         /// <summary>
         /// Provides an Unique String for the image transformation
         /// </summary>
-        public override string UniqueString => base.UniqueString + "-" +  this.ImageFilePath + this.ImageUrl;
+        public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
 
         public ImageFileTransform()
 		{

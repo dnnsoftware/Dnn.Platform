@@ -98,7 +98,7 @@ namespace Dnn.PersonaBar.Pages.Tests
             this.InitializePageController();
 
             // Act
-            TestDelegate pageSettingsCall = () =>  this._pagesController.GetPageSettings(tabId, null);
+            TestDelegate pageSettingsCall = () => this._pagesController.GetPageSettings(tabId, null);
 
             // Assert
             Assert.Throws<PageNotFoundException>(pageSettingsCall);

@@ -310,7 +310,7 @@ namespace DotNetNuke.Entities.Urls
             if (!String.IsNullOrEmpty(delimitedString))
             {
                 var pairs = delimitedString.Split(pairSeparator);
-                foreach (string pair  in pairs)
+                foreach (string pair in pairs)
                 {
                     if (!String.IsNullOrEmpty(pair))
                     {

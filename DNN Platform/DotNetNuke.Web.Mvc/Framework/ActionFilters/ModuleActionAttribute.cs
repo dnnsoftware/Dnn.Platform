@@ -14,7 +14,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
     /// The ModuleActionAttribute is used to define a single ModuleAction.  It can be applied at the Controller level if all 
     /// Action methods should have the same ModuleAction, but it is more likely to be used at the Action method level.
     /// </summary>
-    public class ModuleActionAttribute  : ActionFilterAttribute
+    public class ModuleActionAttribute : ActionFilterAttribute
     {
         public ModuleActionAttribute()
         {

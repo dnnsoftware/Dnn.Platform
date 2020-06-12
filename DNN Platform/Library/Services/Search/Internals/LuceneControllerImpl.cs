@@ -439,7 +439,7 @@ namespace DotNetNuke.Services.Search.Internals
         public int MaxDocsCount()
         {
             this.CheckDisposed();
-            var searcher  = this.GetSearcher();
+            var searcher = this.GetSearcher();
             return searcher.IndexReader.MaxDoc;
         }
 

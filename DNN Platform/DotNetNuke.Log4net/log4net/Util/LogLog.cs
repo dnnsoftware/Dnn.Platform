@@ -604,8 +604,8 @@ namespace log4net.Util
 
         private static bool s_emitInternalMessages = true;
 
-		private const string PREFIX			= "log4net: ";
-		private const string ERR_PREFIX		= "log4net:ERROR ";
+		private const string PREFIX = "log4net: ";
+		private const string ERR_PREFIX = "log4net:ERROR ";
 		private const string WARN_PREFIX	= "log4net:WARN ";
 
 		#endregion Private Static Fields

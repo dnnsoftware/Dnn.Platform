@@ -96,7 +96,7 @@ namespace DotNetNuke.HttpModules.Analytics
         {
             try
             {
-                var  analyticsEngines = AnalyticsEngineConfiguration.GetConfig().AnalyticsEngines;
+                var analyticsEngines = AnalyticsEngineConfiguration.GetConfig().AnalyticsEngines;
                 if (analyticsEngines == null || analyticsEngines.Count == 0) return;
 
                 if (page == null) return;

@@ -58,7 +58,7 @@ namespace DotNetNuke.Modules.Groups
                 this.ParseKey(notification.Context);
                 if (this._roleInfo == null)
                 {
-                    return  this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
+                    return this.Request.CreateErrorResponse(HttpStatusCode.InternalServerError, "Unable to locate role");
                 }
                 if (!this.IsMod())
                 {

@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
         /// <param name="sourceData">The source data</param>
         /// <param name="width">The width in pixels of the image</param>
         /// <param name="height">The height in pixels of the image</param>
-        protected  virtual void FirstPass(BitmapData sourceData, int width, int height)
+        protected virtual void FirstPass(BitmapData sourceData, int width, int height)
         {
             // Define the source data pointers. The source row is a byte to
             // keep addition of the stride value easier (as this is in bytes)              

@@ -125,16 +125,16 @@ namespace log4net.Appender
 			/// <summary>
 			/// text is bright
 			/// </summary>
-			Bright			= 1,
+			Bright = 1,
 			/// <summary>
 			/// text is dim
 			/// </summary>
-			Dim				= 2,
+			Dim = 2,
 
 			/// <summary>
 			/// text is underlined
 			/// </summary>
-			Underscore		= 4,
+			Underscore = 4,
 
 			/// <summary>
 			/// text is blinking
@@ -142,27 +142,27 @@ namespace log4net.Appender
 			/// <remarks>
 			/// Not all terminals support this attribute
 			/// </remarks>
-			Blink			= 8,
+			Blink = 8,
 
 			/// <summary>
 			/// text and background colors are reversed
 			/// </summary>
-			Reverse			= 16,
+			Reverse = 16,
 
 			/// <summary>
 			/// text is hidden
 			/// </summary>
-			Hidden			= 32,
+			Hidden = 32,
 
 			/// <summary>
 			/// text is displayed with a strikethrough
 			/// </summary>
-			Strikethrough		= 64,
+			Strikethrough = 64,
 
 			/// <summary>
 			/// text color is light
 			/// </summary>
-			Light			= 128
+			Light = 128
 		}
 
 		/// <summary>

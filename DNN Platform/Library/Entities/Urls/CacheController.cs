@@ -889,7 +889,7 @@ namespace DotNetNuke.Entities.Urls
                         }
 
                         break;
-                    case "DNN_"  + UrlDictKey:
+                    case "DNN_" + UrlDictKey:
                         itemName = "Friendly Url List";
                         if (v != null &&
                             v.GetType() == typeof(SharedDictionary<int, SharedDictionary<string, string>>))

@@ -171,7 +171,7 @@ namespace log4net.Util
 			// Win32 constants
 			int FORMAT_MESSAGE_ALLOCATE_BUFFER = 0x00000100;	// The function should allocates a buffer large enough to hold the formatted message
 			int FORMAT_MESSAGE_IGNORE_INSERTS = 0x00000200;		// Insert sequences in the message definition are to be ignored
-			int FORMAT_MESSAGE_FROM_SYSTEM  = 0x00001000;		// The function should search the system message-table resource(s) for the requested message
+			int FORMAT_MESSAGE_FROM_SYSTEM = 0x00001000;		// The function should search the system message-table resource(s) for the requested message
 
 			string msgBuf = "";				// buffer that will receive the message
 			IntPtr sourcePtr = new IntPtr();	// Location of the message definition, will be ignored

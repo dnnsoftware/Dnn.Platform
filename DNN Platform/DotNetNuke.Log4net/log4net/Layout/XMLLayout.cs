@@ -101,7 +101,7 @@ namespace log4net.Layout
 		/// appender as well.
 		/// </para>
 		/// </remarks>
-		public XmlLayout(bool locationInfo) :  base(locationInfo)
+		public XmlLayout(bool locationInfo) : base(locationInfo)
 		{
 		}
 

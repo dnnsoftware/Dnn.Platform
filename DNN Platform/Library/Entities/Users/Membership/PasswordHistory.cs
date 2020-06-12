@@ -13,8 +13,8 @@ namespace DotNetNuke.Entities.Users.Membership
     {
         public int PasswordHistoryId { get; set; }
         public int UserId { get; set; }
-        public string Password  { get; set; }
-        public string PasswordSalt  { get; set; }
+        public string Password { get; set; }
+        public string PasswordSalt { get; set; }
 
         /// <summary>
         /// Fill the object with data from database.

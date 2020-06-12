@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
     /// Summary description for PaletteQuantizer.
     /// </summary>
     [CLSCompliant(false)]
-    public  class PaletteQuantizer : Quantizer
+    public class PaletteQuantizer : Quantizer
 	{
 		/// <summary>
 		/// Construct the palette quantizer
@@ -35,10 +35,10 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// </summary>
 		/// <param name="pixel">The pixel to quantize</param>
 		/// <returns>The quantized value</returns>
-		protected  override byte QuantizePixel(Color32 pixel)
+		protected override byte QuantizePixel(Color32 pixel)
 		{
 			byte	colorIndex = 0;
-			int		colorHash = pixel.ARGB;	
+			int colorHash = pixel.ARGB;	
 
 			// Check if the color is in the lookup table
 			if (this._colorMap.ContainsKey(colorHash))
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 						int	greenDistance = paletteColor.G - green;
 						int	blueDistance = paletteColor.B - blue;
 
-						int		distance = (redDistance * redDistance) + 
+						int distance = (redDistance * redDistance) + 
 										   (greenDistance * greenDistance) + 
 										   (blueDistance * blueDistance);
 

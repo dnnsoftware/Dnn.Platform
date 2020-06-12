@@ -190,7 +190,7 @@ namespace log4net.Util
 #endif
 			if (_dictionary == null && create)
 			{
-				_dictionary  = new PropertiesDictionary();
+				_dictionary = new PropertiesDictionary();
 #if NETCF
 				System.Threading.Thread.SetData(s_threadLocalSlot, _dictionary);
 #endif

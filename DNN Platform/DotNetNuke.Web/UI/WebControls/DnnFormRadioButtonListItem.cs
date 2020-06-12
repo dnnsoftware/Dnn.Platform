@@ -62,7 +62,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            this._radioButtonList = new RadioButtonList  { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
+            this._radioButtonList = new RadioButtonList { ID = this.ID + "_RadioButtonList", RepeatColumns = 1, RepeatDirection = RepeatDirection.Vertical, RepeatLayout = RepeatLayout.Flow };
 
             container.Controls.Add(this._radioButtonList);
 

@@ -622,7 +622,7 @@ namespace DotNetNuke.Framework
             if (this.PortalSettings.PortalAliasMappingMode == PortalSettings.PortalAliasMapping.CanonicalUrl)
             {
                 string primaryHttpAlias = null;
-                if (Config.GetFriendlyUrlProvider() == "advanced")  // advanced mode compares on the primary alias as set during alias identification
+                if (Config.GetFriendlyUrlProvider() == "advanced") // advanced mode compares on the primary alias as set during alias identification
                 {
                     if (this.PortalSettings.PrimaryAlias != null && this.PortalSettings.PortalAlias != null)
                     {

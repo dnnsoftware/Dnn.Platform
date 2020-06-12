@@ -28,7 +28,7 @@ namespace Dnn.PersonaBar.Library.DTO.Tabs
 
         public int ParentTabId { get; set; }
 
-        public  bool HasChildren { get; set; }
+        public bool HasChildren { get; set; }
 
         public bool IsOpen { get; set; }
 

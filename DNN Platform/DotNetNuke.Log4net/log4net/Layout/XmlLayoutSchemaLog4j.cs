@@ -77,7 +77,7 @@ namespace log4net.Layout
 		/// appender as well.
 		/// </para>
 		/// </remarks>
-		public XmlLayoutSchemaLog4j(bool locationInfo) :  base(locationInfo)
+		public XmlLayoutSchemaLog4j(bool locationInfo) : base(locationInfo)
 		{
 		}
 

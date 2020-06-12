@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Tabs
 
         protected override Func<ITabModulesController> GetFactory()
         {
-            return ()  => new TabModulesController();
+            return () => new TabModulesController();
         }
     }
 }

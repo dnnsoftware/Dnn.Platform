@@ -59,7 +59,7 @@ namespace DotNetNuke.Entities.Urls
                 foreach (var customAlias in tab.CustomAliases)
                 {
                     string key = tab.TabID.ToString() + ":" + customAlias.Key;
-                    using (customAliasTabs.GetWriteLock())  // obtain write lock on custom alias Tabs
+                    using (customAliasTabs.GetWriteLock()) // obtain write lock on custom alias Tabs
                     {
                         if (customAliasTabs.ContainsKey(key) == false)
                         {

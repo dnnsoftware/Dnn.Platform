@@ -732,7 +732,7 @@ namespace DotNetNuke.Services.Scheduling
             private static string ServerGroupServers(ServerInfo thisServer)
             {
                 // Get the servers
-                var servers = ServerController.GetEnabledServers().Where(s =>  s.ServerGroup == thisServer.ServerGroup);
+                var servers = ServerController.GetEnabledServers().Where(s => s.ServerGroup == thisServer.ServerGroup);
                 return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
             }
 

@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Core.Services.Localization
             // Arrange
             
             // Act
-            var ret  = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], fallback);
+            var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], fallback);
 
             // Assert
             Assert.AreEqual(ret, fallback);

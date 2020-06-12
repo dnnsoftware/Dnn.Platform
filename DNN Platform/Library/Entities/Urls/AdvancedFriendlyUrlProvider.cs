@@ -560,7 +560,7 @@ namespace DotNetNuke.Entities.Urls
                     }
                     else
                     {
-                        redirectAlias =  primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
+                        redirectAlias = primaryAliases.GetAliasByPortalIdAndSettings(portalId, httpAlias, cultureCode, settings);
                     }
 
                     if (redirectAlias != null)

@@ -638,7 +638,7 @@ namespace log4net.Core
 		{
 			get
 			{
-				if (this.m_data.LocationInfo == null  && this.m_cacheUpdatable) 
+				if (this.m_data.LocationInfo == null && this.m_cacheUpdatable) 
 				{
 					this.m_data.LocationInfo = new LocationInfo(this.m_callerStackBoundaryDeclaringType);
 				}
@@ -899,7 +899,7 @@ namespace log4net.Core
 		{
 			get
 			{
-				if (this.m_data.UserName == null  && this.m_cacheUpdatable) 
+				if (this.m_data.UserName == null && this.m_cacheUpdatable) 
 				{
 #if (NETCF || SSCLI || NETSTANDARD1_3) // NETSTANDARD1_3 TODO requires platform-specific code
 					// On compact framework there's no notion of current Windows user
@@ -947,7 +947,7 @@ namespace log4net.Core
 		{
 			get
 			{
-				if (this.m_data.Identity == null  && this.m_cacheUpdatable)
+				if (this.m_data.Identity == null && this.m_cacheUpdatable)
 				{
 #if (NETCF || SSCLI || NETSTANDARD1_3)
 					// On compact framework there's no notion of current thread principals
@@ -1004,7 +1004,7 @@ namespace log4net.Core
 		{
 			get 
 			{ 
-				if (this.m_data.Domain == null  && this.m_cacheUpdatable)
+				if (this.m_data.Domain == null && this.m_cacheUpdatable)
 				{
 					this.m_data.Domain = SystemInfo.ApplicationFriendlyName;
 				}
@@ -1198,7 +1198,7 @@ namespace log4net.Core
 		/// </remarks>
 		public string GetExceptionString() 
 		{
-			if (this.m_data.ExceptionString == null  && this.m_cacheUpdatable)
+			if (this.m_data.ExceptionString == null && this.m_cacheUpdatable)
 			{
 				if (this.m_thrownException != null)
 				{
@@ -1425,7 +1425,7 @@ namespace log4net.Core
 
 		private void CacheProperties()
 		{
-			if (this.m_data.Properties == null  && this.m_cacheUpdatable)
+			if (this.m_data.Properties == null && this.m_cacheUpdatable)
 			{
 				if (this.m_compositeProperties == null)
 				{

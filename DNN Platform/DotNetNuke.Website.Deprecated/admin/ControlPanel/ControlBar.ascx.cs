@@ -648,7 +648,7 @@ namespace DotNetNuke.UI.ControlPanels
 
             if (this.PortalSettings.AllowUserUICulture)
             {
-                if (this.CurrentUICulture  == null)
+                if (this.CurrentUICulture == null)
                 {
                     object oCulture = Personalization.GetProfile("Usability", "UICulture");
 

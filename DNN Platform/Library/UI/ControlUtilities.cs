@@ -53,7 +53,7 @@ namespace DotNetNuke.UI
             return target;
         }
 
-        public static T FindFirstDescendent<T>(Control control)  where T : Control
+        public static T FindFirstDescendent<T>(Control control) where T : Control
         {
           return FindFirstDescendent<T>(control, idx => idx is T);
         }

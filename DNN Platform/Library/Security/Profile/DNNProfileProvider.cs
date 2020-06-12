@@ -191,7 +191,7 @@ namespace DotNetNuke.Security.Profile
             var newTimeZone = properties["PreferredTimeZone"];
             var oldTimeZone = properties["TimeZone"];
             if (oldTimeZone != null && newTimeZone != null)
-            {   // preference given to new property, if new is changed then old should be updated as well.
+            { // preference given to new property, if new is changed then old should be updated as well.
                 if (newTimeZone.IsDirty && !string.IsNullOrEmpty(newTimeZone.PropertyValue))
                 {
                     var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(newTimeZone.PropertyValue);

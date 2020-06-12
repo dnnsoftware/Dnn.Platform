@@ -206,7 +206,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
                         var logTypeConfigInfo = new LogTypeConfigInfo()
                                             {
-                                                LogTypeKey =  logInfo.LogTypeKey,
+                                                LogTypeKey = logInfo.LogTypeKey,
                                                 LogTypePortalID = "*",
                                                 LoggingIsActive = false,
                                                 KeepMostRecent = "-1",

@@ -25,9 +25,9 @@ namespace DotNetNuke.Tests.Web.Api
         }
 
         [Test]
-        [TestCase("{0}={1}; ")]  // simple
+        [TestCase("{0}={1}; ")] // simple
         [TestCase("foo=fee; {0}={1}; key=value")] // normal
-        [TestCase("bad name=value; {0}={1}; good_name=value; ")]  // bad whitespace
+        [TestCase("bad name=value; {0}={1}; good_name=value; ")] // bad whitespace
         [TestCase("foo=fee; {0}={1}")] // no terminating semi-colon
         public void LocateCookies(string cookieFormat)
         {

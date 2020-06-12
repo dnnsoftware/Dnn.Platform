@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Controllers
             get
             {
                 var actionInvoker = this.ActionInvoker as ResultCapturingActionInvoker;
-                return (actionInvoker != null) ?  actionInvoker.ResultOfLastInvoke : null;
+                return (actionInvoker != null) ? actionInvoker.ResultOfLastInvoke : null;
             }
         }
 

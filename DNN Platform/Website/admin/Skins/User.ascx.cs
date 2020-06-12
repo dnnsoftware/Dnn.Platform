@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         if (this.PortalSettings.Users < this.PortalSettings.UserQuota || this.PortalSettings.UserQuota == 0)
                         {
                             if (this.LegacyMode) this.registerLink.Visible = true;
-                            else  this.enhancedRegisterLink.Visible = true;
+                            else this.enhancedRegisterLink.Visible = true;
                         }
                         else
                         {

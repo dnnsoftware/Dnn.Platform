@@ -152,7 +152,7 @@ namespace DotNetNuke.Common.Utilities
 
         public static Hashtable DeSerializeHashtable(string xmlSource, string rootname)
         {
-            var hashTable  = new Hashtable();
+            var hashTable = new Hashtable();
 
             if (!String.IsNullOrEmpty(xmlSource))
             {

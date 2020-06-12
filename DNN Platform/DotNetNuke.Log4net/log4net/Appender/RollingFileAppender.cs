@@ -156,17 +156,17 @@ namespace log4net.Appender
 			/// this appender would just be a normal file appender.
 			/// </para>
 			/// </remarks>
-			Once		= 0,
+			Once = 0,
 
 			/// <summary>
 			/// Roll files based only on the size of the file
 			/// </summary>
-			Size		= 1,
+			Size = 1,
 
 			/// <summary>
 			/// Roll files based only on the date
 			/// </summary>
-			Date		= 2,
+			Date = 2,
 
 			/// <summary>
 			/// Roll files based on both the size and date of the file
@@ -196,32 +196,32 @@ namespace log4net.Appender
 			/// <summary>
 			/// Roll the log for each minute
 			/// </summary>
-			TopOfMinute			= 0,
+			TopOfMinute = 0,
 
 			/// <summary>
 			/// Roll the log for each hour
 			/// </summary>
-			TopOfHour			= 1,
+			TopOfHour = 1,
 
 			/// <summary>
 			/// Roll the log twice a day (midday and midnight)
 			/// </summary>
-			HalfDay				= 2,
+			HalfDay = 2,
 
 			/// <summary>
 			/// Roll the log each day (midnight)
 			/// </summary>
-			TopOfDay			= 3,
+			TopOfDay = 3,
 
 			/// <summary>
 			/// Roll the log each week
 			/// </summary>
-			TopOfWeek			= 4,
+			TopOfWeek = 4,
 
 			/// <summary>
 			/// Roll the log each month
 			/// </summary>
-			TopOfMonth			= 5
+			TopOfMonth = 5
 		}
 
 		#endregion Protected Enums
@@ -1650,7 +1650,7 @@ namespace log4net.Appender
 		/// <summary>
 		/// There is zero backup files by default
 		/// </summary>
-		private int m_maxSizeRollBackups  = 0;
+		private int m_maxSizeRollBackups = 0;
 
 		/// <summary>
 		/// How many sized based backups have been made so far

@@ -109,7 +109,7 @@ namespace DotNetNuke.Admin.Containers
                 if (quickSettingsControl != null)
                 {
                     this.SupportsQuickSettings = true;
-                    var control  = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
+                    var control = ModuleControlFactory.LoadModuleControl(this.Page, this.ModuleContext.Configuration, "QuickSettings", quickSettingsControl.ControlSrc);
                     control.ID += this.ModuleContext.ModuleId;
                     this.quickSettings.Controls.Add(control);
 

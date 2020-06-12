@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Utilities
                                 var type = providerValue.Type;
                                 var assembly = providerValue.Name;
 
-                                if (type.Contains(", "))  // get the straight typename, no assembly, for the cache key
+                                if (type.Contains(", ")) // get the straight typename, no assembly, for the cache key
                                 {
                                     assembly = type.Substring(type.IndexOf(", ") + 1);
                                     type = type.Substring(0, type.IndexOf(", "));

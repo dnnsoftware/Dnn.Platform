@@ -580,11 +580,11 @@ namespace log4net.Appender
 		[StructLayout(LayoutKind.Sequential)]
 		private struct CONSOLE_SCREEN_BUFFER_INFO 
 		{ 
-			public COORD      dwSize; 
-			public COORD      dwCursorPosition; 
-			public ushort     wAttributes; 
+			public COORD dwSize; 
+			public COORD dwCursorPosition; 
+			public ushort wAttributes; 
 			public SMALL_RECT srWindow; 
-			public COORD      dwMaximumWindowSize; 
+			public COORD dwMaximumWindowSize; 
 		}
 
 		#endregion // Win32 Methods

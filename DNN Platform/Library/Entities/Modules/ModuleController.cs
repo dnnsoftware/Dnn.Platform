@@ -1243,7 +1243,7 @@ namespace DotNetNuke.Entities.Modules
         /// </remarks>
         public void CreateContentItem(ModuleInfo module)
         {
-            ContentType contentType  = ContentType.Module;
+            ContentType contentType = ContentType.Module;
             // This module does not have a valid ContentItem
             // create ContentItem
             IContentController contentController = Util.GetContentController();

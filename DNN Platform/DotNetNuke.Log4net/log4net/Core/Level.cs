@@ -551,19 +551,19 @@ namespace log4net.Core
 		/// The <see cref="Warn" /> level designates potentially harmful 
 		/// situations.
 		/// </summary>
-		public readonly static Level Warn  = new Level(60000, "WARN");
+		public readonly static Level Warn = new Level(60000, "WARN");
 
 		/// <summary>
 		/// The <see cref="Notice" /> level designates informational messages 
 		/// that highlight the progress of the application at the highest level.
 		/// </summary>
-		public readonly static Level Notice  = new Level(50000, "NOTICE");
+		public readonly static Level Notice = new Level(50000, "NOTICE");
 
 		/// <summary>
 		/// The <see cref="Info" /> level designates informational messages that 
 		/// highlight the progress of the application at coarse-grained level.
 		/// </summary>
-		public readonly static Level Info  = new Level(40000, "INFO");
+		public readonly static Level Info = new Level(40000, "INFO");
 
 		/// <summary>
 		/// The <see cref="Debug" /> level designates fine-grained informational 

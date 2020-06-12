@@ -109,7 +109,7 @@ namespace DotNetNuke.UI
             var key = GetControlKey();
             var moduleId = GetModuleId(key);
             
-            ModuleInfo slaveModule =  GetSlaveModule(moduleId, key, tabId);
+            ModuleInfo slaveModule = GetSlaveModule(moduleId, key, tabId);
             if (slaveModule != null)
             {
                 var moduleControl = ModuleControlController.GetModuleControlByControlKey(key, slaveModule.ModuleDefID) ??

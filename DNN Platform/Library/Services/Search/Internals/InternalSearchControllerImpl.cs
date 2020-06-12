@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Search.Internals
                                 SearchTypeId = crawler.SearchTypeId,
                                 SearchTypeName = crawler.SearchTypeName,
                                 IsPrivate = crawler.IsPrivate,
-                                ModuleDefinitionId =  def.ModuleDefID,
+                                ModuleDefinitionId = def.ModuleDefID,
                                 LocalizedName = text
                             };
 

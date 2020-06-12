@@ -168,7 +168,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             this._luceneController = new LuceneControllerImpl();
             LuceneController.SetTestableInstance(this._luceneController);
         }
-        private  void SetupUserController()
+        private void SetupUserController()
         {
 
             this._mockUserController.Setup(c => c.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
@@ -470,7 +470,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             return table.CreateDataReader();
         }
         // returns all search types - 3 SearchTypes - module, tab, user
-        private  IDataReader GetAllSearchTypes()
+        private IDataReader GetAllSearchTypes()
         {
             var table = new DataTable("SearchTypes");
             var pkId = table.Columns.Add("SearchTypeId", typeof(int));

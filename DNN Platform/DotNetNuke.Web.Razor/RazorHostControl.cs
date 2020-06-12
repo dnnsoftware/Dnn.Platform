@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.Razor
         }
 
 	    private RazorEngine _engine;
-	    private  RazorEngine Engine
+	    private RazorEngine Engine
 	    {
 		    get
 		    {

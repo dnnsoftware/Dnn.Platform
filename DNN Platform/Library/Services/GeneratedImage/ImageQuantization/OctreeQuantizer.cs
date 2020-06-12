@@ -91,12 +91,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 		/// <summary>
 		/// Stores the tree
 		/// </summary>
-		private	Octree			_octree;
+		private	Octree _octree;
 
 		/// <summary>
 		/// Maximum allowed color depth
 		/// </summary>
-		private int				_maxColors;
+		private int _maxColors;
 
 		/// <summary>
 		/// Class which does the actual quantization
@@ -205,7 +205,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 
 				// Now palettize the nodes
 				ArrayList	palette = new ArrayList(this.Leaves);
-				int			paletteIndex = 0;
+				int paletteIndex = 0;
 				this._root.ConstructPalette(palette, ref paletteIndex);
 
 				// And return the palette
@@ -230,12 +230,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// <summary>
 			/// The root of the octree
 			/// </summary>
-			private	OctreeNode		_root;
+			private	OctreeNode _root;
 
 			/// <summary>
 			/// Number of leaves in the tree
 			/// </summary>
-			private int				_leafCount;
+			private int _leafCount;
 
 			/// <summary>
 			/// Array of reducible nodes
@@ -245,17 +245,17 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 			/// <summary>
 			/// Maximum number of significant bits in the image
 			/// </summary>
-			private int				_maxColorBits;
+			private int _maxColorBits;
 
 			/// <summary>
 			/// Store the last node quantized
 			/// </summary>
-			private OctreeNode		_previousNode;
+			private OctreeNode _previousNode;
 
 			/// <summary>
 			/// Cache the previous color quantized
 			/// </summary>
-			private int				_previousColor;
+			private int _previousColor;
 
 			/// <summary>
 			/// Class which encapsulates each node in the tree
@@ -441,27 +441,27 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// <summary>
 				/// Flag indicating that this is a leaf node
 				/// </summary>
-				private	bool			_leaf;
+				private	bool _leaf;
 
 				/// <summary>
 				/// Number of pixels in this node
 				/// </summary>
-				private	int				_pixelCount;
+				private	int _pixelCount;
 
 				/// <summary>
 				/// Red component
 				/// </summary>
-				private	int				_red;
+				private	int _red;
 
 				/// <summary>
 				/// Green Component
 				/// </summary>
-				private	int				_green;
+				private	int _green;
 
 				/// <summary>
 				/// Blue component
 				/// </summary>
-				private int				_blue;
+				private int _blue;
 
 				/// <summary>
 				/// Pointers to any child nodes
@@ -471,12 +471,12 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
 				/// <summary>
 				/// Pointer to next reducible node
 				/// </summary>
-				private OctreeNode		_nextReducible;
+				private OctreeNode _nextReducible;
 
 				/// <summary>
 				/// The index of this node in the palette
 				/// </summary>
-				private	int				_paletteIndex;
+				private	int _paletteIndex;
 
 			}
 		}

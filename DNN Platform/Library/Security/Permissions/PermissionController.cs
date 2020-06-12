@@ -46,7 +46,7 @@ namespace DotNetNuke.Security.Permissions
         public int AddPermission(PermissionInfo permission)
         {
             EventLogController.Instance.AddLog(permission, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.PERMISSION_CREATED);
-            var permissionId =  Convert.ToInt32(provider.AddPermission(permission.PermissionCode,
+            var permissionId = Convert.ToInt32(provider.AddPermission(permission.PermissionCode,
                                                        permission.ModuleDefID,
                                                        permission.PermissionKey,
                                                        permission.PermissionName,

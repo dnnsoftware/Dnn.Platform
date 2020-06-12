@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Portals
 
             // Check portal
             var activeTab = GetTab(tabId, portalTabs)
-                ?? GetTab(tabId, hostTabs)  // check host
+                ?? GetTab(tabId, hostTabs) // check host
                 ?? GetSpecialTab(portalId, portalSettings.SplashTabId) // check splash tab
                 ?? GetSpecialTab(portalId, portalSettings.HomeTabId); // check home tab
 

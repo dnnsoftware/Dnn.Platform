@@ -1623,7 +1623,7 @@ namespace DotNetNuke.Entities.Portals
             var portal = this.GetPortal(portalId);
             if (!String.IsNullOrEmpty(strName))
             {
-                if (!isNewPortal)  // running from wizard: try to find the tab by path
+                if (!isNewPortal) // running from wizard: try to find the tab by path
                 {
                     string parenttabname = "";
                     if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(nodeTab.CreateNavigator(), "parent")))

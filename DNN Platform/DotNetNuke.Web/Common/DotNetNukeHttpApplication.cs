@@ -194,7 +194,7 @@ namespace DotNetNuke.Web.Common.Internal
             }
 
             var requestUrl = app.Request.Url.LocalPath.ToLowerInvariant();
-            if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") &&  Endings.Any(requestUrl.EndsWith))
+            if (!requestUrl.EndsWith(".aspx") && !requestUrl.EndsWith("/") && Endings.Any(requestUrl.EndsWith))
             {
                 return;
             }

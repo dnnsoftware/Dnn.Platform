@@ -382,7 +382,7 @@ namespace DotNetNuke.Common
         private static string GetCurrentDomainDirectory()
         {
             var dir = AppDomain.CurrentDomain.BaseDirectory.Replace("/", "\\");
-            if (dir.Length > 3 &&  dir.EndsWith("\\"))
+            if (dir.Length > 3 && dir.EndsWith("\\"))
             {
                 dir = dir.Substring(0, dir.Length - 1);
             }
@@ -695,7 +695,7 @@ namespace DotNetNuke.Common
             // While it is possible that you might not have an installation date or that you have deleted log files
             // it is unlikely that you have removed every trace of an installation and yet still have a working install
 
-            bool isInstalled =  (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
+            bool isInstalled = (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
 
             // we need to tighten this check. We now are enforcing the existence of the InstallVersion value in web.config. If
             // this value exists, then DNN was previously installed, and we should never try to re-install it

@@ -231,7 +231,7 @@ namespace Dnn.Modules.Console
         {
             base.OnInit(e);
 
-            this.tabs.ItemDataBound +=  this.tabs_ItemDataBound;
+            this.tabs.ItemDataBound += this.tabs_ItemDataBound;
             this.modeList.SelectedIndexChanged += this.modeList_SelectedIndexChanged;
 
             this.ParentTab.UndefinedItem = new ListItem(DynamicSharedConstants.Unspecified, string.Empty);

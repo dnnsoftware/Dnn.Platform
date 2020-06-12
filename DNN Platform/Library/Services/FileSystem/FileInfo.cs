@@ -415,7 +415,7 @@ namespace DotNetNuke.Services.FileSystem
             this.FolderId = Null.SetNullInteger(dr["FolderId"]);
             this.Height = Null.SetNullInteger(dr["Height"]);
             this.IsCached = Null.SetNullBoolean(dr["IsCached"]);
-            this.PortalId  = Null.SetNullInteger(dr["PortalId"]);
+            this.PortalId = Null.SetNullInteger(dr["PortalId"]);
             this.SHA1Hash = Null.SetNullString(dr["SHA1Hash"]);
             this.Size = Null.SetNullInteger(dr["Size"]);
             this.StorageLocation = Null.SetNullInteger(dr["StorageLocation"]);
@@ -428,7 +428,7 @@ namespace DotNetNuke.Services.FileSystem
             this.Description = Null.SetNullString(dr["Description"]);
             this.EnablePublishPeriod = Null.SetNullBoolean(dr["EnablePublishPeriod"]);
             this.StartDate = Null.SetNullDateTime(dr["StartDate"]);
-            this.EndDate  = Null.SetNullDateTime(dr["EndDate"]);
+            this.EndDate = Null.SetNullDateTime(dr["EndDate"]);
             this.ContentItemID = Null.SetNullInteger(dr["ContentItemID"]);
             this.PublishedVersion = Null.SetNullInteger(dr["PublishedVersion"]);
             this.HasBeenPublished = Convert.ToBoolean(dr["HasBeenPublished"]);

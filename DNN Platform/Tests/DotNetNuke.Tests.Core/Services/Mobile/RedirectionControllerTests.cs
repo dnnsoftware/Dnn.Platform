@@ -864,7 +864,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             }
             else if (userAgent == motorolaRIZRSymbianOSOpera865)
             {
-                clientCapability.IsMobile  = true;
+                clientCapability.IsMobile = true;
                 clientCapability.Capabilities.Add("mobile_browser", "Opera Mini");
                 clientCapability.Capabilities.Add("device_os", "Symbian OS");
             }

@@ -33,7 +33,7 @@ namespace DotNetNuke.Entities.Users.Social
 
         private IList<Relationship> _relationships;
         private IList<UserRelationship> _userRelationships;
-        private  IList<UserRoleInfo> _roles;
+        private IList<UserRoleInfo> _roles;
         private readonly UserInfo _userInfo;
 
         #endregion

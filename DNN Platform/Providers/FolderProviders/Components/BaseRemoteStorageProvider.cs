@@ -270,7 +270,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             //        select Path.GetFileName(f)).ToArray();
 
             var pattern = "^" + mappedPath;
-            return  (from i in list
+            return (from i in list
                     let f = i.Key
                      let r = (!string.IsNullOrEmpty(mappedPath) ? Regex.Replace(f, pattern, "", RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2)) : f)
                     where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1

@@ -440,7 +440,7 @@ namespace log4net.Repository.Hierarchy
 					if (currentElement.LocalName == APPENDER_REF_TAG)
 					{
 						IAppender appender = this.FindAppenderByReference(currentElement);
-						string refName =  currentElement.GetAttribute(REF_ATTR);
+						string refName = currentElement.GetAttribute(REF_ATTR);
 						if (appender != null)
 						{
 							LogLog.Debug(declaringType, "Adding appender named [" + refName + "] to logger [" + log.Name + "].");
@@ -1105,32 +1105,32 @@ namespace log4net.Repository.Hierarchy
 		#region Private Constants
 
 		// String constants used while parsing the XML data
-		private const string CONFIGURATION_TAG			= "log4net";
-		private const string RENDERER_TAG				= "renderer";
-		private const string APPENDER_TAG 				= "appender";
-		private const string APPENDER_REF_TAG 			= "appender-ref";  
-		private const string PARAM_TAG					= "param";
+		private const string CONFIGURATION_TAG = "log4net";
+		private const string RENDERER_TAG = "renderer";
+		private const string APPENDER_TAG = "appender";
+		private const string APPENDER_REF_TAG = "appender-ref";  
+		private const string PARAM_TAG = "param";
 
 		// TODO: Deprecate use of category tags
-		private const string CATEGORY_TAG				= "category";
+		private const string CATEGORY_TAG = "category";
 		// TODO: Deprecate use of priority tag
-		private const string PRIORITY_TAG				= "priority";
+		private const string PRIORITY_TAG = "priority";
 
-		private const string LOGGER_TAG					= "logger";
-		private const string NAME_ATTR					= "name";
-		private const string TYPE_ATTR					= "type";
-		private const string VALUE_ATTR					= "value";
-		private const string ROOT_TAG					= "root";
-		private const string LEVEL_TAG					= "level";
-		private const string REF_ATTR					= "ref";
-		private const string ADDITIVITY_ATTR			= "additivity";  
-		private const string THRESHOLD_ATTR				= "threshold";
-		private const string CONFIG_DEBUG_ATTR			= "configDebug";
-		private const string INTERNAL_DEBUG_ATTR		= "debug";
-		private const string EMIT_INTERNAL_DEBUG_ATTR   = "emitDebug";
+		private const string LOGGER_TAG = "logger";
+		private const string NAME_ATTR = "name";
+		private const string TYPE_ATTR = "type";
+		private const string VALUE_ATTR = "value";
+		private const string ROOT_TAG = "root";
+		private const string LEVEL_TAG = "level";
+		private const string REF_ATTR = "ref";
+		private const string ADDITIVITY_ATTR = "additivity";  
+		private const string THRESHOLD_ATTR = "threshold";
+		private const string CONFIG_DEBUG_ATTR = "configDebug";
+		private const string INTERNAL_DEBUG_ATTR = "debug";
+		private const string EMIT_INTERNAL_DEBUG_ATTR = "emitDebug";
 		private const string CONFIG_UPDATE_MODE_ATTR	= "update";
-		private const string RENDERING_TYPE_ATTR		= "renderingClass";
-		private const string RENDERED_TYPE_ATTR			= "renderedClass";
+		private const string RENDERING_TYPE_ATTR = "renderingClass";
+		private const string RENDERED_TYPE_ATTR = "renderedClass";
 
 		// flag used on the level element
 		private const string INHERITED = "inherited";

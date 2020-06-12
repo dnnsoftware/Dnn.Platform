@@ -653,7 +653,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             }
         }
 
-        private  IEnumerable<ModuleInfo> ConvertToModuleInfo(IEnumerable<TabVersionDetail> details, int tabId)
+        private IEnumerable<ModuleInfo> ConvertToModuleInfo(IEnumerable<TabVersionDetail> details, int tabId)
         {
             var modules = new List<ModuleInfo>();
             try

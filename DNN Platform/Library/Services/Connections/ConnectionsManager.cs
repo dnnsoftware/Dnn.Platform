@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Connections
 
         protected override Func<IConnectionsManager> GetFactory()
         {
-            return  () => new ConnectionsManager();
+            return () => new ConnectionsManager();
         }
 
         #endregion

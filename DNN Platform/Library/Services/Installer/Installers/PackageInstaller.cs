@@ -395,7 +395,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
                 case "Container":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/containerFiles");
-                    if (foldernameNav != null) this.Package.FolderName = Globals.glbContainersPath +  Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
+                    if (foldernameNav != null) this.Package.FolderName = Globals.glbContainersPath + Util.ReadElement(foldernameNav, "containerName").Replace('\\', '/');
                     break;
                 case "Skin":
                     foldernameNav = manifestNav.SelectSingleNode("components/component/skinFiles");
@@ -426,7 +426,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     else
                     {
-                        this.Package.IconFile = (String.IsNullOrEmpty(this.Package.FolderName) ? "" :  this.Package.FolderName + "/") + iconFileNav.Value;
+                        this.Package.IconFile = (String.IsNullOrEmpty(this.Package.FolderName) ? "" : this.Package.FolderName + "/") + iconFileNav.Value;
                         this.Package.IconFile = (!this.Package.IconFile.StartsWith("~/")) ? "~/" + this.Package.IconFile : this.Package.IconFile;
                     }
                 }

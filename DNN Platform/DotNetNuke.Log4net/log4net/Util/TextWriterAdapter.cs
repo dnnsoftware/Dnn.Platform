@@ -63,7 +63,7 @@ namespace log4net.Util
 		/// messages to a <see cref="TextWriter"/>.
 		/// </para>
 		/// </remarks>
-		protected TextWriterAdapter(TextWriter writer) :  base(CultureInfo.InvariantCulture)
+		protected TextWriterAdapter(TextWriter writer) : base(CultureInfo.InvariantCulture)
 		{
 			this.m_writer = writer;
 		}

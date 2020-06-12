@@ -139,7 +139,7 @@ namespace log4net.Core
 
 							if (method != null)
 							{
-								this.m_methodName =  method.Name;
+								this.m_methodName = method.Name;
 								if (method.DeclaringType != null)
 								{
 									this.m_className = method.DeclaringType.FullName;
@@ -149,7 +149,7 @@ namespace log4net.Core
 							this.m_lineNumber = locationFrame.GetFileLineNumber().ToString(System.Globalization.NumberFormatInfo.InvariantInfo);
 
 							// Combine all location info
-							this.m_fullInfo =  this.m_className + '.' + this.m_methodName + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
+							this.m_fullInfo = this.m_className + '.' + this.m_methodName + '(' + this.m_fileName + ':' + this.m_lineNumber + ')';
 						}
 					}
 				}

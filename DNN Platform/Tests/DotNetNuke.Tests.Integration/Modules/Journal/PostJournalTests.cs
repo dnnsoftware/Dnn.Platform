@@ -66,7 +66,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
                 profileId = userId,
                 groupId = -1,
                 journalType = "file",
-                securitySet  = "E",
+                securitySet = "E",
                 itemData = $"{{\"ImageUrl\":\"\",\"Url\":\"fileid={fileId}\"}}"
             };
             
@@ -154,7 +154,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
-            connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId  = notificationId }, this.GetRequestHeaders());
+            connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId = notificationId }, this.GetRequestHeaders());
 
             // POST JOURNAL
             var postData = new

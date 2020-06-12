@@ -123,11 +123,11 @@ namespace log4net.Core
 				return exceptionObjectType == this.m_type || exceptionObjectType.IsSubclassOf(this.m_type);
 			}
 			else if (!this.m_triggerOnSubclass && loggingEvent.ExceptionObject != null)
-			{   // check if loggingEvent.ExceptionObject is of type ExceptionType
+			{ // check if loggingEvent.ExceptionObject is of type ExceptionType
 				return loggingEvent.ExceptionObject.GetType() == this.m_type;
 			}
 			else
-			{   // loggingEvent.ExceptionObject is null
+			{ // loggingEvent.ExceptionObject is null
 				return false;
 			}
 		}
