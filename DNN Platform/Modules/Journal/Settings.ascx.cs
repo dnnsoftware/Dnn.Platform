@@ -45,7 +45,7 @@ namespace DotNetNuke.Modules.Journal {
             try {
                 if (this.Page.IsPostBack == false) {
                     this.BindJournalTypes();
-                    //Check for existing settings and use those on this page
+                    // Check for existing settings and use those on this page
                     if (this.Settings.ContainsKey(Constants.DefaultPageSize)) {
                         this.drpDefaultPageSize.SelectedIndex = this.drpDefaultPageSize.Items.IndexOf(this.drpDefaultPageSize.Items.FindByValue(this.Settings[Constants.DefaultPageSize].ToString()));
                     } else {
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.Journal {
                     }
 
                 }
-            } catch (Exception exc) //Module failed to load
+            } catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.Journal {
                 }
                 ModuleController.Instance.UpdateModuleSetting(this.ModuleId, Constants.JournalFilters, journalTypes);
 
-            } catch (Exception exc) //Module failed to load
+            } catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

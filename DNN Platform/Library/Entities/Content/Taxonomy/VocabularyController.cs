@@ -52,14 +52,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public int AddVocabulary(Vocabulary vocabulary)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("vocabulary", vocabulary);
             Requires.PropertyNotNullOrEmpty("vocabulary", "Name", vocabulary.Name);
             Requires.PropertyNotNegative("vocabulary", "ScopeTypeId", vocabulary.ScopeTypeId);
 
             vocabulary.VocabularyId = this._DataService.AddVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Refresh Cache
+            // Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
             return vocabulary.VocabularyId;
@@ -72,13 +72,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public void DeleteVocabulary(Vocabulary vocabulary)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("vocabulary", vocabulary);
             Requires.PropertyNotNegative("vocabulary", "VocabularyId", vocabulary.VocabularyId);
 
             this._DataService.DeleteVocabulary(vocabulary);
 
-            //Refresh Cache
+            // Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
         }
 
@@ -89,12 +89,12 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public void UpdateVocabulary(Vocabulary vocabulary)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("vocabulary", vocabulary);
             Requires.PropertyNotNegative("vocabulary", "VocabularyId", vocabulary.VocabularyId);
             Requires.PropertyNotNullOrEmpty("vocabulary", "Name", vocabulary.Name);
 
-            //Refresh Cache
+            // Refresh Cache
             DataCache.RemoveCache(DataCache.VocabularyCacheKey);
 
             this._DataService.UpdateVocabulary(vocabulary, UserController.Instance.GetCurrentUserInfo().UserID);

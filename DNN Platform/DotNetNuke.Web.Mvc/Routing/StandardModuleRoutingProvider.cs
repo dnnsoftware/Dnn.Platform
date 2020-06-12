@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public override string GenerateUrl(RouteValueDictionary routeValues, ModuleInstanceContext moduleContext)
         {
-            //Look for a module control
+            // Look for a module control
             string controlKey = (routeValues.ContainsKey("ctl")) ? (string)routeValues["ctl"] : String.Empty;
 
             List<string> additionalParams = (from routeValue in routeValues

@@ -46,10 +46,10 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    //free managed resources here
+                    // free managed resources here
                 }
 
-                //free unmanaged resrources here
+                // free unmanaged resrources here
                 if (this._lock.IsReadLockHeld)
                 {
                     this._lock.ExitReadLock();

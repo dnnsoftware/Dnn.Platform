@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
             var statuses = new List<FilesStatus>();
             try
             {
-                //todo can we eliminate the HttpContext here
+                // todo can we eliminate the HttpContext here
                 this.UploadWholeFile(HttpContextSource.Current, statuses);
             }
             catch (Exception exc)
@@ -44,7 +44,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 
         private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
         {
-            //return json but label it as plain text
+            // return json but label it as plain text
             return new HttpResponseMessage
             {
                 Content = new StringContent(JsonConvert.SerializeObject(statuses))
@@ -65,7 +65,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
                 {
                     var userFolder = this._folderManager.GetUserFolder(this.UserInfo);
 
-                    //todo: deal with the case where the exact file name already exists.
+                    // todo: deal with the case where the exact file name already exists.
                     var fileInfo = this._fileManager.AddFile(userFolder, fileName, file.InputStream, true);
                     var fileIcon = Entities.Icons.IconController.IconURL("Ext" + fileInfo.Extension, "32x32");
                     if (!File.Exists(context.Server.MapPath(fileIcon)))

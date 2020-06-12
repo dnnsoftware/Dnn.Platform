@@ -209,18 +209,18 @@ namespace DotNetNuke.Modules.Admin.Modules
             this.cboCacheProvider.DataSource = this.GetFilteredProviders(ModuleCachingProvider.GetProviderList(), "ModuleCachingProvider");
             this.cboCacheProvider.DataBind();
 
-            //cboCacheProvider.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), ""));
+            // cboCacheProvider.Items.Insert(0, new ListItem(Localization.GetString("None_Specified"), ""));
             this.cboCacheProvider.InsertItem(0, Localization.GetString("None_Specified"), "");
 
-            //if (!string.IsNullOrEmpty(Module.GetEffectiveCacheMethod()) && cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()) != null)
+            // if (!string.IsNullOrEmpty(Module.GetEffectiveCacheMethod()) && cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()) != null)
             if (!string.IsNullOrEmpty(this.Module.GetEffectiveCacheMethod()) && this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()) != null)
             {
-                //cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()).Selected = true;
+                // cboCacheProvider.Items.FindByValue(Module.GetEffectiveCacheMethod()).Selected = true;
                 this.cboCacheProvider.FindItemByValue(this.Module.GetEffectiveCacheMethod()).Selected = true;
             }
             else
             {
-                //select the None Specified value
+                // select the None Specified value
                 this.cboCacheProvider.Items[0].Selected = true;
             }
 
@@ -328,20 +328,20 @@ namespace DotNetNuke.Modules.Admin.Modules
 
 			    JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-                //get ModuleId
+                // get ModuleId
                 if ((this.Request.QueryString["ModuleId"] != null))
                 {
                     this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
                 }
                 if (this.Module.ContentItemId == Null.NullInteger && this.Module.ModuleID != Null.NullInteger)
                 {
-                    //This tab does not have a valid ContentItem
+                    // This tab does not have a valid ContentItem
                     ModuleController.Instance.CreateContentItem(this.Module);
 
                     ModuleController.Instance.UpdateModule(this.Module);
                 }
 
-                //Verify that the current user has access to edit this module
+                // Verify that the current user has access to edit this module
                 if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "MANAGE", this.Module))
                 {
                     if (!(this.IsSharedViewOnly() && TabPermissionController.CanAddContentToPage()))
@@ -351,10 +351,10 @@ namespace DotNetNuke.Modules.Admin.Modules
                 }
                 if (this.Module != null)
                 {
-                    //get module
+                    // get module
                     this.TabModuleId = this.Module.TabModuleID;
 
-                    //get Settings Control
+                    // get Settings Control
                     ModuleControlInfo moduleControlInfo = ModuleControlController.GetModuleControlByControlKey("Settings", this.Module.ModuleDefID);
 
                     if (moduleControlInfo != null)
@@ -408,7 +408,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.cboTab.DataSource = TabController.GetPortalTabs(this.PortalId, -1, false, Null.NullString, true, false, true, false, true);
                     this.cboTab.DataBind();
 
-                    //if tab is a  host tab, then add current tab
+                    // if tab is a  host tab, then add current tab
                     if (Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID))
                     {
                         this.cboTab.InsertItem(0, this.PortalSettings.ActiveTab.LocalizedTabName, this.PortalSettings.ActiveTab.TabID.ToString());
@@ -422,7 +422,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //only Portal Administrators can manage the visibility on all Tabs
+                    // only Portal Administrators can manage the visibility on all Tabs
                     var isAdmin = PermissionProvider.Instance().IsPortalEditor();
                     this.rowAllTabs.Visible = isAdmin;
                     this.chkAllModules.Enabled = isAdmin;
@@ -432,7 +432,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         this.cancelHyperLink.Visible = false;
                     }
 
-                    //tab administrators can only manage their own tab
+                    // tab administrators can only manage their own tab
                     if (!TabPermissionController.CanAdminPage())
                     {
                         this.chkNewTabs.Enabled = false;
@@ -453,7 +453,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         this.isShareableViewOnlyCheckBox.Checked = true;
                         this.isShareableRow.Visible = true;
 
-                        this.cboVisibility.SelectedIndex = 0; //maximized
+                        this.cboVisibility.SelectedIndex = 0; // maximized
                         this.chkAllTabs.Checked = false;
                         this.cmdDelete.Visible = false;
                     }
@@ -463,11 +463,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                         this.permissionsRow.Visible = ModulePermissionController.CanAdminModule(this.Module) || TabPermissionController.CanAddContentToPage();
                     }
 
-                    //Set visibility of Specific Settings
+                    // Set visibility of Specific Settings
                     if (this.SettingsControl == null == false)
                     {
-                        //Get the module settings from the PortalSettings and pass the
-                        //two settings hashtables to the sub control to process
+                        // Get the module settings from the PortalSettings and pass the
+                        // two settings hashtables to the sub control to process
                         this.SettingsControl.LoadSettings();
                         this.specificSettingsTab.Visible = true;
                         this.fsSpecific.Visible = true;
@@ -532,11 +532,11 @@ namespace DotNetNuke.Modules.Admin.Modules
                 {
                     var allTabsChanged = false;
 
-                    //only Portal Administrators can manage the visibility on all Tabs
+                    // only Portal Administrators can manage the visibility on all Tabs
                     var isAdmin = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
                     this.chkAllModules.Enabled = isAdmin;
 
-                    //tab administrators can only manage their own tab
+                    // tab administrators can only manage their own tab
                     if (!TabPermissionController.CanAdminPage())
                     {
                         this.chkAllTabs.Enabled = false;
@@ -572,7 +572,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         var ids = TabModulesController.Instance.GetTabModuleIdsBySetting("Moniker", newMoniker);
                         if (ids != null && ids.Count > 0)
                         {
-                            //Warn user - duplicate moniker value
+                            // Warn user - duplicate moniker value
                             Skin.AddModuleMessage(this, Localization.GetString("MonikerExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                             return;
                         }
@@ -584,7 +584,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         ModuleController.Instance.UpdateTabModuleSetting(this.Module.TabModuleID, "hideadminborder", this.chkAdminBorder.Checked.ToString());
                     }
 
-                    //check whether allow index value is changed
+                    // check whether allow index value is changed
                     if (allowIndex != this.chkAllowIndex.Checked)
                     {
                         ModuleController.Instance.UpdateTabModuleSetting(this.Module.TabModuleID, "AllowIndex", this.chkAllowIndex.Checked.ToString());
@@ -598,7 +598,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         case 1:
                             this.Module.Visibility = VisibilityState.Minimized;
                             break;
-                        //case 2:
+                        // case 2:
                         default:
                             this.Module.Visibility = VisibilityState.None;
                             break;
@@ -647,7 +647,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Module.AllModules = this.chkAllModules.Checked;
                     ModuleController.Instance.UpdateModule(this.Module);
 
-                    //Update Custom Settings
+                    // Update Custom Settings
                     if (this.SettingsControl != null)
                     {
                         try
@@ -658,7 +658,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                         {
                             Logger.Debug(exc);
 
-                            Thread.ResetAbort(); //necessary
+                            Thread.ResetAbort(); // necessary
                         }
                         catch (Exception ex)
                         {
@@ -666,33 +666,33 @@ namespace DotNetNuke.Modules.Admin.Modules
                         }
                     }
 
-                    //These Module Copy/Move statements must be
-                    //at the end of the Update as the Controller code assumes all the
-                    //Updates to the Module have been carried out.
+                    // These Module Copy/Move statements must be
+                    // at the end of the Update as the Controller code assumes all the
+                    // Updates to the Module have been carried out.
 
-                    //Check if the Module is to be Moved to a new Tab
+                    // Check if the Module is to be Moved to a new Tab
                     if (!this.chkAllTabs.Checked)
                     {
                         var newTabId = Int32.Parse(this.cboTab.SelectedValue);
                         if (this.TabId != newTabId)
                         {
-                            //First check if there already is an instance of the module on the target page
+                            // First check if there already is an instance of the module on the target page
                             var tmpModule = ModuleController.Instance.GetModule(this._moduleId, newTabId, false);
                             if (tmpModule == null)
                             {
-                                //Move module
+                                // Move module
                                 ModuleController.Instance.MoveModule(this._moduleId, this.TabId, newTabId, Globals.glbDefaultPane);
                             }
                             else
                             {
-                                //Warn user
+                                // Warn user
                                 Skin.AddModuleMessage(this, Localization.GetString("ModuleExists", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                                 return;
                             }
                         }
                     }
 
-                    //Check if Module is to be Added/Removed from all Tabs
+                    // Check if Module is to be Added/Removed from all Tabs
                     if (allTabsChanged)
                     {
                         var listTabs = TabController.GetPortalTabs(this.PortalSettings.PortalId, Null.NullInteger, false, true);
@@ -728,7 +728,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     if (!this.DoNotRedirectOnUpdate)
                     {
-                        //Navigate back to admin page
+                        // Navigate back to admin page
                         this.Response.Redirect(this.ReturnURL, true);
                     }
                 }

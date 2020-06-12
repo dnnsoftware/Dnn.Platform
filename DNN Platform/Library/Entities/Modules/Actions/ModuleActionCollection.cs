@@ -231,7 +231,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         /// -----------------------------------------------------------------------------
         public bool Contains(ModuleAction value)
         {
-			//If value is not of type ModuleAction, this will return false.
+			// If value is not of type ModuleAction, this will return false.
             return this.List.Contains(value);
         }
 
@@ -239,7 +239,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             ModuleAction retAction = null;
 
-            //Check each action in the List
+            // Check each action in the List
             foreach (ModuleAction modAction in this.List)
             {
                 if (modAction.CommandName == name)
@@ -247,7 +247,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                     retAction = modAction;
                     break;
                 }
-                //If action has children check them
+                // If action has children check them
                 if (modAction.HasChildren())
                 {
                     ModuleAction childAction = modAction.Actions.GetActionByCommandName(name);
@@ -265,14 +265,14 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             var retActions = new ModuleActionCollection();
 
-            //Check each action in the List
+            // Check each action in the List
             foreach (ModuleAction modAction in this.List)
             {
                 if (modAction.CommandName == name)
                 {
                     retActions.Add(modAction);
                 }
-                //If action has children check them
+                // If action has children check them
                 if (modAction.HasChildren())
                 {
                     retActions.AddRange(modAction.Actions.GetActionsByCommandName(name));
@@ -285,7 +285,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         {
             ModuleAction retAction = null;
 
-            //Check each action in the List
+            // Check each action in the List
             foreach (ModuleAction modAction in this.List)
             {
                 if (modAction.ID == id)
@@ -293,7 +293,7 @@ namespace DotNetNuke.Entities.Modules.Actions
                     retAction = modAction;
                     break;
                 }
-                //If action has children check them
+                // If action has children check them
                 if (modAction.HasChildren())
                 {
                     ModuleAction childAction = modAction.Actions.GetActionByID(id);

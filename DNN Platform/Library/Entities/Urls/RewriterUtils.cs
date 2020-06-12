@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Urls
     {
         internal static void RewriteUrl(HttpContext context, string sendToUrl)
         {
-            //first strip the querystring, if any
+            // first strip the querystring, if any
             var queryString = string.Empty;
             string sendToUrlLessQString = sendToUrl;
             if ((sendToUrl.IndexOf("?", StringComparison.Ordinal) > 0))
@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Urls
                 sendToUrlLessQString = sendToUrl.Substring(0, sendToUrl.IndexOf("?", StringComparison.Ordinal));
                 queryString = sendToUrl.Substring(sendToUrl.IndexOf("?", StringComparison.Ordinal) + 1);
                 
-                //Encode querystring values to support unicode characters by M.Kermani
+                // Encode querystring values to support unicode characters by M.Kermani
                 var parameters = new List<string>();                
                 foreach (var parameter in queryString.Split('&'))
                 {
@@ -48,28 +48,28 @@ namespace DotNetNuke.Entities.Urls
                 
             }
             
-            //rewrite the path..
+            // rewrite the path..
             context.RewritePath(sendToUrlLessQString, string.Empty, queryString);
-            //NOTE!  The above RewritePath() overload is only supported in the .NET Framework 1.1
-            //If you are using .NET Framework 1.0, use the below form instead:
-            //context.RewritePath(sendToUrl);
+            // NOTE!  The above RewritePath() overload is only supported in the .NET Framework 1.1
+            // If you are using .NET Framework 1.0, use the below form instead:
+            // context.RewritePath(sendToUrl);
         }
 
         internal static string ResolveUrl(string appPath, string url)
         {
-            //String is Empty, just return Url
+            // String is Empty, just return Url
             if (String.IsNullOrEmpty(url))
             {
                 return url;
             }
 			
-            //String does not contain a ~, so just return Url
+            // String does not contain a ~, so just return Url
             if ((url.StartsWith("~") == false))
             {
                 return url;
             }
 			
-            //There is just the ~ in the Url, return the appPath
+            // There is just the ~ in the Url, return the appPath
             if ((url.Length == 1))
             {
                 return appPath;
@@ -77,14 +77,14 @@ namespace DotNetNuke.Entities.Urls
             var seperatorChar = url.ToCharArray()[1];
             if (seperatorChar == '/' || seperatorChar == '\\')
             {
-                //Url looks like ~/ or ~\
+                // Url looks like ~/ or ~\
                 if ((appPath.Length > 1))
                 {
                     return appPath + "/" + url.Substring(2);
                 }
                 return "/" + url.Substring(2);
             }
-            //Url look like ~something
+            // Url look like ~something
             if ((appPath.Length > 1))
             {
                 return appPath + "/" + url.Substring(1);

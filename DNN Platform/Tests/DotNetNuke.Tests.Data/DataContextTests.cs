@@ -42,12 +42,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DataContext_Instance_Method_Returns_PetaPocoDataContext()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var context = DataContext.Instance();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<IDataContext>(context);
             Assert.IsInstanceOf<PetaPocoDataContext>(context);
         }
@@ -55,13 +55,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DataContext_Instance_Method_Returns_Default_PetaPocoDataContext_Instance()
         {
-            //Arrange
+            // Arrange
             var connectionString = ConfigurationManager.ConnectionStrings[0].ConnectionString;
 
-            //Act
+            // Act
             var context = (PetaPocoDataContext)DataContext.Instance();
 
-            //Assert
+            // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }
@@ -71,13 +71,13 @@ namespace DotNetNuke.Tests.Data
         [TestCase("Test")]
         public void DataContext_Instance_Method_Returns_Named_PetaPocoDataContext_Instance(string name)
         {
-            //Arrange
+            // Arrange
             var connectionString = ConfigurationManager.ConnectionStrings[name].ConnectionString;
 
-            //Act
+            // Act
             var context = (PetaPocoDataContext)DataContext.Instance(name);
 
-            //Assert
+            // Assert
             Database db = Util.GetPrivateMember<PetaPocoDataContext, Database>(context, "_database");
             Assert.AreEqual(connectionString, Util.GetPrivateMember<Database, string>(db, "_connectionString"));
         }

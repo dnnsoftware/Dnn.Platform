@@ -82,13 +82,13 @@ namespace DotNetNuke.Modules.Admin.Modules
                     {
                         var objObject = Reflection.CreateObject(this.Module.DesktopModule.BusinessControllerClass, this.Module.DesktopModule.BusinessControllerClass);
 
-                        //Double-check
+                        // Double-check
                         if (objObject is IPortable)
                         {
                             XmlDocument moduleXml = new XmlDocument { XmlResolver = null };
                             XmlNode moduleNode = ModuleController.SerializeModule(moduleXml, this.Module, true);
 
-                            //add attributes to XML document
+                            // add attributes to XML document
                             XmlAttribute typeAttribute = moduleXml.CreateAttribute("type");
                             typeAttribute.Value = CleanName(this.Module.DesktopModule.ModuleName);
                             moduleNode.Attributes.Append(typeAttribute);
@@ -104,16 +104,16 @@ namespace DotNetNuke.Modules.Admin.Modules
                             var content = sw.ToString();
                             if (!String.IsNullOrEmpty(content))
                             {
-                                //remove invalid chars in content -> DNN 26810: Handled by ModuleController.SerializeModule
-                                //content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
-                                //add attributes to XML document
-                                //content = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + "<content type=\"" + CleanName(Module.DesktopModule.ModuleName) + "\" version=\"" +
+                                // remove invalid chars in content -> DNN 26810: Handled by ModuleController.SerializeModule
+                                // content = Regex.Replace(content, _invalidCharsRegex, string.Empty);
+                                // add attributes to XML document
+                                // content = "<?xml version=\"1.0\" encoding=\"utf-8\" ?>" + "<content type=\"" + CleanName(Module.DesktopModule.ModuleName) + "\" version=\"" +
                                 //          Module.DesktopModule.Version + "\">" + content + "</content>";
 
-                                //First check the Portal limits will not be exceeded (this is approximate)
+                                // First check the Portal limits will not be exceeded (this is approximate)
                                 if (PortalController.Instance.HasSpaceAvailable(this.PortalId, content.Length))
                                 {
-                                    //add file to Files table
+                                    // add file to Files table
                                     using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(content)))
                                     {
                                         Services.FileSystem.FileManager.Instance.AddFile(folder, fileName, fileContent, true, true, "application/octet-stream");

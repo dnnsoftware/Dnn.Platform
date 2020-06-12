@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Details = Localization.Localization.GetString("InitHostSetting", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
 
-            //if any super user (even deleted) is found - exit
+            // if any super user (even deleted) is found - exit
             var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
             if (superUsers != null && superUsers.Count > 0)
             {
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 return;
             }
 
-            //Need to clear the cache to pick up new HostSettings from the SQLDataProvider script
+            // Need to clear the cache to pick up new HostSettings from the SQLDataProvider script
             DataCache.RemoveCache(DataCache.HostSettingsCacheKey);
 
             string domainName = Globals.GetDomainName(HttpContext.Current.Request);
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 HostController.Instance.Update(settingName, settingValue, setting.IsSecure);
             }
 
-            //Synchronise Host Folder
+            // Synchronise Host Folder
             FolderManager.Instance.Synchronize(Null.NullInteger, "", true, true);
 
             this.Status = StepStatus.Done;

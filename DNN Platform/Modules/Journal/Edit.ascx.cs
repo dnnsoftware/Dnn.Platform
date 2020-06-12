@@ -44,9 +44,9 @@ namespace DotNetNuke.Modules.Journal {
         /// -----------------------------------------------------------------------------
         private void Page_Load(object sender, System.EventArgs e) {
             try {
-                //Implement your edit logic for your module
+                // Implement your edit logic for your module
 
-            } catch (Exception exc) //Module failed to load
+            } catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

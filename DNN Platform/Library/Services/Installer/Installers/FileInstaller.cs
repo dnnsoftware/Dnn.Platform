@@ -192,16 +192,16 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Check the White Lists
+				// Check the White Lists
                 if ((this.Package.InstallerInfo.IgnoreWhiteList || Util.IsFileValid(insFile, this.Package.InstallerInfo.AllowableFiles)))
                 {
-					//Install File
+					// Install File
                     if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                     {
                         Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                     }
                     
-					//Copy file from temp location
+					// Copy file from temp location
 					Util.CopyFile(insFile, this.PhysicalBasePath, this.Log);
                     return true;
                 }
@@ -242,7 +242,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 this.Files.Add(file);
 
-                //Add to the
+                // Add to the
                 this.Package.InstallerInfo.Files[file.FullName.ToLowerInvariant()] = file;
             }
         }
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             string fileName = Null.NullString;
 
-            //Get the path
+            // Get the path
             XPathNavigator pathNav = nav.SelectSingleNode("path");
             if (pathNav == null)
             {
@@ -280,14 +280,14 @@ namespace DotNetNuke.Services.Installer.Installers
                 fileName = pathNav.Value + "\\";
             }
 			
-            //Get the name
+            // Get the name
             XPathNavigator nameNav = nav.SelectSingleNode("name");
             if (nameNav != null)
             {
                 fileName += nameNav.Value;
             }
             
-			//Get the sourceFileName
+			// Get the sourceFileName
 			string sourceFileName = Util.ReadElement(nav, "sourceFileName");
             var file = new InstallFile(fileName, sourceFileName, this.Package.InstallerInfo);
             if ((!string.IsNullOrEmpty(this.BasePath)) && (this.BasePath.StartsWith("app_code", StringComparison.InvariantCultureIgnoreCase) && file.Type == InstallFileType.Other))
@@ -296,7 +296,7 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             if (file != null)
             {
-                //Set the Version
+                // Set the Version
 				string strVersion = XmlUtils.GetNodeValue(nav, "version");
                 if (!string.IsNullOrEmpty(strVersion))
                 {
@@ -307,7 +307,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     file.SetVersion(this.Package.Version);
                 }
                 
-				//Set the Action
+				// Set the Action
 				string strAction = XmlUtils.GetAttributeValue(nav, "action");
                 if (!string.IsNullOrEmpty(strAction))
                 {

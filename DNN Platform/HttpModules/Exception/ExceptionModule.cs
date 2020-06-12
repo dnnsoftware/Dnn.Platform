@@ -76,7 +76,7 @@ namespace DotNetNuke.HttpModules.Exceptions
 
                 Exception lastException = srver.GetLastError();
 
-                //HttpExceptions are logged elsewhere
+                // HttpExceptions are logged elsewhere
                 if (!(lastException is HttpException))
                 {
                     var lex = new Exception("Unhandled Error: ", srver.GetLastError());
@@ -93,8 +93,8 @@ namespace DotNetNuke.HttpModules.Exceptions
             }
             catch (Exception exc)
             {
-                //it is possible when terminating the request for the context not to exist
-                //in this case we just want to exit since there is nothing else we can do
+                // it is possible when terminating the request for the context not to exist
+                // in this case we just want to exit since there is nothing else we can do
 				Logger.Error(exc);
             }
         }

@@ -23,25 +23,25 @@ namespace DotNetNuke.Services.Exceptions
         private int m_ModuleDefId;
         private int m_ModuleId;
 
-        //default constructor
+        // default constructor
 		public ModuleLoadException()
         {
         }
 
-        //constructor with exception message
+        // constructor with exception message
         public ModuleLoadException(string message) : base(message)
         {
             this.InitilizePrivateVariables();
         }
 
-        //constructor with exception message
+        // constructor with exception message
         public ModuleLoadException(string message, Exception inner, ModuleInfo ModuleConfiguration) : base(message, inner)
         {
             this.m_ModuleConfiguration = ModuleConfiguration;
             this.InitilizePrivateVariables();
         }
 
-        //constructor with message and inner exception
+        // constructor with message and inner exception
         public ModuleLoadException(string message, Exception inner) : base(message, inner)
         {
             this.InitilizePrivateVariables();
@@ -93,8 +93,8 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitilizePrivateVariables()
         {
-			//Try and get the Portal settings from context
-            //If an error occurs getting the context then set the variables to -1
+			// Try and get the Portal settings from context
+            // If an error occurs getting the context then set the variables to -1
             if ((this.m_ModuleConfiguration != null))
             {
                 this.m_ModuleId = this.m_ModuleConfiguration.ModuleID;
@@ -109,14 +109,14 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        //public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        //{
+        // public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        // {
         //    //Serialize this class' state and then call the base class GetObjectData
         //    info.AddValue("m_ModuleId", m_ModuleId, typeof (Int32));
         //    info.AddValue("m_ModuleDefId", m_ModuleDefId, typeof (Int32));
         //    info.AddValue("m_FriendlyName", m_FriendlyName, typeof (string));
         //    info.AddValue("m_ModuleControlSource", m_ModuleControlSource, typeof (string));
         //    base.GetObjectData(info, context);
-        //}
+        // }
     }
 }

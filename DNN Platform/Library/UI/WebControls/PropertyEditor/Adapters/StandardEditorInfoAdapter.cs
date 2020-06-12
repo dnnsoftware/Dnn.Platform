@@ -88,19 +88,19 @@ namespace DotNetNuke.UI.WebControls
         {
             var editInfo = new EditorInfo();
 
-            //Get the Name of the property
+            // Get the Name of the property
             editInfo.Name = objProperty.Name;
 
-            //Get the value of the property
+            // Get the value of the property
             editInfo.Value = objProperty.GetValue(dataSource, null);
 
-            //Get the type of the property
+            // Get the type of the property
             editInfo.Type = objProperty.PropertyType.AssemblyQualifiedName;
 
-            //Get the Custom Attributes for the property
+            // Get the Custom Attributes for the property
             editInfo.Attributes = objProperty.GetCustomAttributes(true);
 
-            //Get Category Field
+            // Get Category Field
             editInfo.Category = string.Empty;
             object[] categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
                 editInfo.Category = category.Category;
             }
 			
-            //Get EditMode Field
+            // Get EditMode Field
 
             if (!objProperty.CanWrite)
             {
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
 			
-            //Get Editor Field
+            // Get Editor Field
             editInfo.Editor = "UseSystemType";
             object[] editorAttributes = objProperty.GetCustomAttributes(typeof(EditorAttribute), true);
             if (editorAttributes.Length > 0)
@@ -148,12 +148,12 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
 			
-            //Get Required Field
+            // Get Required Field
             editInfo.Required = false;
             object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
             if (requiredAttributes.Length > 0)
             {
-                //The property may contain multiple edit mode types, so make sure we only use DotNetNuke editors.
+                // The property may contain multiple edit mode types, so make sure we only use DotNetNuke editors.
                 var required = (RequiredAttribute)requiredAttributes[0];
                 if (required.Required)
                 {
@@ -161,7 +161,7 @@ namespace DotNetNuke.UI.WebControls
                 }
             }
 			
-            //Get Css Style
+            // Get Css Style
             editInfo.ControlStyle = new Style();
             object[] StyleAttributes = objProperty.GetCustomAttributes(typeof(ControlStyleAttribute), true);
             if (StyleAttributes.Length > 0)
@@ -172,7 +172,7 @@ namespace DotNetNuke.UI.WebControls
                 editInfo.ControlStyle.Width = attribute.Width;
             }
 			
-            //Get LabelMode Field
+            // Get LabelMode Field
             editInfo.LabelMode = LabelMode.Left;
             object[] labelModeAttributes = objProperty.GetCustomAttributes(typeof(LabelModeAttribute), true);
             if (labelModeAttributes.Length > 0)
@@ -181,10 +181,10 @@ namespace DotNetNuke.UI.WebControls
                 editInfo.LabelMode = mode.Mode;
             }
 			
-            //Set ResourceKey Field
+            // Set ResourceKey Field
             editInfo.ResourceKey = string.Format("{0}_{1}", dataSource.GetType().Name, objProperty.Name);
 
-            //Get Validation Expression Field
+            // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;
             object[] regExAttributes = objProperty.GetCustomAttributes(typeof(RegularExpressionValidatorAttribute), true);
             if (regExAttributes.Length > 0)
@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.WebControls
                 editInfo.ValidationExpression = regExAttribute.Expression;
             }
 			
-            //Set Visibility
+            // Set Visibility
             editInfo.ProfileVisibility = new ProfileVisibility
                                              {
                                                  VisibilityMode = UserVisibilityMode.AllUsers

@@ -148,18 +148,18 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				//this needs to execute always to the client script code is registred in InvokePopupCal
+				// this needs to execute always to the client script code is registred in InvokePopupCal
                 this.cmdStartCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtStartDate);
                 this.cmdEndCalendar.NavigateUrl = Calendar.InvokePopupCal(this.txtEndDate);
                 if (!this.Page.IsPostBack)
                 {
                     if (!String.IsNullOrEmpty(this._URL))
                     {
-                        this.lblLogURL.Text = this.URL; //saved for loading Log grid
+                        this.lblLogURL.Text = this.URL; // saved for loading Log grid
                         TabType URLType = Globals.GetURLType(this._URL);
                         if (URLType == TabType.File && this._URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                         {
-                            //to handle legacy scenarios before the introduction of the FileServerHandler
+                            // to handle legacy scenarios before the introduction of the FileServerHandler
                             var fileName = Path.GetFileName(this._URL);
 
                             var folderPath = this._URL.Substring(0, this._URL.LastIndexOf(fileName));
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.UserControls
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -244,12 +244,12 @@ namespace DotNetNuke.UI.UserControls
                     strEndDate = strEndDate + " 23:59";
                 }
                 var objUrls = new UrlController();
-                //localize datagrid
+                // localize datagrid
                 Localization.LocalizeDataGrid(ref this.grdLog, this.LocalResourceFile);
                 this.grdLog.DataSource = objUrls.GetUrlLog(this.PortalSettings.PortalId, this.lblLogURL.Text, this.ModuleID, Convert.ToDateTime(strStartDate), Convert.ToDateTime(strEndDate));
                 this.grdLog.DataBind();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

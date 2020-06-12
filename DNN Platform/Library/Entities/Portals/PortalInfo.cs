@@ -658,7 +658,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (this._administratorRoleName == Null.NullString && this.AdministratorRoleId > Null.NullInteger)
                 {
-					//Get Role Name
+					// Get Role Name
                     RoleInfo adminRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.AdministratorRoleId);
                     if (adminRole != null)
                     {
@@ -740,7 +740,7 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (this._registeredRoleName == Null.NullString && this.RegisteredRoleId > Null.NullInteger)
                 {
-					//Get Role Name
+					// Get Role Name
                     RoleInfo regUsersRole = RoleController.Instance.GetRole(this.PortalID, r => r.RoleID == this.RegisteredRoleId);
                     if (regUsersRole != null)
                     {
@@ -781,11 +781,11 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (Globals.Status == Globals.UpgradeStatus.None)
                 {
-                    //this should not happen outside of an upgrade situation
+                    // this should not happen outside of an upgrade situation
                     throw;
                 }
 
-                //else swallow the error
+                // else swallow the error
             }
             
             this.PortalName = Null.SetNullString(dr["PortalName"]);

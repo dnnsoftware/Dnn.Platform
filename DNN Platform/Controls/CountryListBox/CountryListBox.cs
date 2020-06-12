@@ -85,46 +85,46 @@ namespace DotNetNuke.UI.WebControls
             string IP;
             if (!this.Page.IsPostBack)
             {
-				//If GeoIPFile is not provided, assume they put it in BIN.
+				// If GeoIPFile is not provided, assume they put it in BIN.
                 if (String.IsNullOrEmpty(this._GeoIPFile))
                 {
                     this._GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
                 }
                 this.EnsureChildControls();
-				//Check to see if a TestIP is specified
+				// Check to see if a TestIP is specified
                 if (!String.IsNullOrEmpty(this._TestIP))
                 {
-					//TestIP is specified, let's use it
+					// TestIP is specified, let's use it
                     IP = this._TestIP;
                 }
                 else if (this.Page.Request.UserHostAddress == "127.0.0.1")
                 {
-					//The country cannot be detected because the user is local.
+					// The country cannot be detected because the user is local.
                     IsLocal = true;
-					//Set the IP address in case they didn't specify LocalhostCountryCode
+					// Set the IP address in case they didn't specify LocalhostCountryCode
                     IP = this.Page.Request.UserHostAddress;
                 }
                 else
                 {
-					//Set the IP address so we can find the country
+					// Set the IP address so we can find the country
                     IP = this.Page.Request.UserHostAddress;
                 }
 				
-				//Check to see if we need to generate the Cache for the GeoIPData file
+				// Check to see if we need to generate the Cache for the GeoIPData file
                 if (this.Context.Cache.Get("GeoIPData") == null && this._CacheGeoIPData)
                 {
-					//Store it as	well as	setting	a dependency on	the	file
+					// Store it as	well as	setting	a dependency on	the	file
                     this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(this._GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(this._GeoIPFile)));
                 }
 				
-				//Check to see if the request is a localhost request
-				//and see if the LocalhostCountryCode is specified
+				// Check to see if the request is a localhost request
+				// and see if the LocalhostCountryCode is specified
                 if (IsLocal && !String.IsNullOrEmpty(this._LocalhostCountryCode))
                 {
-					//Bing the data
+					// Bing the data
                     base.OnDataBinding(e);
-					//Pre-Select the value in the drop-down based
-					//on the LocalhostCountryCode specified.
+					// Pre-Select the value in the drop-down based
+					// on the LocalhostCountryCode specified.
                     if (this.Items.FindByValue(this._LocalhostCountryCode) != null)
                     {
                         this.Items.FindByValue(this._LocalhostCountryCode).Selected = true;
@@ -132,39 +132,39 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-					//Either this is a remote request or it is a local
-					//request with no LocalhostCountryCode specified
+					// Either this is a remote request or it is a local
+					// request with no LocalhostCountryCode specified
                     CountryLookup _CountryLookup;
 
-					//Check to see if we are using the Cached
-					//version of the GeoIPData file
+					// Check to see if we are using the Cached
+					// version of the GeoIPData file
                     if (this._CacheGeoIPData)
                     {
-						//Yes, get it from cache
+						// Yes, get it from cache
                         _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
                     }
                     else
                     {
-						//No, get it from file
+						// No, get it from file
                         _CountryLookup = new CountryLookup(this.Context.Server.MapPath(this._GeoIPFile));
                     }
-					//Get the country code based on the IP address
+					// Get the country code based on the IP address
                     string _UserCountryCode = _CountryLookup.LookupCountryCode(IP);
 
-					//Bind the datasource
+					// Bind the datasource
                     base.OnDataBinding(e);
 
-					//Make sure the value returned is actually
-					//in the drop-down list.
+					// Make sure the value returned is actually
+					// in the drop-down list.
                     if (this.Items.FindByValue(_UserCountryCode) != null)
                     {
-						//Yes, it's there, select it based on its value
+						// Yes, it's there, select it based on its value
                         this.Items.FindByValue(_UserCountryCode).Selected = true;
                     }
                     else
                     {
-						//No it's not there.  Let's get the Country description
-						//and add a new list item for the Country detected
+						// No it's not there.  Let's get the Country description
+						// and add a new list item for the Country detected
                         string _UserCountry = _CountryLookup.LookupCountryName(IP);
                         if (_UserCountry != "N/A")
                         {
@@ -172,7 +172,7 @@ namespace DotNetNuke.UI.WebControls
                             newItem.Value = _UserCountryCode;
                             newItem.Text = _UserCountry;
                             this.Items.Insert(0, newItem);
-							//Now let's Pre-Select it
+							// Now let's Pre-Select it
                             this.Items.FindByValue(_UserCountryCode).Selected = true;
                         }
                     }

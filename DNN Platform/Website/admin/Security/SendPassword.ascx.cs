@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 object setting = GetSetting(this.PortalId, "Redirect_AfterRegistration");
 
-                if (Convert.ToInt32(setting) > 0) //redirect to after registration page
+                if (Convert.ToInt32(setting) > 0) // redirect to after registration page
                 {
                     _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
@@ -79,10 +79,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.Request.QueryString["returnurl"] != null)
                     {
-                        //return to the url passed to register
+                        // return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                        //clean the return url to avoid possible XSS attack.
+                        // clean the return url to avoid possible XSS attack.
                         _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
 
                         if (_RedirectURL.Contains("?returnurl"))
@@ -97,11 +97,11 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
-                        //redirect to current page
+                        // redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
                     }
                 }
-                else //redirect to after registration page
+                else // redirect to after registration page
                 {
                     _RedirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
                 }
@@ -171,7 +171,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             var isEnabled = true;
 
-            //both retrieval and reset now use password token resets
+            // both retrieval and reset now use password token resets
             if (MembershipProviderConfig.PasswordRetrievalEnabled || MembershipProviderConfig.PasswordResetEnabled)
             {
                 this.lblHelp.Text = Localization.GetString("ResetTokenHelp", this.LocalResourceFile);
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Security
         /// </remarks>
         protected void OnSendPasswordClick(Object sender, EventArgs e)
         {
-            //pretty much alwasy display the same message to avoid hinting on the existance of a user name
+            // pretty much alwasy display the same message to avoid hinting on the existance of a user name
             var message = Localization.GetString("PasswordSent", this.LocalResourceFile);
             var moduleMessageType = ModuleMessage.ModuleMessageType.GreenSuccess;
             var canSend = true;
@@ -245,12 +245,12 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 if (String.IsNullOrEmpty(this.txtUsername.Text.Trim()))
                 {
-                    //No UserName provided
+                    // No UserName provided
                     if (this.ShowEmailField)
                     {
                         if (String.IsNullOrEmpty(this.txtEmail.Text.Trim()))
                         {
-                            //No email address either (cannot retrieve password)
+                            // No email address either (cannot retrieve password)
                             canSend = false;
                             message = Localization.GetString("EnterUsernameEmail", this.LocalResourceFile);
                             moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                     else
                     {
-                        //Cannot retrieve password
+                        // Cannot retrieve password
                         canSend = false;
                         message = Localization.GetString("EnterUsername", this.LocalResourceFile);
                         moduleMessageType = ModuleMessage.ModuleMessageType.RedError;
@@ -267,7 +267,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
                 if (string.IsNullOrEmpty(Host.SMTPServer))
                 {
-                    //SMTP Server is not configured
+                    // SMTP Server is not configured
                     canSend = false;
                     message = Localization.GetString("OptionUnavailable", this.LocalResourceFile);
                     moduleMessageType = ModuleMessage.ModuleMessageType.YellowWarning;
@@ -326,7 +326,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         this.LogFailure(message);
                     }
 
-					//always hide panel so as to not reveal if username exists.
+					// always hide panel so as to not reveal if username exists.
                     this.pnlRecover.Visible = false;
                     UI.Skins.Skin.AddModuleMessage(this, message, moduleMessageType);
                     this.liSend.Visible = false;

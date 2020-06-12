@@ -1000,8 +1000,8 @@ namespace log4net.Appender
 			} 
 			catch (FormatException) 
 			{
-				//this happens when file.log -> file.log.yyyy-MM-dd which is normal
-				//when staticLogFileName == false
+				// this happens when file.log -> file.log.yyyy-MM-dd which is normal
+				// when staticLogFileName == false
 				LogLog.Debug(declaringType, "Encountered a backup file not ending in .x [" + curFileName + "]");
 			}
 		}
@@ -1222,9 +1222,9 @@ namespace log4net.Appender
 					return;
 				}
 	  
-				//is the new file name equivalent to the 'current' one
-				//something has gone wrong if we hit this -- we should only
-				//roll over if the new file will be different from the old
+				// is the new file name equivalent to the 'current' one
+				// something has gone wrong if we hit this -- we should only
+				// roll over if the new file will be different from the old
 				string dateFormat = this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo);
                 if (this.m_scheduledFilename.Equals(this.CombinePath(this.File, dateFormat))) 
 				{
@@ -1238,7 +1238,7 @@ namespace log4net.Appender
 					this.CloseFile();
 				}
 	  
-				//we may have to roll over a large number of backups here
+				// we may have to roll over a large number of backups here
 				for (int i = 1; i <= this.m_curSizeRollBackups; i++) 
 				{
                     string from = this.CombinePath(this.File, "." + i);
@@ -1249,10 +1249,10 @@ namespace log4net.Appender
 				this.RollFile(this.File, this.m_scheduledFilename);
 			}
 	
-			//We've cleared out the old date and are ready for the new
+			// We've cleared out the old date and are ready for the new
 			this.m_curSizeRollBackups = 0; 
 	
-			//new scheduled name
+			// new scheduled name
             this.m_scheduledFilename = this.CombinePath(this.File, this.m_now.ToString(this.m_datePattern, System.Globalization.DateTimeFormatInfo.InvariantInfo));
 
 			if (fileIsOpen)
@@ -1479,10 +1479,10 @@ namespace log4net.Appender
 				} 
 				else 
 				{
-					//countDirection >= 0
+					// countDirection >= 0
 					if (this.m_curSizeRollBackups >= this.m_maxSizeRollBackups && this.m_maxSizeRollBackups > 0) 
 					{
-						//delete the first and keep counting up.
+						// delete the first and keep counting up.
 						int oldestFileIndex = this.m_curSizeRollBackups - this.m_maxSizeRollBackups;
 
 						// If static then there is 1 file without a number, therefore 1 less archive

@@ -24,7 +24,7 @@ namespace DotNetNuke.Entities.Modules
 
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst 
+            // Write start of main elemenst 
             writer.WriteStartElement("module");
 
             writer.WriteElementString("moduleName", this.ModuleName);
@@ -32,7 +32,7 @@ namespace DotNetNuke.Entities.Modules
             writer.WriteElementString("version", this.Version);
             writer.WriteElementString("instances", this.Instances.ToString());
 
-            //Write end of Host Info 
+            // Write end of Host Info 
             writer.WriteEndElement();
         }
     }

@@ -66,22 +66,22 @@ namespace DotNetNuke.Modules.Admin.Modules
         private void BindFiles(string controlSrc)
         {
             this.cboFile.Items.Clear();
-            //cboFile.Items.Add(new ListItem(Localization.GetString("None_Specified"), "None"));
-            //cboFile.Items.Add(new ListItem("User Control", "UserControl"));
+            // cboFile.Items.Add(new ListItem(Localization.GetString("None_Specified"), "None"));
+            // cboFile.Items.Add(new ListItem("User Control", "UserControl"));
             this.cboFile.AddItem(Localization.GetString("None_Specified"), "None");
             this.cboFile.AddItem("User Control", "UserControl");
 
             var srcPhysicalPath = this.Server.MapPath(controlSrc);
             if (File.Exists(srcPhysicalPath + ".vb") || File.Exists(srcPhysicalPath + ".cs"))
             {
-                //cboFile.Items.Add(new ListItem("Code File", "CodeFile"));
+                // cboFile.Items.Add(new ListItem("Code File", "CodeFile"));
                 this.cboFile.AddItem("Code File", "CodeFile");
             }
             var fileName = Path.GetFileName(srcPhysicalPath);
             var folder = Path.GetDirectoryName(srcPhysicalPath);
             if (File.Exists(folder + "\\App_LocalResources\\" + fileName + ".resx"))
             {
-                //cboFile.Items.Add(new ListItem("Resource File", "ResourceFile"));
+                // cboFile.Items.Add(new ListItem("Resource File", "ResourceFile"));
                 this.cboFile.AddItem("Resource File", "ResourceFile");
             }
         }
@@ -181,7 +181,7 @@ namespace DotNetNuke.Modules.Admin.Modules
             {
                 if (this.cboFile.SelectedValue == "None")
                 {
-                    //No file type selected
+                    // No file type selected
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoFileTypeSelected", this.LocalResourceFile), ModuleMessage.ModuleMessageType.RedError);
                 }
                 else
@@ -202,7 +202,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                     this.Response.Redirect(this.ReturnURL, true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

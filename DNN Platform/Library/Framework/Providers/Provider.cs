@@ -19,13 +19,13 @@ namespace DotNetNuke.Framework.Providers
 
         public Provider(XmlAttributeCollection Attributes)
         {
-            //Set the name of the provider
+            // Set the name of the provider
             this._ProviderName = Attributes["name"].Value;
 
-            //Set the type of the provider
+            // Set the type of the provider
             this._ProviderType = Attributes["type"].Value;
 
-            //Store all the attributes in the attributes bucket
+            // Store all the attributes in the attributes bucket
             foreach (XmlAttribute Attribute in Attributes)
             {
                 if (Attribute.Name != "name" && Attribute.Name != "type")

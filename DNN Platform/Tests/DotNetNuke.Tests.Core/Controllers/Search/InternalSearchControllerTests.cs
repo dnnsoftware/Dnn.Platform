@@ -192,7 +192,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
 
         private void SetupDataProvider()
         {
-            //Standard DataProvider Path for Logging
+            // Standard DataProvider Path for Logging
             this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
 
             DataTableReader searchTypes = null;
@@ -320,7 +320,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
             dtSearchTypes.Columns.Add("SearchResultClass", typeof(string));
             dtSearchTypes.PrimaryKey = new[] {pkId};
 
-            //Create default Crawler
+            // Create default Crawler
             dtSearchTypes.Rows.Add(ModuleSearchTypeId, ModuleSearchTypeName, FakeResultControllerClass);
             dtSearchTypes.Rows.Add(TabSearchTypeId, TabSearchTypeName, FakeResultControllerClass);
             dtSearchTypes.Rows.Add(OtherSearchTypeId, OtherSearchTypeName, FakeResultControllerClass);
@@ -369,27 +369,27 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Null_SearchDocument()
         {
-            //Arrange            
+            // Arrange            
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this._internalSearchController.AddSearchDocument(null));
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Null_Or_Empty_UniqueuKey()
         {
-            //Arrange            
+            // Arrange            
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentException>(() => this._internalSearchController.AddSearchDocument(new SearchDocument()));
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Null_OrEmpty_Title()
         {
-            //Arrange            
+            // Arrange            
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}));
         }
@@ -398,29 +398,29 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Null_OrEmpty_Title()
         {
-            //Arrange            
+            // Arrange            
             var documents = new List<SearchDocument> {new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}};
 
-            //Act, Assert
+            // Act, Assert
             this._internalSearchController.AddSearchDocuments(documents);
         }
 
         [Test]
         public void SearchController_AddSearchDcoumets_Does_Not_Throw_On_Empty_Search_Document()
         {
-            //Arrange            
+            // Arrange            
             var documents = new List<SearchDocument> {new SearchDocument()};
 
-            //Act, Assert
+            // Act, Assert
             this._internalSearchController.AddSearchDocuments(documents);
         }
 
         [Test]
         public void SearchController_Add_Throws_On_Zero_SearchTypeId()
         {
-            //Arrange            
+            // Arrange            
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
                 () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString()}));
         }
@@ -428,9 +428,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_Negative_SearchTypeId()
         {
-            //Arrange            
+            // Arrange            
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentOutOfRangeException>(
                 () =>
                     this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = -1}));
@@ -439,9 +439,9 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Throws_On_DateTimeMin_ModifiedTimeUtc()
         {
-            //Arrange            
+            // Arrange            
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentException>(
                 () => this._internalSearchController.AddSearchDocument(new SearchDocument {UniqueKey = Guid.NewGuid().ToString(), Title = "title", SearchTypeId = 1}));
         }
@@ -453,11 +453,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_ModuleDefinition_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -473,24 +473,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
+            // Act - delete last item
             var searchDoc = new SearchDocument {ModuleDefId = totalDocs};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
+            // Act - delete first item
             searchDoc = new SearchDocument {ModuleDefId = 1};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -499,11 +499,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Module_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -519,24 +519,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
+            // Act - delete last item
             var searchDoc = new SearchDocument {ModuleId = totalDocs};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
+            // Act - delete first item
             searchDoc = new SearchDocument {ModuleId = 1};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -545,11 +545,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Portals_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10; // must be even
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -565,15 +565,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete all portal 1 items
+            // Act - delete all portal 1 items
             var searchDoc = new SearchDocument {PortalId = PortalId1};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert - delete all portal 1
+            // Assert - delete all portal 1
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs / 2, stats.TotalActiveDocuments);
             Assert.AreEqual(totalDocs / 2, stats.TotalDeletedDocuments);
@@ -582,11 +582,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Roles_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -603,24 +603,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
+            // Act - delete last item
             var searchDoc = new SearchDocument {RoleId = totalDocs};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
+            // Act - delete first item
             searchDoc = new SearchDocument {RoleId = 1};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -629,11 +629,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Tabs_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -648,24 +648,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
+            // Act - delete last item
             var searchDoc = new SearchDocument {TabId = totalDocs};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
+            // Act - delete first item
             searchDoc = new SearchDocument {TabId = 1};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);
@@ -674,11 +674,11 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
         [Test]
         public void SearchController_Add_Then_Delete_Users_WorksAsExpected()
         {
-            //Arrange
+            // Arrange
             const int totalDocs = 10;
             var now = DateTime.UtcNow;
 
-            //Act
+            // Act
             for (var i = 1; i <= totalDocs; i++)
             {
                 var doc = new SearchDocument
@@ -695,24 +695,24 @@ namespace DotNetNuke.Tests.Core.Controllers.Search
                 this._internalSearchController.AddSearchDocument(doc);
             }
 
-            //Assert
+            // Assert
             var stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs, stats.TotalActiveDocuments);
 
-            //Act - delete last item
+            // Act - delete last item
             var searchDoc = new SearchDocument {AuthorUserId = totalDocs};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 1, stats.TotalActiveDocuments);
             Assert.AreEqual(1, stats.TotalDeletedDocuments);
 
-            //Act - delete first item
+            // Act - delete first item
             searchDoc = new SearchDocument {AuthorUserId = 1};
             this._internalSearchController.DeleteSearchDocument(searchDoc);
 
-            //Assert
+            // Assert
             stats = this.GetSearchStatistics();
             Assert.AreEqual(totalDocs - 2, stats.TotalActiveDocuments);
             Assert.AreEqual(2, stats.TotalDeletedDocuments);

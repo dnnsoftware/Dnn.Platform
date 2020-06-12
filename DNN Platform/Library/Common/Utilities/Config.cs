@@ -36,7 +36,7 @@ namespace DotNetNuke.Common.Utilities
         public enum ConfigFileType
         {
             DotNetNuke,
-            //compatible with glbDotNetNukeConfig
+            // compatible with glbDotNetNukeConfig
             SiteAnalytics,
             Compression,
             SiteUrls,
@@ -68,29 +68,29 @@ namespace DotNetNuke.Common.Utilities
         /// <returns></returns>
         public static XmlDocument AddAppSetting(XmlDocument xmlDoc, string key, string value, bool update)
         {
-            //retrieve the appSettings node 
+            // retrieve the appSettings node 
             XmlNode xmlAppSettings = xmlDoc.SelectSingleNode("//appSettings");
             if (xmlAppSettings != null)
             {
                 XmlElement xmlElement;
-                //get the node based on key
+                // get the node based on key
                 XmlNode xmlNode = xmlAppSettings.SelectSingleNode(("//add[@key='" + key + "']"));
                 if (update && xmlNode != null)
                 {
-                    //update the existing element
+                    // update the existing element
                     xmlElement = (XmlElement)xmlNode;
                     xmlElement.SetAttribute("value", value);
                 }
                 else
                 {
-                    //create a new element
+                    // create a new element
                     xmlElement = xmlDoc.CreateElement("add");
                     xmlElement.SetAttribute("key", key);
                     xmlElement.SetAttribute("value", value);
                     xmlAppSettings.AppendChild(xmlElement);
                 }
             }
-            //return the xml doc
+            // return the xml doc
             return xmlDoc;
         }
 
@@ -112,16 +112,16 @@ namespace DotNetNuke.Common.Utilities
             XmlNode xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation");
             if (xmlCompilation == null)
             {
-                //Try location node
+                // Try location node
                 xmlCompilation = xmlConfig.SelectSingleNode("configuration/location/system.web/compilation");
             }
-            //Get the CodeSubDirectories Node
+            // Get the CodeSubDirectories Node
             if (xmlCompilation != null)
             {
                 XmlNode xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
                 if (xmlSubDirectories == null)
                 {
-                    //Add Node
+                    // Add Node
                     xmlSubDirectories = xmlConfig.CreateElement("codeSubDirectories");
                     xmlCompilation.AppendChild(xmlSubDirectories);
                 }
@@ -133,11 +133,11 @@ namespace DotNetNuke.Common.Utilities
                     codeSubDirectoryName = name.Substring(0, length);
                 }
 
-                //Check if the node is already present
+                // Check if the node is already present
                 XmlNode xmlSubDirectory = xmlSubDirectories.SelectSingleNode("add[@directoryName='" + codeSubDirectoryName + "']");
                 if (xmlSubDirectory == null)
                 {
-                    //Add Node
+                    // Add Node
                     xmlSubDirectory = xmlConfig.CreateElement("add");
                     XmlUtils.CreateAttribute(xmlConfig, xmlSubDirectory, "directoryName", codeSubDirectoryName);
                     xmlSubDirectories.AppendChild(xmlSubDirectory);
@@ -149,7 +149,7 @@ namespace DotNetNuke.Common.Utilities
         public static void BackupConfig()
         {
             string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
-            //save the current config files
+            // save the current config files
             try
             {
                 if (!Directory.Exists(Globals.ApplicationMapPath + backupFolder))
@@ -190,19 +190,19 @@ namespace DotNetNuke.Common.Utilities
         public static string GetConnectionString(string name)
         {
             string connectionString = "";
-            //First check if connection string is specified in <connectionstrings> (ASP.NET 2.0 / DNN v4.x)
+            // First check if connection string is specified in <connectionstrings> (ASP.NET 2.0 / DNN v4.x)
             if (!String.IsNullOrEmpty(name))
             {
-                //ASP.NET 2 version connection string (in <connectionstrings>)
-                //This will be for new v4.x installs or upgrades from v4.x
+                // ASP.NET 2 version connection string (in <connectionstrings>)
+                // This will be for new v4.x installs or upgrades from v4.x
                 connectionString = WebConfigurationManager.ConnectionStrings[name].ConnectionString;
             }
             if (String.IsNullOrEmpty(connectionString))
             {
                 if (!String.IsNullOrEmpty(name))
                 {
-                    //Next check if connection string is specified in <appsettings> (ASP.NET 1.1 / DNN v3.x)
-                    //This will accomodate upgrades from v3.x
+                    // Next check if connection string is specified in <appsettings> (ASP.NET 1.1 / DNN v3.x)
+                    // This will accomodate upgrades from v3.x
                     connectionString = GetSetting(name);
                 }
             }
@@ -361,7 +361,7 @@ namespace DotNetNuke.Common.Utilities
         public static Provider GetDefaultProvider(string type)
         {
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
-            //Read the configuration specific information for this provider
+            // Read the configuration specific information for this provider
             return (Provider)providerConfiguration.Providers[providerConfiguration.DefaultProvider];
         }
 
@@ -421,10 +421,10 @@ namespace DotNetNuke.Common.Utilities
         public static int GetAuthCookieTimeout()
         {
             XPathNavigator configNav = Load().CreateNavigator();
-            //Select the location node
+            // Select the location node
             XPathNavigator locationNav = configNav.SelectSingleNode("configuration/location");
             XPathNavigator formsNav;
-            //Test for the existence of the location node if it exists then include that in the nodes of the XPath Query
+            // Test for the existence of the location node if it exists then include that in the nodes of the XPath Query
             if (locationNav == null)
             {
                 formsNav = configNav.SelectSingleNode("configuration/system.web/authentication/forms");
@@ -458,7 +458,7 @@ namespace DotNetNuke.Common.Utilities
         public static Provider GetProvider(string type, string name)
         {
             ProviderConfiguration providerConfiguration = ProviderConfiguration.GetProviderConfiguration(type);
-            //Read the configuration specific information for this provider
+            // Read the configuration specific information for this provider
             return (Provider)providerConfiguration.Providers[name];
         }
 
@@ -495,7 +495,7 @@ namespace DotNetNuke.Common.Utilities
         {
 
             XPathNavigator configNav = Load().CreateNavigator();
-            //Select the location node
+            // Select the location node
             var customErrorsNav = configNav.SelectSingleNode("//configuration/system.web/customErrors|//configuration/location/system.web/customErrors");
 
             string customErrorMode = XmlUtils.GetAttributeValue(customErrorsNav, "mode");
@@ -509,13 +509,13 @@ namespace DotNetNuke.Common.Utilities
 
         public static XmlDocument Load(string filename)
         {
-            //open the config file
+            // open the config file
             var xmlDoc = new XmlDocument { XmlResolver = null };
             xmlDoc.Load(Globals.ApplicationMapPath + "\\" + filename);
-            //test for namespace added by Web Admin Tool
+            // test for namespace added by Web Admin Tool
             if (!String.IsNullOrEmpty(xmlDoc.DocumentElement.GetAttribute("xmlns")))
             {
-                //remove namespace
+                // remove namespace
                 string strDoc = xmlDoc.InnerXml.Replace("xmlns=\"http://schemas.microsoft.com/.NetConfiguration/v2.0\"", "");
                 xmlDoc.LoadXml(strDoc);
             }
@@ -525,18 +525,18 @@ namespace DotNetNuke.Common.Utilities
         public static void RemoveCodeSubDirectory(string name)
         {
             XmlDocument xmlConfig = Load();
-            //Select the location node
+            // Select the location node
             XmlNode xmlCompilation = xmlConfig.SelectSingleNode("configuration/system.web/compilation");
             if (xmlCompilation == null)
             {
-                //Try location node
+                // Try location node
                 xmlCompilation = xmlConfig.SelectSingleNode("configuration/location/system.web/compilation");
             }
-            //Get the CodeSubDirectories Node
+            // Get the CodeSubDirectories Node
             XmlNode xmlSubDirectories = xmlCompilation.SelectSingleNode("codeSubDirectories");
             if (xmlSubDirectories == null)
             {
-                //Parent doesn't exist so subDirectory node can't exist
+                // Parent doesn't exist so subDirectory node can't exist
                 return;
             }
 
@@ -547,11 +547,11 @@ namespace DotNetNuke.Common.Utilities
                 codeSubDirectoryName = name.Substring(0, length);
             }
 
-            //Check if the node is present
+            // Check if the node is present
             XmlNode xmlSubDirectory = xmlSubDirectories.SelectSingleNode("add[@directoryName='" + codeSubDirectoryName + "']");
             if (xmlSubDirectory != null)
             {
-                //Remove Node
+                // Remove Node
                 xmlSubDirectories.RemoveChild(xmlSubDirectory);
 
                 Save(xmlConfig);
@@ -572,9 +572,9 @@ namespace DotNetNuke.Common.Utilities
                 var objFileAttributes = FileAttributes.Normal;
                 if (File.Exists(strFilePath))
                 {
-                    //save current file attributes
+                    // save current file attributes
                     objFileAttributes = File.GetAttributes(strFilePath);
-                    //change to normal ( in case it is flagged as read-only )
+                    // change to normal ( in case it is flagged as read-only )
                     File.SetAttributes(strFilePath, FileAttributes.Normal);
                 }
 
@@ -586,7 +586,7 @@ namespace DotNetNuke.Common.Utilities
                 {
                     try
                     {
-                        //save the config file
+                        // save the config file
                         var settings = new XmlWriterSettings { CloseOutput = true, Indent = true };
                         using (var writer = XmlWriter.Create(strFilePath, settings))
                         {
@@ -609,7 +609,7 @@ namespace DotNetNuke.Common.Utilities
                     }
                 }
 
-                //reset file attributes
+                // reset file attributes
                 File.SetAttributes(strFilePath, objFileAttributes);
             }
             catch (Exception exc)
@@ -642,15 +642,15 @@ namespace DotNetNuke.Common.Utilities
             XmlDocument xmlConfig = Load();
             string name = GetDefaultProvider("data").Attributes["connectionStringName"];
 
-            //Update ConnectionStrings
+            // Update ConnectionStrings
             XmlNode xmlConnection = xmlConfig.SelectSingleNode("configuration/connectionStrings/add[@name='" + name + "']");
             XmlUtils.UpdateAttribute(xmlConnection, "connectionString", conn);
 
-            //Update AppSetting
+            // Update AppSetting
             XmlNode xmlAppSetting = xmlConfig.SelectSingleNode("configuration/appSettings/add[@key='" + name + "']");
             XmlUtils.UpdateAttribute(xmlAppSetting, "value", conn);
 
-            //Save changes
+            // Save changes
             Save(xmlConfig);
         }
 
@@ -658,12 +658,12 @@ namespace DotNetNuke.Common.Utilities
         {
             XmlDocument xmlConfig = Load();
 
-            //Update provider
+            // Update provider
             XmlNode xmlProvider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/data/providers/add[@name='" + name + "']");
             XmlUtils.UpdateAttribute(xmlProvider, "databaseOwner", databaseOwner);
             XmlUtils.UpdateAttribute(xmlProvider, "objectQualifier", objectQualifier);
 
-            //Save changes
+            // Save changes
             Save(xmlConfig);
         }
 
@@ -677,11 +677,11 @@ namespace DotNetNuke.Common.Utilities
         {
             XmlDocument xmlConfig = Load();
 
-            //Update provider
+            // Update provider
             XmlNode xmlProvider = xmlConfig.SelectSingleNode("configuration/dotnetnuke/data/providers/add[@name='" + name + "']");
             XmlUtils.UpdateAttribute(xmlProvider, "upgradeConnectionString", upgradeConnectionString);
 
-            //Save changes
+            // Save changes
             Save(xmlConfig);
         }
 
@@ -691,14 +691,14 @@ namespace DotNetNuke.Common.Utilities
             var xmlConfig = new XmlDocument { XmlResolver = null };
             string strError = "";
 
-            //save the current config files
+            // save the current config files
             BackupConfig();
             try
             {
-                //open the web.config
+                // open the web.config
                 xmlConfig = Load();
 
-                //create random keys for the Membership machine keys
+                // create random keys for the Membership machine keys
                 xmlConfig = UpdateMachineKey(xmlConfig);
 
             }
@@ -708,10 +708,10 @@ namespace DotNetNuke.Common.Utilities
                 strError += ex.Message;
             }
 
-            //save a copy of the web.config
+            // save a copy of the web.config
             strError += Save(xmlConfig, backupFolder + "web_.config");
 
-            //save the web.config
+            // save the web.config
             strError += Save(xmlConfig);
 
             return strError;
@@ -738,14 +738,14 @@ namespace DotNetNuke.Common.Utilities
             var xmlConfig = new XmlDocument { XmlResolver = null };
             string strError = "";
 
-            //save the current config files
+            // save the current config files
             BackupConfig();
             try
             {
-                //open the web.config
+                // open the web.config
                 xmlConfig = Load();
 
-                //create random keys for the Membership machine keys
+                // create random keys for the Membership machine keys
                 xmlConfig = UpdateValidationKey(xmlConfig);
             }
             catch (Exception ex)
@@ -754,10 +754,10 @@ namespace DotNetNuke.Common.Utilities
                 strError += ex.Message;
             }
 
-            //save a copy of the web.config
+            // save a copy of the web.config
             strError += Save(xmlConfig, backupFolder + "web_.config");
 
-            //save the web.config
+            // save the web.config
             strError += Save(xmlConfig);
             return strError;
         }
@@ -803,7 +803,7 @@ namespace DotNetNuke.Common.Utilities
 
             if (!File.Exists(path) || overwrite)
             {
-                //Copy from \Config
+                // Copy from \Config
                 string pathToDefault = Path.Combine(Globals.ApplicationMapPath + Globals.glbConfigFolder, fileName);
                 if ((File.Exists(pathToDefault)))
                 {
@@ -840,14 +840,14 @@ namespace DotNetNuke.Common.Utilities
 
 				string backupFolder = string.Concat(Globals.glbConfigFolder, "Backup_", DateTime.Now.ToString("yyyyMMddHHmm"), "\\");
                 var xmlConfig = new XmlDocument { XmlResolver = null };
-                //save the current config files
+                // save the current config files
                 BackupConfig();
                 try
                 {
-                    //open the web.config
+                    // open the web.config
                     xmlConfig = Load();
 
-                    //Update the InstallVersion
+                    // Update the InstallVersion
                     xmlConfig = UpdateInstallVersion(xmlConfig, version);
 
                 }
@@ -857,10 +857,10 @@ namespace DotNetNuke.Common.Utilities
                     strError += ex.Message;
                 }
 
-                //save a copy of the web.config
+                // save a copy of the web.config
                 strError += Save(xmlConfig, backupFolder + "web_.config");
 
-                //save the web.config
+                // save the web.config
                 strError += Save(xmlConfig);
 
             }
@@ -887,23 +887,23 @@ namespace DotNetNuke.Common.Utilities
             try
             {
                 
-                //check current .net version and if attribute has been added already
+                // check current .net version and if attribute has been added already
                 if ((IsNet45OrNewer()) && GetFcnMode() != fcnMode.ToString())
                 {
-                    //open the web.config
+                    // open the web.config
                     var xmlConfig = Load();
 
                     var xmlhttpRunTimeKey = xmlConfig.SelectSingleNode("configuration/system.web/httpRuntime") ??
                                                 xmlConfig.SelectSingleNode("configuration/location/system.web/httpRuntime");
                     XmlUtils.CreateAttribute(xmlConfig, xmlhttpRunTimeKey, "fcnMode", fcnMode.ToString());
 
-                    //save the web.config
+                    // save the web.config
                     Save(xmlConfig);
                 }
             }
             catch (Exception ex)
             {
-                //in case of error installation shouldn't be stopped, log into log4net
+                // in case of error installation shouldn't be stopped, log into log4net
                 Logger.Error(ex);
             }
             return "";  

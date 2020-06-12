@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Search.Internals
         private FastVectorHighlighter _fastHighlighter;
         private readonly object _writerLock = new object();
         private readonly double _readerTimeSpan; // in seconds
-        private readonly int _searchRetryTimes; //search retry times if exception thrown during search process
+        private readonly int _searchRetryTimes; // search retry times if exception thrown during search process
         private readonly List<CachedReader> _oldReaders = new List<CachedReader>();
         private int _isDisposed = UNDISPOSED;
 
@@ -148,11 +148,11 @@ namespace DotNetNuke.Services.Search.Internals
             IndexSearcher searcher;
             if (this._idxReader != null)
             {
-                //use the Reopen() method for better near-realtime when the _writer ins't null
+                // use the Reopen() method for better near-realtime when the _writer ins't null
                 var newReader = this._idxReader.Reopen();
                 if (this._idxReader != newReader)
                 {
-                    //_idxReader.Dispose(); -- will get disposed upon disposing the searcher
+                    // _idxReader.Dispose(); -- will get disposed upon disposing the searcher
                     Interlocked.Exchange(ref this._idxReader, newReader);
                 }
 
@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             var luceneResults = new LuceneResults();
 
-            //validate whether index folder is exist and contains index files, otherwise return null.
+            // validate whether index folder is exist and contains index files, otherwise return null.
             if (!this.ValidateIndexFolder())
             {
                 return luceneResults;
@@ -281,7 +281,7 @@ namespace DotNetNuke.Services.Search.Internals
                         Logger.Trace(sb);
                     }
 
-                    //Page doesn't exist
+                    // Page doesn't exist
                     if (luceneResults.TotalHits < minResults)
                         break;
 
@@ -414,7 +414,7 @@ namespace DotNetNuke.Services.Search.Internals
                 }
 
                 this.CheckDisposed();
-                //optimize down to "> 1 segments" for better performance than down to 1
+                // optimize down to "> 1 segments" for better performance than down to 1
                 this._writer.Optimize(4, doWait);
                 
                 if (doWait)
@@ -461,7 +461,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             return new SearchStatistics
                 {
-                    //Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
+                    // Hack: seems that NumDocs/MaxDoc are buggy and return incorrect/swapped values
                     TotalActiveDocuments = searcher.IndexReader.NumDocs(),
                     TotalDeletedDocuments = searcher.IndexReader.NumDeletedDocs,
                     IndexLocation = this.IndexFolder,

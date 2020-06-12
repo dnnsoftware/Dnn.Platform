@@ -80,18 +80,18 @@ namespace DotNetNuke.Security.Permissions
                     // add WorkflowState Permission to dictionary
                     if (dic.ContainsKey(obj.StateID))
                     {
-                        //Add WorkflowStatePermission to WorkflowStatePermission Collection already in dictionary for StateId
+                        // Add WorkflowStatePermission to WorkflowStatePermission Collection already in dictionary for StateId
                         dic[obj.StateID].Add(obj);
                     }
                     else
                     {
-                        //Create new WorkflowStatePermission Collection for WorkflowStatePermissionID
+                        // Create new WorkflowStatePermission Collection for WorkflowStatePermissionID
                         var collection = new WorkflowStatePermissionCollection();
 
-                        //Add Permission to Collection
+                        // Add Permission to Collection
                         collection.Add(obj);
 
-                        //Add Collection to Dictionary
+                        // Add Collection to Dictionary
                         dic.Add(obj.StateID, collection);
                     }
                 }
@@ -125,16 +125,16 @@ namespace DotNetNuke.Security.Permissions
         {
             bool bFound = false;
 
-            //Get the WorkflowStatePermission Dictionary
+            // Get the WorkflowStatePermission Dictionary
             Dictionary<int, WorkflowStatePermissionCollection> dicWorkflowStatePermissions = GetWorkflowStatePermissions();
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             WorkflowStatePermissionCollection WorkflowStatePermissions = null;
             bFound = dicWorkflowStatePermissions.TryGetValue(StateID, out WorkflowStatePermissions);
 
             if (!bFound)
             {
-                //try the database
+                // try the database
                 WorkflowStatePermissions = new WorkflowStatePermissionCollection(CBO.FillCollection(provider.GetWorkflowStatePermissionsByStateID(StateID), typeof(WorkflowStatePermissionInfo)),
                                                                                  StateID);
             }

@@ -86,7 +86,7 @@ namespace DotNetNuke.Services.UserProfile
 	                {
 						context.Response.End();
 	                }
-					catch (ThreadAbortException)//if ThreadAbortException will shown, should catch it and do nothing.
+					catch (ThreadAbortException)// if ThreadAbortException will shown, should catch it and do nothing.
 	                {
 		                
 	                }
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.UserProfile
             context.ApplicationInstance.CompleteRequest();
         }
 
-        //whether current user has permission to view target user's photo.
+        // whether current user has permission to view target user's photo.
         private bool TryGetPhotoFile(UserInfo targetUser, out IFileInfo photoFile)
         {
             bool isVisible = false;
@@ -207,7 +207,7 @@ namespace DotNetNuke.Services.UserProfile
                 width = 128;
                 size = "xl";
             }
-            //set a default if unprocessed
+            // set a default if unprocessed
             if (String.IsNullOrEmpty(size))
             {
                 height = 32;

@@ -82,11 +82,11 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         public void RegisterRoutes()
         {
-            //add standard tab and module id provider
+            // add standard tab and module id provider
             GlobalConfiguration.Configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             using (this._routes.GetWriteLock())
             {
-                //_routes.Clear(); -- don't use; it will remove original WEP API maps
+                // _routes.Clear(); -- don't use; it will remove original WEP API maps
                 this.LocateServicesAndMapRoutes();
             }
             Logger.TraceFormat("Registered a total of {0} routes", this._routes.Count);
@@ -126,7 +126,7 @@ namespace DotNetNuke.Web.Mvc.Routing
 
         private static void RegisterSystemRoutes()
         {
-            //_routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            // _routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
         }
 
         private IEnumerable<IMvcRouteMapper> GetServiceRouteMappers()

@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.FileSystem
             }
             set
             {
-                //Make sure folder name ends with /
+                // Make sure folder name ends with /
                 if (!string.IsNullOrEmpty(value) && !value.EndsWith("/"))
                 {
                     value = value + "/";
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     if (portalSettings == null || portalSettings.PortalId != this.PortalId)
                     {
-                        //Get the PortalInfo  based on the Portalid
+                        // Get the PortalInfo  based on the Portalid
                         var portal = PortalController.Instance.GetPortal(this.PortalId);
                         if ((portal != null))
                         {
@@ -464,7 +464,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (fileContent == null)
             {
-                //If can't get file content then just exit the function, so it will load again next time.
+                // If can't get file content then just exit the function, so it will load again next time.
                 return;
             }
 

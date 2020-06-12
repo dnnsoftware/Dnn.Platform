@@ -26,8 +26,8 @@ namespace UnitTests.Subtext
                 if (context.Request.UrlReferrer == null) return;
                 var referer = context.Request.UrlReferrer.ToString();
 
-                //Imagine, if you will, a bunch of complex interesting
-                //and fascinating logic here.
+                // Imagine, if you will, a bunch of complex interesting
+                // and fascinating logic here.
 
                 context.Response.Write(physicalPath + ":" + username + ":" + id + ":" + referer);
             }
@@ -73,7 +73,7 @@ namespace UnitTests.Subtext
 
                 const string expected = @"c:\inetpub\MyHandler.ashx:phil:1234:http://example.com/1/";
                 Assert.AreEqual(expected, simulator.ResponseText, "The Expected Response is all wrong.");
-            } //HttpContext.Current is set to null again.
+            } // HttpContext.Current is set to null again.
         }
 
         ////[Test]
@@ -209,7 +209,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedAppDomainAppPath, simulator.PhysicalApplicationPath);
         }
 
-        //[RowTest]
+        // [RowTest]
         ////[Row("http://localhost/AppPath/default.aspx", "/AppPath", "/AppPath/default.aspx")]
         ////[Row("http://localhost/AppPath/default.aspx", "/", "/AppPath/default.aspx")]
         public void CanGetLocalPathCorrectly(string url, string appPath, string expectedLocalPath)
@@ -220,7 +220,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedLocalPath, HttpContext.Current.Request.Url.LocalPath);
         }
 
-        //[RowTest]
+        // [RowTest]
         //////[Row("http://localhost:60653/Test.aspx", null, null, "localhost", 60653, "/", "/Test.aspx", @"c:\InetPub\wwwRoot\")]
         //////[Row("http://localhost:60653/Test.aspx", "/", @"c:\InetPub\wwwRoot\", "localhost", 60653, "/", "/Test.aspx", @"c:\InetPub\wwwRoot\")]
         //////[Row("http://localhost:60653/Test/Test.aspx", "/", @"c:\InetPub\wwwRoot\", "localhost", 60653, "/", "/Test/Test.aspx", @"c:\InetPub\wwwRoot\")]
@@ -238,7 +238,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedLocalPath, HttpContext.Current.Request.Url.LocalPath);
         }
 
-        //[RowTest]
+        // [RowTest]
         ////[Row("/", "/", @"c:\inetpub\wwwroot\")]
         ////[Row("/Test/Test.aspx", "/", @"c:\inetpub\wwwroot\Test\Test.aspx")]
         ////[Row("/Test/Blah/Test.aspx", "/", @"c:\inetpub\wwwroot\Test\Blah\Test.aspx")]
@@ -250,7 +250,7 @@ namespace UnitTests.Subtext
             var simulator = new HttpSimulator(appPath, @"c:\inetpub\wwwroot\");
             simulator.SimulateRequest(url);
 
-            //Create a virtual path object.
+            // Create a virtual path object.
             var vpath = ReflectionHelper.Instantiate("System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", new[] { typeof(string) }, virtualPath);
             Assert.IsNotNull(vpath);
 
@@ -276,7 +276,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expectedMapPath, HttpContext.Current.Request.MapPath(virtualPath));
         }
 
-        //[Test]
+        // [Test]
         public void CanInstantiateVirtualPath()
         {
             var virtualPathType = Type.GetType("System.Web.VirtualPath, System.Web, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", true);
@@ -284,7 +284,7 @@ namespace UnitTests.Subtext
             Assert.IsNotNull(constructor);
         }
 
-        //[Test]
+        // [Test]
         public void CanGetHostingEnvironment()
         {
             var environment = HttpSimulatorTester.CallGetEnvironment();
@@ -293,7 +293,7 @@ namespace UnitTests.Subtext
             Assert.IsNotNull(environment);
         }
 
-        //[RowTest]
+        // [RowTest]
         ////[Row("/", "/")]
         ////[Row("", "/")]
         ////[Row("/test", "/test")]
@@ -309,7 +309,7 @@ namespace UnitTests.Subtext
             Assert.AreEqual(expected, HttpSimulatorTester.CallNormalizeSlashes(s));
         }
 
-        //[Test]
+        // [Test]
         public void CanStripTrailing()
         {
             Assert.AreEqual(@"c:\blah\blah2", HttpSimulatorTester.CallStripTrailingBackSlashes(@"c:\blah\blah2\"));

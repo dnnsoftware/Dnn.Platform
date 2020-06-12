@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.Containers
                     return this.ModulePath + this.minIcon;
                 }
                 
-                return Globals.ApplicationPath + "/images/min.gif"; //is ~/ the same as ApplicationPath in all cases?
+                return Globals.ApplicationPath + "/images/min.gif"; // is ~/ the same as ApplicationPath in all cases?
             }
         }
 
@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.Containers
                     return this.ModulePath + this.MaxIcon;
                 }
                 
-                return Globals.ApplicationPath + "/images/max.gif"; //is ~/ the same as ApplicationPath in all cases?
+                return Globals.ApplicationPath + "/images/max.gif"; // is ~/ the same as ApplicationPath in all cases?
             }
         }
 
@@ -136,7 +136,7 @@ namespace DotNetNuke.UI.Containers
         }
 
 // ReSharper disable InconsistentNaming
-//TODO can this be renamed with a capital M
+// TODO can this be renamed with a capital M
         public string minIcon { get; set; }
 // ReSharper restore InconsistentNaming
 
@@ -160,14 +160,14 @@ namespace DotNetNuke.UI.Containers
             {
                 if (!this.Page.IsPostBack)
                 {
-					//public attributes
+					// public attributes
                     if (!String.IsNullOrEmpty(this.BorderWidth))
                     {
                         this.cmdVisibility.BorderWidth = Unit.Parse(this.BorderWidth);
                     }
                     if (this.ModuleControl.ModuleContext.Configuration != null)
                     {
-						//check if Personalization is allowed
+						// check if Personalization is allowed
                         if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
                         {
                             this.cmdVisibility.Enabled = false;
@@ -175,8 +175,8 @@ namespace DotNetNuke.UI.Containers
                         }
                         if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.Minimized)
                         {
-							//if visibility is set to minimized, then the client needs to set the cookie for maximized only and delete the cookie for minimized,
-                            //instead of the opposite.  We need to notify the client of this
+							// if visibility is set to minimized, then the client needs to set the cookie for maximized only and delete the cookie for minimized,
+                            // instead of the opposite.  We need to notify the client of this
                             ClientAPI.RegisterClientVariable(this.Page, "__dnn_" + this.ModuleControl.ModuleContext.ModuleId + ":defminimized", "true", true);
                         }
                         if (!Globals.IsAdminControl())
@@ -185,7 +185,7 @@ namespace DotNetNuke.UI.Containers
                             {
                                 if (this.ModuleContent != null)
                                 {
-									//EnableMinMax now done in prerender
+									// EnableMinMax now done in prerender
                                 }
                                 else
                                 {
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.Containers
                 }
                 else
                 {
-                    //since we disabled viewstate on the cmdVisibility control we need to check to see if we need hide this on postbacks as well
+                    // since we disabled viewstate on the cmdVisibility control we need to check to see if we need hide this on postbacks as well
                     if (this.ModuleControl.ModuleContext.Configuration != null)
                     {
                         if (this.ModuleControl.ModuleContext.Configuration.Visibility == VisibilityState.None)
@@ -216,7 +216,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -260,7 +260,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

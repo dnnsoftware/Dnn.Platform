@@ -32,11 +32,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var filterProvider = new DnnActionFilterProvider();
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, filters.Count);
             Assert.IsInstanceOf<RequireHostAttribute>(filters.First().Instance);
         }
@@ -56,11 +56,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var filterProvider = new DnnActionFilterProvider();
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, filters.Count);
             Assert.IsInstanceOf<DnnAuthorizeAttribute>(filters.First().Instance);
         }
@@ -80,11 +80,11 @@ namespace DotNetNuke.Tests.Web.Api
 
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var filterProvider = new DnnActionFilterProvider();
             var filters = filterProvider.GetFilters(configuration, actionDescriptor).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(2, filters.Count);
             Assert.IsInstanceOf<RequireHostAttribute>(filters.Last().Instance);
         }

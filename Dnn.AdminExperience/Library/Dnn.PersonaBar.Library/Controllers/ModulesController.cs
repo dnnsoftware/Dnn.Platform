@@ -86,8 +86,8 @@ namespace Dnn.PersonaBar.Library.Controllers
                 if (portalSettings.ContentLocalizationEnabled)
                 {
                     var defaultLocale = LocaleController.Instance.GetDefaultLocale(portalSettings.PortalId);
-                    //check whether original tab is exists, if true then set culture code to default language,
-                    //otherwise set culture code to current.
+                    // check whether original tab is exists, if true then set culture code to default language,
+                    // otherwise set culture code to current.
                     objModule.CultureCode =
                         TabController.Instance.GetTabByCulture(objModule.TabID, portalSettings.PortalId, defaultLocale) !=
                         null
@@ -222,7 +222,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             if (!string.IsNullOrEmpty(moduleTitle))
                 modules = modules.Where(module => module.ModuleTitle.IndexOf(moduleTitle, StringComparison.OrdinalIgnoreCase) >= 0);
 
-            //Return only deleted modules with matching criteria.
+            // Return only deleted modules with matching criteria.
             if (pageId.HasValue && pageId.Value > 0)
             {
                 modules = modules.Where(x => x.TabID == pageId.Value);
@@ -232,7 +232,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 modules = modules.Where(module => module.IsDeleted == deleted);
             }
 
-            //Get distincts.
+            // Get distincts.
             modules = modules.GroupBy(x => x.ModuleID).Select(group => group.First()).OrderBy(x => x.ModuleID);
             var moduleInfos = modules as IList<ModuleInfo> ?? modules.ToList();
             total = moduleInfos.Count;

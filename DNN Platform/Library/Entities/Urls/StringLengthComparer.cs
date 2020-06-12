@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 return 0;
             }
-            return -1; //should never reach here
+            return -1; // should never reach here
         }
     }
 }

@@ -51,13 +51,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public int AddScopeType(ScopeType scopeType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
             scopeType.ScopeTypeId = this._DataService.AddScopeType(scopeType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
 
             return scopeType.ScopeTypeId;
@@ -70,13 +70,13 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public void DeleteScopeType(ScopeType scopeType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
 
             this._DataService.DeleteScopeType(scopeType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 
@@ -87,14 +87,14 @@ namespace DotNetNuke.Entities.Content.Taxonomy
 
         public void UpdateScopeType(ScopeType scopeType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("scopeType", scopeType);
             Requires.PropertyNotNegative("scopeType", "ScopeTypeId", scopeType.ScopeTypeId);
             Requires.PropertyNotNullOrEmpty("scopeType", "ScopeType", scopeType.ScopeType);
 
             this._DataService.UpdateScopeType(scopeType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             DataCache.RemoveCache(DataCache.ScopeTypesCacheKey);
         }
 

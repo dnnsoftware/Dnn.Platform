@@ -110,8 +110,8 @@ namespace DotNetNuke.Web.Mvp
 
         private void PagePreRenderComplete(object sender, EventArgs e)
         {
-            //This event is raised after any async page tasks have completed, so it
-            //is safe to data-bind
+            // This event is raised after any async page tasks have completed, so it
+            // is safe to data-bind
             if ((this.AutoDataBind))
             {
                 this.DataBind();

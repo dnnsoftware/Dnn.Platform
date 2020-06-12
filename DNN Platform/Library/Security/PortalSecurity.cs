@@ -213,13 +213,13 @@ namespace DotNetNuke.Security
         private static void ProcessSecurityRole(UserInfo user, PortalSettings settings, string roleName, out bool? roleAllowed)
         {
             roleAllowed = null;
-            //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+            // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
             if (!String.IsNullOrEmpty(roleName))
             {
-                //Deny permission
+                // Deny permission
                 if (roleName.StartsWith("!"))
                 {
-                    //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                    // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                     if (settings != null && !(settings.PortalId == user.PortalID && user.IsInRole(settings.AdministratorRoleName)))
                     {
                         string denyRole = roleName.Replace("!", "");
@@ -229,7 +229,7 @@ namespace DotNetNuke.Security
                         }
                     }
                 }
-                else //Grant permission
+                else // Grant permission
                 {
                     if (roleName == Globals.glbRoleAllUsersName || user.IsInRole(roleName))
                     {
@@ -280,7 +280,7 @@ namespace DotNetNuke.Security
         /// -----------------------------------------------------------------------------
         private static string FilterStrings(string strInput)
         {
-            //setup up list of search terms as items may be used twice
+            // setup up list of search terms as items may be used twice
             var tempInput = strInput;
             if (string.IsNullOrEmpty(tempInput))
             {
@@ -289,7 +289,7 @@ namespace DotNetNuke.Security
 
             const string replacement = " ";
 
-            //remove the js event from html tags
+            // remove the js event from html tags
             var tagMatches = DangerElementsRegex.Matches(tempInput);
             foreach (Match match in tagMatches)
             {
@@ -298,14 +298,14 @@ namespace DotNetNuke.Security
                 tempInput = tempInput.Replace(tagContent, cleanTagContent);
             }
 
-            //check if text contains encoded angle brackets, if it does it we decode it to check the plain text
+            // check if text contains encoded angle brackets, if it does it we decode it to check the plain text
             if (tempInput.Contains("&gt;") || tempInput.Contains("&lt;"))
             {
-                //text is encoded, so decode and try again
+                // text is encoded, so decode and try again
                 tempInput = HttpUtility.HtmlDecode(tempInput);
                 tempInput = RxListStrings.Aggregate(tempInput, (current, s) => s.Replace(current, replacement));
 
-                //Re-encode
+                // Re-encode
                 tempInput = HttpUtility.HtmlEncode(tempInput);
             }
             else
@@ -616,17 +616,17 @@ namespace DotNetNuke.Security
         {
             if (PortalController.IsMemberOfPortalGroup(user.PortalID) || createPersistentCookie)
             {
-                //Create a custom auth cookie
+                // Create a custom auth cookie
 
-                //first, create the authentication ticket     
+                // first, create the authentication ticket     
                 var authenticationTicket = createPersistentCookie
                     ? new FormsAuthenticationTicket(user.Username, true, Config.GetPersistentCookieTimeout())
                     : new FormsAuthenticationTicket(user.Username, false, Config.GetAuthCookieTimeout());
 
-                //encrypt it     
+                // encrypt it     
                 var encryptedAuthTicket = FormsAuthentication.Encrypt(authenticationTicket);
 
-                //Create a new Cookie
+                // Create a new Cookie
                 var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedAuthTicket)
                 {
                     Expires = authenticationTicket.Expiration,
@@ -674,11 +674,11 @@ namespace DotNetNuke.Security
 
             if (user.IsSuperUser)
             {
-                //save userinfo object in context to ensure Personalization is saved correctly
+                // save userinfo object in context to ensure Personalization is saved correctly
                 HttpContext.Current.Items["UserInfo"] = user;
             }
 
-            //Identity the Login is processed by system.
+            // Identity the Login is processed by system.
             HttpContext.Current.Items["DNN_UserSignIn"] = true;
         }
 
@@ -693,19 +693,19 @@ namespace DotNetNuke.Security
                 AuthCookieController.Instance.Update(currentAuthCookie.Value, OldExpiryTime, Null.NullInteger);
             }
 
-            //Log User Off from Cookie Authentication System
+            // Log User Off from Cookie Authentication System
             var domainCookie = HttpContext.Current.Request.Cookies["SiteGroup"];
             if (domainCookie == null)
             {
-                //Forms Authentication's Logout
+                // Forms Authentication's Logout
                 FormsAuthentication.SignOut();
             }
             else
             {
-                //clear custom domain cookie
+                // clear custom domain cookie
                 var domain = domainCookie.Value;
 
-                //Create a new Cookie
+                // Create a new Cookie
                 var str = String.Empty;
                 if (HttpContext.Current.Request.Browser["supportsEmptyStringInCookieValue"] == "false")
                 {
@@ -733,24 +733,24 @@ namespace DotNetNuke.Security
                 HttpContext.Current.Response.Cookies.Set(siteGroupCookie);
             }
 
-            //Remove current userinfo from context items
+            // Remove current userinfo from context items
             HttpContext.Current.Items.Remove("UserInfo");
 
-            //remove language cookie
+            // remove language cookie
             var httpCookie = HttpContext.Current.Response.Cookies["language"];
             if (httpCookie != null)
             {
                 httpCookie.Value = "";
             }
 
-            //remove authentication type cookie
+            // remove authentication type cookie
             var cookie = HttpContext.Current.Response.Cookies["authentication"];
             if (cookie != null)
             {
                 cookie.Value = "";
             }
 
-            //expire cookies
+            // expire cookies
             cookie = HttpContext.Current.Response.Cookies["portalaliasid"];
             if (cookie != null)
             {
@@ -767,7 +767,7 @@ namespace DotNetNuke.Security
                 cookie.Expires = DateTime.Now.AddYears(-30);
             }
 
-            //clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
+            // clear any authentication provider tokens that match *UserToken convention e.g FacebookUserToken ,TwitterUserToken, LiveUserToken and GoogleUserToken
             var authCookies = HttpContext.Current.Request.Cookies.AllKeys;
             foreach (var authCookie in authCookies)
             {
@@ -841,14 +841,14 @@ namespace DotNetNuke.Security
 
         public static void ForceSecureConnection()
         {
-            //get current url
+            // get current url
             var url = HttpContext.Current.Request.Url.ToString();
-            //if unsecure connection
+            // if unsecure connection
             if (url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
             {
-                //switch to secure connection
+                // switch to secure connection
                 url = "https://" + url.Substring("http://".Length);
-                //append ssl parameter to querystring to indicate secure connection processing has already occurred
+                // append ssl parameter to querystring to indicate secure connection processing has already occurred
                 if (url.IndexOf("?", StringComparison.Ordinal) == -1)
                 {
                     url = url + "?ssl=1";
@@ -857,7 +857,7 @@ namespace DotNetNuke.Security
                 {
                     url = url + "&ssl=1";
                 }
-                //redirect to secure connection
+                // redirect to secure connection
                 HttpContext.Current.Response.Redirect(url, true);
             }
         }
@@ -867,7 +867,7 @@ namespace DotNetNuke.Security
             string cookieDomain = String.Empty;
             if (PortalController.IsMemberOfPortalGroup(portalId))
             {
-                //set cookie domain for portal group
+                // set cookie domain for portal group
                 var groupController = new PortalGroupController();
                 var group = groupController.GetPortalGroups().SingleOrDefault(p => p.MasterPortalId == PortalController.GetEffectivePortalId(portalId));
 
@@ -885,7 +885,7 @@ namespace DotNetNuke.Security
             }
             else
             {
-                //set cookie domain to be consistent with domain specification in web.config
+                // set cookie domain to be consistent with domain specification in web.config
                 cookieDomain = FormsAuthentication.CookieDomain;
             }
 
@@ -902,7 +902,7 @@ namespace DotNetNuke.Security
          
         public static bool IsDenied(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
-            //super user always has full access
+            // super user always has full access
             if (objUserInfo.IsSuperUser)
             {
                 return false;
@@ -912,15 +912,15 @@ namespace DotNetNuke.Security
 
             if (roles != null)
             {
-                //permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
+                // permissions strings are encoded with Deny permissions at the beginning and Grant permissions at the end for optimal performance
                 foreach (string role in roles.Split(new[] { ';' }))
                 {
                     if (!String.IsNullOrEmpty(role))
                     {
-                        //Deny permission
+                        // Deny permission
                         if (role.StartsWith("!"))
                         {
-                            //Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
+                            // Portal Admin cannot be denied from his/her portal (so ignore deny permissions if user is portal admin)
                             if (settings != null && !(settings.PortalId == objUserInfo.PortalID && objUserInfo.IsInRole(settings.AdministratorRoleName)))
                             {
                                 string denyRole = role.Replace("!", "");
@@ -957,7 +957,7 @@ namespace DotNetNuke.Security
 
         public static bool IsInRoles(UserInfo objUserInfo, PortalSettings settings, string roles)
         {
-            //super user always has full access
+            // super user always has full access
             bool isInRoles = objUserInfo.IsSuperUser;
 
             if (!isInRoles)

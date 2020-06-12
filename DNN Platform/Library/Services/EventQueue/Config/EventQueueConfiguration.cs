@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.EventQueue.Config
                 }
                 writer.WriteEndElement();
 
-                //Close EventQueueConfig
+                // Close EventQueueConfig
                 writer.WriteEndElement();
 
                 writer.Close();
@@ -136,14 +136,14 @@ namespace DotNetNuke.Services.EventQueue.Config
                 if (File.Exists(filePath))
                 {
                     config = new EventQueueConfiguration();
-                    //Deserialize into EventQueueConfiguration
+                    // Deserialize into EventQueueConfiguration
                     config.Deserialize(FileSystemUtils.ReadFile(filePath));
-                    //Set back into Cache
+                    // Set back into Cache
                     DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
                 }
                 else
                 {
-					//make a default config file
+					// make a default config file
                     config = new EventQueueConfiguration();
                     config.PublishedEvents = new Dictionary<string, PublishedEvent>();
                     config.EventQueueSubscribers = new Dictionary<string, SubscriberInfo>();
@@ -161,7 +161,7 @@ namespace DotNetNuke.Services.EventQueue.Config
             StreamWriter oStream = File.CreateText(filePath);
             oStream.WriteLine(config.Serialize());
             oStream.Close();
-            //Set back into Cache
+            // Set back into Cache
             DataCache.SetCache("EventQueueConfig", config, new DNNCacheDependency(filePath));
         }
     }

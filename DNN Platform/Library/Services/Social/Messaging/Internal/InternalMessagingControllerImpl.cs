@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
         internal const string ConstSortColumnFrom = "From";
         internal const string ConstSortColumnSubject = "Subject";
         internal const bool ConstAscending = true;
-        internal const double DefaultMessagingThrottlingInterval = 0.5; //default MessagingThrottlingInterval set to 30 seconds.
+        internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
         #endregion
 
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
 
         public InternalMessagingControllerImpl(IDataService dataService)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataService", dataService);
 
             this._dataService = dataService;
@@ -129,28 +129,28 @@ namespace DotNetNuke.Services.Social.Messaging.Internal
                 throw new ArgumentException(Localization.Localization.GetString("MsgBodyRequiredError", Localization.Localization.ExceptionsResourceFile));
             }
 
-            //Cannot have attachments if it's not enabled
+            // Cannot have attachments if it's not enabled
             if (fileIDs != null && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
 
 
-            //Profanity Filter
+            // Profanity Filter
             var profanityFilterSetting = this.GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
             if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
             {
                 body = this.InputFilter(body);
             }
 
-            //call ReplyMessage
+            // call ReplyMessage
             var messageId = this._dataService.CreateMessageReply(conversationId, PortalController.GetEffectivePortalId(sender.PortalID), body, sender.UserID, sender.DisplayName, this.GetCurrentUserInfo().UserID);
-            if (messageId == -1) //Parent message was not found or Recipient was not found in the message
+            if (messageId == -1) // Parent message was not found or Recipient was not found in the message
             {
                 throw new MessageOrRecipientNotFoundException(Localization.Localization.GetString("MsgMessageOrRecipientNotFound", Localization.Localization.ExceptionsResourceFile));
             }
 
-            //associate attachments
+            // associate attachments
             if (fileIDs != null)
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = messageId }))

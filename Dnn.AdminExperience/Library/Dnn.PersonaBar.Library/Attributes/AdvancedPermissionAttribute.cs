@@ -45,8 +45,8 @@ namespace Dnn.PersonaBar.Library.Attributes
             {
                 return true;
             }
-            //Permissions seperated by & should be treated with AND operand.
-            //Permissions seperated by , are internally treated with OR operand.
+            // Permissions seperated by & should be treated with AND operand.
+            // Permissions seperated by , are internally treated with OR operand.
             var allPermissionGroups = this.Permission.Split(new[] { '&' }, StringSplitOptions.RemoveEmptyEntries);
             return allPermissionGroups.All(allPermissions => MenuPermissionController.HasMenuPermission(portalSettings.PortalId, menuItem, allPermissions));
         }

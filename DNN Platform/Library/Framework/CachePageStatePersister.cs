@@ -45,10 +45,10 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public override void Load()
         {
-            //Get the cache key from the web form data
+            // Get the cache key from the web form data
             string key = this.Page.Request.Params[VIEW_STATE_CACHEKEY];
 
-            //Abort if cache key is not available or valid
+            // Abort if cache key is not available or valid
             if (string.IsNullOrEmpty(key) || !key.StartsWith("VS_"))
             {
                 throw new ApplicationException("Missing valid " + VIEW_STATE_CACHEKEY);
@@ -56,11 +56,11 @@ namespace DotNetNuke.Framework
             var state = DataCache.GetCache<Pair>(key);
             if (state != null)
             {
-                //Set view state and control state
+                // Set view state and control state
                 this.ViewState = state.First;
                 this.ControlState = state.Second;
             }
-            //Remove this ViewState from the cache as it has served its purpose
+            // Remove this ViewState from the cache as it has served its purpose
             if (!this.Page.IsCallback)
             {
                 DataCache.RemoveCache(key);
@@ -74,13 +74,13 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public override void Save()
         {
-			//No processing needed if no states available
+			// No processing needed if no states available
             if (this.ViewState == null && this.ControlState == null)
             {
                 return;
             }
 			
-            //Generate a unique cache key
+            // Generate a unique cache key
             var key = new StringBuilder();
             {
                 key.Append("VS_");
@@ -89,14 +89,14 @@ namespace DotNetNuke.Framework
                 key.Append(DateTime.Now.Ticks.ToString());
             }
 			
-            //Save view state and control state separately
+            // Save view state and control state separately
             var state = new Pair(this.ViewState, this.ControlState);
 
-            //Add view state and control state to cache
+            // Add view state and control state to cache
             DNNCacheDependency objDependency = null;
             DataCache.SetCache(key.ToString(), state, objDependency, DateTime.Now.AddMinutes(this.Page.Session.Timeout), Cache.NoSlidingExpiration, CacheItemPriority.NotRemovable, null);
 
-            //Register hidden field to store cache key in
+            // Register hidden field to store cache key in
             this.Page.ClientScript.RegisterHiddenField(VIEW_STATE_CACHEKEY, key.ToString());
         }
     }

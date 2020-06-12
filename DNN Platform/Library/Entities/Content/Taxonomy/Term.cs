@@ -279,7 +279,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 this.ParentTermId = Convert.ToInt32(dr["ParentTermID"]);
             }
 
-            //Fill base class properties
+            // Fill base class properties
             this.FillInternal(dr);
         }
 

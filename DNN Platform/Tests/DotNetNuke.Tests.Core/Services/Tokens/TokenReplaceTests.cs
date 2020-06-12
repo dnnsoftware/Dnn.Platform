@@ -55,14 +55,14 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("This is just plain text")]
         public void TextInputIsReturnedUnModified(string sourceText)
         {
-            //Arrange
+            // Arrange
             var tokenReplace = new TokenReplace(Scope.DefaultSettings, PortalSettings.Current.DefaultLanguage,
                 PortalSettings.Current, UserController.Instance.GetUser(1, 1), 1);
 
-            //Act
+            // Act
             var outputText = tokenReplace.ReplaceEnvironmentTokens(sourceText);
 
-            //Assert
+            // Assert
             Assert.AreEqual(outputText, sourceText);
         }
 
@@ -72,14 +72,14 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("[JavaScript:{ jsname: \"Knockout\" }] [JavaScript:{ path: \"~/DesktopModules/Dnn/ContactList/ClientScripts/contacts.js\"}]")]
         public void ObjectInputIsReturnedBlank(string sourceText)
         {
-            //Arrange
+            // Arrange
             var tokenReplace = new TokenReplace(Scope.DefaultSettings, PortalSettings.Current.DefaultLanguage,
                 PortalSettings.Current, UserController.Instance.GetUser(1, 1), 1);
 
-            //Act
+            // Act
             var outputText = tokenReplace.ReplaceEnvironmentTokens(sourceText);
 
-            //Assert
+            // Assert
             Assert.AreEqual(outputText.Trim(), string.Empty);
         }
 

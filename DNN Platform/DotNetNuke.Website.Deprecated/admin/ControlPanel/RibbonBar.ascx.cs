@@ -216,12 +216,12 @@ namespace DotNetNuke.UI.ControlPanels
 
                     if ((DotNetNukeContext.Current.Application.Name == "DNNCORP.CE"))
                     {
-                        //Hide Support icon in CE
+                        // Hide Support icon in CE
                         this.AdminPanel.FindControl("SupportTickets").Visible = false;
                     }
                     else
                     {
-                        //Show PE/XE tools
+                        // Show PE/XE tools
                         this.AdvancedToolsPanel.Visible = true;
                     }
 
@@ -272,7 +272,7 @@ namespace DotNetNuke.UI.ControlPanels
 									Localization l = new Localization();
 									currentCulture = l.CurrentUICulture;
 								}
-								//Localization.LoadCultureDropDownList(ddlUICulture, CultureDropDownTypes.NativeName, currentCulture);
+								// Localization.LoadCultureDropDownList(ddlUICulture, CultureDropDownTypes.NativeName, currentCulture);
                                 IEnumerable<ListItem> cultureListItems = Localization.LoadCultureInListItems(CultureDropDownTypes.NativeName, currentCulture, "", false);
                                 foreach (var cultureItem in cultureListItems)
                                 {
@@ -285,7 +285,7 @@ namespace DotNetNuke.UI.ControlPanels
                                     selectedCultureItem.Selected = true;
                                 }
 
-								//only show language selector if more than one language
+								// only show language selector if more than one language
 								if (this.ddlUICulture.Items.Count > 1)
 								{
 									this.lblUILanguage.Visible = true;

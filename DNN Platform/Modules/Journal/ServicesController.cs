@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.Journal
             ji.Summary = Utilities.RemoveHTML(ji.Summary);
             ji.Summary = ps.InputFilter(ji.Summary, PortalSecurity.FilterFlag.NoMarkup);
 
-            //parse the mentions context in post data
+            // parse the mentions context in post data
             var originalSummary = ji.Summary;
 
             ji.Summary = this.ParseMentions(ji.Summary, postData.Mentions, ref mentionedUsers);
@@ -542,7 +542,7 @@ namespace DotNetNuke.Modules.Journal
 
         private void SendMentionNotifications(IDictionary<string, UserInfo> mentionedUsers, JournalItem item, string originalSummary, string type = "Post")
         {
-            //send notification to the mention users
+            // send notification to the mention users
             var subjectTemplate = Utilities.GetSharedResource("Notification_Mention.Subject");
             var bodyTemplate = Utilities.GetSharedResource("Notification_Mention.Body");
             var mentionType = Utilities.GetSharedResource("Notification_MentionType_" + type);

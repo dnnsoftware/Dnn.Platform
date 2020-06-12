@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Pages
             int tabId;
             var connector = this.CreateNewSecurePage(out tabId);
 
-            //Try to request the GetLocalization API
+            // Try to request the GetLocalization API
             var response = connector.GetContent($"API/PersonaBar/Pages/GetTabLocalization?pageId={tabId}", null, true, false);
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }

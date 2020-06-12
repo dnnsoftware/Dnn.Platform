@@ -53,7 +53,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void DeleteFile_Calls_FolderProviderDeleteFile()
         {
-            //Arrange
+            // Arrange
             var fileInfo = new FileInfoBuilder().Build();
             this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
 
@@ -67,10 +67,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someString;
             this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
-            //Act
+            // Act
             FileDeletionController.Instance.DeleteFile(fileInfo);
 
-            //Assert
+            // Assert
             this._mockFolderProvider.Verify();
         }
 
@@ -78,13 +78,13 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(FileLockedException))]
         public void DeleteFile_Throws_WhenFileIsLocked()
         {
-            //Arrange
+            // Arrange
             var fileInfo = new FileInfoBuilder().Build();
             
             string someString;
             this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(true);
 
-            //Act
+            // Act
             FileDeletionController.Instance.DeleteFile(fileInfo);            
         }
 
@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [ExpectedException(typeof(FolderProviderException))]
         public void DeleteFile_Throws_WhenFolderProviderThrows()
         {
-            //Arrange
+            // Arrange
             var fileInfo = new FileInfoBuilder().Build();
             
             this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
@@ -113,7 +113,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void DeleteFileData_Calls_DataProviderDeleteFile()
         {
-            //Arrange
+            // Arrange
             var fileInfo = new FileInfoBuilder().Build();
 
             this._fileVersionController.Setup(fv => fv.DeleteAllUnpublishedVersions(fileInfo, false));
@@ -128,17 +128,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someString;
             this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
-            //Act
+            // Act
             FileDeletionController.Instance.DeleteFileData(fileInfo);
 
-            //Assert
+            // Assert
             this._mockData.Verify();
         }
 
         [Test]
         public void DeleteFileData_Calls_ContentControllerDeleteContentItem()
         {
-            //Arrange
+            // Arrange
             var fileInfo = new FileInfoBuilder()
                 .WithContentItemId(Constants.CONTENT_ValidContentItemId)
                 .Build();
@@ -157,10 +157,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             string someString;
             this._mockFileLockingController.Setup(mflc => mflc.IsFileLocked(fileInfo, out someString)).Returns(false);
 
-            //Act
+            // Act
             FileDeletionController.Instance.DeleteFileData(fileInfo);
 
-            //Assert
+            // Assert
             this._mockContentController.Verify();
         }
     }

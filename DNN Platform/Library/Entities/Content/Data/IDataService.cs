@@ -20,7 +20,7 @@ namespace DotNetNuke.Entities.Content.Data
 	/// <seealso cref="DataService"/>
     public interface IDataService
     {
-        //Content Item Methods
+        // Content Item Methods
         int AddContentItem(ContentItem contentItem, int createdByUserId);
 
         void DeleteContentItem(int contentItemId);
@@ -43,7 +43,7 @@ namespace DotNetNuke.Entities.Content.Data
 
         void UpdateContentItem(ContentItem contentItem, int lastModifiedByUserId);
 
-        //Content MetaData Methods
+        // Content MetaData Methods
         void AddMetaData(ContentItem contentItem, string name, string value);
 
         void DeleteMetaData(ContentItem contentItem, string name, string value);
@@ -54,7 +54,7 @@ namespace DotNetNuke.Entities.Content.Data
 	                             IEnumerable<KeyValuePair<string, string>> added,
 	                             IEnumerable<KeyValuePair<string, string>> deleted);
 
-        //ContentType Methods
+        // ContentType Methods
         int AddContentType(ContentType contentType);
 
         void DeleteContentType(ContentType contentType);
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Content.Data
 
         void UpdateContentType(ContentType contentType);
         
-        //ScopeType Methods
+        // ScopeType Methods
         int AddScopeType(ScopeType scopeType);
 
         void DeleteScopeType(ScopeType scopeType);
@@ -72,7 +72,7 @@ namespace DotNetNuke.Entities.Content.Data
 
         void UpdateScopeType(ScopeType scopeType);
 
-        //Term Methods
+        // Term Methods
         int AddHeirarchicalTerm(Term term, int createdByUserId);
 
         int AddSimpleTerm(Term term, int createdByUserId);
@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Content.Data
 
         void UpdateSimpleTerm(Term term, int lastModifiedByUserId);
 
-        //Vocabulary Methods
+        // Vocabulary Methods
         int AddVocabulary(Vocabulary vocabulary, int createdByUserId);
 
         void DeleteVocabulary(Vocabulary vocabulary);

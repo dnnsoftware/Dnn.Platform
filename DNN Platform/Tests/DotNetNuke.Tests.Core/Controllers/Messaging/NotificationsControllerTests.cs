@@ -86,7 +86,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         
         private void SetupDataProvider()
         {
-            //Standard DataProvider Path for Logging
+            // Standard DataProvider Path for Logging
             this._dataProvider.Setup(d => d.GetProviderPath()).Returns("");
         }
 
@@ -352,7 +352,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         {
             this._mockNotificationsController.Setup(nc => nc.GetCurrentUserId()).Returns(Constants.UserID_User12);
 
-//            _mockDataService
+// _mockDataService
 //                .Setup(ds => ds.AddNotificationTypeAction(
 //                    Constants.Messaging_NotificationTypeId,
 //                    Constants.Messaging_NotificationTypeActionNameResourceKey,

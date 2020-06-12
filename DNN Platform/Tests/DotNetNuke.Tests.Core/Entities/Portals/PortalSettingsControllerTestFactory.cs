@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Entities.Portals
         {
             var settings = new Dictionary<string, string>();
 
-            //Read Test Settings
+            // Read Test Settings
             Util.ReadStream(FilePath, "HostSettings", (line, header) =>
                             {
                                 string[] fields = line.Split(',');

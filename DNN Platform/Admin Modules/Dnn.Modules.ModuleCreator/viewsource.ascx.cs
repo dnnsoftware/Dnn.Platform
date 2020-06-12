@@ -77,7 +77,7 @@ namespace Dnn.Module.ModuleCreator
 
             if (Directory.Exists(modulePath))
             {
-                //iterate through files in desktopmodules folder
+                // iterate through files in desktopmodules folder
                 fileList = Directory.GetFiles(modulePath, "*", SearchOption.AllDirectories);
                 foreach (string filePath in fileList)
                 {
@@ -114,7 +114,7 @@ namespace Dnn.Module.ModuleCreator
             }
 
 
-            //iterate through files in app_code folder
+            // iterate through files in app_code folder
             modulePath = Globals.ApplicationMapPath + "\\App_Code\\" + objDesktopModule.FolderName.Replace("/", "\\") + "\\";
             if (Directory.Exists(modulePath))
             {
@@ -261,7 +261,7 @@ namespace Dnn.Module.ModuleCreator
                 this.lblDescription.Text = "";
             }
 
-            //Determine if Control Name is required
+            // Determine if Control Name is required
             var controlNameRequired = false;
             var controlName = "<Not Required>";
             string[] fileList = Directory.GetFiles(templatePath);
@@ -312,20 +312,20 @@ namespace Dnn.Module.ModuleCreator
             var modulePath = Null.NullString;
             var sourceCode = Null.NullString;
 
-            //iterate through files in template folder
+            // iterate through files in template folder
             string[] fileList = Directory.GetFiles(moduleTemplatePath);
             foreach (string filePath in fileList)
             {
                 modulePath = this.Server.MapPath("DesktopModules/" + objDesktopModule.FolderName + "/");
 
-                //open file
+                // open file
                 using (TextReader tr = new StreamReader(filePath))
                 {
                     sourceCode = tr.ReadToEnd();
                     tr.Close();
                 }
 
-                //replace tokens
+                // replace tokens
                 var owner = objPackage.Owner.Replace(" ", "");
                 if (string.IsNullOrEmpty(owner))
                 {
@@ -336,7 +336,7 @@ namespace Dnn.Module.ModuleCreator
                 sourceCode = sourceCode.Replace("_CONTROL_", this.GetControl());
                 sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
-                //get filename
+                // get filename
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", this.GetControl());
                 fileName = fileName.Replace("_OWNER_", objPackage.Owner.Replace(" ", ""));
@@ -374,16 +374,16 @@ namespace Dnn.Module.ModuleCreator
                         break;
                 }
 
-                //check if folder exists
+                // check if folder exists
                 if (!Directory.Exists(modulePath))
                 {
                     Directory.CreateDirectory(modulePath);
                 }
 
-                //check if file already exists
+                // check if file already exists
                 if (!File.Exists(modulePath + fileName))
                 {
-                    //create file
+                    // create file
                     using (TextWriter tw = new StreamWriter(modulePath + fileName))
                     {
                         tw.WriteLine(sourceCode);
@@ -395,7 +395,7 @@ namespace Dnn.Module.ModuleCreator
                 }
             }
 
-            //Create module control
+            // Create module control
             if (controlName != Null.NullString)
             {
                 try
@@ -417,7 +417,7 @@ namespace Dnn.Module.ModuleCreator
                 }
                 catch
                 {
-                    //Suppress error
+                    // Suppress error
                 }
             }
 

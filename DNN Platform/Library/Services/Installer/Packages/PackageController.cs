@@ -277,12 +277,12 @@ namespace DotNetNuke.Services.Installer.Packages
             var dependencies = Instance.GetPackageDependencies(d => d.PackageName.Equals(package.Name, StringComparison.OrdinalIgnoreCase) && d.Version <= package.Version);
             if (dependencies.Count > 0)
             {
-                //There is at least one package dependent on this package.
+                // There is at least one package dependent on this package.
                 foreach (var dependency in dependencies)
                 {
                     var dep = dependency;
 
-                    //Check if there is an alternative package
+                    // Check if there is an alternative package
                     var packages = Instance.GetExtensionPackages(package.PortalID,
                                                                  p => p.Name.Equals(dep.PackageName, StringComparison.OrdinalIgnoreCase)
                                                                         && p.Version >= dep.Version
@@ -300,7 +300,7 @@ namespace DotNetNuke.Services.Installer.Packages
                 {
                     case "Skin":
                     case "Container":
-                        //Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
+                        // Need to get path of skin being deleted so we can call the public CanDeleteSkin function in the SkinController
                         string strRootSkin = package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) ? SkinController.RootSkin : SkinController.RootContainer;
                         SkinPackageInfo _SkinPackageInfo = SkinController.GetSkinByPackageID(package.PackageID);
                         string strFolderPath = Path.Combine(_SkinPackageInfo.PortalID == Null.NullInteger ? Path.Combine(Globals.HostMapPath, strRootSkin) : Path.Combine(portalSettings.HomeSystemDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
@@ -308,13 +308,13 @@ namespace DotNetNuke.Services.Installer.Packages
                         bCanDelete = SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeSystemDirectoryMapPath);
                         if (_SkinPackageInfo.PortalID != Null.NullInteger)
                         {
-                            //To be compliant with all versions
+                            // To be compliant with all versions
                             strFolderPath = Path.Combine(Path.Combine(portalSettings.HomeDirectoryMapPath, strRootSkin), _SkinPackageInfo.SkinName);
                             bCanDelete = bCanDelete && SkinController.CanDeleteSkin(strFolderPath, portalSettings.HomeDirectoryMapPath);
                         }
                         break;
                     case "Provider":
-                        //Check if the provider is the default provider
+                        // Check if the provider is the default provider
                         XmlDocument configDoc = Config.Load();
                         string providerName = package.Name;
                         if (providerName.IndexOf(".", StringComparison.Ordinal) > Null.NullInteger)
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Installer.Packages
                         string extension = Path.GetExtension(fileName);
                         if (extension != null && (extension.Equals(".dnn", StringComparison.InvariantCultureIgnoreCase) || extension.Equals(".dnn5", StringComparison.InvariantCultureIgnoreCase)))
                         {
-                            //Manifest
+                            // Manifest
                             var manifest = manifestReader.ReadToEnd();
 
                             var package = new PackageInfo { Manifest = manifest };
@@ -412,8 +412,8 @@ namespace DotNetNuke.Services.Installer.Packages
                                     switch (package.PackageType)
                                     {
                                         case "Module":
-                                            //In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
-                                            //To ensure that FolderName is DesktopModules...
+                                            // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                                            // To ensure that FolderName is DesktopModules...
                                             var folderNameValue = GetSpecificFolderName(nav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                                             if (!String.IsNullOrEmpty(folderNameValue)) package.FolderName = folderNameValue.Replace('\\', '/');
                                             break;
@@ -454,7 +454,7 @@ namespace DotNetNuke.Services.Installer.Packages
                                         }
                                     }
 
-                                    //Parse the Dependencies
+                                    // Parse the Dependencies
                                     foreach (XPathNavigator dependencyNav in nav.CreateNavigator().Select("dependencies/dependency"))
                                     {
                                         var dependency = DependencyFactory.GetDependency(dependencyNav);

@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.WebControls
             PropertyInfo objProperty;
             string _Category = Null.NullString;
 			
-			//Get Category Field
+			// Get Category Field
             if (!String.IsNullOrEmpty(this.CategoryDataField))
             {
                 objProperty = obj.GetType().GetProperty(this.CategoryDataField);
@@ -217,7 +217,7 @@ namespace DotNetNuke.UI.WebControls
 
             foreach (object obj in arrObjects)
             {
-				//Get Category Field
+				// Get Category Field
                 if (!String.IsNullOrEmpty(this.CategoryDataField))
                 {
                     objProperty = obj.GetType().GetProperty(this.CategoryDataField);
@@ -257,7 +257,7 @@ namespace DotNetNuke.UI.WebControls
             }
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
-				//Check if property is required - as this will need to override visibility
+				// Check if property is required - as this will need to override visibility
                 objProperty = obj.GetType().GetProperty(this.RequiredDataField);
                 if (!(objProperty == null || (objProperty.GetValue(obj, null) == null)))
                 {

@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Users
             this.Description = dr["Description"].ToString();
             this.Direction = (RelationshipDirection)Convert.ToInt32(dr["Direction"]);
 
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
     }

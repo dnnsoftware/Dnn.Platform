@@ -66,42 +66,42 @@ namespace DotNetNuke.Entities.Urls
         {
             List<ExtensionUrlProvider> providers;
 
-            //887 : introduce lockable code to prevent caching race errors 
+            // 887 : introduce lockable code to prevent caching race errors 
             lock (providersBuildLock)
             {
                 bool definitelyNoProvider;
-                //887 : use cached list of tabs instead of per-tab cache of provider
-                //get the list of providers to call based on the tab and the portal
+                // 887 : use cached list of tabs instead of per-tab cache of provider
+                // get the list of providers to call based on the tab and the portal
                 var providersToCall = CacheController.GetProvidersForTabAndPortal(tabId,
                                                                                     portalId,
                                                                                     settings,
                                                                                     out definitelyNoProvider,
                                                                                     parentTraceId);
                 if (definitelyNoProvider == false && providersToCall == null)
-                //nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
+                // nothing in the cache, and we don't have a definitive 'no' that there isn't a provider
                 {
-                    //get all providers for the portal
+                    // get all providers for the portal
                     var allProviders = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
 
-                    //store the list of tabs for this portal that have a provider attached
+                    // store the list of tabs for this portal that have a provider attached
                     CacheController.StoreListOfTabsWithProviders(allProviders, portalId, settings);
 
-                    //stash the provider portals in the cache
+                    // stash the provider portals in the cache
                     CacheController.StoreModuleProvidersForPortal(portalId, settings, allProviders);
 
-                    //now check if there is a provider for this tab/portal combination
+                    // now check if there is a provider for this tab/portal combination
                     if (allProviders.Count > 0)
                     {
-                        //find if a module is specific to a tab
+                        // find if a module is specific to a tab
                         providersToCall = new List<ExtensionUrlProvider>();
                         providersToCall.AddRange(allProviders);
                     }
                 }
-                //always return an instantiated provider collection
+                // always return an instantiated provider collection
                 providers = providersToCall ?? (new List<ExtensionUrlProvider>());
             }
 
-            //return the collection of module providers
+            // return the collection of module providers
             return providers;
         }
 
@@ -123,12 +123,12 @@ namespace DotNetNuke.Entities.Urls
             bool checkForAlwaysCallResult = false;
             if (alwaysCallTabids == null)
             {
-                alwaysCallTabids = new List<int>(); //create new list 
-                //nothing in cache, build list
+                alwaysCallTabids = new List<int>(); // create new list 
+                // nothing in cache, build list
                 List<ExtensionUrlProvider> providers = GetModuleProviders(portalId).Where(p => p.ProviderConfig.IsActive).ToList();
                 foreach (ExtensionUrlProvider provider in providers)
                 {
-                    //check the always call property
+                    // check the always call property
                     if (provider.AlwaysCallForRewrite(portalId))
                     {
                         if (provider.ProviderConfig.AllTabs)
@@ -150,7 +150,7 @@ namespace DotNetNuke.Entities.Urls
                         }
                     }
                 }
-                //now store back in cache
+                // now store back in cache
                 CacheController.StoreAlwaysCallProviderTabs(portalId, alwaysCallTabids, settings);
             }
             if (alwaysCallTabids.Contains(tabId) || alwaysCallTabids.Contains(RewriteController.AllTabsRewrite))
@@ -180,7 +180,7 @@ namespace DotNetNuke.Entities.Urls
                     FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                     foreach (ExtensionUrlProvider provider in providersToCall)
                     {
-                        activeProvider = provider; //for error handling
+                        activeProvider = provider; // for error handling
                         redirected = provider.CheckForRedirect(result.TabId, result.PortalId, result.HttpAlias,
                                                                requestUri, queryStringCol, options, out location,
                                                                ref messages);
@@ -195,9 +195,9 @@ namespace DotNetNuke.Entities.Urls
             }
             catch (Exception ex)
             {
-                //log module provider exception
+                // log module provider exception
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, result, messages);
-                //return defaults
+                // return defaults
                 redirected = false;
                 location = "";
                 string providerName = "Unknown";
@@ -221,7 +221,7 @@ namespace DotNetNuke.Entities.Urls
         {
             var providers = GetProvidersToCall(RewriteController.SiteRootRewrite, portalId, settings, parentTraceId);
 
-            //list should have returned all providers with site root rewrite, but double check here in case of faulty third-party logic
+            // list should have returned all providers with site root rewrite, but double check here in case of faulty third-party logic
             return providers.Any(provider => provider.AlwaysUsesDnnPagePath(portalId) == false);
         }
 
@@ -252,9 +252,9 @@ namespace DotNetNuke.Entities.Urls
                 FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                 foreach (ExtensionUrlProvider provider in providersToCall)
                 {
-                    activeProvider = provider; //keep for exception purposes
+                    activeProvider = provider; // keep for exception purposes
                     bool useDnnPagePath;
-                    //go through and call each provider to generate the friendly urls for the module
+                    // go through and call each provider to generate the friendly urls for the module
                     string customPath = provider.ChangeFriendlyUrl(tab, 
                                                                 friendlyUrlPath, 
                                                                 options, 
@@ -265,20 +265,20 @@ namespace DotNetNuke.Entities.Urls
 
                     if (string.IsNullOrEmpty(endingPageName))
                     {
-                        endingPageName = Globals.glbDefaultPage; //set back to default.aspx if provider cleared it
+                        endingPageName = Globals.glbDefaultPage; // set back to default.aspx if provider cleared it
                     }
-                    //now check to see if a change was made or not.  Don't trust the provider.
+                    // now check to see if a change was made or not.  Don't trust the provider.
                     if (!string.IsNullOrEmpty(customPath))
                     {
-                        //was customPath any different to friendlyUrlPath?
+                        // was customPath any different to friendlyUrlPath?
                         if (String.CompareOrdinal(customPath, friendlyUrlPath) != 0)
                         {
                             wasChanged = true;
                             changedPath = customPath.Trim();
-                            changeToSiteRoot = !useDnnPagePath; //useDNNpagePath means no change to site root.
+                            changeToSiteRoot = !useDnnPagePath; // useDNNpagePath means no change to site root.
                             const string format = "Path returned from {0} -> path:{1}, ending Page:{2}, use Page Path:{3}";
                             messages.Add(string.Format(format, provider.ProviderConfig.ProviderName, customPath, endingPageName, useDnnPagePath));
-                            break; //first module provider to change the Url is the only one used
+                            break; // first module provider to change the Url is the only one used
                         }
                     }
                 }
@@ -286,7 +286,7 @@ namespace DotNetNuke.Entities.Urls
             catch (Exception ex)
             {
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, null, messages);
-                //reset all values to defaults
+                // reset all values to defaults
                 wasChanged = false;
                 changedPath = friendlyUrlPath;
                 changeToSiteRoot = false;
@@ -322,9 +322,9 @@ namespace DotNetNuke.Entities.Urls
                                                                                 parentTraceId);
                 if (providersToCall != null && providersToCall.Count > 0)
                 {
-                    //now check for providers by calling the providers
+                    // now check for providers by calling the providers
                     int upperBound = urlParms.GetUpperBound(0);
-                    //clean extension off parameters array
+                    // clean extension off parameters array
                     var parms = new string[upperBound + 1];
                     Array.ConstrainedCopy(urlParms, 0, parms, 0, upperBound + 1);
                     if (upperBound >= 0)
@@ -332,13 +332,13 @@ namespace DotNetNuke.Entities.Urls
                         bool replaced;
                         parms[upperBound] = RewriteController.CleanExtension(parms[upperBound], settings, out replaced);
                     }
-                    //get options from current settings
+                    // get options from current settings
                     FriendlyUrlOptions options = UrlRewriterUtils.GetOptionsFromSettings(settings);
                     foreach (ExtensionUrlProvider provider in providersToCall)
                     {
-                        //set active provider for exception handling
+                        // set active provider for exception handling
                         activeProvider = provider;
-                        //call down to specific providers and see if we get a rewrite
+                        // call down to specific providers and see if we get a rewrite
                         string location;
                         int status;
                         string queryString = provider.TransformFriendlyUrlToQueryString(parms, 
@@ -350,41 +350,41 @@ namespace DotNetNuke.Entities.Urls
                                                                                         ref messages,
                                                                                         out status, 
                                                                                         out location);
-                        if (status == 0 || status == 200) //either not set, or set to '200 OK'.
+                        if (status == 0 || status == 200) // either not set, or set to '200 OK'.
                         {
                             if (!string.IsNullOrEmpty(queryString) && queryString != newUrl)
                             {
                                 rewriteDone = true;
-                                //check for duplicate tabIds.
+                                // check for duplicate tabIds.
                                 string qsRemainder = null;
                                 if (Regex.IsMatch(queryString, @"tabid=\d+", RegexOptions.IgnoreCase | RegexOptions.CultureInvariant))
                                 {
-                                    //930 : look for other querystring information in the rewritten Url, or invalid rewritten urls can be created
-                                    //pattern to determine which tab matches
-                                    //look for any other querystirng information in the already rewritten Url (ie language parameters)
+                                    // 930 : look for other querystring information in the rewritten Url, or invalid rewritten urls can be created
+                                    // pattern to determine which tab matches
+                                    // look for any other querystirng information in the already rewritten Url (ie language parameters)
                                     Match rewrittenUrlMatch = RewrittenUrlRegex.Match(rewrittenUrl);
                                     if (rewrittenUrlMatch.Groups["qs"].Success)
                                     {
-                                        //keep any other querystring remainders
-                                        qsRemainder = rewrittenUrlMatch.Groups["qs"].Captures.Cast<Capture>().Aggregate("", (current, qsCapture) => current + qsCapture.Value); //initialise
+                                        // keep any other querystring remainders
+                                        qsRemainder = rewrittenUrlMatch.Groups["qs"].Captures.Cast<Capture>().Aggregate("", (current, qsCapture) => current + qsCapture.Value); // initialise
                                     }
-                                    //supplied value overwrites existing value, so remove from the rewritten url
+                                    // supplied value overwrites existing value, so remove from the rewritten url
                                     rewrittenUrl = RewrittenUrlRegex.Replace(rewrittenUrl, "");
                                 }
                                 if (rewrittenUrl.Contains("?") == false)
                                 {
-                                    //use a leading ?, not a leading &
+                                    // use a leading ?, not a leading &
                                     queryString = FriendlyUrlController.EnsureNotLeadingChar("&", queryString);
                                     queryString = FriendlyUrlController.EnsureLeadingChar("?", queryString);
                                 }
                                 else
                                 {
-                                    //use a leading &, not a leading ?
+                                    // use a leading &, not a leading ?
                                     queryString = FriendlyUrlController.EnsureNotLeadingChar("?", queryString);
                                     queryString = FriendlyUrlController.EnsureLeadingChar("&", queryString);
                                 }
 
-                                //add querystring onto rewritten Url
+                                // add querystring onto rewritten Url
                                 rewrittenUrl += queryString;
                                 if (qsRemainder != null)
                                 {
@@ -414,7 +414,7 @@ namespace DotNetNuke.Entities.Urls
                                     result.Action = ActionType.Output500;
                                     break;
                             }
-                            newAction = true; //not doing a 200 status
+                            newAction = true; // not doing a 200 status
                             break;
                         }
                     }
@@ -422,9 +422,9 @@ namespace DotNetNuke.Entities.Urls
             }
             catch (Exception ex)
             {
-                //log module provider exception
+                // log module provider exception
                 LogModuleProviderExceptionInRequest(ex, "500 Internal Server Error", activeProvider, result, messages);
-                //reset values to initial
+                // reset values to initial
                 rewriteDone = false;
                 rewrittenUrl = newUrl;
                 newAction = false;
@@ -511,7 +511,7 @@ namespace DotNetNuke.Entities.Urls
 
                                             if (dr.NextResult())
                                             {
-                                                //Setup Settings
+                                                // Setup Settings
                                                 while (dr.Read())
                                                 {
                                                     var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
@@ -528,7 +528,7 @@ namespace DotNetNuke.Entities.Urls
 
                                             if (dr.NextResult())
                                             {
-                                                //Setup Tabs
+                                                // Setup Tabs
                                                 while (dr.Read())
                                                 {
                                                     var extensionUrlProviderId = Null.SetNullInteger(dr["ExtensionUrlProviderID"]);
@@ -546,7 +546,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                         finally
                                         {
-                                            //Close reader
+                                            // Close reader
                                             CBO.CloseDataReader(dr, true);
                                         }
                                     });
@@ -595,19 +595,19 @@ namespace DotNetNuke.Entities.Urls
                     moduleProviderName = provider.ProviderConfig.ProviderName;
                     moduleProviderVersion = provider.GetType().Assembly.GetName(false).Version.ToString();
                 }
-                //this logic prevents a site logging an exception for every request made.  Instead 
-                //the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
-                //create a cache key for this exception type
+                // this logic prevents a site logging an exception for every request made.  Instead 
+                // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
+                // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();
-                //see if there is an existing object logged for this exception type
+                // see if there is an existing object logged for this exception type
                 object existingEx = DataCache.GetCache(cacheKey);
                 if (existingEx == null)
                 {
-                    //if there was no existing object logged for this exception type, this is a new exception
+                    // if there was no existing object logged for this exception type, this is a new exception
                     DateTime expire = DateTime.Now.AddHours(1);
                     DataCache.SetCache(cacheKey, cacheKey, expire);
-                    //just store the cache key - it doesn't really matter
-                    //create a log event
+                    // just store the cache key - it doesn't really matter
+                    // create a log event
                     string productVer = DotNetNukeContext.Current.Application.Version.ToString();
                     var log = new LogInfo {LogTypeKey = "GENERAL_EXCEPTION"};
                     log.AddProperty("Url Rewriting Extension Url Provider Exception",

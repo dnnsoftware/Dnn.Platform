@@ -32,7 +32,7 @@ namespace DotNetNuke.Data.PetaPoco
         {
             bool includeColumn = true;
 
-            //Check if the class has the ExplictColumnsAttribute
+            // Check if the class has the ExplictColumnsAttribute
             bool declareColumns = pocoProperty.DeclaringType != null 
                             && pocoProperty.DeclaringType.GetCustomAttributes(typeof(DeclareColumnsAttribute), true).Length > 0;
             
@@ -67,12 +67,12 @@ namespace DotNetNuke.Data.PetaPoco
         {
             TableInfo ti = TableInfo.FromPoco(pocoType);
 
-            //Table Name
+            // Table Name
             ti.TableName = DataUtil.GetTableName(pocoType, ti.TableName + "s");
 
             ti.TableName = this._tablePrefix + ti.TableName;
 
-            //Primary Key
+            // Primary Key
             ti.PrimaryKey = DataUtil.GetPrimaryKeyColumn(pocoType, ti.PrimaryKey);
 
             ti.AutoIncrement = DataUtil.GetAutoIncrement(pocoType, true);

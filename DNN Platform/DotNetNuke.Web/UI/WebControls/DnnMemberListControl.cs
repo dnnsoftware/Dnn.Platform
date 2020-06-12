@@ -169,13 +169,13 @@ namespace DotNetNuke.Web.UI.WebControls
             var row = 0;
             var users = new DataTable();
 
-            //users.Load(_relationshipController.GetUsersAdvancedSearch(_currentUser, filterUser, role, relationship, Filters, additionalFilters));
+            // users.Load(_relationshipController.GetUsersAdvancedSearch(_currentUser, filterUser, role, relationship, Filters, additionalFilters));
 
             if (users.Rows.Count > 0)
             {
                 foreach (DataRow user in users.Rows)
                 {
-                    //Row Header
+                    // Row Header
                     writer.Write(string.IsNullOrEmpty(this.AlternatingRowHeaderTemplate) || row % 2 == 0 ? this.RowHeaderTemplate : this.AlternatingRowHeaderTemplate);
 
                     var tokenReplace = new TokenReplace();
@@ -190,7 +190,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     listItem = tokenReplace.ReplaceEnvironmentTokens(listItem, tokenKeyValues, "Member");
                     writer.Write(listItem);
 
-                    //Row Footer
+                    // Row Footer
                     writer.Write(string.IsNullOrEmpty(this.AlternatingRowFooterTemplate) || row % 2 == 0 ? this.RowFooterTemplate : this.AlternatingRowFooterTemplate);
 
                     row++;

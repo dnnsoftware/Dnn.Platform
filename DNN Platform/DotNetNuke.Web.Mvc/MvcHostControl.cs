@@ -53,7 +53,7 @@ namespace DotNetNuke.Web.Mvc
 
             ModuleApplication moduleApplication = null;
 
-            //Check if the MVC Module overrides the base ModuleApplication class.
+            // Check if the MVC Module overrides the base ModuleApplication class.
             var businessControllerClass = desktopModule.BusinessControllerClass;
             if (!String.IsNullOrEmpty(businessControllerClass))
             {
@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.Mvc
         {
             var module = this.ModuleContext.Configuration;
 
-            //TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
+            // TODO DesktopModuleControllerAdapter usage is temporary in order to make method testable
             var desktopModule = DesktopModuleControllerAdapter.Instance.GetDesktopModule(module.DesktopModuleID, module.PortalID);
             var defaultControl = ModuleControlControllerAdapter.Instance.GetModuleControlByControlKey("", module.ModuleDefID);
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Web.Mvc
 
             if (moduleId != this.ModuleContext.ModuleId && String.IsNullOrEmpty(this._controlKey))
             {
-                //Set default routeData for module that is not the "selected" module
+                // Set default routeData for module that is not the "selected" module
                 routeData = defaultRouteData;
             }
             else

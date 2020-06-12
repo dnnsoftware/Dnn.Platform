@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.Containers
                     this.DisplayAction(action);
                 }
 				
-                //set visibility
+                // set visibility
                 if (this.Controls.Count > 0)
                 {
                     this.Visible = true;
@@ -59,7 +59,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((ImageButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

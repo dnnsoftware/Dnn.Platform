@@ -66,10 +66,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                //First Update Permissions in case they have been changed
+                // First Update Permissions in case they have been changed
                 this.UpdatePermissions();
 
-                //Return the TabPermissions
+                // Return the TabPermissions
                 return this._TabPermissions;
             }
         }
@@ -122,7 +122,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var objTabPermission = new TabPermissionInfo();
 
-            //Call base class to load base properties
+            // Call base class to load base properties
             base.ParsePermissionKeys(objTabPermission, Settings);
             if (String.IsNullOrEmpty(Settings[2]))
             {
@@ -177,7 +177,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             objPermission.DisplayName = displayName;
             this._TabPermissions.Add(objPermission, true);
 
-            //Clear Permission List
+            // Clear Permission List
             this._PermissionsList = null;
         }
 
@@ -190,7 +190,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
-            //Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user 
             bool isMatch = false;
             foreach (TabPermissionInfo objTabPermission in this._TabPermissions)
             {
@@ -201,7 +201,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
             }
 
-            //user not found so add new
+            // user not found so add new
             if (!isMatch)
             {
                 foreach (PermissionInfo objPermission in permissions)
@@ -223,13 +223,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            //Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user 
             if (this._TabPermissions.Cast<TabPermissionInfo>().Any(objTabPermission => objTabPermission.RoleID == role.RoleID))
             {
                 return;
             }
 
-            //role not found so add new            
+            // role not found so add new            
             foreach (PermissionInfo objPermission in permissions)
             {
                 if (objPermission.PermissionKey == "VIEW")
@@ -272,7 +272,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                //Call base class method to handle standard permissions
+                // Call base class method to handle standard permissions
                 permission = base.GetPermission(objPerm, role, column, PermissionTypeNull);
             }
             return permission;
@@ -298,29 +298,29 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             if (savedState != null)
             {
-                //Load State from the array of objects that was saved with SaveViewState.
+                // Load State from the array of objects that was saved with SaveViewState.
                 var myState = (object[])savedState;
 
-                //Load Base Controls ViewState
+                // Load Base Controls ViewState
                 if (myState[0] != null)
                 {
                     base.LoadViewState(myState[0]);
                 }
 
-                //Load TabId
+                // Load TabId
                 if (myState[1] != null)
                 {
                     this.TabID = Convert.ToInt32(myState[1]);
                 }
 
-                //Load TabPermissions
+                // Load TabPermissions
                 if (myState[2] != null)
                 {
                     this._TabPermissions = new TabPermissionCollection();
                     string state = Convert.ToString(myState[2]);
                     if (!String.IsNullOrEmpty(state))
                     {
-                        //First Break the String into individual Keys
+                        // First Break the String into individual Keys
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
@@ -335,7 +335,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this._TabPermissions.Remove(permissionID, roleID, userID);
-            //Clear Permission List
+            // Clear Permission List
             this._PermissionsList = null;
         }
 
@@ -348,13 +348,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var allStates = new object[3];
 
-            //Save the Base Controls ViewState
+            // Save the Base Controls ViewState
             allStates[0] = base.SaveViewState();
 
-            //Save the Tab Id
+            // Save the Tab Id
             allStates[1] = this.TabID;
 
-            //Persist the TabPermisisons
+            // Persist the TabPermisisons
             var sb = new StringBuilder();
             if (this._TabPermissions != null)
             {

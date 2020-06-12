@@ -56,7 +56,7 @@ namespace DotNetNuke.Web.InternalServices
 			}
 			catch (ArgumentException)
 			{
-				//do it the old fashioned way
+				// do it the old fashioned way
 				using (var b = new Bitmap(path))
 				{
 					size = b.Size;

@@ -43,32 +43,32 @@ namespace DotNetNuke.Entities.Urls
             }
             if (tabNames != null)
             {
-                //get the portal by name
+                // get the portal by name
                 if (tabNames == "All")
                 {
                     tabIds.Add(-1);
                 }
                 else
                 {
-                    //loop through all specified tab names
+                    // loop through all specified tab names
                     foreach (string tabName in tabNames.Split(';'))
                     {
                         if (String.Compare(tabName, "default.aspx", StringComparison.OrdinalIgnoreCase) == 0)
                         {
-                            //default.aspx is marked with a -2 tabid
+                            // default.aspx is marked with a -2 tabid
                             tabIds.Add(-2);
                         }
                         else
                         {
-                            //593 : add in site root rewriting processing
+                            // 593 : add in site root rewriting processing
                             if (tabName == "/")
                             {
-                                //site root marked with a -3 tabid
+                                // site root marked with a -3 tabid
                                 tabIds.Add(-3);
                             }
                             else
                             {
-                                //portal id specified : specific portal
+                                // portal id specified : specific portal
                                 TabInfo tab = TabController.Instance.GetTabByName(tabName, portalId);
                                 if (tab != null)
                                 {

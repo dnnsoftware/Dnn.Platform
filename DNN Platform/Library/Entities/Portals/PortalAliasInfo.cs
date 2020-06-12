@@ -132,10 +132,10 @@ namespace DotNetNuke.Entities.Portals
 
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("portalAlias");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("portalID", this.PortalID.ToString());
             writer.WriteElementString("portalAliasID", this.PortalAliasID.ToString());
             writer.WriteElementString("HTTPAlias", this.HTTPAlias);
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Portals
             writer.WriteElementString("browserType", this.BrowserType.ToString().ToLowerInvariant());
             writer.WriteElementString("primary", this.IsPrimary.ToString().ToLowerInvariant());
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 

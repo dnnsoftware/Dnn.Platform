@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.Installer.Installers
             try
             {
                 this.Log.AddInfo(Util.FILES_Expanding);
-                //Create the folder for destination            
+                // Create the folder for destination            
                 this._Manifest = insFile.Name + ".manifest";
                 if (!Directory.Exists(this.PhysicalBasePath))
                 {
@@ -143,12 +143,12 @@ namespace DotNetNuke.Services.Installer.Installers
                     using (var writer = XmlWriter.Create(manifestStream, settings))
                     {
 
-                        //Start the new Root Element
+                        // Start the new Root Element
                         writer.WriteStartElement("dotnetnuke");
                         writer.WriteAttributeString("type", "ResourceFile");
                         writer.WriteAttributeString("version", "5.0");
 
-                        //Start files Element
+                        // Start files Element
                         writer.WriteStartElement("files");
 
                         ZipEntry entry = unzip.GetNextEntry();
@@ -159,14 +159,14 @@ namespace DotNetNuke.Services.Installer.Installers
                             {
                                 string fileName = Path.GetFileName(entry.Name);
 
-                                //Start file Element
+                                // Start file Element
                                 writer.WriteStartElement("file");
 
-                                //Write path
+                                // Write path
                                 writer.WriteElementString("path",
                                     entry.Name.Substring(0, entry.Name.IndexOf(fileName)));
 
-                                //Write name
+                                // Write name
                                 writer.WriteElementString("name", fileName);
 
                                 var physicalPath = Path.Combine(this.PhysicalBasePath, entry.Name);
@@ -179,7 +179,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
                                 Util.WriteStream(unzip, physicalPath);
 
-                                //Close files Element
+                                // Close files Element
                                 writer.WriteEndElement();
 
                                 this.Log.AddInfo(string.Format(Util.FILE_Created, entry.Name));
@@ -188,7 +188,7 @@ namespace DotNetNuke.Services.Installer.Installers
                             entry = unzip.GetNextEntry();
                         }
 
-                        //Close files Element
+                        // Close files Element
                         writer.WriteEndElement();
 
                         this.Log.AddInfo(Util.FILES_CreatedResources);
@@ -234,7 +234,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 this._Manifest = insFile.FullName + DEFAULT_MANIFESTEXT;
             }
 
-            //Call base method
+            // Call base method
             return base.ReadManifestItem(nav, checkFileExists);
         }
 
@@ -256,15 +256,15 @@ namespace DotNetNuke.Services.Installer.Installers
                     entry.CheckZipEntry();
                     if (!entry.IsDirectory)
                     {
-                        //Check for Backups
+                        // Check for Backups
                         if (File.Exists(insFile.BackupPath + entry.Name))
                         {
-                            //Restore File
+                            // Restore File
                             Util.RestoreFile(new InstallFile(unzip, entry, this.Package.InstallerInfo), this.PhysicalBasePath, this.Log);
                         }
                         else
                         {
-                            //Delete File
+                            // Delete File
                             Util.DeleteFile(entry.Name, this.PhysicalBasePath, this.Log);
                         }
                     }

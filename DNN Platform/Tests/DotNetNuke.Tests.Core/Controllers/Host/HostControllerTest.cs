@@ -79,7 +79,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_GetSettings_GetList()
         {
-            //Arrange
+            // Arrange
             var expectedDic = new Dictionary<string, ConfigurationSetting>();
 
             foreach (DataRow row in this._hostSettingsTable.Rows)
@@ -93,10 +93,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
                 expectedDic.Add(conf.Key, conf);
             }
 
-            //Act
+            // Act
             var settingsDic = HostController.Instance.GetSettings();
 
-            //Assert
+            // Assert
             foreach (var currentConfig in settingsDic)
             {
                 Assert.AreEqual(currentConfig.Key, currentConfig.Value.Key);
@@ -108,15 +108,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_GetSettingsDictionary_GetList()
         {
-            //Arrange
-            //Convert table to Dictionary<string,string>
+            // Arrange
+            // Convert table to Dictionary<string,string>
             var expectedDic = this._hostSettingsTable.Rows.Cast<DataRow>().ToDictionary(row => row["SettingName"].ToString(), row => row["SettingValue"].ToString());
 
-            //Act
+            // Act
             var settingsDic = HostController.Instance.GetSettingsDictionary();
 
 
-            //Assert
+            // Assert
             CollectionAssert.AreEquivalent(expectedDic.Values, settingsDic.Values);
         }
 
@@ -127,15 +127,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_ExistingValue()
         {
-            //Arrange
+            // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
@@ -143,15 +143,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_ExistingValue_ResetCache()
         {
-            //Arrange
+            // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
@@ -159,15 +159,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_ExistingValue_ResetCache_With_Overload()
         {
-            //Arrange
+            // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value, true);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()), Times.Exactly(1));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Exactly(1));
         }
@@ -175,33 +175,33 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_ExistingValue_Dont_Reset_Cache()
         {
-            //Arrange
+            // Arrange
             const string key = "String_1_S";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(key).Read()).Returns(true);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value, false);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
-            //Clear was not called a second time
+            // Clear was not called a second time
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }
 
         [Test]
         public void HostController_Update_Dictionary()
         {
-            //Arrange
+            // Arrange
             var settings = new Dictionary<string, string>
                                                       {
                                                           {"String_1_S", "MyValue"},
                                                       };
 
-            //Act
+            // Act
             HostController.Instance.Update(settings);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting("String_1_S", "MyValue", false, It.IsAny<int>()), Times.Exactly(1));
             this._mockCache.Verify(c => c.Clear("Host", ""), Times.Exactly(1));
         }
@@ -213,15 +213,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_NewValue()
         {
-            //Arrange
+            // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
@@ -229,15 +229,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_NewValue_ResetCache_With_Overload()
         {
-            //Arrange
+            // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value, true);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
@@ -245,15 +245,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_NewValue_ResetCache()
         {
-            //Arrange
+            // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Once);
         }
@@ -261,15 +261,15 @@ namespace DotNetNuke.Tests.Core.Controllers.Host
         [Test]
         public void HostController_Update_NewValue_Dont_Reset_Cache()
         {
-            //Arrange
+            // Arrange
             const string key = "MyKey";
             const string value = "MyValue";
             this._mockData.Setup(c => c.GetHostSetting(It.IsAny<string>()).Read()).Returns(false);
 
-            //Act
+            // Act
             HostController.Instance.Update(key, value, false);
 
-            //Assert
+            // Assert
             this._mockData.Verify(c => c.UpdateHostSetting(key, value, false, It.IsAny<int>()));
             this._mockCache.Verify(c => c.Remove("DNN_HostSettings"), Times.Never);
         }

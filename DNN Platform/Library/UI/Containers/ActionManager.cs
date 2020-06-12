@@ -91,10 +91,10 @@ namespace DotNetNuke.UI.Containers
 
         private void ClearCache(ModuleAction Command)
         {
-			//synchronize cache
+			// synchronize cache
             ModuleController.SynchronizeModule(this.ModuleContext.ModuleId);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.Containers
         {
             var module = ModuleController.Instance.GetModule(int.Parse(Command.CommandArgument), this.ModuleContext.TabId, true);
 
-            //Check if this is the owner instance of a shared module.
+            // Check if this is the owner instance of a shared module.
             var user = UserController.Instance.GetCurrentUserInfo();
             if (!module.IsShared)
             {
@@ -110,7 +110,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     if (instance.IsShared)
                     {
-                        //HARD Delete Shared Instance
+                        // HARD Delete Shared Instance
                         ModuleController.Instance.DeleteTabModule(instance.TabID, instance.ModuleID, false);
                         EventLogController.Instance.AddLog(instance, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_DELETED);
                     }
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.Containers
             ModuleController.Instance.DeleteTabModule(this.ModuleContext.TabId, int.Parse(Command.CommandArgument), true);
             EventLogController.Instance.AddLog(module, this.PortalSettings, user.UserID, "", EventLogController.EventLogType.MODULE_SENT_TO_RECYCLE_BIN);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -176,7 +176,7 @@ namespace DotNetNuke.UI.Containers
             ModuleController.Instance.UpdateModuleOrder(this.ModuleContext.TabId, this.ModuleContext.ModuleId, -1, Command.CommandArgument);
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.Containers
             }
             ModuleController.Instance.UpdateTabModuleOrder(this.ModuleContext.TabId);
 
-            //Redirect to the same page to pick up changes
+            // Redirect to the same page to pick up changes
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -220,17 +220,17 @@ namespace DotNetNuke.UI.Containers
                 DNNNode objRootNode = objNodes[0];
                 if (objRootNode.HasNodes && objRootNode.DNNNodes.Count == 0)
                 {
-					//if has pending node then display control
+					// if has pending node then display control
                     return true;
                 }
                 else if (objRootNode.DNNNodes.Count > 0)
                 {
-					//verify that at least one child is not a break
+					// verify that at least one child is not a break
                     foreach (DNNNode childNode in objRootNode.DNNNodes)
                     {
                         if (!childNode.IsBreak)
                         {
-							//Found a child so make Visible
+							// Found a child so make Visible
                             return true;
                         }
                     }
@@ -379,7 +379,7 @@ namespace DotNetNuke.UI.Containers
                 case ModuleActionType.UnTranslateModule:
                     this.Translate(action);
                     break;
-                default: //custom action
+                default: // custom action
                     if (!String.IsNullOrEmpty(action.Url) && action.UseActionEvent == false)
                     {
                         this.DoAction(action);

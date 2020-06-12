@@ -182,7 +182,7 @@ namespace DotNetNuke.Services.Tokens
         /// </remarks>
         private void InitializePropertySources()
         {
-            //Cleanup, by default "" is returned for these objects and any property
+            // Cleanup, by default "" is returned for these objects and any property
             IPropertyAccess defaultPropertyAccess = new EmptyPropertyAccess();
             this.PropertySource["portal"] = defaultPropertyAccess;
             this.PropertySource["tab"] = defaultPropertyAccess;
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Tokens
             this.PropertySource["membership"] = defaultPropertyAccess;
             this.PropertySource["profile"] = defaultPropertyAccess;
 
-            //initialization
+            // initialization
             if (this.CurrentAccessLevel >= Scope.Configuration)
             {
                 if (this.PortalSettings != null)

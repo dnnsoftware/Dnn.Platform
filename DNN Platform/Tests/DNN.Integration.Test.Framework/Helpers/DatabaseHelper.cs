@@ -107,8 +107,8 @@ namespace DNN.Integration.Test.Framework.Helpers
                             for (var i = 0; i < reader.FieldCount; i++)
                             {
                                 values.Add(reader.GetName(i), reader.GetValue(i));
-                                //values[reader.GetName(i)] = reader.GetValue(i); 
-                                //values.Add(reader.GetName(i), reader.GetValue(i));
+                                // values[reader.GetName(i)] = reader.GetValue(i); 
+                                // values.Add(reader.GetName(i), reader.GetValue(i));
                             }
                             results.Add(values);
                         }

@@ -298,7 +298,7 @@ namespace DotNetNuke.UI.ControlPanel
 					}
 				}
 
-				//set view mode to edit after add module.
+				// set view mode to edit after add module.
 				if (this.PortalSettings.UserMode != PortalSettings.Mode.Edit)
 				{
 					Personalization.SetProfile("Usability", "UserMode" + this.PortalSettings.PortalId, "EDIT");
@@ -465,7 +465,7 @@ namespace DotNetNuke.UI.ControlPanel
                 {
                     newModule.ModuleID = Null.NullInteger;
 
-                    //copy module settings and tab module settings
+                    // copy module settings and tab module settings
                     newModule.ModuleSettings.Clear();
                     foreach (var key in moduleInfo.ModuleSettings.Keys)
                     {
@@ -478,7 +478,7 @@ namespace DotNetNuke.UI.ControlPanel
                         newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
                     }
 
-                    //reset the module id
+                    // reset the module id
                     newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
@@ -504,7 +504,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
                 else
                 {
-                    //copy tab module settings
+                    // copy tab module settings
                     newModule.TabModuleSettings.Clear();
                     foreach (var key in moduleInfo.TabModuleSettings.Keys)
                     {
@@ -516,7 +516,7 @@ namespace DotNetNuke.UI.ControlPanel
 
                 if (remote)
                 {
-                    //Ensure the Portal Admin has View rights
+                    // Ensure the Portal Admin has View rights
                     var permissionController = new PermissionController();
                     ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
                     AddModulePermission(newModule,
@@ -525,13 +525,13 @@ namespace DotNetNuke.UI.ControlPanel
                                     Null.NullInteger,
                                     true);
 
-                    //Set PortalID correctly
+                    // Set PortalID correctly
                     newModule.OwnerPortalID = newModule.PortalID;
                     newModule.PortalID = PortalSettings.Current.PortalId;
                     ModulePermissionController.SaveModulePermissions(newModule);
                 }
 
-                //Add Event Log
+                // Add Event Log
                 EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
             }
         }
@@ -587,8 +587,8 @@ namespace DotNetNuke.UI.ControlPanel
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //check whether original tab is exists, if true then set culture code to default language,
-                    //otherwise set culture code to current.
+                    // check whether original tab is exists, if true then set culture code to default language,
+                    // otherwise set culture code to current.
                     if (TabController.Instance.GetTabByCulture(objModule.TabID, PortalSettings.Current.PortalId, defaultLocale) != null)
                     {
                         objModule.CultureCode = defaultLocale.Code;
@@ -677,7 +677,7 @@ namespace DotNetNuke.UI.ControlPanel
             ITermController termController = Util.GetTermController();
             this.CategoryList.DataSource = termController.GetTermsByVocabulary("Module_Categories").OrderBy(t => t.Weight).Where(t => t.Name != "< None >").ToList();
             this.CategoryList.DataBind();
-            //CategoryList.Items.Add(new ListItem(Localization.GetString("AllCategories", LocalResourceFile), "All"));
+            // CategoryList.Items.Add(new ListItem(Localization.GetString("AllCategories", LocalResourceFile), "All"));
             this.CategoryList.AddItem(Localization.GetString("AllCategories", this.LocalResourceFile), "All");
             if (!this.IsPostBack)
             {
@@ -689,7 +689,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             if (this.AddExistingModule.Checked)
             {
-                //Get list of modules for the selected tab
+                // Get list of modules for the selected tab
                 if (!string.IsNullOrEmpty(this.PageLst.SelectedValue))
                 {
                     var tabId = int.Parse(this.PageLst.SelectedValue);
@@ -763,10 +763,10 @@ namespace DotNetNuke.UI.ControlPanel
 
             foreach (ModuleInfo m in PortalSettings.Current.ActiveTab.Modules)
             {
-                //if user is allowed to view module and module is not deleted
+                // if user is allowed to view module and module is not deleted
                 if (ModulePermissionController.CanViewModule(m) && !m.IsDeleted)
                 {
-                    //modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
+                    // modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
                     if (!m.AllTabs || !PortalSettings.Current.ActiveTab.IsSuperTab)
                     {
                         if (m.PaneName == this.PaneLst.SelectedValue)
@@ -895,7 +895,7 @@ namespace DotNetNuke.UI.ControlPanel
             {
                 return false;
             }
-            //If we are not in an edit page
+            // If we are not in an edit page
             return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 

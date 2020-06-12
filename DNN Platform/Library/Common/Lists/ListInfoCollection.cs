@@ -33,7 +33,7 @@ namespace DotNetNuke.Common.Lists
         public void Add(string key, object value)
         {
             int index;
-            //<tam:note key to be lowercase for appropiated seeking>
+            // <tam:note key to be lowercase for appropiated seeking>
             try
             {
                 index = base.List.Add(value);
@@ -64,7 +64,7 @@ namespace DotNetNuke.Common.Lists
         {
             int index;
             object obj;
-            try //Do validation first
+            try // Do validation first
             {
                 if (this.mKeyIndexLookup[key.ToLowerInvariant()] == null)
                 {
@@ -87,7 +87,7 @@ namespace DotNetNuke.Common.Lists
             int index;
             object obj = null;
             bool itemExists = false;
-            try //Do validation first
+            try // Do validation first
             {
                 if (this.mKeyIndexLookup[key.ToLowerInvariant()] != null)
                 {
@@ -98,14 +98,14 @@ namespace DotNetNuke.Common.Lists
             {
                 Logger.Error(exc);
             }
-            //key will be in format Country.US:Region
+            // key will be in format Country.US:Region
             if (!itemExists)
             {
                 var ctlLists = new ListController();
                 string listName = key.Substring(key.IndexOf(":") + 1);
                 string parentKey = key.Replace(listName, "").TrimEnd(':');
                 ListInfo listInfo = ctlLists.GetListInfo(listName, parentKey);
-                //the collection has been cache, so add this entry list into it if specified
+                // the collection has been cache, so add this entry list into it if specified
                 if (Cache)
                 {
                     this.Add(listInfo.Key, listInfo);

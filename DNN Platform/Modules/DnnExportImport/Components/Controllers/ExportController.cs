@@ -29,10 +29,10 @@ namespace Dnn.ExportImport.Components.Controllers
                 exportDto.FromDateUtc = this.GetLastJobTime(exportDto.PortalId, JobType.Export);
             }
             var dataObject = JsonConvert.SerializeObject(exportDto);
-            exportDto.IsDirty = false; //This should be set to false for new job.
+            exportDto.IsDirty = false; // This should be set to false for new job.
             var jobId = DataProvider.Instance().AddNewJob(exportDto.PortalId, userId,
                 JobType.Export, exportDto.ExportName, exportDto.ExportDescription, directory, dataObject);
-            //Run the scheduler if required.
+            // Run the scheduler if required.
             if (exportDto.RunNow)
             {
                 EntitiesController.Instance.RunSchedule();

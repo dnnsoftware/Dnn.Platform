@@ -34,8 +34,8 @@ namespace DotNetNuke.Framework.Reflections
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-                    //some assemblies don't want to be reflected but they still 
-                    //expose types in the exception
+                    // some assemblies don't want to be reflected but they still 
+                    // expose types in the exception
                     types = ex.Types ?? new Type[0];
                 }
 
@@ -86,7 +86,7 @@ namespace DotNetNuke.Framework.Reflections
                                                     "DotNetNuke.WebUtility",
                                                 };
 
-            //First eliminate by "class"
+            // First eliminate by "class"
             var assemblyName = assembly.FullName.ToLowerInvariant();
             bool canScan = !(assemblyName.StartsWith("clientdependency.core") || assemblyName.StartsWith("countrylistbox")
                 || assemblyName.StartsWith("icsharpcode") || assemblyName.StartsWith("fiftyone")
@@ -99,7 +99,7 @@ namespace DotNetNuke.Framework.Reflections
 
             if (canScan)
             {
-                //Next eliminate specific assemblies
+                // Next eliminate specific assemblies
                 if (ignoreAssemblies.Any(ignoreAssembly => assemblyName == ignoreAssembly.ToLowerInvariant()))
                 {
                     canScan = false;
@@ -111,8 +111,8 @@ namespace DotNetNuke.Framework.Reflections
 
         IEnumerable<IAssembly> IAssemblyLocator.Assemblies
         {
-            //this method is not readily testable as the assemblies in the current app domain
-            //will vary depending on the test runner and test configuration
+            // this method is not readily testable as the assemblies in the current app domain
+            // will vary depending on the test runner and test configuration
             get
             {
                 return (from assembly in AppDomain.CurrentDomain.GetAssemblies()

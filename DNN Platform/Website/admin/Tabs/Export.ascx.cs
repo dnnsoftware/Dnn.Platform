@@ -134,18 +134,18 @@ namespace DotNetNuke.Modules.Admin.Tabs
                             nodePortal.Attributes.Append(XmlUtils.CreateAttribute(xmlTemplate, "version", "3.0"));
                         }
 
-                        //Add template description
+                        // Add template description
                         XmlElement node = xmlTemplate.CreateElement("description");
                         node.InnerXml = this.Server.HtmlEncode(this.txtDescription.Text);
                         nodePortal.AppendChild(node);
 
-                        //Serialize tabs
+                        // Serialize tabs
                         XmlNode nodeTabs = nodePortal.AppendChild(xmlTemplate.CreateElement("tabs"));
                         this.SerializeTab(xmlTemplate, nodeTabs);
 
                         UI.Skins.Skin.AddModuleMessage(this, "", string.Format(Localization.GetString("ExportedMessage", this.LocalResourceFile), filename), ModuleMessage.ModuleMessageType.BlueInfo);
 
-                        //add file to Files table
+                        // add file to Files table
 						using (var fileContent = new MemoryStream(Encoding.UTF8.GetBytes(xmlTemplate.OuterXml)))
 						{
 							Services.FileSystem.FileManager.Instance.AddFile(folder, this.txtFile.Text + ".page.template", fileContent, true, true, "application/octet-stream");

@@ -34,14 +34,14 @@ namespace DotNetNuke.UI.Modules.Html5
 
             if (!(string.IsNullOrEmpty(this._html5File)))
             {
-                //Check if css file exists
+                // Check if css file exists
                 var cssFile = Path.ChangeExtension(this._html5File, ".css");
                 if (this.FileExists(cssFile))
                 {
                     ClientResourceManager.RegisterStyleSheet(this.Page, cssFile, FileOrder.Css.DefaultPriority);
                 }
 
-                //Check if js file exists
+                // Check if js file exists
                 var jsFile = Path.ChangeExtension(this._html5File, ".js");
                 if (this.FileExists(jsFile))
                 {
@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Modules.Html5
                 this._fileContent = tokenReplace.ReplaceEnvironmentTokens(this._fileContent);
             }
 
-            //Register for Services Framework
+            // Register for Services Framework
             ServicesFramework.Instance.RequestAjaxScriptSupport();
         }
 

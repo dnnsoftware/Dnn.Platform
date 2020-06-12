@@ -56,7 +56,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                 return true;
             }
 
-            //when there have excluded roles defined, and current user in the role. the service call will failed.
+            // when there have excluded roles defined, and current user in the role. the service call will failed.
             if (!string.IsNullOrEmpty(this.Exclude))
             {
                 foreach (var roleName in this.Exclude.Split(';'))
@@ -72,7 +72,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                 }
             }
 
-            //if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
+            // if menu identifier defined, then will check the menu permission, multiple identifier should split with ",".
             if (!string.IsNullOrEmpty(this.MenuName))
             {
                 if (isAdmin)
@@ -95,7 +95,7 @@ namespace Dnn.PersonaBar.Library.Attributes
             }
             
 
-            //when menu identifier not defined, will check the service scope permission.
+            // when menu identifier not defined, will check the service scope permission.
             switch (this.Scope)
             {
                 case ServiceScope.Admin:
@@ -103,7 +103,7 @@ namespace Dnn.PersonaBar.Library.Attributes
                 case ServiceScope.Regular:
                     if (portalSettings != null)
                     {
-                        //if user have ability on any persona bar menus, then need allow to request api.
+                        // if user have ability on any persona bar menus, then need allow to request api.
                         return PersonaBarController.Instance.GetMenu(portalSettings, portalSettings.UserInfo).AllItems.Count > 0;
                     }
                     

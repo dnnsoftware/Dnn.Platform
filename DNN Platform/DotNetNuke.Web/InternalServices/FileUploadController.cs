@@ -766,7 +766,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (uri.Host.StartsWith("10") || uri.Host.StartsWith("172") || uri.Host.StartsWith("192"))
                 {
-                    //check nonroutable IP addresses
+                    // check nonroutable IP addresses
                     if (NetworkUtils.IsIPInRange(uri.Host, "10.0.0.0", "8") ||
                         NetworkUtils.IsIPInRange(uri.Host, "172.16.0.0", "12") ||
                         NetworkUtils.IsIPInRange(uri.Host, "192.168.0.0", "16"))

@@ -64,12 +64,12 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                         {
                             _allClientCapabilityValues = new Dictionary<string, List<string>>();
 
-                            //TODO :Implement
-                            //foreach (var property in DataProvider.Properties)
-                            //{
+                            // TODO :Implement
+                            // foreach (var property in DataProvider.Properties)
+                            // {
                             //    var values = property.Values.Select(value => value.Name).ToList();
                             //    _allClientCapabilityValues.Add(property.Name, values);
-                            //}
+                            // }
                         }
                     }
 

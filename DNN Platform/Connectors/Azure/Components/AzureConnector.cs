@@ -120,7 +120,7 @@ namespace Dnn.AzureConnector.Components
             configs.Add("Container", this.GetSetting(settings, Constants.AzureContainerName));
             configs.Add("Connected", !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureAccountName)) && !string.IsNullOrEmpty(this.GetSetting(settings, Constants.AzureContainerName)) ? "true" : "false");
 
-            //This setting will improve the UI to set password-type inputs on secure settings
+            // This setting will improve the UI to set password-type inputs on secure settings
             configs.Add("SecureSettings", "AccountKey");
             configs.Add("Id", Convert.ToString(folderMapping?.FolderMappingID));
             return configs;
@@ -350,7 +350,7 @@ namespace Dnn.AzureConnector.Components
             var folderMappings = FolderMappingController.Instance.GetFolderMappings(portalId)
                 .Where(f => f.FolderProviderType == Constants.FolderProviderType).ToList();
 
-            //Create new mapping if none is found.
+            // Create new mapping if none is found.
             if (!folderMappings.Any() && autoCreate)
             {
                 return this.CreateAzureFolderMapping(portalId, DefaultDisplayName);

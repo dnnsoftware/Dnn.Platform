@@ -31,7 +31,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 		private void Redirect()
 		{
-			//Redirect browser back to portal 
+			// Redirect browser back to portal 
 			this.Response.Redirect(AuthenticationController.GetLogoffRedirectURL(this.PortalSettings, this.Request), true);
 		}
 
@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 		{
 			try
 			{
-				//Remove user from cache
+				// Remove user from cache
 				if (this.User != null)
 				{
 					DataCache.ClearUserCache(this.PortalSettings.PortalId, this.Context.User.Identity.Name);
@@ -47,7 +47,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				var objPortalSecurity = PortalSecurity.Instance;
 				objPortalSecurity.SignOut();
 			}
-			catch (Exception exc)	//Page failed to load
+			catch (Exception exc)	// Page failed to load
 			{
 				Exceptions.ProcessPageLoadException(exc);
 			}
@@ -67,15 +67,15 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			base.OnLoad(e);
 			try
 			{
-				//Get the Authentication System associated with the current User
+				// Get the Authentication System associated with the current User
 				var authSystem = AuthenticationController.GetAuthenticationType();
 
 				if (authSystem != null && !string.IsNullOrEmpty(authSystem.LogoffControlSrc))
 				{
 					var authLogoffControl = (AuthenticationLogoffBase)this.LoadControl("~/" + authSystem.LogoffControlSrc);
 
-					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-					//this is necessary for the Localization in PageBase
+					// set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+					// this is necessary for the Localization in PageBase
 					authLogoffControl.AuthenticationType = authSystem.AuthenticationType;
 					authLogoffControl.ID = Path.GetFileNameWithoutExtension(authSystem.LogoffControlSrc) + "_" + authSystem.AuthenticationType;
 					authLogoffControl.LocalResourceFile = authLogoffControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
@@ -85,21 +85,21 @@ namespace DotNetNuke.Modules.Admin.Authentication
 					authLogoffControl.LogOff += this.UserLogOff;
 					authLogoffControl.Redirect += this.UserRedirect;
 
-					//Add Login Control to Control
+					// Add Login Control to Control
 					this.pnlLogoffContainer.Controls.Add(authLogoffControl);
 				}
 				else
 				{
-					//The current auth system has no custom logoff control so LogOff
+					// The current auth system has no custom logoff control so LogOff
 					this.DoLogoff();
 					this.Redirect();
 				}
 			}
 			catch (ThreadAbortException)
 			{
-				//Do nothing Response.redirect
+				// Do nothing Response.redirect
 			}
-			catch (Exception exc) //Page failed to load
+			catch (Exception exc) // Page failed to load
 			{
 				Exceptions.ProcessPageLoadException(exc);
 			}

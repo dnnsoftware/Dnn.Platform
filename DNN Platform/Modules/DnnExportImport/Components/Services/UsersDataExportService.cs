@@ -36,7 +36,7 @@ namespace Dnn.ExportImport.Components.Services
             this.CheckPoint.TotalItems = 0;
             this.CheckPoint.ProcessedItems = 0;
             this.CheckPointStageCallback(this);
-            //No implementation required in export users child as everything is exported in parent service.
+            // No implementation required in export users child as everything is exported in parent service.
         }
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
@@ -56,7 +56,7 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
-            //Skip the import if all the users has been processed already.
+            // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
                 return;
 
@@ -64,7 +64,7 @@ namespace Dnn.ExportImport.Components.Services
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
 
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this)) return;
             var includeProfile = importDto.ExportDto.IncludeProperfileProperties;
@@ -92,7 +92,7 @@ namespace Dnn.ExportImport.Components.Services
                             foreach (var user in users)
                             {
                                 if (this.CheckCancelled(importJob)) return;
-                                //Find the correct userId from the system which was added/updated by UserExportService.
+                                // Find the correct userId from the system which was added/updated by UserExportService.
                                 var userId = UserController.GetUserByName(user.Username)?.UserID;
                                 if (userId != null)
                                 {
@@ -148,7 +148,7 @@ namespace Dnn.ExportImport.Components.Services
                                 }
                             }
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
-                            //Bulk insert the data in DB
+                            // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUserRolesBulk", "@DataTable", tableUserRoles, new Dictionary<string, object> { { "Overwrite", overwrite } });
                             totalUserRolesImported += tempUserRolesCount;

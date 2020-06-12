@@ -110,11 +110,11 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 if (this.Separator.IndexOf("src=", StringComparison.Ordinal) != -1)
                 {
-					//Add the skinpath to image paths
+					// Add the skinpath to image paths
                     this.Separator = SrcRegex.Replace(this.Separator, "$&" + this.PortalSettings.ActiveTab.SkinPath);
                 }
 				
-				//Wrap in a span
+				// Wrap in a span
                 this.Separator = string.Format("<span class=\"{0}\">{1}</span>", strCssClass, this.Separator);
             }
             else
@@ -122,12 +122,12 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.Separator = " ";
             }
 			
-            //build links
+            // build links
             string strLinks = "";
 
             strLinks = this.BuildLinks(this.Level, strSeparator, strCssClass);
 			
-			//Render links, even if nothing is returned with the currently set level
+			// Render links, even if nothing is returned with the currently set level
             if (String.IsNullOrEmpty(strLinks) && this.ForceLinks)
             {
                 strLinks = this.BuildLinks("", strSeparator, strCssClass);
@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 switch (strLevel)
                 {
-                    case "same": //Render tabs on the same level as the current tab
+                    case "same": // Render tabs on the same level as the current tab
                     case "":
                         if (objTab.ParentId == this.PortalSettings.ActiveTab.ParentId)
                         {
@@ -173,19 +173,19 @@ namespace DotNetNuke.UI.Skins.Controls
                             }
                         }
                         break;
-                    case "child": //Render the current tabs child tabs
+                    case "child": // Render the current tabs child tabs
                         if (objTab.ParentId == this.PortalSettings.ActiveTab.TabID)
                         {
                             return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
                         break;
-                    case "parent": //Render the current tabs parenttab
+                    case "parent": // Render the current tabs parenttab
                         if (objTab.TabID == this.PortalSettings.ActiveTab.ParentId)
                         {
                             return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
                         }
                         break;
-                    case "root": //Render Root tabs
+                    case "root": // Render Root tabs
                         if (objTab.Level == 0)
                         {
                             return this.AddLink(objTab.TabName, objTab.FullUrl, strCssClass);
@@ -198,7 +198,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         private string ProcessLink(string sLink, int iLinksLength)
         {
-			//wrap in a div if set to vertical
+			// wrap in a div if set to vertical
             if (String.IsNullOrEmpty(sLink))
             {
                 return "";
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.Skins.Controls
             }
             else if (!String.IsNullOrEmpty(this.Separator) && iLinksLength > 0)
             {
-				//If not vertical, then render the separator
+				// If not vertical, then render the separator
                 sLink = string.Concat(this.Separator, sLink);
             }
             return sLink;

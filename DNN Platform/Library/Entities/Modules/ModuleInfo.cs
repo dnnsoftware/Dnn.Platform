@@ -62,8 +62,8 @@ namespace DotNetNuke.Entities.Modules
 
         public ModuleInfo()
         {
-            //initialize the properties that can be null
-            //in the database
+            // initialize the properties that can be null
+            // in the database
             this.PortalID = Null.NullInteger;
             this.OwnerPortalID = Null.NullInteger;
             this.TabModuleID = Null.NullInteger;
@@ -86,12 +86,12 @@ namespace DotNetNuke.Entities.Modules
             this.DisplayPrint = true;
             this.DisplaySyndicate = false;
 
-            //Guid, Version Guid, and Localized Version Guid should be initialised to a new value
+            // Guid, Version Guid, and Localized Version Guid should be initialised to a new value
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
             this._localizedVersionGuid = Guid.NewGuid();
 
-            //Default Language Guid should be initialised to a null Guid
+            // Default Language Guid should be initialised to a null Guid
             this._defaultLanguageGuid = Null.NullGuid;
         }
 
@@ -421,7 +421,7 @@ namespace DotNetNuke.Entities.Modules
                 bool isLocalized = true;
                 if (this.DefaultLanguageModule != null)
                 {
-                    //Child language
+                    // Child language
                     isLocalized = this.ModuleID != this.DefaultLanguageModule.ModuleID;
                 }
                 return isLocalized;
@@ -444,7 +444,7 @@ namespace DotNetNuke.Entities.Modules
                 bool isTranslated = true;
                 if (this.DefaultLanguageModule != null)
                 {
-                    //Child language
+                    // Child language
                     isTranslated = (this.LocalizedVersionGuid == this.DefaultLanguageModule.LocalizedVersionGuid);
                 }
                 return isTranslated;
@@ -458,7 +458,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (this._localizedModules == null && (this.DefaultLanguageGuid.Equals(Null.NullGuid)) && this.ParentTab != null && this.ParentTab.LocalizedTabs != null)
                 {
-                    //Cycle through all localized tabs looking for this module
+                    // Cycle through all localized tabs looking for this module
                     this._localizedModules = new Dictionary<string, ModuleInfo>();
                     foreach (TabInfo t in this.ParentTab.LocalizedTabs.Values)
                     {
@@ -525,7 +525,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class properties
+            // Call the base classes fill method to populate base class properties
             base.FillInternal(dr);
 
             this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
@@ -1006,7 +1006,7 @@ namespace DotNetNuke.Entities.Modules
                                         CultureCode = this.CultureCode
                                     };
 
-            //localized properties
+            // localized properties
 	        this.Clone(objModuleInfo, this);
             return objModuleInfo;
         }

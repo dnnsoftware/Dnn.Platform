@@ -81,7 +81,7 @@ namespace DotNetNuke.Framework
         public override void Load()
         {
             StreamReader reader = null;
-            //Read the state string, using the StateFormatter.
+            // Read the state string, using the StateFormatter.
             try
             {
                 reader = new StreamReader(this.StateFileName);
@@ -90,8 +90,8 @@ namespace DotNetNuke.Framework
 
                 IStateFormatter formatter = this.StateFormatter;
 
-                //Deserialize returns the Pair object that is serialized in
-                //the Save method.      
+                // Deserialize returns the Pair object that is serialized in
+                // the Save method.      
                 var statePair = (Pair)formatter.Deserialize(serializedStatePair);
                 this.ViewState = statePair.First;
                 this.ControlState = statePair.Second;
@@ -112,7 +112,7 @@ namespace DotNetNuke.Framework
         /// -----------------------------------------------------------------------------
         public override void Save()
         {
-			//No processing needed if no states available
+			// No processing needed if no states available
             if (this.ViewState == null && this.ControlState == null)
             {
                 return;
@@ -124,7 +124,7 @@ namespace DotNetNuke.Framework
                     Directory.CreateDirectory(this.CacheDirectory);
                 }
 
-                //Write a state string, using the StateFormatter.
+                // Write a state string, using the StateFormatter.
                 using (var writer = new StreamWriter(this.StateFileName, false))
                 {
                     IStateFormatter formatter = this.StateFormatter;

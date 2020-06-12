@@ -96,10 +96,10 @@ namespace DotNetNuke.UI.ControlPanel
                 errMsg = ex.Message;
             }
 
-            //Clear the Tab's Cached modules
+            // Clear the Tab's Cached modules
             DataCache.ClearModuleCache(PortalSettings.ActiveTab.TabID);
 
-            //Update Cached Tabs as TabPath may be needed before cache is cleared
+            // Update Cached Tabs as TabPath may be needed before cache is cleared
             TabInfo tempTab;
             if (TabController.Instance.GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(newTab.TabID, out tempTab))
             {
@@ -191,7 +191,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.TemplateLst.ClearSelection();
             this.TemplateLst.Items.Clear();
 
-            //Get Templates Folder
+            // Get Templates Folder
             ArrayList templateFiles = Globals.GetFileList(PortalSettings.PortalId, "page.template", false, "Templates/");
             foreach (FileItem dnnFile in templateFiles)
             {
@@ -211,9 +211,9 @@ namespace DotNetNuke.UI.ControlPanel
             this.LocationLst.ClearSelection();
             this.LocationLst.Items.Clear();
 
-            //LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
-            //LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
-            //LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
+            // LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
+            // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
+            // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
 
             this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
             this.LocationLst.AddItem(this.GetString("After"), "AFTER");

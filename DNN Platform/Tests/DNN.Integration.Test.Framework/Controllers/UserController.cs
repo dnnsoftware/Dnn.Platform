@@ -82,7 +82,7 @@ namespace DNN.Integration.Test.Framework.Controllers
             if (uid > 0)
                 return uid;
 
-            //create role if not present
+            // create role if not present
             RoleController.CreateRoleIfNotPresent(parms.Role);  
 
             var fileContent = SqlScripts.SingleUserCreation;

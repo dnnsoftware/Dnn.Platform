@@ -30,7 +30,7 @@ namespace DotNetNuke.Modules.Journal
             var statuses = new List<FilesStatus>();
             try
             {
-                //todo can we eliminate the HttpContext here
+                // todo can we eliminate the HttpContext here
                 this.UploadWholeFile(HttpContextSource.Current, statuses);
             }
             catch (Exception exc)
@@ -43,7 +43,7 @@ namespace DotNetNuke.Modules.Journal
 
         private HttpResponseMessage IframeSafeJson(List<FilesStatus> statuses)
         {
-            //return json but label it as plain text
+            // return json but label it as plain text
             return new HttpResponseMessage
             {
                 Content = new StringContent(JsonConvert.SerializeObject(statuses))
@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.Journal
                 if (file == null) continue;
 
                 var fileName = Path.GetFileName(file.FileName);
-                //fix any filename issues that would cause double escaping exceptions
+                // fix any filename issues that would cause double escaping exceptions
                 if (IsImageExtension(Path.GetExtension(fileName)))
                 {
                     fileName = fileName.Replace("+", ""); 

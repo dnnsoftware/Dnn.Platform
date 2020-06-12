@@ -52,10 +52,10 @@ namespace DotNetNuke.Entities.Users
         {
             var objUserOnlineController = new UserOnlineController();
 
-            //Is Users Online Enabled?
+            // Is Users Online Enabled?
             if ((objUserOnlineController.IsEnabled()))
             {
-                //Update the Users Online records from Cache
+                // Update the Users Online records from Cache
                 this.Status = "Updating Users Online";
                 objUserOnlineController.UpdateUsersOnline();
                 this.Status = "Update Users Online Successfully";
@@ -73,21 +73,21 @@ namespace DotNetNuke.Entities.Users
         {
             try
             {
-                //notification that the event is progressing
-                this.Progressing(); //OPTIONAL
+                // notification that the event is progressing
+                this.Progressing(); // OPTIONAL
                 this.UpdateUsersOnline();
-                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("UsersOnline purge completed.");
             }
-            catch (Exception exc) //REQUIRED
+            catch (Exception exc) // REQUIRED
             {
-                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
                 this.ScheduleHistoryItem.AddLogNote("UsersOnline purge failed." + exc);
 
-                //notification that we have errored
+                // notification that we have errored
                 this.Errored(ref exc);
 
-                //log the exception
+                // log the exception
                 Exceptions.LogException(exc);
             }
         }

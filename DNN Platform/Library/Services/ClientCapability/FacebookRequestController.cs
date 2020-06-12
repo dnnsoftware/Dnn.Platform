@@ -141,8 +141,8 @@ namespace DotNetNuke.Services.ClientCapability
         /// <returns></returns>
         private static DateTime ConvertToTimestamp(long value)
         {
-            //create Timespan by subtracting the value provided from
-            //the Unix Epoch
+            // create Timespan by subtracting the value provided from
+            // the Unix Epoch
             DateTime epoc = new DateTime(1970, 1, 1, 0, 0, 0, 0);
             return epoc.AddSeconds((double)value);
         }

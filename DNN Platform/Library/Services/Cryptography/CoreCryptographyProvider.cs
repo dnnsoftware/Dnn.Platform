@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Cryptography
             string value;
             if (!String.IsNullOrEmpty(passphrase))
             {
-                //convert key to 16 characters for simplicity
+                // convert key to 16 characters for simplicity
                 if (passphrase.Length < 16)
                 {
                     passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
@@ -32,14 +32,14 @@ namespace DotNetNuke.Services.Cryptography
                     passphrase = passphrase.Substring(0, 16);
                 }
 
-                //create encryption keys
+                // create encryption keys
                 byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
                 byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
 
-                //convert data to byte array
+                // convert data to byte array
                 byte[] byteData = Encoding.UTF8.GetBytes(message);
 
-                //encrypt 
+                // encrypt 
                 using (var objDes = new DESCryptoServiceProvider())
                 using (var objMemoryStream = new MemoryStream())
                 using (var objCryptoStream = new CryptoStream(objMemoryStream, objDes.CreateEncryptor(byteKey, byteVector),
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Cryptography
                     objCryptoStream.Write(byteData, 0, byteData.Length);
                     objCryptoStream.FlushFinalBlock();
 
-                    //convert to string and Base64 encode
+                    // convert to string and Base64 encode
                     value = Convert.ToBase64String(objMemoryStream.ToArray());
                 }
             }
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Cryptography
             {
                 try
                 {
-                    //convert key to 16 characters for simplicity
+                    // convert key to 16 characters for simplicity
                     if (passphrase.Length < 16)
                     {
                         passphrase = passphrase + "XXXXXXXXXXXXXXXX".Substring(0, 16 - passphrase.Length);
@@ -82,12 +82,12 @@ namespace DotNetNuke.Services.Cryptography
                         passphrase = passphrase.Substring(0, 16);
                     }
 
-                    //create encryption keys
+                    // create encryption keys
                     byte[] byteKey = Encoding.UTF8.GetBytes(passphrase.Substring(0, 8));
                     byte[] byteVector = Encoding.UTF8.GetBytes(passphrase.Substring(passphrase.Length - 8, 8));
                     byte[] byteData = Convert.FromBase64String(message);
 
-                    //decrypt
+                    // decrypt
                     using (var objDes = new DESCryptoServiceProvider())
                     using (var objMemoryStream = new MemoryStream())
                     using (var objCryptoStream = new CryptoStream(objMemoryStream,
@@ -96,12 +96,12 @@ namespace DotNetNuke.Services.Cryptography
                         objCryptoStream.Write(byteData, 0, byteData.Length);
                         objCryptoStream.FlushFinalBlock();
 
-                        //convert to string
+                        // convert to string
                         Encoding objEncoding = Encoding.UTF8;
                         strValue = objEncoding.GetString(objMemoryStream.ToArray());
                     }
                 }
-                catch //decryption error
+                catch // decryption error
                 {
                     strValue = "";
                 }
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.Cryptography
             byte[] results;
             var utf8 = new UTF8Encoding();
 
-            //hash the passphrase using MD5 to create 128bit byte array
+            // hash the passphrase using MD5 to create 128bit byte array
             using (var hashProvider = new MD5CryptoServiceProvider())
             {
                 byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Cryptography
                 }
             }
 
-            //Return the encrypted string as a base64 encoded string 
+            // Return the encrypted string as a base64 encoded string 
             return Convert.ToBase64String(results);
         }
 
@@ -162,7 +162,7 @@ namespace DotNetNuke.Services.Cryptography
             byte[] results;
             var utf8 = new UTF8Encoding();
 
-            //hash the passphrase using MD5 to create 128bit byte array
+            // hash the passphrase using MD5 to create 128bit byte array
             using (var hashProvider = new MD5CryptoServiceProvider())
             {
                 byte[] tdesKey = hashProvider.ComputeHash(utf8.GetBytes(passphrase));

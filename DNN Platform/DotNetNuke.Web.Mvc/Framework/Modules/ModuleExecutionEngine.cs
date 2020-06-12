@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
             if (moduleRequestContext.ModuleApplication != null)
             {
-                //Run the module
+                // Run the module
                 return moduleRequestContext.ModuleApplication.ExecuteRequest(moduleRequestContext);
             }
             return null;

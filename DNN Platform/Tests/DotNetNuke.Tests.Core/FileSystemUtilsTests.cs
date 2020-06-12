@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Core
         [TestCase("..\\")]
         public void DeleteFiles_Should_Not_Able_To_Delete_Root_Folder(string path)
         {
-            //Action
+            // Action
             FileSystemUtils.DeleteFiles(new string[] {path});
 
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.AllDirectories);
@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void AddToZip_Should_Able_To_Add_Multiple_Files()
         {
-            //Action
+            // Action
             this.DeleteZippedFiles();
             var zipFilePath = Path.Combine(Globals.ApplicationMapPath, $"Test{Guid.NewGuid().ToString().Substring(0, 8)}.zip");
             var files = Directory.GetFiles(Globals.ApplicationMapPath, "*.*", SearchOption.TopDirectoryOnly);
@@ -78,7 +78,7 @@ namespace DotNetNuke.Tests.Core
                 zipStream.Close();
             }
 
-            //Assert
+            // Assert
             var destPath = Path.Combine(Globals.ApplicationMapPath, Path.GetFileNameWithoutExtension(zipFilePath));
             if (!Directory.Exists(destPath))
             {
@@ -106,7 +106,7 @@ namespace DotNetNuke.Tests.Core
         [Test]
         public void DeleteFile_Should_Delete_File()
         {
-            //Action
+            // Action
             var testPath = Globals.ApplicationMapPath + $"/Test{Guid.NewGuid().ToString().Substring(0, 8)}.txt";
             using (StreamWriter sw = File.CreateText(testPath))
             {
@@ -115,7 +115,7 @@ namespace DotNetNuke.Tests.Core
             
             FileSystemUtils.DeleteFile(testPath);
 
-            //Assert
+            // Assert
             bool res = File.Exists(testPath.Replace("/", "\\"));
             Assert.IsFalse(res);
         }
@@ -127,10 +127,10 @@ namespace DotNetNuke.Tests.Core
         [TestCase("Test/Test ")]
         public void FixPath_Should_Change_Slashes_And_Trim(string input)
         {
-            //Action
+            // Action
             var result = FileSystemUtils.FixPath(input);
 
-            //Assert
+            // Assert
             if (string.IsNullOrEmpty(input))
             {
                 Assert.IsTrue(input == result);
@@ -171,7 +171,7 @@ namespace DotNetNuke.Tests.Core
                 }
                 catch (Exception)
                 {
-                    //ignore
+                    // ignore
                 }
             }
         }
@@ -183,7 +183,7 @@ namespace DotNetNuke.Tests.Core
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
         }
     }

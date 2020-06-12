@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         internal void SetDefaultFilterCondition(int moduleId)
         {
-            //handle upgrades where FilterCondition didn't exist
+            // handle upgrades where FilterCondition didn't exist
             if (this.SettingExists(moduleId, "RootFolderId") && !this.SettingExists(moduleId, "FilterCondition"))
                 this.SaveFilterCondition(moduleId, FilterCondition.FilterByFolder);
         }

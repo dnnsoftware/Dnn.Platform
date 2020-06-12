@@ -31,9 +31,9 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public PermissionTriState()
         {
-            //kind of ugly to lookup this data each time, but doesn't seem worth the effort to 
-            //maintain statics for the paths but require a control instance to initialize them
-            //and lazy load the text bits when the page instance (or localization) changes 
+            // kind of ugly to lookup this data each time, but doesn't seem worth the effort to 
+            // maintain statics for the paths but require a control instance to initialize them
+            // and lazy load the text bits when the page instance (or localization) changes 
             LookupScriptValues(this, out this._grantImagePath, out this._denyImagePath, out this._nullImagePath, out this._lockImagePath, out this._grantAltText, out this._denyAltText, out this._nullAltText);
         }
 
@@ -123,7 +123,7 @@ namespace DotNetNuke.UI.WebControls.Internal
             {
                 imagePath = this._lockImagePath;
                 cssClass += " lockedPerm";
-                //altText is set based on Value
+                // altText is set based on Value
             }
 
             if (!this.SupportsDenyMode)
@@ -156,8 +156,8 @@ namespace DotNetNuke.UI.WebControls.Internal
 
         public bool IsView { get; set; }
 
-        //Locked is currently not used on a post-back and therefore the 
-        //value on postback is undefined at this time
+        // Locked is currently not used on a post-back and therefore the 
+        // value on postback is undefined at this time
         public bool Locked { get; set; }
 
         public string PermissionKey { get; set; }

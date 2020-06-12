@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
         public UserPreferencesController(IDataService dataService)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataService", dataService);
 
             this.dataService = dataService;

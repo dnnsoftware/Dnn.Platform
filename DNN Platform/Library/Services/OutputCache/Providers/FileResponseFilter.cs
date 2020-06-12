@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// </summary>
     public class FileResponseFilter : OutputCacheResponseFilter
     {
-        //Private _content As StringBuilder
+        // Private _content As StringBuilder
         private DateTime _cacheExpiration;
 
         internal FileResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration) : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)

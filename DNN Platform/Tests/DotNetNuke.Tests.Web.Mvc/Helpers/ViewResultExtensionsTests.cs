@@ -18,39 +18,39 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
         [Test]
         public void ExecuteResult_Throws_With_Null_ControllerContext()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
             
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => result.ExecuteResult(null, new StringWriter()));
         }
 
         [Test]
         public void ExecuteResult_Throws_With_Null_TextWriter()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
             var context = MockHelper.CreateMockControllerContext();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => result.ExecuteResult(context, null));
         }
 
         [Test]
         public void ExecuteResult_Throws_With_Empty_ViewName_And_No_Action()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
             var context = MockHelper.CreateMockControllerContext();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<InvalidOperationException>(() => result.ExecuteResult(context, new StringWriter()));
         }
 
         [Test]
         public void ExecuteResult_Calls_ViewEngine_FindView_If_View_Is_Null()
         {
-            //Arrange
+            // Arrange
             var result = new DnnViewResult();
 
             var routeData = new RouteData();
@@ -66,10 +66,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Helpers
             result.ViewEngineCollection.Clear();
             result.ViewEngineCollection.Add(mockViewEngine.Object);
 
-            //Act
+            // Act
             result.ExecuteResult(context, new StringWriter());
 
-            //Assert
+            // Assert
             Assert.AreSame(mockView.Object, result.View);
         }
     }

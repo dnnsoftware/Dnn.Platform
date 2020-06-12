@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Razor Host Module")]
 [assembly: ComVisible(false)]
 
-//The following GUID is for the ID of the typelib if this project is exposed to COM
+// The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("dba19364-20c8-49ec-9c3a-69008fe699f6")]
 

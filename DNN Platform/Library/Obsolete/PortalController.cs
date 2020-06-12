@@ -19,7 +19,7 @@ using System.Collections;
 using System.Xml;
 
 using DotNetNuke.Entities.Tabs;
-//using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
+// using DotNetNuke.Services.Upgrade.Internals.InstallConfiguration;
 
 #endregion
 

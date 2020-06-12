@@ -23,12 +23,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoMapper_Constructor_Initialises_TablePrefix_Property()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Prefix, Util.GetPrivateMember<PetaPocoMapper, string>(mapper, "_tablePrefix"));
         }
 
@@ -39,104 +39,104 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoMapper_GetTableInfo_Returns_TableInfo()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<TableInfo>(ti);
         }
 
         [Test]
         public void PetaPocoMapper_Maps_TableName_To_Plural_Of_ObjectName()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(String.Empty);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Dog, ti.TableName);
         }
 
         [Test]
         public void PetaPocoMapper_Adds_Prefix_To_Plural_Of_ObjectName()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Prefix + Constants.TABLENAME_Dog, ti.TableName);
         }
 
         [Test]
         public void PetaPocoMapper_Maps_TableName_To_Attribute()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(String.Empty);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Person));
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Person, ti.TableName);
         }
 
         [Test]
         public void PetaPocoMapper_Adds_Prefix_To_Attribute()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Person));
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Prefix + Constants.TABLENAME_Person, ti.TableName);
         }
 
         [Test]
         public void PetaPocoMapper_Sets_PrimaryKey_To_Attribute()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(String.Empty);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Person));
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Person_Key, ti.PrimaryKey);
         }
 
         [Test]
         public void PetaPocoMapper_Sets_PrimaryKey_To_ID_If_No_Attribute()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(String.Empty);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.TABLENAME_Key, ti.PrimaryKey);
         }
 
         [Test]
         public void PetaPocoMapper_Sets_AutoIncrement_To_True()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(String.Empty);
 
-            //Act
+            // Act
             var ti = mapper.GetTableInfo(typeof(Dog));
 
-            //Assert
+            // Assert
             Assert.IsTrue(ti.AutoIncrement);
         }
 
@@ -147,45 +147,45 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void PetaPocoMapper_GetColumnInfo_Returns_ColumnInfo()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
             var dogType = typeof(Dog);
             var dogProperty = dogType.GetProperty(Constants.COLUMNNAME_Name);
 
-            //Act
+            // Act
             var ci = mapper.GetColumnInfo(dogProperty);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<ColumnInfo>(ci);
         }
 
         [Test]
         public void PetaPocoMapper_GetColumnInfo_Maps_ColumnName_To_Attribute()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
             var personType = typeof(Person);
             var personProperty = personType.GetProperty(Constants.COLUMNNAME_Name);
 
-            //Act
+            // Act
             var ci = mapper.GetColumnInfo(personProperty);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.COLUMNNAME_PersonName, ci.ColumnName);
         }
 
         [Test]
         public void PetaPocoMapper_GetColumnInfo_Maps_ColumnName_To_PropertyName_If_No_Attribute()
         {
-            //Arrange
+            // Arrange
             var mapper = new PetaPocoMapper(Constants.TABLENAME_Prefix);
             var dogType = typeof(Dog);
             var dogProperty = dogType.GetProperty(Constants.COLUMNNAME_Name);
 
-            //Act
+            // Act
             var ci = mapper.GetColumnInfo(dogProperty);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.COLUMNNAME_Name, ci.ColumnName);
         }
 

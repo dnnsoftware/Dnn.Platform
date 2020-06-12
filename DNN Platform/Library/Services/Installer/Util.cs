@@ -192,10 +192,10 @@ namespace DotNetNuke.Services.Installer
             int count;
             do
             {
-                //Read the chunk from the source
+                // Read the chunk from the source
                 count = sourceStream.Read(buf, 0, 1024);
 
-                //Write the chunk to the destination
+                // Write the chunk to the destination
                 destStream.Write(buf, 0, count);
             } while (count > 0);
             destStream.Flush();
@@ -217,12 +217,12 @@ namespace DotNetNuke.Services.Installer
             {
                 if (isRequired)
                 {
-                    //Log Error
+                    // Log Error
                     log.AddFailure(logmessage);
                 }
                 else
                 {
-                    //Use Default
+                    // Use Default
                     propValue = defaultValue;
                 }
             }
@@ -245,13 +245,13 @@ namespace DotNetNuke.Services.Installer
             string fullFileName = Path.Combine(basePath, installFile.FullName);
             string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
 
-            //create the backup folder if neccessary
+            // create the backup folder if neccessary
             if (!Directory.Exists(installFile.BackupPath))
             {
                 Directory.CreateDirectory(installFile.BackupPath);
             }
 
-            //Copy file to backup location
+            // Copy file to backup location
             RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(fullFileName, backupFileName), "Backup file " + fullFileName);
             log.AddInfo(string.Format(FILE_CreateBackup, installFile.FullName));
         }
@@ -268,14 +268,14 @@ namespace DotNetNuke.Services.Installer
             string filePath = Path.Combine(basePath, installFile.Path);
             string fullFileName = Path.Combine(basePath, installFile.FullName);
 
-            //create the folder if neccessary
+            // create the folder if neccessary
             if (!Directory.Exists(filePath))
             {
                 log.AddInfo(string.Format(FOLDER_Created, filePath));
                 Directory.CreateDirectory(filePath);
             }
 
-            //Copy file from temp location
+            // Copy file from temp location
             RetryableAction.RetryEverySecondFor30Seconds(() => FileSystemUtils.CopyFile(installFile.TempFileName, fullFileName), "Copy file to " + fullFileName);
 
             log.AddInfo(string.Format(FILE_Created, installFile.FullName));
@@ -331,15 +331,15 @@ namespace DotNetNuke.Services.Installer
 
         public static bool IsFileValid(InstallFile file, string packageWhiteList)
         {
-            //Check the White List
+            // Check the White List
             FileExtensionWhitelist whiteList = Host.AllowedExtensionWhitelist;
 
-            //Check the White Lists
+            // Check the White Lists
             string strExtension = file.Extension.ToLowerInvariant();
             if ((strExtension == "dnn" || whiteList.IsAllowedExtension(strExtension) || packageWhiteList.Contains(strExtension) ||
                  (packageWhiteList.Contains("*dataprovider") && strExtension.EndsWith("dataprovider"))))
             {
-                //Install File is Valid
+                // Install File is Valid
                 return true;
             }
 
@@ -529,7 +529,7 @@ namespace DotNetNuke.Services.Installer
             string fullFileName = Path.Combine(basePath, installFile.FullName);
             string backupFileName = Path.Combine(installFile.BackupPath, installFile.Name + ".config");
 
-            //Copy File back over install file
+            // Copy File back over install file
             FileSystemUtils.CopyFile(backupFileName, fullFileName);
 
             log.AddInfo(string.Format(FILE_RestoreBackup, installFile.FullName));
@@ -564,7 +564,7 @@ namespace DotNetNuke.Services.Installer
             if (file.Directory != null && !file.Directory.Exists)
                 file.Directory.Create();
 
-            //HACK: Temporary fix, upping retry limit due to locking for existing filesystem access.  This "fixes" azure, but isn't the most elegant
+            // HACK: Temporary fix, upping retry limit due to locking for existing filesystem access.  This "fixes" azure, but isn't the most elegant
             TryToCreateAndExecute(destFileName, (f) => StreamToStream(sourceStream, f), 3500);
         }
 
@@ -585,7 +585,7 @@ namespace DotNetNuke.Services.Installer
             {
                 try
                 {
-                    //Open for create, requesting read/write access, allow others to read/write as well
+                    // Open for create, requesting read/write access, allow others to read/write as well
                     using (var file = File.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite))
                     {
                         action(file);

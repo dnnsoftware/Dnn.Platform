@@ -173,10 +173,10 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this.Log.AddInfo(string.Format(Util.WRITER_AddFileToManifest, file.Name));
 
-            //Start file Element
+            // Start file Element
             writer.WriteStartElement(this.ItemNodeName);
 
-            //Write path
+            // Write path
             if (!string.IsNullOrEmpty(file.Path))
             {
                 string path = file.Path;
@@ -190,16 +190,16 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteElementString("path", path);
             }
 			
-            //Write name
+            // Write name
             writer.WriteElementString("name", file.Name);
 
-            //Write sourceFileName
+            // Write sourceFileName
             if (!string.IsNullOrEmpty(file.SourceFileName))
             {
                 writer.WriteElementString("sourceFileName", file.SourceFileName);
             }
 			
-            //Close file Element
+            // Close file Element
             writer.WriteEndElement();
         }
 		
@@ -209,7 +209,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         public virtual void WriteManifest(XmlWriter writer)
         {
-			//Start component Element
+			// Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", this.ComponentType);
             if (this.InstallOrder > Null.NullInteger)
@@ -221,13 +221,13 @@ namespace DotNetNuke.Services.Installer.Writers
                 writer.WriteAttributeString("unInstallOrder", this.UnInstallOrder.ToString());
             }
 			
-            //Start files element
+            // Start files element
             writer.WriteStartElement(this.CollectionNodeName);
 
-            //Write custom manifest items
+            // Write custom manifest items
             this.WriteCustomManifest(writer);
 
-            //Write basePath Element
+            // Write basePath Element
             if (!string.IsNullOrEmpty(this._BasePath))
             {
                 writer.WriteElementString("basePath", this._BasePath);
@@ -237,10 +237,10 @@ namespace DotNetNuke.Services.Installer.Writers
                 this.WriteFileElement(writer, file);
             }
 			
-            //End files Element
+            // End files Element
             writer.WriteEndElement();
 
-            //End component Element
+            // End component Element
             writer.WriteEndElement();
         }
 		

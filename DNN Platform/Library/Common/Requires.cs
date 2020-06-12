@@ -109,7 +109,7 @@ namespace DotNetNuke.Common
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void PropertyNotNegative<T>(T item, string propertyName)
         {
-            //Check first if the item is null
+            // Check first if the item is null
             NotNull(item);
 
             var type = typeof(T);
@@ -160,7 +160,7 @@ namespace DotNetNuke.Common
         /// <exception cref="ArgumentNullException"></exception>
         public static void PropertyNotNull<T>(T item, string propertyName) where T : class
         {
-            //Check first if the item is null
+            // Check first if the item is null
             NotNull(item);
 
             var type = typeof(T);
@@ -181,7 +181,7 @@ namespace DotNetNuke.Common
         /// <exception cref="ArgumentException"></exception>
         public static void PropertyNotNullOrEmpty<T>(T item, string propertyName)
         {
-            //Check first if the item is null
+            // Check first if the item is null
             NotNull(item);
 
             var type = typeof(T);

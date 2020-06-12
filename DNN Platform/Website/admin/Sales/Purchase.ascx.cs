@@ -97,18 +97,18 @@ namespace DotNetNuke.Modules.Admin.Sales
                                 this.lblFrequency.Text = entry.Text;
                             }
                             this.txtUnits.Text = "1";
-                            if (objRole.BillingFrequency == "O") //one-time fee
+                            if (objRole.BillingFrequency == "O") // one-time fee
                             {
                                 this.txtUnits.Enabled = false;
                             }
                         }
-                        else //security violation attempt to access item not related to this Module
+                        else // security violation attempt to access item not related to this Module
                         {
                             this.Response.Redirect(this._navigationManager.NavigateURL(), true);
                         }
                     }
 
-                    //Store URL Referrer to return to portal
+                    // Store URL Referrer to return to portal
                     if (this.Request.UrlReferrer != null)
                     {
                         this.ViewState["UrlReferrer"] = Convert.ToString(this.Request.UrlReferrer);
@@ -132,7 +132,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                 this.lblFeeCurrency.Text = strCurrency;
                 this.lblTotalCurrency.Text = strCurrency;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -157,7 +157,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     }
                     if (strPaymentProcessor == "PayPal")
                     {
-						//build secure PayPal URL
+						// build secure PayPal URL
                         string strPayPalURL = "";
                         strPayPalURL = "https://www.paypal.com/xclick/business=" + Globals.HTTPPOSTEncode(strProcessorUserId);
                         strPayPalURL = strPayPalURL + "&item_name=" +
@@ -173,12 +173,12 @@ namespace DotNetNuke.Modules.Admin.Sales
                         strPayPalURL = strPayPalURL + "&notify_url=" + Globals.HTTPPOSTEncode("http://" + Globals.GetDomainName(this.Request) + "/admin/Sales/PayPalIPN.aspx");
                         strPayPalURL = strPayPalURL + "&undefined_quantity=&no_note=1&no_shipping=1";
 
-                        //redirect to PayPal
+                        // redirect to PayPal
                         this.Response.Redirect(strPayPalURL, true);
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -190,7 +190,7 @@ namespace DotNetNuke.Modules.Admin.Sales
             {
                 this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"]), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -224,7 +224,7 @@ namespace DotNetNuke.Modules.Admin.Sales
                     retValue = Convert.ToDouble(strResponse.Substring(intPos2 + 3, (intPos1 - intPos2) - 4));
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

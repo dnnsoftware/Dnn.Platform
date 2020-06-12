@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Content
 
 	    public int AddContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             var currentUser = UserController.Instance.GetCurrentUserInfo();
             var createdByUserId = currentUser.UserID;
@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Content
 
         public void DeleteContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
 
@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Content
         
         public ContentItem GetContentItem(int contentItemId)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             return CBO.GetCachedObject<ContentItem>(
@@ -105,7 +105,7 @@ namespace DotNetNuke.Entities.Content
 
         public IQueryable<ContentItem> GetContentItemsByTerm(string term)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNullOrEmpty("term", term);
 
             return CBO.FillQueryable<ContentItem>(this._dataService.GetContentItemsByTerm(term));
@@ -167,7 +167,7 @@ namespace DotNetNuke.Entities.Content
 
         public void UpdateContentItem(ContentItem contentItem)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             
@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Content
 
         public void AddMetaData(ContentItem contentItem, string name, string value)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
@@ -196,7 +196,7 @@ namespace DotNetNuke.Entities.Content
 
         public void DeleteMetaData(ContentItem contentItem, string name, string value)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentItem", contentItem);
             Requires.PropertyNotNegative("contentItem", "ContentItemId", contentItem.ContentItemId);
             Requires.NotNullOrEmpty("name", name);
@@ -216,7 +216,7 @@ namespace DotNetNuke.Entities.Content
 
         public NameValueCollection GetMetaData(int contentItemId)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNegative("contentItemId", contentItemId);
 
             var metadata = new NameValueCollection();

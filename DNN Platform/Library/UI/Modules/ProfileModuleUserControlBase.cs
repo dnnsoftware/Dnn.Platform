@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.Modules
 
         private string GetRedirectUrl()
         {
-            //redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
+            // redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
             var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
             string redirectUrl;
 
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.Modules
             {
                 try
                 {
-                    //Clicked on breadcrumb - don't know which user
+                    // Clicked on breadcrumb - don't know which user
                     this.Response.Redirect(this.Request.IsAuthenticated
                                           ? this.NavigationManager.NavigateURL(this.ModuleContext.PortalSettings.ActiveTab.TabID, "", "UserId=" + this.ModuleContext.PortalSettings.UserId.ToString(CultureInfo.InvariantCulture))
                                           : this.GetRedirectUrl(), true);

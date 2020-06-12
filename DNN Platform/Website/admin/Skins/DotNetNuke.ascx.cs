@@ -40,11 +40,11 @@ namespace DotNetNuke.UI.Skins.Controls
                 this.hypDotNetNuke.CssClass = this.CssClass;
             }
 			
-            //get Product Name and Legal Copyright from constants (Medium Trust)
+            // get Product Name and Legal Copyright from constants (Medium Trust)
             this.hypDotNetNuke.Text = DotNetNukeContext.Current.Application.LegalCopyright;
             this.hypDotNetNuke.NavigateUrl = DotNetNukeContext.Current.Application.Url;
             
-			//show copyright credits?
+			// show copyright credits?
 			this.Visible = Host.DisplayCopyright;
         }
     }

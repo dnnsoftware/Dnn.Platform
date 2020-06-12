@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
 
-                    //register admin.css
+                    // register admin.css
                     ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
 			}

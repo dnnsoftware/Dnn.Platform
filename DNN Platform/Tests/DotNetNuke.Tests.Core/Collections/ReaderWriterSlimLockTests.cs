@@ -22,7 +22,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
                 scl.Dispose();
                 scl.Dispose();
-                //no exception on 2nd dispose
+                // no exception on 2nd dispose
             }
         }
     }

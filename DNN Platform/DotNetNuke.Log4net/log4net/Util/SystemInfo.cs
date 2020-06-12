@@ -720,7 +720,7 @@ namespace log4net.Util
 			// Check if the type name specifies the assembly name
 			if (typeName.IndexOf(',') == -1)
 			{
-				//LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
+				// LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
 #if NETSTANDARD1_3
 				return relativeAssembly.GetType(typeName, throwOnError, ignoreCase);
 #elif NETCF
@@ -731,7 +731,7 @@ namespace log4net.Util
 				if (type != null)
 				{
 					// Found type in relative assembly
-					//LogLog.Debug(declaringType, "SystemInfo: Loaded type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
+					// LogLog.Debug(declaringType, "SystemInfo: Loaded type ["+typeName+"] from assembly ["+relativeAssembly.FullName+"]");
 					return type;
 				}
 
@@ -783,7 +783,7 @@ namespace log4net.Util
 			else
 			{
 				// Includes explicit assembly name
-				//LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from global Type");
+				// LogLog.Debug(declaringType, "SystemInfo: Loading type ["+typeName+"] from global Type");
 
 #if NETCF
 				// In NETCF 2 and 3 arg versions seem to behave differently

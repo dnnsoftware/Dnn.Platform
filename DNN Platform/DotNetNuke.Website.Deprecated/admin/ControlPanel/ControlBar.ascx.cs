@@ -112,7 +112,7 @@ namespace DotNetNuke.UI.ControlPanels
         {
             base.OnInit(e);
 
-            //page will be null if the control panel initial twice, it will be removed in the second time.
+            // page will be null if the control panel initial twice, it will be removed in the second time.
             if (this.Page != null)
             {
                 this.ID = "ControlBar";

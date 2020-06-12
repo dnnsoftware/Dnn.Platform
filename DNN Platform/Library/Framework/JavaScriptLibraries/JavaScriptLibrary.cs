@@ -123,17 +123,17 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("javaScriptLibrary");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("libraryName", this.LibraryName);
             writer.WriteElementString("fileName", this.FileName);
             writer.WriteElementString("objectName", this.ObjectName);
             writer.WriteElementString("preferredScriptLocation", this.PreferredScriptLocation.ToString());
             writer.WriteElementString("CDNPath", this.CDNPath);
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 

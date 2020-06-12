@@ -27,7 +27,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Security
             cookies.Add(session.SessionCookies.GetCookies(session.Domain));
 
             // make sure the request succeeds when the user is logged in
-            //var result1 = session.GetContent(GetPortaslApi, null, false); -- use same method to validate
+            // var result1 = session.GetContent(GetPortaslApi, null, false); -- use same method to validate
             var result1 = this.SendDirectGetRequest(session.Domain, GetPortaslApi, session.Timeout, cookies);
             Assert.IsTrue(result1.IsSuccessStatusCode);
             Assert.AreEqual(HttpStatusCode.OK, result1.StatusCode);

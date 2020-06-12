@@ -100,7 +100,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			get
 			{
 				var isHost = Globals.IsHostTab(this.PortalSettings.ActiveTab.TabID);
-                //if not host tab but current edit user is a host user, then return true
+                // if not host tab but current edit user is a host user, then return true
                 if (!isHost && this.User != null && this.User.IsSuperUser)
                 {
                     isHost = true;
@@ -254,7 +254,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				this.EnsureChildControls();
 				if (this.ViewState["FileID"] == null)
 				{
-					//Get FileId from the file combo
+					// Get FileId from the file combo
 					var fileId = Null.NullInteger;
 					if (this._cboFiles.SelectedItem != null)
 					{
@@ -437,24 +437,24 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void AddFileAndUploadArea()
 		{
-			//Create Url Div
+			// Create Url Div
 		    this._pnlFile = new Panel {CssClass = "dnnFormItem"};
 
-		    //Create File Label
+		    // Create File Label
 		    this._lblFile = new Label {EnableViewState = false};
 		    this._pnlFile.Controls.Add(this._lblFile);
 
-			//Create Files Combo
+			// Create Files Combo
 		    this._cboFiles = new DropDownList {ID = "File", DataTextField = "Text", DataValueField = "Value", AutoPostBack = true};
 		    this._cboFiles.SelectedIndexChanged += this.FileChanged;
 			this._pnlFile.Controls.Add(this._cboFiles);
 
 			this._pnlLeftDiv.Controls.Add(this._pnlFile);
 
-			//Create Upload Div
+			// Create Upload Div
 		    this._pnlUpload = new Panel {CssClass = "dnnFormItem"};
 
-		    //Create Upload Box
+		    // Create Upload Box
 			this._txtFile = new HtmlInputFile();
 			this._txtFile.Attributes.Add("size", "13");
 			this._pnlUpload.Controls.Add(this._txtFile);
@@ -467,14 +467,14 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		private void AddFolderArea()
 		{
-			//Create Url Div
+			// Create Url Div
 		    this._pnlFolder = new Panel {CssClass = "dnnFormItem"};
 
-		    //Create Folder Label
+		    // Create Folder Label
 		    this._lblFolder = new Label {EnableViewState = false};
 		    this._pnlFolder.Controls.Add(this._lblFolder);
 
-			//Create Folders Combo
+			// Create Folders Combo
 		    this._cboFolders = new DropDownList {ID = "Folder", AutoPostBack = true};
 		    this._cboFolders.SelectedIndexChanged += this.FolderChanged;
 			this._pnlFolder.Controls.Add(this._cboFolders);
@@ -482,7 +482,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			// add to left div
 			this._pnlLeftDiv.Controls.Add(this._pnlFolder);
 
-			//Load Folders
+			// Load Folders
 			this.LoadFolders();
 		}
 
@@ -502,7 +502,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		{
 		    this._pnlMessage = new Panel {CssClass = "dnnFormMessage dnnFormWarning"};
 
-		    //Create Label
+		    // Create Label
 		    this._lblMessage = new Label {EnableViewState = false, Text = ""};
 		    this._pnlMessage.Controls.Add(this._lblMessage);
 
@@ -534,7 +534,7 @@ namespace DotNetNuke.Web.UI.WebControls
             UserInfo user = this.User ?? UserController.Instance.GetCurrentUserInfo();
             this._cboFolders.Items.Clear();
 
-			//Add Personal Folder
+			// Add Personal Folder
 			if (this.UsePersonalFolder)
 			{
 			    var userFolder = FolderManager.Instance.GetUserFolder(user).FolderPath;
@@ -545,7 +545,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				}
 				else
 				{
-					//Add DummyFolder
+					// Add DummyFolder
 					this._cboFolders.Items.Add(new ListItem(Utilities.GetLocalizedString("MyFolder"), userFolder));
 				}
 			}
@@ -661,7 +661,7 @@ namespace DotNetNuke.Web.UI.WebControls
 		/// </summary>
 		protected override void CreateChildControls()
 		{
-			//First clear the controls collection
+			// First clear the controls collection
 			this.Controls.Clear();
 
 	        this._pnlContainer = new Panel {CssClass = "dnnFilePicker"};
@@ -695,13 +695,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
 			if (this._cboFolders.Items.Count > 0)
 			{
-				//Configure Labels
+				// Configure Labels
 				this._lblFolder.Text = Utilities.GetLocalizedString("Folder");
 				this._lblFolder.CssClass = this.LabelCssClass;
 				this._lblFile.Text = Utilities.GetLocalizedString("File");
 				this._lblFile.CssClass = this.LabelCssClass;
 
-				//select folder
+				// select folder
 				string fileName;
 				string folderPath;
 				if (!string.IsNullOrEmpty(this.FilePath))
@@ -721,7 +721,7 @@ namespace DotNetNuke.Web.UI.WebControls
 					this._cboFolders.Items.FindByValue(folderPath).Selected = true;
 				}
 
-				//Get Files
+				// Get Files
 				this.LoadFiles();
 				if (this._cboFiles.Items.FindByText(fileName) != null)
 				{
@@ -744,7 +744,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				{
 					this._pnlFolder.Visible = false;
 				}
-				//Configure Mode
+				// Configure Mode
 				switch (this.Mode)
 				{
 					case FileControlMode.Normal:
@@ -773,7 +773,7 @@ namespace DotNetNuke.Web.UI.WebControls
 				this._lblMessage.Text = Utilities.GetLocalizedString("NoPermission");
 			}
 
-			//Show message Row
+			// Show message Row
 			this._pnlMessage.Visible = (!string.IsNullOrEmpty(this._lblMessage.Text));
 		}
 
@@ -799,7 +799,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
 		private void SaveFile(object sender, EventArgs e)
 		{
-			//if file is selected exit
+			// if file is selected exit
 			if (!string.IsNullOrEmpty(this._txtFile.PostedFile.FileName))
 			{
 				var extension = Path.GetExtension(this._txtFile.PostedFile.FileName).Replace(".", "");
@@ -821,17 +821,17 @@ namespace DotNetNuke.Web.UI.WebControls
 
 					var folderPath = PathUtils.Instance.GetRelativePath(this.PortalId, this.ParentFolder) + this._cboFolders.SelectedItem.Value;
 
-					//Check if this is a User Folder
+					// Check if this is a User Folder
 				    IFolderInfo folder;
 					if (this.IsUserFolder(this._cboFolders.SelectedItem.Value))
 					{
-						//Make sure the user folder exists
+						// Make sure the user folder exists
                         folder = folderManager.GetFolder(PortalController.GetEffectivePortalId(this.PortalId), folderPath);
 						if (folder == null)
 						{
-							//Add User folder
+							// Add User folder
                             var user = this.User ?? UserController.Instance.GetCurrentUserInfo();
-                            //fix user's portal id
+                            // fix user's portal id
 						    user.PortalID = this.PortalId;
                             folder = ((FolderManager)folderManager).AddUserFolder(user);
 						}

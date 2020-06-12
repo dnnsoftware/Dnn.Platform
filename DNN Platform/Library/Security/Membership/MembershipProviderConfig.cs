@@ -176,7 +176,7 @@ namespace DotNetNuke.Security.Membership
             {
                 bool enabled = memberProvider.PasswordRetrievalEnabled;
 
-                //If password format is hashed the password cannot be retrieved
+                // If password format is hashed the password cannot be retrieved
                 if (memberProvider.PasswordFormat == PasswordFormat.Hashed)
                 {
                     enabled = false;

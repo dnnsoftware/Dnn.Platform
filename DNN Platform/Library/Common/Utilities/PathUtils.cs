@@ -58,8 +58,8 @@ namespace DotNetNuke.Common.Utilities
         /// <returns>The formatted path.</returns>
         public virtual string FormatFolderPath(string folderPath)
         {
-            //Can not call trim on folderpath since folder passed in might have a legit space
-            //at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test" 
+            // Can not call trim on folderpath since folder passed in might have a legit space
+            // at the begingin of its name " MyFolder/Test" is not same physical folder as "MyFoler/Test" 
             if (String.IsNullOrEmpty(folderPath) || String.IsNullOrEmpty(folderPath.Trim()))
             {
                 return "";

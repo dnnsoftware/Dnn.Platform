@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
         [Test]
         public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult()
         {
-            //Arrange
+            // Arrange
             var engine = new ModuleExecutionEngine();
 
             var actionResultMock = new Mock<ActionResult>();
@@ -95,18 +95,18 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
                                                 ControllerContext = controllerContext
                                             };
 
-            //Act
+            // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
 
 
-            //Arrange
+            // Arrange
             viewResultMock.Verify(v => v.ExecuteResult(It.IsAny<ControllerContext>(), It.IsAny<TextWriter>()));
         }
 
         [Test]
         public void ExecuteModuleResult_Calls_IDnnViewResult_ExecuteResult_With_ModuleRequestResult_ControllerContext()
         {
-            //Arrange
+            // Arrange
             var engine = new ModuleExecutionEngine();
 
             var actionResultMock = new Mock<ActionResult>();
@@ -120,11 +120,11 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Modules
                                                 ControllerContext = controllerContext
                                             };
 
-            //Act
+            // Act
             engine.ExecuteModuleResult(moduleRequestResult, new StringWriter());
 
 
-            //Arrange
+            // Arrange
             viewResultMock.Verify(v => v.ExecuteResult(controllerContext, It.IsAny<TextWriter>()));
         }
     }

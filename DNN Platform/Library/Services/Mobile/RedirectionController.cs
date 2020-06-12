@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Mobile
         #region Constants
         private const string DisableMobileRedirectCookieName = "disablemobileredirect";
 		private const string DisableRedirectPresistCookieName = "disableredirectpresist";
-        private const string DisableMobileRedirectQueryStringName = "nomo"; //google uses the same name nomo=1 means do not redirect to mobile
+        private const string DisableMobileRedirectQueryStringName = "nomo"; // google uses the same name nomo=1 means do not redirect to mobile
         #endregion
 
         #region Private Properties
@@ -54,13 +54,13 @@ namespace DotNetNuke.Services.Mobile
         {
             bool allowed = true;
 
-            //Check for the existence of special query string to force enable / disable of redirect
+            // Check for the existence of special query string to force enable / disable of redirect
             if (app.Request.QueryString[DisableMobileRedirectQueryStringName] != null)
             {
                 int val;
                 if (int.TryParse(app.Request.QueryString[DisableMobileRedirectQueryStringName], out val))
                 {
-                    if (val == 0) //forced enable. clear any cookie previously set
+                    if (val == 0) // forced enable. clear any cookie previously set
                     {
                         if (app.Response.Cookies[DisableMobileRedirectCookieName] != null)
                         {
@@ -82,21 +82,21 @@ namespace DotNetNuke.Services.Mobile
 						    app.Response.Cookies.Add(cookie);
 						}   
                     }
-                    else if (val == 1) //forced disable. need to setup cookie
+                    else if (val == 1) // forced disable. need to setup cookie
                     {
                         allowed = false;
                     }                                        
                 }                
             }
-			else if (app.Request.Cookies[DisableMobileRedirectCookieName] != null && app.Request.Cookies[DisableRedirectPresistCookieName] != null) //check for cookie
+			else if (app.Request.Cookies[DisableMobileRedirectCookieName] != null && app.Request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
             {
                 allowed = false;
             }
 
 
-            if (!allowed) //redirect is not setup to be allowed, keep the cookie alive
+            if (!allowed) // redirect is not setup to be allowed, keep the cookie alive
             {
-				//this cookie is set to re-enable redirect after 20 minutes
+				// this cookie is set to re-enable redirect after 20 minutes
 				var presistCookie = new HttpCookie(DisableRedirectPresistCookieName)
 				{
 				    Expires = DateTime.Now.AddMinutes(20),
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Mobile
 				};
                 app.Response.Cookies.Add(presistCookie);
 
-				//this cookie is set to re-enable redirect after close browser.
+				// this cookie is set to re-enable redirect after close browser.
                 var cookie = new HttpCookie(DisableMobileRedirectCookieName)
                 {
                     Path = (!string.IsNullOrEmpty(Globals.ApplicationPath) ? Globals.ApplicationPath : "/")
@@ -149,13 +149,13 @@ namespace DotNetNuke.Services.Mobile
 			string redirectUrl = string.Empty;
 
 			IList<IRedirection> redirections = this.GetRedirectionsByPortal(portalId);
-			//check for redirect only when redirect rules are defined
+			// check for redirect only when redirect rules are defined
 			if (redirections == null || redirections.Count == 0)
 			{
                 return redirectUrl;
 			}
 
-            //try to get content from cache
+            // try to get content from cache
         	var cacheKey = string.Format(RedirectionUrlCacheKey, userAgent, portalId, currentTabId);
             redirectUrl = this.GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(redirectUrl)) 
@@ -170,18 +170,18 @@ namespace DotNetNuke.Services.Mobile
 				if (redirection.Enabled)
 				{
 					bool checkFurther = false;
-					//redirection is based on source tab
+					// redirection is based on source tab
 					if (redirection.SourceTabId != Null.NullInteger)
 					{
-						//source tab matches current tab
+						// source tab matches current tab
 						if (currentTabId == redirection.SourceTabId)
 						{
 							checkFurther = true;
 						}
-							//is child tabs to be included as well
+							// is child tabs to be included as well
 						else if (redirection.IncludeChildTabs)
 						{
-							//Get all the descendents of the source tab and find out if current tab is in source tab's hierarchy or not.
+							// Get all the descendents of the source tab and find out if current tab is in source tab's hierarchy or not.
                             foreach (var childTab in TabController.Instance.GetTabsByPortal(portalId).DescendentsOf(redirection.SourceTabId))
 							{
 								if (childTab.TabID == currentTabId)
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Mobile
 							}
 						}
 					}
-						//redirection is based on portal
+						// redirection is based on portal
 					else if (redirection.SourceTabId == Null.NullInteger)
 					{
 						checkFurther = true;
@@ -204,13 +204,13 @@ namespace DotNetNuke.Services.Mobile
 					    {
                             clientCapability = ClientCapabilityProvider.Instance().GetClientCapability(userAgent);
 					    }
-						//check if client capability matches with this rule
+						// check if client capability matches with this rule
 						if (this.DoesCapabilityMatchWithRule(clientCapability, redirection))
 						{
-							//find the redirect url
+							// find the redirect url
 							redirectUrl = this.GetRedirectUrlFromRule(redirection, portalId, currentTabId);
 
-                            //update cache content
+                            // update cache content
                             this.SetUrlInCache(cacheKey, redirectUrl);
 							break;
 						}
@@ -251,13 +251,13 @@ namespace DotNetNuke.Services.Mobile
             string fullSiteUrl = string.Empty;
 
             IList<IRedirection> redirections = this.GetAllRedirections();
-            //check for redirect only when redirect rules are defined
+            // check for redirect only when redirect rules are defined
             if (redirections == null || redirections.Count == 0)
             {
                 return fullSiteUrl;
             }
 
-			//try to get content from cache
+			// try to get content from cache
 			var cacheKey = string.Format(FullSiteUrlCacheKey, portalId, currentTabId);
             fullSiteUrl = this.GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(fullSiteUrl))
@@ -270,37 +270,37 @@ namespace DotNetNuke.Services.Mobile
 			{
 				if (redirection.Enabled)
 				{
-					if (redirection.TargetType == TargetType.Tab) //page within same site
+					if (redirection.TargetType == TargetType.Tab) // page within same site
 					{
 						int targetTabId = int.Parse(redirection.TargetValue.ToString());
-						if (targetTabId == currentTabId) //target tab is same as current tab
+						if (targetTabId == currentTabId) // target tab is same as current tab
 						{
 							foundRule = true;
 						}
 					}
-					else if (redirection.TargetType == TargetType.Portal) //home page of another portal
+					else if (redirection.TargetType == TargetType.Portal) // home page of another portal
 					{
 						int targetPortalId = int.Parse(redirection.TargetValue.ToString());
-						if (targetPortalId == portalId) //target portal is same as current portal
+						if (targetPortalId == portalId) // target portal is same as current portal
 						{
 							foundRule = true;
 						}
 					}
 
-					//found the rule, let's find the url now
+					// found the rule, let's find the url now
 					if (foundRule)
 					{
 						////redirection is based on tab
-						//Following are being commented as NavigateURL method does not return correct url for a tab in a different portal
-						//always point to the home page of the other portal
-						//if (redirection.SourceTabId != Null.NullInteger)
-						//{
+						// Following are being commented as NavigateURL method does not return correct url for a tab in a different portal
+						// always point to the home page of the other portal
+						// if (redirection.SourceTabId != Null.NullInteger)
+						// {
 						//    fullSiteUrl = Globals.NavigateURL(redirection.SourceTabId);
-						//}
-						//else //redirection is based on portal
+						// }
+						// else //redirection is based on portal
 						{
 							var portalSettings = new PortalSettings(redirection.PortalId);
-							if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) //ensure it's not redirecting to itself
+							if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) // ensure it's not redirecting to itself
 							{
 								fullSiteUrl = this.GetPortalHomePageUrl(portalSettings);
 							}
@@ -310,11 +310,11 @@ namespace DotNetNuke.Services.Mobile
 				}
 			}
 
-            //append special query string            
+            // append special query string            
             if (!string.IsNullOrEmpty(fullSiteUrl))
                 fullSiteUrl += string.Format("{0}{1}=1", fullSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);
 
-			//update cache content
+			// update cache content
             this.SetUrlInCache(cacheKey, fullSiteUrl);
 
         	return fullSiteUrl;
@@ -349,13 +349,13 @@ namespace DotNetNuke.Services.Mobile
         {
             string mobileSiteUrl = string.Empty;
             IList<IRedirection> redirections = this.GetRedirectionsByPortal(portalId);
-            //check for redirect only when redirect rules are defined
+            // check for redirect only when redirect rules are defined
             if (redirections == null || redirections.Count == 0)
             {
                 return mobileSiteUrl;
             }
 
-			//try to get content from cache
+			// try to get content from cache
 			var cacheKey = string.Format(MobileSiteUrlCacheKey, portalId, currentTabId);
             mobileSiteUrl = this.GetUrlFromCache(cacheKey);
             if (!string.IsNullOrEmpty(mobileSiteUrl))
@@ -363,7 +363,7 @@ namespace DotNetNuke.Services.Mobile
                 return mobileSiteUrl;
             }
 
-			//let's try to find if this tab has any specifc rules
+			// let's try to find if this tab has any specifc rules
 			foreach (var redirection in redirections)
 			{
 				if (redirection.Enabled)
@@ -376,7 +376,7 @@ namespace DotNetNuke.Services.Mobile
 				}
 			}
 
-			//tab has no specific rule, we can select the first rule
+			// tab has no specific rule, we can select the first rule
 			if (string.IsNullOrEmpty(mobileSiteUrl))
 			{
 				var firstRedirection = redirections.FirstOrDefault(r => r.Enabled);
@@ -386,11 +386,11 @@ namespace DotNetNuke.Services.Mobile
 				}
 			}
 
-            //append special query string
+            // append special query string
             if (!string.IsNullOrEmpty(mobileSiteUrl))
                 mobileSiteUrl += string.Format("{0}{1}=0", mobileSiteUrl.Contains("?") ? "&" : "?", DisableMobileRedirectQueryStringName);            
 
-			//update cache content
+			// update cache content
             this.SetUrlInCache(cacheKey, mobileSiteUrl);
 
         	return mobileSiteUrl;
@@ -440,21 +440,21 @@ namespace DotNetNuke.Services.Mobile
             var allTabs = TabController.Instance.GetTabsByPortal(portalId);
             var redirects = this.GetRedirectionsByPortal(portalId);
 
-            //remove rules for deleted source tabs
+            // remove rules for deleted source tabs
             foreach (var r in redirects.Where(r => r.SourceTabId != Null.NullInteger && allTabs.Where(t => t.Key == r.SourceTabId).Count() < 1))
             {
                 this.Delete(portalId, r.Id);
             }
             
-            //remove rules for deleted target tabs
-            redirects = this.GetRedirectionsByPortal(portalId); //fresh get of rules in case some were deleted above                       
+            // remove rules for deleted target tabs
+            redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above                       
             foreach (var r in redirects.Where(r => r.TargetType == TargetType.Tab && allTabs.Where(t => t.Key == int.Parse(r.TargetValue.ToString())).Count() < 1))
             {
                 this.Delete(portalId, r.Id);
             }
 
-            //remove rules for deleted target portals
-            redirects = this.GetRedirectionsByPortal(portalId); //fresh get of rules in case some were deleted above                       
+            // remove rules for deleted target portals
+            redirects = this.GetRedirectionsByPortal(portalId); // fresh get of rules in case some were deleted above                       
             var allPortals = PortalController.Instance.GetPortals();            
             foreach (var r in redirects.Where(r => r.TargetType == TargetType.Portal))
             {
@@ -482,7 +482,7 @@ namespace DotNetNuke.Services.Mobile
 			var delRedirection = this.GetRedirectionById(portalId, id);
 			if (delRedirection != null)
 			{
-				//update the list order
+				// update the list order
 				this.GetRedirectionsByPortal(portalId).Where(p => p.SortOrder > delRedirection.SortOrder).ToList().ForEach(p =>
 				                                                                                              	{
 				                                                                                              		p.SortOrder--;
@@ -557,14 +557,14 @@ namespace DotNetNuke.Services.Mobile
         {
             string redirectUrl = string.Empty;
 
-            if (redirection.TargetType == TargetType.Url) //independent url base
+            if (redirection.TargetType == TargetType.Url) // independent url base
             {
                 redirectUrl = redirection.TargetValue.ToString();
             }
-            else if (redirection.TargetType == TargetType.Tab) //page within same site
+            else if (redirection.TargetType == TargetType.Tab) // page within same site
             {
                 int targetTabId = int.Parse(redirection.TargetValue.ToString());
-                if (targetTabId != currentTabId) //ensure it's not redirecting to itself
+                if (targetTabId != currentTabId) // ensure it's not redirecting to itself
                 {
                     var tab = TabController.Instance.GetTab(targetTabId, portalId, false);
                     if (tab != null && !tab.IsDeleted)
@@ -573,16 +573,16 @@ namespace DotNetNuke.Services.Mobile
                     }
                 }
             }
-            else if (redirection.TargetType == TargetType.Portal) //home page of another portal
+            else if (redirection.TargetType == TargetType.Portal) // home page of another portal
             {
                 int targetPortalId = int.Parse(redirection.TargetValue.ToString());
-                if (targetPortalId != portalId) //ensure it's not redirecting to itself
+                if (targetPortalId != portalId) // ensure it's not redirecting to itself
                 {
-                    //check whethter the target portal still exists
+                    // check whethter the target portal still exists
                     if (PortalController.Instance.GetPortals().Cast<PortalInfo>().Any(p => p.PortalID == targetPortalId))
                     {
                         var portalSettings = new PortalSettings(targetPortalId);
-                        if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) //ensure it's not redirecting to itself
+                        if (portalSettings.HomeTabId != Null.NullInteger && portalSettings.HomeTabId != currentTabId) // ensure it's not redirecting to itself
                         {
                             redirectUrl = this.GetPortalHomePageUrl(portalSettings);
                         }
@@ -681,7 +681,7 @@ namespace DotNetNuke.Services.Mobile
             }
             else if (redirection.Type == RedirectionType.Other)
             {
-                //match all the capabilities defined in the rule
+                // match all the capabilities defined in the rule
                 int matchCount = 0;
                 foreach (IMatchRule rule in redirection.MatchRules)
                 {

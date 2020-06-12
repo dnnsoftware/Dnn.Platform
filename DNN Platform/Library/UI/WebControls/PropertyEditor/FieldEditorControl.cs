@@ -378,11 +378,11 @@ namespace DotNetNuke.UI.WebControls
 				}
 			}
 			
-			//Build the Validators
+			// Build the Validators
 			this.BuildValidators(editInfo, propEditor.ID);
 			if (this.Validators.Count > 0)
 			{
-				//Add the Validators to the editor cell
+				// Add the Validators to the editor cell
 				foreach (BaseValidator validator in this.Validators)
 				{
 					validator.Width = this.Width;
@@ -494,14 +494,14 @@ namespace DotNetNuke.UI.WebControls
 			var labelCell = new TableCell();
 			var editorCell = new TableCell();
 
-			//Build Label Cell
+			// Build Label Cell
 			labelCell.VerticalAlign = VerticalAlign.Top;
 			labelCell.Controls.Add(this.BuildLabel(editInfo));
 			if (editInfo.LabelMode == LabelMode.Left || editInfo.LabelMode == LabelMode.Right)
 			{
 				labelCell.Width = this.LabelWidth;
 			}
-			//Build Editor Cell
+			// Build Editor Cell
 			editorCell.VerticalAlign = VerticalAlign.Top;
 			EditControl propEditor = this.BuildEditor(editInfo);
 			Image requiredIcon = this.BuildRequiredIcon(editInfo);
@@ -521,7 +521,7 @@ namespace DotNetNuke.UI.WebControls
 				editorCell.Controls.Add(visibility);
 			}
 			
-			//Add cells to table
+			// Add cells to table
 			var editorRow = new TableRow();
 			var labelRow = new TableRow();
 			if (editInfo.LabelMode == LabelMode.Bottom || editInfo.LabelMode == LabelMode.Top || editInfo.LabelMode == LabelMode.None)
@@ -556,13 +556,13 @@ namespace DotNetNuke.UI.WebControls
 				tbl.Rows.Add(editorRow);
 			}
 			
-			//Build the Validators
+			// Build the Validators
 			this.BuildValidators(editInfo, propEditor.ID);
 
 			var validatorsRow = new TableRow();
 			var validatorsCell = new TableCell();
 			validatorsCell.ColumnSpan = 2;
-			//Add the Validators to the editor cell
+			// Add the Validators to the editor cell
 			foreach (BaseValidator validator in this.Validators)
 			{
 				validatorsCell.Controls.Add(validator);
@@ -570,7 +570,7 @@ namespace DotNetNuke.UI.WebControls
 			validatorsRow.Cells.Add(validatorsCell);
 			tbl.Rows.Add(validatorsRow);
 
-			//Add the Table to the Controls Collection
+			// Add the Table to the Controls Collection
 			this.Controls.Add(tbl);
 		}
 
@@ -585,7 +585,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 			this.Validators.Clear();
 
-			//Add Required Validators
+			// Add Required Validators
 			if (editInfo.Required)
 			{
 				var reqValidator = new RequiredFieldValidator();
@@ -603,7 +603,7 @@ namespace DotNetNuke.UI.WebControls
 				this.Validators.Add(reqValidator);
 			}
 			
-			//Add Regular Expression Validators
+			// Add Regular Expression Validators
 			if (!String.IsNullOrEmpty(editInfo.ValidationExpression))
 			{
 				var regExValidator = new RegularExpressionValidator();
@@ -670,31 +670,31 @@ namespace DotNetNuke.UI.WebControls
 					editInfo.EditMode = this.EditMode;
 				}
 				
-				//Get the Editor Type to use (if specified)
+				// Get the Editor Type to use (if specified)
 				if (!string.IsNullOrEmpty(this.EditorTypeName))
 				{
 					editInfo.Editor = this.EditorTypeName;
 				}
 				
-				//Get the Label Mode to use (if specified)
+				// Get the Label Mode to use (if specified)
 				if (this.LabelMode != LabelMode.Left)
 				{
 					editInfo.LabelMode = this.LabelMode;
 				}
 				
-				//if Required is specified set editors property
+				// if Required is specified set editors property
 				if (this.Required)
 				{
 					editInfo.Required = this.Required;
 				}
 				
-				//Get the ValidationExpression to use (if specified)
+				// Get the ValidationExpression to use (if specified)
 				if (!string.IsNullOrEmpty(this.ValidationExpression))
 				{
 					editInfo.ValidationExpression = this.ValidationExpression;
 				}
 				
-				//Raise the ItemCreated Event
+				// Raise the ItemCreated Event
 				this.OnItemCreated(new PropertyEditorItemEventArgs(editInfo));
 
 				this.Visible = editInfo.Visible;
@@ -810,22 +810,22 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		public override void DataBind()
 		{
-			//Invoke OnDataBinding so DataBinding Event is raised
+			// Invoke OnDataBinding so DataBinding Event is raised
 			base.OnDataBinding(EventArgs.Empty);
 
-			//Clear Existing Controls
+			// Clear Existing Controls
 			this.Controls.Clear();
 
-			//Clear Child View State as controls will be loaded from DataSource
+			// Clear Child View State as controls will be loaded from DataSource
 			this.ClearChildViewState();
 
-			//Start Tracking ViewState
+			// Start Tracking ViewState
 			this.TrackViewState();
 
-			//Create the editor
+			// Create the editor
 			this.CreateEditor();
 
-			//Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+			// Set flag so CreateChildConrols should not be invoked later in control's lifecycle
 			this.ChildControlsCreated = true;
 		}
 

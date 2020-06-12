@@ -56,9 +56,9 @@ namespace DotNetNuke.Web.UI
             ApplySkin(telerikControl, "", controlName, fallBackEmbeddedSkinName);
         }
 
-        //Use selected skin's webcontrol skin if one exists
-        //or use _default skin's webcontrol skin if one exists
-        //or use embedded skin
+        // Use selected skin's webcontrol skin if one exists
+        // or use _default skin's webcontrol skin if one exists
+        // or use embedded skin
         public static void ApplySkin(Control telerikControl, string fallBackEmbeddedSkinName, string controlName, string webControlSkinSubFolderName)
         {
             PropertyInfo skinProperty = null;
@@ -116,13 +116,13 @@ namespace DotNetNuke.Web.UI
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, webControlSkinSubFolderName);
                     systemWebControlSkin = Path.Combine(systemWebControlSkin, string.Format("{0}.{1}.css", controlName, webControlSkinName));
 
-                    //Check if the selected skin has the webcontrol skin
+                    // Check if the selected skin has the webcontrol skin
                     if ((!File.Exists(systemWebControlSkin)))
                     {
                         systemWebControlSkin = "";
                     }
 
-                    //No skin, try default folder
+                    // No skin, try default folder
                     if ((string.IsNullOrEmpty(systemWebControlSkin)))
                     {
                         skinVirtualFolder = telerikControl.ResolveUrl("~/Portals/_default/Skins/_default");
@@ -182,7 +182,7 @@ namespace DotNetNuke.Web.UI
                     fallBackEmbeddedSkinName = "Simple";
                 }
 
-                //Set fall back skin Embedded Skin
+                // Set fall back skin Embedded Skin
                 skinProperty.SetValue(telerikControl, fallBackEmbeddedSkinName, null);
                 enableEmbeddedSkinsProperty.SetValue(telerikControl, true, null);
             }
@@ -262,7 +262,7 @@ namespace DotNetNuke.Web.UI
         public static string GetOnClientClickConfirm(Control ctrl, MessageWindowParameters message)
         {
             AddMessageWindow(ctrl);
-            //function(text, mozEvent, oWidth, oHeight, callerObj, oTitle) 
+            // function(text, mozEvent, oWidth, oHeight, callerObj, oTitle) 
             return string.Format("return postBackConfirm('{0}', event, '{1}', '{2}', '', '{3}');", message.Message, message.WindowWidth, message.WindowHeight, message.Title);
         }
 

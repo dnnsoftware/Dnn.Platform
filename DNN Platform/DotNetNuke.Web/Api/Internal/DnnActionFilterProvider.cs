@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Api.Internal
     {
         public IEnumerable<FilterInfo> GetFilters(HttpConfiguration configuration, HttpActionDescriptor actionDescriptor)
         {
-            //Requires.NotNull("configuration", configuration);
+            // Requires.NotNull("configuration", configuration);
             Requires.NotNull("actionDescriptor", actionDescriptor);
 
             var controllerFilters = actionDescriptor.ControllerDescriptor.GetFilters().Select(instance => new FilterInfo(instance, FilterScope.Controller));

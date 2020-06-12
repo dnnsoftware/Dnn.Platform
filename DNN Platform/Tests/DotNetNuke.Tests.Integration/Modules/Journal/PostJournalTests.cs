@@ -59,7 +59,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
             fileId = DatabaseHelper.ExecuteScalar<int>($"SELECT MIN(FileId) FROM {{objectQualifier}}Files WHERE PortalId = {this.PortalId}");
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -115,7 +115,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -150,13 +150,13 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
-            //ADD FRIENDS
+            // ADD FRIENDS
             connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new {friendId = userId2}, this.GetRequestHeaders("Member Directory"));
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
             connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId  = notificationId }, this.GetRequestHeaders());
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username1} Post",
@@ -179,7 +179,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var groupId = this.CreateNewGroup(username.Replace("testuser", "testrole"));
             this.AddUserToGroup(groupId, userId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
             var groupId = this.CreateNewGroup(username.Replace("testuser", "testrole"));
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -235,7 +235,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -263,7 +263,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -289,7 +289,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var postData = new
             {
                 text = $"{username} Post",
@@ -315,7 +315,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username} Post";
             var postData = new
             {
@@ -345,7 +345,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector1 = this.PrepareNewUser(out userId1, out username1, out fileId1);
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username1} Post";
             var postData = new
             {
@@ -376,14 +376,14 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             var connector2 = this.PrepareNewUser(out userId2, out username2, out fileId2);
             var connector3 = this.PrepareNewUser(out userId3, out username3, out fileId3);
 
-            //ADD FRIENDS
+            // ADD FRIENDS
             connector1.PostJson("/API/MemberDirectory/MemberDirectory/AddFriend", new { friendId = userId2 }, this.GetRequestHeaders("Member Directory"));
 
             var notificationId = DatabaseHelper.ExecuteScalar<int>($"SELECT TOP 1 MessageID FROM {{objectQualifier}}CoreMessaging_Messages WHERE SenderUserID = {userId1}");
             connector2.PostJson("/API/InternalServices/RelationshipService/AcceptFriend", new { NotificationId = notificationId }, this.GetRequestHeaders());
 
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username1} Post";
             var postData = new
             {
@@ -411,7 +411,7 @@ namespace DotNetNuke.Tests.Integration.Modules.Journal
             string username;
             var connector = this.PrepareNewUser(out userId, out username, out fileId);
 
-            //POST JOURNAL
+            // POST JOURNAL
             var journalText = $"{username} Post";
             var postData = new
             {

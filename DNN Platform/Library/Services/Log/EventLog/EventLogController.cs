@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Log.EventLog
 
         public void AddLog(LogProperties properties, PortalSettings portalSettings, int userID, string logTypeKey, bool bypassBuffering)
         {
-            //supports adding a custom string for LogType
+            // supports adding a custom string for LogType
             var log = new LogInfo
                 {
                     LogUserID = userID,
@@ -339,7 +339,7 @@ namespace DotNetNuke.Services.Log.EventLog
             }
             else
             {
-                //Serialise using XmlSerializer
+                // Serialise using XmlSerializer
                 log.LogProperties.Add(new LogDetailInfo("logdetail", XmlUtils.Serialize(businessObject)));
             }
 

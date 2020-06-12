@@ -14,7 +14,7 @@ namespace DNN.Integration.Test.Framework
     public abstract class IntegrationTestBase
     {
         public static string ConnectionString { get; }
-        //public static string DatabaseName { get; }
+        // public static string DatabaseName { get; }
 
         #region static constructor
 
@@ -25,10 +25,10 @@ namespace DNN.Integration.Test.Framework
             Thread.CurrentThread.CurrentCulture =
                 Thread.CurrentThread.CurrentUICulture = new CultureInfo("en-US");
             ConnectionString = AppConfigHelper.ConnectionString;
-            //DatabaseName = GetDbNameFromConnectionString(ConnectionString);
+            // DatabaseName = GetDbNameFromConnectionString(ConnectionString);
 
-            //SchedulerController.DisableAllSchedulers(false);
-            //SchedulerController.DisableAppStartDelay(false);
+            // SchedulerController.DisableAllSchedulers(false);
+            // SchedulerController.DisableAppStartDelay(false);
         }
 
         #endregion

@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Core.Collections
             {
                 using (ISharedCollectionLock writeLock = d2.GetWriteLock())
                 {
-                    //do nothing
+                    // do nothing
                 }
             }
         }

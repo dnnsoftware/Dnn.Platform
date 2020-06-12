@@ -388,7 +388,7 @@ namespace DotNetNuke.Services.GeneratedImage
             }
         }
 
-        //Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
+        // Clear the user image disk cache if userid is found in clear list and is within ClientCacheExpiration time.
         private bool ClearDiskImageCacheIfNecessary(int userId, int portalId, string cacheId)
         {
             var cacheKey = string.Format(DataCache.UserIdListToClearDiskImageCacheKey, portalId);
@@ -396,9 +396,9 @@ namespace DotNetNuke.Services.GeneratedImage
             if ((userIds = DataCache.GetCache<Dictionary<int, DateTime>>(cacheKey)) == null || !userIds.ContainsKey(userId)) return false;
             this.ImageStore.ForcePurgeFromServerCache(cacheId);
             DateTime expiry;
-            //The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
+            // The clear mechanism is performed for ClientCacheExpiration timespan so that all active clients clears the cache and don't see old data.
             if (!userIds.TryGetValue(userId, out expiry) || DateTime.UtcNow <= expiry.Add(this.ClientCacheExpiration)) return true;
-            //Remove the userId from the clear list when timespan is > ClientCacheExpiration.
+            // Remove the userId from the clear list when timespan is > ClientCacheExpiration.
             userIds.Remove(userId);
             DataCache.SetCache(cacheKey, userIds);
             return true;

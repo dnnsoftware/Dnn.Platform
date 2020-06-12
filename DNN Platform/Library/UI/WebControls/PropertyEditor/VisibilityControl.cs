@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		public void RaisePostDataChangedEvent()
 		{
-			//Raise the VisibilityChanged Event
+			// Raise the VisibilityChanged Event
 		    var args = new PropertyEditorEventArgs(this.Name) {Value = this.Value};
 		    this.OnVisibilityChanged(args);
 		}
@@ -147,10 +147,10 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderVisibility(HtmlTextWriter writer, string optionValue, UserVisibilityMode selectedVisibility, string optionText)
         {
-            //Render Li
+            // Render Li
             writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-            //Render radio button
+            // Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
             writer.AddAttribute("aria-label", this.ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
@@ -163,16 +163,16 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(optionText);
             writer.RenderEndTag();
 
-            //Close Li
+            // Close Li
             writer.RenderEndTag();
         }
 
         private void RenderCheckboxItem(HtmlTextWriter writer, string prefix, string value, string text, bool selected)
         {
-            //Render Li
+            // Render Li
             writer.RenderBeginTag(HtmlTextWriterTag.Li);
 
-            //Render radio button
+            // Render radio button
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "checkbox");
             writer.AddAttribute("aria-label", this.ID);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + prefix + value);
@@ -186,7 +186,7 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(text);
             writer.RenderEndTag();
 
-            //Close Li
+            // Close Li
             writer.RenderEndTag();
 
         }
@@ -248,38 +248,38 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="writer">A HtmlTextWriter.</param>
 		protected override void Render(HtmlTextWriter writer)
 		{
-            //Render Div container
+            // Render Div container
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnFormVisibility dnnDropdownSettings");
 			writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            //Render dnnButtonDropdown
+            // Render dnnButtonDropdown
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonDropdown");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            //Render dnnButton Icon
+            // Render dnnButton Icon
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonIcon");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            //writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
-            //writer.RenderBeginTag(HtmlTextWriterTag.Img);
+            // writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Lock"));
+            // writer.RenderBeginTag(HtmlTextWriterTag.Img);
             
-            //Close Image Tag
-            //writer.RenderEndTag();
+            // Close Image Tag
+            // writer.RenderEndTag();
 
-            //Close dnnButtonIcon
+            // Close dnnButtonIcon
             writer.RenderEndTag();
 
-            //render dnnButton Arrow
+            // render dnnButton Arrow
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonArrow");
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
             writer.RenderEndTag();
 
-            //Close dnnButton Dropdown
+            // Close dnnButton Dropdown
             writer.RenderEndTag();
 
-            //Render UL for radio Button List
-            //writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
+            // Render UL for radio Button List
+            // writer.AddStyleAttribute(HtmlTextWriterStyle.Display, "none");
             writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnButtonDropdown-ul");
 
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);
@@ -292,20 +292,20 @@ namespace DotNetNuke.UI.WebControls
 
             this.RenderVisibility(writer, "3", UserVisibilityMode.FriendsAndGroups, Localization.GetString("FriendsGroups").Trim());
 
-            //Render UL for check Box List
+            // Render UL for check Box List
             writer.AddStyleAttribute(HtmlTextWriterStyle.Display, this.Visibility.VisibilityMode == UserVisibilityMode.FriendsAndGroups ? "block" : "none");
             writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
 		    this.RenderRelationships(writer);
             this.RenderGroups(writer);
 
-            //Close UL
+            // Close UL
             writer.RenderEndTag();
 
-            //Close UL
+            // Close UL
             writer.RenderEndTag();
 
-            //Close Div
+            // Close Div
 			writer.RenderEndTag();
 		}
 		

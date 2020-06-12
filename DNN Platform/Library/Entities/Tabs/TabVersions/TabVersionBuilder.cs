@@ -161,7 +161,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var rollbackDetails = this.CopyVersionDetails(this.GetVersionModulesDetails(tabId, version)).ToArray();
             var newVersion = this.CreateNewVersion(tabId, createdByUserId);
             
-            //Save Reset detail
+            // Save Reset detail
             this._tabVersionDetailController.SaveTabVersionDetail(this.GetResetTabVersionDetail(newVersion), createdByUserId);
             
             foreach (var rollbackDetail in rollbackDetails)
@@ -178,7 +178,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }
                 this._tabVersionDetailController.SaveTabVersionDetail(rollbackDetail, createdByUserId);
 
-                //Check if restoring version contains modules to restore
+                // Check if restoring version contains modules to restore
                 if (publishedDetails.All(tv => tv.ModuleId != rollbackDetail.ModuleId))
                 {
                     this.RestoreModuleInfo(tabId, rollbackDetail);
@@ -189,7 +189,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 }               
             }
             
-            //Check if current version contains modules not existing in restoring version 
+            // Check if current version contains modules not existing in restoring version 
             foreach (var publishedDetail in publishedDetails.Where(publishedDetail => rollbackDetails.All(tvd => tvd.ModuleId != publishedDetail.ModuleId)))
             {
                 this._moduleController.DeleteTabModule(tabId, publishedDetail.ModuleId, true);
@@ -295,7 +295,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
             var currentVersion = this.GetCurrentVersion(tabId);
             if (currentVersion == null)
             {
-                //Only when a tab is on a first version and it is not published, the currentVersion object can be null
+                // Only when a tab is on a first version and it is not published, the currentVersion object can be null
                 return new List<ModuleInfo>();
             }
 
@@ -471,7 +471,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
 
             if (tabVersionsOrdered.Count() < maxVersionsAllowed) return;
 
-            //The last existing version is going to be deleted, therefore we need to add the snapshot to the previous one
+            // The last existing version is going to be deleted, therefore we need to add the snapshot to the previous one
             var snapShotTabVersion = tabVersionsOrdered.ElementAtOrDefault(maxVersionsAllowed - 2);
             this.CreateSnapshotOverVersion(tabId, snapShotTabVersion);
             this.DeleteOldVersions(tabVersionsOrdered, snapShotTabVersion);

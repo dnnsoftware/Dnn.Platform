@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     formatPrice = "";
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -83,7 +83,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, cancel);
 
-                //Raise SubscriptionUpdated Event
+                // Raise SubscriptionUpdated Event
                 this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(cancel, objRole.RoleName));
             }
             else
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, roleID, RoleStatus.Approved, false, false);
 
-                //Raise SubscriptionUpdated Event
+                // Raise SubscriptionUpdated Event
                 this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
             }
             else
@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -183,7 +183,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         break;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.Admin.Security
                         break;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -250,7 +250,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 formatURL = serverPath + "Register.aspx?tabid=" + this.TabId;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -324,7 +324,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             else if (objRole.IsPublic && objRole.TrialFee == 0.0)
             {
-				//Use Trial?
+				// Use Trial?
                 UserRoleInfo objUserRole = RoleController.Instance.GetUserRole(this.PortalId, this.UserInfo.UserID, roleID);
                 if ((objUserRole == null) || (!objUserRole.IsTrialUsed))
                 {
@@ -351,7 +351,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.grdServices.DataSource = RoleController.Instance.GetUserRoles(this.UserInfo, false);
                 this.grdServices.DataBind();
 
-                //if no service available then hide options
+                // if no service available then hide options
                 this.ServicesRow.Visible = (this.grdServices.Items.Count > 0);
             }
         }
@@ -410,12 +410,12 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 return;
             }
-            //Get the RSVP code
+            // Get the RSVP code
             string code = this.txtRSVPCode.Text;
             bool rsvpCodeExists = false;
             if (!String.IsNullOrEmpty(code))
             {
-                //Parse the roles
+                // Parse the roles
                 foreach (RoleInfo objRole in RoleController.Instance.GetRoles(this.PortalSettings.PortalId))
                 {
                     if (objRole.RSVPCode == code)
@@ -423,14 +423,14 @@ namespace DotNetNuke.Modules.Admin.Security
                         RoleController.Instance.UpdateUserRole(this.PortalId, this.UserInfo.UserID, objRole.RoleID, RoleStatus.Approved, false, false);
                         rsvpCodeExists = true;
 
-                        //Raise SubscriptionUpdated Event
+                        // Raise SubscriptionUpdated Event
                         this.OnSubscriptionUpdated(new SubscriptionUpdatedEventArgs(false, objRole.RoleName));
                     }
                 }
                 if (rsvpCodeExists)
                 {
                     this.lblRSVP.Text = Localization.GetString("RSVPSuccess", this.LocalResourceFile);
-                    //Reset RSVP Code field
+                    // Reset RSVP Code field
                     this.txtRSVPCode.Text = "";
                 }
                 else
@@ -447,21 +447,21 @@ namespace DotNetNuke.Modules.Admin.Security
             int roleID = Convert.ToInt32(e.CommandArgument);
             if (commandName == Localization.GetString("Subscribe", this.LocalResourceFile) || commandName == Localization.GetString("Renew", this.LocalResourceFile))
             {
-				//Subscribe
+				// Subscribe
                 this.Subscribe(roleID, false);
             }
             else if (commandName == Localization.GetString("Unsubscribe", this.LocalResourceFile))
             {
-				//Unsubscribe
+				// Unsubscribe
                 this.Subscribe(roleID, true);
             }
             else if (commandName == "UseTrial")
             {
-				//Use Trial
+				// Use Trial
                 this.UseTrial(roleID);
             }
 			
-			//Rebind Grid
+			// Rebind Grid
             this.DataBind();
         }
 		

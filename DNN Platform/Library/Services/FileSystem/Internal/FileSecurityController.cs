@@ -33,13 +33,13 @@ namespace DotNetNuke.Services.FileSystem.Internal
             var extension = Path.GetExtension(fileName);
             var checker = this.GetSecurityChecker(extension?.ToLowerInvariant().TrimStart('.'));
 
-            //when there is no specfic file check for the file type, then treat it as validated.
+            // when there is no specfic file check for the file type, then treat it as validated.
             if (checker == null)
             {
                 return true;
             }
 
-            //use copy of the stream as we can't make sure how the check process the stream.
+            // use copy of the stream as we can't make sure how the check process the stream.
             using (var copyStream = this.CopyStream(fileContent))
             {
                 return checker.Validate(copyStream);

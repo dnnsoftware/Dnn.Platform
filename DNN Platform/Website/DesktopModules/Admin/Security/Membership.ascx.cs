@@ -198,7 +198,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-			//disable/enable buttons
+			// disable/enable buttons
             if (this.UserInfo.UserID == this.User.UserID)
             {
                 this.cmdAuthorize.Visible = false;
@@ -240,7 +240,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.updatePassword.Value = this.LocalizeString(this.UserMembership.UpdatePassword.ToString());
             this.isDeleted.Value = this.LocalizeString(this.UserMembership.IsDeleted.ToString());
 
-            //show the user folder path without default parent folder, and only visible to admin.
+            // show the user folder path without default parent folder, and only visible to admin.
             this.userFolder.Visible = this.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName);
             if (this.userFolder.Visible)
             {
@@ -289,15 +289,15 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.Request.IsAuthenticated != true) return;
 
-			//Get the Membership Information from the property editors
+			// Get the Membership Information from the property editors
             this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
             this.User.Membership.Approved = true;
 
-            //Update User
+            // Update User
             UserController.UpdateUser(this.PortalId, this.User);
 
-            //Update User Roles if needed
+            // Update User Roles if needed
             if (!this.User.IsSuperUser && this.User.IsInRole("Unverified Users") && this.PortalSettings.UserRegistration == (int)Common.Globals.PortalRegistrationType.VerifiedRegistration)
             {
                 UserController.ApproveUser(this.User);
@@ -325,12 +325,12 @@ namespace DotNetNuke.Modules.Admin.Users
             var message = String.Empty;
             if (canSend)
             {
-                //Get the Membership Information from the property editors
+                // Get the Membership Information from the property editors
                 this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
                 this.User.Membership.UpdatePassword = true;
 
-                //Update User
+                // Update User
                 UserController.UpdateUser(this.PortalId, this.User);
 
                 this.OnMembershipPasswordUpdateChanged(EventArgs.Empty);
@@ -356,12 +356,12 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.Request.IsAuthenticated != true) return;
 
-			//Get the Membership Information from the property editors
+			// Get the Membership Information from the property editors
             this.User.Membership = (UserMembership)this.membershipForm.DataSource;
 
             this.User.Membership.Approved = false;
 
-            //Update User
+            // Update User
             UserController.UpdateUser(this.PortalId, this.User);
 
             this.OnMembershipUnAuthorized(EventArgs.Empty);
@@ -383,7 +383,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             var currentSuperUserState = this.User.IsSuperUser;
             this.User.IsSuperUser = !currentSuperUserState;
-            //Update User
+            // Update User
             UserController.UpdateUser(this.PortalId, this.User);
             DataCache.ClearCache();
 
@@ -410,7 +410,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.Request.IsAuthenticated != true) return;
 
-			//update the user record in the database
+			// update the user record in the database
             bool isUnLocked = UserController.UnLockUser(this.User);
 
             if (isUnLocked)

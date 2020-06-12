@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.FileSystem
         #region Private Methods
         private int AddFolderInternal(IFolderInfo folder)
         {
-            //Check this is not a duplicate
+            // Check this is not a duplicate
             var tmpfolder = this.GetFolder(folder.PortalID, folder.FolderPath);
 
             if (tmpfolder != null && folder.FolderID == Null.NullInteger)
@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.FileSystem
                                                                     workflowId,
                                                                     parentId);
 
-                //Refetch folder for logging
+                // Refetch folder for logging
                 folder = this.GetFolder(folder.PortalID, folder.FolderPath);
 
                 this.AddLogEntry(folder, EventLogController.EventLogType.FOLDER_CREATED);
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.FileSystem
                 this.UpdateFolderInternal(folder, false);
             }
 
-            //Invalidate Cache
+            // Invalidate Cache
             this.ClearFolderCache(folder.PortalID);
 
             return folder.FolderID;
@@ -471,7 +471,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 else
                 {
-                    //Parent foldermapping DOESN'T support mapped path
+                    // Parent foldermapping DOESN'T support mapped path
                     // abd current foldermapping YES support mapped path
                     mappedPath = PathUtils.Instance.FormatFolderPath(this.GetDefaultMappedPath(folderMapping) + mappedPath);
                 }
@@ -645,7 +645,7 @@ namespace DotNetNuke.Services.FileSystem
                         folder.DisplayPath = this.MyFolderName + "/";
                         folder.DisplayName = this.MyFolderName;
                     }
-                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) //Allow UserFolder children
+                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) // Allow UserFolder children
                     {
                         continue;
                     }
@@ -664,7 +664,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The folder entity or null if the folder cannot be located.</returns>
         public virtual IFolderInfo GetFolder(int folderId)
         {
-            //Try and get the folder from the portal cache
+            // Try and get the folder from the portal cache
             IFolderInfo folder = null;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null)
@@ -795,7 +795,7 @@ namespace DotNetNuke.Services.FileSystem
                         folder.DisplayPath = Localization.Localization.GetString("MyFolderName") + "/";
                         folder.DisplayName = Localization.Localization.GetString("MyFolderName");
                     }
-                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) //Allow UserFolder children
+                    else if (!folder.FolderPath.StartsWith(userFolder.FolderPath, StringComparison.InvariantCultureIgnoreCase)) // Allow UserFolder children
                     {
                         continue;
                     }
@@ -809,7 +809,7 @@ namespace DotNetNuke.Services.FileSystem
 
         public virtual IFolderInfo GetUserFolder(UserInfo userInfo)
         {
-            //always use _default portal for a super user
+            // always use _default portal for a super user
             int portalId = userInfo.IsSuperUser ? -1 : userInfo.PortalID;
 
             string userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(userInfo);
@@ -859,7 +859,7 @@ namespace DotNetNuke.Services.FileSystem
                 this.MoveFolderBetweenProviders(folder, newFolderPath);
             }
 
-            //log the folder moved event.
+            // log the folder moved event.
             var log = new LogInfo();
             log.AddProperty("Old Folder Path", currentFolderPath);
             log.AddProperty("New Folder Path", newFolderPath);
@@ -867,7 +867,7 @@ namespace DotNetNuke.Services.FileSystem
             log.LogTypeKey = EventLogController.EventLogType.FOLDER_MOVED.ToString();
             LogController.Instance.AddLog(log);
 
-            //Files in cache are obsolete because their physical path is not correct after moving
+            // Files in cache are obsolete because their physical path is not correct after moving
             this.DeleteFilesFromCache(folder.PortalID, newFolderPath);
             var movedFolder = this.GetFolder(folder.FolderID);
 
@@ -906,13 +906,13 @@ namespace DotNetNuke.Services.FileSystem
 
             this.RenameFolderInFileSystem(folder, newFolderPath);
 
-            //Update Provider
+            // Update Provider
             provider.RenameFolder(folder, newFolderName);
 
-            //Update database
+            // Update database
             this.UpdateChildFolders(folder, newFolderPath);
 
-            //Files in cache are obsolete because their physical path is not correct after rename
+            // Files in cache are obsolete because their physical path is not correct after rename
             this.DeleteFilesFromCache(folder.PortalID, newFolderPath);
 
             // Notify folder renamed event
@@ -1225,7 +1225,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual IFolderInfo AddUserFolder(UserInfo user)
         {
-            //user _default portal for all super users
+            // user _default portal for all super users
             var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
 
             var folderMapping = FolderMappingsConfigController.Instance.GetFolderMapping(portalId, DefaultUsersFoldersPath) ?? FolderMappingController.Instance.GetDefaultFolderMapping(portalId);
@@ -1387,7 +1387,7 @@ namespace DotNetNuke.Services.FileSystem
 
             if (portalId != Null.NullInteger)
             {
-                //Set Folder Permissions to inherit from parent
+                // Set Folder Permissions to inherit from parent
                 this.CopyParentFolderPermissions(folder);
             }
 
@@ -1689,7 +1689,7 @@ namespace DotNetNuke.Services.FileSystem
             var mergedTree = this.MergeFolderLists(fileSystemFolders, databaseFolders);
             var mappedFolders = new SortedList<string, MergedTreeItem>();
 
-            //Some providers cache the list of objects for performance
+            // Some providers cache the list of objects for performance
             this.ClearFolderProviderCachedLists(portalId);
 
             foreach (var mergedItem in mergedTree.Values)
@@ -1698,7 +1698,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 var folderMapping = FolderMappingController.Instance.GetFolderMapping(portalId, mergedItem.FolderMappingID);
 
-                //Add any folders from non-core providers
+                // Add any folders from non-core providers
                 if (folderMapping.MappingName != "Standard" && folderMapping.MappingName != "Secure" && folderMapping.MappingName != "Database")
                 {
                     if (!isRecursive)
@@ -1739,17 +1739,17 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual bool IsMoveOperationValid(IFolderInfo folderToMove, IFolderInfo destinationFolder, string newFolderPath)
         {
-            //FolderMapping cases
+            // FolderMapping cases
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folderToMove.PortalID, folderToMove.FolderMappingID);
             if (folderToMove.FolderMappingID == destinationFolder.FolderMappingID && FolderProvider.Instance(folderMapping.FolderProviderType).SupportsMappedPaths)
             {
-                //Root mapped folder cannot be move, when folder mappings are equal
+                // Root mapped folder cannot be move, when folder mappings are equal
                 if (folderToMove.MappedPath == string.Empty)
                 {
                     return false;
                 }
 
-                //Destination folder cannot be a child mapped folder from the folder to move
+                // Destination folder cannot be a child mapped folder from the folder to move
                 if (destinationFolder.MappedPath.StartsWith(folderToMove.MappedPath))
                 {
                     return false;
@@ -1849,13 +1849,13 @@ namespace DotNetNuke.Services.FileSystem
             var newFolderPath = destinationFolder.FolderPath + folder.FolderName + "/";
             this.RenameFolderInFileSystem(folder, newFolderPath);
 
-            //Update provider
+            // Update provider
             var newMappedPath = destinationFolder.MappedPath + folder.FolderName + "/";
             var folderMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID);
             var provider = FolderProvider.Instance(folderMapping.FolderProviderType);
             provider.MoveFolder(folder.MappedPath, newMappedPath, folderMapping);
 
-            //Update database
+            // Update database
             this.UpdateChildFolders(folder, Path.Combine(destinationFolder.FolderPath, folder.FolderName));
         }
 
@@ -2117,7 +2117,7 @@ namespace DotNetNuke.Services.FileSystem
                 var objFolder = this.GetFolder(portalId, parentFolderPath);
                 if (objFolder != null)
                 {
-                    //UpdateFolder(objFolder);
+                    // UpdateFolder(objFolder);
                     this.UpdateFolderInternal(objFolder, false);
                 }
             }
@@ -2176,7 +2176,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual bool CanMoveBetweenFolderMappings(FolderMappingInfo sourceFolderMapping, FolderMappingInfo destinationFolderMapping)
         {
-            //If Folder Mappings are exactly the same
+            // If Folder Mappings are exactly the same
             if (sourceFolderMapping.FolderMappingID == destinationFolderMapping.FolderMappingID)
             {
                 return true;

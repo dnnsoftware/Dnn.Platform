@@ -123,26 +123,26 @@ namespace DotNetNuke.Modules.Admin.Users
         /// <returns></returns>
         private bool CanUpdateUsername()
         {
-            //do not allow for non-logged in users
+            // do not allow for non-logged in users
             if (this.Request.IsAuthenticated == false || this.AddUser)
             {
                 return false;
             }
 
-            //can only update username if a host/admin and account being managed is not a superuser
+            // can only update username if a host/admin and account being managed is not a superuser
             if (UserController.Instance.GetCurrentUserInfo().IsSuperUser)
             {
-                //only allow updates for non-superuser accounts
+                // only allow updates for non-superuser accounts
                 if (this.User.IsSuperUser == false)
                 {
                     return true;
                 }
             }
 
-            //if an admin, check if the user is only within this portal
+            // if an admin, check if the user is only within this portal
             if (UserController.Instance.GetCurrentUserInfo().IsInRole(this.PortalSettings.AdministratorRoleName))
             {
-                //only allow updates for non-superuser accounts
+                // only allow updates for non-superuser accounts
                 if (this.User.IsSuperUser)
                 {
                     return false;
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void UpdateDisplayName()
         {
-			//Update DisplayName to conform to Format
+			// Update DisplayName to conform to Format
 			if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
             {
 				this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
@@ -168,16 +168,16 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         private bool Validate()
         {
-            //Check User Editor
+            // Check User Editor
             bool _IsValid = this.userForm.IsValid;
 
-            //Check Password is valid
+            // Check Password is valid
             if (this.AddUser && this.ShowPassword)
             {
                 this.CreateStatus = UserCreateStatus.AddUser;
                 if (!this.chkRandom.Checked)
                 {					
-					//1. Check Password is Valid
+					// 1. Check Password is Valid
                     if (this.CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(this.txtPassword.Text))
                     {
                         this.CreateStatus = UserCreateStatus.InvalidPassword;
@@ -189,16 +189,16 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else
                 {
-					//Generate a random password for the user
+					// Generate a random password for the user
                     this.User.Membership.Password = UserController.GeneratePassword();
                 }
 				
-                //Check Question/Answer
+                // Check Question/Answer
                 if (this.CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
                     if (string.IsNullOrEmpty(this.txtQuestion.Text))
                     {
-						//Invalid Question
+						// Invalid Question
                         this.CreateStatus = UserCreateStatus.InvalidQuestion;
                     }
                     else
@@ -209,7 +209,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         if (string.IsNullOrEmpty(this.txtAnswer.Text))
                         {
-							//Invalid Question
+							// Invalid Question
                             this.CreateStatus = UserCreateStatus.InvalidAnswer;
                         }
                         else
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Users
         /// </summary>
         public void CreateUser()
         {
-            //Update DisplayName to conform to Format
+            // Update DisplayName to conform to Format
             this.UpdateDisplayName();
 
             if (this.IsRegister)
@@ -245,7 +245,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else
             {
-                //Set the Approved status from the value in the Authorized checkbox
+                // Set the Approved status from the value in the Authorized checkbox
                 this.User.Membership.Approved = this.chkAuthorize.Checked;
             }
             var user = this.User;
@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             bool disableUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);
 
-            //only show username row once UseEmailAsUserName is disabled in site settings
+            // only show username row once UseEmailAsUserName is disabled in site settings
             if (disableUsername)
             {
                 this.userNameReadOnly.Visible = false;
@@ -571,21 +571,21 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     if (this.User.UserID == this.PortalSettings.AdministratorId)
                     {
-						//Clear the Portal Cache
+						// Clear the Portal Cache
                         DataCache.ClearPortalUserCountCache(this.UserPortalID);
                     }
                     try
                     {
-						//Update DisplayName to conform to Format
+						// Update DisplayName to conform to Format
                         this.UpdateDisplayName();
-                        //either update the username or update the user details
+                        // either update the username or update the user details
 
                         if (this.CanUpdateUsername() && !this.PortalSettings.Registration.UseEmailAsUserName)
                         {
                             UserController.ChangeUsername(this.User.UserID, this.renameUserName.Value.ToString());
                         }
 
-                        //DNN-5874 Check if unique display name is required
+                        // DNN-5874 Check if unique display name is required
                         if (this.PortalSettings.Registration.RequireUniqueDisplayName)
                         {
                             var usersWithSameDisplayName = (System.Collections.Generic.List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);

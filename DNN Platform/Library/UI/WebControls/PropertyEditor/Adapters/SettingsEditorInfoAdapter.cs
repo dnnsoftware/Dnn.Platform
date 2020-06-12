@@ -47,33 +47,33 @@ namespace DotNetNuke.UI.WebControls
             var info = (SettingInfo)this.DataMember;
             var editInfo = new EditorInfo();
 
-            //Get the Name of the property
+            // Get the Name of the property
             editInfo.Name = info.Name;
 
 			editInfo.Category = string.Empty;
 
-            //Get Value Field
+            // Get Value Field
             editInfo.Value = info.Value;
 
-            //Get the type of the property
+            // Get the type of the property
             editInfo.Type = info.Type.AssemblyQualifiedName;
 
-            //Get Editor Field
+            // Get Editor Field
             editInfo.Editor = info.Editor;
 
-            //Get LabelMode Field
+            // Get LabelMode Field
             editInfo.LabelMode = LabelMode.Left;
 
-            //Get Required Field
+            // Get Required Field
             editInfo.Required = false;
 
-            //Set ResourceKey Field
+            // Set ResourceKey Field
             editInfo.ResourceKey = editInfo.Name;
 
-            //Get Style
+            // Get Style
             editInfo.ControlStyle = new Style();
 
-            //Get Validation Expression Field
+            // Get Validation Expression Field
             editInfo.ValidationExpression = string.Empty;
 
             return editInfo;
@@ -94,10 +94,10 @@ namespace DotNetNuke.UI.WebControls
             while (settingsEnumerator.MoveNext())
             {
                 key = Convert.ToString(settingsEnumerator.Key);
-                //Do we have the item in the Hashtable being changed
+                // Do we have the item in the Hashtable being changed
                 if (key == name)
                 {
-					//Set the Value property to the new value
+					// Set the Value property to the new value
                     if ((!(ReferenceEquals(newValue, oldValue))) || changed)
                     {
                         settings[key] = newValue;

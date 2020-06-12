@@ -197,7 +197,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Attempt to get the Authentication Service
+				// Attempt to get the Authentication Service
                 SkinPackageInfo skinPackage = SkinController.GetSkinByPackageID(this.Package.PackageID);
                 if (skinPackage != null)
                 {
@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     break;
             }
             
-			//Call base method to set up for file processing
+			// Call base method to set up for file processing
 			base.ProcessFile(file, nav);
         }
 
@@ -252,10 +252,10 @@ namespace DotNetNuke.Services.Installer.Installers
             this.SkinPackage = new SkinPackageInfo();
             this.SkinPackage.PortalID = this.Package.PortalID;
 
-            //Get the Skin name
+            // Get the Skin name
             this.SkinPackage.SkinName = Util.ReadElement(nav, this.SkinNameNodeName);
 
-            //Call base class
+            // Call base class
             base.ReadCustomManifest(nav);
         }
 
@@ -267,12 +267,12 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         protected override void UnInstallFile(InstallFile unInstallFile)
         {
-			//Uninstall file
+			// Uninstall file
             base.UnInstallFile(unInstallFile);
 
             if (unInstallFile.Extension == "htm" || unInstallFile.Extension == "html")
             {
-				//Try to remove "processed file"
+				// Try to remove "processed file"
                 string fileName = unInstallFile.FullName;
                 fileName = fileName.Replace(Path.GetExtension(fileName), ".ascx");
                 Util.DeleteFile(fileName, this.PhysicalBasePath, this.Log);
@@ -292,7 +292,7 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bAdd = Null.NullBoolean;
             try
             {
-				//Attempt to get the Skin Package
+				// Attempt to get the Skin Package
                 this.TempSkinPackage = SkinController.GetSkinPackage(this.SkinPackage.PortalID, this.SkinPackage.SkinName, this.SkinType);
                 if (this.TempSkinPackage == null)
                 {
@@ -316,20 +316,20 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.SkinPackage.SkinType = this.SkinType;
                 if (bAdd)
                 {
-					//Add new skin package
+					// Add new skin package
                     this.SkinPackage.SkinPackageID = SkinController.AddSkinPackage(this.SkinPackage);
                 }
                 else
                 {
-					//Update skin package
+					// Update skin package
                     SkinController.UpdateSkinPackage(this.SkinPackage);
                 }
                 this.Log.AddInfo(string.Format(Util.SKIN_Registered, this.SkinPackage.SkinName));
 
-                //install (copy the files) by calling the base class
+                // install (copy the files) by calling the base class
                 base.Install();
 
-                //process the list of skin files
+                // process the list of skin files
                 if (this.SkinFiles.Count > 0)
                 {
                     this.Log.StartJob(Util.SKIN_BeginProcessing);
@@ -375,19 +375,19 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//If Temp Skin exists then we need to update the DataStore with this 
+			// If Temp Skin exists then we need to update the DataStore with this 
             if (this.TempSkinPackage == null)
             {
-				//No Temp Skin - Delete newly added Skin
+				// No Temp Skin - Delete newly added Skin
                 this.DeleteSkinPackage();
             }
             else
             {
-				//Temp Skin - Rollback to Temp
+				// Temp Skin - Rollback to Temp
                 SkinController.UpdateSkinPackage(this.TempSkinPackage);
             }
             
-			//Call base class to prcoess files
+			// Call base class to prcoess files
 			base.Rollback();
         }
 
@@ -400,7 +400,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteSkinPackage();
 
-            //Call base class to prcoess files
+            // Call base class to prcoess files
             base.UnInstall();
         }
 		

@@ -31,7 +31,7 @@ namespace DotNetNuke.Security.Permissions
 		
         private int _moduleID;
 
-        //local property declarations
+        // local property declarations
         private int _modulePermissionID;
 		
 		#endregion

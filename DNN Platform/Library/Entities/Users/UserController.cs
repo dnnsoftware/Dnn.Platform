@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Users
 
         private static void AddEventLog(int portalId, string username, int userId, string portalName, string ip, UserLoginStatus loginStatus)
         {
-            //initialize log record
+            // initialize log record
             var objSecurity = PortalSecurity.Instance;
             var log = new LogInfo
             {
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Users
             };
             log.AddProperty("IP", ip);
 
-            //create log record
+            // create log record
             LogController.Instance.AddLog(log);
         }
 
@@ -99,7 +99,7 @@ namespace DotNetNuke.Entities.Users
                 RoleController.Instance.AddUserRole(portalId, user.UserID, role.RoleID, RoleStatus.Approved, false, Null.NullDate, Null.NullDate);
             }
 
-            //Clear the roles cache - so the usercount is correct
+            // Clear the roles cache - so the usercount is correct
             RoleController.Instance.ClearRoleCache(portalId);
         }
 
@@ -136,21 +136,21 @@ namespace DotNetNuke.Entities.Users
             }
         }
 
-        //TODO - Handle Portal Groups
+        // TODO - Handle Portal Groups
         private static void DeleteUserPermissions(UserInfo user)
         {
             FolderPermissionController.DeleteFolderPermissionsByUser(user);
 
-            //Delete Module Permissions
+            // Delete Module Permissions
             ModulePermissionController.DeleteModulePermissionsByUser(user);
 
-            //Delete Tab Permissions
+            // Delete Tab Permissions
             TabPermissionController.DeleteTabPermissionsByUser(user);
         }
 
         private static void RestoreUserPermissions(UserInfo user)
         {
-            //restore user's folder permission
+            // restore user's folder permission
             var userFolderPath = ((PathUtils)PathUtils.Instance).GetUserFolderPathInternal(user);
             var portalId = user.IsSuperUser ? Null.NullInteger : user.PortalID;
             var userFolder = FolderManager.Instance.GetFolder(portalId, userFolderPath);
@@ -337,12 +337,12 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Security_UserNameValidation"] = Globals.glbUserNameRegEx;
             }
-            //Forces a valid profile on registration
+            // Forces a valid profile on registration
             if (settings["Security_RequireValidProfile"] == null)
             {
                 settings["Security_RequireValidProfile"] = false;
             }
-            //Forces a valid profile on login
+            // Forces a valid profile on login
             if (settings["Security_RequireValidProfileAtLogin"] == null)
             {
                 settings["Security_RequireValidProfileAtLogin"] = true;
@@ -364,7 +364,7 @@ namespace DotNetNuke.Entities.Users
             {
                 settings["Security_UsersControl"] = (UsersControl)Convert.ToInt32(settings["Security_UsersControl"]);
             }
-            //Display name format
+            // Display name format
             if (settings["Security_DisplayNameFormat"] == null)
             {
                 settings["Security_DisplayNameFormat"] = "";
@@ -731,15 +731,15 @@ namespace DotNetNuke.Entities.Users
         {
             bool passwordChanged;
 
-            //Although we would hope that the caller has already validated the password,
-            //Validate the new Password
+            // Although we would hope that the caller has already validated the password,
+            // Validate the new Password
             if (ValidatePassword(newPassword))
             {
                 passwordChanged = MembershipProvider.Instance().ChangePassword(user, oldPassword, newPassword);
 
                 if (passwordChanged)
                 {
-                    //Update User
+                    // Update User
                     user.Membership.UpdatePassword = false;
                     UpdateUser(user.PortalID, user);
                 }
@@ -765,12 +765,12 @@ namespace DotNetNuke.Entities.Users
             Guid resetTokenGuid = new Guid(resetToken);
 
             var user = GetUserByName(portalid, username);
-            //if user does not exist return false 
+            // if user does not exist return false 
             if (user == null)
             {
                 return false;
             }
-            //check if the token supplied is the same as the users and is still valid
+            // check if the token supplied is the same as the users and is still valid
             if (user.PasswordResetToken != resetTokenGuid || user.PasswordResetExpiration < DateTime.Now)
             {
                 return false;
@@ -781,19 +781,19 @@ namespace DotNetNuke.Entities.Users
                 return false;
             }
 
-            //Although we would hope that the caller has already validated the password,
-            //Validate the new Password
+            // Although we would hope that the caller has already validated the password,
+            // Validate the new Password
             if (ValidatePassword(newPassword))
             {
                 passwordChanged = MembershipProvider.Instance().ResetAndChangePassword(user, newPassword);
 
-                //update reset token values to ensure token is 1-time use
+                // update reset token values to ensure token is 1-time use
                 user.PasswordResetExpiration = DateTime.MinValue;
                 user.PasswordResetToken = Guid.NewGuid();
 
                 if (passwordChanged)
                 {
-                    //Update User
+                    // Update User
                     user.Membership.UpdatePassword = false;
                     UpdateUser(user.PortalID, user);
                 }
@@ -820,13 +820,13 @@ namespace DotNetNuke.Entities.Users
             Guid resetTokenGuid = new Guid(resetToken);
 
             var user = GetUserByName(portalid, username);
-            //if user does not exist return false 
+            // if user does not exist return false 
             if (user == null)
             {
                 errorMessage = Localization.GetString("PasswordResetFailed_UserUndefined");
                 return false;
             }
-            //check if the token supplied is the same as the users and is still valid
+            // check if the token supplied is the same as the users and is still valid
             if (user.PasswordResetToken != resetTokenGuid || user.PasswordResetExpiration < DateTime.Now)
             {
                 errorMessage = Localization.GetString("PasswordResetFailed_ResetLinkExpired");
@@ -839,8 +839,8 @@ namespace DotNetNuke.Entities.Users
                 return false;
             }
 
-            //Although we would hope that the caller has already validated the password,
-            //Validate the new Password
+            // Although we would hope that the caller has already validated the password,
+            // Validate the new Password
             if (ValidatePassword(newPassword))
             {
                 try
@@ -849,15 +849,15 @@ namespace DotNetNuke.Entities.Users
 
                     if (passwordChanged)
                     {
-                        //update reset token values to ensure token is 1-time use
+                        // update reset token values to ensure token is 1-time use
                         user.PasswordResetExpiration = DateTime.MinValue;
                         user.PasswordResetToken = Guid.NewGuid();
 
-                        //Update User
+                        // Update User
                         user.Membership.UpdatePassword = false;
                         UpdateUser(user.PortalID, user);
 
-                        m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, true); //add the password into history.
+                        m.IsPasswordInHistory(user.UserID, user.PortalID, newPassword, true); // add the password into history.
                     }
                     else
                     {
@@ -981,18 +981,18 @@ namespace DotNetNuke.Entities.Users
         {
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
-            //ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
+            // ensure valid GUID exists (covers case where password is randomly generated - has 24 hr validity as per other Admin user steps
             var passwordExpiry = DateTime.Now.AddMinutes(1440);
             var passwordGuid = Guid.NewGuid();
             user.PasswordResetExpiration = passwordExpiry;
             user.PasswordResetToken = passwordGuid;
 
-            //Create the User
+            // Create the User
             var createStatus = MembershipProvider.Instance().CreateUser(ref user);
 
             if (createStatus == UserCreateStatus.Success)
             {
-                //reapply guid/expiry (cleared when user is created)
+                // reapply guid/expiry (cleared when user is created)
                 user.PasswordResetExpiration = passwordExpiry;
                 user.PasswordResetToken = passwordGuid;
                 UpdateUser(user.PortalID, user);
@@ -1000,14 +1000,14 @@ namespace DotNetNuke.Entities.Users
                 CachingProvider.Instance().Remove(string.Format(DataCache.PortalUserCountCacheKey, portalId));
                 if (!user.IsSuperUser)
                 {
-                    //autoassign user to portal roles
+                    // autoassign user to portal roles
                     AutoAssignUsersToRoles(user, portalId);
                 }
 
                 EventManager.Instance.OnUserCreated(new UserEventArgs { User = user, SendNotification = sendEmailNotification });
             }
 
-            //Reset PortalId
+            // Reset PortalId
             FixMemberPortalId(user, portalId);
             return createStatus;
         }
@@ -1021,7 +1021,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static void DeleteUnauthorizedUsers(int portalId)
         {
-            //DNN-6924 for superusers call GetUsers(includeDeleted, superUsersOnly, portalId)
+            // DNN-6924 for superusers call GetUsers(includeDeleted, superUsersOnly, portalId)
             var arrUsers = (portalId == -1) ? GetUsers(true, true, portalId) : GetUnAuthorizedUsers(portalId);
             for (int i = 0; i < arrUsers.Count; i++)
             {
@@ -1059,25 +1059,25 @@ namespace DotNetNuke.Entities.Users
 
             if (canDelete)
             {
-                //Delete Permissions
+                // Delete Permissions
                 DeleteUserPermissions(user);
                 canDelete = MembershipProvider.Instance().DeleteUser(user);
             }
 
             if (canDelete)
             {
-                //Obtain PortalSettings from Current Context or from the users (original) portal if the HTTP Current Context is unavailable.
+                // Obtain PortalSettings from Current Context or from the users (original) portal if the HTTP Current Context is unavailable.
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_DELETED);
                 if (notify && !user.IsSuperUser)
                 {
-                    //send email notification to portal administrator that the user was removed from the portal
+                    // send email notification to portal administrator that the user was removed from the portal
                     SendDeleteEmailNotifications(user, portalSettings);
                 }
 
                 DataCache.ClearPortalUserCountCache(user.PortalID);
                 DataCache.ClearUserCache(user.PortalID, user.Username);
 
-                //also clear current portal's cache if the user is a host user
+                // also clear current portal's cache if the user is a host user
                 if (portalSettings.PortalId != portalId)
                 {
                     DataCache.ClearPortalCache(portalSettings.PortalId, false);
@@ -1209,7 +1209,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                //Throw a configuration exception as password retrieval is not enabled
+                // Throw a configuration exception as password retrieval is not enabled
                 throw new ConfigurationErrorsException("Password Retrieval is not enabled");
             }
             return user.Membership.Password;
@@ -1452,7 +1452,7 @@ namespace DotNetNuke.Entities.Users
                     int index = kvp.Key.IndexOf("_");
                     if (index > 0)
                     {
-                        //Get the prefix
+                        // Get the prefix
                         string prefix = kvp.Key.Substring(0, index + 1);
                         switch (prefix)
                         {
@@ -1475,7 +1475,7 @@ namespace DotNetNuke.Entities.Users
                                         settings[kvp.Key] = (UsersControl)Convert.ToInt32(kvp.Value);
                                         break;
                                     default:
-                                        //update value or add any new values
+                                        // update value or add any new values
                                         settings[kvp.Key] = kvp.Value;
                                         break;
                                 }
@@ -1769,7 +1769,7 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            //Remove the User
+            // Remove the User
             var retValue = MembershipProvider.Instance().RemoveUser(user);
 
             if ((retValue))
@@ -1777,10 +1777,10 @@ namespace DotNetNuke.Entities.Users
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                //Log event
+                // Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_REMOVED);
 
-                //Delete userFolder - DNN-3787
+                // Delete userFolder - DNN-3787
                 DeleteUserFolder(user);
 
                 DataCache.ClearPortalCache(portalId, false);
@@ -1789,7 +1789,7 @@ namespace DotNetNuke.Entities.Users
                 EventManager.Instance.OnUserRemoved(new UserEventArgs { User = user });
             }
 
-            //Reset PortalId
+            // Reset PortalId
             FixMemberPortalId(user, portalId);
 
             return retValue;
@@ -1813,7 +1813,7 @@ namespace DotNetNuke.Entities.Users
 
                 if (notDeletedSubfolders.Count == 0)
                 {
-                    //try to remove the parent folder if there is no other users use this folder.
+                    // try to remove the parent folder if there is no other users use this folder.
                     var parentFolder = FolderManager.Instance.GetFolder(userFolder.ParentID);
                     FolderManager.Instance.Synchronize(folderPortalId, parentFolder.FolderPath, true, true);
                     if (parentFolder != null && !FolderManager.Instance.GetFolders(parentFolder).Any())
@@ -1822,7 +1822,7 @@ namespace DotNetNuke.Entities.Users
 
                         if (notDeletedSubfolders.Count == 0)
                         {
-                            //try to remove the root folder if there is no other users use this folder.
+                            // try to remove the root folder if there is no other users use this folder.
                             var rootFolder = FolderManager.Instance.GetFolder(parentFolder.ParentID);
                             FolderManager.Instance.Synchronize(folderPortalId, rootFolder.FolderPath, true, true);
                             if (rootFolder != null && !FolderManager.Instance.GetFolders(rootFolder).Any())
@@ -1879,7 +1879,7 @@ namespace DotNetNuke.Entities.Users
             }
             else
             {
-                //Throw a configuration exception as password reset is not enabled
+                // Throw a configuration exception as password reset is not enabled
                 throw new ConfigurationErrorsException("Password Reset is not enabled");
             }
             return user.Membership.Password;
@@ -1926,25 +1926,25 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            //Restore the User
+            // Restore the User
             var retValue = MembershipProvider.Instance().RestoreUser(user);
 
             if ((retValue))
             {
-                //restore user permissions
+                // restore user permissions
                 RestoreUserPermissions(user);
 
                 // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
-                //Log event
+                // Log event
                 EventLogController.Instance.AddLog("Username", user.Username, portalSettings, user.UserID, EventLogController.EventLogType.USER_RESTORED);
 
                 DataCache.ClearPortalUserCountCache(user.PortalID);
                 DataCache.ClearUserCache(user.PortalID, user.Username);
             }
 
-            //Reset PortalId
+            // Reset PortalId
             FixMemberPortalId(user, portalId);
             UpdateUser(portalId, GetUserById(portalId, user.UserID));
             return retValue;
@@ -1967,7 +1967,7 @@ namespace DotNetNuke.Entities.Users
             int portalId = user.PortalID;
             user.PortalID = GetEffectivePortalId(portalId);
 
-            //Unlock the User
+            // Unlock the User
             var retValue = MembershipProvider.Instance().UnLockUser(user);
             DataCache.ClearUserCache(portalId, user.Username);
             UpdateUser(portalId, GetUserById(portalId, user.UserID));
@@ -2035,16 +2035,16 @@ namespace DotNetNuke.Entities.Users
             portalId = GetEffectivePortalId(portalId);
             user.PortalID = portalId;
 
-            //clear the cache so that can get original info from database.
+            // clear the cache so that can get original info from database.
             DataCache.RemoveCache(String.Format(DataCache.UserProfileCacheKey, portalId, user.Username));
             var oldUser = MembershipProvider.Instance().GetUser(user.PortalID, user.UserID);
-            var oldProfile = oldUser.Profile; //access the profile property to reload data from database.
+            var oldProfile = oldUser.Profile; // access the profile property to reload data from database.
 
-            //Update the User
+            // Update the User
             MembershipProvider.Instance().UpdateUser(user);
             if (loggedAction)
             {
-                //if the httpcontext is null, then get portal settings by portal id.
+                // if the httpcontext is null, then get portal settings by portal id.
                 PortalSettings portalSettings = null;
                 if (HttpContext.Current != null)
                 {
@@ -2060,10 +2060,10 @@ namespace DotNetNuke.Entities.Users
 
             EventManager.Instance.OnUserUpdated(new UpdateUserEventArgs { User = user, OldUser = oldUser });
 
-            //Reset PortalId
+            // Reset PortalId
             FixMemberPortalId(user, originalPortalId);
 
-            //Remove the UserInfo from the Cache, as it has been modified
+            // Remove the UserInfo from the Cache, as it has been modified
             if (clearCache)
             {
                 DataCache.ClearUserCache(portalId, user.Username);
@@ -2098,11 +2098,11 @@ namespace DotNetNuke.Entities.Users
 
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-            //Validate the user
+            // Validate the user
             var objUser = ValidateUser(portalId, username, password, verificationCode, portalName, ip, ref loginStatus);
             if (objUser != null)
             {
-                //Call UserLogin overload
+                // Call UserLogin overload
                 UserLogin(portalId, objUser, portalName, ip, createPersistentCookie);
             }
             else
@@ -2110,7 +2110,7 @@ namespace DotNetNuke.Entities.Users
                 AddEventLog(portalId, username, Null.NullInteger, portalName, ip, loginStatus);
             }
 
-            //return the User object
+            // return the User object
             return objUser;
         }
 
@@ -2132,12 +2132,12 @@ namespace DotNetNuke.Entities.Users
 
             if (user.LastIPAddress != ip)
             {
-                //Update User in Database with Last IP used
+                // Update User in Database with Last IP used
                 user.LastIPAddress = ip;
                 DataProvider.Instance().UpdateUserLastIpAddress(user.UserID, ip);
             }
 
-            //set the forms authentication cookie ( log the user in )
+            // set the forms authentication cookie ( log the user in )
             var security = PortalSecurity.Instance;
             security.SignIn(user, createPersistentCookie);
 
@@ -2153,16 +2153,16 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public static bool ValidatePassword(string password)
         {
-            //Valid Length
+            // Valid Length
             var isValid = password.Length >= MembershipProviderConfig.MinPasswordLength;
 
-            //Validate NonAlphaChars
+            // Validate NonAlphaChars
             var rx = Globals.NonAlphanumericCharacters;
             if (rx.Matches(password).Count < MembershipProviderConfig.MinNonAlphanumericCharacters)
             {
                 isValid = false;
             }
-            //Validate Regex
+            // Validate Regex
             if (!String.IsNullOrEmpty(MembershipProviderConfig.PasswordStrengthRegularExpression) && isValid)
             {
                 isValid = Regex.IsMatch(password, MembershipProviderConfig.PasswordStrengthRegularExpression);
@@ -2208,24 +2208,24 @@ namespace DotNetNuke.Entities.Users
         {
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-            //Try and Log the user in
+            // Try and Log the user in
             var user = MembershipProvider.Instance().UserLogin(GetEffectivePortalId(portalId), username, password, authType, verificationCode, ref loginStatus);
             if (loginStatus == UserLoginStatus.LOGIN_USERLOCKEDOUT || loginStatus == UserLoginStatus.LOGIN_FAILURE || loginStatus == UserLoginStatus.LOGIN_USERNOTAPPROVED)
             {
-                //User Locked Out so log to event log
+                // User Locked Out so log to event log
                 AddEventLog(portalId, username, Null.NullInteger, portalName, ip, loginStatus);
             }
 
-            //Check Default Accounts
+            // Check Default Accounts
             if (loginStatus == UserLoginStatus.LOGIN_SUCCESS || loginStatus == UserLoginStatus.LOGIN_SUPERUSER)
             {
                 CheckInsecurePassword(username, password, ref loginStatus);
             }
 
-            //Reset portalId
+            // Reset portalId
             FixMemberPortalId(user, portalId);
 
-            //return the User object
+            // return the User object
             return user;
         }
 
@@ -2245,10 +2245,10 @@ namespace DotNetNuke.Entities.Users
 
             var validStatus = UserValidStatus.VALID;
 
-            //Check if Password needs to be updated
+            // Check if Password needs to be updated
             if (objUser.Membership.UpdatePassword)
             {
-                //Admin has forced password update
+                // Admin has forced password update
                 validStatus = UserValidStatus.UPDATEPASSWORD;
             }
             else if (PasswordConfig.PasswordExpiry > 0)
@@ -2256,12 +2256,12 @@ namespace DotNetNuke.Entities.Users
                 var expiryDate = objUser.Membership.LastPasswordChangeDate.AddDays(PasswordConfig.PasswordExpiry);
                 if (expiryDate < DateTime.Now)
                 {
-                    //Password Expired
+                    // Password Expired
                     validStatus = UserValidStatus.PASSWORDEXPIRED;
                 }
                 else if (expiryDate < DateTime.Now.AddDays(PasswordConfig.PasswordExpiryReminder) && (!ignoreExpiring))
                 {
-                    //Password update reminder
+                    // Password update reminder
                     validStatus = UserValidStatus.PASSWORDEXPIRING;
                 }
             }
@@ -2278,7 +2278,7 @@ namespace DotNetNuke.Entities.Users
                 }
             }
 
-            //Check if Profile needs updating
+            // Check if Profile needs updating
             if (validStatus == UserValidStatus.VALID)
             {
                 var validProfile = Convert.ToBoolean(UserModuleBase.GetSetting(portalId, "Security_RequireValidProfileAtLogin"));

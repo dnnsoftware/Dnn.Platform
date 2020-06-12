@@ -120,32 +120,32 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         private static void WriteStream(HttpResponse objResponse, Stream objStream)
         {
-            //Buffer to read 10K bytes in chunk:
+            // Buffer to read 10K bytes in chunk:
             var bytBuffer = new byte[10000];
 
-            //Length of the file:
+            // Length of the file:
             int intLength;
 
-            //Total bytes to read:
+            // Total bytes to read:
             long lngDataToRead;
             try
             {
-                //Total bytes to read:
+                // Total bytes to read:
                 lngDataToRead = objStream.Length;
 
-                //Read the bytes.
+                // Read the bytes.
                 while (lngDataToRead > 0)
                 {
-					//Verify that the client is connected.
+					// Verify that the client is connected.
                     if (objResponse.IsClientConnected)
                     {
-						//Read the data in buffer
+						// Read the data in buffer
                         intLength = objStream.Read(bytBuffer, 0, 10000);
 
-                        //Write the data to the current output stream.
+                        // Write the data to the current output stream.
                         objResponse.OutputStream.Write(bytBuffer, 0, intLength);
 
-                        //Flush the data to the HTML output.
+                        // Flush the data to the HTML output.
                         objResponse.Flush();
 
                         lngDataToRead = lngDataToRead - intLength;
@@ -183,10 +183,10 @@ namespace DotNetNuke.Common.Utilities
             FileStream fs = null;
             try
             {
-				//Open File Stream
+				// Open File Stream
                 fs = File.OpenRead(FixPath(filePath));
 				
-				//Read file into byte array buffer
+				// Read file into byte array buffer
                 var buffer = new byte[fs.Length];
 
                 var len = fs.Read(buffer, 0, buffer.Length);
@@ -196,13 +196,13 @@ namespace DotNetNuke.Common.Utilities
                                       "Requested to read {0} bytes, but was read {1} bytes", fs.Length, len);
                 }
 
-                //Create Zip Entry
+                // Create Zip Entry
                 var entry = new ZipEntry(Path.Combine(folder, fileName));
                 entry.DateTime = DateTime.Now;
                 entry.Size = fs.Length;
                 fs.Close();
 
-                //Compress file and add to Zip file
+                // Compress file and add to Zip file
                 ZipFile.PutNextEntry(entry);
                 ZipFile.Write(buffer, 0, buffer.Length);
             }
@@ -266,7 +266,7 @@ namespace DotNetNuke.Common.Utilities
                     {
                         File.Delete(fileName);
                     }
-                    fileDeleted = true; //we don't care if it didn't exist...the operation didn't fail, that's what we care about
+                    fileDeleted = true; // we don't care if it didn't exist...the operation didn't fail, that's what we care about
                 }
                 catch (Exception exc)
                 {

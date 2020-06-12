@@ -62,13 +62,13 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public int AddContentType(ContentType contentType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
             contentType.ContentTypeId = this._DataService.AddContentType(contentType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             this.ClearContentTypeCache();
 
             return contentType.ContentTypeId;
@@ -90,13 +90,13 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentOutOfRangeException">content type id is less than 0.</exception>
         public void DeleteContentType(ContentType contentType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
 
             this._DataService.DeleteContentType(contentType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             this.ClearContentTypeCache();
         }
 
@@ -121,14 +121,14 @@ namespace DotNetNuke.Entities.Content
         /// <exception cref="System.ArgumentException">contentType.ContentType is empty.</exception>
         public void UpdateContentType(ContentType contentType)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("contentType", contentType);
             Requires.PropertyNotNegative("contentType", "ContentTypeId", contentType.ContentTypeId);
             Requires.PropertyNotNullOrEmpty("contentType", "ContentType", contentType.ContentType);
 
             this._DataService.UpdateContentType(contentType);
 
-            //Refresh cached collection of types
+            // Refresh cached collection of types
             this.ClearContentTypeCache();
         }
 

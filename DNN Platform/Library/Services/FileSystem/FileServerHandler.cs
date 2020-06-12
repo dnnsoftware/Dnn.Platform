@@ -45,13 +45,13 @@ namespace DotNetNuke.Services.FileSystem
             var ModuleId = -1;
             try
             {
-                //get TabId
+                // get TabId
                 if (context.Request.QueryString["tabid"] != null)
                 {
                     Int32.TryParse(context.Request.QueryString["tabid"], out TabId);
                 }
 
-                //get ModuleId
+                // get ModuleId
                 if (context.Request.QueryString["mid"] != null)
                 {
                     Int32.TryParse(context.Request.QueryString["mid"], out ModuleId);
@@ -59,11 +59,11 @@ namespace DotNetNuke.Services.FileSystem
             }
             catch (Exception)
             {
-                //The TabId or ModuleId are incorrectly formatted (potential DOS)
+                // The TabId or ModuleId are incorrectly formatted (potential DOS)
                 this.Handle404Exception(context, context.Request.RawUrl);
             }
 
-            //get Language
+            // get Language
             string Language = _portalSettings.DefaultLanguage;
             if (context.Request.QueryString["language"] != null)
             {
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.FileSystem
                 Localization.Localization.SetLanguage(Language);
             }
 
-            //get the URL
+            // get the URL
             string URL = "";
             if (context.Request.QueryString["fileticket"] != null)
             {
@@ -98,20 +98,20 @@ namespace DotNetNuke.Services.FileSystem
                 URL = context.Request.QueryString["link"];
                 if (URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
-                    URL = ""; //restrict direct access by FileID
+                    URL = ""; // restrict direct access by FileID
                 }
             }
             if (!String.IsNullOrEmpty(URL))
             {
                 URL = URL.Replace(@"\", @"/");
 
-                //update clicks, this must be done first, because the url tracker works with unmodified urls, like tabid, fileid etc
+                // update clicks, this must be done first, because the url tracker works with unmodified urls, like tabid, fileid etc
                 var objUrls = new UrlController();
                 objUrls.UpdateUrlTracking(_portalSettings.PortalId, URL, ModuleId, -1);
                 TabType UrlType = Globals.GetURLType(URL);
                 if (UrlType == TabType.Tab)
                 {
-                    //verify whether the tab is exist, otherwise throw out 404.
+                    // verify whether the tab is exist, otherwise throw out 404.
                     if (TabController.Instance.GetTab(int.Parse(URL), _portalSettings.PortalId, false) == null)
                     {
                         this.Handle404Exception(context, context.Request.RawUrl);
@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 if (UrlType == TabType.File && URL.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase) == false)
                 {
-                    //to handle legacy scenarios before the introduction of the FileServerHandler
+                    // to handle legacy scenarios before the introduction of the FileServerHandler
                     var fileName = Path.GetFileName(URL);
 
                     var folderPath = URL.Substring(0, URL.LastIndexOf(fileName, StringComparison.InvariantCulture));
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.FileSystem
                     URL = "FileID=" + file.FileId;
                 }
 
-                //get optional parameters
+                // get optional parameters
                 bool blnForceDownload = false;
                 if ((context.Request.QueryString["forcedownload"] != null) || (context.Request.QueryString["contenttype"] != null))
                 {
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.FileSystem
                 }
                 var contentDisposition = blnForceDownload ? ContentDisposition.Attachment : ContentDisposition.Inline;
 
-                //clear the current response
+                // clear the current response
                 context.Response.Clear();
                 var fileManager = FileManager.Instance;
                 try
@@ -199,7 +199,7 @@ namespace DotNetNuke.Services.FileSystem
                                         context.Response.Redirect(Globals.AccessDeniedURL(), true);
                                     }
                                 }
-                                catch (ThreadAbortException) //if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
+                                catch (ThreadAbortException) // if call fileManager.WriteFileToResponse ThreadAbortException will shown, should catch it and do nothing.
                                 {
 
                                 }
@@ -215,14 +215,14 @@ namespace DotNetNuke.Services.FileSystem
                             }
                             break;
                         case TabType.Url:
-                            //prevent phishing by verifying that URL exists in URLs table for Portal
+                            // prevent phishing by verifying that URL exists in URLs table for Portal
                             if (objUrls.GetUrl(_portalSettings.PortalId, URL) != null)
                             {
                                 context.Response.Redirect(URL, true);
                             }
                             break;
                         default:
-                            //redirect to URL
+                            // redirect to URL
                             context.Response.Redirect(URL, true);
                             break;
                     }
@@ -247,7 +247,7 @@ namespace DotNetNuke.Services.FileSystem
             {
                 return true;
             }
-            //We should allow creator to see the file that is pending to be approved
+            // We should allow creator to see the file that is pending to be approved
             var user = UserController.Instance.GetCurrentUserInfo();
             return user != null && user.UserID == file.CreatedByUserID;
         }

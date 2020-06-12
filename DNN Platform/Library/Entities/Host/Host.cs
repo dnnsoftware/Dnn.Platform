@@ -1288,11 +1288,11 @@ namespace DotNetNuke.Entities.Host
 
                 if (portalSettings == null || portalSettings.ActiveTab == null)
                 {
-                    //without portal settings or active tab, we can't continue
+                    // without portal settings or active tab, we can't continue
                     return false;
                 }
 
-                //we don't want to load the portal smtp server when on a host tab. 
+                // we don't want to load the portal smtp server when on a host tab. 
                 if (portalSettings.ActiveTab.PortalID == Null.NullInteger)
                 {
                     return false;
@@ -1341,7 +1341,7 @@ namespace DotNetNuke.Entities.Host
                     }
                     catch (Exception)
                     {
-                        //fixes case where smtppassword failed to encrypt due to failing upgrade
+                        // fixes case where smtppassword failed to encrypt due to failing upgrade
                         var current = HostController.Instance.GetString("SMTPPassword");
                         if (!string.IsNullOrEmpty(current))
                         {

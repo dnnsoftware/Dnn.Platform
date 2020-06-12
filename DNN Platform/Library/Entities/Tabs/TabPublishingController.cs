@@ -55,17 +55,17 @@ namespace DotNetNuke.Entities.Tabs
             var tab = TabController.Instance.GetTab(tabID, portalID);
             if (!TabPermissionController.CanAdminPage(tab))
             {
-                return false; //User has no permission
+                return false; // User has no permission
             }
             
             Hashtable settings = TabController.Instance.GetTabSettings(tabID);
             if (settings["WorkflowID"] != null)
             {
-                return Convert.ToInt32(settings["WorkflowID"]) == 1; //If workflowID is 1, then the Page workflow is Direct Publish
+                return Convert.ToInt32(settings["WorkflowID"]) == 1; // If workflowID is 1, then the Page workflow is Direct Publish
             }
 
-            //If workflowID is 1, then the Page workflow is Direct Publish
-            //If WorkflowID is -1, then there is no Workflow setting
+            // If workflowID is 1, then the Page workflow is Direct Publish
+            // If WorkflowID is -1, then there is no Workflow setting
             var workflowID = Convert.ToInt32(PortalController.GetPortalSetting("WorkflowID", portalID, "-1"));
 
             return (workflowID == 1) || (workflowID == -1);
@@ -104,7 +104,7 @@ namespace DotNetNuke.Entities.Tabs
         private void ClearTabCache(TabInfo tabInfo)
         {
             TabController.Instance.ClearCache(tabInfo.PortalID);
-            //Clear the Tab's Cached modules
+            // Clear the Tab's Cached modules
             DataCache.ClearModuleCache(tabInfo.TabID);
         }
 

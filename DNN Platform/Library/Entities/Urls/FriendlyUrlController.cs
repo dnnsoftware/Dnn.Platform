@@ -30,11 +30,11 @@ namespace DotNetNuke.Entities.Urls
     {
         #region Constants
 
-        private const string DisableMobileRedirectCookieName = "disablemobileredirect"; //dnn cookies
-        private const string DisableRedirectPresistCookieName = "disableredirectpresist"; //dnn cookies
+        private const string DisableMobileRedirectCookieName = "disablemobileredirect"; // dnn cookies
+        private const string DisableRedirectPresistCookieName = "disableredirectpresist"; // dnn cookies
 
         private const string DisableMobileRedirectQueryStringName = "nomo";
-                             //google uses the same name nomo=1 means do not redirect to mobile
+                             // google uses the same name nomo=1 means do not redirect to mobile
 
         private const string MobileViewSiteCookieName = "dnn_IsMobile";
         private const string DisableMobileViewCookieName = "dnn_NoMobile";
@@ -629,7 +629,7 @@ namespace DotNetNuke.Entities.Urls
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls, FriendlyUrlSettings settings)
         {
             PortalSettings portalSettings = null;
-            //716 just ignore portal settings if we don't actually need it 
+            // 716 just ignore portal settings if we don't actually need it 
             if (includeStdUrls)
             {
                 portalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -639,7 +639,7 @@ namespace DotNetNuke.Entities.Urls
 
         public static Dictionary<int, TabInfo> GetTabs(int portalId, bool includeStdUrls, PortalSettings portalSettings, FriendlyUrlSettings settings)
         {
-            //811 : friendly urls for admin/host tabs
+            // 811 : friendly urls for admin/host tabs
             var tabs = new Dictionary<int, TabInfo>();
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
             var hostTabs = TabController.Instance.GetTabsByPortal(-1);
@@ -697,9 +697,9 @@ namespace DotNetNuke.Entities.Urls
             TabInfo tab = TabController.Instance.GetTab(tabId, portalSettings.PortalId, false);
             if (addStdUrls)
             {
-                //Add on the standard Urls that exist for a tab, based on settings like
-                //replacing spaces, diacritic characters and languages
-                //BuildFriendlyUrls(tab, true, portalSettings, settings);
+                // Add on the standard Urls that exist for a tab, based on settings like
+                // replacing spaces, diacritic characters and languages
+                // BuildFriendlyUrls(tab, true, portalSettings, settings);
             }
             return tab;
         }
@@ -714,7 +714,7 @@ namespace DotNetNuke.Entities.Urls
         private static void CheckIllegalChars(string illegalChars, ref string ch, ref bool replacedUnwantedChars)
         {
             var resultingCh = new StringBuilder(ch.Length);
-            foreach (char c in ch) //ch could contain several chars from the pre-defined replacement list
+            foreach (char c in ch) // ch could contain several chars from the pre-defined replacement list
             {
                 if (illegalChars.ToUpperInvariant().Contains(char.ToUpperInvariant(c)))
                 {
@@ -741,9 +741,9 @@ namespace DotNetNuke.Entities.Urls
                 replacedUnwantedChars = true;
             }
 
-            ch = options.PunctuationReplacement; //in list of replacment chars
+            ch = options.PunctuationReplacement; // in list of replacment chars
 
-            //If we still have a space ensure it's encoded
+            // If we still have a space ensure it's encoded
             if (ch == " ")
             {
                 ch = options.SpaceEncoding;
@@ -758,10 +758,10 @@ namespace DotNetNuke.Entities.Urls
             int val;
             if (int.TryParse(request.QueryString[DisableMobileRedirectQueryStringName], out val))
             {
-                //the nomo value is in the querystring
+                // the nomo value is in the querystring
                 if (val == 1)
                 {
-                    //no, can't do it
+                    // no, can't do it
                     canUseMobileDevice = false;
                     var cookie = new HttpCookie(DisableMobileViewCookieName)
                     {
@@ -771,11 +771,11 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    //check for disable mobile view cookie name
+                    // check for disable mobile view cookie name
                     var cookie = request.Cookies[DisableMobileViewCookieName];
                     if (cookie != null)
                     {
-                        //if exists, expire cookie to allow redirect
+                        // if exists, expire cookie to allow redirect
                         cookie = new HttpCookie(DisableMobileViewCookieName)
                         {
                             Expires = DateTime.Now.AddMinutes(-1),
@@ -783,18 +783,18 @@ namespace DotNetNuke.Entities.Urls
                         };
                         response.Cookies.Set(cookie);
                     }
-                    //check the DotNetNuke cookies for allowed
+                    // check the DotNetNuke cookies for allowed
                     if (request.Cookies[DisableMobileRedirectCookieName] != null
-                        && request.Cookies[DisableRedirectPresistCookieName] != null) //check for cookie
+                        && request.Cookies[DisableRedirectPresistCookieName] != null) // check for cookie
                     {
-                        //cookies exist, can't use mobile device
+                        // cookies exist, can't use mobile device
                         canUseMobileDevice = false;
                     }
                 }
             }
             else
             {
-                //look for disable mobile view cookie
+                // look for disable mobile view cookie
                 var cookie = request.Cookies[DisableMobileViewCookieName];
                 if (cookie != null)
                 {
@@ -824,7 +824,7 @@ namespace DotNetNuke.Entities.Urls
         public static string CleanNameForUrl(string urlName, FriendlyUrlOptions options, out bool replacedUnwantedChars)
         {
             replacedUnwantedChars = false;
-            //get options
+            // get options
             if (options == null)
             {
                 options = new FriendlyUrlOptions();
@@ -847,7 +847,7 @@ namespace DotNetNuke.Entities.Urls
                 normalisedUrl = urlName.Normalize(NormalizationForm.FormD);
                 if (!string.Equals(normalisedUrl, urlName, StringComparison.Ordinal))
                 {
-                    replacedUnwantedChars = true; //replaced an accented character
+                    replacedUnwantedChars = true; // replaced an accented character
                 }
             }
 
@@ -855,19 +855,19 @@ namespace DotNetNuke.Entities.Urls
             bool doublePeriod = false;
             foreach (char c in normalisedUrl)
             {
-                //look for a double period in the name
+                // look for a double period in the name
                 if (!doublePeriod && i > 0 && c == '.' && normalisedUrl[i - 1] == '.')
                 {
                     doublePeriod = true;
                 }
 
-                //use string for manipulation
+                // use string for manipulation
                 string ch = c.ToString(CultureInfo.InvariantCulture);
 
-                //do replacement in pre-defined list?
+                // do replacement in pre-defined list?
                 if (replacementChars != null && replacementChars.ContainsKey(ch))
                 {
-                    //replace with value
+                    // replace with value
                     ch = replacementChars[ch];
                     replacedUnwantedChars = true;
                 }
@@ -878,46 +878,46 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    //Check if ch is in the replace list
+                    // Check if ch is in the replace list
                     CheckCharsForReplace(options, ref ch, ref replacedUnwantedChars);
 
-                    //not in replacement list, check if valid char
+                    // not in replacement list, check if valid char
                     if (regexMatch.IsMatch(ch))
                     {
-                        ch = ""; //not a replacement or allowed char, so doesn't go into Url
+                        ch = ""; // not a replacement or allowed char, so doesn't go into Url
                         replacedUnwantedChars = true;
-                        //if we are here, this character isn't going into the output Url                        
+                        // if we are here, this character isn't going into the output Url                        
                     }
                 }
 
-                //Check if the final ch is an illegal char
+                // Check if the final ch is an illegal char
                 CheckIllegalChars(options.IllegalChars, ref ch, ref replacedUnwantedChars);
                 if (i == last)
                 {
-                    //834 : strip off last character if it is a '.'
+                    // 834 : strip off last character if it is a '.'
                     if (!(ch == "-" || ch == replaceWith || ch == "."))
                     {
-                        //only append if not the same as the replacement character
+                        // only append if not the same as the replacement character
                         result.Append(ch);
                     }
                     else
                     {
-                        replacedUnwantedChars = true; //last char not added - effectively replaced with nothing.
+                        replacedUnwantedChars = true; // last char not added - effectively replaced with nothing.
                     }
                 }
                 else
                 {
                     result.Append(ch);
                 }
-                i++; //increment counter
+                i++; // increment counter
             }
 
             if (doublePeriod)
             {
                 result = result.Replace("..", "");
             }
-            //replace any duplicated replacement characters by doing replace twice
-            //replaces -- with - or --- with -  //749 : ampersand not completed replaced
+            // replace any duplicated replacement characters by doing replace twice
+            // replaces -- with - or --- with -  //749 : ampersand not completed replaced
             if (replaceDoubleChars && !string.IsNullOrEmpty(replaceWith))
             {
                 result = result.Replace(replaceWith + replaceWith, replaceWith);
@@ -941,7 +941,7 @@ namespace DotNetNuke.Entities.Urls
                 string start = path.Substring(0, leading.Length);
                 if (String.Compare(start, leading, StringComparison.OrdinalIgnoreCase) != 0)
                 {
-                    //not leading with this 
+                    // not leading with this 
                     path = leading + path;
                 }
             }
@@ -956,14 +956,14 @@ namespace DotNetNuke.Entities.Urls
                 string start = path.Substring(0, leading.Length);
                 if (String.Compare(start, leading, StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    //matches start, take leading off
+                    // matches start, take leading off
                     path = path.Substring(leading.Length);
                 }
             }
             return path;
         }
 
-        //737 : detect mobile and other types of browsers
+        // 737 : detect mobile and other types of browsers
         public static BrowserTypes GetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
         {
             var browserType = BrowserTypes.Normal;
@@ -1032,22 +1032,22 @@ namespace DotNetNuke.Entities.Urls
 
         private static bool ValidateUrl(string url, int validateUrlForTabId, PortalSettings settings)
         {
-            //Try and get a user by the url
+            // Try and get a user by the url
             var user = UserController.GetUserByVanityUrl(settings.PortalId, url);
             bool isUnique = (user == null);
 
             if (isUnique)
             {
-                //Try and get a tab by the url
+                // Try and get a tab by the url
                 int tabId = TabController.GetTabByTabPath(settings.PortalId, "//" + url, settings.CultureCode);
                 isUnique = (tabId == -1 || tabId == validateUrlForTabId);
             }
 
-            if (isUnique) //check whether have a tab which use the url.
+            if (isUnique) // check whether have a tab which use the url.
             {
                 var friendlyUrlSettings = GetCurrentSettings(settings.PortalId);
                 var tabs = TabController.Instance.GetTabsByPortal(settings.PortalId).AsList();
-				//DNN-6492: if content localize enabled, only check tab names in current culture.
+				// DNN-6492: if content localize enabled, only check tab names in current culture.
 	            if (settings.ContentLocalizationEnabled)
 	            {
 		            tabs = tabs.Where(t => t.CultureCode == settings.CultureCode).ToList();

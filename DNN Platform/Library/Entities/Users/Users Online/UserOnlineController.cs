@@ -141,15 +141,15 @@ namespace DotNetNuke.Entities.Users
             Hashtable userList = this.GetUserList();
             string userID;
 
-            //Check if the Tracking cookie exists
+            // Check if the Tracking cookie exists
             HttpCookie cookie = context.Request.Cookies[cookieName];
-            //Track Anonymous User
+            // Track Anonymous User
 			if ((cookie == null))
             {  	
-                //Create a temporary userId
+                // Create a temporary userId
                 userID = Guid.NewGuid().ToString();
 
-                //Create a new cookie
+                // Create a new cookie
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
@@ -157,7 +157,7 @@ namespace DotNetNuke.Entities.Users
                 };
                 context.Response.Cookies.Add(cookie);
 
-                //Create a user
+                // Create a user
                 user = new AnonymousUserInfo
                 {
                     UserID = userID,
@@ -167,7 +167,7 @@ namespace DotNetNuke.Entities.Users
                     LastActiveDate = DateTime.Now
                 };
 
-                //Add the user
+                // Add the user
                 if (!userList.Contains(userID))
                 {
                     userList[userID] = user;
@@ -177,17 +177,17 @@ namespace DotNetNuke.Entities.Users
             {
                 if ((cookie.Value == null))
                 {
-					//Expire the cookie, there is something wrong with it
+					// Expire the cookie, there is something wrong with it
                     context.Response.Cookies[cookieName].Expires = new DateTime(1999, 10, 12);
 
-                    //No need to do anything else
+                    // No need to do anything else
                     return;
                 }
 				
-                //Get userID out of cookie
+                // Get userID out of cookie
                 userID = cookie.Value;
 
-                //Find the cookie in the user list
+                // Find the cookie in the user list
                 if ((userList[userID] == null))
                 {
                     userList[userID] = new AnonymousUserInfo();
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Users
                 user.TabID = portalSettings.ActiveTab.TabID;
                 user.LastActiveDate = DateTime.Now;
 
-                //Reset the expiration on the cookie
+                // Reset the expiration on the cookie
                 cookie = new HttpCookie(cookieName, userID)
                 {
                     Expires = DateTime.Now.AddMinutes(20),
@@ -219,17 +219,17 @@ namespace DotNetNuke.Entities.Users
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         private void TrackAuthenticatedUser(HttpContext context)
         {
-            //Retrieve Portal Settings
+            // Retrieve Portal Settings
             var portalSettings = (PortalSettings)context.Items["PortalSettings"];
 
             if (portalSettings == null)
             {
                 return;
             }
-            //Get the logged in User ID
+            // Get the logged in User ID
             UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
-            //Get user list
+            // Get user list
             Hashtable userList = this.GetUserList();
 
             var user = new OnlineUserInfo();
@@ -258,7 +258,7 @@ namespace DotNetNuke.Entities.Users
         {
             HttpContext context = HttpContext.Current;
 
-            //Have we already done the work for this request?
+            // Have we already done the work for this request?
             if (context.Items["CheckedUsersOnlineCookie"] != null)
             {
                 return;
@@ -285,16 +285,16 @@ namespace DotNetNuke.Entities.Users
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]
         public void UpdateUsersOnline()
         {
-            //Get a Current User List
+            // Get a Current User List
             Hashtable userList = this.GetUserList();
 
-            //Create a shallow copy of the list to Process
+            // Create a shallow copy of the list to Process
             var listToProcess = (Hashtable)userList.Clone();
 
-            //Clear the list
+            // Clear the list
             this.ClearUserList();
 			
-			//Persist the current User List
+			// Persist the current User List
             try
             {
                 memberProvider.UpdateUsersOnline(listToProcess);
@@ -305,7 +305,7 @@ namespace DotNetNuke.Entities.Users
 
             }
 			
-            //Remove users that have expired
+            // Remove users that have expired
             memberProvider.DeleteUsersOnline(this.GetOnlineTimeWindow());
         }
     }

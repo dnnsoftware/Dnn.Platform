@@ -32,18 +32,18 @@ namespace DotNetNuke.Services.Exceptions
 	    private string m_Source;
         private string m_StackTrace;
 
-	    //default constructor
+	    // default constructor
 		public BasePortalException()
         {
         }
 
-        //constructor with exception message
+        // constructor with exception message
 		public BasePortalException(string message) : base(message)
         {
             this.InitializePrivateVariables();
         }
 
-        //constructor with message and inner exception
+        // constructor with message and inner exception
         public BasePortalException(string message, Exception inner) : base(message, inner)
         {
             this.InitializePrivateVariables();
@@ -120,8 +120,8 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitializePrivateVariables()
         {
-			//Try and get the Portal settings from context
-            //If an error occurs getting the context then set the variables to -1
+			// Try and get the Portal settings from context
+            // If an error occurs getting the context then set the variables to -1
             try
             {
                 var context = HttpContext.Current;
@@ -266,8 +266,8 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        //public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        //{
+        // public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        // {
         //    //Serialize this class' state and then call the base class GetObjectData
         //    info.AddValue("m_AssemblyVersion", AssemblyVersion, typeof (string));
         //    info.AddValue("m_PortalID", PortalID, typeof (Int32));
@@ -290,6 +290,6 @@ namespace DotNetNuke.Services.Exceptions
         //    info.AddValue("m_Message", m_Message, typeof (string));
         //    info.AddValue("m_Source", m_Source, typeof (string));
         //    base.GetObjectData(info, context);
-        //}
+        // }
     }
 }

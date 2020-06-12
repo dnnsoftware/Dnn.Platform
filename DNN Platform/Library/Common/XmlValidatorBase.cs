@@ -75,19 +75,19 @@ namespace DotNetNuke.Common
 		/// </returns>
         public bool IsValid()
         {
-			//There is a bug here which I haven't been able to fix.
-            //If the XML Instance does not include a reference to the
-            //schema, then the validation fails.  If the reference exists
-            //the the validation works correctly.
+			// There is a bug here which I haven't been able to fix.
+            // If the XML Instance does not include a reference to the
+            // schema, then the validation fails.  If the reference exists
+            // the the validation works correctly.
 
-            //Create a validating reader
+            // Create a validating reader
             var settings = new XmlReaderSettings();
             settings.Schemas = this._schemaSet;
             settings.ValidationType = ValidationType.Schema;
-            //Set the validation event handler.
+            // Set the validation event handler.
             settings.ValidationEventHandler += this.ValidationCallBack;
             XmlReader vreader = XmlReader.Create(this._reader, settings);
-            //Read and validate the XML data.
+            // Read and validate the XML data.
             while (vreader.Read())
             {
             }

@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Profile
         {
             ProfilePropertyDefinition definition = null;
 
-            //read datareader
+            // read datareader
             bool canContinue = true;
             if (checkForOpenDataReader)
             {
@@ -147,9 +147,9 @@ namespace DotNetNuke.Entities.Profile
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     ProfilePropertyDefinition definition = FillPropertyDefinitionInfo(dr, false);
-                    //add to collection
+                    // add to collection
                     arr.Add(definition);
                 }
             }
@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Profile
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return arr;
@@ -172,20 +172,20 @@ namespace DotNetNuke.Entities.Profile
 
         private static IEnumerable<ProfilePropertyDefinition> GetPropertyDefinitions(int portalId)
         {
-            //Get the Cache Key
+            // Get the Cache Key
             string key = string.Format(DataCache.ProfileDefinitionsCacheKey, portalId);
 
-            //Try fetching the List from the Cache
+            // Try fetching the List from the Cache
             var definitions = (List<ProfilePropertyDefinition>)DataCache.GetCache(key);
             if (definitions == null)
             {
-                //definitions caching settings
+                // definitions caching settings
                 Int32 timeOut = DataCache.ProfileDefinitionsCacheTimeOut * Convert.ToInt32(Host.Host.PerformanceSetting);
 
-                //Get the List from the database
+                // Get the List from the database
                 definitions = FillPropertyDefinitionInfoCollection(_dataProvider.GetPropertyDefinitionsByPortal(portalId));
 
-                //Cache the List
+                // Cache the List
                 if (timeOut > 0)
                 {
                     DataCache.SetCache(key, definitions, TimeSpan.FromMinutes(timeOut));
@@ -234,7 +234,7 @@ namespace DotNetNuke.Entities.Profile
             AddDefaultDefinition(portalId, "Preferences", "PreferredLocale", "Locale", 0, UserVisibilityMode.AdminOnly, dataTypes);
             AddDefaultDefinition(portalId, "Preferences", "Photo", "Image", 0, UserVisibilityMode.AllUsers, dataTypes);
 
-            //6.0 requires the old TimeZone property to be marked as Deleted
+            // 6.0 requires the old TimeZone property to be marked as Deleted
             ProfilePropertyDefinition pdf = GetPropertyDefinitionByName(portalId, "TimeZone");
             if (pdf != null)
             {
@@ -335,7 +335,7 @@ namespace DotNetNuke.Entities.Profile
             }
             if (!bFound)
             {
-                //Try Database
+                // Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinition(definitionId));
             }
             return definition;
@@ -366,7 +366,7 @@ namespace DotNetNuke.Entities.Profile
             }
             if (!bFound)
             {
-                //Try Database
+                // Try Database
                 definition = FillPropertyDefinitionInfo(_dataProvider.GetPropertyDefinitionByName(portalId, name));
             }
             return definition;
@@ -514,10 +514,10 @@ namespace DotNetNuke.Entities.Profile
 
             _profileProvider.UpdateUserProfile(user);
 
-            //Remove the UserInfo from the Cache, as it has been modified
+            // Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(user.PortalID, user.Username);
 
-            //Raise Profile updated event
+            // Raise Profile updated event
             EventManager.Instance.OnProfileUpdated(new ProfileEventArgs { User = user, OldProfile = oldUser.Profile });
         }
 
@@ -535,7 +535,7 @@ namespace DotNetNuke.Entities.Profile
             user.PortalID = portalId;
 
             var photoChanged = Null.NullBoolean;
-            //Iterate through the Definitions
+            // Iterate through the Definitions
             if (profileProperties != null)
             {
                 foreach (ProfilePropertyDefinition propertyDefinition in profileProperties)
@@ -553,7 +553,7 @@ namespace DotNetNuke.Entities.Profile
                     }
                 }
 
-                //if user's photo changed, then create different size thumbnails of profile pictures.
+                // if user's photo changed, then create different size thumbnails of profile pictures.
                 if (photoChanged)
                 {
                     try

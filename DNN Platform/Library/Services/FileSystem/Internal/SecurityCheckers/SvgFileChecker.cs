@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.FileSystem.Internal.SecurityCheckers
             }
             catch (Exception)
             {
-                //when there have exception occur, just return false as not validated, no need log the error.
+                // when there have exception occur, just return false as not validated, no need log the error.
             }
 
             return false;

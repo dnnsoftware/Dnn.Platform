@@ -55,7 +55,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             base.OnPreRender(e);
 
-            //add the selected folder's level path so that it can expand to the selected node in client side.
+            // add the selected folder's level path so that it can expand to the selected node in client side.
             var selectedPage = this.SelectedPage;
             if (selectedPage != null && selectedPage.ParentId > Null.NullInteger)
             {

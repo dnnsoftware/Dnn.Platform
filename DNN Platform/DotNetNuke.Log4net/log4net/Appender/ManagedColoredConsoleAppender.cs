@@ -22,7 +22,7 @@
 #endregion
 
 // Compatibility:
-//	http://msdn.microsoft.com/en-us/library/system.console.foregroundcolor.aspx
+// http://msdn.microsoft.com/en-us/library/system.console.foregroundcolor.aspx
 // Disable for unsupported targets
 #if !NETCF 
 #if !SSCLI

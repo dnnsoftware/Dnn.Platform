@@ -245,15 +245,15 @@ namespace DotNetNuke.UI.WebControls
 			this.dtRolesSelection.Columns.Clear();
 			this.dtRolesSelection.Rows.Clear();
 
-		    //Add Roles Column
+		    // Add Roles Column
 			var col = new DataColumn("RoleId", typeof(string));
 			this.dtRolesSelection.Columns.Add(col);
 
-			//Add Roles Column
+			// Add Roles Column
 			col = new DataColumn("RoleName", typeof(string));
 			this.dtRolesSelection.Columns.Add(col);
 
-			//Add Selected Column
+			// Add Selected Column
 			col = new DataColumn("Selected", typeof(bool));
 			this.dtRolesSelection.Columns.Add(col);
 
@@ -340,16 +340,16 @@ namespace DotNetNuke.UI.WebControls
 		{
 			if (savedState != null)
 			{
-				//Load State from the array of objects that was saved with SaveViewState.
+				// Load State from the array of objects that was saved with SaveViewState.
 				var myState = (object[])savedState;
 				
-				//Load Base Controls ViewState
+				// Load Base Controls ViewState
 				if (myState[0] != null)
 				{
 					base.LoadViewState(myState[0]);
 				}
 				
-				//Load TabPermissions
+				// Load TabPermissions
 				if (myState[1] != null)
 				{
 				    string state = Convert.ToString(myState[1]);
@@ -367,9 +367,9 @@ namespace DotNetNuke.UI.WebControls
 		{
 			var allStates = new object[2];
 
-			//Save the Base Controls ViewState
+			// Save the Base Controls ViewState
 			allStates[0] = base.SaveViewState();
-			//Persist the TabPermisisons
+			// Persist the TabPermisisons
 			var sb = new StringBuilder();
 			bool addDelimiter = false;
 			foreach (string role in this.CurrentRoleSelection)
@@ -395,7 +395,7 @@ namespace DotNetNuke.UI.WebControls
 		{
 		    this.pnlRoleSlections = new Panel {CssClass = "dnnRolesGrid"};
 
-		    //Optionally Add Role Group Filter
+		    // Optionally Add Role Group Filter
 			PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 			ArrayList arrGroups = RoleController.GetRoleGroups(_portalSettings.PortalId);
 			if (arrGroups.Count > 0)
@@ -449,10 +449,10 @@ namespace DotNetNuke.UI.WebControls
 			{
 				if (currentRoleName == roleName)
 				{
-					//role is in collection
+					// role is in collection
 					if (!Selected)
 					{
-						//Remove from collection as we only keep selected roles
+						// Remove from collection as we only keep selected roles
 						this.CurrentRoleSelection.Remove(currentRoleName);
 					}
 					isMatch = true;
@@ -460,7 +460,7 @@ namespace DotNetNuke.UI.WebControls
 				}
 			}
 			
-			//Rolename not found so add new
+			// Rolename not found so add new
 			if (!isMatch && Selected)
 			{
 				this.CurrentRoleSelection.Add(roleName);

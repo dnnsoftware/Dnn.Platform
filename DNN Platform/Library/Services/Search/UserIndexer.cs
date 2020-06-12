@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Search
 
                     if (rowsAffected > 0 && searchDocuments.Count >= saveThreshold)
                     {
-                        //remove existing indexes
+                        // remove existing indexes
                         DeleteDocuments(portalId, indexedUsers);
                         var values = searchDocuments.Values;
                         totalIndexed += this.IndexCollectedDocs(indexer, values);
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Search
 
                 if (searchDocuments.Count > 0)
                 {
-                    //remove existing indexes
+                    // remove existing indexes
                     DeleteDocuments(portalId, indexedUsers);
                     var values = searchDocuments.Values;
                     totalIndexed += this.IndexCollectedDocs(indexer, values);
@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Search
 
                     AddBasicInformation(searchDocuments, indexedUsers, userSearch, portalId);
 
-                    //log the userid so that it can get the correct user collection next time.
+                    // log the userid so that it can get the correct user collection next time.
                     if (userSearch.UserId > startUserId)
                     {
                         startUserId = userSearch.UserId;
@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.Search
                             continue;
                         }
 
-                        //DNN-5740 / DNN-9040: replace split flag if it included in property value.
+                        // DNN-5740 / DNN-9040: replace split flag if it included in property value.
                         propertyValue = propertyValue.Replace("[$]", "$");
                         var uniqueKey = string.Format("{0}_{1}", userSearch.UserId, visibilityMode).ToLowerInvariant();
                         if (visibilityMode == UserVisibilityMode.FriendsAndGroups)
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Search
                         }
                         else
                         {
-                            //Need remove use exists index for all visibilities.
+                            // Need remove use exists index for all visibilities.
                             if (!indexedUsers.Contains(userSearch.UserId))
                             {
                                 indexedUsers.Add(userSearch.UserId);
@@ -264,8 +264,8 @@ namespace DotNetNuke.Services.Search
                 {
                     indexedUsers.Add(userSearch.UserId);
                 }
-                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
-                //so that can make sure DisplayName will be indexed
+                // if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                // so that can make sure DisplayName will be indexed
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
@@ -290,8 +290,8 @@ namespace DotNetNuke.Services.Search
                 {
                     indexedUsers.Add(userSearch.UserId);
                 }
-                //if the user doesn't exist in search collection, we need add it with ALLUsers mode,
-                //so that can make sure DisplayName will be indexed
+                // if the user doesn't exist in search collection, we need add it with ALLUsers mode,
+                // so that can make sure DisplayName will be indexed
                 var searchDoc = new SearchDocument
                 {
                     SearchTypeId = UserSearchTypeId,
@@ -368,7 +368,7 @@ namespace DotNetNuke.Services.Search
                         keyword.Length > 1 ? "OR " : string.Empty);
                     clauseCount += 2;
                     if (clauseCount >= ClauseMaxCount)
-                        //max cluaseCount is 1024, if reach the max value, perform a delete action. 
+                        // max cluaseCount is 1024, if reach the max value, perform a delete action. 
                     {
                         keyword.Append(")");
                         PerformDelete(portalId, keyword.ToString().ToLowerInvariant());

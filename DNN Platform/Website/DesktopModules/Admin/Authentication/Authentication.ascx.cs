@@ -40,35 +40,35 @@ namespace DotNetNuke.Modules.Admin.Authentication
 
 			foreach (var authSystem in authSystems)
 			{
-				//Add a Section Header
+				// Add a Section Header
 				var sectionHeadControl = (SectionHeadControl)this.LoadControl("~/controls/SectionHeadControl.ascx");
 				sectionHeadControl.IncludeRule = true;
 				sectionHeadControl.CssClass = "Head";
 
-				//Create a <div> to hold the control
+				// Create a <div> to hold the control
 				var container = new HtmlGenericControl();
 				container.ID = authSystem.AuthenticationType;
 
 				var authSettingsControl = (AuthenticationSettingsBase)this.LoadControl("~/" + authSystem.SettingsControlSrc);
 
-				//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-				//this is necessary for the Localization in PageBase
+				// set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+				// this is necessary for the Localization in PageBase
 				authSettingsControl.ID = Path.GetFileNameWithoutExtension(authSystem.SettingsControlSrc) + "_" + authSystem.AuthenticationType;
 
-				//Add Settings Control to Container
+				// Add Settings Control to Container
 				container.Controls.Add(authSettingsControl);
 				this._settingControls.Add(authSettingsControl);
 
-				//Add Section Head Control to Container
+				// Add Section Head Control to Container
 				this.pnlSettings.Controls.Add(sectionHeadControl);
 
-				//Add Container to Controls
+				// Add Container to Controls
 				this.pnlSettings.Controls.Add(container);
 
-				//Attach Settings Control's container to Section Head Control
+				// Attach Settings Control's container to Section Head Control
 				sectionHeadControl.Section = container.ID;
 
-				//Get Section Head Text from the setting controls LocalResourceFile
+				// Get Section Head Text from the setting controls LocalResourceFile
 				authSettingsControl.LocalResourceFile = authSettingsControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
 														Path.GetFileNameWithoutExtension(authSystem.SettingsControlSrc);
 				sectionHeadControl.Text = Localization.GetString("Title", authSettingsControl.LocalResourceFile);
@@ -84,14 +84,14 @@ namespace DotNetNuke.Modules.Admin.Authentication
 				settingControl.UpdateSettings();
 			}
 			
-			//Validate Enabled
+			// Validate Enabled
 			var enabled = false;
 			var authSystems = AuthenticationController.GetEnabledAuthenticationServices();
 			foreach (var authSystem in authSystems)
 			{
 				var authLoginControl = (AuthenticationLoginBase)this.LoadControl("~/" + authSystem.LoginControlSrc);
 
-				//Check if AuthSystem is Enabled
+				// Check if AuthSystem is Enabled
 				if (authLoginControl.Enabled)
 				{
 					enabled = true;
@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
 			}
 			if (!enabled)
 			{
-				//Display warning
+				// Display warning
 				UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NoProvidersEnabled", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
 			}
 		}

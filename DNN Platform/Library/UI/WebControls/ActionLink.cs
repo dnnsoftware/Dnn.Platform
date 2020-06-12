@@ -88,10 +88,10 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-            //Call base class method to ensure Control Tree is built
+            // Call base class method to ensure Control Tree is built
             base.CreateChildControls();
 
-            //Set Causes Validation and Enables ViewState to false
+            // Set Causes Validation and Enables ViewState to false
             this.EnableViewState = false;
         }
 

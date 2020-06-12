@@ -104,7 +104,7 @@ namespace DotNetNuke.Common.Utilities
         {
             int escapeCount = 0;
 
-            //count the number of escape chars on end of string
+            // count the number of escape chars on end of string
             for (int i = s.Length - 1; i > -1; i--)
             {
                 if (s.Substring(i, 1) == EscapeSequence.ToString())
@@ -117,7 +117,7 @@ namespace DotNetNuke.Common.Utilities
                 }
             }
 
-            return escapeCount % 2 == 1; //odd count means escape mode is active
+            return escapeCount % 2 == 1; // odd count means escape mode is active
         }
     }
 }

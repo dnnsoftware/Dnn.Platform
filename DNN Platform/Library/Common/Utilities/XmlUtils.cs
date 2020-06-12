@@ -133,18 +133,18 @@ namespace DotNetNuke.Common.Utilities
 
                 var objValue = Activator.CreateInstance<TValue>();
 
-                //Create the XmlSerializer
+                // Create the XmlSerializer
                 var xser = new XmlSerializer(objValue.GetType());
 
-                //A reader is needed to read the XML document.
+                // A reader is needed to read the XML document.
                 var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
                 {
                     XmlResolver = null,
                     DtdProcessing = DtdProcessing.Prohibit
                 };
 
-                //Use the Deserialize method to restore the object's state, and store it
-                //in the Hashtable
+                // Use the Deserialize method to restore the object's state, and store it
+                // in the Hashtable
                 objDictionary.Add(key, (TValue)xser.Deserialize(reader));
             }
             return objDictionary;
@@ -166,24 +166,24 @@ namespace DotNetNuke.Common.Utilities
                         string key = xmlItem.GetAttribute("key");
                         string typeName = xmlItem.GetAttribute("type");
 
-                        //Create the XmlSerializer
+                        // Create the XmlSerializer
                         var xser = new XmlSerializer(Type.GetType(typeName));
 
-                        //A reader is needed to read the XML document.
+                        // A reader is needed to read the XML document.
                         var reader = new XmlTextReader(new StringReader(xmlItem.InnerXml))
                         {
                             XmlResolver = null,
                             DtdProcessing = DtdProcessing.Prohibit
                         };
 
-                        //Use the Deserialize method to restore the object's state, and store it
-                        //in the Hashtable
+                        // Use the Deserialize method to restore the object's state, and store it
+                        // in the Hashtable
                         hashTable.Add(key, xser.Deserialize(reader));
                     }
                 }
                 catch (Exception)
                 {
-                    //Logger.Error(ex); /*Ignore Log because if failed on profile this will log on every request.*/
+                    // Logger.Error(ex); /*Ignore Log because if failed on profile this will log on every request.*/
                 }
             }
 
@@ -618,25 +618,25 @@ namespace DotNetNuke.Common.Utilities
 
                 foreach (var key in source.Keys)
                 {
-                    //Create the item Node
+                    // Create the item Node
                     XmlElement xmlItem = xmlDoc.CreateElement("item");
 
-                    //Save the key name and the object type
+                    // Save the key name and the object type
                     xmlItem.SetAttribute("key", Convert.ToString(key));
                     xmlItem.SetAttribute("type", source[key].GetType().AssemblyQualifiedName);
 
-                    //Serialize the object
+                    // Serialize the object
                     var xmlObject = new XmlDocument { XmlResolver = null };
                     xser = new XmlSerializer(source[key].GetType());
                     sw = new StringWriter();
                     xser.Serialize(sw, source[key]);
                     xmlObject.LoadXml(sw.ToString());
 
-                    //import and append the node to the root
+                    // import and append the node to the root
                     xmlItem.AppendChild(xmlDoc.ImportNode(xmlObject.DocumentElement, true));
                     xmlRoot.AppendChild(xmlItem);
                 }
-                //Return the OuterXml of the profile
+                // Return the OuterXml of the profile
                 strString = xmlDoc.OuterXml;
             }
             else
@@ -716,7 +716,7 @@ namespace DotNetNuke.Common.Utilities
         {
             var xslt = new XslCompiledTransform();
             xslt.Load(xsltUrl);
-            //Transform the file.
+            // Transform the file.
             xslt.Transform(doc, null, writer);
         }
 
@@ -808,7 +808,7 @@ namespace DotNetNuke.Common.Utilities
         [Obsolete("This method is obsolete. Use .Net XmlDocument.Load instead. Scheduled removal in v11.0.0.")]
         public static XmlDocument GetXMLContent(string contentUrl)
         {
-            //This function reads an Xml document via a Url and returns it as an XmlDocument object
+            // This function reads an Xml document via a Url and returns it as an XmlDocument object
 
             var functionReturnValue = new XmlDocument { XmlResolver = null };
             var req = WebRequest.Create(contentUrl);

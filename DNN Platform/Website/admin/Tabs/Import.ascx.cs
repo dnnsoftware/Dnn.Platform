@@ -77,7 +77,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 var folder = FolderManager.Instance.GetFolder(this.cboFolders.SelectedItemValueAsInt);
                 if (folder != null)
                 {
-                    //var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
+                    // var files = Directory.GetFiles(PortalSettings.HomeDirectoryMapPath + folder.FolderPath, "*.page.template");
                     var files = Globals.GetFileList(this.PortalId, "page.template", false, folder.FolderPath);
                     foreach (FileItem file in files)
                     {
@@ -196,7 +196,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 TabInfo objTab;
                 if (this.optMode.SelectedValue == "ADD")
                 {
-                    //Check for invalid
+                    // Check for invalid
                     string invalidType;
                     if (!TabController.IsValidTabName(this.txtTabName.Text, out invalidType))
                     {
@@ -205,7 +205,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                         return;
                     }
 
-                    //New Tab
+                    // New Tab
                     objTab = new TabInfo { PortalID = this.PortalId, TabName = this.txtTabName.Text, IsVisible = true };
                     var parentId = this.cboParentTab.SelectedItemValueAsInt;
                     if (parentId != Null.NullInteger)
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     objTab.TabPath = Globals.GenerateTabPath(objTab.ParentId, objTab.TabName);
                     var tabId = TabController.GetTabByTabPath(objTab.PortalID, objTab.TabPath, Null.NullString);
 
-                    //Check if tab exists
+                    // Check if tab exists
                     if (tabId != Null.NullInteger)
                     {
                         TabInfo existingTab = TabController.Instance.GetTab(tabId, this.PortalId, false);
@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                     objTab = TabController.DeserializeTab(tabNodes[0], objTab, this.PortalId, PortalTemplateModuleAction.Replace);
 
                     var exceptions = string.Empty;
-                    //Create second tabs onwards. For firs tab, we like to use tab details from text box, for rest it'll come from template
+                    // Create second tabs onwards. For firs tab, we like to use tab details from text box, for rest it'll come from template
                     for (var tab = 1; tab < tabNodes.Count; tab++)
                     {
                         try
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.Admin.Tabs
                 }
                 else
                 {
-                    //Replace Existing Tab
+                    // Replace Existing Tab
                     objTab = TabController.DeserializeTab(tabNodes[0], this.Tab, this.PortalId, PortalTemplateModuleAction.Replace);
                 }
                 switch (this.optRedirect.SelectedValue)

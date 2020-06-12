@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-					//Try and cast the value to an Boolean
+					// Try and cast the value to an Boolean
                     boolValue = Convert.ToBoolean(this.Value);
                 }
                 catch (Exception exc)
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.WebControls
                 bool boolValue = Null.NullBoolean;
                 try
                 {
-					//Try and cast the value to an Boolean
+					// Try and cast the value to an Boolean
                     boolValue = Convert.ToBoolean(this.OldValue);
                 }
                 catch (Exception exc)

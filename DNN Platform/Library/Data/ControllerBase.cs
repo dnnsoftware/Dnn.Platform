@@ -17,7 +17,7 @@ namespace DotNetNuke.Data
 
         protected ControllerBase(IDataContext dataContext)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataContext", dataContext);
 
             this.DataContext = dataContext;
@@ -25,7 +25,7 @@ namespace DotNetNuke.Data
 
         public void Add(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
             using (this.DataContext)
@@ -38,7 +38,7 @@ namespace DotNetNuke.Data
 
         public void Delete(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
             var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);
@@ -95,7 +95,7 @@ namespace DotNetNuke.Data
 
         public void Update(TEntity entity)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull(entity);
 
             var primaryKey = DataUtil.GetPrimaryKeyProperty(typeof(TEntity), String.Empty);

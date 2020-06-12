@@ -39,7 +39,7 @@ namespace DotNetNuke.Modules.Journal
 
                 if (notification != null && notification.Context != null && notification.Context.Contains("_"))
                 {
-                    //Dismiss the notification
+                    // Dismiss the notification
                     NotificationsController.Instance.DeleteNotificationRecipient(postData.NotificationId, this.UserInfo.UserID);
 
                     var context = notification.Context.Split('_');

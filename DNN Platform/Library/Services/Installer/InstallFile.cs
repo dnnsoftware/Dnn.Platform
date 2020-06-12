@@ -321,10 +321,10 @@ namespace DotNetNuke.Services.Installer
                 }
             }
 			
-            //remove [app_code] token
+            // remove [app_code] token
             this.Path = this.Path.Replace("[app_code]", "");
 
-            //remove starting "\"
+            // remove starting "\"
             if (this.Path.StartsWith("\\"))
             {
                 this.Path = this.Path.Substring(1);

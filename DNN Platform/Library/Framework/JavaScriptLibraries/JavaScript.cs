@@ -76,7 +76,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         /// <param name="jsname">the library name</param>
         public static void RequestRegistration(string jsname)
         {
-            //handle case where script has no javascript library
+            // handle case where script has no javascript library
             switch (jsname)
             {
                 case CommonJs.jQuery:
@@ -134,7 +134,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                     return;
             }
 
-            //this should only occur if packages are incorrect or a RequestRegistration call has a typo
+            // this should only occur if packages are incorrect or a RequestRegistration call has a typo
             LogCollision(String.Format("Missing specific version library - {0},{1},{2}", jsname, version, specific));
         }
 
@@ -175,7 +175,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             else
             {
-                //covers case where upgrading to 7.2.0 and JSL's are not installed
+                // covers case where upgrading to 7.2.0 and JSL's are not installed
                 AddPreInstallorLegacyItemRequest(jsname);
             }
         }
@@ -194,7 +194,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 return true;
             }
 
-            //unable to find a higher major version
+            // unable to find a higher major version
             library = GetHighestVersionLibrary(jsname);
             if (library != null)
             {
@@ -215,7 +215,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             else
             {
-                //this will only occur if a specific library is requested and not available
+                // this will only occur if a specific library is requested and not available
                 LogCollision(String.Format("Missing Library request - {0} : {1}", jsname, version));
             }
         }
@@ -271,7 +271,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static JavaScriptLibrary GetHighestVersionLibrary(String jsname)
         {
-            if (Globals.Status == Globals.UpgradeStatus.Install) //if in install process, then do not use JSL but all use the legacy versions.
+            if (Globals.Status == Globals.UpgradeStatus.Install) // if in install process, then do not use JSL but all use the legacy versions.
             {
                 return null;
             }
@@ -283,7 +283,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
             }
             catch (Exception)
             {
-                //no library found (install or upgrade)
+                // no library found (install or upgrade)
                 return null;
             }
         }
@@ -292,14 +292,14 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
         {
             if (Host.CdnEnabled)
             {
-                //load custom CDN path setting
+                // load custom CDN path setting
                 var customCdn = HostController.Instance.GetString("CustomCDN_" + js.LibraryName);
                 if (!string.IsNullOrEmpty(customCdn))
                 {
                     return customCdn;
                 }
 
-                //cdn enabled but jsl does not have one defined
+                // cdn enabled but jsl does not have one defined
                 if (!String.IsNullOrEmpty(js.CDNPath))
                 {
                     var cdnPath = js.CDNPath;
@@ -372,7 +372,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
         private static void LogCollision(string collisionText)
         {
-            //need to log an event
+            // need to log an event
             EventLogController.Instance.AddLog("Javascript Libraries",
                                             collisionText,
                                             PortalController.Instance.GetCurrentPortalSettings(),
@@ -395,7 +395,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
 
             ClientResourceManager.RegisterScript(page, GetScriptPath(jsl, page), GetFileOrder(jsl), GetScriptLocation(jsl), jsl.LibraryName, jsl.Version.ToString(3));
 
-            //workaround to support IE specific script until we move to IE version that no longer requires this
+            // workaround to support IE specific script until we move to IE version that no longer requires this
             if (jsl.LibraryName == CommonJs.jQueryFileUpload)
             {
                 ClientResourceManager.RegisterScript(page,
@@ -425,7 +425,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                 var fallback = new DnnJsIncludeFallback(jsl.ObjectName, VirtualPathUtility.ToAbsolute("~/Resources/libraries/" + jsl.LibraryName + "/" + Globals.FormatVersion(jsl.Version, "00", 3, "_") + "/" + jsl.FileName));
                 if (scriptloader != null)
                 {
-                    //add the fallback control after script loader.
+                    // add the fallback control after script loader.
                     var index = scriptloader.Parent.Controls.IndexOf(scriptloader);
                     scriptloader.Parent.Controls.AddAt(index + 1, fallback);
                 }
@@ -473,7 +473,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         }
                         break;
                     case CommonJs.jQueryUI:
-                        //register dependency
+                        // register dependency
                         if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
                         {
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryScriptReference(),
@@ -484,7 +484,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryMigrateScriptReference(),
                                 FileOrder.Js.jQueryMigrate, "DnnPageHeaderProvider");
                         }
-                        //actual jqueryui
+                        // actual jqueryui
                         if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
                         {
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
@@ -492,14 +492,14 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         }
                         break;
                     case CommonJs.DnnPlugins:
-                        //This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
-                        //such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
+                        // This method maybe called when Page.Form hasn't initialized yet, in that situation if needed should reference dnn js manually.
+                        // such as call jQuery.RegisterDnnJQueryPlugins in Control.OnInit.
                         if (page.Form != null)
                         {
                             
                         }
 
-                        //register dependency
+                        // register dependency
 
                         if (GetHighestVersionLibrary(CommonJs.jQuery) == null)
                         {
@@ -514,7 +514,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                         }
 
 
-                        //actual jqueryui
+                        // actual jqueryui
                         if (GetHighestVersionLibrary(CommonJs.jQueryUI) == null)
                         {
                             ClientResourceManager.RegisterScript(page, jQuery.GetJQueryUIScriptReference(),
@@ -526,7 +526,7 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
                             ClientResourceManager.RegisterScript(page,
                                 "~/Resources/Shared/Scripts/jquery/jquery.hoverIntent.min.js", FileOrder.Js.HoverIntent);
                         }
-                        //no package for this - CRM will deduplicate
+                        // no package for this - CRM will deduplicate
                         ClientResourceManager.RegisterScript(page, "~/Resources/Shared/Scripts/dnn.jquery.js");
                         break;
                     case CommonJs.jQueryFileUpload:

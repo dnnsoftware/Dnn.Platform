@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Utilities
                     int count = 0;
                     while ((line = reader.ReadLine()) != null)
                     {
-                        //Ignore first line
+                        // Ignore first line
                         if (count > 0)
                         {
                             onReadLine(line, header);

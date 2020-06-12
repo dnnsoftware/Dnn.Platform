@@ -13,7 +13,7 @@ namespace DotNetNuke.Common.Utilities
 {
     public partial class KeepAlive : Page
     {
-		//This call is required by the Web Form Designer.
+		// This call is required by the Web Form Designer.
         private void InitializeComponent()
         {
         }
@@ -22,8 +22,8 @@ namespace DotNetNuke.Common.Utilities
         {
             base.OnInit(e);
 
-			//CODEGEN: This method call is required by the Web Form Designer
-			//Do not modify it using the code editor.
+			// CODEGEN: This method call is required by the Web Form Designer
+			// Do not modify it using the code editor.
             this.InitializeComponent();
         }
 

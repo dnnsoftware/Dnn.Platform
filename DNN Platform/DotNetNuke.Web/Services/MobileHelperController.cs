@@ -144,7 +144,7 @@ namespace DotNetNuke.Web.Services
             var allPortalTabs = tabController.GetTabsByPortal(portalId);
             IDictionary<int, TabInfo> tabsInOrder = new Dictionary<int, TabInfo>();
 
-            //must get each tab, they parent may not exist
+            // must get each tab, they parent may not exist
             foreach (var tab in allPortalTabs.Values)
             {
                 AddChildTabsToList(tab, allPortalTabs, tabsWithModule, tabsInOrder);
@@ -171,9 +171,9 @@ namespace DotNetNuke.Web.Services
         {
             if (tabsWithModule.ContainsKey(currentTab.TabID) && !tabsInOrder.ContainsKey(currentTab.TabID))
             {
-                //add current tab
+                // add current tab
                 tabsInOrder.Add(currentTab.TabID, currentTab);
-                //add children of current tab
+                // add children of current tab
                 foreach (var tab in allPortalTabs.WithParentId(currentTab.TabID))
                 {
                     AddChildTabsToList(tab, allPortalTabs, tabsWithModule, tabsInOrder);

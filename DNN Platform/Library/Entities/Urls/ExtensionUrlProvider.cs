@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Urls
                 var qs = new StringBuilder(urlParms.GetUpperBound(0));
                 foreach (string urlPathPart in urlParms)
                 {
-                    if (i > skipUpToPosition) //skip over the parts we don't want
+                    if (i > skipUpToPosition) // skip over the parts we don't want
                     {
                         if (odd)
                         {
@@ -66,7 +66,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             qs.Append("=" + urlPathPart);
                         }
-                        //switch odd/even
+                        // switch odd/even
                         odd = !odd;
                     }
                     i++;

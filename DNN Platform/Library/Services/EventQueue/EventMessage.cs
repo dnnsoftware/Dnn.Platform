@@ -261,12 +261,12 @@ namespace DotNetNuke.Services.EventQueue
             reader.ReadStartElement("Attributes");
             if (!reader.IsEmptyElement)
             {
-				//Loop throug the Attributes
+				// Loop throug the Attributes
                 do
                 {
                     reader.ReadStartElement("Attribute");
 
-                    //Load it from the Xml
+                    // Load it from the Xml
                     reader.ReadStartElement("Name");
                     attName = reader.ReadString();
                     reader.ReadEndElement();
@@ -281,7 +281,7 @@ namespace DotNetNuke.Services.EventQueue
                         reader.Read();
                     }
 					
-                    //Add attribute to the collection
+                    // Add attribute to the collection
                     this._attributes.Add(attName, attValue);
                 } while (reader.ReadToNextSibling("Attribute"));
             }
@@ -303,10 +303,10 @@ namespace DotNetNuke.Services.EventQueue
                 {
                     writer.WriteStartElement("Attribute");
 
-                    //Write the Name element
+                    // Write the Name element
                     writer.WriteElementString("Name", key);
 
-                    //Write the Value element
+                    // Write the Value element
                     if (this.Attributes[key].IndexOfAny("<'>\"&".ToCharArray()) > -1)
                     {
                         writer.WriteStartElement("Value");
@@ -315,18 +315,18 @@ namespace DotNetNuke.Services.EventQueue
                     }
                     else
                     {
-                        //Write value
+                        // Write value
                         writer.WriteElementString("Value", this.Attributes[key]);
                     }
 
-                    //Close the Attribute node
+                    // Close the Attribute node
                     writer.WriteEndElement();
                 }
 
-                //Close the Attributes node
+                // Close the Attributes node
                 writer.WriteEndElement();
 
-                //Close Writer
+                // Close Writer
                 writer.Close();
 
                 return sb.ToString();

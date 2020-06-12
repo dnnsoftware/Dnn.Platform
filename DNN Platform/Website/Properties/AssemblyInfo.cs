@@ -19,7 +19,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: ComVisible(false)]
 
-//The following GUID is for the ID of the typelib if this project is exposed to COM
+// The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("e9e9d29d-dca4-4f97-a60a-35d9625515e8")]
 

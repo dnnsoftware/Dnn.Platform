@@ -59,7 +59,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
             bool verified = true;
 
-            //Attempt to create the File
+            // Attempt to create the File
             try
             {
                 this.Try(() => FileCreateAction(verifyPath), "Creating verification file");
@@ -82,7 +82,7 @@ namespace DotNetNuke.Common.Utilities
 
             using (File.Create(verifyPath))
             {
-                //do nothing just let it close
+                // do nothing just let it close
             }
         }
 
@@ -96,7 +96,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify\\Verify.txt");
             bool verified = true;
 
-            //Attempt to delete the File
+            // Attempt to delete the File
             try
             {
                 this.Try(() => File.Delete(verifyPath), "Deleting verification file");
@@ -120,7 +120,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify");
             bool verified = true;
 
-            //Attempt to create the Directory
+            // Attempt to create the Directory
             try
             {
 				this.Try(() => FolderCreateAction(verifyPath), "Creating verification folder");
@@ -154,7 +154,7 @@ namespace DotNetNuke.Common.Utilities
             string verifyPath = Path.Combine(this._basePath, "Verify");
             bool verified = true;
 
-            //Attempt to delete the Directory
+            // Attempt to delete the Directory
             try
             {
                 this.Try(() => Directory.Delete(verifyPath, true), "Deleting verification folder");

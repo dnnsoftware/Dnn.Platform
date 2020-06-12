@@ -103,8 +103,8 @@ namespace DotNetNuke.Services.Localization
         #region Private Members
 
         private static string _defaultKeyName = "resourcekey";
-        //private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
-        //private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
+        // private static readonly ILocaleController LocaleController.Instance = LocaleController.Instance;
+        // private static readonly ILocalizationProvider _localizationProvider = LocalizationProvider.Instance;
         private static bool? _showMissingKeys;
         #endregion
 
@@ -257,7 +257,7 @@ namespace DotNetNuke.Services.Localization
         {
             get
             {
-                //_CurrentCulture
+                // _CurrentCulture
                 return Thread.CurrentThread.CurrentCulture.ToString();
             }
         }
@@ -282,7 +282,7 @@ namespace DotNetNuke.Services.Localization
         {
             string localizedText;
 
-            //Localize Header Text
+            // Localize Header Text
             if (!string.IsNullOrEmpty(controlField.HeaderText))
             {
                 localizedText = GetString((controlField.HeaderText + ".Header"), resourceFile);
@@ -294,7 +294,7 @@ namespace DotNetNuke.Services.Localization
             }
             if (controlField is TemplateField)
             {
-                //do nothing
+                // do nothing
             }
             else if (controlField is ButtonField)
             {
@@ -379,7 +379,7 @@ namespace DotNetNuke.Services.Localization
 
         public static int ActiveLanguagesByPortalID(int portalID)
         {
-            //Default to 1 (maybe called during portal creation before languages are enabled for portal)
+            // Default to 1 (maybe called during portal creation before languages are enabled for portal)
 
             int count = 1;
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalID);
@@ -405,11 +405,11 @@ namespace DotNetNuke.Services.Localization
                 // locale needs to be added
                 if (portalLocale == null)
                 {
-                    //We need to add a translator role for the language
+                    // We need to add a translator role for the language
                     bool contentLocalizationEnabled = PortalController.GetPortalSettingAsBoolean("ContentLocalizationEnabled", portalID, false);
                     if (contentLocalizationEnabled)
                     {
-                        //Create new Translator Role
+                        // Create new Translator Role
                         AddTranslatorRole(portalID, newLocale);
                     }
 
@@ -544,7 +544,7 @@ namespace DotNetNuke.Services.Localization
         {
             foreach (Locale language in LocaleController.Instance.GetLocales(Null.NullInteger).Values)
             {
-                //Add Portal/Language to PortalLanguages
+                // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portalID, language.LanguageId, false);
             }
             DataCache.RemoveCache(String.Format(DataCache.LocalesCacheKey, portalID));
@@ -554,7 +554,7 @@ namespace DotNetNuke.Services.Localization
         {
             foreach (PortalInfo portal in PortalController.Instance.GetPortals())
             {
-                //Add Portal/Language to PortalLanguages
+                // Add Portal/Language to PortalLanguages
                 AddLanguageToPortal(portal.PortalID, languageID, false);
 
                 DataCache.RemoveCache(String.Format(DataCache.LocalesCacheKey, portal.PortalID));
@@ -563,7 +563,7 @@ namespace DotNetNuke.Services.Localization
 
         public static void AddTranslatorRole(int portalID, Locale language)
         {
-            //Create new Translator Role
+            // Create new Translator Role
             string roleName = string.Format("Translator ({0})", language.Code);
             RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
@@ -596,7 +596,7 @@ namespace DotNetNuke.Services.Localization
         {
             TimeZoneInfo timeZoneInfo = TimeZoneInfo.Local;
 
-            //lookup existing mapping
+            // lookup existing mapping
             switch (timeZoneOffsetInMinutes)
             {
                 case -720:
@@ -720,7 +720,7 @@ namespace DotNetNuke.Services.Localization
 
         public static void DeleteLanguage(Locale language, bool isInstalling)
         {
-            //remove languages from all portals
+            // remove languages from all portals
             RemoveLanguageFromPortals(language.LanguageId, isInstalling);
 
             DataProvider.Instance().DeleteLanguage(language.LanguageId);
@@ -985,7 +985,7 @@ namespace DotNetNuke.Services.Localization
             CultureInfo culture = null;
             foreach (string userLang in HttpContext.Current.Request.UserLanguages)
             {
-                //split userlanguage by ";"... all but the first language will contain a preferrence index eg. ;q=.5
+                // split userlanguage by ";"... all but the first language will contain a preferrence index eg. ;q=.5
                 string language = userLang.Split(';')[0];
                 culture = GetCultureFromString(portalId, language);
                 if (culture != null)
@@ -1068,7 +1068,7 @@ namespace DotNetNuke.Services.Localization
 
         public static string GetString(string key, Control ctrl)
         {
-            //We need to find the parent module
+            // We need to find the parent module
             Control parentControl = ctrl.Parent;
             string localizedText;
             var moduleControl = parentControl as IModuleControl;
@@ -1077,19 +1077,19 @@ namespace DotNetNuke.Services.Localization
                 PropertyInfo pi = parentControl.GetType().GetProperty("LocalResourceFile");
                 if (pi != null)
                 {
-                    //If control has a LocalResourceFile property use this
+                    // If control has a LocalResourceFile property use this
                     localizedText = GetString(key, pi.GetValue(parentControl, null).ToString());
                 }
                 else
                 {
-                    //Drill up to the next level 
+                    // Drill up to the next level 
                     localizedText = GetString(key, parentControl);
                 }
             }
             else
             {
-                //We are at the Module Level so return key
-                //Get Resource File Root from Parents LocalResourceFile Property
+                // We are at the Module Level so return key
+                // Get Resource File Root from Parents LocalResourceFile Property
                 localizedText = GetString(key, moduleControl.LocalResourceFile);
             }
             return localizedText;
@@ -1577,13 +1577,13 @@ namespace DotNetNuke.Services.Localization
         {
             IEnumerable<ListItem> cultureListItems = LoadCultureInListItems(displayType, selectedValue, filter, host);
 
-            //add the items to the list
+            // add the items to the list
             foreach (var cultureItem in cultureListItems)
             {
                 list.Items.Add(cultureItem);
             }
 
-            //select the default item
+            // select the default item
             if (selectedValue != null)
             {
                 ListItem item = list.Items.FindByValue(selectedValue);
@@ -1669,8 +1669,8 @@ namespace DotNetNuke.Services.Localization
             else
             {
                 bool isAdminPage = false;
-                //we should be checking that the tab path matches //Admin//pagename or //admin
-                //in this way we should avoid partial matches (ie //Administrators
+                // we should be checking that the tab path matches //Admin//pagename or //admin
+                // in this way we should avoid partial matches (ie //Administrators
                 if (PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Admin//", StringComparison.CurrentCultureIgnoreCase) ||
                     String.Compare(PortalSettings.Current.ActiveTab.TabPath, "//Admin", StringComparison.OrdinalIgnoreCase) == 0 ||
                     PortalSettings.Current.ActiveTab.TabPath.StartsWith("//Host//", StringComparison.CurrentCultureIgnoreCase) ||
@@ -1703,7 +1703,7 @@ namespace DotNetNuke.Services.Localization
             string localizedText;
             foreach (DataGridColumn col in grid.Columns)
             {
-                //Localize Header Text
+                // Localize Header Text
                 if (!string.IsNullOrEmpty(col.HeaderText))
                 {
                     localizedText = GetString(col.HeaderText + ".Header", resourceFile);
@@ -1716,28 +1716,28 @@ namespace DotNetNuke.Services.Localization
                 {
                     var editCol = (EditCommandColumn)col;
 
-                    //Edit Text - maintained for backward compatibility
+                    // Edit Text - maintained for backward compatibility
                     localizedText = GetString(editCol.EditText + ".EditText", resourceFile);
                     if (!String.IsNullOrEmpty(localizedText))
                     {
                         editCol.EditText = localizedText;
                     }
 
-                    //Edit Text
+                    // Edit Text
                     localizedText = GetString(editCol.EditText, resourceFile);
                     if (!String.IsNullOrEmpty(localizedText))
                     {
                         editCol.EditText = localizedText;
                     }
 
-                    //Cancel Text
+                    // Cancel Text
                     localizedText = GetString(editCol.CancelText, resourceFile);
                     if (!String.IsNullOrEmpty(localizedText))
                     {
                         editCol.CancelText = localizedText;
                     }
 
-                    //Update Text
+                    // Update Text
                     localizedText = GetString(editCol.UpdateText, resourceFile);
                     if (!String.IsNullOrEmpty(localizedText))
                     {
@@ -1748,7 +1748,7 @@ namespace DotNetNuke.Services.Localization
                 {
                     var buttonCol = (ButtonColumn)col;
 
-                    //Edit Text
+                    // Edit Text
                     localizedText = GetString(buttonCol.Text, resourceFile);
                     if (!String.IsNullOrEmpty(localizedText))
                     {
@@ -1862,7 +1862,7 @@ namespace DotNetNuke.Services.Localization
                             {
                                 PortalAliasController.Instance.DeletePortalAlias(portalAliasInfo);
 
-                                //Fix PortalSettings for the rest of this request
+                                // Fix PortalSettings for the rest of this request
                                 var newDefaultAlias = portalAliases.SingleOrDefault(a => a.IsPrimary && a.CultureCode == String.Empty);
                                 if (newDefaultAlias != null)
                                 {
@@ -1877,13 +1877,13 @@ namespace DotNetNuke.Services.Localization
                     }
                 }
 
-                //Get Translator Role
+                // Get Translator Role
                 string roleName = string.Format("Translator ({0})", language.Code);
                 RoleInfo role = RoleController.Instance.GetRole(portalID, r => r.RoleName == roleName);
 
                 if (role != null)
                 {
-                    //Remove Translator Role from Portal
+                    // Remove Translator Role from Portal
                     RoleController.Instance.DeleteRole(role);
                 }
 
@@ -1951,7 +1951,7 @@ namespace DotNetNuke.Services.Localization
                     return;
                 }
 
-                //save the page culture as a cookie
+                // save the page culture as a cookie
                 HttpCookie cookie = response.Cookies.Get("language");
                 if ((cookie == null))
                 {

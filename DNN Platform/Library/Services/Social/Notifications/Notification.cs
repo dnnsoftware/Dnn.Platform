@@ -187,7 +187,7 @@ namespace DotNetNuke.Services.Social.Notifications
 				}
 			}
 
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
 

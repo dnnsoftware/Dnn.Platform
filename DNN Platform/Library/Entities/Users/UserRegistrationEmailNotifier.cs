@@ -28,9 +28,9 @@ namespace DotNetNuke.Entities.Users
                 return;
             }
 
-            //send notification to portal administrator of new user registration
-            //check the receive notification setting first, but if register type is Private, we will always send the notification email.
-            //because the user need administrators to do the approve action so that he can continue use the website.
+            // send notification to portal administrator of new user registration
+            // check the receive notification setting first, but if register type is Private, we will always send the notification email.
+            // because the user need administrators to do the approve action so that he can continue use the website.
             if (PortalSettings.Current.EnableRegisterNotification || PortalSettings.Current.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
             {
                 NotifyUser(user, MessageType.UserRegistrationAdmin);

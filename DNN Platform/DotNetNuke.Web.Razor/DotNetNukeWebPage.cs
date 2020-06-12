@@ -29,7 +29,7 @@ namespace DotNetNuke.Web.Razor
         {
             base.ConfigurePage(parentPage);
 
-            //Child pages need to get their context from the Parent
+            // Child pages need to get their context from the Parent
             this.Context = parentPage.Context;
         }
 

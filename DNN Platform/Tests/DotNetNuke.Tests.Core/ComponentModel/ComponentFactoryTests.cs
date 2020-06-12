@@ -58,18 +58,18 @@ namespace DotNetNuke.Tests.Core.ComponentModel
         [Test]
         public void DNNPRO_13443_ComponentFactory_DuplicatedInsert()
         {
-            //Setup
+            // Setup
             var testComp1 = new ArrayList();
             var testComp2 = new ArrayList();
 
             testComp1.Add("testComp1");
             testComp2.Add("testComp2");
 
-            //Act
+            // Act
             ComponentFactory.RegisterComponentInstance<IList>(testComp1);
             ComponentFactory.RegisterComponentInstance<IList>(testComp2);
 
-            //Assert
+            // Assert
             var retreivedComponent = ComponentFactory.GetComponent<IList>();
             Assert.AreEqual(testComp1, retreivedComponent);
         }

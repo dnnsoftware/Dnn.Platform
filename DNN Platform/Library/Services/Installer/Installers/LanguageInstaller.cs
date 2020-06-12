@@ -95,10 +95,10 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Attempt to get the LanguagePack
+				// Attempt to get the LanguagePack
                 LanguagePackInfo tempLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
 
-                //Attempt to get the Locale
+                // Attempt to get the Locale
                 Locale language = LocaleController.Instance.GetLocale(tempLanguagePack.LanguageID);
                 if (tempLanguagePack != null)
                 {
@@ -107,10 +107,10 @@ namespace DotNetNuke.Services.Installer.Installers
 
                 // fix DNN-26330	 Removing a language pack extension removes the language
                 // we should not delete language when deleting language pack, as there is just a loose relationship
-                //if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
-                //{
+                // if (language != null && tempLanguagePack.PackageType == LanguagePackType.Core)
+                // {
                 //    Localization.Localization.DeleteLanguage(language);
-                //}
+                // }
 
                 this.Log.AddInfo(string.Format(Util.LANGUAGE_UnRegistered, language.Text));
             }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Language = new Locale();
             this.LanguagePack = new LanguagePackInfo();
 
-            //Get the Skin name
+            // Get the Skin name
             this.Language.Code = Util.ReadElement(nav, "code");
             this.Language.Text = Util.ReadElement(nav, "displayName");
             this.Language.Fallback = Util.ReadElement(nav, "fallback");
@@ -154,7 +154,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
 			
-            //Call base class
+            // Call base class
             base.ReadCustomManifest(nav);
         }
 		
@@ -192,14 +192,14 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 try
                 {
-                    //Attempt to get the LanguagePack
+                    // Attempt to get the LanguagePack
                     this.InstalledLanguagePack = LanguagePackController.GetLanguagePackByPackage(this.Package.PackageID);
                     if (this.InstalledLanguagePack != null)
                     {
                         this.LanguagePack.LanguagePackID = this.InstalledLanguagePack.LanguagePackID;
                     }
 
-                    //Attempt to get the Locale
+                    // Attempt to get the Locale
                     this.TempLanguage = LocaleController.Instance.GetLocale(this.Language.Code);
                     if (this.TempLanguage != null)
                     {
@@ -207,20 +207,20 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                     if (this.LanguagePack.PackageType == LanguagePackType.Core)
                     {
-                        //Update language
+                        // Update language
                         Localization.Localization.SaveLanguage(this.Language);
                     }
 
-                    //Set properties for Language Pack
+                    // Set properties for Language Pack
                     this.LanguagePack.PackageID = this.Package.PackageID;
                     this.LanguagePack.LanguageID = this.Language.LanguageId;
 
-                    //Update LanguagePack
+                    // Update LanguagePack
                     LanguagePackController.SaveLanguagePack(this.LanguagePack);
 
                     this.Log.AddInfo(string.Format(Util.LANGUAGE_Registered, this.Language.Text));
 
-                    //install (copy the files) by calling the base class
+                    // install (copy the files) by calling the base class
                     base.Install();
                 }
                 catch (Exception ex)
@@ -243,19 +243,19 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//If Temp Language exists then we need to update the DataStore with this 
+			// If Temp Language exists then we need to update the DataStore with this 
             if (this.TempLanguage == null)
             {
-				//No Temp Language - Delete newly added Language
+				// No Temp Language - Delete newly added Language
                 this.DeleteLanguage();
             }
             else
             {
-				//Temp Language - Rollback to Temp
+				// Temp Language - Rollback to Temp
                 Localization.Localization.SaveLanguage(this.TempLanguage);
             }
             
-			//Call base class to prcoess files
+			// Call base class to prcoess files
 			base.Rollback();
         }
 
@@ -268,7 +268,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.DeleteLanguage();
 
-            //Call base class to prcoess files
+            // Call base class to prcoess files
             base.UnInstall();
         }
 

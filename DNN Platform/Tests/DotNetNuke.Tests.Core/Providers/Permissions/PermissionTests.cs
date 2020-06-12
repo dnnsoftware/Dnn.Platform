@@ -69,7 +69,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_True_WhenRoleIsFollowerRoleAndRoleEntityIsFollowedByUser()
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
             var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
             string roles = "FOLLOWER:" + relatedUser.UserID;
@@ -87,14 +87,14 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFollowerRoleAndRoleEntityIsNotFollowedByUser()
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
             var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
             string roles = "FOLLOWER:" + relatedUser.UserID;
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
@@ -121,7 +121,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         [TestCase(RelationshipStatus.Pending)]
         public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFollowerRoleAndRelationshipIsNotAccepted(RelationshipStatus relationshipStatus)
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
             var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
             string roles = "FOLLOWER:" + relatedUser.UserID;
@@ -139,14 +139,14 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_True_WhenRoleIsFriendRoleAndRoleEntityIsFriend()
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
             var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
             string roles = "FRIEND:" + relatedUser.UserID;
@@ -164,14 +164,14 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFriendRoleAndRoleEntityIsNotFriend()
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
             var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
             string roles = "FRIEND:" + relatedUser.UserID;
@@ -189,7 +189,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
@@ -198,7 +198,7 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         [TestCase(RelationshipStatus.Pending)]
         public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsFriendRoleAndRelationshipIsNotAccepted(RelationshipStatus relationshipStatus)
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = Constants.USER_TenId };
             var relatedUser = new UserInfo { IsSuperUser = false, UserID = Constants.USER_ValidId };
             string roles = "FRIEND:" + relatedUser.UserID;
@@ -216,20 +216,20 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_True_WhenRoleIsOwnerRoleAndRoleEntityIsUser()
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = UserId };
             string roles = "OWNER:" + UserId;
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsTrue(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
@@ -237,13 +237,13 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
         [Test]
         public void PortalSecurity_IsInRoles_NonAdminUser_False_WhenRoleIsOwnerRoleAndRoleEntityIsNotUser()
         {
-            //Arrange
+            // Arrange
             var user = new UserInfo { IsSuperUser = false, UserID = UserId };
             string roles = "OWNER:" + UserId + 1;
 
             var portalSettings = SetupPortalSettings();
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
@@ -261,45 +261,45 @@ namespace DotNetNuke.Tests.Core.Providers.Permissions
             Assert.IsFalse(PortalSecurity.IsInRoles(user, portalSettings, roles));
         }
 
-        //[Test]
-        //public void CorePermissionProvider_HasModuleAccess_Super_User_Is_Always_True()
-        //{
+        // [Test]
+        // public void CorePermissionProvider_HasModuleAccess_Super_User_Is_Always_True()
+        // {
         //    CreateUser(true, new List<string>() { "SomeRoleName" });
 
-        //    var permissionProvider = new CorePermissionProvider();
+        // var permissionProvider = new CorePermissionProvider();
         //    Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
-        //}
+        // }
 
 
-        //[Test]
-        //public void CorePermissionProvider_HasModuleAccess_SecurityLevelAnonymous_Is_Always_True()
-        //{
+        // [Test]
+        // public void CorePermissionProvider_HasModuleAccess_SecurityLevelAnonymous_Is_Always_True()
+        // {
         //    CreateUser(false, new List<string>() { "SomeRoleName" });
 
-        //    var permissionProvider = new CorePermissionProvider();
+        // var permissionProvider = new CorePermissionProvider();
         //    Assert.IsTrue(permissionProvider.HasModuleAccess(SecurityAccessLevel.Anonymous, "", new ModuleInfo()));
-        //}
+        // }
 
-        //[Test]
-        //public void CorePermissionProvider_HasModuleAccess_SecurityLevelHost_Is_False_For_Non_SuperUser()
-        //{
+        // [Test]
+        // public void CorePermissionProvider_HasModuleAccess_SecurityLevelHost_Is_False_For_Non_SuperUser()
+        // {
         //    CreateUser(false, new List<string>() { "SomeRoleName" });
 
-        //    var permissionProvider = new CorePermissionProvider();
+        // var permissionProvider = new CorePermissionProvider();
         //    Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.Host, "", new ModuleInfo()));
-        //}
+        // }
 
-        //[Test]
-        //public void CorePermissionProvider_HasModuleAccess_SecurityLevelView_Is_False_For_User_Without_View_Role()
-        //{
+        // [Test]
+        // public void CorePermissionProvider_HasModuleAccess_SecurityLevelView_Is_False_For_User_Without_View_Role()
+        // {
         //    CreateUser(false, new List<string>() { "RoleWithoutViewPermission" });
         //    var modulePermissionCollection = new ModulePermissionCollection();
         //    AddModulePermission(modulePermissionCollection, "View", Convert.ToInt32(SetupPortalSettings().AdministratorRoleId));
         //    var module = new ModuleInfo {InheritViewPermissions = false, ModulePermissions = modulePermissionCollection};
 
-        //    var permissionProvider = new CorePermissionProvider();
+        // var permissionProvider = new CorePermissionProvider();
         //    Assert.IsFalse(permissionProvider.HasModuleAccess(SecurityAccessLevel.View, "", module));
-        //}
+        // }
 
         private static PortalSettings SetupPortalSettings()
         {

@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Installer
             this.TempInstallFolder = Globals.InstallMapPath + "Temp\\" + Path.GetFileNameWithoutExtension(Path.GetRandomFileName());
             this.PhysicalSitePath = sitePath;
 
-            //Read the Zip file into its component entries
+            // Read the Zip file into its component entries
             this.ReadZipStream(inputStream, false);
         }
 
@@ -332,27 +332,27 @@ namespace DotNetNuke.Services.Installer
                 entry.CheckZipEntry();
                 if (!entry.IsDirectory)
                 {
-					//Add file to list
+					// Add file to list
                     var file = new InstallFile(unzip, entry, this);
                     if (file.Type == InstallFileType.Resources && (file.Name.Equals("containers.zip", StringComparison.InvariantCultureIgnoreCase) || file.Name.Equals("skins.zip", StringComparison.InvariantCultureIgnoreCase)))
                     {
-						//Temporarily save the TempInstallFolder
+						// Temporarily save the TempInstallFolder
                         string tmpInstallFolder = this.TempInstallFolder;
 
-                        //Create Zip Stream from File
+                        // Create Zip Stream from File
                         using (var zipStream = new FileStream(file.TempFileName, FileMode.Open, FileAccess.Read))
                         {
-                            //Set TempInstallFolder
+                            // Set TempInstallFolder
                             this.TempInstallFolder = Path.Combine(this.TempInstallFolder, Path.GetFileNameWithoutExtension(file.Name));
 
-                            //Extract files from zip
+                            // Extract files from zip
                             this.ReadZipStream(zipStream, true);
                         }
 
-                        //Restore TempInstallFolder
+                        // Restore TempInstallFolder
                         this.TempInstallFolder = tmpInstallFolder;
 
-                        //Delete zip file
+                        // Delete zip file
                         var zipFile = new FileInfo(file.TempFileName);
                         zipFile.Delete();
                     }
@@ -404,7 +404,7 @@ namespace DotNetNuke.Services.Installer
                 this.Log.EndJob(Util.FILES_ReadingEnd);
             }
 			
-            //Close the Zip Input Stream as we have finished with it
+            // Close the Zip Input Stream as we have finished with it
             inputStream.Close();
         }
 		

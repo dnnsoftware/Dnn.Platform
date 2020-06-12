@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.UserControls
         /// <remarks>
         /// </remarks>
         /// -----------------------------------------------------------------------------
-        public string ControlName { get; set; } //Associated Edit Control for this Label
+        public string ControlName { get; set; } // Associated Edit Control for this Label
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -91,7 +91,7 @@ namespace DotNetNuke.UI.UserControls
                 this.lblHelp.Text = value;
                 this.imgHelp.AlternateText = HtmlUtils.Clean(value, false);
 				
-				//hide the help icon if the help text is ""
+				// hide the help icon if the help text is ""
                 if (String.IsNullOrEmpty(value))
                 {
                     this.imgHelp.Visible = false;
@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.UserControls
                 DNNClientAPI.EnableMinMax(this.cmdHelp, this.pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
                 if (String.IsNullOrEmpty(this._HelpKey))
                 {
-					//Set Help Key to the Resource Key plus ".Help"
+					// Set Help Key to the Resource Key plus ".Help"
                     this._HelpKey = this._ResourceKey + ".Help";
                 }
                 string helpText = Localization.GetString(this._HelpKey, this);
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.UserControls
                     this.HelpText = helpText;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

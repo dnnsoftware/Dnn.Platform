@@ -24,7 +24,7 @@ namespace Dnn.ExportImport.Components.Controllers
                 switch (version)
                 {
                     case "09.01.00":
-                        //AddNewLogTypes(); // moved to SQL migration script
+                        // AddNewLogTypes(); // moved to SQL migration script
                         break;
                 }
                 return "Success";

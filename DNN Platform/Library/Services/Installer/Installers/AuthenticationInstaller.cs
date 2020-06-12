@@ -99,12 +99,12 @@ namespace DotNetNuke.Services.Installer.Installers
             bool bAdd = Null.NullBoolean;
             try
             {
-				//Attempt to get the Authentication Service
+				// Attempt to get the Authentication Service
                 this.TempAuthSystem = AuthenticationController.GetAuthenticationServiceByType(this.AuthSystem.AuthenticationType);
 
                 if (this.TempAuthSystem == null)
                 {
-					//Enable by default
+					// Enable by default
                     this.AuthSystem.IsEnabled = true;
                     bAdd = true;
                 }
@@ -116,12 +116,12 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.AuthSystem.PackageID = this.Package.PackageID;
                 if (bAdd)
                 {
-                    //Add new service
+                    // Add new service
                     AuthenticationController.AddAuthentication(this.AuthSystem);
                 }
                 else
                 {
-					//Update service
+					// Update service
                     AuthenticationController.UpdateAuthentication(this.AuthSystem);
                 }
                 this.Completed = true;
@@ -143,16 +143,16 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             this.AuthSystem = new AuthenticationInfo();
 
-            //Get the type
+            // Get the type
             this.AuthSystem.AuthenticationType = Util.ReadElement(manifestNav, "authenticationService/type", this.Log, Util.AUTHENTICATION_TypeMissing);
 
-            //Get the SettingsSrc
+            // Get the SettingsSrc
             this.AuthSystem.SettingsControlSrc = Util.ReadElement(manifestNav, "authenticationService/settingsControlSrc", this.Log, Util.AUTHENTICATION_SettingsSrcMissing);
 
-            //Get the LoginSrc
+            // Get the LoginSrc
             this.AuthSystem.LoginControlSrc = Util.ReadElement(manifestNav, "authenticationService/loginControlSrc", this.Log, Util.AUTHENTICATION_LoginSrcMissing);
 
-            //Get the LogoffSrc
+            // Get the LogoffSrc
             this.AuthSystem.LogoffControlSrc = Util.ReadElement(manifestNav, "authenticationService/logoffControlSrc");
 
             if (this.Log.Valid)
@@ -169,15 +169,15 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//If Temp Auth System exists then we need to update the DataStore with this 
+			// If Temp Auth System exists then we need to update the DataStore with this 
             if (this.TempAuthSystem == null)
             {
-				//No Temp Auth System - Delete newly added system
+				// No Temp Auth System - Delete newly added system
                 this.DeleteAuthentiation();
             }
             else
             {
-				//Temp Auth System - Rollback to Temp
+				// Temp Auth System - Rollback to Temp
                 AuthenticationController.UpdateAuthentication(this.TempAuthSystem);
             }
         }

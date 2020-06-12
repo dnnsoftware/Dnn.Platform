@@ -12,6 +12,6 @@ namespace DotNetNuke.Web.Api
     /// </summary>
     public interface IOverrideDefaultAuthLevel
     {
-        //no need for methods the mere presence of this interface acts as a flag to OverridableHostAuthFilter
+        // no need for methods the mere presence of this interface acts as a flag to OverridableHostAuthFilter
     }
 }

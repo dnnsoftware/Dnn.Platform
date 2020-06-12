@@ -92,9 +92,9 @@ namespace DotNetNuke.Services.Search
                 ? this._searchModules[portalId].Where(m => m.SupportSearch).Select(m => m.ModuleInfo)
                 : this.GetSearchModules(portalId);
 
-            //Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
-            //We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate.
-            //LastContentModifiedOnDate remains MinValue for modules that don't update this property
+            // Some modules update LastContentModifiedOnDate (e.g. Html module) when their content changes.
+            // We won't be calling into such modules if LastContentModifiedOnDate is prior to startDate.
+            // LastContentModifiedOnDate remains MinValue for modules that don't update this property
             var modulesInDateRange = searchModuleCollection.Where(module =>
                 !((SqlDateTime.MinValue.Value < module.LastContentModifiedOnDate && module.LastContentModifiedOnDate < startDateLocal)))
                 .OrderBy(m => m.LastContentModifiedOnDate).ThenBy(m => m.ModuleID).ToArray();
@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.Search
                 PortalId = module.PortalID,
                 SearchTypeId = ModuleSearchTypeId,
                 CultureCode = module.CultureCode,
-                //Add Module MetaData
+                // Add Module MetaData
                 ModuleDefId = module.ModuleDefID,
                 ModuleId = module.ModuleID
             };
@@ -311,7 +311,7 @@ namespace DotNetNuke.Services.Search
             var businessControllers = new Hashtable();
             var searchModuleIds = new HashSet<int>();
 			var searchModules = new List<ModuleIndexInfo>();
-            //Only get modules that are set to be Indexed.
+            // Only get modules that are set to be Indexed.
             var modules = ModuleController.Instance.GetSearchModules(portalId).Cast<ModuleInfo>().Where(m => m.TabModuleSettings["AllowIndex"] == null || bool.Parse(m.TabModuleSettings["AllowIndex"].ToString()));
 
             foreach (var module in modules.Where(module => !searchModuleIds.Contains(module.ModuleID)))
@@ -319,17 +319,17 @@ namespace DotNetNuke.Services.Search
                 try
                 {
                     var tab = TabController.Instance.GetTab(module.TabID, portalId, false);
-                    //Only index modules on tabs that are set to be Indexed.
+                    // Only index modules on tabs that are set to be Indexed.
                     if (tab.TabSettings["AllowIndex"] == null || (tab.TabSettings["AllowIndex"] != null && bool.Parse(tab.TabSettings["AllowIndex"].ToString())))
                     {
-                        //Check if the business controller is in the Hashtable                        
+                        // Check if the business controller is in the Hashtable                        
                         var controller = businessControllers[module.DesktopModule.BusinessControllerClass];
                         if (!String.IsNullOrEmpty(module.DesktopModule.BusinessControllerClass))
                         {
-                            //If nothing create a new instance
+                            // If nothing create a new instance
                             if (controller == null)
                             {
-                                //Add to hashtable
+                                // Add to hashtable
                                 controller = Reflection.CreateObject(module.DesktopModule.BusinessControllerClass, module.DesktopModule.BusinessControllerClass);
                                 businessControllers.Add(module.DesktopModule.BusinessControllerClass, controller);
                             }

@@ -56,10 +56,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                //First Update Permissions in case they have been changed
+                // First Update Permissions in case they have been changed
                 this.UpdatePermissions();
 
-                //Return the DesktopModulePermissions
+                // Return the DesktopModulePermissions
                 return this._DesktopModulePermissions;
             }
         }
@@ -110,7 +110,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var objDesktopModulePermission = new DesktopModulePermissionInfo();
 
-            //Call base class to load base properties
+            // Call base class to load base properties
             base.ParsePermissionKeys(objDesktopModulePermission, Settings);
             if (String.IsNullOrEmpty(Settings[2]))
             {
@@ -139,7 +139,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             objPermission.DisplayName = displayName;
             this._DesktopModulePermissions.Add(objPermission, true);
 
-            //Clear Permission List
+            // Clear Permission List
             this._PermissionsList = null;
         }
 
@@ -152,7 +152,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, UserInfo user)
         {
-            //Search DesktopModulePermission Collection for the user 
+            // Search DesktopModulePermission Collection for the user 
             bool isMatch = false;
             foreach (DesktopModulePermissionInfo objDesktopModulePermission in this._DesktopModulePermissions)
             {
@@ -163,7 +163,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                 }
             }
 
-            //user not found so add new
+            // user not found so add new
             if (!isMatch)
             {
                 foreach (PermissionInfo objPermission in permissions)
@@ -185,13 +185,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         /// -----------------------------------------------------------------------------
         protected override void AddPermission(ArrayList permissions, RoleInfo role)
         {
-            //Search TabPermission Collection for the user 
+            // Search TabPermission Collection for the user 
             if (this._DesktopModulePermissions.Cast<DesktopModulePermissionInfo>().Any(p => p.RoleID == role.RoleID))
             {
                 return;
             }
 
-            //role not found so add new
+            // role not found so add new
             foreach (PermissionInfo objPermission in permissions)
             {
                 if (objPermission.PermissionKey == "DEPLOY")
@@ -221,29 +221,29 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             if (savedState != null)
             {
-                //Load State from the array of objects that was saved with SaveViewState.
+                // Load State from the array of objects that was saved with SaveViewState.
                 var myState = (object[])savedState;
 
-                //Load Base Controls ViewState
+                // Load Base Controls ViewState
                 if (myState[0] != null)
                 {
                     base.LoadViewState(myState[0]);
                 }
 
-                //Load DesktopModuleId
+                // Load DesktopModuleId
                 if (myState[1] != null)
                 {
                     this.PortalDesktopModuleID = Convert.ToInt32(myState[1]);
                 }
 
-                //Load DesktopModulePermissions
+                // Load DesktopModulePermissions
                 if (myState[2] != null)
                 {
                     this._DesktopModulePermissions = new DesktopModulePermissionCollection();
                     string state = Convert.ToString(myState[2]);
                     if (!String.IsNullOrEmpty(state))
                     {
-                        //First Break the String into individual Keys
+                        // First Break the String into individual Keys
                         string[] permissionKeys = state.Split(new[] { "##" }, StringSplitOptions.None);
                         foreach (string key in permissionKeys)
                         {
@@ -258,7 +258,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         protected override void RemovePermission(int permissionID, int roleID, int userID)
         {
             this._DesktopModulePermissions.Remove(permissionID, roleID, userID);
-            //Clear Permission List
+            // Clear Permission List
             this._PermissionsList = null;
         }
 
@@ -271,13 +271,13 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             var allStates = new object[3];
 
-            //Save the Base Controls ViewState
+            // Save the Base Controls ViewState
             allStates[0] = base.SaveViewState();
 
-            //Save the DesktopModule Id
+            // Save the DesktopModule Id
             allStates[1] = this.PortalDesktopModuleID;
 
-            //Persist the DesktopModulePermisisons
+            // Persist the DesktopModulePermisisons
             var sb = new StringBuilder();
             if (this._DesktopModulePermissions != null)
             {

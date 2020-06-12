@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             {
 	            try
 	            {
-					//need apply the Licensing module after packages installed, so that we can know whats the edition of install instance. CE/PE/EE
+					// need apply the Licensing module after packages installed, so that we can know whats the edition of install instance. CE/PE/EE
 					var document = Config.Load();
 					var licensingNode = document.SelectSingleNode("/configuration/system.webServer/modules/add[@name='Licensing']");
 					if (licensingNode != null)
@@ -57,8 +57,8 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 	            }
 	            catch (Exception ex)
 	            {
-					//we shouldn't break the install process when LP download failed, for admin user can install the LP after website created.
-					//so we logged what's wrong here, and user can check it later.
+					// we shouldn't break the install process when LP download failed, for admin user can install the LP after website created.
+					// so we logged what's wrong here, and user can check it later.
 		            Logger.Error(ex);
 	            }
 

@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.Mvc.Framework
 {
     public static class ViewEngineCollectionExt
     {
-        //Enable the call to ViewEngineCollection FindView method with useCache=false
+        // Enable the call to ViewEngineCollection FindView method with useCache=false
         public static ViewEngineResult FindView(this ViewEngineCollection viewEngineCollection,
             ControllerContext controllerContext,
             string viewName, string masterName, bool useCache)
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.Mvc.Framework
             }
         }
 
-        //Enable the call to ViewEngineCollection FindPartialView method with useCache=false
+        // Enable the call to ViewEngineCollection FindPartialView method with useCache=false
         public static ViewEngineResult FindPartialView(this ViewEngineCollection viewEngineCollection,
             ControllerContext controllerContext, string partialViewName, bool useCache)
         {

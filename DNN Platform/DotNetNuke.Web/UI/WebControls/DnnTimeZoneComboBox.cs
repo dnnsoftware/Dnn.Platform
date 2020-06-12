@@ -17,7 +17,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void OnInit(System.EventArgs e)
         {
-            //Utilities.ApplySkin(this);
+            // Utilities.ApplySkin(this);
             base.OnInit(e);
 
             this.DataTextField = "DisplayName";

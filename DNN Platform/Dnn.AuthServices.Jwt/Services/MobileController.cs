@@ -70,7 +70,7 @@ namespace Dnn.AuthServices.Jwt.Services
 
             if (!string.IsNullOrEmpty(result.Error))
             {
-                //HACK: this will return the scheme with the error message as a challenge; non-standard method
+                // HACK: this will return the scheme with the error message as a challenge; non-standard method
                 return this.Unauthorized(new AuthenticationHeaderValue(JwtController.AuthScheme, result.Error));
             }
 

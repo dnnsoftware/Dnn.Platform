@@ -183,11 +183,11 @@ namespace DotNetNuke.Tests.Content.Mocks
         {
             if (ComponentFactory.Container == null)
             {
-                //Create a Container
+                // Create a Container
                 ComponentFactory.Container = new SimpleContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var getMock = ComponentFactory.GetComponent<Mock<TMock>>();
 
             if (getMock == null)
@@ -238,7 +238,7 @@ namespace DotNetNuke.Tests.Content.Mocks
             var mockVocabularies = new Mock<IVocabularyController>();
             mockVocabularies.Setup(v => v.GetVocabularies()).Returns(TestVocabularies);
 
-            //Register Mock
+            // Register Mock
             return RegisterMockController(mockVocabularies);
         }
 

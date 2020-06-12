@@ -145,7 +145,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void OnSelectedTermChanged(TermsEventArgs e)
         {
-            //Raise the SelectedTermChanged Event
+            // Raise the SelectedTermChanged Event
             if (this.SelectedTermChanged != null)
             {
                 this.SelectedTermChanged(this, e);
@@ -158,13 +158,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
         private void ListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            //Raise the SelectedTermChanged Event
+            // Raise the SelectedTermChanged Event
             this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
 
         private void TreeViewNodeClick(object sender, RadTreeNodeEventArgs e)
         {
-            //Raise the SelectedTermChanged Event
+            // Raise the SelectedTermChanged Event
             this.OnSelectedTermChanged(new TermsEventArgs(this.SelectedTerm));
         }
 

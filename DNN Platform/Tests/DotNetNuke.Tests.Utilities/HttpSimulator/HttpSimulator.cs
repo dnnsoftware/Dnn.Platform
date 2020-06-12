@@ -142,7 +142,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
                 this._formVars.Add(formVariables);
 
             if (this._formVars.Count > 0)
-                httpVerb = HttpVerb.POST; //Need to enforce this.
+                httpVerb = HttpVerb.POST; // Need to enforce this.
 
             if (headers != null)
                 this._headers.Add(headers);
@@ -161,13 +161,13 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             
             #region Console Debug INfo
 
-            //Console.WriteLine("host: " + Host);
-            //Console.WriteLine("virtualDir: " + _applicationPath);
-            //Console.WriteLine("page: " + LocalPath);
-            //Console.WriteLine("pathPartAfterApplicationPart: " + Page);
-            //Console.WriteLine("appPhysicalDir: " + _physicalApplicationPath);
-            //if (HttpContext.Current != null)
-            //{
+            // Console.WriteLine("host: " + Host);
+            // Console.WriteLine("virtualDir: " + _applicationPath);
+            // Console.WriteLine("page: " + LocalPath);
+            // Console.WriteLine("pathPartAfterApplicationPart: " + Page);
+            // Console.WriteLine("appPhysicalDir: " + _physicalApplicationPath);
+            // if (HttpContext.Current != null)
+            // {
             //    Console.WriteLine("Request.Url.LocalPath: " + HttpContext.Current.Request.Url.LocalPath);
             //    Console.WriteLine("Request.Url.Host: " + HttpContext.Current.Request.Url.Host);
             //    Console.WriteLine("Request.FilePath: " + HttpContext.Current.Request.FilePath);
@@ -177,11 +177,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             //    Console.WriteLine("Request.Url.Port: " + HttpContext.Current.Request.Url.Port);
             //    Console.WriteLine("Request.ApplicationPath: " + HttpContext.Current.Request.ApplicationPath);
             //    Console.WriteLine("Request.PhysicalPath: " + HttpContext.Current.Request.PhysicalPath);
-            //}
-            //Console.WriteLine("HttpRuntime.AppDomainAppPath: " + HttpRuntime.AppDomainAppPath);
-            //Console.WriteLine("HttpRuntime.AppDomainAppVirtualPath: " + HttpRuntime.AppDomainAppVirtualPath);
-            //Console.WriteLine("HostingEnvironment.ApplicationPhysicalPath: " + HostingEnvironment.ApplicationPhysicalPath);
-            //Console.WriteLine("HostingEnvironment.ApplicationVirtualPath: " + HostingEnvironment.ApplicationVirtualPath);
+            // }
+            // Console.WriteLine("HttpRuntime.AppDomainAppPath: " + HttpRuntime.AppDomainAppPath);
+            // Console.WriteLine("HttpRuntime.AppDomainAppVirtualPath: " + HttpRuntime.AppDomainAppVirtualPath);
+            // Console.WriteLine("HostingEnvironment.ApplicationPhysicalPath: " + HostingEnvironment.ApplicationPhysicalPath);
+            // Console.WriteLine("HostingEnvironment.ApplicationVirtualPath: " + HostingEnvironment.ApplicationVirtualPath);
 
             #endregion
             
@@ -207,7 +207,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 		public class FakeHttpSessionState : NameObjectCollectionBase, IHttpSessionState
 		{
 			private readonly string _sessionId = Guid.NewGuid().ToString();
-			private int _timeout = 30; //minutes
+			private int _timeout = 30; // minutes
 			private const bool _isNewSession = true;
 		    private readonly HttpStaticObjectsCollection _staticObjects = new HttpStaticObjectsCollection();
 			private readonly object _syncRoot = new Object();
@@ -533,11 +533,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
 			if (searchIndex < 0)
 				return original;
-            //mod to add one onto the search length - otherwise strange results??
-			//return original.Substring(original.IndexOf(search) + search.Length + 1);
-            //return original.Substring(original.IndexOf(search) + search.Length);
-            //original = original.Substring(searchIndex, original.Length - searchIndex);
-            //return original.Replace(search,"");
+            // mod to add one onto the search length - otherwise strange results??
+			// return original.Substring(original.IndexOf(search) + search.Length + 1);
+            // return original.Substring(original.IndexOf(search) + search.Length);
+            // original = original.Substring(searchIndex, original.Length - searchIndex);
+            // return original.Replace(search,"");
             var regexMatch = @"(" + search + ")(?<keep>.+)";
             const string regexReplace = @"${keep}";
             var result = Regex.Replace(original, regexMatch, regexReplace, RegexOptions.IgnoreCase );
@@ -582,7 +582,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             set 
             {
                 this._physicalApplicationPath = value ?? WebsitePhysicalAppPath;
-                //strip trailing backslashes.
+                // strip trailing backslashes.
                 this._physicalApplicationPath = StripTrailingBackSlashes(this._physicalApplicationPath) + @"\";
             }
         }
@@ -620,7 +620,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
         void SetHttpRuntimeInternals()
         {
-            //We cheat by using reflection.
+            // We cheat by using reflection.
 
             // get singleton property value
             var runtime = ReflectionHelper.GetStaticFieldValue<HttpRuntime>("_theRuntime", typeof(HttpRuntime));
@@ -650,7 +650,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
             catch (InvalidOperationException)
             {
-                //Shoot, we need to grab it via reflection.
+                // Shoot, we need to grab it via reflection.
                 environment = ReflectionHelper.GetStaticFieldValue<HostingEnvironment>("_theHostingEnvironment", typeof(HostingEnvironment));
             }
             return environment;
@@ -664,11 +664,11 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
 
             s = s.Replace(@"\", "/");
 
-            //Reduce multiple slashes in row to single.
+            // Reduce multiple slashes in row to single.
             var normalized = Regex.Replace(s, "(/)/+", "$1");
-            //Strip left.
+            // Strip left.
             normalized = StripPrecedingSlashes(normalized);
-            //Strip right.
+            // Strip right.
             normalized = StripTrailingSlashes(normalized);
             return "/" + normalized;
         }

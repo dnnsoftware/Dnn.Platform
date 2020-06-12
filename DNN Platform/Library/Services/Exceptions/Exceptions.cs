@@ -76,13 +76,13 @@ namespace DotNetNuke.Services.Exceptions
             {
                 try
                 {
-                    //Get the corresponding method for that stack frame.
+                    // Get the corresponding method for that stack frame.
                     MemberInfo mi = sf.GetMethod();
-                    //Get the namespace where that method is defined.
+                    // Get the namespace where that method is defined.
                     string res = mi.DeclaringType.Namespace + ".";
-                    //Append the type name.
+                    // Append the type name.
                     res += mi.DeclaringType.Name + ".";
-                    //Append the name of the method.
+                    // Append the name of the method.
                     res += mi.Name;
                     objExceptionInfo.Method = res;
                 }
@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="exc">The exc.</param>
         public static void ProcessModuleLoadException(Control ctrl, Exception exc)
         {
-			//Exit Early if ThreadAbort Exception
+			// Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
             {
                 return;
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="DisplayErrorMessage">if set to <c>true</c> [display error message].</param>
         public static void ProcessModuleLoadException(Control ctrl, Exception exc, bool DisplayErrorMessage)
         {
-			//Exit Early if ThreadAbort Exception
+			// Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
             {
                 return;
@@ -233,12 +233,12 @@ namespace DotNetNuke.Services.Exceptions
             var ctrlModule = ctrl as IModuleControl;
             if (ctrlModule == null)
             {
-				//Regular Control
+				// Regular Control
                 friendlyMessage = Localization.Localization.GetString("ErrorOccurred");
             }
             else
             {
-				//IModuleControl
+				// IModuleControl
                 string moduleTitle = Null.NullString;
                 if (ctrlModule != null && ctrlModule.ModuleContext.Configuration != null)
                 {
@@ -257,7 +257,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="exc">The exc.</param>
         public static void ProcessModuleLoadException(string FriendlyMessage, Control ctrl, Exception exc)
         {
-			//Exit Early if ThreadAbort Exception
+			// Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
             {
                 return;
@@ -274,7 +274,7 @@ namespace DotNetNuke.Services.Exceptions
 		/// <param name="DisplayErrorMessage">if set to <c>true</c> display error message.</param>
         public static void ProcessModuleLoadException(string FriendlyMessage, Control ctrl, Exception exc, bool DisplayErrorMessage)
         {
-            			//Exit Early if ThreadAbort Exception
+            			// Exit Early if ThreadAbort Exception
             if (ThreadAbortCheck(exc))
             {
                 return;
@@ -307,11 +307,11 @@ namespace DotNetNuke.Services.Exceptions
                         lex = new ModuleLoadException(friendlyMessageOverride, exc, ctrlModule.ModuleContext.Configuration);
                     }
 
-                    //publish the exception
+                    // publish the exception
                     var objExceptionLog = new ExceptionLogController();
                     objExceptionLog.AddLog(lex);
-                    //Some modules may want to suppress an error message
-                    //and just log the exception.
+                    // Some modules may want to suppress an error message
+                    // and just log the exception.
                     if (DisplayErrorMessage)
                     {
                         PlaceHolder ErrorPlaceholder = null;
@@ -321,14 +321,14 @@ namespace DotNetNuke.Services.Exceptions
                         }
                         if (ErrorPlaceholder != null)
                         {
-							//hide the module
+							// hide the module
                             ctrl.Visible = false;
                             ErrorPlaceholder.Visible = true;
                             ErrorPlaceholder.Controls.Add(new ErrorContainer(_portalSettings, FriendlyMessage, lex).Container);
                         }
                         else
                         {
-							//there's no ErrorPlaceholder, add it to the module's control collection
+							// there's no ErrorPlaceholder, add it to the module's control collection
                             ctrl.Controls.Add(new ErrorContainer(_portalSettings, FriendlyMessage, lex).Container);
                         }
                     }
@@ -382,12 +382,12 @@ namespace DotNetNuke.Services.Exceptions
             else
             {
                 var lex = new PageLoadException((exc == null ? "" : exc.Message), exc);
-                //publish the exception
+                // publish the exception
                 var objExceptionLog = new ExceptionLogController();
                 objExceptionLog.AddLog(lex);
                 if (!String.IsNullOrEmpty(URL))
                 {
-					//redirect
+					// redirect
                     if (URL.IndexOf("error=terminate") != -1)
                     {
                         

@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
-			//Call base class method with includeAppCode = false
+			// Call base class method with includeAppCode = false
             base.GetFiles(includeSource, false);
         }
 

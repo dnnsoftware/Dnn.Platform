@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var isVisible = accessingUser.UserID == targetUser.UserID;
             if (!isVisible)
             {
-                //Relationships
+                // Relationships
                 foreach (var relationship in profileVisibility.RelationshipVisibilities)
                 {
                     switch (relationship.RelationshipTypeId)
@@ -147,7 +147,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         break;
                     }
                 }
-                //Groups/Roles
+                // Groups/Roles
                 if (profileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
                 {
                     isVisible = true;

@@ -37,26 +37,26 @@ namespace DotNetNuke.Services.Search.Internals
 
         public override bool IncrementToken()
         {
-            //Pop buffered synonyms
+            // Pop buffered synonyms
             if (this._synonymStack.Count > 0)
             {
                 var syn = this._synonymStack.Pop();
                 this.RestoreState(this._current);
                 this._termAtt.SetTermBuffer(syn);
 
-                //set position increment to 0
+                // set position increment to 0
                 this._posIncrAtt.PositionIncrement = 0;
                 return true;
             }
 
-            //read next token
+            // read next token
             if (!this.input.IncrementToken())
                 return false;
 
-            //push synonyms onto stack
+            // push synonyms onto stack
             if (this.AddAliasesToStack())
             {
-                this._current = this.CaptureState(); //save current token
+                this._current = this.CaptureState(); // save current token
             }
 
             return true;
@@ -64,7 +64,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private bool AddAliasesToStack()
         {
-            var portalId = 0; //default
+            var portalId = 0; // default
             string cultureCode;
             var searchDoc = Thread.GetData(Thread.GetNamedDataSlot(Constants.TlsSearchInfo)) as SearchDocument;
             if (searchDoc != null)

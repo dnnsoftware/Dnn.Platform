@@ -67,10 +67,10 @@ namespace Dnn.PersonaBar.Library.Helper
 
         public static void EnsureDefaultRoles(this DTO.Permissions dto)
         {
-            //Administrators Role always has implicit permissions, then it should be always in
+            // Administrators Role always has implicit permissions, then it should be always in
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.AdministratorRoleId), true, true);
             
-            //Show also default roles
+            // Show also default roles
             dto.EnsureRole(RoleController.Instance.GetRoleById(PortalSettings.Current.PortalId, PortalSettings.Current.RegisteredRoleId), false, true);
             dto.EnsureRole(new RoleInfo { RoleID = Int32.Parse(Globals.glbRoleAllUsers), RoleName = Globals.glbRoleAllUsersName }, false, true);
         }
@@ -113,7 +113,7 @@ namespace Dnn.PersonaBar.Library.Helper
         {
             var data = new { Groups = new List<object>(), Roles = new List<object>() };
 
-            //retreive role groups info
+            // retreive role groups info
             data.Groups.Add(new { GroupId = -2, Name = "AllRoles" });
             data.Groups.Add(new { GroupId = -1, Name = "GlobalRoles", Selected = true });
 
@@ -122,7 +122,7 @@ namespace Dnn.PersonaBar.Library.Helper
                 data.Groups.Add(new { GroupId = group.RoleGroupID, Name = group.RoleGroupName });
             }
 
-            //retreive roles info
+            // retreive roles info
             data.Roles.Add(new { RoleID = Int32.Parse(Globals.glbRoleUnauthUser), GroupId = -1, RoleName = Globals.glbRoleUnauthUserName });
             data.Roles.Add(new { RoleID = Int32.Parse(Globals.glbRoleAllUsers), GroupId = -1, RoleName = Globals.glbRoleAllUsersName });
             foreach (RoleInfo role in RoleController.Instance.GetRoles(portalId).OrderBy(r => r.RoleName))

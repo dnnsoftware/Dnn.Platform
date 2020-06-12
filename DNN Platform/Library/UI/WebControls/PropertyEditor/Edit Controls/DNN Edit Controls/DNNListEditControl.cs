@@ -166,7 +166,7 @@ namespace DotNetNuke.UI.WebControls
 	            }
 	            try
                 {
-					//Try and cast the value to an Integer
+					// Try and cast the value to an Integer
                     intValue = Convert.ToInt32(this.OldValue);
                 }
                 catch (Exception exc)
@@ -231,12 +231,12 @@ namespace DotNetNuke.UI.WebControls
             {
                 if (this.ValueField == ListBoundField.Id)
                 {
-					//Integer type field
+					// Integer type field
                     this.Value = Int32.Parse(value);
                 }
                 else
                 {
-					//String type Field
+					// String type Field
                     this.Value = value;
                 }
             }
@@ -265,13 +265,13 @@ namespace DotNetNuke.UI.WebControls
             var args = new PropertyEditorEventArgs(this.Name);
             if (this.ValueField == ListBoundField.Id)
             {
-				//This is an Integer Value
+				// This is an Integer Value
                 args.Value = this.IntegerValue;
                 args.OldValue = this.OldIntegerValue;
             }
             else
             {
-				//This is a String Value
+				// This is a String Value
                 args.Value = this.StringValue;
                 args.OldValue = this.OldStringValue;
             }
@@ -290,7 +290,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void OnAttributesChanged()
         {
-			//Get the List settings out of the "Attributes"
+			// Get the List settings out of the "Attributes"
             if ((this.CustomAttributes != null))
             {
                 foreach (Attribute attribute in this.CustomAttributes)
@@ -377,7 +377,7 @@ namespace DotNetNuke.UI.WebControls
                 writer.Write(entryText);
             }
 			
-			//Close Select Tag
+			// Close Select Tag
             writer.RenderEndTag();
         }
 
@@ -389,7 +389,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            //Render the Select Tag
+            // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
@@ -403,7 +403,7 @@ namespace DotNetNuke.UI.WebControls
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
-            //Add the Not Specified Option
+            // Add the Not Specified Option
             if (this.ValueField == ListBoundField.Text)
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
@@ -414,7 +414,7 @@ namespace DotNetNuke.UI.WebControls
             }
             if (this.StringValue == Null.NullString)
             {
-				//Add the Selected Attribute
+				// Add the Selected Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
 
@@ -427,7 +427,7 @@ namespace DotNetNuke.UI.WebControls
             {
                 string itemValue = Null.NullString;
                 
-				//Add the Value Attribute
+				// Add the Value Attribute
 				switch (this.ValueField)
                 {
                     case ListBoundField.Id:
@@ -443,11 +443,11 @@ namespace DotNetNuke.UI.WebControls
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, itemValue);
                 if (this.StringValue == itemValue)
                 {
-					//Add the Selected Attribute
+					// Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
                 
-				//Render Option Tag
+				// Render Option Tag
 				writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 switch (this.TextField)
                 {
@@ -464,7 +464,7 @@ namespace DotNetNuke.UI.WebControls
                 writer.RenderEndTag();
             }
             
-			//Close Select Tag
+			// Close Select Tag
 			writer.RenderEndTag();
         }
 		

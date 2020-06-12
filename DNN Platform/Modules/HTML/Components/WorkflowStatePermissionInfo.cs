@@ -42,7 +42,7 @@ namespace DotNetNuke.Security.Permissions
             this._StateID = Null.NullInteger;
         }
 
-        //New
+        // New
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -167,7 +167,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
 
             this.WorkflowStatePermissionID = Null.SetNullInteger(dr["WorkflowStatePermissionID"]);

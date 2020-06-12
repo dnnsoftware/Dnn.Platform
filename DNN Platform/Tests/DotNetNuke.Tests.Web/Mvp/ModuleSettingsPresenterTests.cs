@@ -48,17 +48,17 @@ namespace DotNetNuke.Tests.Web.Mvp
         [Test]
         public void ModuleSettingsPresenter_Load_Initialises_Both_Dictionaries_On_PostBack()
         {
-            //Arrange
+            // Arrange
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
             var presenter = new TestSettingsPresenter(view.Object) { ModuleContext = this.CreateModuleContext() };
             presenter.IsPostBack = true;
 
-            //Act
+            // Act
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.ModuleSettings);
             Assert.AreEqual(0, view.Object.Model.ModuleSettings.Count);
 
@@ -69,17 +69,17 @@ namespace DotNetNuke.Tests.Web.Mvp
         [Test]
         public void ModuleSettingsPresenter_Load_Does_Not_Initialise_Dictionaries_If_Not_PostBack()
         {
-            //Arrange
+            // Arrange
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
             var presenter = new TestSettingsPresenter(view.Object) { ModuleContext = this.CreateModuleContext() };
             presenter.IsPostBack = false;
 
-            //Act
+            // Act
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            //Assert
+            // Assert
             Assert.IsNull(view.Object.Model.ModuleSettings);
             Assert.IsNull(view.Object.Model.TabModuleSettings);
         }
@@ -87,7 +87,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         [Test]
         public void ModuleSettingsPresenter_LoadSettings_Loads_Both_Dictionaries()
         {
-            //Arrange
+            // Arrange
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
@@ -96,10 +96,10 @@ namespace DotNetNuke.Tests.Web.Mvp
 
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            //Act
+            // Act
             view.Raise(v => v.OnLoadSettings += null, EventArgs.Empty);
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<Dictionary<string, string>>(view.Object.Model.ModuleSettings);
             Assert.AreEqual(_moduleSettingCount, view.Object.Model.ModuleSettings.Count);
 
@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         [Test]
         public void ModuleSettingsPresenter_SaveSettings_Saves_ModuleSettings()
         {
-            //Arrange
+            // Arrange
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
@@ -121,10 +121,10 @@ namespace DotNetNuke.Tests.Web.Mvp
             presenter.IsPostBack = true;
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            //Act
+            // Act
             view.Raise(v => v.OnSaveSettings += null, EventArgs.Empty);
 
-            //Assert
+            // Assert
             foreach (var setting in view.Object.Model.ModuleSettings)
             {
                 var key = setting.Key;
@@ -136,7 +136,7 @@ namespace DotNetNuke.Tests.Web.Mvp
         [Test]
         public void ModuleSettingsPresenter_SaveSettings_Saves_TabModuleSettings()
         {
-            //Arrange
+            // Arrange
             var view = new Mock<ISettingsView<SettingsModel>>();
             view.SetupGet(v => v.Model).Returns(new SettingsModel());
 
@@ -147,10 +147,10 @@ namespace DotNetNuke.Tests.Web.Mvp
             presenter.IsPostBack = true;
             view.Raise(v => v.Load += null, EventArgs.Empty);
 
-            //Act
+            // Act
             view.Raise(v => v.OnSaveSettings += null, EventArgs.Empty);
 
-            //Assert
+            // Assert
             foreach (var setting in view.Object.Model.TabModuleSettings)
             {
                 var key = setting.Key;

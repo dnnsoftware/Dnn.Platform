@@ -75,10 +75,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     if (this.Request.QueryString["returnurl"] != null)
                     {
-						//return to the url passed to register
+						// return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                        //clean the return url to avoid possible XSS attack.
+                        // clean the return url to avoid possible XSS attack.
                         _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
 
                         if (_RedirectURL.Contains("?returnurl"))
@@ -91,11 +91,11 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
-						//redirect to current page
+						// redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
                     }
                 }
-                else //redirect to after registration page
+                else // redirect to after registration page
                 {
 					_RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
@@ -243,7 +243,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if (this.User != null)
             {
-				//If trying to add a SuperUser - check that user is a SuperUser
+				// If trying to add a SuperUser - check that user is a SuperUser
                 if (this.VerifyUserPermissions() == false)
                 {
                     return;
@@ -301,7 +301,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return false;
             }
 
-            //Check if User is a member of the Current Portal (or a member of the MasterPortal if PortalGroups enabled)
+            // Check if User is a member of the Current Portal (or a member of the MasterPortal if PortalGroups enabled)
             if (this.User.PortalID != Null.NullInteger && this.User.PortalID != this.PortalId)
             {
                 this.AddModuleMessage("InvalidUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -309,7 +309,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return false;
             }
 
-            //Check if User is a SuperUser and that the current User is a SuperUser
+            // Check if User is a SuperUser and that the current User is a SuperUser
             if (this.User.IsSuperUser && !this.UserInfo.IsSuperUser)
             {
                 this.AddModuleMessage("NoUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -318,7 +318,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.IsEdit)
             {
-                //Check if user has admin rights
+                // Check if user has admin rights
                 if (!this.IsAdmin || (this.User.IsInRole(this.PortalSettings.AdministratorRoleName) && !PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName)))
                 {
                     this.AddModuleMessage("NotAuthorized", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -334,7 +334,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         if (this.HasManageUsersModulePermission() == false)
                         {
-                            //Display current user's profile
+                            // Display current user's profile
                             this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "", "UserID=" + this.UserInfo.UserID), true);
                         }
                     }
@@ -371,7 +371,7 @@ namespace DotNetNuke.Modules.Admin.Users
             this.ctlUser.User = this.User;
             this.ctlUser.DataBind();
 
-            //Bind the Membership
+            // Bind the Membership
             if (this.AddUser || (!this.IsAdmin))
             {
 				this.membershipRow.Visible = false;
@@ -413,7 +413,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.adminTabNav.Visible = false;
                 if (this.Request.IsAuthenticated && MembershipProviderConfig.RequiresQuestionAndAnswer)
                 {
-                    //Admin adding user
+                    // Admin adding user
                     this.dnnManageUsers.Visible = false;
                     this.actionsRow.Visible = false;
                     this.AddModuleMessage("CannotAddUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -500,42 +500,42 @@ namespace DotNetNuke.Modules.Admin.Users
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-            //Set the Membership Control Properties
+            // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
             this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlMembership.UserId = this.UserId;
 
-            //Set the User Control Properties
+            // Set the User Control Properties
             this.ctlUser.ID = "User";
             this.ctlUser.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlUser.UserId = this.UserId;
 
-            //Set the Roles Control Properties
+            // Set the Roles Control Properties
             this.ctlRoles.ID = "SecurityRoles";
             this.ctlRoles.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlRoles.ParentModule = this;
 
-            //Set the Password Control Properties
+            // Set the Password Control Properties
             this.ctlPassword.ID = "Password";
             this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlPassword.UserId = this.UserId;
 
-            //Set the Profile Control Properties
+            // Set the Profile Control Properties
             this.ctlProfile.ID = "Profile";
             this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlProfile.UserId = this.UserId;
 
-            //Customise the Control Title
+            // Customise the Control Title
             if (this.AddUser)
             {
                 if (!this.Request.IsAuthenticated)
                 {
-                    //Register
+                    // Register
                     this.ModuleConfiguration.ModuleTitle = Localization.GetString("Register.Title", this.LocalResourceFile);
                 }
                 else
                 {
-                    //Add User
+                    // Add User
                     this.ModuleConfiguration.ModuleTitle = Localization.GetString("AddUser.Title", this.LocalResourceFile);
                 }
 
@@ -555,10 +555,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
             try
             {
-                //Add an Action Event Handler to the Skin
+                // Add an Action Event Handler to the Skin
                 this.AddActionHandler(this.ModuleAction_Click);
 
-                //Bind the User information to the controls
+                // Bind the User information to the controls
                 this.BindData();
 
                 this.loginLink.NavigateUrl = Globals.LoginURL(this.RedirectURL, (this.Request.QueryString["override"] != null));
@@ -568,7 +568,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.loginLink.Attributes.Add("onclick", "return " + UrlUtils.PopUpUrl(this.loginLink.NavigateUrl, this, this.PortalSettings, true, false, 300, 650));
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -622,8 +622,8 @@ namespace DotNetNuke.Modules.Admin.Users
             switch (e.Action.CommandArgument)
             {
                 case "ManageRoles":
-                    //pnlRoles.Visible = true;
-                    //pnlUser.Visible = false;
+                    // pnlRoles.Visible = true;
+                    // pnlUser.Visible = false;
                     break;
                 case "Cancel":
                     break;
@@ -654,7 +654,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.AddModuleMessage("UserAuthorized", ModuleMessage.ModuleMessageType.GreenSuccess, true);
 
-				//Send Notification to User
+				// Send Notification to User
 				if (string.IsNullOrEmpty(this.User.Membership.Password) && !MembershipProviderConfig.RequiresQuestionAndAnswer && MembershipProviderConfig.PasswordRetrievalEnabled)
                 {
                     UserInfo user = this.User;
@@ -663,7 +663,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -687,7 +687,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -714,7 +714,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -739,7 +739,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -763,7 +763,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 this.BindMembership();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -786,7 +786,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.AddModuleMessage("UserUnLocked", ModuleMessage.ModuleMessageType.GreenSuccess, true);
                 this.BindMembership();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -831,18 +831,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (status == PasswordUpdateStatus.Success)
             {
-				//Send Notification to User
+				// Send Notification to User
                 try
                 {
                     var accessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     if (accessingUser.UserID != this.User.UserID)
                     {
-						//The password was changed by someone else
+						// The password was changed by someone else
                         Mail.SendMail(this.User, MessageType.PasswordUpdated, this.PortalSettings);
                     }
                     else
                     {
-						//The User changed his own password
+						// The User changed his own password
                         Mail.SendMail(this.User, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
                     }
                     this.AddModuleMessage("PasswordChanged", ModuleMessage.ModuleMessageType.GreenSuccess, true);
@@ -872,8 +872,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 return;
             }
 
-            //Redirect to same page (this will update all controls for any changes to profile
-            //and leave us at Page 0 (User Credentials)
+            // Redirect to same page (this will update all controls for any changes to profile
+            // and leave us at Page 0 (User Credentials)
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 
@@ -911,7 +911,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(e.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -929,7 +929,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.Response.Redirect(this.ReturnUrl, true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -946,7 +946,7 @@ namespace DotNetNuke.Modules.Admin.Users
             try
             {
                 this.Response.Redirect(this.ReturnUrl, true);
-                //Module failed to load
+                // Module failed to load
             }
             catch (Exception exc)
             {
@@ -959,7 +959,7 @@ namespace DotNetNuke.Modules.Admin.Users
             try
             {
                 this.Response.Redirect(this.ReturnUrl, true);
-                //Module failed to load
+                // Module failed to load
             }
             catch (Exception exc)
             {

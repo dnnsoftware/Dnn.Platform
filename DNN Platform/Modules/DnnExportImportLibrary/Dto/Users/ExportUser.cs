@@ -25,12 +25,12 @@ namespace Dnn.ExportImport.Dto.Users
 
         public bool IsDeletedPortal { get; set; }
 
-        public int CreatedByUserId { get; set; } //How do we insert this value?
-        public string CreatedByUserName { get; set; }//This could be used to find "CreatedByUserId"
+        public int CreatedByUserId { get; set; } // How do we insert this value?
+        public string CreatedByUserName { get; set; }// This could be used to find "CreatedByUserId"
         public DateTime? CreatedOnDate { get; set; }
 
-        public int LastModifiedByUserId { get; set; } //How do we insert this value?
-        public string LastModifiedByUserName { get; set; }//This could be used to find "LastModifiedByUserId"
+        public int LastModifiedByUserId { get; set; } // How do we insert this value?
+        public string LastModifiedByUserName { get; set; }// This could be used to find "LastModifiedByUserId"
         public DateTime? LastModifiedOnDate { get; set; }
         public Guid? PasswordResetToken { get; set; }
         public DateTime? PasswordResetExpiration { get; set; }

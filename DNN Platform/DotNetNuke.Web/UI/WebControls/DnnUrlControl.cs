@@ -95,7 +95,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return false; //Set as default
+                    return false; // Set as default
                 }
             }
             set
@@ -187,7 +187,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return true; //Set as default in the old variable
+                    return true; // Set as default in the old variable
                 }
             }
             set
@@ -210,7 +210,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return true; //Set as default in the old variable
+                    return true; // Set as default in the old variable
                 }
             }
             set
@@ -280,7 +280,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return false; //Set as default in the old variable
+                    return false; // Set as default in the old variable
                 }
             }
             set
@@ -303,7 +303,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return true; //Set as default in the old variable
+                    return true; // Set as default in the old variable
                 }
             }
             set
@@ -338,7 +338,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return true; //Set as default in the old variable
+                    return true; // Set as default in the old variable
                 }
             }
             set
@@ -361,7 +361,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return true; //Set as default in the old variable
+                    return true; // Set as default in the old variable
                 }
             }
             set
@@ -384,7 +384,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 else
                 {
-                    return false; //Set as default in the old variable
+                    return false; // Set as default in the old variable
                 }
             }
             set
@@ -584,7 +584,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     }
                     else
                     {
-                        //to handle legacy scenarios before the introduction of the FileServerHandler
+                        // to handle legacy scenarios before the introduction of the FileServerHandler
                         var fileName = Path.GetFileName(_Url);
                         var folderPath = _Url.Substring(0, _Url.LastIndexOf(fileName));
                         var folder = FolderManager.Instance.GetFolder(this._objPortal.PortalID, folderPath);
@@ -618,7 +618,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     this.chkTrack.Checked = objUrlTracking.TrackClicks;
                     this.chkLog.Checked = objUrlTracking.LogActivity;
                 }
-                else //the url does not exist in the tracking table
+                else // the url does not exist in the tracking table
                 {
                     this.chkTrack.Checked = false;
                     this.chkLog.Checked = false;
@@ -647,22 +647,22 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.optType.Items[0].Selected = true;
                     }
                 }
-                this.chkNewWindow.Checked = false; //Need check
-                this.chkTrack.Checked = false; //Need check
-                this.chkLog.Checked = false; //Need check
+                this.chkNewWindow.Checked = false; // Need check
+                this.chkTrack.Checked = false; // Need check
+                this.chkLog.Checked = false; // Need check
             }
 
-            //Url type changed, then we must draw the controlos for that type
+            // Url type changed, then we must draw the controlos for that type
             this._doRenderTypeControls = true;
         }
 
         private void DoRenderTypes()
         {
-            //We must clear the list to keep the same item order
+            // We must clear the list to keep the same item order
             string strCurrent = "";
             if (this.optType.SelectedIndex >= 0)
             {
-                strCurrent = this.optType.SelectedItem.Value; //Save current selected value
+                strCurrent = this.optType.SelectedItem.Value; // Save current selected value
             }
             this.optType.Items.Clear();
             if (this.ShowNone)
@@ -760,13 +760,13 @@ namespace DotNetNuke.Web.UI.WebControls
                     else
                     {
                         this.optType.Items[0].Selected = true;
-                        this._doRenderTypeControls = true; //Type changed, re-draw
+                        this._doRenderTypeControls = true; // Type changed, re-draw
                     }
                 }
                 else
                 {
                     this.optType.Items[0].Selected = true;
-                    this._doRenderTypeControls = true; //Type changed, re-draw
+                    this._doRenderTypeControls = true; // Type changed, re-draw
                 }
                 this.TypeRow.Visible = this.optType.Items.Count > 1;
             }
@@ -812,17 +812,17 @@ namespace DotNetNuke.Web.UI.WebControls
             var objUrls = new UrlController();
             if (!String.IsNullOrEmpty(_Urltype))
             {
-                //load listitems
+                // load listitems
                 switch (this.optType.SelectedItem.Value)
                 {
-                    case "N": //None
+                    case "N": // None
                         this.URLRow.Visible = false;
                         this.TabRow.Visible = false;
                         this.FileRow.Visible = false;
                         this.UserRow.Visible = false;
                         this.ImagesRow.Visible = false;
                         break;
-                    case "I": //System Image
+                    case "I": // System Image
                         this.URLRow.Visible = false;
                         this.TabRow.Visible = false;
                         this.FileRow.Visible = false;
@@ -845,7 +845,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         break;
 
-                    case "U": //Url
+                    case "U": // Url
                         this.URLRow.Visible = true;
                         this.TabRow.Visible = false;
                         this.FileRow.Visible = false;
@@ -867,7 +867,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         this.cmdAdd.Visible = false;
                         this.cmdDelete.Visible = false;
                         break;
-                    case "T": //tab
+                    case "T": // tab
                         this.URLRow.Visible = false;
                         this.TabRow.Visible = true;
                         this.FileRow.Visible = false;
@@ -888,20 +888,20 @@ namespace DotNetNuke.Web.UI.WebControls
                             this.cboTabs.SelectedPage = page;
                         }
                         break;
-                    case "F": //file
+                    case "F": // file
                         this.URLRow.Visible = false;
                         this.TabRow.Visible = false;
                         this.FileRow.Visible = true;
                         this.UserRow.Visible = false;
                         this.ImagesRow.Visible = false;
 
-                        //select folder
-                        //We Must check if selected folder has changed because of a property change (Secure, Database)
+                        // select folder
+                        // We Must check if selected folder has changed because of a property change (Secure, Database)
                         string FileName = string.Empty;
                         string FolderPath = string.Empty;
                         string LastFileName = string.Empty;
                         string LastFolderPath = string.Empty;
-                        //Let's try to remember last selection
+                        // Let's try to remember last selection
                         if (this.ViewState["LastFolderPath"] != null)
                         {
                             LastFolderPath = Convert.ToString(this.ViewState["LastFolderPath"]);
@@ -912,13 +912,13 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                         if (_Url != string.Empty)
                         {
-                            //Let's use the new URL
+                            // Let's use the new URL
                             FileName = _Url.Substring(_Url.LastIndexOf("/") + 1);
                             FolderPath = _Url.Replace(FileName, "");
                         }
                         else
                         {
-                            //Use last settings
+                            // Use last settings
                             FileName = LastFileName;
                             FolderPath = LastFolderPath;
                         }
@@ -927,7 +927,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         this.txtUrl.Visible = false;
                         break;
-                    case "M": //membership users
+                    case "M": // membership users
                         this.URLRow.Visible = false;
                         this.TabRow.Visible = false;
                         this.FileRow.Visible = false;
@@ -958,7 +958,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             base.OnInit(e);
 
-            //prevent unauthorized access
+            // prevent unauthorized access
             if (this.Request.IsAuthenticated == false)
             {
                 this.Visible = false;
@@ -990,18 +990,18 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 if (this.ViewState["IsUrlControlLoaded"] == null)
                 {
-                    //If Not Page.IsPostBack Then
-                    //let's make at least an initialization
-                    //The type radio button must be initialized
-                    //The url must be initialized no matter its value
+                    // If Not Page.IsPostBack Then
+                    // let's make at least an initialization
+                    // The type radio button must be initialized
+                    // The url must be initialized no matter its value
                     this._doRenderTypes = true;
                     this._doChangeURL = true;
                     ClientAPI.AddButtonConfirm(this.cmdDelete, Localization.GetString("DeleteItem"));
-                    //The following line was mover to the pre-render event to ensure render for the first time
-                    //ViewState("IsUrlControlLoaded") = "Loaded"
+                    // The following line was mover to the pre-render event to ensure render for the first time
+                    // ViewState("IsUrlControlLoaded") = "Loaded"
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -1034,7 +1034,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             catch (Exception exc)
             {
-                //Let's detect possible problems
+                // Let's detect possible problems
                 Exceptions.LogException(new Exception("Error rendering URLControl subcontrols.", exc));
             }
         }
@@ -1046,7 +1046,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.txtUrl.Visible = true;
             this.cmdAdd.Visible = false;
             this.cmdDelete.Visible = false;
-            this._doRenderTypeControls = false; //Must not render on this postback
+            this._doRenderTypeControls = false; // Must not render on this postback
             this._doRenderTypes = false;
             this._doChangeURL = false;
         }
@@ -1057,9 +1057,9 @@ namespace DotNetNuke.Web.UI.WebControls
             {
                 var objUrls = new UrlController();
                 objUrls.DeleteUrl(this._objPortal.PortalID, this.cboUrls.SelectedItem.Value);
-                this.LoadUrls(); //we must reload the url list
+                this.LoadUrls(); // we must reload the url list
             }
-            this._doRenderTypeControls = false; //Must not render on this postback
+            this._doRenderTypeControls = false; // Must not render on this postback
             this._doRenderTypes = false;
             this._doChangeURL = false;
         }
@@ -1077,14 +1077,14 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.cboUrls.ClearSelection();
                 this.cboUrls.Items.FindByValue(this.txtUrl.Text).Selected = true;
             }
-            this._doRenderTypeControls = false; //Must not render on this postback
+            this._doRenderTypeControls = false; // Must not render on this postback
             this._doRenderTypes = false;
             this._doChangeURL = false;
         }
 
         protected void optType_SelectedIndexChanged(Object sender, EventArgs e)
         {
-            //Type changed, render the correct control set
+            // Type changed, render the correct control set
             this.ViewState["UrlType"] = this.optType.SelectedItem.Value;
             this._doRenderTypeControls = true;
         }

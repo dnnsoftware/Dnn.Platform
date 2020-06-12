@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Search
         /// <returns><b>true</b> if the collection contains the specified object; otherwise, <b>false</b>.</returns>
         public bool Contains(SearchContentModuleInfo value)
         {
-			//If value is not of type SearchContentModuleInfo, this will return false.
+			// If value is not of type SearchContentModuleInfo, this will return false.
             return this.List.Contains(value);
         }
 

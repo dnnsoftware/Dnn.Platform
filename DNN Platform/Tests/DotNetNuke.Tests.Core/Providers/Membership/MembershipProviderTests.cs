@@ -67,8 +67,8 @@ namespace DotNetNuke.Tests.Core.Providers.Membership
         {
         }
 
-        //TODO: Must be moved to integration tests.
-        //Note: this is the only test in core unit testing project that requires a working db connection to run.
+        // TODO: Must be moved to integration tests.
+        // Note: this is the only test in core unit testing project that requires a working db connection to run.
         [Test]
         [Ignore]
         public void Password_Should_Saved_In_History_During_Create_User()

@@ -90,18 +90,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 
             var connectionString = builder.ToString();
 
-            //load web.config connection string for comparison
+            // load web.config connection string for comparison
             var appConnectionString = Config.GetConnectionString();
 
             var modified = false;
-            //save to web.config if different
+            // save to web.config if different
             if (appConnectionString.ToLower() != connectionString.ToLower())
             {
                 Config.UpdateConnectionString(connectionString);
                 modified = true;
             }
 
-            //Compare (and overwrite) Owner and Qualifier in Data Provider
+            // Compare (and overwrite) Owner and Qualifier in Data Provider
             if (Config.GetDataBaseOwner().ToLower() != dbowner.ToLower() ||
                 (Config.GetObjectQualifer().ToLower() != connectionConfig.Qualifier.ToLower()))
             {
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 modified = true;
             }
 
-            //Compare (and overwrite) Owner and Qualifier in Data Provider
+            // Compare (and overwrite) Owner and Qualifier in Data Provider
             if (!string.IsNullOrEmpty(connectionConfig.UpgradeConnectionString) && Config.GetUpgradeConnectionString().ToLower() != connectionConfig.UpgradeConnectionString.ToLower())
             {
                 Config.UpdateUpgradeConnectionString("SqlDataProvider", connectionConfig.UpgradeConnectionString);
@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             string dbUser = "";
             string connection = Config.GetUpgradeConnectionString();
 
-            //If connection string does not use integrated security, then get user id.
+            // If connection string does not use integrated security, then get user id.
             if (connection.ToLowerInvariant().Contains("user id") || connection.ToLowerInvariant().Contains("uid") || connection.ToLowerInvariant().Contains("user"))
             {
                 string[] connectionParams = connection.Split(';');

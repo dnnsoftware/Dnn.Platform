@@ -37,13 +37,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(Constants.PAGE_Last)]
         public void PageSelector_Returns_CorrectPage_When_Given_Valid_Index(int index)
         {
-            //Arrange
+            // Arrange
             var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
-            //Act
+            // Act
             IPagedList<int> pagedList = selector.GetPage(index);
 
-            //Assert
+            // Assert
             Assert.AreEqual(index, pagedList.PageIndex);
         }
 
@@ -52,13 +52,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(8)]
         public void PageSelector_Returns_Correct_RecordCount_When_Given_Valid_Index(int pageSize)
         {
-            //Arrange
+            // Arrange
             var selector = new PageSelector<int>(this.list, pageSize);
 
-            //Act
+            // Act
             IPagedList<int> pagedList = selector.GetPage(Constants.PAGE_First);
 
-            //Assert
+            // Assert
             Assert.AreEqual(pageSize, pagedList.PageSize);
         }
 
@@ -69,13 +69,13 @@ namespace DotNetNuke.Tests.Core.Collections
         [TestCase(4, 4)]
         public void PageSelector_Returns_Correct_Values_When_Given_Valid_Index_And_PageSize(int index, int pageSize)
         {
-            //Arrange
+            // Arrange
             var selector = new PageSelector<int>(this.list, pageSize);
 
-            //Act
+            // Act
             IPagedList<int> pagedList = selector.GetPage(index);
 
-            //Assert
+            // Assert
             for (int i = 0; i < pageSize; i++)
             {
                 Assert.AreEqual(index * pageSize + i, pagedList[i]);
@@ -85,20 +85,20 @@ namespace DotNetNuke.Tests.Core.Collections
         [Test]
         public void PageSelector_Throws_When_Given_InValid_Index()
         {
-            //Arrange
+            // Arrange
             var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_OutOfRange));
         }
 
         [Test]
         public void PageSelector_Throws_When_Given_Negative_Index()
         {
-            //Arrange
+            // Arrange
             var selector = new PageSelector<int>(this.list, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             Assert.Throws<IndexOutOfRangeException>(() => selector.GetPage(Constants.PAGE_NegativeIndex));
         }
     }

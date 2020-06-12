@@ -93,7 +93,7 @@ namespace DotNetNuke.Web.UI.WebControls
                         }
                     }
 
-                    //clear the append item by client side
+                    // clear the append item by client side
                     if (this.Items.Count > 1)
                     {
                         this.Items.Remove(1);
@@ -154,7 +154,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._tree.CheckBoxes = true;
                 this._tree.EnableViewState = false;
 
-                //bind client-side events
+                // bind client-side events
                 this._tree.OnClientNodeChecked = "webcontrols.termsSelector.OnClientNodeChecked";
 
                 this._container.Controls.Add(this._tree);
@@ -212,7 +212,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             ITermController termRep = Util.GetTermController();
 
-            //Add a dummy parent term if simple vocabulary
+            // Add a dummy parent term if simple vocabulary
             if (v.Type == VocabularyType.Simple)
             {
                 terms.Add(new { termId = -v.VocabularyId, name = v.Name, parentTermId = Null.NullInteger });

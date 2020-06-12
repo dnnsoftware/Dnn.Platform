@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this.AddCssClass("folder");
             base.OnPreRender(e);
 
-            //add the selected folder's level path so that it can expand to the selected node in client side.
+            // add the selected folder's level path so that it can expand to the selected node in client side.
             var selectedFolder = this.SelectedFolder;
             if (selectedFolder != null && selectedFolder.ParentID > Null.NullInteger)
             {

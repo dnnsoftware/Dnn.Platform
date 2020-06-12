@@ -107,7 +107,7 @@ namespace DotNetNuke.UI.WebControls
             Int32 propValue = Convert.ToInt32(this.Value);
             Array enumValues = Enum.GetValues(this.EnumType);
 
-            //Render the Select Tag
+            // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
@@ -120,22 +120,22 @@ namespace DotNetNuke.UI.WebControls
                 string enumName = Enum.GetName(this.EnumType, enumValue);
                 enumName = Localization.GetString(enumName, this.LocalResourceFile);
 
-                //Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, enumValue.ToString(CultureInfo.InvariantCulture));
 
                 if (enumValue == propValue)
                 {
-					//Add the Selected Attribute
+					// Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
 				
-                //Render Option Tag
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(enumName);
                 writer.RenderEndTag();
             }
 			
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 

@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 try
                 {
-					//Try and cast the value to an Integer
+					// Try and cast the value to an Integer
                     if (this.Value != null)
                     {
                         Int32.TryParse(this.Value.ToString(), out intValue);
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.WebControls
                 int intValue = Null.NullInteger;
                 try
                 {
-					//Try and cast the value to an Integer
+					// Try and cast the value to an Integer
                     int.TryParse(this.OldValue.ToString(), out intValue);
                 }
                 catch (Exception exc)

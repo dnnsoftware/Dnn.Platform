@@ -95,7 +95,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             string tabOutputCacheProvider = tabSettings["CacheProvider"].ToString();
             this._app.Context.Items[ContextKeyTabOutputCacheProvider] = tabOutputCacheProvider;
-            int maxCachedVariationsForTab = 250; //by default, prevent DOS attacks
+            int maxCachedVariationsForTab = 250; // by default, prevent DOS attacks
             if (tabSettings["MaxVaryByCount"] != null && !string.IsNullOrEmpty(tabSettings["MaxVaryByCount"].ToString()))
             {
                 maxCachedVariationsForTab = Convert.ToInt32(tabSettings["MaxVaryByCount"].ToString());
@@ -108,7 +108,7 @@ namespace DotNetNuke.HttpModules.OutputCaching
             includeVaryByKeys.Add("portalid");
             includeVaryByKeys.Add("locale");
 			includeVaryByKeys.Add("alias");
-            //make sure to always add keys in lowercase only
+            // make sure to always add keys in lowercase only
 
             if (includeExclude == IncludeExcludeType.ExcludeByDefault)
             {
@@ -200,16 +200,16 @@ namespace DotNetNuke.HttpModules.OutputCaching
 
             if (returnedFromCache)
             {
-				//output the content type heade when read content from cache.
+				// output the content type heade when read content from cache.
 				this._app.Context.Response.AddHeader("Content-Type", string.Format("{0}; charset={1}", this._app.Response.ContentType, this._app.Response.Charset));
-                //This is to give a site owner the ability
-                //to visually verify that a page was rendered via
-                //the output cache.  Use FireFox FireBug or another
-                //tool to view the response headers easily.
+                // This is to give a site owner the ability
+                // to visually verify that a page was rendered via
+                // the output cache.  Use FireFox FireBug or another
+                // tool to view the response headers easily.
                 this._app.Context.Response.AddHeader("DNNOutputCache", "true");
 
-                //Also add it ti the Context - the Headers are readonly unless using IIS in Integrated Pipleine mode
-                //and we need to know if OutPut Caching is active in the compression module
+                // Also add it ti the Context - the Headers are readonly unless using IIS in Integrated Pipleine mode
+                // and we need to know if OutPut Caching is active in the compression module
                 this._app.Context.Items.Add("DNNOutputCache", "true");
 
                 this._app.Context.Response.End();

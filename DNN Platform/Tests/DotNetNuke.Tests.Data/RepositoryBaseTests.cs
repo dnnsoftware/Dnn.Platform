@@ -36,12 +36,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_CacheArgs_Null_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsNull(Util.GetPrivateMember<RepositoryBase<Dog>, CacheItemArgs>(baseRepo, "CacheArgs"));
         }
@@ -49,12 +49,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_CacheArgs_If_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableDog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<CacheableDog>;
             Assert.IsNotNull(Util.GetPrivateMember<RepositoryBase<CacheableDog>, CacheItemArgs>(baseRepo, "CacheArgs"));
         }
@@ -62,12 +62,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_Valid_CacheArgs_If_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableDog>();
 
-            //Assert
+            // Assert
             var cacheArgs = Util.GetPrivateMember<FakeRepository<CacheableDog>, CacheItemArgs>(repo, "CacheArgs");
             Assert.AreEqual(Constants.CACHE_DogsKey, cacheArgs.CacheKey);
             Assert.AreEqual(Constants.CACHE_Priority, cacheArgs.CachePriority);
@@ -77,12 +77,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_IsCacheable_False_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsCacheable"));
         }
@@ -90,12 +90,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_IsCacheable_True_If_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableDog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<CacheableDog>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<CacheableDog>, bool>(baseRepo, "IsCacheable"));
         }
@@ -103,12 +103,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_IsScoped_False_If_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsScoped"));
         }
@@ -116,12 +116,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_IsScoped_False_If_Cacheable_And_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableDog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<CacheableDog>;
             Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<CacheableDog>, bool>(baseRepo, "IsScoped"));
         }
@@ -129,12 +129,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_IsScoped_True_If_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Cat>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Cat>, bool>(baseRepo, "IsScoped"));
         }
@@ -142,12 +142,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_IsScoped_True_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableCat>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<CacheableCat>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<CacheableCat>, bool>(baseRepo, "IsScoped"));
         }
@@ -155,12 +155,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_Scope_Empty_If_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
         }
@@ -168,12 +168,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_Scope_Empty_If_Cacheable_And_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableDog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<CacheableDog>;
             Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<CacheableDog>, string>(baseRepo, "Scope"));
         }
@@ -181,12 +181,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_Scope_If_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Cat>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<Cat>, string>(baseRepo, "Scope"));
         }
@@ -194,12 +194,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Constructor_Sets_Scope_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<CacheableCat>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<CacheableCat>;
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<CacheableCat>, string>(baseRepo, "Scope"));
         }
@@ -211,13 +211,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_CacheArgs_Null_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(String.Empty);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsNull(Util.GetPrivateMember<RepositoryBase<Dog>, CacheItemArgs>(baseRepo, "CacheArgs"));
         }
@@ -225,13 +225,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_CacheArgs_If_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(Constants.CACHE_DogsKey);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsNotNull(Util.GetPrivateMember<RepositoryBase<Dog>, CacheItemArgs>(baseRepo, "CacheArgs"));
         }
@@ -239,13 +239,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_Valid_CacheArgs_If_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(Constants.CACHE_DogsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority);
 
-            //Assert
+            // Assert
             var cacheArgs = Util.GetPrivateMember<FakeRepository<Dog>, CacheItemArgs>(repo, "CacheArgs");
             Assert.AreEqual(Constants.CACHE_DogsKey, cacheArgs.CacheKey);
             Assert.AreEqual(Constants.CACHE_Priority, cacheArgs.CachePriority);
@@ -255,12 +255,12 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_IsCacheable_False_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsCacheable"));
         }
@@ -268,13 +268,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_IsCacheable_True_If_Cacheable()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(Constants.CACHE_DogsKey);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsCacheable"));
         }
@@ -282,13 +282,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_IsScoped_False_If_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(String.Empty);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsScoped"));
         }
@@ -296,13 +296,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_IsScoped_False_If_Cacheable_And_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(Constants.CACHE_DogsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.IsFalse(Util.GetPrivateMember<RepositoryBase<Dog>, bool>(baseRepo, "IsScoped"));
         }
@@ -310,13 +310,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_IsScoped_True_If_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Cat>();
             repo.Initialize(String.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Cat>, bool>(baseRepo, "IsScoped"));
         }
@@ -324,13 +324,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_IsScoped_True_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Cat>();
             repo.Initialize(Constants.CACHE_CatsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority, Constants.CACHE_ScopeModule);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.IsTrue(Util.GetPrivateMember<RepositoryBase<Cat>, bool>(baseRepo, "IsScoped"));
         }
@@ -338,13 +338,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_Scope_Empty_If_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(String.Empty);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
         }
@@ -352,13 +352,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_Scope_Empty_If_Cacheable_And_Not_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Dog>();
             repo.Initialize(Constants.CACHE_DogsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Dog>;
             Assert.AreEqual(String.Empty, Util.GetPrivateMember<RepositoryBase<Dog>, string>(baseRepo, "Scope"));
         }
@@ -366,13 +366,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_Scope_If_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Cat>();
             repo.Initialize(String.Empty, 20, CacheItemPriority.Default, Constants.CACHE_ScopeModule);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<Cat>, string>(baseRepo, "Scope"));
         }
@@ -380,13 +380,13 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Initialize_Sets_Scope_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var repo = new FakeRepository<Cat>();
             repo.Initialize(Constants.CACHE_CatsKey, Constants.CACHE_TimeOut, Constants.CACHE_Priority, Constants.CACHE_ScopeModule);
 
-            //Assert
+            // Assert
             var baseRepo = repo as RepositoryBase<Cat>;
             Assert.AreEqual(Constants.CACHE_ScopeModule, Util.GetPrivateMember<RepositoryBase<Cat>, string>(baseRepo, "Scope"));
         }
@@ -398,7 +398,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Delete_Clears_Cache_If_Cacheable()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(Constants.CACHE_DogsKey);
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -406,17 +406,17 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act
+            // Act
             mockRepository.Object.Delete(new CacheableDog());
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Delete_Clears_Cache_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -424,39 +424,39 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             mockRepository.Object.Delete(new CacheableCat { ModuleId = Constants.MODULE_ValidId });
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Delete_Does_Not_Clear_Cache_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act
+            // Act
             mockRepository.Object.Delete(new Dog());
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_Delete_Calls_DeleteInternal()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
             mockRepository.Protected().Setup("DeleteInternal", ItExpr.IsAny<Dog>());
 
-            //Act
+            // Act
             mockRepository.Object.Delete(new Dog());
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("DeleteInternal", Times.Once(), ItExpr.IsAny<Dog>());
         }
 
@@ -467,7 +467,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Get_Checks_Cache_If_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -476,47 +476,47 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)));
         }
 
         [Test]
         public void RepositoryBase_Get_Does_Not_Check_Cache_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_Get_Does_Not_Check_Cache_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_CatsKey)), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_Get_Calls_GetAllInternal_If_Cacheable_And_Cache_Expired()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -526,45 +526,45 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
             mockRepository.Protected().Setup("GetInternal");
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("GetInternal", Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Get_Calls_GetAllInternal_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
             mockRepository.Protected().Setup("GetInternal");
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("GetInternal", Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Get_Calls_GetAllInternal_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup("GetInternal");
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("GetInternal", Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Get_Does_Not_Call_GetAllInternal_If_Cacheable_And_Cache_Valid()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -574,10 +574,10 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
             mockRepository.Protected().Setup("GetInternal");
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get();
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("GetInternal", Times.Never());
         }
 
@@ -588,7 +588,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Get_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -599,65 +599,65 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get<int>(Constants.MODULE_ValidId);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(cacheKey));
         }
 
         [Test]
         public void RepositoryBase_Get_Overload_Throws_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.Get<int>(Constants.MODULE_ValidId));
         }
 
         [Test]
         public void RepositoryBase_Get_Overload_Throws_If_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.Get<int>(Constants.MODULE_ValidId));
         }
 
         [Test]
         public void RepositoryBase_Get_Overload_Throws_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.Get<int>(Constants.MODULE_ValidId));
         }
 
         [Test]
         public void RepositoryBase_Get_Overload_Calls_GetAllByScopeInternal_If_Not_Cacheable_And_Is_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Cat>>();
             mockRepository.Protected().Setup<IEnumerable<Cat>>("GetByScopeInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get<int>(Constants.MODULE_ValidId);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IEnumerable<Cat>>("GetByScopeInternal", Times.Once(), ItExpr.IsAny<object>());
         }
 
         [Test]
         public void RepositoryBase_Get_Overload_Calls_GetAllByScopeInternal_If_Cacheable_And_Cache_Expired()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -669,17 +669,17 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup<IEnumerable<CacheableCat>>("GetByScopeInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get<int>(Constants.MODULE_ValidId);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IEnumerable<CacheableCat>>("GetByScopeInternal", Times.Once(), ItExpr.IsAny<object>());
         }
 
         [Test]
         public void RepositoryBase_Get_Overload_Does_Not_Call_GetAllByScopeInternal_If_Cacheable_And_Cache_Valid()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -691,10 +691,10 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup<IEnumerable<CacheableCat>>("GetByScopeInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var list = mockRepository.Object.Get<int>(Constants.MODULE_ValidId);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IEnumerable<CacheableCat>>("GetByScopeInternal", Times.Never(), ItExpr.IsAny<object>());
         }
 
@@ -705,7 +705,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_GetById_Checks_Cache_If_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -714,75 +714,75 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act
+            // Act
             var dog = mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)));
         }
 
         [Test]
         public void RepositoryBase_GetById_Does_Not_Check_Cache_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act
+            // Act
             var dog = mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_GetById_Does_Not_Check_Cache_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             var cat = mockRepository.Object.GetById(Constants.PETAPOCO_ValidCatId);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_GetById_Calls_GetByIdInternal_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
             mockRepository.Protected().Setup<Dog>("GetByIdInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var dog = mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<Dog>("GetByIdInternal", Times.Once(), ItExpr.IsAny<object>());
         }
 
         [Test]
         public void RepositoryBase_GetById_Calls_GetByIdInternal_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup<CacheableCat>("GetByIdInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var cat = mockRepository.Object.GetById(Constants.PETAPOCO_ValidCatId);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<CacheableCat>("GetByIdInternal", Times.Once(), ItExpr.IsAny<object>());
         }
 
         [Test]
         public void RepositoryBase_GetById_Does_Not_Call_GetByIdInternal_If_Cacheable_And_Cache_Valid()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -792,10 +792,10 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
             mockRepository.Protected().Setup<CacheableDog>("GetByIdInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var dog = mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<CacheableDog>("GetByIdInternal", Times.Never(), ItExpr.IsAny<object>());
         }
 
@@ -806,7 +806,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_GetById_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -817,32 +817,32 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             var cat = mockRepository.Object.GetById(Constants.PETAPOCO_ValidCatId, Constants.MODULE_ValidId);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(cacheKey));
         }
 
         [Test]
         public void RepositoryBase_GetById_Overload_Throws_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId, Constants.MODULE_ValidId));
         }
 
         [Test]
         public void RepositoryBase_GetById_Overload_Throws__If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.GetById(Constants.PETAPOCO_ValidDogId, Constants.MODULE_ValidId));
         }
 
@@ -853,7 +853,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_GetPage_Checks_Cache_If_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -862,75 +862,75 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act
+            // Act
             var dogs = mockRepository.Object.GetPage(Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)));
         }
 
         [Test]
         public void RepositoryBase_GetPage_Does_Not_Check_Cache_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act
+            // Act
             var dogs = mockRepository.Object.GetPage(Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_GetPage_Does_Not_Check_Cache_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             var cats = mockRepository.Object.GetPage(Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(CachingProvider.GetCacheKey(Constants.CACHE_DogsKey)), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_GetPage_Calls_GetAllByPageInternal_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
             mockRepository.Protected().Setup<IPagedList<Dog>>("GetPageInternal", ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
 
-            //Act
+            // Act
             var dogs = mockRepository.Object.GetPage(Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IPagedList<Dog>>("GetPageInternal", Times.Once(), ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
         }
 
         [Test]
         public void RepositoryBase_GetPage_Calls_GetAllByPageInternal_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup<IPagedList<CacheableCat>>("GetPageInternal", ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
 
-            //Act
+            // Act
             var cats = mockRepository.Object.GetPage(Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IPagedList<CacheableCat>>("GetPageInternal", Times.Once(), ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
         }
 
         [Test]
         public void RepositoryBase_GetPage_Does_Not_Call_GetAllByPageInternal_If_Cacheable_And_Cache_Valid()
         {
-            //Arrange
+            // Arrange
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
             mockHostController.Setup(h => h.GetString("PerformanceSetting")).Returns("3");
 
@@ -941,10 +941,10 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
             mockRepository.Protected().Setup<IPagedList<CacheableDog>>("GetPageInternal", ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
 
-            //Act
+            // Act
             var dogs = mockRepository.Object.GetPage(Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IPagedList<CacheableDog>>("GetPageInternal", Times.Never(), ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
         }
 
@@ -955,7 +955,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_GetPage_Overload_Checks_Cache_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -966,65 +966,65 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             var cats = mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.GetItem(cacheKey));
         }
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Throws_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount));
         }
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Throws_If_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount));
         }
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Throws_If_Cacheable_But_Not_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<NotSupportedException>(() => mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount));
         }
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Calls_GetAllByScopeAndPageInternal_If_Not_Cacheable_And_Is_Scoped()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Cat>>();
             mockRepository.Protected().Setup<IEnumerable<Cat>>("GetPageByScopeInternal", ItExpr.IsAny<object>(), ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
 
-            //Act
+            // Act
             var cats = mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IEnumerable<Cat>>("GetPageByScopeInternal", Times.Once(), ItExpr.IsAny<object>(), ItExpr.IsAny<int>(), ItExpr.IsAny<int>());
         }
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Calls_GetAllByScopeInternal_If_Cacheable_And_Cache_Expired()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -1040,17 +1040,17 @@ namespace DotNetNuke.Tests.Data
             var mockData = MockComponentProvider.CreateDataProvider();
             mockData.Setup(d => d.GetProviderPath()).Returns(String.Empty);
 
-            //Act
+            // Act
             var cats = mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IEnumerable<CacheableCat>>("GetByScopeInternal", Times.Once(), ItExpr.IsAny<object>());
         }
 
         [Test]
         public void RepositoryBase_GetPage_Overload_Does_Not_Call_GetAllByScopeInternal_If_Cacheable_And_Cache_Valid()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockHostController = MockComponentProvider.CreateNew<IHostController>();
@@ -1062,10 +1062,10 @@ namespace DotNetNuke.Tests.Data
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
             mockRepository.Protected().Setup<IEnumerable<CacheableCat>>("GetByScopeInternal", ItExpr.IsAny<object>());
 
-            //Act
+            // Act
             var cats = mockRepository.Object.GetPage<int>(Constants.MODULE_ValidId, Constants.PAGE_First, Constants.PAGE_RecordCount);
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify<IEnumerable<CacheableCat>>("GetByScopeInternal", Times.Never(), ItExpr.IsAny<object>());
         }
 
@@ -1076,7 +1076,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Insert_Clears_Cache_If_Cacheable()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(Constants.CACHE_DogsKey);
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -1084,17 +1084,17 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act
+            // Act
             mockRepository.Object.Insert(new CacheableDog());
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Insert_Clears_Cache_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -1102,39 +1102,39 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             mockRepository.Object.Insert(new CacheableCat { ModuleId = Constants.MODULE_ValidId });
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Insert_Does_Not_Clear_Cache_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act
+            // Act
             mockRepository.Object.Insert(new Dog());
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_Insert_Calls_InsertInternal()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
             mockRepository.Protected().Setup("InsertInternal", ItExpr.IsAny<Dog>());
 
-            //Act
+            // Act
             mockRepository.Object.Insert(new Dog());
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("InsertInternal", Times.Once(), ItExpr.IsAny<Dog>());
         }
 
@@ -1145,7 +1145,7 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void RepositoryBase_Update_Clears_Cache_If_Cacheable()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(Constants.CACHE_DogsKey);
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -1153,17 +1153,17 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableDog>>();
 
-            //Act
+            // Act
             mockRepository.Object.Update(new CacheableDog());
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Update_Clears_Cache_If_Cacheable_And_Scoped()
         {
-            //Arrange
+            // Arrange
             var cacheKey = CachingProvider.GetCacheKey(String.Format(Constants.CACHE_CatsKey + "_" + Constants.CACHE_ScopeModule + "_{0}", Constants.MODULE_ValidId));
 
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
@@ -1171,39 +1171,39 @@ namespace DotNetNuke.Tests.Data
 
             var mockRepository = new Mock<RepositoryBase<CacheableCat>>();
 
-            //Act
+            // Act
             mockRepository.Object.Update(new CacheableCat { ModuleId = Constants.MODULE_ValidId });
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(cacheKey), Times.Once());
         }
 
         [Test]
         public void RepositoryBase_Update_Does_Not_Clear_Cache_If_Not_Cacheable()
         {
-            //Arrange
+            // Arrange
             var mockCache = MockComponentProvider.CreateDataCacheProvider();
 
             var mockRepository = new Mock<RepositoryBase<Dog>>();
 
-            //Act
+            // Act
             mockRepository.Object.Update(new Dog());
 
-            //Assert
+            // Assert
             mockCache.Verify(c => c.Remove(It.IsAny<string>()), Times.Never());
         }
 
         [Test]
         public void RepositoryBase_Update_Calls_UpdateInternal()
         {
-            //Arrange
+            // Arrange
             var mockRepository = new Mock<RepositoryBase<Dog>>();
             mockRepository.Protected().Setup("UpdateInternal", ItExpr.IsAny<Dog>());
 
-            //Act
+            // Act
             mockRepository.Object.Update(new Dog());
 
-            //Assert
+            // Assert
             mockRepository.Protected().Verify("UpdateInternal", Times.Once(), ItExpr.IsAny<Dog>());
         }
         #endregion

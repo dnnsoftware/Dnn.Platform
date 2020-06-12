@@ -52,13 +52,13 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             foreach (KeyValuePair<string, InstallFile> kvp in this._Files)
             {
-				//Start component Element
+				// Start component Element
                 writer.WriteStartElement("component");
                 writer.WriteAttributeString("type", "Cleanup");
                 writer.WriteAttributeString("fileName", kvp.Value.Name);
                 writer.WriteAttributeString("version", Path.GetFileNameWithoutExtension(kvp.Value.Name));
 
-                //End component Element
+                // End component Element
                 writer.WriteEndElement();
             }
         }

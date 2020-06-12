@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             var items = new List<DnnFormItemBase>();
 
-            //iterate over pages
+            // iterate over pages
             foreach (DnnFormTab page in this.Tabs)
             {
                 foreach (DnnFormSection section in page.Sections)
@@ -117,13 +117,13 @@ namespace DotNetNuke.Web.UI.WebControls
                 items.AddRange(page.Items);
             }
 
-            //iterate over section
+            // iterate over section
             foreach (DnnFormSection section in this.Sections)
             {
                 items.AddRange(section.Items);
             }
 
-            //Add base items
+            // Add base items
             items.AddRange(this.Items);
 
             return items;
@@ -317,7 +317,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 if (!cs.IsClientScriptBlockRegistered(this.GetType(), scriptName))
                 {
-                    //Render Script
+                    // Render Script
                     var scriptBuilder = new StringBuilder();
                     scriptBuilder.Append("<script language=\"javascript\" type=\"text/javascript\">\r\n");
                     scriptBuilder.Append("\t(function ($, Sys) {\r\n");

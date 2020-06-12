@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.Skins.Controls
             // Position in breadcrumb list
             var position = 1;
 
-            //resolve image path in separator content
+            // resolve image path in separator content
             this.ResolveSeparatorPaths();
 
             // If we have enabled hiding when there are no breadcrumbs, simply return
@@ -141,7 +141,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 this._breadcrumb.Append(this._separator);
             }
 
-            //process bread crumbs
+            // process bread crumbs
             for (var i = this._rootLevel; i < this.PortalSettings.ActiveTab.BreadCrumbs.Count; ++i)
             {
                 // Only add separators if we're past the root level
@@ -193,7 +193,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 this._breadcrumb.Append("</span>");
             }
 
-            this._breadcrumb.Append("</span>"); //End of BreadcrumbList
+            this._breadcrumb.Append("</span>"); // End of BreadcrumbList
 
             this.lblBreadCrumb.Text = this._breadcrumb.ToString();
         }

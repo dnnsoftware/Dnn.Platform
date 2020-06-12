@@ -33,18 +33,18 @@ namespace DotNetNuke.Entities.Urls
             result.Action = ActionType.Continue;
             result.Reason = RedirectReason.Not_Redirected;
             result.FinalUrl = null;
-            //clean the path for the rewrite 
+            // clean the path for the rewrite 
             NameValueCollection queryString = null;
             if (context != null)
             {
                 queryString = context.Request.QueryString;
             }
             result.RewritePath = RedirectTokens.RemoveAnyRedirectTokens(result.RewritePath, queryString);
-            //redo the rewrite to fix up the problem.  The user has ticked 'permanent redirect' but hasn't supplied a forwarding Url
+            // redo the rewrite to fix up the problem.  The user has ticked 'permanent redirect' but hasn't supplied a forwarding Url
             if (context != null)
-            //if no context supplied, means no rewrite was required because querystring didn't contain do301 action
+            // if no context supplied, means no rewrite was required because querystring didn't contain do301 action
             {
-                //RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
+                // RewriterUtils.RewriteUrl(context, result.RewritePath, settings.RebaseClientPath);
                 RewriterUtils.RewriteUrl(context, result.RewritePath);
             }
             result.DebugMessages.Add(message);
@@ -92,11 +92,11 @@ namespace DotNetNuke.Entities.Urls
                                                             NameValueCollection queryStringCol, 
                                                             FriendlyUrlSettings settings)
         {
-            //check for parameter replaced works by inspecting the parameters on a rewritten request, comparing 
-            //them agains the list of regex expressions on the friendlyurls.config file, and redirecting to the same page 
-            //but with new parameters, if there was a match
+            // check for parameter replaced works by inspecting the parameters on a rewritten request, comparing 
+            // them agains the list of regex expressions on the friendlyurls.config file, and redirecting to the same page 
+            // but with new parameters, if there was a match
             bool redirect = false;
-            //get the redirect actions for this portal
+            // get the redirect actions for this portal
             var messages = new List<string>();
             Dictionary<int, List<ParameterRedirectAction>> redirectActions = CacheController.GetParameterRedirects(settings, result.PortalId, ref messages);
             if (redirectActions != null && redirectActions.Count > 0)
@@ -108,67 +108,67 @@ namespace DotNetNuke.Entities.Urls
                     string rewrittenUrl = result.RewritePath ?? result.RawUrl;
 
                     List<ParameterRedirectAction> parmRedirects = null;
-                    //find the matching redirects for the tabid
+                    // find the matching redirects for the tabid
                     int tabId = result.TabId;
                     if (tabId > -1)
                     {
                         if (redirectActions.ContainsKey(tabId))
                         {
-                            //find the right set of replaced actions for this tab
+                            // find the right set of replaced actions for this tab
                             parmRedirects = redirectActions[tabId];
                         }
                     }
-                    //check for 'all tabs' redirections
-                    if (redirectActions.ContainsKey(-1)) //-1 means 'all tabs' - rewriting across all tabs
+                    // check for 'all tabs' redirections
+                    if (redirectActions.ContainsKey(-1)) // -1 means 'all tabs' - rewriting across all tabs
                     {
-                        //initialise to empty collection if there are no specific tab redirects
+                        // initialise to empty collection if there are no specific tab redirects
                         if (parmRedirects == null)
                         {
                             parmRedirects = new List<ParameterRedirectAction>();
                         }
-                        //add in the all redirects
+                        // add in the all redirects
                         List<ParameterRedirectAction> allRedirects = redirectActions[-1];
-                        parmRedirects.AddRange(allRedirects); //add the 'all' range to the tab range
+                        parmRedirects.AddRange(allRedirects); // add the 'all' range to the tab range
                         tabId = result.TabId;
                     }
                     if (redirectActions.ContainsKey(-2) && result.OriginalPath.ToLowerInvariant().Contains("default.aspx"))
                     {
-                        //for the default.aspx page
+                        // for the default.aspx page
                         if (parmRedirects == null)
                         {
                             parmRedirects = new List<ParameterRedirectAction>();
                         }
                         List<ParameterRedirectAction> defaultRedirects = redirectActions[-2];
-                        parmRedirects.AddRange(defaultRedirects); //add the default.aspx redirects to the list
+                        parmRedirects.AddRange(defaultRedirects); // add the default.aspx redirects to the list
                         tabId = result.TabId;
                     }
-                    //726 : allow for site-root redirects, ie redirects where no page match
+                    // 726 : allow for site-root redirects, ie redirects where no page match
                     if (redirectActions.ContainsKey(-3))
                     {
-                        //request is for site root
+                        // request is for site root
                         if (parmRedirects == null)
                         {
                             parmRedirects = new List<ParameterRedirectAction>();
                         }
                         List<ParameterRedirectAction> siteRootRedirects = redirectActions[-3];
-                        parmRedirects.AddRange(siteRootRedirects); //add the site root redirects to the collection
+                        parmRedirects.AddRange(siteRootRedirects); // add the site root redirects to the collection
                     }
-                    //OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
+                    // OK what we have now is a list of redirects for the currently requested tab (either because it was specified by tab id,
                     // or because there is a replaced for 'all tabs'
 
                     if (parmRedirects != null && parmRedirects.Count > 0 && rewrittenUrl != null)
                     {
                         foreach (ParameterRedirectAction parmRedirect in parmRedirects)
                         {
-                            //regex test each replaced to see if there is a match between the parameter string
-                            //and the parmRedirect
+                            // regex test each replaced to see if there is a match between the parameter string
+                            // and the parmRedirect
                             string compareWith = rewrittenUrl;
                             var redirectRegex = RegexUtils.GetCachedRegex(parmRedirect.LookFor,
                                                           RegexOptions.IgnoreCase | RegexOptions.CultureInvariant);
                             Match regexMatch = redirectRegex.Match(compareWith);
                             bool success = regexMatch.Success;
                             bool siteRootTried = false;
-                            //if no match, but there is a site root redirect to try
+                            // if no match, but there is a site root redirect to try
                             if (!success && parmRedirect.TabId == -3)
                             {
                                 siteRootTried = true;
@@ -188,7 +188,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                //success! there was a match in the parameters
+                                // success! there was a match in the parameters
                                 string parms = redirectRegex.Replace(compareWith, parmRedirect.RedirectTo);
                                 if (siteRootTried)
                                 {
@@ -201,24 +201,24 @@ namespace DotNetNuke.Entities.Urls
                                                              compareWith + "), replaced with " + parms);
                                 }
                                 string finalUrl = "";
-                                //now we need to generate the friendly Url
+                                // now we need to generate the friendly Url
 
-                                //first check to see if the parameter replacement string has a destination tabid specified
+                                // first check to see if the parameter replacement string has a destination tabid specified
                                 if (parms.ToLowerInvariant().Contains("tabid/"))
                                 {
-                                    //if so, using a feature whereby the dest tabid can be changed within the parameters, which will 
-                                    //redirect the page as well as redirecting the parameter values
+                                    // if so, using a feature whereby the dest tabid can be changed within the parameters, which will 
+                                    // redirect the page as well as redirecting the parameter values
                                     string[] parmParts = parms.Split('/');
                                     bool tabIdNext = false;
                                     foreach (string parmPart in parmParts)
                                     {
                                         if (tabIdNext)
                                         {
-                                            //changes the tabid of page, effects a page redirect along with a parameter redirect
+                                            // changes the tabid of page, effects a page redirect along with a parameter redirect
                                             Int32.TryParse(parmPart, out tabId);
                                             parms = parms.Replace("tabid/" + tabId.ToString(), "");
-                                            //remove the tabid/xx from the path
-                                            break; //that's it, we're finished
+                                            // remove the tabid/xx from the path
+                                            break; // that's it, we're finished
                                         }
                                         if (parmPart.Equals("tabid", StringComparison.InvariantCultureIgnoreCase))
                                         {
@@ -228,20 +228,20 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 else if (tabId == -1)
                                 {
-                                    //find the home tabid for this portal
-                                    //735 : switch to custom method for getting portal
+                                    // find the home tabid for this portal
+                                    // 735 : switch to custom method for getting portal
                                     PortalInfo portal = CacheController.GetPortal(result.PortalId, true);
                                     tabId = portal.HomeTabId;
                                 }
                                 if (parmRedirect.ChangeToSiteRoot)
                                 {
-                                    //when change to siteroot requested, new path goes directly off the portal alias
-                                    //so set the finalUrl as the poratl alias
+                                    // when change to siteroot requested, new path goes directly off the portal alias
+                                    // so set the finalUrl as the poratl alias
                                     finalUrl = result.Scheme + result.HttpAlias + "/";
                                 }
                                 else
                                 {
-                                    //if the tabid has been supplied, do a friendly url provider lookup to get the correct format for the tab url
+                                    // if the tabid has been supplied, do a friendly url provider lookup to get the correct format for the tab url
                                     if (tabId > -1)
                                     {
                                         TabInfo tab = TabController.Instance.GetTab(tabId, result.PortalId, false);
@@ -296,11 +296,11 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                     if (parms.Length > 0)
                                     {
-                                        //we are adding more parms onto the end, so remove the page extension
-                                        //from the parameter list
-                                        //946 : exception when settings.PageExtension value is empty
+                                        // we are adding more parms onto the end, so remove the page extension
+                                        // from the parameter list
+                                        // 946 : exception when settings.PageExtension value is empty
                                         parms += settings.PageExtension;
-                                        //816: if page extension is /, then don't do this
+                                        // 816: if page extension is /, then don't do this
                                         if (settings.PageExtension != "/" &&
                                             string.IsNullOrEmpty(settings.PageExtension) == false)
                                         {
@@ -309,9 +309,9 @@ namespace DotNetNuke.Entities.Urls
                                     }
                                     else
                                     {
-                                        //we are removing all the parms altogether, so
-                                        //the url needs to end in the page extension only
-                                        //816: if page extension is /, then don't do this
+                                        // we are removing all the parms altogether, so
+                                        // the url needs to end in the page extension only
+                                        // 816: if page extension is /, then don't do this
                                         if (settings.PageExtension != "/" &&
                                             string.IsNullOrEmpty(settings.PageExtension) == false)
                                         {
@@ -320,10 +320,10 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                     }
                                 }
-                                //put the replaced parms back on the end
+                                // put the replaced parms back on the end
                                 finalUrl += parms;
 
-                                //set the final url
+                                // set the final url
                                 result.FinalUrl = finalUrl;
                                 result.Reason = RedirectReason.Custom_Redirect;
                                 switch (parmRedirect.Action)
@@ -382,16 +382,16 @@ namespace DotNetNuke.Entities.Urls
                                                     Guid parentTraceId)
         {
             string bestFriendlyUrl = null;
-            //592 : check for permanent redirect
+            // 592 : check for permanent redirect
             permRedirect = tab.PermanentRedirect;
             int redirectTabId;
             if (int.TryParse(tab.Url, out redirectTabId))
             {
-                //ok, redirecting to a new tab, specified by the tabid in the Url field
+                // ok, redirecting to a new tab, specified by the tabid in the Url field
                 TabInfo redirectTab = TabController.Instance.GetTab(redirectTabId, tab.PortalID, false);
                 if (redirectTab != null)
                 {
-                    //now get the friendly url for that tab
+                    // now get the friendly url for that tab
                     bestFriendlyUrl = AdvancedFriendlyUrlProvider.ImprovedFriendlyUrl(redirectTab, 
                                                                                         cleanPath,
                                                                                         Globals.glbDefaultPage,
@@ -403,17 +403,17 @@ namespace DotNetNuke.Entities.Urls
             }
             else
             {
-                //use the url, as specified in the dnn tab url property
-                //776 : when no url, don't redirect 
+                // use the url, as specified in the dnn tab url property
+                // 776 : when no url, don't redirect 
                 if (tab.Url != "")
                 {
                     bestFriendlyUrl = tab.Url;
                 }
                 else
                 {
-                    //776: no actual Url for the 'perm redirect'.
-                    //this is a mistake on the part of the person who created the perm redirect
-                    //but don't create a redirect or there will be a terminal loop
+                    // 776: no actual Url for the 'perm redirect'.
+                    // this is a mistake on the part of the person who created the perm redirect
+                    // but don't create a redirect or there will be a terminal loop
                     permRedirect = false;
                 }
             }

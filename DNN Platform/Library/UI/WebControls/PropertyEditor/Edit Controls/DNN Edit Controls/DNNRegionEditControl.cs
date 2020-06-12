@@ -149,7 +149,7 @@ namespace DotNetNuke.UI.WebControls
 		/// -----------------------------------------------------------------------------
 		protected override void OnAttributesChanged()
 		{
-			//Get the List settings out of the "Attributes"
+			// Get the List settings out of the "Attributes"
 			if ((this.CustomAttributes != null))
 			{
 				foreach (Attribute attribute in this.CustomAttributes)

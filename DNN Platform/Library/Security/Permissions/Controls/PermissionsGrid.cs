@@ -273,10 +273,10 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             get
             {
-                //Obtain PortalSettings from Current Context
+                // Obtain PortalSettings from Current Context
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
                 int portalID;
-                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) //if we are in host filemanager then we need to pass a null portal id
+                if (Globals.IsHostTab(portalSettings.ActiveTab.TabID)) // if we are in host filemanager then we need to pass a null portal id
                 {
                     portalID = Null.NullInteger;
                 }
@@ -323,20 +323,20 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.dtRolePermissions.Columns.Clear();
             this.dtRolePermissions.Rows.Clear();
 
-            //Add Roles Column
+            // Add Roles Column
             this.dtRolePermissions.Columns.Add(new DataColumn("RoleId"));
 
-            //Add Roles Column
+            // Add Roles Column
             this.dtRolePermissions.Columns.Add(new DataColumn("RoleName"));
 
             for (int i = 0; i <= this._permissions.Count - 1; i++)
             {
                 var permissionInfo = (PermissionInfo)this._permissions[i];
 
-                //Add Enabled Column
+                // Add Enabled Column
                 this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName + "_Enabled"));
 
-                //Add Permission Column
+                // Add Permission Column
                 this.dtRolePermissions.Columns.Add(new DataColumn(permissionInfo.PermissionName));
             }
             this.GetRoles();
@@ -381,11 +381,11 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.dtUserPermissions.Columns.Clear();
             this.dtUserPermissions.Rows.Clear();
 
-            //Add Roles Column
+            // Add Roles Column
             var col = new DataColumn("UserId");
             this.dtUserPermissions.Columns.Add(col);
 
-            //Add Roles Column
+            // Add Roles Column
             col = new DataColumn("DisplayName");
             this.dtUserPermissions.Columns.Add(col);
             int i;
@@ -394,11 +394,11 @@ namespace DotNetNuke.Security.Permissions.Controls
                 PermissionInfo objPerm;
                 objPerm = (PermissionInfo)this._permissions[i];
 
-                //Add Enabled Column
+                // Add Enabled Column
                 col = new DataColumn(objPerm.PermissionName + "_Enabled");
                 this.dtUserPermissions.Columns.Add(col);
 
-                //Add Permission Column
+                // Add Permission Column
                 col = new DataColumn(objPerm.PermissionName);
                 this.dtUserPermissions.Columns.Add(col);
             }
@@ -476,10 +476,10 @@ namespace DotNetNuke.Security.Permissions.Controls
                 this.Roles.Add(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });                    
             }
 
-            //Administrators Role always has implicit permissions, then it should be always in
+            // Administrators Role always has implicit permissions, then it should be always in
             this.EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.AdministratorRoleId));
             
-            //Show also default roles
+            // Show also default roles
             this.EnsureRole(RoleController.Instance.GetRoleById(portalSettings.PortalId, portalSettings.RegisteredRoleId));
             this.EnsureRole(new RoleInfo { RoleID = this.AllUsersRoleId, PortalID = portalSettings.PortalId, RoleName = Globals.glbRoleAllUsersName });
             
@@ -527,8 +527,8 @@ namespace DotNetNuke.Security.Permissions.Controls
                                                 };
                 templateCol.ItemTemplate = columnTemplate;
 
-                var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) //system permission
-                                                            : (!String.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) //custom permission
+                var locName = (permission.ModuleDefID <= 0) ? Localization.GetString(permission.PermissionName + ".Permission", PermissionProvider.Instance().LocalResourceFile) // system permission
+                                                            : (!String.IsNullOrEmpty(this.ResourceFile) ? Localization.GetString(permission.PermissionName + ".Permission", this.ResourceFile) // custom permission
                                                                                                     : "");
                 templateCol.HeaderText = !String.IsNullOrEmpty(locName) ? locName : permission.PermissionName;                
                 templateCol.HeaderStyle.Wrap = true;
@@ -570,7 +570,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         private void DeleteRolePermissions(int entityID)
         {
-            //PermissionsList.RemoveAll(p => p.RoleID == entityID);
+            // PermissionsList.RemoveAll(p => p.RoleID == entityID);
             var permissionToDelete = this.PermissionsList.Where(p => p.RoleID == entityID);
             foreach (PermissionInfoBase permission in permissionToDelete)
             {
@@ -647,7 +647,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         {
             this.lblErrorMessage = new Label
             {
-                //TODO Remove DEBUG test
+                // TODO Remove DEBUG test
                 Text = "<br />" + (errorKey.StartsWith("DEBUG") ? errorKey : Localization.GetString(errorKey)),
                 CssClass = "NormalRed"
             };
@@ -737,7 +737,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
             this.pnlPermissions = new Panel { CssClass = "dnnGrid dnnPermissionsGrid" };
 
-            //Optionally Add Role Group Filter
+            // Optionally Add Role Group Filter
             this.CreateAddRoleControls();
 
             this.rolePermissionsGrid = new DataGrid
@@ -843,7 +843,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             this.lblSelectRole.AssociatedControlID = this.cboSelectRole.ID;            
             divSelectRole.Controls.Add(this.lblSelectRole);
 
-            this.FillSelectRoleComboBox(-1); //Default Role Group is Global Roles
+            this.FillSelectRoleComboBox(-1); // Default Role Group is Global Roles
             divSelectRole.Controls.Add(this.cboSelectRole);
 
             this.cmdRole = new LinkButton { Text = Localization.GetString("Add"), CssClass = "dnnSecondaryAction" };
@@ -1065,7 +1065,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         protected virtual bool SupportsDenyPermissions(PermissionInfo permissionInfo)
         {
-            //to maintain backward compatibility the base implementation must always call the simple parameterless version of this method
+            // to maintain backward compatibility the base implementation must always call the simple parameterless version of this method
             return false;
         }
 
@@ -1163,7 +1163,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                     for (int i = 2; i <= dgi.Cells.Count - 2; i++) 
                     {
-                        //all except first two cells which is role names and role ids and last column is Actions
+                        // all except first two cells which is role names and role ids and last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
                             var permissionInfo = (PermissionInfo)this._permissions[i - 2];
@@ -1199,7 +1199,7 @@ namespace DotNetNuke.Security.Permissions.Controls
                     }
                     for (int i = 2; i <= dgi.Cells.Count - 2; i++)
                     {
-                        //all except first two cells which is displayname and userid and Last column is Actions
+                        // all except first two cells which is displayname and userid and Last column is Actions
                         if (dgi.Cells[i].Controls.Count > 0)
                         {
                             var permissionInfo = (PermissionInfo)this._permissions[i - 2];
@@ -1262,12 +1262,12 @@ namespace DotNetNuke.Security.Permissions.Controls
             int selectedRoleId;
             if (!Int32.TryParse(this.roleField.Value, out selectedRoleId))
             {
-                //Role not selected
+                // Role not selected
                 this.SetErrorMessage("InvalidRoleId");
                 return;
             }
 
-            //verify role         
+            // verify role         
             var role = this.GetSelectedRole(selectedRoleId);
             if (role != null)
             {
@@ -1276,7 +1276,7 @@ namespace DotNetNuke.Security.Permissions.Controls
             }
             else
             {
-                //role does not exist
+                // role does not exist
                 this.SetErrorMessage("RoleNotFound");
             }            
         }

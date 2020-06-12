@@ -51,9 +51,9 @@ namespace DNN.Integration.Test.Framework
 
         private const string LoginPath = "/Login";
         private const string LogoffPath = "/Home/ctl/Logoff";
-        //private const string LogoffPath = "/Home/ctl/Logoff.aspx";
-        //private const string LogoffPath = "/Logoff.aspx");
-        //private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
+        // private const string LogoffPath = "/Home/ctl/Logoff.aspx";
+        // private const string LogoffPath = "/Logoff.aspx");
+        // private const string LogoffPath = "/Home/tabid/55/ctl/LogOff/Default.aspx");
 
         const string UploadFileRequestPath = "API/internalservices/fileupload/postfile";
         const string ActivityStreamUploadFilePath = "API/DNNCorp/ActivityStream/FileUpload/UploadFile";
@@ -192,7 +192,7 @@ namespace DNN.Integration.Test.Framework
 
             var excludedInputPrefixes = new List<string>();
 
-            //CombineUrlPath(_domain, LoginPath);
+            // CombineUrlPath(_domain, LoginPath);
             using (var httpResponse2 = this.PostUserForm(LoginPath, postData, excludedInputPrefixes, false))
             {
                 if (httpResponse2 != null && httpResponse2.StatusCode < HttpStatusCode.BadRequest) // < 400
@@ -624,7 +624,7 @@ namespace DNN.Integration.Test.Framework
                 Console.WriteLine(
                     @"Either User '{0}' has no rights to post to this page {1} or " +
                     @"this page does not contain correct form ", this.UserName, relativeUrl);
-                //return null;
+                // return null;
             }
 
             foreach (var field in inputFields)

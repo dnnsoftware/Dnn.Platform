@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.Skins
             if (portalInfo != null)
             {                
                 ProcessSkinsFolder(skins, portalInfo.HomeSystemDirectoryMapPath + skinRoot, skinRoot, PortalSystemSkinPrefix);
-                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); //to be compliant with all versions
+                ProcessSkinsFolder(skins, portalInfo.HomeDirectoryMapPath + skinRoot, skinRoot, PortalSkinPrefix); // to be compliant with all versions
             }
             return skins;
         }
@@ -152,7 +152,7 @@ namespace DotNetNuke.UI.Skins
                 skinType = "S";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), "").Replace("\\", "/");
             }
-            else //to be compliant with all versions
+            else // to be compliant with all versions
             {
                 skinType = "L";
                 skinFolder = folderPath.ToLowerInvariant().Replace(portalHomeDirMapPath.ToLowerInvariant(), "").Replace("\\", "/");
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.Skins
             }
             if (canDelete)
             {
-				//Check if used for Tabs or Modules
+				// Check if used for Tabs or Modules
                 canDelete = DataProvider.Instance().CanDeleteSkin(skinType, skinFolder);
             }
             return canDelete;
@@ -243,7 +243,7 @@ namespace DotNetNuke.UI.Skins
                     case "[s]":
                         strSkinSrc = SdirRegex.Replace(strSkinSrc, portalSettings.HomeSystemDirectory);
                         break;
-                    case "[l]": //to be compliant with all versions
+                    case "[l]": // to be compliant with all versions
                         strSkinSrc = LdirRegex.Replace(strSkinSrc, portalSettings.HomeDirectory);
                         break;
                 }
@@ -290,10 +290,10 @@ namespace DotNetNuke.UI.Skins
             var skins = new List<KeyValuePair<string, string>>();
             switch (scope)
             {
-                case SkinScope.Host: //load host skins
+                case SkinScope.Host: // load host skins
                     skins = GetHostSkins(skinRoot);
                     break;
-                case SkinScope.Site: //load portal skins
+                case SkinScope.Site: // load portal skins
                     skins = GetPortalSkins(portalInfo, skinRoot);
                     break;
                 case SkinScope.All:
@@ -321,7 +321,7 @@ namespace DotNetNuke.UI.Skins
                 
             }
 			
-			//portal folder
+			// portal folder
             switch (skinFile.ToLowerInvariant())
             {
                 case "skin":
@@ -437,7 +437,7 @@ namespace DotNetNuke.UI.Skins
             string strMessage = "";
             var arrSkinFiles = new ArrayList();
 
-            //Localized Strings
+            // Localized Strings
             PortalSettings ResourcePortalSettings = Globals.GetPortalSettings();
             string BEGIN_MESSAGE = Localization.GetString("BeginZip", ResourcePortalSettings);
             string CREATE_DIR = Localization.GetString("CreateDir", ResourcePortalSettings);
@@ -454,12 +454,12 @@ namespace DotNetNuke.UI.Skins
                 objZipEntry.CheckZipEntry();
                 if (!objZipEntry.IsDirectory)
                 {
-					//validate file extension
+					// validate file extension
                     strExtension = objZipEntry.Name.Substring(objZipEntry.Name.LastIndexOf(".") + 1);
                     var extraExtensions = new List<string> {".ASCX", ".HTM", ".HTML", ".CSS", ".SWF", ".RESX", ".XAML", ".JS"};
                     if (Host.AllowedExtensionWhitelist.IsAllowedExtension(strExtension, extraExtensions))
                     {
-                        //process embedded zip files
+                        // process embedded zip files
 						if (objZipEntry.Name.Equals(RootSkin.ToLowerInvariant() + ".zip", StringComparison.InvariantCultureIgnoreCase))
                         {
                             using (var objMemoryStream = new MemoryStream())
@@ -492,24 +492,24 @@ namespace DotNetNuke.UI.Skins
                         {
                             strFileName = rootPath + skinRoot + "\\" + skinName + "\\" + objZipEntry.Name;
 
-                            //create the directory if it does not exist
+                            // create the directory if it does not exist
                             if (!Directory.Exists(Path.GetDirectoryName(strFileName)))
                             {
                                 strMessage += FormatMessage(CREATE_DIR, Path.GetDirectoryName(strFileName), 2, false);
                                 Directory.CreateDirectory(Path.GetDirectoryName(strFileName));
                             }
 							
-							//remove the old file
+							// remove the old file
                             if (File.Exists(strFileName))
                             {
                                 File.SetAttributes(strFileName, FileAttributes.Normal);
                                 File.Delete(strFileName);
                             }
 							
-							//create the new file
+							// create the new file
                             objFileStream = File.Create(strFileName);
 							
-							//unzip the file
+							// unzip the file
                             strMessage += FormatMessage(WRITE_FILE, Path.GetFileName(strFileName), 2, false);
                             intSize = objZipInputStream.Read(arrData, 0, arrData.Length);
                             while (intSize > 0)
@@ -519,7 +519,7 @@ namespace DotNetNuke.UI.Skins
                             }
                             objFileStream.Close();
 
-                            //save the skin file
+                            // save the skin file
                             switch (Path.GetExtension(strFileName))
                             {
                                 case ".htm":
@@ -545,11 +545,11 @@ namespace DotNetNuke.UI.Skins
             strMessage += FormatMessage(END_MESSAGE, skinName + ".zip", 1, false);
             objZipInputStream.Close();
 
-            //process the list of skin files
+            // process the list of skin files
             var NewSkin = new SkinFileProcessor(rootPath, skinRoot, skinName);
             strMessage += NewSkin.ProcessList(arrSkinFiles, SkinParser.Portable);
 			
-			//log installation event
+			// log installation event
             try
             {
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};

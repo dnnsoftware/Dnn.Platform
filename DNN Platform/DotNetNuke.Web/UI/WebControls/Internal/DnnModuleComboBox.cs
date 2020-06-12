@@ -124,16 +124,16 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             var portalDesktopModules = DesktopModuleController.GetDesktopModules(PortalSettings.Current.PortalId);
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
-            //foreach (var item in _moduleCombo.Items)
-            //{
+            // foreach (var item in _moduleCombo.Items)
+            // {
             //    string imageUrl =
             //        (from pkgs in packages
             //         join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
             //         where portMods.Value.DesktopModuleID.ToString() == item.Value
             //         select pkgs.IconFile).FirstOrDefault();
 
-            //    item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            //}
+            // item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            // }
         }
 
         private void BindTabModuleImages(int tabID)
@@ -143,8 +143,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             var moduleDefnitions = ModuleDefinitionController.GetModuleDefinitions();
             var packages = PackageController.Instance.GetExtensionPackages(PortalSettings.Current.PortalId);
 
-            //foreach (RadComboBoxItem item in _moduleCombo.Items)
-            //{
+            // foreach (RadComboBoxItem item in _moduleCombo.Items)
+            // {
             //    string imageUrl = (from pkgs in packages
             //                       join portMods in portalDesktopModules on pkgs.PackageID equals portMods.Value.PackageID
             //                       join modDefs in moduleDefnitions on portMods.Value.DesktopModuleID equals modDefs.Value.DesktopModuleID
@@ -152,8 +152,8 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             //                       where tabMods.Value.ModuleID.ToString() == item.Value
             //                       select pkgs.IconFile).FirstOrDefault();
 
-            //    item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
-            //}
+            // item.ImageUrl = String.IsNullOrEmpty(imageUrl) ? Globals.ImagePath + DefaultExtensionImage : imageUrl;
+            // }
         }
 
         #endregion

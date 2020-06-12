@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
     {
 		#region "Shared/Static Methods"
 
-        //return the provider
+        // return the provider
         public static FriendlyUrlProvider Instance()
         {
             return ComponentFactory.GetComponent<FriendlyUrlProvider>();

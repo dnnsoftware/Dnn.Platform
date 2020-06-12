@@ -35,7 +35,7 @@ namespace DotNetNuke.Web.Common.Internal
                 if (fileChangesMonitor == null)
                 {
                     Logger.Info("fileChangesMonitor is null");
-                    //AddSiteFilesMonitoring(true);
+                    // AddSiteFilesMonitoring(true);
                 }
                 else
                 {
@@ -52,7 +52,7 @@ namespace DotNetNuke.Web.Common.Internal
                         null, null, null);
                     Logger.Trace("DirMonCompletion count: " + dirMonCount);
                     // enable our monitor only when fcnMode="Disabled"
-                    //AddSiteFilesMonitoring(fcnVal.ToString() == "1");
+                    // AddSiteFilesMonitoring(fcnVal.ToString() == "1");
                 }
 
                 // just monitor the root folder but don't interfere

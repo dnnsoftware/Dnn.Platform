@@ -49,7 +49,7 @@ namespace DotNetNuke.Services.Installer.Installers
             this.Package = package;
             if (!string.IsNullOrEmpty(package.Manifest))
             {
-				//Create an XPathDocument from the Xml
+				// Create an XPathDocument from the Xml
                 var doc = new XPathDocument(new StringReader(package.Manifest));
                 XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
                 this.ReadComponents(nav);
@@ -59,10 +59,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 ComponentInstallerBase installer = InstallerFactory.GetInstaller(package.PackageType);
                 if (installer != null)
                 {
-					//Set package
+					// Set package
                     installer.Package = package;
 
-                    //Set type
+                    // Set type
                     installer.Type = package.PackageType;
                     this._componentInstallers.Add(0, installer);
                 }
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             if (!string.IsNullOrEmpty(packageManifest))
             {
-				//Create an XPathDocument from the Xml
+				// Create an XPathDocument from the Xml
                 var doc = new XPathDocument(new StringReader(packageManifest));
                 XPathNavigator nav = doc.CreateNavigator().SelectSingleNode("package");
                 this.ReadManifest(nav);
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Installer.Installers
             PackageType type = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
             if (type == null)
             {
-                //This package type not registered
+                // This package type not registered
 				this.Log.Logs.Clear();
                 this.Log.AddFailure(Util.SECURITY_NotRegistered + " - " + this.Package.PackageType);
                 this.IsValid = false;
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             foreach (XPathNavigator componentNav in manifestNav.CreateNavigator().Select("components/component"))
             {
-                //Set default order to next value (ie the same as the size of the collection)
+                // Set default order to next value (ie the same as the size of the collection)
 				int order = this._componentInstallers.Count;
 				
                 string type = componentNav.GetAttribute("type", "");
@@ -194,7 +194,7 @@ namespace DotNetNuke.Services.Installer.Installers
             string strText = Null.NullString;
             if (this.Package.InstallerInfo.InstallMode != InstallMode.ManifestOnly)
             {
-				//Load from file
+				// Load from file
                 strText = FileSystemUtils.ReadFile(this.Package.InstallerInfo.TempInstallFolder + "\\" + source);
             }
             return strText;
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
 
-            //Add Event Message
+            // Add Event Message
             if (this._eventMessage != null && !String.IsNullOrEmpty(this._eventMessage.Attributes["UpgradeVersionsList"]))
             {
                 this._eventMessage.Attributes.Set("desktopModuleID", Null.NullInteger.ToString());
@@ -248,16 +248,16 @@ namespace DotNetNuke.Services.Installer.Installers
             bool isCompleted = true;
             try
             {
-				//Save the Package Information
+				// Save the Package Information
                 if (this._installedPackage != null)
                 {
                     this.Package.PackageID = this._installedPackage.PackageID;
                 }
 				
-                //Save Package
+                // Save Package
                 PackageController.Instance.SaveExtensionPackage(this.Package);
 
-                //Iterate through all the Components
+                // Iterate through all the Components
                 for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
                 {
                     ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
@@ -291,12 +291,12 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             if (isCompleted)
             {
-				//All components successfully installed so Commit any pending changes
+				// All components successfully installed so Commit any pending changes
                 this.Commit();
             }
             else
             {
-				//There has been a failure so Rollback
+				// There has been a failure so Rollback
                 this.Rollback();
             }
         }
@@ -308,13 +308,13 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            //Get Name Property
+            // Get Name Property
             this.Package.Name = Util.ReadAttribute(manifestNav, "name", this.Log, Util.EXCEPTION_NameMissing);
 
-            //Get Type
+            // Get Type
             this.Package.PackageType = Util.ReadAttribute(manifestNav, "type", this.Log, Util.EXCEPTION_TypeMissing);
 
-            //If Skin or Container then set PortalID
+            // If Skin or Container then set PortalID
             if (this.Package.PackageType.Equals("Skin", StringComparison.OrdinalIgnoreCase) || this.Package.PackageType.Equals("Container", StringComparison.OrdinalIgnoreCase))
             {
                 this.Package.PortalID = this.Package.InstallerInfo.PortalID;
@@ -325,10 +325,10 @@ namespace DotNetNuke.Services.Installer.Installers
                 return;
             }
 
-            //Get IsSystem
+            // Get IsSystem
             this.Package.IsSystemPackage = bool.Parse(Util.ReadAttribute(manifestNav, "isSystem", false, this.Log, "", bool.FalseString));
 
-            //Get Version
+            // Get Version
             string strVersion = Util.ReadAttribute(manifestNav, "version", this.Log, Util.EXCEPTION_VersionMissing);
             if (string.IsNullOrEmpty(strVersion))
             {
@@ -343,7 +343,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 return;
             }
 
-            //Attempt to get the Package from the Data Store (see if its installed)
+            // Attempt to get the Package from the Data Store (see if its installed)
             var packageType = PackageController.Instance.GetExtensionPackageType(t => t.PackageType.Equals(this.Package.PackageType, StringComparison.OrdinalIgnoreCase));
 
             if (packageType.SupportsSideBySideInstallation)
@@ -384,8 +384,8 @@ namespace DotNetNuke.Services.Installer.Installers
             switch (this.Package.PackageType)
             {
                 case "Module":
-                    //In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
-                    //To ensure that FolderName is DesktopModules...
+                    // In Dynamics moduels, a component:type=File can have a basePath pointing to the App_Conde folder. This is not a correct FolderName
+                    // To ensure that FolderName is DesktopModules...
                     var folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/files|components/component/resourceFiles", "basePath", "DesktopModules");
                     if (!String.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
@@ -402,7 +402,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     if (foldernameNav != null) this.Package.FolderName = Globals.glbSkinsPath + Util.ReadElement(foldernameNav, "skinName").Replace('\\', '/');
                     break;
                 default:
-                    //copied from "Module" without the extra OR condition
+                    // copied from "Module" without the extra OR condition
                     folderNameValue = PackageController.GetSpecificFolderName(manifestNav, "components/component/resourceFiles", "basePath", "DesktopModules");
                     if (!String.IsNullOrEmpty(folderNameValue)) this.Package.FolderName = folderNameValue.Replace('\\', '/');
                     break;
@@ -410,7 +410,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
             this._eventMessage = this.ReadEventMessageNode(manifestNav);
 
-            //Get Icon
+            // Get Icon
             XPathNavigator iconFileNav = manifestNav.SelectSingleNode("iconFile");
             if (iconFileNav != null)
             {
@@ -431,7 +431,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     }
                 }
             }
-			//Get Author
+			// Get Author
             XPathNavigator authorNav = manifestNav.SelectSingleNode("owner");
             if (authorNav != null)
             {
@@ -441,14 +441,14 @@ namespace DotNetNuke.Services.Installer.Installers
                 this.Package.Email = Util.ReadElement(authorNav, "email");
             }
 			
-            //Get License
+            // Get License
             XPathNavigator licenseNav = manifestNav.SelectSingleNode("license");
             if (licenseNav != null)
             {
                 string licenseSrc = Util.ReadAttribute(licenseNav, "src");
                 if (string.IsNullOrEmpty(licenseSrc))
                 {
-					//Load from element
+					// Load from element
                     this.Package.License = licenseNav.Value;
                 }
                 else
@@ -458,18 +458,18 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             if (string.IsNullOrEmpty(this.Package.License))
             {
-				//Legacy Packages have no license
+				// Legacy Packages have no license
                 this.Package.License = Util.PACKAGE_NoLicense;
             }
 			
-            //Get Release Notes
+            // Get Release Notes
             XPathNavigator relNotesNav = manifestNav.SelectSingleNode("releaseNotes");
             if (relNotesNav != null)
             {
                 string relNotesSrc = Util.ReadAttribute(relNotesNav, "src");
                 if (string.IsNullOrEmpty(relNotesSrc))
                 {
-					//Load from element
+					// Load from element
                     this.Package.ReleaseNotes = relNotesNav.Value;
                 }
                 else
@@ -479,11 +479,11 @@ namespace DotNetNuke.Services.Installer.Installers
             }
             if (string.IsNullOrEmpty(this.Package.ReleaseNotes))
             {
-				//Legacy Packages have no Release Notes
+				// Legacy Packages have no Release Notes
 				this.Package.ReleaseNotes = Util.PACKAGE_NoReleaseNotes;
             }
 
-            //Parse the Dependencies
+            // Parse the Dependencies
             var packageDependencies = this.Package.Dependencies;
             foreach (XPathNavigator dependencyNav in manifestNav.CreateNavigator().Select("dependencies/dependency"))
             {
@@ -502,7 +502,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
 
-            //Read Components
+            // Read Components
             this.ReadComponents(manifestNav);
         }
 
@@ -524,15 +524,15 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
 			
-            //If Previously Installed Package exists then we need to update the DataStore with this 
+            // If Previously Installed Package exists then we need to update the DataStore with this 
             if (this._installedPackage == null)
             {
-				//No Previously Installed Package - Delete newly added Package
+				// No Previously Installed Package - Delete newly added Package
                 PackageController.Instance.DeleteExtensionPackage(this.Package);
             }
             else
             {
-				//Previously Installed Package - Rollback to Previously Installed
+				// Previously Installed Package - Rollback to Previously Installed
                 PackageController.Instance.SaveExtensionPackage(this._installedPackage);
             }
         }
@@ -544,7 +544,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void UnInstall()
         {
-			//Iterate through all the Components
+			// Iterate through all the Components
             for (int index = 0; index <= this._componentInstallers.Count - 1; index++)
             {
                 ComponentInstallerBase compInstaller = this._componentInstallers.Values[index];
@@ -567,7 +567,7 @@ namespace DotNetNuke.Services.Installer.Installers
                 }
             }
 			
-            //Remove the Package information from the Data Store
+            // Remove the Package information from the Data Store
             PackageController.Instance.DeleteExtensionPackage(this.Package);
         }
 		

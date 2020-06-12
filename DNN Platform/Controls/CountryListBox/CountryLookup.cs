@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.WebControls
         public CountryLookup(string FileLocation)
         {
             //------------------------------------------------------------------------------------------------
-            //Load the passed in GeoIP Data file to the memorystream
+            // Load the passed in GeoIP Data file to the memorystream
             //------------------------------------------------------------------------------------------------
             using (var _FileStream = new FileStream(FileLocation, FileMode.Open, FileAccess.Read))
             {
@@ -91,7 +91,7 @@ namespace DotNetNuke.UI.WebControls
 
         private long ConvertIPAddressToNumber(IPAddress _IPAddress)
         {
-            //Convert an IP Address, (e.g. 127.0.0.1), to the numeric equivalent
+            // Convert an IP Address, (e.g. 127.0.0.1), to the numeric equivalent
             string[] _Address = _IPAddress.ToString().Split('.');
             if (_Address.Length == 4)
             {
@@ -105,7 +105,7 @@ namespace DotNetNuke.UI.WebControls
 
         private string ConvertIPNumberToAddress(long _IPNumber)
         {
-            //Convert an IP Number to the IP Address equivalent
+            // Convert an IP Number to the IP Address equivalent
             string _IPNumberPart1 = Convert.ToString(((int)(_IPNumber / 16777216)) % 256);
             string _IPNumberPart2 = Convert.ToString(((int)(_IPNumber / 65536)) % 256);
             string _IPNumberPart3 = Convert.ToString(((int)(_IPNumber / 256)) % 256);
@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.WebControls
 
         public static MemoryStream FileToMemory(string FileLocation)
         {
-            //Read a given file into a Memory Stream to return as the result
+            // Read a given file into a Memory Stream to return as the result
             var _MemStream = new MemoryStream();
             var _Byte = new byte[256];
             try
@@ -140,13 +140,13 @@ namespace DotNetNuke.UI.WebControls
 
         public string LookupCountryCode(IPAddress _IPAddress)
         {
-            //Look up the country code, e.g. US, for the passed in IP Address
+            // Look up the country code, e.g. US, for the passed in IP Address
             return CountryCode[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(_IPAddress), 31))];
         }
 
         public string LookupCountryCode(string _IPAddress)
         {
-            //Look up the country code, e.g. US, for the passed in IP Address
+            // Look up the country code, e.g. US, for the passed in IP Address
             IPAddress _Address;
             try
             {
@@ -161,13 +161,13 @@ namespace DotNetNuke.UI.WebControls
 
         public string LookupCountryName(IPAddress addr)
         {
-            //Look up the country name, e.g. United States, for the IP Address
+            // Look up the country name, e.g. United States, for the IP Address
             return CountryName[Convert.ToInt32(this.SeekCountry(0, this.ConvertIPAddressToNumber(addr), 31))];
         }
 
         public string LookupCountryName(string _IPAddress)
         {
-            //Look up the country name, e.g. United States, for the IP Address
+            // Look up the country name, e.g. United States, for the IP Address
             IPAddress _Address;
             try
             {

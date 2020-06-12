@@ -157,15 +157,15 @@ namespace DotNetNuke.Modules.Groups
             RoleController.Instance.AddUserRole(this.PortalId, this.UserId, roleInfo.RoleID, userRoleStatus, true, Null.NullDate, Null.NullDate);
             if (roleInfo.Status == RoleStatus.Pending)
             {
-                //Send notification to Group Moderators to approve/reject group.
+                // Send notification to Group Moderators to approve/reject group.
                 notifications.AddGroupNotification(Constants.GroupPendingNotification, this.GroupViewTabId, this.ModuleId, roleInfo, this.UserInfo, modRoles, modUsers);
             }
             else
             {
-                //Send notification to Group Moderators informing of new group.
+                // Send notification to Group Moderators informing of new group.
                 notifications.AddGroupNotification(Constants.GroupCreatedNotification, this.GroupViewTabId, this.ModuleId, roleInfo, this.UserInfo, modRoles, modUsers);
 
-                //Add entry to journal.
+                // Add entry to journal.
                 GroupUtilities.CreateJournalEntry(roleInfo, this.UserInfo);
             }
 

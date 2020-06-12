@@ -46,8 +46,8 @@ namespace DotNetNuke.Entities.Groups {
             objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);
 
             // Add Terms
-            //var cntTerm = new Terms();
-            //cntTerm.ManageQuestionTerms(objPost, objContent);
+            // var cntTerm = new Terms();
+            // cntTerm.ManageQuestionTerms(objPost, objContent);
 
             return objContent;
         }
@@ -56,7 +56,7 @@ namespace DotNetNuke.Entities.Groups {
         /// This is used to update the content in the ContentItems table. Should be called when a question is updated.
         /// </summary>
         internal void UpdateContentItem(RoleInfo objItem, int tabId) {
-            ContentItem objContent = null; //Util.GetContentController().;
+            ContentItem objContent = null; // Util.GetContentController().;
 
             if (objContent == null) return;
             objContent.Content = objItem.RoleName;
@@ -66,8 +66,8 @@ namespace DotNetNuke.Entities.Groups {
             Util.GetContentController().UpdateContentItem(objContent);
 
             // Update Terms
-            //var cntTerm = new Terms();
-            //cntTerm.ManageQuestionTerms(objPost, objContent);
+            // var cntTerm = new Terms();
+            // cntTerm.ManageQuestionTerms(objPost, objContent);
         }
 
         /// <summary>
@@ -80,8 +80,8 @@ namespace DotNetNuke.Entities.Groups {
             if (objContent == null) return;
 
             // remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
-            //var cntTerms = new Terms();
-            //cntTerms.RemoveQuestionTerms(objContent);
+            // var cntTerms = new Terms();
+            // cntTerms.RemoveQuestionTerms(objContent);
 
             Util.GetContentController().DeleteContentItem(objContent);
         }

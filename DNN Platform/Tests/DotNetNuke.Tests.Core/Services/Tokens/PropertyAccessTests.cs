@@ -25,16 +25,16 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("", true)]
         public void TicksPropertyAcccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
         {
-            //Arrange
+            // Arrange
             var ticksPropertyAccess = new TicksPropertyAccess();
             var accessingUser = new UserInfo();
 
-            //Act
+            // Act
             bool propertyNotFound = false;
             string propertyValue = ticksPropertyAccess.GetProperty(propertyName, "", CultureInfo.InvariantCulture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, propertyNotFound);
         }
         
@@ -43,7 +43,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("ticksperday")]
         public void TicksPropertyAcccess_GetProperty_Returns_Correct_String(string propertyName)
         {
-            //Arrange
+            // Arrange
             var ticksPropertyAccess = new TicksPropertyAccess();
             var accessingUser = new UserInfo();
 
@@ -61,12 +61,12 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
                     break;
             }
 
-            //Act
+            // Act
             bool propertyNotFound = false;
             string propertyValue = ticksPropertyAccess.GetProperty(propertyName, "", CultureInfo.InvariantCulture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected.ToString(CultureInfo.InvariantCulture), propertyValue);
         }
 
@@ -79,17 +79,17 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("", true)]
         public void DateTimePropertyAcccess_GetProperty_Sets_PropertyNotFound(string propertyName, bool expected)
         {
-            //Arrange
+            // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
             var accessingUser = new UserInfo {Profile = new UserProfile {PreferredTimeZone = TimeZoneInfo.Local}};
 
 
-            //Act
+            // Act
             bool propertyNotFound = false;
             string propertyValue = dtPropertyAccess.GetProperty(propertyName, "", CultureInfo.InvariantCulture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, propertyNotFound);
         }
 
@@ -104,7 +104,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("utc", "it")]
         public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_For_Culture(string propertyName, string cultureName)
         {
-            //Arrange
+            // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
             var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
             var culture = new CultureInfo(cultureName);
@@ -128,12 +128,12 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             }
 
 
-            //Act
+            // Act
             bool propertyNotFound = false;
             string propertyValue = dtPropertyAccess.GetProperty(propertyName, "", culture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, propertyValue);
         }
 
@@ -148,7 +148,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
          [TestCase("utc", "it", "mmm dd, yyyy")]
          public void DateTimePropertyAcccess_GetProperty_Returns_Correct_String_Given_Format_And_Culture(string propertyName, string cultureName, string format)
          {
-             //Arrange
+             // Arrange
              var dtPropertyAccess = new DateTimePropertyAccess();
              var accessingUser = new UserInfo { Profile = new UserProfile { PreferredTimeZone = TimeZoneInfo.Local } };
              var culture = new CultureInfo(cultureName);
@@ -173,12 +173,12 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
              }
 
 
-             //Act
+             // Act
              bool propertyNotFound = false;
              string propertyValue = dtPropertyAccess.GetProperty(propertyName, format, culture,
                                                                     accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-             //Assert
+             // Assert
              Assert.AreEqual(expected, propertyValue);
          }
 
@@ -187,7 +187,7 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
         [TestCase("now", "Azores Standard Time")]
         public void DateTimePropertyAcccess_GetProperty_Adjusts_For_TimeZone(string propertyName, string timeZoneId)
         {
-            //Arrange
+            // Arrange
             var dtPropertyAccess = new DateTimePropertyAccess();
             var userTimeZone = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
             var timeZoneProfileProperty = new ProfilePropertyDefinition(Constants.PORTAL_Zero)
@@ -220,12 +220,12 @@ namespace DotNetNuke.Tests.Core.Services.Tokens
             }
 
 
-            //Act
+            // Act
             bool propertyNotFound = false;
             string propertyValue = dtPropertyAccess.GetProperty(propertyName, "", culture,
                                                                    accessingUser, Scope.DefaultSettings, ref propertyNotFound);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expected, propertyValue);
         }
     }

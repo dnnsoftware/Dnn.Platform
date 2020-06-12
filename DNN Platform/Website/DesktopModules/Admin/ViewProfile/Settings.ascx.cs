@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             catch (Exception exc)
             {
-                //Module failed to load
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             catch (Exception exc)
             {
-                //Module failed to load
+                // Module failed to load
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
         }

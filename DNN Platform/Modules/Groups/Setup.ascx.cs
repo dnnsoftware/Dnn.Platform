@@ -37,10 +37,10 @@ namespace DotNetNuke.Modules.Groups
 
         public void btGo_Click(object sender, EventArgs e)
         {
-            //Setup Child Page - Main View/Activity
+            // Setup Child Page - Main View/Activity
             TabInfo tab = this.CreatePage(this.PortalSettings.ActiveTab, this.PortalId, this.TabId, "Group Activity", false);
 
-            //Add Module to Child Page
+            // Add Module to Child Page
             int groupViewModuleId = this.AddModule(tab, this.PortalId, "Social Groups", "ContentPane");
             int journalModuleId = this.AddModule(tab, this.PortalId, "Journal", "ContentPane");
             int consoleId = this.AddModule(tab, this.PortalId, "Console", "RightPane");
@@ -54,11 +54,11 @@ namespace DotNetNuke.Modules.Groups
             this.AddModule(memberTab, this.PortalId, "DotNetNuke.Modules.MemberDirectory", "ContentPane");
 
 
-            //List Settings
+            // List Settings
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupLoadView, GroupMode.List.ToString());
             ModuleController.Instance.UpdateTabModuleSetting(this.TabModuleId, Constants.GroupViewPage, tab.TabID.ToString(CultureInfo.InvariantCulture));
 
-			//Default Social Groups
+			// Default Social Groups
 	        var defaultGroup = RoleController.GetRoleGroupByName(this.PortalId, Constants.DefaultGroupName);
 	        var groupId = -2;
 			if (defaultGroup != null)
@@ -125,7 +125,7 @@ namespace DotNetNuke.Modules.Groups
 
         private string GetSkin()
         {
-            //attempt to find and load a  skin from the assigned skinned source
+            // attempt to find and load a  skin from the assigned skinned source
             var skinSource = this.PortalSettings.DefaultPortalSkin;
 
             var tab = TabController.Instance.GetTab(this.TabId, this.PortalId, false);
@@ -141,7 +141,7 @@ namespace DotNetNuke.Modules.Groups
 
                 if (!File.Exists(HttpContext.Current.Server.MapPath(physicalSkinFile)))
                 {
-                    skinSource = ""; //this will load the default skin
+                    skinSource = ""; // this will load the default skin
                 }
             }
             return skinSource;
@@ -235,7 +235,7 @@ namespace DotNetNuke.Modules.Groups
                 {
                     if (objTabPermission.PermissionKey == "VIEW" && permissionType == 0)
                     {
-                        //Don't need to explicitly add View permisisons if "Same As Page"
+                        // Don't need to explicitly add View permisisons if "Same As Page"
                         continue;
                     }
 
@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.Groups
                         objSystemModulePermission = (PermissionInfo)arrSystemModulePermissions[j];
                         if (objSystemModulePermission.PermissionKey == "VIEW" && permissionType == 1 && objTabPermission.PermissionKey != "EDIT")
                         {
-                            //Only Page Editors get View permissions if "Page Editors Only"
+                            // Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
 

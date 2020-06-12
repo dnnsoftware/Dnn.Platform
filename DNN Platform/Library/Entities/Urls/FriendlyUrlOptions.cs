@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Urls
         public int MaxUrlPathLength;
         public string PageExtension;
         public string PunctuationReplacement;
-        //922 : change to use regexMatch pattern for allowable characters
+        // 922 : change to use regexMatch pattern for allowable characters
         public string RegexMatch;
         public Dictionary<string, string> ReplaceCharWithChar = new Dictionary<string, string>();
         public string ReplaceChars;
@@ -36,8 +36,8 @@ namespace DotNetNuke.Entities.Urls
 
         public bool CanGenerateNonStandardPath
         {
-            //replaces statements like this
-            //if ((settings.ReplaceSpaceWith != null && settings.ReplaceSpaceWith.Length > 0) || settings.ReplaceCharWithCharDict != null && settings.ReplaceCharWithCharDict.Count > 0)
+            // replaces statements like this
+            // if ((settings.ReplaceSpaceWith != null && settings.ReplaceSpaceWith.Length > 0) || settings.ReplaceCharWithCharDict != null && settings.ReplaceCharWithCharDict.Count > 0)
             get
             {
                 bool result = false;

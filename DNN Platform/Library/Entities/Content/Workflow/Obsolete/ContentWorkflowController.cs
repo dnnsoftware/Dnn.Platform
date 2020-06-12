@@ -87,7 +87,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var item = this.contentController.GetContentItem(itemID);
             var workflow = this.GetWorkflow(item);
 
-            //If already exists a started workflow
+            // If already exists a started workflow
             if (workflow != null && !this.IsWorkflowCompleted(workflow, item))
             {
                 return;
@@ -97,7 +97,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 workflow = this.GetWorkflowByID(workflowID);
             }
 
-            //Delete previous logs
+            // Delete previous logs
             DataProvider.Instance().DeleteContentWorkflowLogs(itemID, workflowID);
             var newStateID = this.GetFirstWorkflowStateID(workflow);
             this.SetWorkflowState(newStateID, item);
@@ -164,7 +164,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public bool IsWorkflowCompleted(int itemID)
         {
-            var item = this.contentController.GetContentItem(itemID); //Ensure DB values
+            var item = this.contentController.GetContentItem(itemID); // Ensure DB values
             var workflow = this.GetWorkflow(item);
             if (workflow == null) return true; // If item has not workflow, then it is considered as completed
             return this.IsWorkflowCompleted(workflow, item);
@@ -173,7 +173,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         [Obsolete("Deprecated in Platform 7.4.0. Use instead IWorkflowEngine. Scheduled removal in v10.0.0.")]
         public bool IsWorkflowOnDraft(int itemID)
         {
-            var item = this.contentController.GetContentItem(itemID); //Ensure DB values
+            var item = this.contentController.GetContentItem(itemID); // Ensure DB values
             var workflow = this.GetWorkflow(item);
             if (workflow == null) return false; // If item has not workflow, then it is not on Draft
             return item.StateID == this.GetFirstWorkflowStateID(workflow);
@@ -551,7 +551,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 SenderUserID = actionUserID
             };
 
-            //append the context
+            // append the context
             if (!string.IsNullOrEmpty(source))
             {
                 if (parameters != null && parameters.Length > 0)

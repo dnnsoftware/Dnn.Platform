@@ -63,7 +63,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this._textBox.TextChanged += this.TextChanged;
             this._textBox.Attributes.Add("aria-label", this.DataField);
 
-            //Load from ControlState
+            // Load from ControlState
             this._textBox.Text = Convert.ToString(this.Value);
             if (this.TextMode == TextBoxMode.Password)
             {

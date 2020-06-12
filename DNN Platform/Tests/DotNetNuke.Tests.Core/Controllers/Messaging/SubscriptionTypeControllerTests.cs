@@ -54,17 +54,17 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Returns(SubscriptionTypeDataReaderMockHelper.CreateEmptySubscriptionTypeReader())
                 .Verifiable();
             
-            //Act
+            // Act
             this.subscriptionTypeController.GetSubscriptionTypes();
 
-            //Assert
+            // Assert
             this.mockDataService.Verify(ds => ds.GetSubscriptionTypes(), Times.Once());
         }
 
         [Test]
         public void GetSubscriptionTypes_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.GetSubscriptionTypes(null));
         }
         #endregion
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void GetSubscriptionType_ShouldThrowArgumentNullException_WhenPredicateIsNull()
         {
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.GetSubscriptionType(null));
         }
         #endregion
@@ -82,7 +82,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void AddSubscriptionType_ShouldThrowArgumentNullException_WhenSubscriptionTypeIsNull()
         {
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => this.subscriptionTypeController.AddSubscriptionType(null));
         }
 
@@ -100,10 +100,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                     subscriptionType.DesktopModuleId))
                 .Returns(expectedSubscriptionTypeId);
 
-            //Act
+            // Act
             this.subscriptionTypeController.AddSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             Assert.AreEqual(expectedSubscriptionTypeId, subscriptionType.SubscriptionTypeId);
         }
 
@@ -116,10 +116,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
 
             var subscriptionType = new SubscriptionTypeBuilder().Build();
 
-            //Act
+            // Act
             this.subscriptionTypeController.AddSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             this.mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());
         }
         #endregion
@@ -154,10 +154,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 .Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId))
                 .Verifiable();
             
-            //Act
+            // Act
             this.subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             this.mockDataService.Verify(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId), Times.Once());
         }
 
@@ -170,10 +170,10 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.mockDataService.Setup(ds => ds.DeleteSubscriptionType(subscriptionType.SubscriptionTypeId));
             this.mockCacheProvider.Setup(cp => cp.Remove(SubscriptionTypesCacheKey)).Verifiable();
             
-            //Act
+            // Act
             this.subscriptionTypeController.DeleteSubscriptionType(subscriptionType);
 
-            //Assert
+            // Assert
             this.mockCacheProvider.Verify(cp => cp.Remove(SubscriptionTypesCacheKey), Times.Once());
         }
         #endregion

@@ -210,8 +210,8 @@ namespace DotNetNuke.Web.UI.WebControls
         
         public IOrderedDictionary ExtractValues(Control container)
         {
-            //do nothing we don't really support databinding
-            //but the telerik grid trys to databind to all template columns regardless
+            // do nothing we don't really support databinding
+            // but the telerik grid trys to databind to all template columns regardless
             return new OrderedDictionary();
         }
 
@@ -274,7 +274,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                //Bind Image Button
+                // Bind Image Button
                 if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
                     var colIcon = (ImageButton)sender;
@@ -285,7 +285,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 }
                 if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
-                    //Bind Link Button
+                    // Bind Link Button
                     var colLink = (LinkButton)sender;
                     container = (GridItem)colLink.NamingContainer;
                     keyValue = this.GetValue(container);

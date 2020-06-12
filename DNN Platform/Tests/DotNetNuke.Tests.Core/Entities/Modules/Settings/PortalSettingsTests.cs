@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
         private void SaveSettings_CallsUpdatePortalSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue,
             bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new MyPortalSettings
             {
@@ -137,43 +137,43 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new MyPortalSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void SaveSettings_UpdatesCache()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new MyPortalSettings();
 
             this.MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new MyPortalSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSettings_CallsGetCachedObject()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
 
             this.MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new MyPortalSettings());
             var settingsRepository = new MyPortalSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
@@ -243,7 +243,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         private void GetSettings_GetsValuesFrom_PortalSettings(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var portalSettings = new Dictionary<string, string>
                                  {
@@ -261,10 +261,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new MyPortalSettingsRepository();
 
-            //Act
+            // Act
             var settings = settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             Assert.AreEqual(stringValue, settings.StringProperty, "The retrieved string property value is not equal to the stored one");
             Assert.AreEqual(integerValue, settings.IntegerProperty, "The retrieved integer property value is not equal to the stored one");
             Assert.AreEqual(doubleValue, settings.DoubleProperty, "The retrieved double property value is not equal to the stored one");

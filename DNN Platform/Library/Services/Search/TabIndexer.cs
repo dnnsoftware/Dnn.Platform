@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Search
 
             searchDoc.Keywords.Add("keywords", tab.KeyWords);
 
-            //Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
+            // Using TabName for searchDoc.Title due to higher prevalence and relavency || TabTitle will be stored as a keyword
             searchDoc.Title = tab.TabName;
             searchDoc.Keywords.Add("title", tab.Title);
 

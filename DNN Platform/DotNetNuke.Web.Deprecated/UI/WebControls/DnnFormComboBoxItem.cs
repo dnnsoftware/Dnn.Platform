@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFormComboBoxItem : DnnFormListItemBase
     {
-        //public DropDownList ComboBox { get; set; }
+        // public DropDownList ComboBox { get; set; }
         public DnnComboBox ComboBox { get; set; }
 
         private void IndexChanged(object sender, EventArgs e)
@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.UI.WebControls
             BindListInternal(this.ComboBox, this.Value, this.ListSource, this.ListTextField, this.ListValueField);
         }
 
-        //internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
+        // internal static void BindListInternal(DropDownList comboBox, object value, IEnumerable listSource, string textField, string valueField)
         internal static void BindListInternal(DnnComboBox comboBox, object value, IEnumerable listSource, string textField, string valueField)
         {
             if (comboBox != null)
@@ -45,7 +45,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     var items = listSource as Dictionary<string, string>;
                     foreach (var item in items)
                     {
-                        //comboBox.Items.Add(new ListItem(item.Key, item.Value));
+                        // comboBox.Items.Add(new ListItem(item.Key, item.Value));
                         comboBox.AddItem(item.Key, item.Value);
                     }
                 }
@@ -58,8 +58,8 @@ namespace DotNetNuke.Web.UI.WebControls
                     comboBox.DataBind();
                 }
 
-                //Reset SelectedValue
-                //comboBox.Select(selectedValue);
+                // Reset SelectedValue
+                // comboBox.Select(selectedValue);
                 var selectedItem = comboBox.FindItemByValue(selectedValue);
                 if (selectedItem != null)
                     selectedItem.Selected = true;                
@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            //ComboBox = new DropDownList { ID = ID + "_ComboBox" };
+            // ComboBox = new DropDownList { ID = ID + "_ComboBox" };
             this.ComboBox = new DnnComboBox { ID = this.ID + "_ComboBox" };
             this.ComboBox.SelectedIndexChanged += this.IndexChanged;
             container.Controls.Add(this.ComboBox);

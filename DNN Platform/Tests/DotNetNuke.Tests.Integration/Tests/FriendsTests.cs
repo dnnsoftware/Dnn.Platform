@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Integration.Tests
 
             var notificationTitle = this.GetNotificationTitle(userId1);
 
-            //the notification should use french language: testuser8836 veut être amis avec vous
+            // the notification should use french language: testuser8836 veut être amis avec vous
             Assert.AreEqual($"{userName1} veut être amis", notificationTitle);
         }
 

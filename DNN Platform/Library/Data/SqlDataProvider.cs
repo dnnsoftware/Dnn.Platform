@@ -126,7 +126,7 @@ namespace DotNetNuke.Data
             }
             catch (SqlException sqlException)
             {
-                //error in SQL query
+                // error in SQL query
                 Logger.Error(sqlException);
                 errorMessage = sqlException.Message;
             }
@@ -143,8 +143,8 @@ namespace DotNetNuke.Data
         {
             string DBUser = "public";
 
-            //If connection string does not use integrated security, then get user id.
-            //Normalize to uppercase before all of the comparisons
+            // If connection string does not use integrated security, then get user id.
+            // Normalize to uppercase before all of the comparisons
             var connectionStringUppercase = this.ConnectionString.ToUpper();
             if (connectionStringUppercase.Contains("USER ID") || connectionStringUppercase.Contains("UID") || connectionStringUppercase.Contains("USER"))
             {
@@ -167,7 +167,7 @@ namespace DotNetNuke.Data
 
         private string GrantStoredProceduresPermission(string Permission, string LoginOrRole)
         {
-            //grant rights to a login or role for all stored procedures
+            // grant rights to a login or role for all stored procedures
             var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
                 + "  begin"
                 + "    declare @exec nvarchar(2000) "
@@ -194,7 +194,7 @@ namespace DotNetNuke.Data
 
         private string GrantUserDefinedFunctionsPermission(string ScalarPermission, string TablePermission, string LoginOrRole)
         {
-            //grant EXECUTE rights to a login or role for all functions
+            // grant EXECUTE rights to a login or role for all functions
             var sql = "if exists (select * from dbo.sysusers where name='" + LoginOrRole + "')"
                 + "  begin"
                 + "    declare @exec nvarchar(2000) "
@@ -310,15 +310,15 @@ namespace DotNetNuke.Data
         {
             string exceptions = this.ExecuteScriptInternal(this.UpgradeConnectionString, script, timeoutSec);
 
-            //if the upgrade connection string is specified or or db_owner setting is not set to dbo
+            // if the upgrade connection string is specified or or db_owner setting is not set to dbo
             if (this.UpgradeConnectionString != this.ConnectionString || !this.DatabaseOwner.Trim().Equals("dbo.", StringComparison.InvariantCultureIgnoreCase))
             {
                 try
                 {
-                    //grant execute rights to the public role or userid for all stored procedures. This is
-                    //necesary because the UpgradeConnectionString will create stored procedures
-                    //which restrict execute permissions for the ConnectionString user account. This is also
-                    //necessary when db_owner is not set to "dbo" 
+                    // grant execute rights to the public role or userid for all stored procedures. This is
+                    // necesary because the UpgradeConnectionString will create stored procedures
+                    // which restrict execute permissions for the ConnectionString user account. This is also
+                    // necessary when db_owner is not set to "dbo" 
                     exceptions += this.GrantStoredProceduresPermission("EXECUTE", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)
@@ -330,11 +330,11 @@ namespace DotNetNuke.Data
 
                 try
                 {
-                    //grant execute or select rights to the public role or userid for all user defined functions based
-                    //on what type of function it is (scalar function or table function). This is
-                    //necesary because the UpgradeConnectionString will create user defined functions
-                    //which restrict execute permissions for the ConnectionString user account.  This is also
-                    //necessary when db_owner is not set to "dbo" 
+                    // grant execute or select rights to the public role or userid for all user defined functions based
+                    // on what type of function it is (scalar function or table function). This is
+                    // necesary because the UpgradeConnectionString will create user defined functions
+                    // which restrict execute permissions for the ConnectionString user account.  This is also
+                    // necessary when db_owner is not set to "dbo" 
                     exceptions += this.GrantUserDefinedFunctionsPermission("EXECUTE", "SELECT", this.GetConnectionStringUserID());
                 }
                 catch (SqlException objException)

@@ -159,7 +159,7 @@ namespace DNN.Integration.Test.Framework.Controllers
                 tabId,
                 settingName,
                 settingValue,
-                1); //CreatedByUserID
+                1); // CreatedByUserID
         }
 
         /// <summary>

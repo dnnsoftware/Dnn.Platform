@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.Skins.Controls
 {
     public class LanguageTokenReplace : TokenReplace
     {
-        //see http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=6505
+        // see http://support.dotnetnuke.com/issue/ViewIssue.aspx?id=6505
         public LanguageTokenReplace()
             : base(Scope.NoSettings)
         {
@@ -122,10 +122,10 @@ namespace DotNetNuke.UI.Skins.Controls
                     {
                         case "tabid":
                         case "ctl":
-                        case "language": //skip parameter
+                        case "language": // skip parameter
                             break;
                         case "mid":
-                        case "moduleid": //start of patch (Manzoni Fausto) gemini 14205 
+                        case "moduleid": // start of patch (Manzoni Fausto) gemini 14205 
                             if (isLocalized)
                             {
                                 string ModuleIdKey = arrKeys[i].ToLowerInvariant();
@@ -148,14 +148,14 @@ namespace DotNetNuke.UI.Skins.Controls
                         default:
                             if ((arrKeys[i].ToLowerInvariant() == "portalid") && this.objPortal.ActiveTab.IsSuperTab)
                             {
-                                //skip parameter
-                                //navigateURL adds portalid to querystring if tab is superTab
+                                // skip parameter
+                                // navigateURL adds portalid to querystring if tab is superTab
                             }
                             else
                             {
                                 if (!string.IsNullOrEmpty(rawQueryStringCollection.Get(arrKeys[i])))
                                 {
-                                    //skip parameter as it is part of a querystring param that has the following form
+                                    // skip parameter as it is part of a querystring param that has the following form
                                     // [friendlyURL]/?param=value
                                     // gemini 25516
 
@@ -172,7 +172,7 @@ namespace DotNetNuke.UI.Skins.Controls
                                 }
                                 // on localised pages most of the module parameters have no sense and generate duplicate urls for the same content
                                 // because we are on a other tab with other modules (example : /en-US/news/articleid/1)
-                                else //if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
+                                else // if (!isLocalized) -- this applies only when a portal "Localized Content" is enabled.
                                 {
                                     string[] arrValues = queryStringCollection.GetValues(i);
                                     if (arrValues != null)
@@ -198,7 +198,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (!settings.ContentLocalizationEnabled && LocaleController.Instance.GetLocales(settings.PortalId).Count > 1 && !settings.EnableUrlLanguage)
             {
-                //because useLanguageInUrl is false, navigateUrl won't add a language param, so we need to do that ourselves
+                // because useLanguageInUrl is false, navigateUrl won't add a language param, so we need to do that ourselves
                 if (returnValue != "")
                 {
                     returnValue += "&";
@@ -206,7 +206,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 returnValue += "language=" + newLanguage.ToLowerInvariant();
             }
 
-            //return the new querystring as a string array
+            // return the new querystring as a string array
             return returnValue.Split('&');
         }
 
@@ -219,7 +219,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             var newLocale = LocaleController.Instance.GetLocale(newLanguage);
 
-            //Ensure that the current ActiveTab is the culture of the new language
+            // Ensure that the current ActiveTab is the culture of the new language
             var tabId = this.objPortal.ActiveTab.TabID;
             var islocalized = false;
 
@@ -238,19 +238,19 @@ namespace DotNetNuke.UI.Skins.Controls
                     switch (localizedTab.TabType)
                     {
                         case TabType.Normal:
-                            //normal tab
+                            // normal tab
                             tabId = localizedTab.TabID;
                             break;
                         case TabType.Tab:
-                            //alternate tab url                                
+                            // alternate tab url                                
                             fullurl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(localizedTab.Url));
                             break;
                         case TabType.File:
-                            //file url
+                            // file url
                             fullurl = TestableGlobals.Instance.LinkClick(localizedTab.Url, localizedTab.TabID, Null.NullInteger);
                             break;
                         case TabType.Url:
-                            //external url
+                            // external url
                             fullurl = localizedTab.Url;
                             break;
                     }

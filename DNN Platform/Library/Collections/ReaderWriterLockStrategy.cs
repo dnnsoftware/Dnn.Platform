@@ -146,7 +146,7 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    //dispose managed state (managed objects).
+                    // dispose managed state (managed objects).
                 }
 
                 if (this._lock != null)

@@ -85,7 +85,7 @@ namespace DotNetNuke.Framework
         {
             get
             {
-                //Set ViewState Persister to default (as defined in Base Class)
+                // Set ViewState Persister to default (as defined in Base Class)
                 if (this._persister == null)
                 {
                     this._persister = base.PageStatePersister;
@@ -239,7 +239,7 @@ namespace DotNetNuke.Framework
             {
                 try
                 {
-                    //if the exception's status code set to 404, we need display 404 page if defined or show no found info.
+                    // if the exception's status code set to 404, we need display 404 page if defined or show no found info.
                     var statusCode = (exc as HttpException).GetHttpCode();
                     if (statusCode == 404)
                     {
@@ -296,26 +296,26 @@ namespace DotNetNuke.Framework
         {
             base.OnPreRender(e);
 
-            //Because we have delayed registration of the jQuery script,
-            //Modules can override the standard behavior by including their own script on the page.
-            //The module must register the script with the "jQuery" key and should notify user
-            //of potential version conflicts with core jQuery support.
-            //if (jQuery.IsRequested)
-            //{
+            // Because we have delayed registration of the jQuery script,
+            // Modules can override the standard behavior by including their own script on the page.
+            // The module must register the script with the "jQuery" key and should notify user
+            // of potential version conflicts with core jQuery support.
+            // if (jQuery.IsRequested)
+            // {
             //    jQuery.RegisterJQuery(Page);
-            //}
-            //if (jQuery.IsUIRequested)
-            //{
+            // }
+            // if (jQuery.IsUIRequested)
+            // {
             //    jQuery.RegisterJQueryUI(Page);
-            //}
-            //if (jQuery.AreDnnPluginsRequested)
-            //{
+            // }
+            // if (jQuery.AreDnnPluginsRequested)
+            // {
             //    jQuery.RegisterDnnJQueryPlugins(Page);
-            //}
-            //if (jQuery.IsHoverIntentRequested)
-            //{
+            // }
+            // if (jQuery.IsHoverIntentRequested)
+            // {
             //    jQuery.RegisterHoverIntent(Page);
-            //}
+            // }
             
             if (ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired)
             {
@@ -496,16 +496,16 @@ namespace DotNetNuke.Framework
         {
             if (!control.Visible) return;
 
-            //Perform the substitution if a key was found
+            // Perform the substitution if a key was found
             var key = GetControlAttribute(control, affectedControls, Localization.KeyName);
             if (!string.IsNullOrEmpty(key))
             {
-                //Translation starts here ....
+                // Translation starts here ....
                 var value = Localization.GetString(key, resourceFileRoot);
                 this.LocalizeControl(control, value);
             }
 
-            //Translate listcontrol items here 
+            // Translate listcontrol items here 
             var listControl = control as ListControl;
             if (listControl != null)
             {
@@ -529,8 +529,8 @@ namespace DotNetNuke.Framework
             }
 
 
-            //UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
-            //Manual Override to ResolveUrl
+            // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
+            // Manual Override to ResolveUrl
             var image = control as Image;
             if (image != null)
             {
@@ -539,7 +539,7 @@ namespace DotNetNuke.Framework
                     image.ImageUrl = this.Page.ResolveUrl(image.ImageUrl);
                 }
 
-                //Check for IconKey
+                // Check for IconKey
                 if (string.IsNullOrEmpty(image.ImageUrl))
                 {
                     var iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
@@ -549,8 +549,8 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            //UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
-            //Manual Override to ResolveUrl
+            // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
+            // Manual Override to ResolveUrl
             var htmlImage = control as HtmlImage;
             if (htmlImage != null)
             {
@@ -559,7 +559,7 @@ namespace DotNetNuke.Framework
                     htmlImage.Src = this.Page.ResolveUrl(htmlImage.Src);
                 }
 
-                //Check for IconKey
+                // Check for IconKey
                 if (string.IsNullOrEmpty(htmlImage.Src))
                 {
                     var iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
@@ -569,8 +569,8 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            //UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
-            //Manual Override to ResolveUrl
+            // UrlRewriting Issue - ResolveClientUrl gets called instead of ResolveUrl
+            // Manual Override to ResolveUrl
             var ctrl = control as HyperLink;
             if (ctrl != null)
             {
@@ -583,7 +583,7 @@ namespace DotNetNuke.Framework
                     ctrl.ImageUrl = this.Page.ResolveUrl(ctrl.ImageUrl);
                 }
 
-                //Check for IconKey
+                // Check for IconKey
                 if (string.IsNullOrEmpty(ctrl.ImageUrl))
                 {
                     var iconKey = GetControlAttribute(control, affectedControls, IconController.IconKeyName);
@@ -593,30 +593,30 @@ namespace DotNetNuke.Framework
                 }
             }
 
-            //Process child controls
+            // Process child controls
             if (!includeChildren || !control.HasControls()) return;
             var objModuleControl = control as IModuleControl;
             if (objModuleControl == null)
             {
-                //Cache results from reflection calls for performance
+                // Cache results from reflection calls for performance
                 var pi = control.GetType().GetProperty("LocalResourceFile");
                 if (pi != null) 
                 {
-                    //Attempt to get property value
+                    // Attempt to get property value
                     var pv = pi.GetValue(control, null);
 
-                    //If controls has a LocalResourceFile property use this, otherwise pass the resource file root
+                    // If controls has a LocalResourceFile property use this, otherwise pass the resource file root
                     this.IterateControls(control.Controls, affectedControls, pv == null ? resourceFileRoot : pv.ToString());
                 }
                 else
                 {
-                    //Pass Resource File Root through
+                    // Pass Resource File Root through
                     this.IterateControls(control.Controls, affectedControls, resourceFileRoot);
                 }
             }
             else
             {
-                //Get Resource File Root from Controls LocalResourceFile Property
+                // Get Resource File Root from Controls LocalResourceFile Property
                 this.IterateControls(control.Controls, affectedControls, objModuleControl.LocalResourceFile);
             }
         }

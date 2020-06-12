@@ -22,7 +22,7 @@ namespace DotNetNuke.Instrumentation
         private const string ConfigFile = "DotNetNuke.log4net.config";
         private static bool _configured;
 
-        //use a single static logger to avoid the performance impact of type reflection on every call for logging
+        // use a single static logger to avoid the performance impact of type reflection on every call for logging
         private static readonly DnnLogger Logger = DnnLogger.GetClassLogger(typeof(DnnLog));
         
         private static readonly object ConfigLock = new object();

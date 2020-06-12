@@ -100,7 +100,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 var nodeIcon = this.GetNodeIcon(tab, out tooltip);
                 var node = new TabDto
                 {
-                    Name = tab.LocalizedTabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    Name = tab.LocalizedTabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
                     TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                     ImageUrl = nodeIcon,
                     Tooltip = tooltip,
@@ -307,7 +307,7 @@ namespace Dnn.PersonaBar.Library.Controllers
             var nodeIcon = this.GetNodeIcon(tab, out tooltip);
             return new TabDto
             {
-                Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
                 TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                 ImageUrl = nodeIcon,
                 Tooltip = tooltip,
@@ -353,7 +353,7 @@ namespace Dnn.PersonaBar.Library.Controllers
                 var nodeIcon = this.GetNodeIcon(tab, out tooltip);
                 var node = new TabDto
                 {
-                    Name = tab.TabName, //$"{tab.TabName} {GetNodeStatusIcon(tab)}",
+                    Name = tab.TabName, // $"{tab.TabName} {GetNodeStatusIcon(tab)}",
                     TabId = tab.TabID.ToString(CultureInfo.InvariantCulture),
                     ImageUrl = nodeIcon,
                     Tooltip = tooltip,

@@ -67,7 +67,7 @@ namespace DotNetNuke.Modules.Groups
                 this._roleInfo.Status = RoleStatus.Approved;
                 RoleController.Instance.UpdateRole(this._roleInfo);
                 var roleCreator = UserController.GetUserById(this.PortalSettings.PortalId, this._roleInfo.CreatedByUserID);
-                //Update the original creator's role
+                // Update the original creator's role
                 RoleController.Instance.UpdateUserRole(this.PortalSettings.PortalId, roleCreator.UserID, this._roleInfo.RoleID, RoleStatus.Approved, true, false);
                 GroupUtilities.CreateJournalEntry(this._roleInfo, roleCreator);
 

@@ -80,14 +80,14 @@ namespace DotNetNuke.Entities.Users
             UserInfo objUserInfo = null;
             try
             {
-                //read datareader
+                // read datareader
                 var bContinue = true;
                 if (closeDataReader)
                 {
                     bContinue = false;
                     if (dr.Read())
                     {
-                        //Ensure the data reader returned is valid
+                        // Ensure the data reader returned is valid
                         if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
                         {
                             bContinue = true;

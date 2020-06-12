@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Urls
             }
             this._tabId = tab.TabID;
 
-            //Add Portal Aliases
+            // Add Portal Aliases
             var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                         {
@@ -303,7 +303,7 @@ namespace DotNetNuke.Tests.Urls
                 Localization.SaveLanguage(this._customLocale);
                 Localization.AddLanguageToPortals(this._customLocale.LanguageId);
 
-                //add new primary alias
+                // add new primary alias
                 this._primaryAlias = new PortalAliasInfo
                 {
                     PortalID = this.PortalId,
@@ -386,7 +386,7 @@ namespace DotNetNuke.Tests.Urls
                 tab.TabName = testPageName;
                 TabController.Instance.UpdateTab(tab);
 
-                //Refetch tab from DB
+                // Refetch tab from DB
                 tab = TabController.Instance.GetTab(tab.TabID, tab.PortalID, false);
             }
 

@@ -15,10 +15,10 @@ namespace DotNetNuke.Web.UI.WebControls
     public class DnnListBox : RadListBox
     {
 
-        //public DnnListBox()
-        //{
+        // public DnnListBox()
+        // {
         //    Utilities.ApplySkin(this);
-        //}
+        // }
 
     }
 }

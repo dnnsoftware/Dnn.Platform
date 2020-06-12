@@ -126,7 +126,7 @@ namespace DotNetNuke.Common.Utilities
                 return this._extensions;
             }
 
-            //toList required to ensure that multiple enumerations of the list are possible
+            // toList required to ensure that multiple enumerations of the list are possible
             var additionalExtensionsList = additionalExtensions.ToList();
             if (!additionalExtensionsList.Any())
             {

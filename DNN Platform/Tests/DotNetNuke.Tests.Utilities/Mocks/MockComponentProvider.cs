@@ -24,7 +24,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
                 ResetContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var mockComp = ComponentFactory.GetComponent<Mock<T>>();
             var objComp = ComponentFactory.GetComponent<T>();
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Utilities.Mocks
                 ResetContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var mockComp = ComponentFactory.GetComponent<Mock<T>>();
             var objComp = ComponentFactory.GetComponent<T>(name);
 

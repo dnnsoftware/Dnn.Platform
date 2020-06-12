@@ -156,7 +156,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             template.Text = type == GridItemType.Header ? this.HeaderText : this.Text;
 
-            //Set Design Mode to True
+            // Set Design Mode to True
             template.DesignMode = isDesignMode;
 
             return template;

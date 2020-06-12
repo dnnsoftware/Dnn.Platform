@@ -52,15 +52,15 @@ namespace DotNetNuke.ComponentModel
         public void InstallComponents(IContainer container)
         {
             ProviderConfiguration config = ProviderConfiguration.GetProviderConfiguration(this._ProviderType);
-            //Register the default provider first (so it is the first component registered for its service interface
+            // Register the default provider first (so it is the first component registered for its service interface
 			if (config != null)
             {
                 this.InstallProvider(container, (Provider)config.Providers[config.DefaultProvider]);
 
-                //Register the others
+                // Register the others
                 foreach (Provider provider in config.Providers.Values)
                 {
-					//Skip the default because it was registered above
+					// Skip the default because it was registered above
                     if (!config.DefaultProvider.Equals(provider.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         this.InstallProvider(container, provider);
@@ -77,7 +77,7 @@ namespace DotNetNuke.ComponentModel
             {
                 Type type = null;
 
-                //Get the provider type
+                // Get the provider type
                 try
                 {
                     type = BuildManager.GetType(provider.Type, false, true);
@@ -96,16 +96,16 @@ namespace DotNetNuke.ComponentModel
                 }
                 else
                 {
-                    //Register the component
+                    // Register the component
                     container.RegisterComponent(provider.Name, this._ProviderInterface, type, this._ComponentLifeStyle);
 
-                    //Load the settings into a dictionary
+                    // Load the settings into a dictionary
                     var settingsDict = new Dictionary<string, string> { { "providerName", provider.Name } };
                     foreach (string key in provider.Attributes.Keys)
                     {
                         settingsDict.Add(key, provider.Attributes.Get(key));
                     }
-                    //Register the settings as dependencies
+                    // Register the settings as dependencies
                     container.RegisterComponentSettings(type.FullName, settingsDict);
                 }
             }

@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Api
 
             if (providers == null)
             {
-                //shouldn't ever happen outside of unit tests
+                // shouldn't ever happen outside of unit tests
                 return new ITabAndModuleInfoProvider[]{};
             }
 

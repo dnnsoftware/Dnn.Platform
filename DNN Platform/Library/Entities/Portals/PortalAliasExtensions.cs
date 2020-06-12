@@ -49,7 +49,7 @@ namespace DotNetNuke.Entities.Portals
         public static PortalAliasInfo GetAliasByPortalIdAndSettings(this IEnumerable<PortalAliasInfo> aliases, int portalId, UrlAction result, string cultureCode, FriendlyUrlSettings settings)
         {
             var browserType = BrowserTypes.Normal;
-            //if required, and possible, detect browser type
+            // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Portals
         {
             var browserType = BrowserTypes.Normal;
             UrlAction result = null;
-            //if required, and possible, detect browser type
+            // if required, and possible, detect browser type
             if (HttpContext.Current != null && settings != null)
             {
                 HttpRequest request = HttpContext.Current.Request;
@@ -99,17 +99,17 @@ namespace DotNetNuke.Entities.Portals
         {
             var aliasList = aliases.ToList();
 
-            //First check if our current alias is already a perfect match.
+            // First check if our current alias is already a perfect match.
             PortalAliasInfo foundAlias = null;
             if (result != null && !string.IsNullOrEmpty(result.HttpAlias))
             {
-                //try to find exact match
+                // try to find exact match
                 foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
                                                          (String.Compare(a.CultureCode, cultureCode,
                                                              StringComparison.OrdinalIgnoreCase) == 0)
                                                          && a.PortalID == portalId
                                                          && a.HTTPAlias == result.HttpAlias);
-                if (foundAlias == null) //let us try again using Startswith() to find matching Hosts
+                if (foundAlias == null) // let us try again using Startswith() to find matching Hosts
                 {
                     foundAlias = aliasList.FirstOrDefault(a => a.BrowserType == browserType &&
                                                          (String.Compare(a.CultureCode, cultureCode,
@@ -118,7 +118,7 @@ namespace DotNetNuke.Entities.Portals
                                                          && a.HTTPAlias.StartsWith(result.HttpAlias.Split('/')[0]));
                 }
             }
-            //27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
+            // 27138 : Redirect loop caused by duplicate primary aliases.  Changed to only check by browserType/Culture code which makes a primary alias
             if (foundAlias == null)
             {
                 foundAlias = aliasList.Where(a => a.BrowserType == browserType
@@ -129,7 +129,7 @@ namespace DotNetNuke.Entities.Portals
                     .FirstOrDefault();
             }
 
-            //JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
+            // JIRA DNN-4882 : DevPCI fix bug with url Mobile -> Search alias with culture code
             // START DNN-4882
             if (foundAlias == null)
             {
@@ -201,10 +201,10 @@ namespace DotNetNuke.Entities.Portals
             {
                 if (cpa.PortalID == portalId && String.Compare(alias, cpa.HTTPAlias, StringComparison.OrdinalIgnoreCase) == 0)
                 {
-                    //this is a match
+                    // this is a match
                     culture = cpa.CultureCode;
                     browserType = cpa.BrowserType;
-                    //852 : add skin per portal alias
+                    // 852 : add skin per portal alias
                     skin = cpa.Skin;
                     break;
                 }

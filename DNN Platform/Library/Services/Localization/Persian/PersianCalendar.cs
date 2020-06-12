@@ -13,7 +13,7 @@ namespace DotNetNuke.Services.Localization.Persian
             try { return base.GetYear(time); }
             catch
             {
-                //ignore
+                // ignore
             }
             return time.Year;
         }
@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Localization.Persian
             try { return base.GetMonth(time); }
             catch
             {
-                //ignore
+                // ignore
             }
             return time.Month;
         }
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Localization.Persian
             try { return base.GetDayOfMonth(time); }
             catch
             {
-                //ignore
+                // ignore
             }
             return time.Day;
         }
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Localization.Persian
             try { return base.GetDayOfYear(time); }
             catch
             {
-                //ignore
+                // ignore
             }
             return time.DayOfYear;
         }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Localization.Persian
             try { return base.GetDayOfWeek(time); }
             catch
             {
-                //ignore
+                // ignore
             }
             return time.DayOfWeek;
         }

@@ -113,7 +113,7 @@ namespace DotNetNuke.Entities.Tabs
         [Obsolete("Deprecated in DNN 7.3. Use one of the alternate MoveTabxxx methods). Scheduled removal in v10.0.0.")]
         public void MoveTab(TabInfo tab, TabMoveType type)
         {
-            //Get the List of tabs with the same parent
+            // Get the List of tabs with the same parent
             IOrderedEnumerable<TabInfo> siblingTabs = this.GetSiblingTabs(tab).OrderBy(t => t.TabOrder);
             int tabIndex = GetIndexOfTab(tab, siblingTabs);
             switch (type)

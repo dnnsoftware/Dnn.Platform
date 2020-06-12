@@ -60,7 +60,7 @@ namespace DotNetNuke.HttpModules.Config
                 {
                     filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics);
 
-                    //Create a FileStream for the Config file
+                    // Create a FileStream for the Config file
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
                     var doc = new XPathDocument(fileReader);
                     config = new AnalyticsEngineConfiguration {AnalyticsEngines = new AnalyticsEngineCollection()};
@@ -78,14 +78,14 @@ namespace DotNetNuke.HttpModules.Config
                     }
                     if (File.Exists(filePath))
                     {
-                        //Set back into Cache
+                        // Set back into Cache
                         DataCache.SetCache("AnalyticsEngineConfig", config, new DNNCacheDependency(filePath));
                     }
                 }
             }
             catch (Exception ex)
             {
-                //log it
+                // log it
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
                 log.AddProperty("Analytics.AnalyticsEngineConfiguration", "GetConfig Failed");
                 if (!string.IsNullOrEmpty(filePath))
@@ -99,7 +99,7 @@ namespace DotNetNuke.HttpModules.Config
             {
                 if (fileReader != null)
                 {
-                    //Close the Reader
+                    // Close the Reader
                     fileReader.Close();
                 }
             }

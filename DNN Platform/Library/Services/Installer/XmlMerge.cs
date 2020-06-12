@@ -237,7 +237,7 @@ namespace DotNetNuke.Services.Installer
 
 			if (rootNode == null)
 			{
-			    return false; //not every TargetRoot will contain every target node
+			    return false; // not every TargetRoot will contain every target node
 			}
             
             switch (nodeAction)
@@ -297,12 +297,12 @@ namespace DotNetNuke.Services.Installer
         {
             var changedNodes = false;
 
-            //The nodes definition is not correct so skip changes
+            // The nodes definition is not correct so skip changes
             if (this.TargetConfig != null)
             {
-                //in web.config it is possible to add <location> nodes that contain nodes that would
-                //otherwise be in the root <configuration> node, therefore some files can have multiple roots
-                //making it tricky to decide where to apply the xml merge operations
+                // in web.config it is possible to add <location> nodes that contain nodes that would
+                // otherwise be in the root <configuration> node, therefore some files can have multiple roots
+                // making it tricky to decide where to apply the xml merge operations
                 var targetRoots = this.GetTargetRoots().ToList();
 
                 if (targetRoots.Count == 1)
@@ -334,7 +334,7 @@ namespace DotNetNuke.Services.Installer
                         }
                         else
                         {
-                            //hit on all roots
+                            // hit on all roots
                             XmlNode hit = this.FindMatchingNodes(node, hits, "targetpath").FirstOrDefault();
                             if (hit != null)
                             {
@@ -342,7 +342,7 @@ namespace DotNetNuke.Services.Installer
                             }
                             else
                             {
-                                //all paths match at root level but no targetpaths match below that so default to the initial root
+                                // all paths match at root level but no targetpaths match below that so default to the initial root
                                 changedNodes = this.ProcessNode(node, hits[0]) || changedNodes;
                             }
                         }
@@ -385,7 +385,7 @@ namespace DotNetNuke.Services.Installer
                 }
                 else
                 {
-                    //Use Namespace Manager
+                    // Use Namespace Manager
                     string xmlNameSpace = mergeNode.Attributes["nameSpace"].Value;
                     string xmlNameSpacePrefix = mergeNode.Attributes["nameSpacePrefix"].Value;
                     var nsmgr = new XmlNamespaceManager(this.TargetConfig.NameTable);
@@ -438,10 +438,10 @@ namespace DotNetNuke.Services.Installer
             var changedNode = false;
             if (node != null)
             {
-                //Get Parent
+                // Get Parent
                 XmlNode parentNode = node.ParentNode;
 
-                //Remove current Node
+                // Remove current Node
                 if (parentNode != null)
                 {
                     parentNode.RemoveChild(node);
@@ -516,13 +516,13 @@ namespace DotNetNuke.Services.Installer
                     }
                     if (targetNode == null)
                     {
-                        //Since there is no collision we can just add the node
+                        // Since there is no collision we can just add the node
                         rootNode.AppendChild(this.TargetConfig.ImportNode(child, true));
                         changedNode = true;
                         continue;
                     }
 
-                    //There is a collision so we need to determine what to do.
+                    // There is a collision so we need to determine what to do.
                     string collisionAction = actionNode.Attributes["collision"].Value;
                     switch (collisionAction.ToLowerInvariant())
                     {
@@ -653,7 +653,7 @@ namespace DotNetNuke.Services.Installer
                 {
                     Debug.Assert(configNode.Attributes != null, "configNode.Attributes != null");
 
-                    //Attempt to load TargetFile property from configFile Atribute
+                    // Attempt to load TargetFile property from configFile Atribute
                     this.TargetFileName = configNode.Attributes["configfile"].Value;
                     string targetProductName = "";
                     if (configNode.Attributes["productName"] != null)
@@ -677,7 +677,7 @@ namespace DotNetNuke.Services.Installer
                     {
                         isAppliedToProduct = DotNetNukeContext.Current.Application.ApplyToProduct(targetProductName);
                     }
-                    //The nodes definition is not correct so skip changes
+                    // The nodes definition is not correct so skip changes
                     if (this.TargetConfig != null && isAppliedToProduct)
                     {
                         var changedNodes = this.ProcessNodes(configNode.SelectNodes("node"), autoSave);

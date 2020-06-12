@@ -59,7 +59,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -90,7 +90,7 @@ namespace DotNetNuke.Modules.RazorHost
                     this.Response.Redirect(this.ModuleContext.EditUrl("Edit"), true);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

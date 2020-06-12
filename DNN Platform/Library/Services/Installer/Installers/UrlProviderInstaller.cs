@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                //Ensure DesktopModule Cache is cleared
+                // Ensure DesktopModule Cache is cleared
                 DataCache.RemoveCache(String.Format(DataCache.DesktopModuleCacheKey, Null.NullInteger));
 
                 var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(this._desktopModuleName, Null.NullInteger);
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this._extensionUrlProvider.DesktopModuleId = desktopModule.DesktopModuleID;
                 }
 
-                //Attempt to get the Desktop Module
+                // Attempt to get the Desktop Module
                 this._installedExtensionUrlProvider = ExtensionUrlProviderController.GetProviders(Null.NullInteger)
                                             .SingleOrDefault(p => p.ProviderType == this._extensionUrlProvider.ProviderType);
 
@@ -136,15 +136,15 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-            //If Temp Provider exists then we need to update the DataStore with this 
+            // If Temp Provider exists then we need to update the DataStore with this 
             if (this._installedExtensionUrlProvider == null)
             {
-                //No Temp Provider - Delete newly added module
+                // No Temp Provider - Delete newly added module
                 this.DeleteProvider();
             }
             else
             {
-                //Temp Provider - Rollback to Temp
+                // Temp Provider - Rollback to Temp
                 ExtensionUrlProviderController.SaveProvider(this._installedExtensionUrlProvider);
             }
         }

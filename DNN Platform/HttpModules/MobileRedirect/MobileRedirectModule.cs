@@ -45,7 +45,7 @@ namespace DotNetNuke.HttpModules
             var app = (HttpApplication)s;
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             
-            //First check if we are upgrading/installing
+            // First check if we are upgrading/installing
             var rawUrl = app.Request.RawUrl;
             if (!Initialize.ProcessHttpModule(app.Request, false, false)
                     || app.Request.HttpMethod == "POST"
@@ -57,8 +57,8 @@ namespace DotNetNuke.HttpModules
                 return;
             }
 
-            //Check if redirection has been disabled for the session
-            //This method inspects cookie and query string. It can also setup / clear cookies.
+            // Check if redirection has been disabled for the session
+            // This method inspects cookie and query string. It can also setup / clear cookies.
             if (this._redirectionController != null &&
                 portalSettings?.ActiveTab != null &&
                 !string.IsNullOrEmpty(app.Request.UserAgent) &&
@@ -67,7 +67,7 @@ namespace DotNetNuke.HttpModules
                 var redirectUrl = this._redirectionController.GetRedirectUrl(app.Request.UserAgent);
                 if (!string.IsNullOrEmpty(redirectUrl))
                 {
-                    //append the query string from original url
+                    // append the query string from original url
                     var idx = rawUrl.IndexOf("?", StringComparison.Ordinal);
                     var queryString = idx >= 0 ? rawUrl.Substring(idx + 1) : string.Empty;
                     if (!string.IsNullOrEmpty(queryString))

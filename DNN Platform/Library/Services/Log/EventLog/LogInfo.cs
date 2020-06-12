@@ -165,7 +165,7 @@ namespace DotNetNuke.Services.Log.EventLog
                 }
             }
 			
-            //Check for LogProperties child node
+            // Check for LogProperties child node
             reader.Read();
             if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "LogProperties")
             {
@@ -175,7 +175,7 @@ namespace DotNetNuke.Services.Log.EventLog
                     this.LogProperties.ReadXml(reader);
                 }
 			}
-			//Check for Exception child node
+			// Check for Exception child node
 			if (reader.NodeType == XmlNodeType.Element && reader.LocalName == "Exception")
 	        {
 				this.Exception.ReadXml(reader);

@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.UI.WebControls
                     selectedValue = this.DefaultValue;
                 }
 
-                //Reset SelectedValue
+                // Reset SelectedValue
                 if (this._radioButtonList.Items.FindByValue(selectedValue) != null)
                 {
                     this._radioButtonList.Items.FindByValue(selectedValue).Selected = true;

@@ -114,7 +114,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 this.SupportsFlash = false;
                 this.HtmlPreferedDTD = null;
 
-                //set IsMobile to false when IsTablet is true.
+                // set IsMobile to false when IsTablet is true.
                 if (this.IsTablet)
                     this.IsMobile = false;
             }
@@ -249,7 +249,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
             }
             else
             {
-                //TODO: detect others. maybe through an external service such as:
+                // TODO: detect others. maybe through an external service such as:
                 // http://www.useragentstring.com/pages/api.php
                 // or see this thread: http://www.geekpedia.com/code47_Detect-operating-system-from-user-agent-string.html
                 // or port this open source PHP project to C# from https://github.com/piwik/device-detector
@@ -285,7 +285,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
                 case "6.0":
                     return "Vista";
                 case "5.2":
-                    //platformName = "Windows Server 2003; Windows XP x64 Edition";
+                    // platformName = "Windows Server 2003; Windows XP x64 Edition";
                     return "XP x64 Edition";
                 case "5.1":
                     return "XP";

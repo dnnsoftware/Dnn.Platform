@@ -133,7 +133,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             this.lblLastChanged.Text = this.User.Membership.LastPasswordChangeDate.ToLongDateString();
 
-            //Set Password Expiry Label
+            // Set Password Expiry Label
             if (this.User.Membership.UpdatePassword)
             {
                 this.lblExpires.Text = Localization.GetString("ForcedExpiry", this.LocalResourceFile);
@@ -155,7 +155,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.pnlChange.Visible = true;
                 this.cmdUpdate.Visible = true;
 				
-				//Set up Change Password
+				// Set up Change Password
                 if (this.IsAdmin && !this.IsUser)
                 {
                     this.lblChangeHelp.Text = Localization.GetString("AdminChangeHelp", this.LocalResourceFile);
@@ -179,8 +179,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
 			
-            //If Password Reset is not enabled then only the Admin can reset the 
-            //Password, a User must Update
+            // If Password Reset is not enabled then only the Admin can reset the 
+            // Password, a User must Update
             if (!MembershipProviderConfig.PasswordResetEnabled)
             {
                 this.pnlReset.Visible = false;
@@ -191,7 +191,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.pnlReset.Visible = true;
                 this.cmdReset.Visible = true;
 				
-				//Set up Reset Password
+				// Set up Reset Password
                 if (this.IsAdmin && !this.IsUser)
                 {
                     if (MembershipProviderConfig.RequiresQuestionAndAnswer)
@@ -223,7 +223,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
 			
-            //Set up Edit Question and Answer area
+            // Set up Edit Question and Answer area
             if (MembershipProviderConfig.RequiresQuestionAndAnswer && this.IsUser)
             {
                 this.pnlQA.Visible = true;
@@ -340,7 +340,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             try
             {
-                //create resettoken
+                // create resettoken
                 UserController.ResetPasswordToken(this.User, Entities.Host.Host.AdminMembershipResetLinkValidity);
 
                 bool canSend = Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings) == string.Empty;
@@ -377,7 +377,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             try
             {
-                //send fresh resettoken copy
+                // send fresh resettoken copy
                 bool canSend = UserController.ResetPasswordToken(this.User, true);
 
                 var message = String.Empty;
@@ -452,34 +452,34 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     return;
                 }
-                //1. Check New Password and Confirm are the same
+                // 1. Check New Password and Confirm are the same
                 if (this.txtNewPassword.Text != this.txtNewConfirm.Text)
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordMismatch));
                     return;
                 }
 
-                //2. Check New Password is Valid
+                // 2. Check New Password is Valid
                 if (!UserController.ValidatePassword(this.txtNewPassword.Text))
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordInvalid));
                     return;
                 }
 
-                //3. Check old Password is Provided
+                // 3. Check old Password is Provided
                 if (!this.IsAdmin && String.IsNullOrEmpty(this.txtOldPassword.Text))
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordMissing));
                     return;
                 }
 
-                //4. Check New Password is ddifferent
+                // 4. Check New Password is ddifferent
                 if (!this.IsAdmin && this.txtNewPassword.Text == this.txtOldPassword.Text)
                 {
                     this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordNotDifferent));
                     return;
                 }
-                //5. Check New Password is not same as username or banned
+                // 5. Check New Password is not same as username or banned
 				var membershipPasswordController = new MembershipPasswordController();
                 var settings = new MembershipPasswordSettings(this.User.PortalID);
 
@@ -493,7 +493,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
                 }
 
-				//check new password is not in history
+				// check new password is not in history
 				if (membershipPasswordController.IsPasswordInHistory(this.User.UserID, this.User.PortalID, this.txtNewPassword.Text, false))
 				{
 					this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
@@ -516,18 +516,18 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (MembershipPasswordException exc)
                     {
-                        //Password Answer missing
+                        // Password Answer missing
                         Logger.Error(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     }
                     catch (ThreadAbortException)
                     {
-                        //Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects    
                     }
                     catch (Exception exc)
                     {
-                        //Fail
+                        // Fail
                         Logger.Error(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
@@ -543,18 +543,18 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     catch (MembershipPasswordException exc)
                     {
-                        //Password Answer missing
+                        // Password Answer missing
                         Logger.Error(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.InvalidPasswordAnswer));
                     }
                     catch (ThreadAbortException)
                     {
-                        //Do nothing we are not logging ThreadAbortxceptions caused by redirects    
+                        // Do nothing we are not logging ThreadAbortxceptions caused by redirects    
                     }
                     catch (Exception exc)
                     {
-                        //Fail
+                        // Fail
                         Logger.Error(exc);
 
                         this.OnPasswordUpdated(new PasswordUpdatedEventArgs(PasswordUpdateStatus.PasswordResetFailed));
@@ -591,7 +591,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return;
             }
 			
-            //Try and set password Q and A
+            // Try and set password Q and A
             UserInfo objUser = UserController.GetUserById(this.PortalId, this.UserId);
             this.OnPasswordQuestionAnswerUpdated(UserController.ChangePasswordQuestionAndAnswer(objUser, this.txtQAPassword.Text, this.txtEditQuestion.Text, this.txtEditAnswer.Text)
                                                 ? new PasswordUpdatedEventArgs(PasswordUpdateStatus.Success)

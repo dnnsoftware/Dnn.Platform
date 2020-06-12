@@ -95,13 +95,13 @@ namespace DotNetNuke.Services.Installer.Installers
                     installer = new JavaScriptFileInstaller();
                     break;
                 default:
-                    //Installer type is defined in the List
+                    // Installer type is defined in the List
                     var listController = new ListController();
                     ListEntryInfo entry = listController.GetListEntryInfo("Installer", installerType);
 
                     if (entry != null && !string.IsNullOrEmpty(entry.Text))
                     {
-						//The class for the Installer is specified in the Text property
+						// The class for the Installer is specified in the Text property
                         installer = (ComponentInstallerBase)Reflection.CreateObject(entry.Text, "Installer_" + entry.Value);
                     }
                     break;
@@ -124,10 +124,10 @@ namespace DotNetNuke.Services.Installer.Installers
             ComponentInstallerBase installer = GetInstaller(installerType);
             if (installer != null)
             {
-                //Set package
+                // Set package
                 installer.Package = package;
 
-                //Set type
+                // Set type
                 installer.Type = installerType;
 
                 if (!string.IsNullOrEmpty(componentVersion))
@@ -139,7 +139,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     installer.Version = package.Version;
                 }
 				
-                //Read Manifest
+                // Read Manifest
                 if (package.InstallerInfo.InstallMode != InstallMode.ManifestOnly || installer.SupportsManifestOnlyInstall)
                 {
                     installer.ReadManifest(manifestNav);

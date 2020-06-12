@@ -236,7 +236,7 @@ namespace DotNetNuke.Services.Install
 		{
 			base.OnPreRender(e);
 
-			//Make sure that the password is not cleared on pastback
+			// Make sure that the password is not cleared on pastback
 			this.txtConfirm.Attributes["value"] = this.txtConfirm.Text;
 			this.txtPassword.Attributes["value"] = this.txtPassword.Text;
 		}

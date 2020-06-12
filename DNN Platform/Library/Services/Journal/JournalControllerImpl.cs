@@ -125,7 +125,7 @@ namespace DotNetNuke.Services.Journal
                 PortalId = portalId,
                 AuthorUserId = currentUserId,
                 UniqueKey = ji.ContentItemId.ToString("D"),
-                //QueryString = "journalid=" + journalId,
+                // QueryString = "journalid=" + journalId,
                 SearchTypeId = SearchHelper.Instance.GetSearchTypeByName("module").SearchTypeId
             };
 
@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.Journal
                 journalItem.SecuritySet += "U" + journalItem.UserId + ",";
             }
 
-            //if the post is marked as private, we shouldn't make it visible to the group.
+            // if the post is marked as private, we shouldn't make it visible to the group.
             if (journalItem.SocialGroupId > 0 && originalSecuritySet.Contains("U,"))
             {
                 var item = journalItem;
@@ -269,7 +269,7 @@ namespace DotNetNuke.Services.Journal
                 .Except(InvalidSecuritySetsWithoutId)
                 .Where(p => p.IndexOfAny(ValidSecurityDescriptors) >= 0);
 
-            //TODO: validate existence and visibility/accessability of all Roles added to the set (if any)
+            // TODO: validate existence and visibility/accessability of all Roles added to the set (if any)
 
             journalItem.SecuritySet = string.Join(",", parts);
         }
@@ -566,7 +566,7 @@ namespace DotNetNuke.Services.Journal
                     return FileManager.Instance.AddFile(userFolder, fileName, stream, true);
                 }
             }
-            //todo: deal with the case where the exact file name already exists.            
+            // todo: deal with the case where the exact file name already exists.            
             return FileManager.Instance.AddFile(userFolder, fileName, fileContent, true);                    
         }
         
@@ -689,8 +689,8 @@ namespace DotNetNuke.Services.Journal
                 comment.Comment =
                     portalSecurity.InputFilter(comment.Comment, PortalSecurity.FilterFlag.NoScripting);
             }
-            //TODO: enable once the profanity filter is working properly.
-            //objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
+            // TODO: enable once the profanity filter is working properly.
+            // objCommentInfo.Comment = portalSecurity.Remove(objCommentInfo.Comment, DotNetNuke.Security.PortalSecurity.ConfigType.ListController, "ProfanityFilter", DotNetNuke.Security.PortalSecurity.FilterScope.PortalList);
 
             string xml = null;
             if (comment.CommentXML != null)
@@ -713,7 +713,7 @@ namespace DotNetNuke.Services.Journal
         public void DeleteComment(int journalId, int commentId)
         {
             this._dataService.Journal_Comment_Delete(journalId, commentId);
-            //UNDONE: update the parent journal item and content item so this comment gets removed from search index
+            // UNDONE: update the parent journal item and content item so this comment gets removed from search index
         }
 
         public void LikeComment(int journalId, int commentId, int userId, string displayName)

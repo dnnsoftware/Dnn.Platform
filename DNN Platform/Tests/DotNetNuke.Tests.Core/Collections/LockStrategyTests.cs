@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.Collections
 
             strategy.Dispose();
             strategy.Dispose();
-            //no exception on 2nd dispose
+            // no exception on 2nd dispose
         }
 
         [Test, ExpectedException(typeof(LockRecursionException))]
@@ -35,7 +35,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 {
                     using (var readLock2 = strategy.GetReadLock())
                     {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }
@@ -50,7 +50,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 {
                     using (var readLock2 = strategy.GetWriteLock())
                     {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }
@@ -65,7 +65,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 {
                     using (var readLock2 = strategy.GetReadLock())
                     {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }
@@ -83,10 +83,10 @@ namespace DotNetNuke.Tests.Core.Collections
                         var t = new Thread(GetReadLock);
                         t.Start(strategy);
 
-                        //sleep and let new thread run
+                        // sleep and let new thread run
                         t.Join(TimeSpan.FromMilliseconds(100));
 
-                        //assert that read thread has terminated
+                        // assert that read thread has terminated
                         Console.WriteLine(t.ThreadState.ToString());
                         Assert.IsTrue(t.ThreadState == ThreadState.Stopped);
                     }
@@ -105,16 +105,16 @@ namespace DotNetNuke.Tests.Core.Collections
                     t = new Thread(GetWriteLock);
                     t.Start(strategy);
 
-                    //sleep and let new thread run and block
+                    // sleep and let new thread run and block
                     Thread.Sleep(50);
 
-                    //assert that write thread has not terminated
+                    // assert that write thread has not terminated
                     Assert.IsTrue(t.IsAlive);
-                } //release write lock
+                } // release write lock
 
                 Thread.Sleep(50);
 
-                //assert that getwritelock did complete once first writelock was released it's call
+                // assert that getwritelock did complete once first writelock was released it's call
                 Assert.IsFalse(t.IsAlive);
             }
         }
@@ -128,7 +128,7 @@ namespace DotNetNuke.Tests.Core.Collections
                 {
                     using (var writeLock2 = strategy.GetWriteLock())
                     {
-                        //do nothing
+                        // do nothing
                     }
                 }
             }
@@ -156,19 +156,19 @@ namespace DotNetNuke.Tests.Core.Collections
                     t = new Thread(GetWriteLock);
                     t.Start(strategy);
 
-                    //sleep and let new thread run
+                    // sleep and let new thread run
                     Thread.Sleep(100);
 
-                    //assert that write thread is still waiting
+                    // assert that write thread is still waiting
                     Assert.IsTrue(t.IsAlive);
                 }
-                //release read lock
+                // release read lock
 
-                //sleep and let write thread finish up
+                // sleep and let write thread finish up
                 Thread.Sleep(100);
                 Assert.IsFalse(t.IsAlive);
             }
-            //release controller
+            // release controller
         }
 
         [Test]
@@ -183,14 +183,14 @@ namespace DotNetNuke.Tests.Core.Collections
                     t = new Thread(GetWriteLock);
                     t.Start(strategy);
 
-                    //sleep and let new thread run
+                    // sleep and let new thread run
                     Thread.Sleep(100);
 
-                    //assert that write thread is still waiting
+                    // assert that write thread is still waiting
                     Assert.IsTrue(t.IsAlive);
                 }
-                //release write lock
-                //sleep and let write thread finish up
+                // release write lock
+                // sleep and let write thread finish up
                 Thread.Sleep(100);
                 Assert.IsFalse(t.IsAlive);
             }
@@ -210,10 +210,10 @@ namespace DotNetNuke.Tests.Core.Collections
                         t = new Thread(GetReadLock);
                         t.Start(strategy);
 
-                        //sleep and let new thread run
+                        // sleep and let new thread run
                         Thread.Sleep(100);
 
-                        //assert that read thread has terminated
+                        // assert that read thread has terminated
                         Assert.IsFalse(t.IsAlive);
                     }
                 }
@@ -242,7 +242,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var strategy = (ILockStrategy)obj;
             using (var readLock = strategy.GetReadLock())
             {
-                //do nothing
+                // do nothing
             }
         }
 
@@ -251,7 +251,7 @@ namespace DotNetNuke.Tests.Core.Collections
             var strategy = (ILockStrategy)obj;
             using (var writeLock = strategy.GetWriteLock())
             {
-                //do nothing
+                // do nothing
             }
         }
     }

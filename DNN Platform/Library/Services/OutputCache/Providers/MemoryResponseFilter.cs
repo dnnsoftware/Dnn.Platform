@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
     /// </summary>
     public class MemoryResponseFilter : OutputCacheResponseFilter
     {
-        //Private _content As StringBuilder
+        // Private _content As StringBuilder
         private static System.Web.Caching.Cache runtimeCache;
 
         internal MemoryResponseFilter(int itemId, int maxVaryByCount, Stream filterChain, string cacheKey, TimeSpan cacheDuration) : base(filterChain, cacheKey, cacheDuration, maxVaryByCount)
@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             get
             {
-                //create singleton of the cache object
+                // create singleton of the cache object
                 if (runtimeCache == null)
                 {
                     runtimeCache = HttpRuntime.Cache;

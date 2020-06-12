@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Tokens
             CacheLevel isSafe = CacheLevel.fullyCacheable;
             if (sourceText != null && !string.IsNullOrEmpty(sourceText))
             {
-                //initialize PropertyAccess classes
+                // initialize PropertyAccess classes
                 string DummyResult = this.ReplaceTokens(sourceText);
 
                 foreach (Match currentMatch in this.TokenizerRegex.Matches(sourceText))
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Tokens
                     {
                         if (strObjectName == "[")
                         {
-                            //nothing
+                            // nothing
                         }
                         else if (!this.PropertySource.ContainsKey(strObjectName.ToLowerInvariant()))
                         {

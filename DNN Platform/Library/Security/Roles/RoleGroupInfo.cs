@@ -169,7 +169,7 @@ namespace DotNetNuke.Security.Roles
             this.RoleGroupName = Null.SetNullString(dr["RoleGroupName"]);
             this.Description = Null.SetNullString(dr["Description"]);
 
-            //Fill base class fields
+            // Fill base class fields
             this.FillInternal(dr);
         }
 
@@ -260,17 +260,17 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("rolegroup");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("rolegroupname", this.RoleGroupName);
             writer.WriteElementString("description", this.Description);
 
-            //Write start of roles
+            // Write start of roles
             writer.WriteStartElement("roles");
 			
-			//Iterate through roles
+			// Iterate through roles
             if (this.Roles != null)
             {
                 foreach (RoleInfo role in this.Roles.Values)
@@ -279,10 +279,10 @@ namespace DotNetNuke.Security.Roles
                 }
             }
 			
-            //Write end of Roles
+            // Write end of Roles
             writer.WriteEndElement();
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 

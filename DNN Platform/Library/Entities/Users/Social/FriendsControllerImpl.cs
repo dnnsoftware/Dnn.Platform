@@ -18,9 +18,9 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         internal const string FriendRequest = "FriendRequest";
 
 
-        //static FriendsControllerImpl()
-        //{
-        //}
+        // static FriendsControllerImpl()
+        // {
+        // }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
@@ -73,7 +73,7 @@ namespace DotNetNuke.Entities.Users.Social.Internal
         {
             Requires.NotNull("user1", initiatingUser);
 
-            //Check if the friendship has been requested first by target user
+            // Check if the friendship has been requested first by target user
             var targetUserRelationship = RelationshipController.Instance.GetFriendRelationship(targetUser,
                 initiatingUser);
             if (targetUserRelationship != null && targetUserRelationship.Status == RelationshipStatus.Pending)

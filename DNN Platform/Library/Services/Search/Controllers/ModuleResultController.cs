@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Search.Controllers
             var viewable = false;
             if (searchResult.ModuleId > 0)
             {
-                //Get All related tabIds from moduleId (while minimizing DB access; using caching)
+                // Get All related tabIds from moduleId (while minimizing DB access; using caching)
                 var moduleId = searchResult.ModuleId;
                 // The next call has over 30% performance enhancement over the above one
                 var tabModules = TabController.Instance.GetTabsByPortal(searchResult.PortalId).Values
@@ -57,10 +57,10 @@ namespace DotNetNuke.Services.Search.Controllers
                     var tab = TabController.Instance.GetTab(module.TabID, searchResult.PortalId, false);
                     if (this.ModuleIsAvailable(tab, module) && !tab.IsDeleted && !tab.DisableLink && TabPermissionController.CanViewPage(tab))
                     {
-                        //Check If authorised to View Module
+                        // Check If authorised to View Module
                         if (ModulePermissionController.CanViewModule(module) && this.HasModuleSearchPermission(module, searchResult))
                         {
-                            //Verify against search document permissions
+                            // Verify against search document permissions
                             if (string.IsNullOrEmpty(searchResult.Permissions) || PortalSecurity.IsInRoles(searchResult.Permissions))
                             {
                                 viewable = true;
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Search.Controllers
                 return searchResult.Url;
 
             var url = Localization.Localization.GetString("SEARCH_NoLink");
-            //Get All related tabIds from moduleId
+            // Get All related tabIds from moduleId
             var tabModules = GetModuleTabs(searchResult.ModuleId);
 
             foreach (ModuleInfo module in tabModules)

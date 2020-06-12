@@ -36,10 +36,10 @@ namespace DotNetNuke.Common.Utilities
         private static readonly Regex StripTagsRegex = new Regex("<[^<>]*>", RegexOptions.Compiled);
         private static readonly Regex RemoveInlineStylesRegEx = new Regex("<style>.*?</style>", RegexOptions.Compiled | RegexOptions.Multiline);
          
-        //Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
+        // Match all variants of <br> tag (<br>, <BR>, <br/>, including embedded space
         private static readonly Regex ReplaceHtmlNewLinesRegex = new Regex("\\s*<\\s*[bB][rR]\\s*/\\s*>\\s*", RegexOptions.Compiled);
 
-        //Create Regular Expression objects
+        // Create Regular Expression objects
         private const string PunctuationMatch = "[~!#\\$%\\^&*\\(\\)-+=\\{\\[\\}\\]\\|;:\\x22'<,>\\.\\?\\\\\\t\\r\\v\\f\\n]";
         private static readonly Regex AfterRegEx = new Regex(PunctuationMatch + "\\s", RegexOptions.Compiled);
         private static readonly Regex BeforeRegEx = new Regex("\\s" + PunctuationMatch, RegexOptions.Compiled);
@@ -71,18 +71,18 @@ namespace DotNetNuke.Common.Utilities
                 HTML = HttpUtility.HtmlDecode(HTML);
             }
 
-            //First remove any HTML Tags ("<....>")
+            // First remove any HTML Tags ("<....>")
             HTML = StripTags(HTML, true);
 
-            //Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
+            // Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
             HTML = HttpUtility.HtmlDecode(HTML);
 
-            //Thirdly remove any punctuation
+            // Thirdly remove any punctuation
             if (RemovePunctuation)
             {
                 HTML = StripPunctuation(HTML, true);
                 // When RemovePunctuation is false, HtmlDecode() would have already had removed these
-                //Finally remove extra whitespace
+                // Finally remove extra whitespace
                 HTML = StripWhiteSpace(HTML, true);
             }
 
@@ -107,19 +107,19 @@ namespace DotNetNuke.Common.Utilities
                 return string.Empty;
             }
 
-            //First remove unspecified HTML Tags ("<....>")
+            // First remove unspecified HTML Tags ("<....>")
             html = StripUnspecifiedTags(html, tagsFilter, true);
 
-            //Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
+            // Second replace any HTML entities (&nbsp; &lt; etc) through their char symbol
             html = HttpUtility.HtmlDecode(html);
 
-            //Thirdly remove any punctuation
+            // Thirdly remove any punctuation
             if (removePunctuation)
             {
                 html = StripPunctuation(html, true);
             }
 
-            //Finally remove extra whitespace
+            // Finally remove extra whitespace
             html = StripWhiteSpace(html, true);
 
             return html;
@@ -222,11 +222,11 @@ namespace DotNetNuke.Common.Utilities
 
             if (!string.IsNullOrEmpty(strText))
             {
-                //First remove white space (html does not render white space anyway and it screws up the conversion to text)
-                //Replace it by a single space
+                // First remove white space (html does not render white space anyway and it screws up the conversion to text)
+                // Replace it by a single space
                 strText = StripWhiteSpace(strText, true);
 
-                //Replace all variants of <br> by Linefeeds
+                // Replace all variants of <br> by Linefeeds
                 strText = FormatText(strText, false);
             }
 
@@ -297,7 +297,7 @@ namespace DotNetNuke.Common.Utilities
         public static string StripEntities(string HTML, bool RetainSpace)
         {
             var repString = RetainSpace ? " " : "";
-            //Replace Entities by replacement String and return mofified string
+            // Replace Entities by replacement String and return mofified string
             return EntityRegEx.Replace(HTML, repString);
         }
 
@@ -374,13 +374,13 @@ namespace DotNetNuke.Common.Utilities
 
             var result = new StringBuilder();
 
-            //Set up Replacement String
+            // Set up Replacement String
             var repString = retainSpace ? " " : "";
 
-            //Stripped HTML
+            // Stripped HTML
             result.Append(StripTagsRegex.Replace(html, repString));
 
-            //Adding Tag info from specified tags
+            // Adding Tag info from specified tags
             foreach (Match m in Regex.Matches(html, "(?<=(" + specifiedTags + ")=)\"(?<a>.*?)\""))
             {
                 if (m.Value.Length > 0)
@@ -410,10 +410,10 @@ namespace DotNetNuke.Common.Utilities
                 return string.Empty;
             }
 
-            //Define return string
-            string retHTML = HTML + " "; //Make sure any punctuation at the end of the String is removed
+            // Define return string
+            string retHTML = HTML + " "; // Make sure any punctuation at the end of the String is removed
 
-            //Set up Replacement String
+            // Set up Replacement String
             var repString = RetainSpace ? " " : "";
             while (BeforeRegEx.IsMatch(retHTML))
             {
@@ -537,7 +537,7 @@ namespace DotNetNuke.Common.Utilities
                 string configSetting = Config.GetSetting("ShowInstallationMessages") ?? "true";
                 if (bool.TryParse(configSetting, out showInstallationMessages) && showInstallationMessages)
                 {
-                    //Get the time of the feedback
+                    // Get the time of the feedback
                     TimeSpan timeElapsed = Upgrade.RunTime;
                     string strMessage = "";
                     if (showtime)
@@ -603,10 +603,10 @@ namespace DotNetNuke.Common.Utilities
         /// -----------------------------------------------------------------------------
         public static void WriteHeader(HttpResponse response, string mode)
         {
-            //Set Response buffer to False
+            // Set Response buffer to False
             response.Buffer = false;
 
-            //create an install page if it does not exist already
+            // create an install page if it does not exist already
             if (!File.Exists(HttpContext.Current.Server.MapPath("~/Install/Install.htm")))
             {
                 if (File.Exists(HttpContext.Current.Server.MapPath("~/Install/Install.template.htm")))
@@ -614,7 +614,7 @@ namespace DotNetNuke.Common.Utilities
                     File.Copy(HttpContext.Current.Server.MapPath("~/Install/Install.template.htm"), HttpContext.Current.Server.MapPath("~/Install/Install.htm"));
                 }
             }
-            //read install page and insert into response stream
+            // read install page and insert into response stream
             if (File.Exists(HttpContext.Current.Server.MapPath("~/Install/Install.htm")))
             {
                 response.Write(FileSystemUtils.ReadFile(HttpContext.Current.Server.MapPath("~/Install/Install.htm")));

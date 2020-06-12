@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Controllers
             catch (Exception exc)
             {
                 Logger.Error(exc);
-                //we just want to trap the error as we may not be installed so there will be no Settings
+                // we just want to trap the error as we may not be installed so there will be no Settings
             }
             return retValue;
         }

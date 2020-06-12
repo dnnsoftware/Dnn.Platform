@@ -229,13 +229,13 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-				//set the resourcekey attribute to the label
+				// set the resourcekey attribute to the label
                 if (!String.IsNullOrEmpty(this.ResourceKey))
                 {
                     this.lblTitle.Attributes["resourcekey"] = this.ResourceKey;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -263,10 +263,10 @@ namespace DotNetNuke.UI.UserControls
                     DNNClientAPI.EnableMinMax(this.imgIcon, ctl, !this.IsExpanded, this.Page.ResolveUrl(this.MinImageUrl), this.Page.ResolveUrl(this.MaxImageUrl), DNNClientAPI.MinMaxPersistanceType.Page);
                 }
 				
-                //optionlly show hr
+                // optionlly show hr
                 this.pnlRule.Visible = this._includeRule;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

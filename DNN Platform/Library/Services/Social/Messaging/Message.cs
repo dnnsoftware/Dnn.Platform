@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.ReplyAllAllowed = Null.SetNullBoolean(dr["ReplyAllAllowed"]);
             this.SenderUserID = Convert.ToInt32(dr["SenderUserID"]);
             this.NotificationTypeID = Null.SetNullInteger(dr["NotificationTypeID"]);
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
     }

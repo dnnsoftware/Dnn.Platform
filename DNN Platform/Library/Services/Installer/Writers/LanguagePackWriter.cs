@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
                 else
                 {
-					//Get the BasePath of the Dependent Package
+					// Get the BasePath of the Dependent Package
                     PackageInfo dependendentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == this.LanguagePack.DependentPackageID);
                     PackageWriterBase dependentPackageWriter = PackageWriterFactory.GetWriter(dependendentPackage);
                     this.BasePath = dependentPackageWriter.BasePath;
@@ -72,7 +72,7 @@ namespace DotNetNuke.Services.Installer.Writers
             this._Language.Code = Util.ReadAttribute(cultureNav, "Code");
             this._Language.Fallback = Localization.Localization.SystemLocale;
 
-            //Create a Package
+            // Create a Package
             this.Package = new PackageInfo(installer);
             this.Package.Name = this.Language.Text;
             this.Package.FriendlyName = this.Language.Text;
@@ -449,12 +449,12 @@ namespace DotNetNuke.Services.Installer.Writers
                         break;
                     case "LocalResource":
                         filePath = Path.Combine("DesktopModules", Path.Combine(moduleName, "App_LocalResources"));
-                        //Two assumptions are made here
-                        //1. Core files appear in the package before extension files
-                        //2. Module packages only include one module
+                        // Two assumptions are made here
+                        // 1. Core files appear in the package before extension files
+                        // 2. Module packages only include one module
                         if (!this._IsCore && this._LanguagePack == null)
                         {
-							//Check if language is installed
+							// Check if language is installed
                             Locale locale = LocaleController.Instance.GetLocale(this._Language.Code);
                             if (locale == null)
                             {
@@ -462,13 +462,13 @@ namespace DotNetNuke.Services.Installer.Writers
                             }
                             else
                             {
-								//Attempt to figure out the Extension
+								// Attempt to figure out the Extension
                                 foreach (KeyValuePair<int, DesktopModuleInfo> kvp in
                                     DesktopModuleController.GetDesktopModules(Null.NullInteger))
                                 {
                                     if (kvp.Value.FolderName.ToLowerInvariant() == moduleName)
                                     {
-										//Found Module - Get Package
+										// Found Module - Get Package
                                         var dependentPackage = PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == kvp.Value.PackageID);
                                         this.Package.Name += "_" + dependentPackage.Name;
                                         this.Package.FriendlyName += " " + dependentPackage.FriendlyName;
@@ -505,7 +505,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void GetFiles(bool includeSource, bool includeAppCode)
         {
-			//Language file starts at the root
+			// Language file starts at the root
             this.ParseFolder(Path.Combine(Globals.ApplicationMapPath, this.BasePath), Globals.ApplicationMapPath);
         }
 
@@ -524,7 +524,7 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             if (folder.Name.ToLowerInvariant() == "app_localresources" || folder.Name.ToLowerInvariant() == "app_globalresources" || folder.Name.ToLowerInvariant() == "_default")
             {
-				//Add the Files in the Folder
+				// Add the Files in the Folder
                 FileInfo[] files = folder.GetFiles();
                 foreach (FileInfo file in files)
                 {

@@ -128,7 +128,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 var url = this._navigationManager.NavigateURL(this.TabId, "ControlKey", "mid=" + this.ModuleId, "ReturnUrl=" + this.Server.UrlEncode(this._navigationManager.NavigateURL()));
 
-                //append popUp parameter
+                // append popUp parameter
                 var delimiter = url.Contains("?") ? "&" : "?";
                 url = string.Format("{0}{1}popUp=true", url, delimiter);
 
@@ -535,7 +535,7 @@ namespace DotNetNuke.Modules.DigitalAssets
             {
                 base.OnLoad(e);
 
-                //if (IsPostBack) return;
+                // if (IsPostBack) return;
 
                 switch (SettingsRepository.GetMode(this.ModuleId))
                 {
@@ -568,7 +568,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                         break;
 
                     default:
-                        //handle upgrades where FilterCondition didn't exist
+                        // handle upgrades where FilterCondition didn't exist
                         SettingsRepository.SetDefaultFilterCondition(this.ModuleId);
                         this.RootFolderViewModel = this.controller.GetRootFolder(this.ModuleId);
                         break;
@@ -598,7 +598,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this.FolderNameRegExValidator.ErrorMessage = this.controller.GetInvalidCharsErrorText();
                 this.FolderNameRegExValidator.ValidationExpression = "^([^" + Regex.Escape(this.controller.GetInvalidChars()) + "]+)$";
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -617,7 +617,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
 
-                //register the telerik core js manually
+                // register the telerik core js manually
                 var telerikCoreJs = this.Page.ClientScript.GetWebResourceUrl(typeof(RadGrid), "Telerik.Web.UI.Common.Core.js");
                 ClientResourceManager.RegisterScript(this.Page, telerikCoreJs, FileOrder.Js.jQuery + 3);
 
@@ -641,7 +641,7 @@ namespace DotNetNuke.Modules.DigitalAssets
                 this.MainToolBar.ModuleContext = this.ModuleContext;
                 this.SelectionToolBar.ModuleContext = this.ModuleContext;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

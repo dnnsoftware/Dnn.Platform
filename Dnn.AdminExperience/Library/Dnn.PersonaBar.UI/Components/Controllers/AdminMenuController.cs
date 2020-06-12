@@ -53,7 +53,7 @@ namespace Dnn.PersonaBar.UI.Components.Controllers
                 Controller = "Dnn.PersonaBar.UI.MenuControllers.LinkMenuController, Dnn.PersonaBar.UI",
                 ResourceKey = tab.LocalizedTabName,
                 ParentId = PersonaBarRepository.Instance.GetMenuItem("Manage").MenuId,
-                Order = tab.IsSuperTab ? 300 : 200, //show host menus after admin menus
+                Order = tab.IsSuperTab ? 300 : 200, // show host menus after admin menus
                 AllowHost = true,
                 Enabled = true
             };

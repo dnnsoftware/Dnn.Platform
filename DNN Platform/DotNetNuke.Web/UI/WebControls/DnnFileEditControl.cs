@@ -20,7 +20,7 @@ namespace DotNetNuke.Web.UI.WebControls
         #region Private Fields
 
         private DnnFilePickerUploader _fileControl;
-        //private DnnFilePicker _fileControl;
+        // private DnnFilePicker _fileControl;
 
         #endregion
 
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-            //First clear the controls collection
+            // First clear the controls collection
             this.Controls.Clear();
 
             var userControl = this.Page.LoadControl("~/controls/filepickeruploader.ascx");
@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this._fileControl.User = this.User;
 	            this._fileControl.Required = true;
 
-                //Add table to Control
+                // Add table to Control
                 this.Controls.Add(this._fileControl);
             }
 
@@ -128,7 +128,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             bool dataChanged = false;
             string presentValue = this.StringValue;
-            //string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
+            // string postedValue = postCollection[string.Format("{0}FileControl$dnnFileUploadFileId", postDataKey)];
             string postedValue = this._fileControl.FileID.ToString();
             if (!presentValue.Equals(postedValue))
             {

@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
 			MockComponentProvider.CreateDataCacheProvider();
 			MockComponentProvider.CreateEventLogController();
 
-            //create the bin folder
+            // create the bin folder
             var folderPath = HostingEnvironment.ApplicationPhysicalPath + "bin";
             if (!Directory.Exists(folderPath))
             {
@@ -64,7 +64,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         [ExpectedException(typeof(ArgumentException))]
         public void AspNetClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_Empty_ClientCapabilityId()
         {
-            //Act
+            // Act
             string nullClientCapabilityId = String.Empty;         
             var clientCapabilitiesByNullId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProvider
         [ExpectedException(typeof(ArgumentException))]
         public void AspNetClientCapabilityProvider_GetClientCapabilityById_ThrowsException_For_Null_ClientCapabilityId()
         {
-            //Act
+            // Act
             string nullClientCapabilityId = null;
             var clientCapabilitiesByEmptyId = this._clientCapabilityProvider.GetClientCapabilityById(nullClientCapabilityId);
         }

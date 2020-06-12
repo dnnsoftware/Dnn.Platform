@@ -123,7 +123,7 @@ namespace DotNetNuke.Services.GeneratedImage
         {
             this.SetupCulture();
 
-            //which type of image should be generated ?
+            // which type of image should be generated ?
             string mode = string.IsNullOrEmpty(parameters["mode"]) ? "profilepic" : parameters["mode"].ToLowerInvariant();
 
             // We need to determine the output format		

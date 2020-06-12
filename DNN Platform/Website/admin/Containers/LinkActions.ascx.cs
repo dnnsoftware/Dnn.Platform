@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.Containers
                 {
                     if (this.ActionRoot.Visible)
                     {
-						//Is Root Menu visible?
+						// Is Root Menu visible?
                         if (this.Controls.Count > 0)
                         {
                             this.Controls.Clear();
@@ -49,12 +49,12 @@ namespace DotNetNuke.UI.Containers
                         var PreSpacer = new LiteralControl(this.ItemSeparator);
                         this.Controls.Add(PreSpacer);
 
-                        //Add Menu Items
+                        // Add Menu Items
                         foreach (ModuleAction action in this.ActionRoot.Actions)
                         {
                             if (action.Title == "~")
                             {
-								//not supported in this Action object
+								// not supported in this Action object
                             }
                             else
                             {
@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
 				
-                //Need to determine if this action list actually has any items.
+                // Need to determine if this action list actually has any items.
                 if (this.Controls.Count > 0)
                 {
                     this.Visible = true;
@@ -90,7 +90,7 @@ namespace DotNetNuke.UI.Containers
                     this.Visible = false;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -111,7 +111,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.ProcessAction(((LinkButton)sender).ID.Substring(3));
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

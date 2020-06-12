@@ -78,8 +78,8 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 var strMessage = "";
 				
-				//check to see if a url
-                //was passed in for an icon
+				// check to see if a url
+                // was passed in for an icon
                 if (!String.IsNullOrEmpty(this.IconImage))
                 {
                     strMessage += this.Text;
@@ -115,7 +115,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     this.lblHeading.Text = this.Heading;
                 }
             }
-            catch (Exception exc) //Control failed to load
+            catch (Exception exc) // Control failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc, false);
             }
@@ -125,7 +125,7 @@ namespace DotNetNuke.UI.Skins.Controls
 		{
 			base.OnPreRender(e);
 
-			//set the scroll js only shown for module message and in postback mode.
+			// set the scroll js only shown for module message and in postback mode.
 			this.scrollScript.Visible = this.IsPostBack && this.IsModuleMessage;
 		}
 		

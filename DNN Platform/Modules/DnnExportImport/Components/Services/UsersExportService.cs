@@ -52,16 +52,16 @@ namespace Dnn.ExportImport.Components.Services
             }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
 
-            //Skip the export if all the users has been processed already.
+            // Skip the export if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
                 return;
 
-            //Check if there is any pending stage or partially processed data.
+            // Check if there is any pending stage or partially processed data.
             if (this.CheckPoint.Stage > 0)
             {
                 pageIndex = this.CheckPoint.Stage;
             }
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             this.CheckPoint.ProcessedItems = this.CheckPoint.Stage * pageSize;
             if (this.CheckPointStageCallback(this)) return;
@@ -168,7 +168,7 @@ namespace Dnn.ExportImport.Components.Services
                     this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalUsers;
                     this.CheckPoint.Stage++;
                     if (this.CheckPointStageCallback(this)) return;
-                    //Rebuild the indexes in the exported database.
+                    // Rebuild the indexes in the exported database.
                     this.Repository.RebuildIndex<ExportUser>(x => x.Id, true);
                     this.Repository.RebuildIndex<ExportUserPortal>(x => x.ReferenceId);
                     this.Repository.RebuildIndex<ExportAspnetUser>(x => x.ReferenceId);
@@ -216,14 +216,14 @@ namespace Dnn.ExportImport.Components.Services
                 return;
             }
             var totalPages = Util.CalculateTotalPages(totalUsers, pageSize);
-            //Skip the import if all the users has been processed already.
+            // Skip the import if all the users has been processed already.
             if (this.CheckPoint.Stage >= totalPages)
                 return;
 
             var pageIndex = this.CheckPoint.Stage;
 
             var totalUsersToBeProcessed = totalUsers - pageIndex * pageSize;
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalUsers : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this)) return;
             try
@@ -258,7 +258,7 @@ namespace Dnn.ExportImport.Components.Services
 
                                 var userPortal = this.Repository.GetRelatedItems<ExportUserPortal>(user.Id).FirstOrDefault();
                                 var userAuthentication = this.Repository.GetRelatedItems<ExportUserAuthentication>(user.Id).FirstOrDefault();
-                                //Aspnet Users and Membership
+                                // Aspnet Users and Membership
                                 var aspNetUser = this.Repository.GetRelatedItems<ExportAspnetUser>(user.Id).FirstOrDefault();
                                 var aspnetMembership = aspNetUser != null
                                     ? this.Repository.GetRelatedItems<ExportAspnetMembership>(aspNetUser.Id).FirstOrDefault()
@@ -351,7 +351,7 @@ namespace Dnn.ExportImport.Components.Services
                                 table.Rows.Add(row);
                             }
                             var overwrite = importDto.CollisionResolution == CollisionResolution.Overwrite;
-                            //Bulk insert the data in DB
+                            // Bulk insert the data in DB
                             DotNetNuke.Data.DataProvider.Instance()
                                 .BulkInsert("ExportImport_AddUpdateUsersBulk", "@DataTable", table, new Dictionary<string, object> { { "Overwrite", overwrite } });
                             totalUsersImported += users.Count;

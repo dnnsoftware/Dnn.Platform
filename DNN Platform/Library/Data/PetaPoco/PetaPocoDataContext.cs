@@ -118,7 +118,7 @@ namespace DotNetNuke.Data.PetaPoco
         {
             PetaPocoRepository<T> rep = null;
 
-            //Determine whether to use a Fluent Mapper
+            // Determine whether to use a Fluent Mapper
             if (this.FluentMappers.ContainsKey(typeof(T)))
             {
                 var fluentMapper = this.FluentMappers[typeof(T)] as FluentMapper<T>;

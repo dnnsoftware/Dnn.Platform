@@ -113,9 +113,9 @@ namespace DotNetNuke.Entities.Tabs
             var portalSettings = new PortalSettings(tab.TabID, tab.PortalID);
             foreach (ModuleInfo allTabsModule in ModuleController.Instance.GetAllTabsModules(tab.PortalID, true))
             {
-                //[DNN-6276]We need to check that the Module is not implicitly deleted.  ie If all instances are on Pages
-                //that are all "deleted" then even if the Module itself is not deleted, we would not expect the 
-                //Module to be added
+                // [DNN-6276]We need to check that the Module is not implicitly deleted.  ie If all instances are on Pages
+                // that are all "deleted" then even if the Module itself is not deleted, we would not expect the 
+                // Module to be added
                 var canAdd =
                 (from ModuleInfo allTabsInstance in ModuleController.Instance.GetTabModulesByModule(allTabsModule.ModuleID) select Instance.GetTab(allTabsInstance.TabID, tab.PortalID, false)).Any(
                     t => !t.IsDeleted) && (!portalSettings.ContentLocalizationEnabled || allTabsModule.CultureCode == tab.CultureCode);
@@ -130,10 +130,10 @@ namespace DotNetNuke.Entities.Tabs
         {
             ValidateTabPath(tab);
 
-            //First create ContentItem as we need the ContentItemID
+            // First create ContentItem as we need the ContentItemID
             this.CreateContentItem(tab);
 
-            //Add Tab
+            // Add Tab
             if (afterTabId > 0)
             {
                 tab.TabID = this._dataProvider.AddTabAfter(tab, afterTabId, UserController.Instance.GetCurrentUserInfo().UserID);
@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Tabs
                                 : this._dataProvider.AddTabToEnd(tab, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(tab.PortalID);
 
             ITermController termController = Util.GetTermController();
@@ -158,10 +158,10 @@ namespace DotNetNuke.Entities.Tabs
             EventLogController.Instance.AddLog(tab, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID,
                             "", EventLogController.EventLogType.TAB_CREATED);
 
-            //Add Tab Permissions
+            // Add Tab Permissions
             TabPermissionController.SaveTabPermissions(tab);
 
-            //Add TabSettings - use Try/catch as tabs are added during upgrade ptocess and the sproc may not exist
+            // Add TabSettings - use Try/catch as tabs are added during upgrade ptocess and the sproc may not exist
             try
             {
                 this.UpdateTabSettings(ref tab);
@@ -171,13 +171,13 @@ namespace DotNetNuke.Entities.Tabs
                 Exceptions.LogException(ex);
             }
 
-            //Add AllTabs Modules
+            // Add AllTabs Modules
             if (includeAllTabsModules && tab.PortalID != Null.NullInteger)
             {
                 AddAllTabsModules(tab);
             }
 
-            //Check Tab Versioning
+            // Check Tab Versioning
             if (tab.PortalID == Null.NullInteger || !TabVersionSettings.Instance.IsVersioningEnabled(tab.PortalID, tab.TabID))
             {
                 this.MarkAsPublished(tab);
@@ -195,20 +195,20 @@ namespace DotNetNuke.Entities.Tabs
 				Logger.TraceFormat("Localizing TabId: {0}, TabPath: {1}, Locale: {2}", originalTab.TabID, originalTab.TabPath, locale.Code);
 				var defaultLocale = LocaleController.Instance.GetDefaultLocale(originalTab.PortalID);
 
-				//First Clone the Tab
+				// First Clone the Tab
 				TabInfo localizedCopy = originalTab.Clone();
 				localizedCopy.TabID = Null.NullInteger;
 				localizedCopy.StateID = Null.NullInteger;
 			    localizedCopy.ContentItemId = Null.NullInteger;
 
-				//Set Guids and Culture Code
+				// Set Guids and Culture Code
 				localizedCopy.UniqueId = Guid.NewGuid();
 				localizedCopy.VersionGuid = Guid.NewGuid();
 				localizedCopy.LocalizedVersionGuid = Guid.NewGuid();
 				localizedCopy.CultureCode = locale.Code;
 				localizedCopy.TabName = localizedCopy.TabName + " (" + locale.Code + ")";
 			    
-                //copy page tags
+                // copy page tags
 			    foreach (var term in originalTab.Terms)
 			    {
 			        localizedCopy.Terms.Add(term);
@@ -224,9 +224,9 @@ namespace DotNetNuke.Entities.Tabs
 					localizedCopy.DefaultLanguageGuid = originalTab.UniqueId;
 				}
 
-				//Copy Permissions from original Tab for Admins only
-				//If original tab is user tab or its parent tab is user tab, then copy full permission
-				//from original tab.
+				// Copy Permissions from original Tab for Admins only
+				// If original tab is user tab or its parent tab is user tab, then copy full permission
+				// from original tab.
 				PortalInfo portal = PortalController.Instance.GetPortal(originalTab.PortalID);
 				if (originalTab.TabID == portal.UserTabId || originalTab.ParentId == portal.UserTabId)
 				{
@@ -237,24 +237,24 @@ namespace DotNetNuke.Entities.Tabs
 					localizedCopy.TabPermissions.AddRange(originalTab.TabPermissions.Where(p => p.RoleID == portal.AdministratorRoleId));
 				}
 
-				//Get the original Tabs Parent
-				//check the original whether have parent.
+				// Get the original Tabs Parent
+				// check the original whether have parent.
 				if (!Null.IsNull(originalTab.ParentId))
 				{
 					TabInfo originalParent = this.GetTab(originalTab.ParentId, originalTab.PortalID, false);
 
-                    //Get the localized parent
+                    // Get the localized parent
                     TabInfo localizedParent = this.GetTabByCulture(originalParent.TabID, originalParent.PortalID, locale);
                     localizedCopy.ParentId = localizedParent.TabID;
                 }
 
-                //Save Tab
+                // Save Tab
                 var afterTabId = insertAfterOriginal ? originalTab.TabID : -1;
                 const int beforeTabId = -1;
                 const bool includeAllModules = false;
-                this.AddTabInternal(localizedCopy, afterTabId, beforeTabId, includeAllModules); //not include modules show on all page, it will handled in copy modules action.
+                this.AddTabInternal(localizedCopy, afterTabId, beforeTabId, includeAllModules); // not include modules show on all page, it will handled in copy modules action.
 
-				//if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
+				// if the tab has custom stylesheet defined, then also copy the stylesheet to the localized version.
 				if (originalTab.TabSettings.ContainsKey("CustomStylesheet"))
 				{
 					this.UpdateTabSetting(localizedCopy.TabID, "CustomStylesheet", originalTab.TabSettings["CustomStylesheet"].ToString());
@@ -265,22 +265,22 @@ namespace DotNetNuke.Entities.Tabs
 				 */
                 DisableTabVersioningAndWorkflow(localizedCopy);
 
-				//Make shallow copies of all modules
+				// Make shallow copies of all modules
 				ModuleController.Instance.CopyModules(originalTab, localizedCopy, true, allTabsModulesFromDefault);
 
-				//Convert these shallow copies to deep copies
+				// Convert these shallow copies to deep copies
 				foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(localizedCopy.TabID))
 				{
 					ModuleController.Instance.LocalizeModule(kvp.Value, locale);
 				}
 
-				//if not copy modules which show on all pages from default language, we need add all modules in current culture.
+				// if not copy modules which show on all pages from default language, we need add all modules in current culture.
 				if (!allTabsModulesFromDefault)
 				{
 					AddAllTabsModules(localizedCopy);
 				}
 
-				//Add Translator Role
+				// Add Translator Role
 				this.GiveTranslatorRoleEditRights(localizedCopy, null);
 
 				/* Tab versioning and workflow is re-enabled  
@@ -295,7 +295,7 @@ namespace DotNetNuke.Entities.Tabs
 				throw;
 			}
 
-			//Clear the Cache
+			// Clear the Cache
 			if (clearCache)
 			{
 				this.ClearCache(originalTab.PortalID);
@@ -308,7 +308,7 @@ namespace DotNetNuke.Entities.Tabs
             string cacheKey = String.Format(DataCache.TabSettingsCacheKey, portalId);
             DataCache.RemoveCache(cacheKey);
 
-            //aslo clear the settings from tab object in cache.
+            // aslo clear the settings from tab object in cache.
             var tab = this.GetTab(tabId, portalId, false);
             if (tab != null)
             {
@@ -356,7 +356,7 @@ namespace DotNetNuke.Entities.Tabs
 
             var descendants = this.GetTabsByPortal(tab.PortalID).DescendentsOf(tab.TabID);
 
-            //Create Redirect for descendant tabs
+            // Create Redirect for descendant tabs
             foreach (TabInfo descendantTab in descendants)
             {
                 this.CreateTabRedirect(descendantTab);
@@ -474,21 +474,21 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     while (dr.Read())
                     {
-                        //fill business object
+                        // fill business object
                         var tabAliasSkin = CBO.FillObject<TabAliasSkinInfo>(dr, false);
 
-                        //add Tab Alias Skin to dictionary
+                        // add Tab Alias Skin to dictionary
                         if (dic.ContainsKey(tabAliasSkin.TabId))
                         {
-                            //Add Tab Alias Skin to Tab Alias Skin Collection already in dictionary for TabId
+                            // Add Tab Alias Skin to Tab Alias Skin Collection already in dictionary for TabId
                             dic[tabAliasSkin.TabId].Add(tabAliasSkin);
                         }
                         else
                         {
-                            //Create new Tab Alias Skin Collection for TabId
+                            // Create new Tab Alias Skin Collection for TabId
                             var collection = new List<TabAliasSkinInfo> { tabAliasSkin };
 
-                            //Add Collection to Dictionary
+                            // Add Collection to Dictionary
                             dic.Add(tabAliasSkin.TabId, collection);
                         }
                     }
@@ -499,7 +499,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 finally
                 {
-                    //close datareader
+                    // close datareader
                     CBO.CloseDataReader(dr, true);
                 }
             }
@@ -528,23 +528,23 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     while (dr.Read())
                     {
-                        //fill business object
+                        // fill business object
                         var tabId = (int)dr["TabId"];
                         var customAlias = (string)dr["httpAlias"];
                         var cultureCode = (string)dr["cultureCode"];
 
-                        //add Custom Alias to dictionary
+                        // add Custom Alias to dictionary
                         if (dic.ContainsKey(tabId))
                         {
-                            //Add Custom Alias to Custom Alias Collection already in dictionary for TabId
+                            // Add Custom Alias to Custom Alias Collection already in dictionary for TabId
                             dic[tabId][cultureCode] = customAlias;
                         }
                         else
                         {
-                            //Create new Custom Alias Collection for TabId
+                            // Create new Custom Alias Collection for TabId
                             var collection = new Dictionary<string, string> { { cultureCode, customAlias } };
 
-                            //Add Collection to Dictionary
+                            // Add Collection to Dictionary
                             dic.Add(tabId, collection);
                         }
                     }
@@ -555,7 +555,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 finally
                 {
-                    //close datareader
+                    // close datareader
                     CBO.CloseDataReader(dr, true);
                 }
             }
@@ -667,21 +667,21 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     while (dr.Read())
                     {
-                        //fill business object
+                        // fill business object
                         var tabRedirect = CBO.FillObject<TabUrlInfo>(dr, false);
 
-                        //add Tab Redirect to dictionary
+                        // add Tab Redirect to dictionary
                         if (dic.ContainsKey(tabRedirect.TabId))
                         {
-                            //Add Tab Redirect to Tab Redirect Collection already in dictionary for TabId
+                            // Add Tab Redirect to Tab Redirect Collection already in dictionary for TabId
                             dic[tabRedirect.TabId].Add(tabRedirect);
                         }
                         else
                         {
-                            //Create new Tab Redirect Collection for TabId
+                            // Create new Tab Redirect Collection for TabId
                             var collection = new List<TabUrlInfo> { tabRedirect };
 
-                            //Add Collection to Dictionary
+                            // Add Collection to Dictionary
                             dic.Add(tabRedirect.TabId, collection);
                         }
                     }
@@ -692,7 +692,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 finally
                 {
-                    //close datareader
+                    // close datareader
                     CBO.CloseDataReader(dr, true);
                 }
             }
@@ -701,7 +701,7 @@ namespace DotNetNuke.Entities.Tabs
 
         private void HardDeleteTabInternal(int tabId, int portalId)
         {
-            //Delete all tabModule Instances
+            // Delete all tabModule Instances
             foreach (ModuleInfo m in ModuleController.Instance.GetTabModules(tabId).Values)
             {
                 ModuleController.Instance.DeleteTabModule(m.TabID, m.ModuleID, false);
@@ -709,10 +709,10 @@ namespace DotNetNuke.Entities.Tabs
 
             var tab = this.GetTab(tabId, portalId, false);
 
-            //Delete Tab
+            // Delete Tab
             this._dataProvider.DeleteTab(tabId);
 
-            //Log deletion
+            // Log deletion
             EventLogController.Instance.AddLog("TabID",
                             tabId.ToString(),
                             PortalController.Instance.GetCurrentPortalSettings(),
@@ -727,7 +727,7 @@ namespace DotNetNuke.Entities.Tabs
 
             DataProvider.Instance().AddSearchDeletedItems(document);
 
-            //Remove the Content Item
+            // Remove the Content Item
             if (tab != null && tab.ContentItemId > Null.NullInteger)
             {
                 IContentController contentController = Util.GetContentController();
@@ -848,7 +848,7 @@ namespace DotNetNuke.Entities.Tabs
             int tabId = GetTabByTabPath(tab.PortalID, tabPath, tab.CultureCode);
             if (tabId > Null.NullInteger)
             {
-                //Tab exists so Throw
+                // Tab exists so Throw
                 throw new TabExistsException(tabId,
                                              string.Format("Page Exists in portal: {0}, path: {1}, culture: {2}",
                                                            tab.PortalID, tab.TabPath, tab.CultureCode));
@@ -937,10 +937,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <remarks>The tab is added to the end of the current Level.</remarks>
         public int AddTab(TabInfo tab, bool includeAllTabsModules)
         {
-            //Add tab to store
+            // Add tab to store
             int tabID = this.AddTabInternal(tab, -1, -1, includeAllTabsModules);
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(tab.PortalID);
 
             return tabID;
@@ -953,10 +953,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="afterTabId">Id of the tab after which this tab is added</param>
         public int AddTabAfter(TabInfo tab, int afterTabId)
         {
-            //Add tab to store
+            // Add tab to store
             int tabID = this.AddTabInternal(tab, afterTabId, -1, true);
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(tab.PortalID);
 
             return tabID;
@@ -969,10 +969,10 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="beforeTabId">Id of the tab before which this tab is added</param>
         public int AddTabBefore(TabInfo objTab, int beforeTabId)
         {
-            //Add tab to store
+            // Add tab to store
             int tabID = this.AddTabInternal(objTab, -1, beforeTabId, true);
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(objTab.PortalID);
 
             return tabID;
@@ -986,7 +986,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             DataCache.ClearTabsCache(portalId);
 
-            //Clear the Portal cache so the Pages count is correct
+            // Clear the Portal cache so the Pages count is correct
             DataCache.ClearPortalCache(portalId, false);
 
             DataCache.RemoveCache(DataCache.PortalDictionaryCacheKey);
@@ -1014,7 +1014,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="clearCache"></param>
         public void ConvertTabToNeutralLanguage(int portalId, int tabId, string cultureCode, bool clearCache)
         {
-            //parent tabs can not be deleted
+            // parent tabs can not be deleted
             if (this.GetTabsByPortal(portalId).WithParentId(tabId).Count == 0)
             {
                 // delete all translated / localized tabs for this tab
@@ -1040,7 +1040,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tab">The updated tab.</param>
         public void CreateContentItem(TabInfo tab)
         {
-            //First create ContentItem as we need the ContentItemID
+            // First create ContentItem as we need the ContentItemID
             ContentType contentType = ContentType.Tab;
 
             IContentController contentController = Util.GetContentController();
@@ -1114,7 +1114,7 @@ namespace DotNetNuke.Entities.Tabs
         /// </remarks>
         public void DeleteTab(int tabId, int portalId)
         {
-            //parent tabs can not be deleted
+            // parent tabs can not be deleted
             if (this.GetTabsByPortal(portalId).WithParentId(tabId).Count == 0)
             {
                 this.HardDeleteTabInternal(tabId, portalId);
@@ -1133,7 +1133,7 @@ namespace DotNetNuke.Entities.Tabs
             List<TabInfo> descendantList = this.GetTabsByPortal(portalId).DescendentsOf(tabId);
             if (deleteDescendants && descendantList.Count > 0)
             {
-                //Iterate through descendants from bottom - which will remove children first
+                // Iterate through descendants from bottom - which will remove children first
                 for (int i = descendantList.Count - 1; i >= 0; i += -1)
                 {
                     this.HardDeleteTabInternal(descendantList[i].TabID, portalId);
@@ -1247,15 +1247,15 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>list of TabAliasSkinInfo</returns>
         public List<TabAliasSkinInfo> GetAliasSkins(int tabId, int portalId)
         {
-            //Get the Portal AliasSkin Dictionary
+            // Get the Portal AliasSkin Dictionary
             Dictionary<int, List<TabAliasSkinInfo>> dicTabAliases = this.GetAliasSkins(portalId);
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             List<TabAliasSkinInfo> tabAliases;
             bool bFound = dicTabAliases.TryGetValue(tabId, out tabAliases);
             if (!bFound)
             {
-                //Return empty collection
+                // Return empty collection
                 tabAliases = new List<TabAliasSkinInfo>();
             }
             return tabAliases;
@@ -1269,15 +1269,15 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>dictionary of tabid and aliases</returns>
         public Dictionary<string, string> GetCustomAliases(int tabId, int portalId)
         {
-            //Get the Portal CustomAlias Dictionary
+            // Get the Portal CustomAlias Dictionary
             Dictionary<int, Dictionary<string, string>> dicCustomAliases = this.GetCustomAliases(portalId);
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             Dictionary<string, string> customAliases;
             bool bFound = dicCustomAliases.TryGetValue(tabId, out customAliases);
             if (!bFound)
             {
-                //Return empty collection
+                // Return empty collection
                 customAliases = new Dictionary<string, string>();
             }
             return customAliases;
@@ -1311,21 +1311,21 @@ namespace DotNetNuke.Entities.Tabs
             }
             else if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
-                //if we are using the cache
+                // if we are using the cache
                 tab = CBO.FillObject<TabInfo>(this._dataProvider.GetTab(tabId));
             }
             else
             {
-                //if we do not know the PortalId then try to find it in the Portals Dictionary using the TabId
+                // if we do not know the PortalId then try to find it in the Portals Dictionary using the TabId
                 portalId = GetPortalId(tabId, portalId);
 
-                //if we have the PortalId then try to get the TabInfo object
+                // if we have the PortalId then try to get the TabInfo object
                 tab = this.GetTabsByPortal(portalId).WithTabId(tabId) ??
                       this.GetTabsByPortal(GetPortalId(tabId, Null.NullInteger)).WithTabId(tabId);
 
                 if (tab == null)
                 {
-                    //recheck the info directly from database to make sure we can avoid error if the cache doesn't update
+                    // recheck the info directly from database to make sure we can avoid error if the cache doesn't update
                     // correctly, this may occurred when install is set up in web farm.
                     tab = CBO.FillObject<TabInfo>(this._dataProvider.GetTab(tabId));
 
@@ -1357,19 +1357,19 @@ namespace DotNetNuke.Entities.Tabs
             TabInfo localizedTab = null;
             TabCollection tabs = this.GetTabsByPortal(portalId);
 
-            //Get Tab specified by Id
+            // Get Tab specified by Id
             TabInfo originalTab = tabs.WithTabId(tabId);
 
             if (locale != null && originalTab != null)
             {
-                //Check if tab is in the requested culture
+                // Check if tab is in the requested culture
                 if (string.IsNullOrEmpty(originalTab.CultureCode) || originalTab.CultureCode == locale.Code)
                 {
                     localizedTab = originalTab;
                 }
                 else
                 {
-                    //See if tab exists for culture
+                    // See if tab exists for culture
                     if (originalTab.IsDefaultLanguage)
                     {
                         originalTab.LocalizedTabs.TryGetValue(locale.Code, out localizedTab);
@@ -1518,15 +1518,15 @@ namespace DotNetNuke.Entities.Tabs
         /// <returns>list of urls associated with a tab</returns>
         public List<TabUrlInfo> GetTabUrls(int tabId, int portalId)
         {
-            //Get the Portal TabUrl Dictionary
+            // Get the Portal TabUrl Dictionary
             Dictionary<int, List<TabUrlInfo>> dicTabUrls = this.GetTabUrls(portalId);
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             List<TabUrlInfo> tabRedirects;
             bool bFound = dicTabUrls.TryGetValue(tabId, out tabRedirects);
             if (!bFound)
             {
-                //Return empty collection
+                // Return empty collection
                 tabRedirects = new List<TabUrlInfo>();
             }
             return tabRedirects;
@@ -1566,7 +1566,7 @@ namespace DotNetNuke.Entities.Tabs
                                 tp => tp.RoleID == role.RoleID && tp.PermissionKey == "EDIT").SingleOrDefault();
                         if (perm == null)
                         {
-                            //Create Permission
+                            // Create Permission
                             var tabTranslatePermission = new TabPermissionInfo(translatePermisison)
                             {
                                 RoleID = role.RoleID,
@@ -1614,7 +1614,7 @@ namespace DotNetNuke.Entities.Tabs
         public bool IsTabPublished(TabInfo publishTab)
         {
             bool returnValue = true;
-            //To publish a subsidiary language tab we need to enable the View Permissions
+            // To publish a subsidiary language tab we need to enable the View Permissions
             if (publishTab != null && publishTab.DefaultLanguageTab != null)
             {
                 foreach (TabPermissionInfo perm in
@@ -1670,19 +1670,19 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="afterTabId">will move objTab after this tab.</param>
         public void MoveTabAfter(TabInfo tab, int afterTabId)
         {
-            //Get AfterTab
+            // Get AfterTab
             var afterTab = this.GetTab(afterTabId, tab.PortalID, false);
 
-            //Create Tab Redirects
+            // Create Tab Redirects
             if (afterTab.ParentId != tab.ParentId)
             {
                 this.CreateTabRedirects(tab);
             }
 
-            //Move Tab
+            // Move Tab
             this._dataProvider.MoveTabAfter(tab.TabID, afterTabId, UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(tab.PortalID);
 
             var portalId = GetPortalId(tab.TabID, -1);
@@ -1697,19 +1697,19 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="beforeTabId">will move objTab before this tab.</param>
         public void MoveTabBefore(TabInfo tab, int beforeTabId)
         {
-            //Get AfterTab
+            // Get AfterTab
             var beforeTab = this.GetTab(beforeTabId, tab.PortalID, false);
 
-            //Create Tab Redirects
+            // Create Tab Redirects
             if (beforeTab.ParentId != tab.ParentId)
             {
                 this.CreateTabRedirects(tab);
             }
 
-            //Move Tab
+            // Move Tab
             this._dataProvider.MoveTabBefore(tab.TabID, beforeTabId, UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(tab.PortalID);
 
             var portalId = GetPortalId(tab.TabID, -1);
@@ -1724,16 +1724,16 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="parentId">will move tab to this parent.</param>
         public void MoveTabToParent(TabInfo tab, int parentId)
         {
-            //Create Tab Redirects
+            // Create Tab Redirects
             if (parentId != tab.ParentId)
             {
                 this.CreateTabRedirects(tab);
             }
 
-            //Move Tab
+            // Move Tab
             this._dataProvider.MoveTabToParent(tab.TabID, parentId, UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Clear the Cache
+            // Clear the Cache
             this.ClearCache(tab.PortalID);
 
             var portalId = GetPortalId(tab.TabID, -1);
@@ -1763,7 +1763,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="tabID">The tab ID.</param>
         public void PopulateBreadCrumbs(int portalID, ref ArrayList breadCrumbs, int tabID)
         {
-            //find the tab in the tabs collection
+            // find the tab in the tabs collection
             TabInfo tab;
             TabCollection portalTabs = this.GetTabsByPortal(portalID);
             TabCollection hostTabs = this.GetTabsByPortal(Null.NullInteger);
@@ -1772,12 +1772,12 @@ namespace DotNetNuke.Entities.Tabs
             {
                 found = hostTabs.TryGetValue(tabID, out tab);
             }
-            //if tab was found
+            // if tab was found
             if (found)
             {
                 breadCrumbs.Insert(0, tab.Clone());
 
-                //get the tab parent
+                // get the tab parent
                 if (!Null.IsNull(tab.ParentId))
                 {
                     this.PopulateBreadCrumbs(portalID, ref breadCrumbs, tab.ParentId);
@@ -1791,7 +1791,7 @@ namespace DotNetNuke.Entities.Tabs
         /// <param name="publishTab">The publish tab.</param>
         public void PublishTab(TabInfo publishTab)
         {
-            //To publish a subsidiary language tab we need to enable the View Permissions
+            // To publish a subsidiary language tab we need to enable the View Permissions
             if (publishTab != null && publishTab.DefaultLanguageTab != null)
             {
                 foreach (TabPermissionInfo perm in
@@ -1838,7 +1838,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             if (tab.DefaultLanguageTab != null)
             {
-                //We are trying to restore the child, so recall this function with the master language's tab id
+                // We are trying to restore the child, so recall this function with the master language's tab id
                 this.RestoreTab(tab.DefaultLanguageTab, portalSettings);
                 return;
             }
@@ -1846,7 +1846,7 @@ namespace DotNetNuke.Entities.Tabs
             tab.IsDeleted = false;
             this.UpdateTab(tab);
 
-            //Restore any localized children
+            // Restore any localized children
             foreach (TabInfo localizedtab in tab.LocalizedTabs.Values)
             {
                 localizedtab.IsDeleted = false;
@@ -1891,7 +1891,7 @@ namespace DotNetNuke.Entities.Tabs
             }
             else
             {
-                //need to see if sequence number exists to decide if insert or update
+                // need to see if sequence number exists to decide if insert or update
                 List<TabUrlInfo> t = this.GetTabUrls(portalId, tabUrl.TabId);
                 var existingSeq = t.FirstOrDefault(r => r.SeqNum == tabUrl.SeqNum);
                 if (existingSeq == null)
@@ -1932,14 +1932,14 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (tab.DefaultLanguageTab != null && LocaleController.Instance.GetLocales(portalSettings.PortalId).ContainsKey(tab.CultureCode))
                 {
-                    //We are trying to delete the child, so recall this function with the master language's tab id
+                    // We are trying to delete the child, so recall this function with the master language's tab id
                     return this.SoftDeleteTab(tab.DefaultLanguageTab.TabID, portalSettings);
                 }
 
-                //Delete the Tab
+                // Delete the Tab
                 deleted = this.SoftDeleteTabInternal(tab, portalSettings);
 
-                //Delete any localized children
+                // Delete any localized children
                 if (deleted)
                 {
                     foreach (TabInfo localizedtab in tab.LocalizedTabs.Values)
@@ -1963,7 +1963,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             TabInfo originalTab = this.GetTab(updatedTab.TabID, updatedTab.PortalID, true);
 
-            //Update ContentItem If neccessary
+            // Update ContentItem If neccessary
             if (updatedTab.TabID != Null.NullInteger)
             {
                 if (updatedTab.ContentItemId == Null.NullInteger)
@@ -1976,13 +1976,13 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            //Create Tab Redirects
+            // Create Tab Redirects
             if (originalTab.ParentId != updatedTab.ParentId || originalTab.TabName != updatedTab.TabName)
             {
                 this.CreateTabRedirects(updatedTab);
             }
 
-            //Update Tab to DataStore
+            // Update Tab to DataStore
             this._dataProvider.UpdateTab(updatedTab.TabID,
                                updatedTab.ContentItemId,
                                updatedTab.PortalID,
@@ -2013,7 +2013,7 @@ namespace DotNetNuke.Entities.Tabs
                                updatedTab.CultureCode,
                                updatedTab.IsSystem);
 
-            //Update Tags
+            // Update Tags
             List<Term> terms = updatedTab.Terms;
             ITermController termController = Util.GetTermController();
             termController.RemoveTermsFromContent(updatedTab);
@@ -2026,10 +2026,10 @@ namespace DotNetNuke.Entities.Tabs
                                       UserController.Instance.GetCurrentUserInfo().UserID, "",
                                       EventLogController.EventLogType.TAB_UPDATED);
 
-            //Update Tab permissions
+            // Update Tab permissions
             TabPermissionController.SaveTabPermissions(updatedTab);
 
-            //Update TabSettings - use Try/catch as tabs are added during upgrade ptocess and the sproc may not exist
+            // Update TabSettings - use Try/catch as tabs are added during upgrade ptocess and the sproc may not exist
             try
             {
                 this.UpdateTabSettings(ref updatedTab);
@@ -2039,10 +2039,10 @@ namespace DotNetNuke.Entities.Tabs
                 Exceptions.LogException(ex);
             }
 
-            //Update Tab Version
+            // Update Tab Version
             UpdateTabVersion(updatedTab.TabID);
 
-            //Clear Tab Caches
+            // Clear Tab Caches
             this.ClearCache(updatedTab.PortalID);
             if (updatedTab.PortalID != originalTab.PortalID)
             {
@@ -2083,7 +2083,7 @@ namespace DotNetNuke.Entities.Tabs
                         .UpdateTabTranslationStatus(localizedTab.TabID, localizedTab.LocalizedVersionGuid,
                                                     UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Clear Tab Caches
+            // Clear Tab Caches
             this.ClearCache(localizedTab.PortalID);
         }
 
@@ -2095,7 +2095,7 @@ namespace DotNetNuke.Entities.Tabs
         {
             this._dataProvider.MarkAsPublished(tab.TabID);
             
-            //Clear Tab Caches
+            // Clear Tab Caches
             this.ClearCache(tab.PortalID);
 
             EventManager.Instance.OnTabMarkedAsPublished(new TabEventArgs { Tab = tab });
@@ -2132,7 +2132,7 @@ namespace DotNetNuke.Entities.Tabs
             {
                 if (TabPermissionController.CanAdminPage(tab))
                 {
-                    //Update ContentItem If neccessary
+                    // Update ContentItem If neccessary
                     if (tab.ContentItemId == Null.NullInteger && tab.TabID != Null.NullInteger)
                     {
                         Instance.CreateContentItem(tab);
@@ -2224,13 +2224,13 @@ namespace DotNetNuke.Entities.Tabs
         {
             Dictionary<int, ModuleInfo> dicModules = ModuleController.Instance.GetTabModules(tabId);
 
-            //If Mode is Replace remove all the modules already on this Tab
+            // If Mode is Replace remove all the modules already on this Tab
             if (mergeTabs == PortalTemplateModuleAction.Replace)
             {
                 foreach (KeyValuePair<int, ModuleInfo> kvp in dicModules)
                 {
                     var module = kvp.Value;
-                    //when the modules show on all pages are included by the same import process, it need removed.
+                    // when the modules show on all pages are included by the same import process, it need removed.
                     if (!module.AllTabs || hModules.ContainsValue(module.ModuleID))
                     {
                         ModuleController.Instance.DeleteTabModule(tabId, kvp.Value.ModuleID, false);
@@ -2238,10 +2238,10 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            //iterate through the panes
+            // iterate through the panes
             foreach (XmlNode nodePane in nodePanes.ChildNodes)
             {
-                //iterate through the modules
+                // iterate through the modules
                 if (nodePane.SelectSingleNode("modules") != null)
                 {
                     XmlNode selectSingleNode = nodePane.SelectSingleNode("modules");
@@ -2256,7 +2256,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            //if deserialize tab from install wizard, we need parse desiralize handlers first.
+            // if deserialize tab from install wizard, we need parse desiralize handlers first.
             var installFromWizard = HttpContext.Current != null && HttpContext.Current.Items.Contains("InstallFromWizard");
             if (installFromWizard)
             {
@@ -2328,8 +2328,8 @@ namespace DotNetNuke.Entities.Tabs
                 tab.IsSecure = XmlUtils.GetNodeValueBoolean(tabNode, "issecure", false);
                 tab.SiteMapPriority = XmlUtils.GetNodeValueSingle(tabNode, "sitemappriority", (float)0.5);
                 tab.CultureCode = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "cultureCode");
-                //objTab.UniqueId = New Guid(XmlUtils.GetNodeValue(nodeTab, "guid", Guid.NewGuid.ToString()));
-                //objTab.VersionGuid = New Guid(XmlUtils.GetNodeValue(nodeTab, "versionGuid", Guid.NewGuid.ToString()));
+                // objTab.UniqueId = New Guid(XmlUtils.GetNodeValue(nodeTab, "guid", Guid.NewGuid.ToString()));
+                // objTab.VersionGuid = New Guid(XmlUtils.GetNodeValue(nodeTab, "versionGuid", Guid.NewGuid.ToString()));
                 tab.UseBaseFriendlyUrls = XmlUtils.GetNodeValueBoolean(tabNode, "UseBaseFriendlyUrls", false);
 
                 tab.TabPermissions.Clear();
@@ -2337,7 +2337,7 @@ namespace DotNetNuke.Entities.Tabs
 
                 DeserializeTabSettings(tabNode.SelectNodes("tabsettings/tabsetting"), tab);
 
-                //set tab skin and container
+                // set tab skin and container
                 if (!String.IsNullOrEmpty(XmlUtils.GetNodeValue(tabNode, "skinsrc", "")))
                 {
                     tab.SkinSrc = XmlUtils.GetNodeValue(tabNode, "skinsrc", "");
@@ -2352,14 +2352,14 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     if (tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent")] != null)
                     {
-                        //parent node specifies the path (tab1/tab2/tab3), use saved tabid
+                        // parent node specifies the path (tab1/tab2/tab3), use saved tabid
                         tab.ParentId = Convert.ToInt32(tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent")]);
                         tabName = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent") + "/" + tab.TabName;
                     }
                     else
                     {
-                        //Parent node doesn't spcecify the path, search by name.
-                        //Possible incoherence if tabname not unique
+                        // Parent node doesn't spcecify the path, search by name.
+                        // Possible incoherence if tabname not unique
                         TabInfo objParent = Instance.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "parent"), portalId);
                         if (objParent != null)
                         {
@@ -2368,7 +2368,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         else
                         {
-                            //parent tab not found!
+                            // parent tab not found!
                             tab.ParentId = Null.NullInteger;
                             tabName = tab.TabName;
                         }
@@ -2379,7 +2379,7 @@ namespace DotNetNuke.Entities.Tabs
                 {
                     if (tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")] != null)
                     {
-                        //parent node specifies the path (tab1/tab2/tab3), use saved tabid
+                        // parent node specifies the path (tab1/tab2/tab3), use saved tabid
                         int defaultLanguageTabId = Convert.ToInt32(tabs[XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab")]);
                         TabInfo defaultLanguageTab = Instance.GetTab(defaultLanguageTabId, portalId, false);
                         if (defaultLanguageTab != null)
@@ -2389,8 +2389,8 @@ namespace DotNetNuke.Entities.Tabs
                     }
                     else
                     {
-                        //Parent node doesn't spcecify the path, search by name.
-                        //Possible incoherence if tabname not unique
+                        // Parent node doesn't spcecify the path, search by name.
+                        // Possible incoherence if tabname not unique
                         TabInfo defaultLanguageTab = Instance.GetTabByName(XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "defaultLanguageTab"), portalId);
                         if (defaultLanguageTab != null)
                         {
@@ -2399,7 +2399,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
 
-                //create/update tab
+                // create/update tab
                 if (tab.TabID == Null.NullInteger)
                 {
                     tab.TabID = TabController.Instance.AddTab(tab);
@@ -2409,7 +2409,7 @@ namespace DotNetNuke.Entities.Tabs
                     Instance.UpdateTab(tab);                   
                 }
 
-                //UpdateTabUrls
+                // UpdateTabUrls
                 foreach (XmlNode oTabUrlNode in tabNode.SelectNodes("tabUrls/tabUrl"))
                 {
                     var tabUrl = new TabUrlInfo();
@@ -2417,20 +2417,20 @@ namespace DotNetNuke.Entities.Tabs
                     DataProvider.Instance().SaveTabUrl(tab.TabID, tabUrl.SeqNum, tabUrl.PortalAliasId, (int)tabUrl.PortalAliasUsage, tabUrl.Url, tabUrl.QueryString, tabUrl.CultureCode, tabUrl.HttpStatus, tabUrl.IsSystem, UserController.Instance.GetCurrentUserInfo().UserID);
                 }
                 
-                //extra check for duplicate tabs in same level
+                // extra check for duplicate tabs in same level
                 if (tabs[tabName] == null)
                 {
                     tabs.Add(tabName, tab.TabID);
                 }
             }
 
-            //Parse Panes
+            // Parse Panes
             if (tabNode.SelectSingleNode("panes") != null)
             {
                 DeserializePanes(tabNode.SelectSingleNode("panes"), portalId, tab.TabID, mergeTabs, modules);
             }
 
-            //Finally add "tabid" to node
+            // Finally add "tabid" to node
             tabNode.AppendChild(XmlUtils.CreateElement(tabNode.OwnerDocument, "tabid", tab.TabID.ToString()));
             return tab;
         }
@@ -2583,7 +2583,7 @@ namespace DotNetNuke.Entities.Tabs
                     if ((tab.IsVisible || includeHidden) && tab.HasAVisibleVersion && (tab.IsDeleted == false || includeDeleted) &&
                         (tab.TabType == TabType.Normal || includeURL))
                     {
-                        //Check if User has View/Edit Permission for this tab
+                        // Check if User has View/Edit Permission for this tab
                         if (checkEditPermission || checkViewPermisison)
                         {
                             const string permissionList = "ADD,COPY,EDIT,MANAGE";
@@ -2599,7 +2599,7 @@ namespace DotNetNuke.Entities.Tabs
                         }
                         else
                         {
-                            //Add Tab to List
+                            // Add Tab to List
                             listTabs.Add(tab);
                         }
                     }
@@ -2767,7 +2767,7 @@ namespace DotNetNuke.Entities.Tabs
                     tabNode.Attributes.Remove(tabNode.Attributes["xmlns:xsi"]);
                 }
 
-                //remove unwanted elements
+                // remove unwanted elements
                 // ReSharper disable AssignNullToNotNullAttribute
                 tabNode.RemoveChild(tabNode.SelectSingleNode("tabid"));
                 tabNode.RemoveChild(tabNode.SelectSingleNode("moduleID"));
@@ -2823,7 +2823,7 @@ namespace DotNetNuke.Entities.Tabs
                 // ReSharper restore AssignNullToNotNullAttribute
             }
 
-            //Manage Url
+            // Manage Url
             XmlNode urlNode = tabXml.SelectSingleNode("tab/url");
             switch (tab.TabType)
             {
@@ -2832,7 +2832,7 @@ namespace DotNetNuke.Entities.Tabs
                     break;
                 case TabType.Tab:
                     urlNode.Attributes.Append(XmlUtils.CreateAttribute(tabXml, "type", "Tab"));
-                    //Get the tab being linked to
+                    // Get the tab being linked to
                     TabInfo tempTab = TabController.Instance.GetTab(Int32.Parse(tab.Url), tab.PortalID, false);
                     if (tempTab != null)
                     {
@@ -2850,7 +2850,7 @@ namespace DotNetNuke.Entities.Tabs
             }
 
 
-            //serialize TabSettings
+            // serialize TabSettings
             XmlUtils.SerializeHashtable(tab.TabSettings, tabXml, tabNode, "tabsetting", "settingname", "settingvalue");
             if (portal != null)
             {
@@ -2911,24 +2911,24 @@ namespace DotNetNuke.Entities.Tabs
             }
             if (tabs != null)
             {
-                //Manage Parent Tab
+                // Manage Parent Tab
                 if (!Null.IsNull(tab.ParentId))
                 {
                     newnode = tabXml.CreateElement("parent");
                     newnode.InnerXml = HttpContext.Current.Server.HtmlEncode(tabs[tab.ParentId].ToString());
                     tabNode.AppendChild(newnode);
 
-                    //save tab as: ParentTabName/CurrentTabName
+                    // save tab as: ParentTabName/CurrentTabName
                     tabs.Add(tab.TabID, tabs[tab.ParentId] + "/" + tab.TabName);
                 }
                 else
                 {
-                    //save tab as: CurrentTabName
+                    // save tab as: CurrentTabName
                     tabs.Add(tab.TabID, tab.TabName);
                 }
             }
 
-            //Manage Content Localization
+            // Manage Content Localization
             if (tab.DefaultLanguageTab != null)
             {
 
@@ -2940,7 +2940,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
                 catch
                 {
-                    //ignore
+                    // ignore
                 }
             }
 
@@ -2952,7 +2952,7 @@ namespace DotNetNuke.Entities.Tabs
             XmlDocument moduleXml;
             ModuleInfo module;
 
-            //Serialize modules
+            // Serialize modules
             panesNode = tabNode.AppendChild(tabXml.CreateElement("panes"));
             foreach (KeyValuePair<int, ModuleInfo> kvp in ModuleController.Instance.GetTabModules(tab.TabID))
             {
@@ -2963,7 +2963,7 @@ namespace DotNetNuke.Entities.Tabs
                     moduleNode = ModuleController.SerializeModule(moduleXml, module, includeContent);
                     if (panesNode.SelectSingleNode("descendant::pane[name='" + module.PaneName + "']") == null)
                     {
-                        //new pane found
+                        // new pane found
                         paneNode = moduleXml.CreateElement("pane");
                         nameNode = paneNode.AppendChild(moduleXml.CreateElement("name"));
                         nameNode.InnerText = module.PaneName;
@@ -2975,7 +2975,7 @@ namespace DotNetNuke.Entities.Tabs
                 }
             }
 
-            //Serialize TabUrls
+            // Serialize TabUrls
             var tabUrlsNode = tabNode.AppendChild(tabXml.CreateElement("tabUrls"));
 			foreach (var tabUrl in TabController.Instance.GetTabUrls(tab.TabID, tab.PortalID))
             {

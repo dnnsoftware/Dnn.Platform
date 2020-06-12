@@ -145,7 +145,7 @@ namespace DotNetNuke.Entities.Users.Social
             this.DefaultResponse = (RelationshipStatus)Convert.ToInt32(dr["DefaultResponse"]);
             this.RelationshipTypeId = Convert.ToInt32(dr["RelationshipTypeID"]);
 
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
     }

@@ -190,7 +190,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
 
             this.UserID = Null.SetNullInteger(dr["UserID"]);

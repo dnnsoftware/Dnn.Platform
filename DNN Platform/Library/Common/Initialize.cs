@@ -49,7 +49,7 @@ namespace DotNetNuke.Common
             bool autoUpgrade = Config.GetSetting("AutoUpgrade") == null || bool.Parse(Config.GetSetting("AutoUpgrade"));
             bool useWizard = Config.GetSetting("UseInstallWizard") == null || bool.Parse(Config.GetSetting("UseInstallWizard"));
 
-            //Determine the Upgrade status and redirect as neccessary to InstallWizard.aspx
+            // Determine the Upgrade status and redirect as neccessary to InstallWizard.aspx
             string retValue = Null.NullString;
             switch (Globals.Status)
             {
@@ -92,7 +92,7 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        //500 Error - Redirect to ErrorPage
+                        // 500 Error - Redirect to ErrorPage
                         if ((HttpContext.Current != null))
                         {
                             if (!isInstalled)
@@ -116,7 +116,7 @@ namespace DotNetNuke.Common
 
         private static void CreateUnderConstructionPage(HttpServerUtility server)
         {
-            //create an UnderConstruction page if it does not exist already
+            // create an UnderConstruction page if it does not exist already
             if (!File.Exists(server.MapPath("~/Install/UnderConstruction.htm")))
             {
                 if (File.Exists(server.MapPath("~/Install/UnderConstruction.template.htm")))
@@ -133,15 +133,15 @@ namespace DotNetNuke.Common
 
         private static Version GetNETFrameworkVersion()
         {
-            //Obtain the .NET Framework version, 9.4.0 and later requires .NET 4.7.2 or later
+            // Obtain the .NET Framework version, 9.4.0 and later requires .NET 4.7.2 or later
             var version = Environment.Version.ToString(2);
 
-            //If unknown version return as is.
+            // If unknown version return as is.
             if (version != "4.0")
                 return new Version(version);
 
-            //Otherwise utilize release DWORD from registry to determine version
-            //Reference List: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
+            // Otherwise utilize release DWORD from registry to determine version
+            // Reference List: https://docs.microsoft.com/en-us/dotnet/framework/migration-guide/versions-and-dependencies
             var release = GetDotNet4ReleaseNumberFromRegistry();
             if (release >= 528040)
             {
@@ -170,7 +170,7 @@ namespace DotNetNuke.Common
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
             return -1;
         }
@@ -182,30 +182,30 @@ namespace DotNetNuke.Common
 
             Logger.Trace("Request " + request.Url.LocalPath);
 
-            //Don't process some of the AppStart methods if we are installing
+            // Don't process some of the AppStart methods if we are installing
             if (!IsUpgradeOrInstallRequest(app.Request))
             {
-                //Check whether the current App Version is the same as the DB Version
+                // Check whether the current App Version is the same as the DB Version
                 redirect = CheckVersion(app);
                 if (string.IsNullOrEmpty(redirect) && !InstallBlocker.Instance.IsInstallInProgress())
                 {
                     Logger.Info("Application Initializing");
-                    //Set globals
+                    // Set globals
                     Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                     Globals.OperatingSystemVersion = Environment.OSVersion.Version;
                     Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                     Globals.DatabaseEngineVersion = GetDatabaseEngineVersion();
-                    //Try and Upgrade to Current Framewok
+                    // Try and Upgrade to Current Framewok
                     Upgrade.TryUpgradeNETFramework();
                     Upgrade.CheckFipsCompilanceAssemblies();
 
-                    //Log Server information
+                    // Log Server information
                     ServerController.UpdateServerActivity(new ServerInfo());
-                    //Start Scheduler
+                    // Start Scheduler
                     StartScheduler();
-                    //Log Application Start
+                    // Log Application Start
                     LogStart();
-                    //Process any messages in the EventQueue for the Application_Start event
+                    // Process any messages in the EventQueue for the Application_Start event
                     EventQueueController.ProcessMessages("Application_Start");
 
                     ServicesRoutingManager.RegisterServiceRoutes();
@@ -214,7 +214,7 @@ namespace DotNetNuke.Common
 
                     ConnectionsManager.Instance.RegisterConnections();
 
-                    //Set Flag so we can determine the first Page Request after Application Start
+                    // Set Flag so we can determine the first Page Request after Application Start
                     app.Context.Items.Add("FirstRequest", true);
 
                     Logger.Info("Application Initialized");
@@ -224,7 +224,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                //NET Framework version is neeed by Upgrade
+                // NET Framework version is neeed by Upgrade
                 Globals.NETFrameworkVersion = GetNETFrameworkVersion();
                 Globals.IISAppName = request.ServerVariables["APPL_MD_PATH"];
                 Globals.OperatingSystemVersion = Environment.OSVersion.Version;
@@ -250,19 +250,19 @@ namespace DotNetNuke.Common
         public static void Init(HttpApplication app)
         {
             string redirect;
-            //Check if app is initialised
+            // Check if app is initialised
             if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
             {
                 return;
             }
             lock (InitializeLock)
             {
-                //Double-Check if app was initialised by another request
+                // Double-Check if app was initialised by another request
                 if (InitializedAlready && Globals.Status == Globals.UpgradeStatus.None)
                 {
                     return;
                 }
-                //Initialize ...
+                // Initialize ...
                 redirect = InitializeApp(app, ref InitializedAlready);
             }
             if (!string.IsNullOrEmpty(redirect))
@@ -383,7 +383,7 @@ namespace DotNetNuke.Common
             }
             if (Globals.Status != Globals.UpgradeStatus.Install)
             {
-                //purge log buffer
+                // purge log buffer
                 LoggingProvider.Instance().PurgeLogBuffer();
             }
         }
@@ -459,7 +459,7 @@ namespace DotNetNuke.Common
             var scheduler = SchedulingProvider.Instance();
             scheduler.RunEventSchedule(EventName.APPLICATION_START);
 
-            //instantiate APPLICATION_START scheduled jobs
+            // instantiate APPLICATION_START scheduled jobs
             if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
             {
                 Logger.Trace("Running Schedule " + SchedulingProvider.SchedulerMode);
@@ -481,7 +481,7 @@ namespace DotNetNuke.Common
         /// -----------------------------------------------------------------------------
         public static void StopScheduler()
         {
-            //stop scheduled jobs
+            // stop scheduled jobs
             SchedulingProvider.Instance().Halt("Stopped by Application_End");
         }
     }

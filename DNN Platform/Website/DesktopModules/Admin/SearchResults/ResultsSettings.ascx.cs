@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.SearchResults
                     this.txtMaxDescriptionLength.Text = this.GetStringSetting("MaxDescriptionLength", "100");
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

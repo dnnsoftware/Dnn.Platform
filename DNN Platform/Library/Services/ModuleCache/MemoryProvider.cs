@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.ModuleCache
 
         public override void PurgeExpiredItems(int portalId)
         {
-            //throw new NotSupportedException();
+            // throw new NotSupportedException();
         }
     }
 }

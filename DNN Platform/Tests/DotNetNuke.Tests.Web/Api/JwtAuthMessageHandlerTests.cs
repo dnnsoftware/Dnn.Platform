@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Web.Api
         private Mock<IUserController> _mockUserController;
         private Mock<IPortalController> _mockPortalController;
 
-        //{ "type":"JWT","alg":"HS256"} . {"sub":"host","nbf":1,"exp":4102444799,"sid":"0123456789ABCDEF"} . (HS256_KEY="secret")
+        // { "type":"JWT","alg":"HS256"} . {"sub":"host","nbf":1,"exp":4102444799,"sid":"0123456789ABCDEF"} . (HS256_KEY="secret")
         private const string ValidToken =
             "eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ";
 
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Web.Api
             UserController.SetTestableInstance(this._mockUserController.Object);
             this._mockUserController.Setup(x => x.GetUserById(It.IsAny<int>(), It.IsAny<int>())).Returns(
                 (int portalId, int userId) => GetUserByIdCallback(portalId, userId));
-            //_mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
+            // _mockUserController.Setup(x => x.ValidateUser(It.IsAny<UserInfo>(), It.IsAny<int>(), It.IsAny<bool>())).Returns(UserValidStatus.VALID);
         }
 
         private static IDataReader GetUser()
@@ -204,122 +204,122 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void ReturnsResponseAsReceived()
         {
-            //Arrange
+            // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.OK) {RequestMessage = new HttpRequestMessage()};
 
-            //Act
+            // Act
             var handler = new JwtAuthMessageHandler(true, false);
             var response2 = handler.OnOutboundResponse(response, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.AreEqual(response, response2);
         }
 
         [Test]
         public void MissingAuthoizationHeaderReturnsNullResponse()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
 
-            //Act
+            // Act
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.IsNull(response);
         }
 
         [Test]
         public void WrongAuthoizationSchemeReturnsNullResponse()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
             request.Headers.Authorization = AuthenticationHeaderValue.Parse("Basic ");
 
-            //Act
+            // Act
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.IsNull(response);
         }
 
         [Test]
         public void MissingAuthoizationTokenReturnsNullResponse()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
             request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer ");
 
-            //Act
+            // Act
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.IsNull(response);
         }
 
         [Test]
         public void AuthoizationTokenWithMissingComponentsReturnsNullResponse()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
             request.Headers.Authorization = AuthenticationHeaderValue.Parse(
                 "Bearer eyJ0eXBlIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0");
 
-            //Act
+            // Act
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.IsNull(response);
         }
 
         [Test]
         public void AuthoizationTokenWithWrongSchemeTypeReturnsNullResponse()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
             request.Headers.Authorization = AuthenticationHeaderValue.Parse(
                 "Bearer eyJ0eXBlIjoieHh4IiwiYWxnIjoiSFMyNTYifQ.eyJzdWIiOiJ1c2VybmFtZSIsIm5iZiI6MSwiZXhwIjo0MTAyNDQ0Nzk5LCJzaWQiOiIwMTIzNDU2Nzg5QUJDREVGIn0.nfWCOVNk5M7L7EPDe3i3j4aAPRerbxgmcjOxaC-LWUQ");
 
-            //Act
+            // Act
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.IsNull(response);
         }
 
         [Test]
         public void AuthoizationTokenWithoorResponse()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/anyuri");
             request.Headers.Authorization = AuthenticationHeaderValue.Parse("Bearer " + ValidToken);
 
-            //Act
+            // Act
             this.SetupMockServices();
             var handler = new JwtAuthMessageHandler(true, false);
             var response = handler.OnInboundRequest(request, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.IsNull(response);
         }
 
-        //todo unit test actual authentication code
+        // todo unit test actual authentication code
         // very hard to unit test inbound authentication code as it dips into untestable bits of
         // UserController, etc. Need to write controllers with interfaces and ServiceLocator<>.
 
         #region helpers
 
-        //private static string DecodeBase64(string b64Str)
-        //{
+        // private static string DecodeBase64(string b64Str)
+        // {
         //    // fix Base64 string padding
         //    var mod = b64Str.Length % 4;
         //    if (mod != 0) b64Str += new string('=', 4 - mod);
         //    return Encoding.UTF8.GetString(Convert.FromBase64String(b64Str));
-        //}
+        // }
 
         private static string EncodeBase64(byte[] data)
         {

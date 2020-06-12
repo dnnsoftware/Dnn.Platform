@@ -34,9 +34,9 @@ namespace DotNetNuke.Entities.Modules
                     string Content = HttpUtility.HtmlDecode(message.Attributes["Content"]);
                     string Version = message.Attributes["Version"];
                     int UserID = Convert.ToInt32(message.Attributes["UserId"]);
-                    //call the IPortable interface for the module/version
+                    // call the IPortable interface for the module/version
                     ((IPortable)controller).ImportModule(ModuleId, Content, Version, UserID);
-                    //Synchronize Module Cache
+                    // Synchronize Module Cache
                     ModuleController.SynchronizeModule(ModuleId);
                 }
             }
@@ -57,13 +57,13 @@ namespace DotNetNuke.Entities.Modules
                 object controller = Reflection.CreateObject(BusinessControllerClass, "");
                 if (controller is IUpgradeable)
                 {
-					//get the list of applicable versions
+					// get the list of applicable versions
                     string[] UpgradeVersions = message.Attributes["UpgradeVersionsList"].Split(',');
                     foreach (string Version in UpgradeVersions)
                     {
-						//call the IUpgradeable interface for the module/version
+						// call the IUpgradeable interface for the module/version
                         string Results = ((IUpgradeable)controller).UpgradeModule(Version);
-                        //log the upgrade results
+                        // log the upgrade results
                         var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.MODULE_UPDATED.ToString()};
                         log.AddProperty("Module Upgraded", BusinessControllerClass);
                         log.AddProperty("Version", Version);
@@ -96,10 +96,10 @@ namespace DotNetNuke.Entities.Modules
                 DesktopModuleInfo desktopModule = DesktopModuleController.GetDesktopModule(desktopModuleId, Null.NullInteger);
                 if ((desktopModule != null))
                 {
-                    //Initialise the SupportedFeatures
+                    // Initialise the SupportedFeatures
                     desktopModule.SupportedFeatures = 0;
 
-                    //Test the interfaces
+                    // Test the interfaces
                     desktopModule.IsPortable = (objController is IPortable);
 #pragma warning disable 0618
                     desktopModule.IsSearchable = (objController is ModuleSearchBase) || (objController is ISearchable);
@@ -132,14 +132,14 @@ namespace DotNetNuke.Entities.Modules
                                            ProcessorCommand = "ImportModule"
                                        };
 
-            //Add custom Attributes for this message
+            // Add custom Attributes for this message
             appStartMessage.Attributes.Add("BusinessControllerClass", objModule.DesktopModule.BusinessControllerClass);
             appStartMessage.Attributes.Add("ModuleId", objModule.ModuleID.ToString());
             appStartMessage.Attributes.Add("Content", content);
             appStartMessage.Attributes.Add("Version", version);
             appStartMessage.Attributes.Add("UserID", userID.ToString());
 
-            //send it to occur on next App_Start Event
+            // send it to occur on next App_Start Event
             EventQueueController.SendMessage(appStartMessage, "Application_Start_FirstRequest");
         }
 
@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Modules
                         ImportModule(message);
                         break;
                     default:
-						//other events can be added here
+						// other events can be added here
                         break;
                 }
             }

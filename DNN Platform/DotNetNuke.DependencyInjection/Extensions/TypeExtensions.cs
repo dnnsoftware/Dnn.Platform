@@ -39,13 +39,13 @@ namespace DotNetNuke.DependencyInjection.Extensions
             }
             catch (ReflectionTypeLoadException ex)
             {
-                //TODO: We should log the reason of the exception after the API cleanup
-                //Ensure that Dnn obtains all types that were loaded, ignoring the failure(s)
+                // TODO: We should log the reason of the exception after the API cleanup
+                // Ensure that Dnn obtains all types that were loaded, ignoring the failure(s)
                 types = ex.Types.Where(x => x != null).ToArray<Type>();
             }
             catch (Exception)
             {
-                //TODO: We should log the reason of the exception after the API cleanup
+                // TODO: We should log the reason of the exception after the API cleanup
                 types = new Type[0];
             }
 

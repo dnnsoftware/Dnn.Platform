@@ -139,7 +139,7 @@ namespace DotNetNuke.Modules.Admin.Modules
                 Int32.TryParse(this.Request.QueryString["moduleid"], out this.ModuleId);
             }
 
-            //Verify that the current user has access to edit this module
+            // Verify that the current user has access to edit this module
             if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Edit, "IMPORT", this.Module))
             {
                 this.Response.Redirect(Globals.AccessDeniedURL(), true);
@@ -194,7 +194,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 					this.cboFiles.AddItem(file.Text.Replace("content." + Globals.CleanName(this.Module.DesktopModule.ModuleName) + ".", ""), file.Value);
                 }
 
-                //legacy support for files which used the FriendlyName
+                // legacy support for files which used the FriendlyName
                 if (Globals.CleanName(this.Module.DesktopModule.ModuleName) == Globals.CleanName(this.Module.DesktopModule.FriendlyName))
                 {
                     continue;

@@ -336,7 +336,7 @@ namespace Dnn.Modules.Console
 
 				this.DetailView.ItemDataBound += this.RepeaterItemDataBound;
 
-				//Save User Preferences
+				// Save User Preferences
 				this.SavePersonalizedSettings();
 			}
 			catch (Exception exc)
@@ -404,8 +404,8 @@ namespace Dnn.Modules.Console
 						}
 					}
 
-					//if OrderTabsByHierarchy set to true, we need reorder the tab list to move tabs which have child tabs to the end of list.
-					//so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
+					// if OrderTabsByHierarchy set to true, we need reorder the tab list to move tabs which have child tabs to the end of list.
+					// so that the list display in UI can show tabs in same level in same area, and not break by child tabs.
 					if (this.OrderTabsByHierarchy)
 					{
 						this._tabs = this._tabs.OrderBy(t => t.HasChildren).ToList();
@@ -484,7 +484,7 @@ namespace Dnn.Modules.Console
                 sb.Append("<div>{4}</div>");
 			    sb.Append("</div>");
 
-                //const string contentHtml = "<div>" + "<a href=\"{0}\"><img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/><img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/></a>" + "<h3>{3}</h3>" + "<div>{4}</div>" + "</div>";
+                // const string contentHtml = "<div>" + "<a href=\"{0}\"><img src=\"{1}\" alt=\"{3}\" width=\"16px\" height=\"16px\"/><img src=\"{2}\" alt=\"{3}\" width=\"32px\" height=\"32px\"/></a>" + "<h3>{3}</h3>" + "<div>{4}</div>" + "</div>";
 
 			    var tabUrl = tab.FullUrl;
                 if (this.ProfileUserId > -1)

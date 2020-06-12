@@ -21,17 +21,17 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
     {
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(SimpleWebFarmCachingProvider));
 
-        private readonly int executionTimeout = 5000; //Limit timeout to 5 seconds as cache operations should be quick
+        private readonly int executionTimeout = 5000; // Limit timeout to 5 seconds as cache operations should be quick
 
         #region Server Notification Methods
 
         private void NotifyOtherServers(string command, string detail)
         {
-            //Do not send notifications to other servers if currently upgrading
+            // Do not send notifications to other servers if currently upgrading
             if (Globals.Status != Globals.UpgradeStatus.None)
                 return; 
             
-            //Get all servers currently in the database that could be used for synchronization, excluding this one
+            // Get all servers currently in the database that could be used for synchronization, excluding this one
             // But focus on only servers that could be used for this application and notifications
             // including activity within 60 minutes
             var lastActivityDate = DateTime.Now.AddHours(-1);
@@ -41,31 +41,31 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
                             && s.ServerName != Globals.ServerName)
                 .ToList();
 
-            //If we have no additional servers do nothing
+            // If we have no additional servers do nothing
             if (additionalServers.Count == 0)
                 return;
 
-            //Otherwise notify each server
+            // Otherwise notify each server
             foreach (var server in additionalServers)
             {
-                //Setup parameters for sending
+                // Setup parameters for sending
                 var commandParameter = (Host.DebugMode) ? command : UrlUtils.EncryptParameter(command, Host.GUID);
                 var detailParameter = (Host.DebugMode) ? detail : UrlUtils.EncryptParameter(detail, Host.GUID);
                 var protocol = HostController.Instance.GetBoolean("UseSSLForCacheSync", false) ? "https://" : "http://";
                 var notificationUrl =
                     $"{protocol}{server.Url}/SimpleWebFarmSync.aspx?command={commandParameter}&detail={detailParameter}";
 
-                //Build a webrequest
+                // Build a webrequest
                 var notificationRequest = WebRequest.CreateHttp(notificationUrl);
 
-                //Create a cookie container so we can get cookies and use default credentials
+                // Create a cookie container so we can get cookies and use default credentials
                 notificationRequest.CookieContainer = new CookieContainer();
                 notificationRequest.UseDefaultCredentials = true;
                 
                 // Start the asynchronous request
                 var result = (notificationRequest.BeginGetResponse(this.OnServerNotificationCompleteCallback, notificationRequest));
 
-                //Register timeout
+                // Register timeout
                 // TODO: Review possible use of async/await C# 7 implementation
                 ThreadPool.RegisterWaitForSingleObject(result.AsyncWaitHandle, HandleNotificationTimeout, notificationRequest, this.executionTimeout, true);
             }
@@ -73,18 +73,18 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
         private void OnServerNotificationCompleteCallback(IAsyncResult asynchronousResult)
         {
-            //Get the request from the state object
+            // Get the request from the state object
             var request = (HttpWebRequest)asynchronousResult.AsyncState;
             try
             {
-                //Get the response
+                // Get the response
                 using (var response = (HttpWebResponse)(request.EndGetResponse(asynchronousResult)))
                 {
-                    //If status code is ok do nothing
+                    // If status code is ok do nothing
                     if (response.StatusCode == HttpStatusCode.OK)
                         return;
 
-                    //Otherwise log the failure
+                    // Otherwise log the failure
                     Exceptions.LogException(new ApplicationException(
                         $"Error sending cache server notification.  Url: {request.RequestUri.AbsoluteUri} with a status code {response.StatusCode}"));
                 }
@@ -104,7 +104,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
             if (!timedOut)
                 return;
 
-            //Abort if possible
+            // Abort if possible
             var request = (HttpWebRequest)state;
             request?.Abort();
         }
@@ -123,14 +123,14 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         /// <param name="detail">Additional detail to pass to the caching sub-system</param>
         internal void ProcessSynchronizationRequest(string command, string detail)
         {
-            //Handle basic removal
+            // Handle basic removal
             if (command.StartsWith("remove", StringComparison.OrdinalIgnoreCase))
             {
                 this.RemoveInternal(detail);
                 return;
             }
 
-            //A clear method will have additional type information included, split using the ~ character
+            // A clear method will have additional type information included, split using the ~ character
             if (command.StartsWith("clear~", StringComparison.InvariantCultureIgnoreCase))
             {
                 var commandParts = command.Split('~');
@@ -143,27 +143,27 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
 
         public override void Clear(string type, string data)
         {
-            //Clear the local cache
+            // Clear the local cache
             this.ClearCacheInternal(type, data, true);
 
-            //Per API implementation standards only notify others if expiration has not been desabled
+            // Per API implementation standards only notify others if expiration has not been desabled
             if (CacheExpirationDisable)
                 return;
 
-            //Notify other servers
+            // Notify other servers
             this.NotifyOtherServers("Clear~" + type, data);
         }
 
         public override void Remove(string key)
         {
-            //Remove from local cache
+            // Remove from local cache
             this.RemoveInternal(key);
 
-            //Per API implementation standards only notify others if expiration has not been disabled
+            // Per API implementation standards only notify others if expiration has not been disabled
             if (CacheExpirationDisable)
                 return;
 
-            //Notify Other Servers
+            // Notify Other Servers
             this.NotifyOtherServers("Remove", key);
         }
 

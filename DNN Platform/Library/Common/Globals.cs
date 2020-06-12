@@ -339,7 +339,7 @@ namespace DotNetNuke.Common
         private static string _installPath;
         private static Version _dataBaseVersion;
         private static UpgradeStatus _status = UpgradeStatus.Unknown;
-        private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; //this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
+        private const string _tabPathInvalidCharsEx = "[&\\? \\./'#:\\*]"; // this value should keep same with the value used in sp BuildTabLevelAndPath to remove invalid chars.
         private static readonly Regex TabPathInvalidCharsRx = new Regex(_tabPathInvalidCharsEx, RegexOptions.Compiled);
 
         /// <summary>
@@ -557,8 +557,8 @@ namespace DotNetNuke.Common
             }
             catch (ThreadAbortException)
             {
-                //we are ignoreing this error simply because there is no graceful way to redirect the user, wihtout the threadabort exception.
-                //RobC
+                // we are ignoreing this error simply because there is no graceful way to redirect the user, wihtout the threadabort exception.
+                // RobC
             }
             catch (Exception ex)
             {
@@ -580,10 +580,10 @@ namespace DotNetNuke.Common
 
                     Logger.Trace("Getting application status");
                     tempStatus = UpgradeStatus.None;
-                    //first call GetProviderPath - this insures that the Database is Initialised correctly
-                    //and also generates the appropriate error message if it cannot be initialised correctly
+                    // first call GetProviderPath - this insures that the Database is Initialised correctly
+                    // and also generates the appropriate error message if it cannot be initialised correctly
                     string strMessage = DataProvider.Instance().GetProviderPath();
-                    //get current database version from DB
+                    // get current database version from DB
                     if (!strMessage.StartsWith("ERROR:"))
                     {
                         try
@@ -600,18 +600,18 @@ namespace DotNetNuke.Common
                     {
                         if (IsInstalled())
                         {
-                            //Errors connecting to the database after an initial installation should be treated as errors.
+                            // Errors connecting to the database after an initial installation should be treated as errors.
                             tempStatus = UpgradeStatus.Error;
                         }
                         else
                         {
-                            //An error that occurs before the database has been installed should be treated as a new install
+                            // An error that occurs before the database has been installed should be treated as a new install
                            tempStatus = UpgradeStatus.Install;
                         }
                     }
                     else if (DataBaseVersion == null)
                     {
-                        //No Db Version so Install
+                        // No Db Version so Install
                         tempStatus = UpgradeStatus.Install;
                     }
                     else
@@ -619,24 +619,24 @@ namespace DotNetNuke.Common
                         var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
                         if (version.Major > DataBaseVersion.Major)
                         {
-                            //Upgrade Required (Major Version Upgrade)
+                            // Upgrade Required (Major Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
                         else if (version.Major == DataBaseVersion.Major && version.Minor > DataBaseVersion.Minor)
                         {
-                            //Upgrade Required (Minor Version Upgrade)
+                            // Upgrade Required (Minor Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
                         else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
                                  version.Build > DataBaseVersion.Build)
                         {
-                            //Upgrade Required (Build Version Upgrade)
+                            // Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
                         else if (version.Major == DataBaseVersion.Major && version.Minor == DataBaseVersion.Minor &&
                                  version.Build == DataBaseVersion.Build && IncrementalVersionExists(version))
                         {
-                            //Upgrade Required (Build Version Upgrade)
+                            // Upgrade Required (Build Version Upgrade)
                             tempStatus = UpgradeStatus.Upgrade;
                         }
                     }
@@ -655,7 +655,7 @@ namespace DotNetNuke.Common
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
-            //If the provider path does not exist, then there can't be any log files
+            // If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
                 providerpath = HttpRuntime.AppDomainAppPath + providerpath.Replace("~", "");
@@ -691,9 +691,9 @@ namespace DotNetNuke.Common
             int htmlmodulefactor = Convert.ToInt32(ModuleDirectoryExists("html") ? 2 : 0);
             int portaldirectoryfactor = Convert.ToInt32(HasNonDefaultPortalDirectory() ? 2 : 0);
             int localexecutionfactor = Convert.ToInt32(HttpContext.Current.Request.IsLocal ? c_PassingScore - 1 : 0);
-            //This calculation ensures that you have a more than one item that indicates you have already installed DNN.
-            //While it is possible that you might not have an installation date or that you have deleted log files
-            //it is unlikely that you have removed every trace of an installation and yet still have a working install
+            // This calculation ensures that you have a more than one item that indicates you have already installed DNN.
+            // While it is possible that you might not have an installation date or that you have deleted log files
+            // it is unlikely that you have removed every trace of an installation and yet still have a working install
 
             bool isInstalled =  (!IsInstallationURL()) && ((installationdatefactor + dataproviderfactor + htmlmodulefactor + portaldirectoryfactor + localexecutionfactor) >= c_PassingScore);
 
@@ -712,7 +712,7 @@ namespace DotNetNuke.Common
         {
             Provider currentdataprovider = Config.GetDefaultProvider("data");
             string providerpath = currentdataprovider.Attributes["providerPath"];
-            //If the provider path does not exist, then there can't be any log files
+            // If the provider path does not exist, then there can't be any log files
             if (!string.IsNullOrEmpty(providerpath))
             {
                 providerpath = HttpContext.Current.Server.MapPath(providerpath);
@@ -895,7 +895,7 @@ namespace DotNetNuke.Common
             if (!String.IsNullOrEmpty(VariableColumns))
             {
                 arrVariableColumns = VariableColumns.Split(',');
-                //add varible columns to table
+                // add varible columns to table
                 for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
                 {
                     arrField = arrVariableColumns[intColumn].Split('|');
@@ -911,10 +911,10 @@ namespace DotNetNuke.Common
             DataRow row = null;
             while (result.Read())
             {
-                //loop using KeyColumn as control break
+                // loop using KeyColumn as control break
                 if (Convert.ToInt32(result[KeyColumn]) != intKeyColumn)
                 {
-                    //add row
+                    // add row
                     if (intKeyColumn != -1)
                     {
                         tab.Rows.Add(row);
@@ -927,7 +927,7 @@ namespace DotNetNuke.Common
                         arrField = arrFixedColumns[intColumn].Split('|');
                         row[arrField[0]] = result[arrField[0]];
                     }
-                    //initialize variable column values
+                    // initialize variable column values
                     if (!String.IsNullOrEmpty(VariableColumns))
                     {
                         for (intColumn = 0; intColumn < arrVariableColumns.Length; intColumn++)
@@ -946,7 +946,7 @@ namespace DotNetNuke.Common
                     }
                     intKeyColumn = Convert.ToInt32(result[KeyColumn]);
                 }
-                //assign pivot column value
+                // assign pivot column value
                 if (!String.IsNullOrEmpty(FieldTypeColumn))
                 {
                     FieldType = result[FieldTypeColumn].ToString();
@@ -1129,11 +1129,11 @@ namespace DotNetNuke.Common
         public static string GetApplicationName(int PortalID)
         {
             string appName;
-            //Get the Data Provider Configuration
+            // Get the Data Provider Configuration
             ProviderConfiguration _providerConfiguration = ProviderConfiguration.GetProviderConfiguration("data");
-            //Read the configuration specific information for the current Provider
+            // Read the configuration specific information for the current Provider
             var objProvider = (Provider)_providerConfiguration.Providers[_providerConfiguration.DefaultProvider];
-            //Get the Object Qualifier frm the Provider Configuration
+            // Get the Object Qualifier frm the Provider Configuration
             string _objectQualifier = objProvider.Attributes["objectQualifier"];
             if (!String.IsNullOrEmpty(_objectQualifier) && _objectQualifier.EndsWith("_") == false)
             {
@@ -1179,7 +1179,7 @@ namespace DotNetNuke.Common
         /// <param name="version">The version.</param>
         public static void UpdateDataBaseVersion(Version version)
         {
-            //update the version
+            // update the version
             DataProvider.Instance().UpdateDatabaseVersion(version.Major, version.Minor, version.Build, DotNetNukeContext.Current.Application.Name);
             _dataBaseVersion = version;
         }
@@ -1191,7 +1191,7 @@ namespace DotNetNuke.Common
         /// <param name="increment">The increment.</param>
        public static void UpdateDataBaseVersionIncrement(Version version, int increment)
         {
-            //update the version and increment
+            // update the version and increment
            DataProvider.Instance().UpdateDatabaseVersionIncrement(version.Major, version.Minor, version.Build, increment, DotNetNukeContext.Current.Application.Name);
             _dataBaseVersion = version;
         }
@@ -1393,7 +1393,7 @@ namespace DotNetNuke.Common
                             }
                             else
                             {
-                                //File is stored in DB - Just add to arraylist
+                                // File is stored in DB - Just add to arraylist
                                 arrFileList.Add(new FileItem(file.FileId.ToString(), file.FileName));
                             }
                         }
@@ -1416,7 +1416,7 @@ namespace DotNetNuke.Common
             int TabId = -1;
             int PortalId = -1;
             PortalAliasInfo objPortalAliasInfo = null;
-            //if the portal alias exists
+            // if the portal alias exists
             if (Host.HostPortalID > Null.NullInteger)
             {
                 PortalId = Host.HostPortalID;
@@ -1470,12 +1470,12 @@ namespace DotNetNuke.Common
         public static PortalSettings GetPortalSettings()
         {
             PortalSettings portalSettings = null;
-            //Try getting the settings from the Context
+            // Try getting the settings from the Context
             if (HttpContext.Current != null)
             {
                 portalSettings = (PortalSettings)HttpContext.Current.Items["PortalSettings"];
             }
-            //If nothing then try getting the Host Settings
+            // If nothing then try getting the Host Settings
             if (portalSettings == null)
             {
                 portalSettings = GetHostPortalSettings();
@@ -2033,13 +2033,13 @@ namespace DotNetNuke.Common
             {
                 tLen = strToken.Length + 2;
                 string _UploadDirectory = strUploadDirectory.ToLowerInvariant();
-                //find position of first occurrance:
+                // find position of first occurrance:
                 P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
                 while (P != -1)
                 {
-                    sbBuff.Append(strHTML.Substring(S, P - S + tLen)); //keep charactes left of URL
-                    S = P + tLen; //save startpos of URL
-                    R = strHTML.IndexOf("\"", S); //end of URL
+                    sbBuff.Append(strHTML.Substring(S, P - S + tLen)); // keep charactes left of URL
+                    S = P + tLen; // save startpos of URL
+                    R = strHTML.IndexOf("\"", S); // end of URL
                     if (R >= 0)
                     {
                         strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
@@ -2053,7 +2053,7 @@ namespace DotNetNuke.Common
                     {
                         sbBuff.Append(strUploadDirectory);
                     }
-                    //find position of next occurrance:
+                    // find position of next occurrance:
                     P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
                 }
                 if (S > -1)
@@ -2130,7 +2130,7 @@ namespace DotNetNuke.Common
             {
                 if (control.Page.Request.Browser.EcmaScriptVersion.Major >= 1)
                 {
-                    //JH dnn.js mod
+                    // JH dnn.js mod
                     if (ClientAPI.ClientAPIDisabled() == false)
                     {
                         JavaScript.RegisterClientReference(control.Page, ClientAPI.ClientNamespaceReferences.dnn);
@@ -2138,7 +2138,7 @@ namespace DotNetNuke.Common
                     }
                     else
                     {
-                        //Create JavaScript
+                        // Create JavaScript
                         var sb = new StringBuilder();
                         sb.Append("<script type=\"text/javascript\">");
                         sb.Append("<!--");
@@ -2146,7 +2146,7 @@ namespace DotNetNuke.Common
                         sb.Append("function SetInitialFocus() {");
                         sb.Append(Environment.NewLine);
                         sb.Append(" document.");
-                        //Find the Form
+                        // Find the Form
                         Control objParent = control.Parent;
                         while (!(objParent is HtmlForm))
                         {
@@ -2175,31 +2175,31 @@ namespace DotNetNuke.Common
         /// <returns>Web request</returns>
         public static HttpWebRequest GetExternalRequest(string Address)
         {
-            //Obtain PortalSettings from Current Context
+            // Obtain PortalSettings from Current Context
             PortalSettings _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
-            //Create the request object
+            // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
-            //Set a time out to the request ... 10 seconds
+            // Set a time out to the request ... 10 seconds
             objRequest.Timeout = Host.WebRequestTimeout;
-            //Attach a User Agent to the request
+            // Attach a User Agent to the request
             objRequest.UserAgent = "DotNetNuke";
-            //If there is Proxy info, apply it to the request
+            // If there is Proxy info, apply it to the request
             if (!string.IsNullOrEmpty(Host.ProxyServer))
             {
-                //Create a new Proxy
+                // Create a new Proxy
                 WebProxy Proxy;
-                //Create a new Network Credentials item
+                // Create a new Network Credentials item
                 NetworkCredential ProxyCredentials;
-                //Fill Proxy info from host settings
+                // Fill Proxy info from host settings
                 Proxy = new WebProxy(Host.ProxyServer, Host.ProxyPort);
                 if (!string.IsNullOrEmpty(Host.ProxyUsername))
                 {
-                    //Fill the credential info from host settings
+                    // Fill the credential info from host settings
                     ProxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
-                    //Apply credentials to proxy
+                    // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
-                //Apply Proxy to request
+                // Apply Proxy to request
                 objRequest.Proxy = Proxy;
             }
             return objRequest;
@@ -2213,7 +2213,7 @@ namespace DotNetNuke.Common
         /// <returns>Web request</returns>
         public static HttpWebRequest GetExternalRequest(string Address, NetworkCredential Credentials)
         {
-            //Create the request object
+            // Create the request object
             var objRequest = (HttpWebRequest)WebRequest.Create(Address);
             // Set a time out to the request ... 10 seconds
             objRequest.Timeout = Host.WebRequestTimeout;
@@ -2237,7 +2237,7 @@ namespace DotNetNuke.Common
                 {
                     // Fill the credential info from host settings
                     ProxyCredentials = new NetworkCredential(Host.ProxyUsername, Host.ProxyPassword);
-                    //Apply credentials to proxy
+                    // Apply credentials to proxy
                     Proxy.Credentials = ProxyCredentials;
                 }
                 objRequest.Proxy = Proxy;
@@ -2283,7 +2283,7 @@ namespace DotNetNuke.Common
             }
             catch (IOException)
             {
-                //Force Deletion. Directory should be empty
+                // Force Deletion. Directory should be empty
                 try
                 {
                     Thread.Sleep(50);
@@ -2387,7 +2387,7 @@ namespace DotNetNuke.Common
         {
             string returnValue = Null.NullString;
 
-            //Regex is expensive so we will cache the results in a lookup table
+            // Regex is expensive so we will cache the results in a lookup table
             var validClassLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(new CacheItemArgs("ValidClassLookup", 200, CacheItemPriority.NotRemovable),
                                                                                                    (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
@@ -2396,7 +2396,7 @@ namespace DotNetNuke.Common
             {
                 if (validClassLookupDictionary.ContainsKey(inputValue))
                 {
-                    //Return value
+                    // Return value
                     returnValue = validClassLookupDictionary[inputValue];
                     idFound = true;
                 }
@@ -2408,7 +2408,7 @@ namespace DotNetNuke.Common
                 {
                     if (!validClassLookupDictionary.ContainsKey(inputValue))
                     {
-                        //Create Valid Class
+                        // Create Valid Class
                         // letters ([a-zA-Z]), digits ([0-9]), hyphens ("-") and underscores ("_") are valid in class values
                         // Remove all characters that aren't in the list
                         returnValue = InvalidCharacters.Replace(inputValue, string.Empty);
@@ -2424,13 +2424,13 @@ namespace DotNetNuke.Common
                             }
                         }
 
-                        //put in Dictionary
+                        // put in Dictionary
                         validClassLookupDictionary[inputValue] = returnValue;
                     }
                 }
             }
 
-            //Return Value
+            // Return Value
             return returnValue;
         }
 
@@ -2443,7 +2443,7 @@ namespace DotNetNuke.Common
         {
             string returnValue = Null.NullString;
 
-            //Regex is expensive so we will cache the results in a lookup table
+            // Regex is expensive so we will cache the results in a lookup table
             var validIDLookupDictionary = CBO.GetCachedObject<SharedDictionary<string, string>>(new CacheItemArgs("ValidIDLookup", 200, CacheItemPriority.NotRemovable),
                                                                                                 (CacheItemArgs cacheItemArgs) => new SharedDictionary<string, string>());
 
@@ -2452,7 +2452,7 @@ namespace DotNetNuke.Common
             {
                 if (validIDLookupDictionary.ContainsKey(inputValue))
                 {
-                    //Return value
+                    // Return value
                     returnValue = validIDLookupDictionary[inputValue];
                     idFound = true;
                 }
@@ -2464,7 +2464,7 @@ namespace DotNetNuke.Common
                 {
                     if (!validIDLookupDictionary.ContainsKey(inputValue))
                     {
-                        //Create Valid ID
+                        // Create Valid ID
                         // '... letters, digits ([0-9]), hyphens ("-"), underscores ("_"), colons (":"), and periods (".")' are valid identifiers
                         // We aren't allowing hyphens or periods, even though they're valid, since the previous version of this function didn't
                         // Replace all characters that aren't in the list with an underscore
@@ -2474,7 +2474,7 @@ namespace DotNetNuke.Common
                         // replace a starting non-letter character with an A
                         returnValue = InvalidInitialCharacters.Replace(returnValue, "A");
 
-                        //put in Dictionary
+                        // put in Dictionary
                         validIDLookupDictionary[inputValue] = returnValue;
                     }
                 }
@@ -2506,12 +2506,12 @@ namespace DotNetNuke.Common
             {
                 if (String.IsNullOrEmpty(Message))
                 {
-                    //redirect to access denied page
+                    // redirect to access denied page
                     strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied");
                 }
                 else
                 {
-                    //redirect to access denied page with custom message
+                    // redirect to access denied page with custom message
                     var messageGuid = DataProvider.Instance().AddRedirectMessage(
                         _portalSettings.UserId, _portalSettings.ActiveTab.TabID, Message).ToString("N");
                     strURL = navigationManager.NavigateURL(_portalSettings.ActiveTab.TabID, "Access Denied", "message=" + messageGuid);
@@ -2796,13 +2796,13 @@ namespace DotNetNuke.Common
                         var objFile = FileManager.Instance.GetFile(intId);
                         if (objFile == null)
                         {
-                            //fileId does not exist in the portal
+                            // fileId does not exist in the portal
                             strUrl = "";
                         }
                     }
                     else
                     {
-                        //failed to get fileId
+                        // failed to get fileId
                         strUrl = "";
                     }
                     break;
@@ -2811,13 +2811,13 @@ namespace DotNetNuke.Common
                     {
                         if (UserController.GetUserById(portalSettings.PortalId, intId) == null)
                         {
-                            //UserId does not exist for this portal
+                            // UserId does not exist for this portal
                             strUrl = "";
                         }
                     }
                     else
                     {
-                        //failed to get UserId
+                        // failed to get UserId
                         strUrl = "";
                     }
                     break;
@@ -2826,13 +2826,13 @@ namespace DotNetNuke.Common
                     {
                         if (TabController.Instance.GetTab(intId, portalSettings.PortalId, false) == null)
                         {
-                            //the tab does not exist
+                            // the tab does not exist
                             strUrl = "";
                         }
                     }
                     else
                     {
-                        //failed to get TabId
+                        // failed to get TabId
                         strUrl = "";
                     }
                     break;
@@ -2883,7 +2883,7 @@ namespace DotNetNuke.Common
                 else
                 {
                     string strMessage = string.Format("error={0}", Localization.GetString("NoLoginControl", Localization.GlobalResourceFile));
-                    //No account module so use portal tab
+                    // No account module so use portal tab
                     loginUrl = string.IsNullOrEmpty(returnUrl)
                                  ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", strMessage, popUpParameter)
                                  : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, strMessage, popUpParameter);
@@ -2891,7 +2891,7 @@ namespace DotNetNuke.Common
             }
             else
             {
-                //portal tab
+                // portal tab
                 loginUrl = string.IsNullOrEmpty(returnUrl)
                                 ? navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", popUpParameter)
                                 : navigationManager.NavigateURL(portalSettings.ActiveTab.TabID, "Login", returnUrl, popUpParameter);
@@ -3124,7 +3124,7 @@ namespace DotNetNuke.Common
             }
             if (_portalSettings.RegisterTabId != -1)
             {
-                //user defined tab
+                // user defined tab
                 strURL = navigationManager.NavigateURL(_portalSettings.RegisterTabId, "", extraParams);
             }
             else
@@ -3333,11 +3333,11 @@ namespace DotNetNuke.Common
             }
             else if (TrackClicks || ForceDownload || UrlType == TabType.File)
             {
-                //format LinkClick wrapper
+                // format LinkClick wrapper
                 if (Link.StartsWith("fileid=", StringComparison.InvariantCultureIgnoreCase))
                 {
                     strLink = ApplicationPath + "/LinkClick.aspx?fileticket=" + UrlUtils.EncryptParameter(UrlUtils.GetParameterValue(Link), portalGuid);
-                    if (PortalId == Null.NullInteger) //To track Host files
+                    if (PortalId == Null.NullInteger) // To track Host files
                     {
                         strLink += "&hf=1";
                     }
@@ -3351,7 +3351,7 @@ namespace DotNetNuke.Common
                 {
                     strLink += "&tabid=" + TabID;
                 }
-                //append portal id to query string to identity portal the click originated.
+                // append portal id to query string to identity portal the click originated.
                 if (PortalId != Null.NullInteger)
                 {
                     strLink += "&portalid=" + PortalId;
@@ -3361,12 +3361,12 @@ namespace DotNetNuke.Common
                 {
                     strLink += "&mid=" + ModuleID;
                 }
-                //only add language to url if more than one locale is enabled, and if admin did not turn it off
+                // only add language to url if more than one locale is enabled, and if admin did not turn it off
                 if (LocaleController.Instance.GetLocales(PortalId).Count > 1 && EnableUrlLanguage)
                 {
                     strLink += "&language=" + Thread.CurrentThread.CurrentCulture.Name;
                 }
-                //force a download dialog
+                // force a download dialog
                 if (ForceDownload)
                 {
                     strLink += "&forcedownload=true";
@@ -3506,19 +3506,19 @@ namespace DotNetNuke.Common
         {
             if (string.IsNullOrEmpty(HelpUrl))
             {
-                //bool isAdminModule = moduleConfig.DesktopModule.IsAdmin;
-                //string ctlString = Convert.ToString(HttpContext.Current.Request.QueryString["ctl"]);
-                //if (((Host.EnableModuleOnLineHelp && !isAdminModule) || (isAdminModule)))
-                //{
+                // bool isAdminModule = moduleConfig.DesktopModule.IsAdmin;
+                // string ctlString = Convert.ToString(HttpContext.Current.Request.QueryString["ctl"]);
+                // if (((Host.EnableModuleOnLineHelp && !isAdminModule) || (isAdminModule)))
+                // {
                 //    if ((isAdminModule) || (IsAdminControl() && ctlString == "Module") || (IsAdminControl() && ctlString == "Tab"))
                 //    {
                 //        HelpUrl = Host.HelpURL;
                 //    }
-                //}
-                //else
-                //{
+                // }
+                // else
+                // {
                 HelpUrl = Host.HelpURL;
-                //}
+                // }
             }
             return HelpUrl;
         }
@@ -3546,7 +3546,7 @@ namespace DotNetNuke.Common
             {
 				if (objModule.ModuleDefinition.FriendlyName == moduleName)
                 {
-                    //We need to ensure that Anonymous Users or All Users have View permissions to the login page
+                    // We need to ensure that Anonymous Users or All Users have View permissions to the login page
                     TabInfo tab = TabController.Instance.GetTab(tabId, objModule.PortalID, false);
                     if (TabPermissionController.CanViewPage(tab))
                     {

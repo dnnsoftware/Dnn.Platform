@@ -63,18 +63,18 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_AddContentItem_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => controller.AddContentItem(null));
         }
 
         [Test]
         public void ContentController_AddContentItem_Calls_DataService_On_Valid_Arguments()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             
             ContentController controller = new ContentController(mockDataService.Object);
@@ -84,17 +84,17 @@ namespace DotNetNuke.Tests.Content
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
 
-            //Act
+            // Act
             int contentId = controller.AddContentItem(content);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.AddContentItem(content, It.IsAny<int>()));
         }
 
         [Test]
         public void ContentController_AddContentItem_Returns_ValidId_On_Valid_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>())).Returns(Constants.CONTENT_AddContentItemId);
             ContentController controller = new ContentController(mockDataService.Object);
@@ -104,17 +104,17 @@ namespace DotNetNuke.Tests.Content
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
 
-            //Act
+            // Act
             int contentId = controller.AddContentItem(content);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.CONTENT_AddContentItemId, contentId);
         }
 
         [Test]
         public void ContentController_AddContentItem_Sets_ContentItemId_Property_On_Valid_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.AddContentItem(It.IsAny<ContentItem>(), It.IsAny<int>())).Returns(Constants.CONTENT_AddContentItemId);
             ContentController controller = new ContentController(mockDataService.Object);
@@ -124,10 +124,10 @@ namespace DotNetNuke.Tests.Content
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
 
-            //Act
+            // Act
             int contentId = controller.AddContentItem(content);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.CONTENT_AddContentItemId, content.ContentItemId);
         }
 
@@ -139,41 +139,41 @@ namespace DotNetNuke.Tests.Content
         [ExpectedException(typeof(ArgumentNullException))]
         public void ContentController_DeleteContentItem_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
-            //Act, Arrange
+            // Act, Arrange
             controller.DeleteContentItem(null);
         }
 
         [Test]
         public void ContentController_DeleteContentItem_Throws_On_Negative_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Null.NullInteger;
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.DeleteContentItem(content));
         }
 
         [Test]
         public void ContentController_DeleteContentItem_Calls_DataService_On_Valid_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Constants.CONTENT_DeleteContentItemId;
 
-            //Act
+            // Act
             controller.DeleteContentItem(content);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.DeleteContentItem(content.ContentItemId));
         }
 
@@ -184,56 +184,56 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_GetContentItem_Throws_On_Negative_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.GetContentItem(Null.NullInteger));
         }
 
         [Test]
         public void ContentController_GetContentItem_Returns_Null_On_InValid_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItem(Constants.CONTENT_InValidContentItemId)).Returns(MockHelper.CreateEmptyContentItemReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             ContentItem content = controller.GetContentItem(Constants.CONTENT_InValidContentItemId);
 
-            //Assert
+            // Assert
             Assert.IsNull(content);
         }
 
         [Test]
         public void ContentController_GetContentItem_Calls_DataService_On_Valid_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItem(Constants.CONTENT_ValidContentItemId)).Returns(MockHelper.CreateValidContentItemReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             ContentItem content = controller.GetContentItem(Constants.CONTENT_ValidContentItemId);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.GetContentItem(Constants.CONTENT_ValidContentItemId));
         }
 
         [Test]
         public void ContentController_GetContentItem_Returns_ContentItem_On_Valid_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItem(Constants.CONTENT_ValidContentItemId)).Returns(MockHelper.CreateValidContentItemReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             ContentItem content = controller.GetContentItem(Constants.CONTENT_ValidContentItemId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.CONTENT_ValidContentItemId, content.ContentItemId);
             Assert.AreEqual(ContentTestHelper.GetContent(Constants.CONTENT_ValidContentItemId), content.Content);
             Assert.AreEqual(ContentTestHelper.GetContentKey(Constants.CONTENT_ValidContentItemId), content.ContentKey);
@@ -246,48 +246,48 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_GetContentItemsByTerm_Throws_On_Null_Term()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentException>(() => controller.GetContentItemsByTerm(Null.NullString));
         }
 
         [Test]
         public void ContentController_GetContentItemsByTerm_Calls_DataService()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItemsByTerm(Constants.TERM_ValidName)).Returns(MockHelper.CreateValidContentItemReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<ContentItem> contentItems = controller.GetContentItemsByTerm(Constants.TERM_ValidName);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.GetContentItemsByTerm(Constants.TERM_ValidName));
         }
 
         [Test]
         public void ContentController_GetContentItemsByTerm_Returns_Empty_List_If_Term_Not_Used()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItemsByTerm(Constants.TERM_UnusedName)).Returns(MockHelper.CreateEmptyContentItemReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<ContentItem> contentItems = controller.GetContentItemsByTerm(Constants.TERM_UnusedName);
 
-            //Assert
+            // Assert
             Assert.AreEqual(0, contentItems.Count());
         }
 
         [Test]
         public void ContentController_GetContentItemsByTerm_Returns_List_Of_ContentItems()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetContentItemsByTerm(Constants.TERM_ValidName)).Returns(MockHelper.CreateValidContentItemsReader(Constants.CONTENT_TaggedItemCount,
                                                                                                                                              Constants.CONTENT_IndexedFalse,
@@ -295,10 +295,10 @@ namespace DotNetNuke.Tests.Content
                                                                                                                                              Constants.TERM_ValidName));
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<ContentItem> contentItems = controller.GetContentItemsByTerm(Constants.TERM_ValidName);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.CONTENT_TaggedItemCount, contentItems.Count());
         }
 
@@ -360,38 +360,38 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_GetUnIndexedContentItems_Calls_DataService()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetUnIndexedContentItems()).Returns(MockHelper.CreateValidContentItemReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<ContentItem> contentItems = controller.GetUnIndexedContentItems();
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.GetUnIndexedContentItems());
         }
 
         [Test]
         public void ContentController_GetUnIndexedContentItems_Returns_EmptyList_If_No_UnIndexed_Items()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetUnIndexedContentItems()).Returns(MockHelper.CreateEmptyContentItemReader());
 
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<ContentItem> contentItems = controller.GetUnIndexedContentItems();
 
-            //Assert
+            // Assert
             Assert.AreEqual(0, contentItems.Count());
         }
 
         [Test]
         public void ContentController_GetUnIndexedContentItems_Returns_List_Of_UnIndexedContentItems()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetUnIndexedContentItems()).Returns(MockHelper.CreateValidContentItemsReader(Constants.CONTENT_IndexedFalseItemCount,
                                                                                                                         Constants.CONTENT_IndexedFalse,
@@ -400,10 +400,10 @@ namespace DotNetNuke.Tests.Content
 
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             IQueryable<ContentItem> contentItems = controller.GetUnIndexedContentItems();
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.CONTENT_IndexedFalseItemCount, contentItems.Count());
             foreach (ContentItem content in contentItems)
             {
@@ -418,18 +418,18 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_UpdateContentItem_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => controller.UpdateContentItem(null));
         }
 
         [Test]
         public void ContentController_UpdateContentItem_Throws_On_Negative_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
@@ -442,7 +442,7 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_UpdateContentItem_Calls_DataService_On_Valid_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
@@ -453,10 +453,10 @@ namespace DotNetNuke.Tests.Content
             content.Content = Constants.CONTENT_UpdateContent;
             content.ContentKey = Constants.CONTENT_UpdateContentKey;
 
-            //Act
+            // Act
             controller.UpdateContentItem(content);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.UpdateContentItem(content, It.IsAny<int>()));
         }
 
@@ -467,55 +467,55 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_AddMetaData_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => controller.AddMetaData(null, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
         [Test]
         public void ContentController_AddMetaData_Throws_On_Negative_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Null.NullInteger;
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.AddMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
         [Test]
         public void ContentController_AddMetaData_Throws_On_Null_MetaDataName()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
  
             ContentItem content = ContentTestHelper.CreateValidContentItem();
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.AddMetaData(content, Null.NullString, Constants.CONTENT_ValidMetaDataValue));
         }
 
         [Test]
         public void ContentController_AddMetaData_Calls_DataService_On_Valid_Arguments()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
 
-            //Act
+            // Act
             controller.AddMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.AddMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
@@ -526,55 +526,55 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_DeleteMetaData_Throws_On_Null_ContentItem()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentNullException>(() => controller.AddMetaData(null, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
         [Test]
         public void ContentController_DeleteMetaData_Throws_On_Negative_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Null.NullInteger;
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.DeleteMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
         [Test]
         public void ContentController_DeleteMetaData_Throws_On_Null_MetaDataName()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.AddMetaData(content, Null.NullString, Constants.CONTENT_ValidMetaDataValue));
         }
 
         [Test]
         public void ContentController_DeleteMetaData_Calls_DataService_On_Valid_Arguments()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
             ContentItem content = ContentTestHelper.CreateValidContentItem();
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
 
-            //Act
+            // Act
             controller.DeleteMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.DeleteMetaData(content, Constants.CONTENT_ValidMetaDataName, Constants.CONTENT_ValidMetaDataValue));
         }
 
@@ -585,33 +585,33 @@ namespace DotNetNuke.Tests.Content
         [Test]
         public void ContentController_GetMetaData_Throws_On_Negative_ContentItemId()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act, Arrange
+            // Act, Arrange
             Assert.Throws<ArgumentOutOfRangeException>(() => controller.GetMetaData(Null.NullInteger));
         }
 
         [Test]
         public void ContentController_GetMetaData_Calls_DataService_On_Valid_Arguments()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetMetaData(Constants.CONTENT_ValidContentItemId)).Returns(MockHelper.CreateValidMetaDataReader());
             ContentController controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             NameValueCollection metaData = controller.GetMetaData(Constants.CONTENT_ValidContentItemId);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.GetMetaData(Constants.CONTENT_ValidContentItemId));
         }
 
         [Test]
         public void ContentController_GetMetaData_Returns_NameValueCollection_Of_MetaData()
         {
-            //Arrange
+            // Arrange
             Mock<IDataService> mockDataService = new Mock<IDataService>();
             mockDataService.Setup(ds => ds.GetMetaData(Constants.CONTENT_ValidContentItemId)).Returns(MockHelper.CreateValidMetaDataReader());
 
@@ -632,10 +632,10 @@ namespace DotNetNuke.Tests.Content
             
             var controller = new ContentController(mockDataService.Object);
 
-            //Act
+            // Act
             var metaData = controller.GetMetaData(Constants.CONTENT_ValidContentItemId);
 
-            //Assert
+            // Assert
             Assert.AreEqual(Constants.CONTENT_MetaDataCount, metaData.Count);
         }
 
@@ -682,10 +682,10 @@ namespace DotNetNuke.Tests.Content
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
             content.ContentTitle = Constants.CONTENT_ValidTitle;
 
-            //Act
+            // Act
             controller.AddContentItem(content);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.AddMetaData(content, AttachmentController.TitleKey, Constants.CONTENT_ValidTitle));
         }
 
@@ -724,13 +724,13 @@ namespace DotNetNuke.Tests.Content
             content.ContentItemId = Constants.CONTENT_ValidContentItemId;
             content.ContentTitle = Constants.CONTENT_ValidTitle;
 
-            //Act
+            // Act
             controller.AddContentItem(content);
 
             content.ContentTitle = Constants.CONTENT_ValidTitle2;
             controller.UpdateContentItem(content);
 
-            //Assert
+            // Assert
             mockDataService.Verify(ds => ds.AddMetaData(content, AttachmentController.TitleKey, Constants.CONTENT_ValidTitle));
             mockDataService.Verify(ds => ds.AddMetaData(content, AttachmentController.TitleKey, Constants.CONTENT_ValidTitle2));
         }

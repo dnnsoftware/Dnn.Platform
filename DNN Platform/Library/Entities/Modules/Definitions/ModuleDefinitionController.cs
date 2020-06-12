@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public void DeleteModuleDefinition(int moduleDefinitionId)
         {
-			//Delete associated permissions
+			// Delete associated permissions
             var permissionController = new PermissionController();
             foreach (PermissionInfo permission in permissionController.GetPermissionsByModuleDefID(moduleDefinitionId))
             {
@@ -159,7 +159,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public static Dictionary<string, ModuleDefinitionInfo> GetModuleDefinitionsByDesktopModuleID(int desktopModuleID)
         {
-            //Iterate through cached Dictionary to get all Module Definitions with the correct DesktopModuleID
+            // Iterate through cached Dictionary to get all Module Definitions with the correct DesktopModuleID
             return GetModuleDefinitions().Where(kvp => kvp.Value.DesktopModuleID == desktopModuleID)
                     .ToDictionary(kvp => kvp.Value.FriendlyName, kvp => kvp.Value);
         }
@@ -194,7 +194,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             int moduleDefinitionID = moduleDefinition.ModuleDefID;
             if (moduleDefinitionID == Null.NullInteger)
             {
-				//Add new Module Definition
+				// Add new Module Definition
                 moduleDefinitionID = dataProvider.AddModuleDefinition(moduleDefinition.DesktopModuleID,
                                                                       moduleDefinition.FriendlyName,
                                                                       moduleDefinition.DefinitionName,
@@ -203,7 +203,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
             }
             else
             {
-				//Upgrade Module Definition
+				// Upgrade Module Definition
                 dataProvider.UpdateModuleDefinition(moduleDefinition.ModuleDefID, moduleDefinition.FriendlyName, moduleDefinition.DefinitionName, moduleDefinition.DefaultCacheTime, UserController.Instance.GetCurrentUserInfo().UserID);
             }
             if (saveChildren)
@@ -212,7 +212,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 {
                     kvp.Value.ModuleDefID = moduleDefinitionID;
 
-                    //check if permission exists
+                    // check if permission exists
                     var permissionController = new PermissionController();
                     ArrayList permissions = permissionController.GetPermissionByCodeAndKey(kvp.Value.PermissionCode, kvp.Value.PermissionKey);
                     if (permissions != null && permissions.Count == 1)
@@ -230,7 +230,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                 {
                     kvp.Value.ModuleDefID = moduleDefinitionID;
 
-                    //check if definition exists
+                    // check if definition exists
                     ModuleControlInfo moduleControl = ModuleControlController.GetModuleControlByControlKey(kvp.Value.ControlKey, kvp.Value.ModuleDefID);
                     if (moduleControl != null)
                     {

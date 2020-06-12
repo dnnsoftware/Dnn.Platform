@@ -541,7 +541,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (this.UseDropDownList)
             {
-                //Client Variables will survive a postback so there is no reason to register them.
+                // Client Variables will survive a postback so there is no reason to register them.
                 if (!this.Page.IsPostBack)
                 {
 
@@ -551,7 +551,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     ClientAPI.RegisterClientVariable(this.Page, "SearchIconWebUrl", string.Format("url({0})", this.ResolveUrl(this.WebIconURL)), true);
                     ClientAPI.RegisterClientVariable(this.Page, "SearchIconSiteUrl", string.Format("url({0})", this.ResolveUrl(this.SiteIconURL)), true);
 
-                    //We are going to use a dnn client variable to store which search option (web/site) is selected.
+                    // We are going to use a dnn client variable to store which search option (web/site) is selected.
                     ClientAPI.RegisterClientVariable(this.Page, "SearchIconSelected", "S", true);
                     this.SearchType = "S";
                 }

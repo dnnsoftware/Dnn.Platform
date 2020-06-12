@@ -240,7 +240,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                                        Value = userFolder.FolderID.ToString(CultureInfo.InvariantCulture)
                                                    };
                 }
-                else if (this.UsePersonalFolder) //if UserPersonalFolder is true, make sure the file is under the user folder.
+                else if (this.UsePersonalFolder) // if UserPersonalFolder is true, make sure the file is under the user folder.
                 {
                     this.FoldersComboBox.SelectedItem = new ListItem
                                                     {
@@ -285,7 +285,7 @@ namespace DotNetNuke.Web.UI.WebControls
             }
             else
             {
-                //select folder
+                // select folder
                 string fileName;
                 string folderPath;
                 if (!string.IsNullOrEmpty(this.FilePath))

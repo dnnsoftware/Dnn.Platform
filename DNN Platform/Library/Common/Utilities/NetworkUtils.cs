@@ -59,12 +59,12 @@ namespace DotNetNuke.Common.Utils
         /// <returns>IP Address in long</returns>
         public static long IPtoLong(IPAddress ip)
         {
-            //convert IP to number
+            // convert IP to number
 
             byte[] addressBytes = ip.GetAddressBytes();
-            //get the octets
+            // get the octets
             long addr = 0;
-            //accumulator for address
+            // accumulator for address
 
             for (int x = 0; x <= 3; x++)
             {
@@ -80,23 +80,23 @@ namespace DotNetNuke.Common.Utils
         /// <returns>IP Number as formatted string</returns>
         public static string LongToIp(long ip)
         {
-            //convert number back to IP
+            // convert number back to IP
 
             var ipByte = new byte[4];
-            //4 octets
+            // 4 octets
             string addr = "";
-            //accumulator for address
+            // accumulator for address
 
             long mask8 = MaskFromCidr(8);
-            //create eight bit mask
+            // create eight bit mask
 
-            //get the octets
+            // get the octets
             for (int x = 0; x <= 3; x++)
             {
                 ipByte[x] = Convert.ToByte((ip & mask8) >> ((3 - x) * 8));
                 mask8 = mask8 >> 8;
                 addr += ipByte[x].ToString() + ".";
-                //add current octet to string
+                // add current octet to string
             }
             return addr.TrimEnd('.');
         }
@@ -130,7 +130,7 @@ namespace DotNetNuke.Common.Utils
             long ipL = IPtoLong(ipAddress);
             long maskL = IPtoLong(mask);
 
-            //Convert  Mask to CIDR(1-30)
+            // Convert  Mask to CIDR(1-30)
             long oneBit = 0x80000000L;
             int cidr = 0;
 
@@ -181,7 +181,7 @@ namespace DotNetNuke.Common.Utils
             }
             catch (Exception)
             {
-                //catch case where IP cannot be resolved such as when debugger is attached
+                // catch case where IP cannot be resolved such as when debugger is attached
                 startIP = 0;
                 endIP = 0;
             }
@@ -217,16 +217,16 @@ namespace DotNetNuke.Common.Utils
         {
             try
             {
-                //handle case where local adapter is localhost
+                // handle case where local adapter is localhost
                 if (currentIP == "::1")
                 {
                     currentIP = "127.0.0.1";
                 }
 
-                //handle case where we are matching on a single IP
+                // handle case where we are matching on a single IP
                 if (String.IsNullOrEmpty(subnetmask)) if (currentIP == startIP) return true;
 
-                //handle case where we have to build a CIDR, convert to an IP range and compare
+                // handle case where we have to build a CIDR, convert to an IP range and compare
                 string cidr = FormatAsCidr(startIP, subnetmask);
                 uint fromIP, toIP;
                 Network2IpRange(cidr, out fromIP, out toIP);
@@ -239,7 +239,7 @@ namespace DotNetNuke.Common.Utils
             }
             catch (Exception)
             {
-                //catch case where IP cannot be resolved such as when debugger is attached
+                // catch case where IP cannot be resolved such as when debugger is attached
                 return false;
             }
             return false;

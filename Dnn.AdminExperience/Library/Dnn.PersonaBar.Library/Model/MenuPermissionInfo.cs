@@ -31,7 +31,7 @@ namespace Dnn.PersonaBar.Library.Model
 		
         private int _menuId;
 
-        //local property declarations
+        // local property declarations
         private int _menuPermissionId;
 		
 		#endregion

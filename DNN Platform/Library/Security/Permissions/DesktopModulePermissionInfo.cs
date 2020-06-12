@@ -29,7 +29,7 @@ namespace DotNetNuke.Security.Permissions
     {
 		#region "Private Members"
 
-        //local property declarations
+        // local property declarations
         private int _desktopModulePermissionID;
         private int _portalDesktopModuleID;
 		

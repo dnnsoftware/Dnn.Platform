@@ -21,12 +21,12 @@ namespace DotNetNuke.Services.Scheduling
         {
             try
             {
-                //notification that the event is progressing
+                // notification that the event is progressing
                 this.Progressing();
 
                 SchedulingProvider.Instance().PurgeScheduleHistory();
 
-                //update the result to success since no exception was thrown
+                // update the result to success since no exception was thrown
                 this.ScheduleHistoryItem.Succeeded = true;
                 this.ScheduleHistoryItem.AddLogNote("Schedule history purged.");
             }
@@ -36,10 +36,10 @@ namespace DotNetNuke.Services.Scheduling
                 this.ScheduleHistoryItem.AddLogNote("Schedule history purge failed." + exc);
                 this.ScheduleHistoryItem.Succeeded = false;
 
-                //notification that we have errored
+                // notification that we have errored
                 this.Errored(ref exc);
 				
-				//log the exception
+				// log the exception
                 Exceptions.Exceptions.LogException(exc);
             }
         }

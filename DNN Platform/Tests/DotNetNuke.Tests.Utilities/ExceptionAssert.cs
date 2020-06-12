@@ -12,15 +12,15 @@ namespace DotNetNuke.Tests.Utilities
     [Obsolete("Use Assert.Exception or ExpectedExceptionAttribute. Scheduled removal in v11.0.0.")]
     public static class ExceptionAssert
     {
-        //public static void Throws<TException>(Action act) where TException : Exception
-        //{
+        // public static void Throws<TException>(Action act) where TException : Exception
+        // {
         //    Throws<TException>(act, ex => true);
-        //}
+        // }
 
-        //public static void Throws<TException>(string message, Action act) where TException : Exception
-        //{
+        // public static void Throws<TException>(string message, Action act) where TException : Exception
+        // {
         //    Throws<TException>(act, ex => ex.Message.Equals(message, StringComparison.Ordinal));
-        //}
+        // }
 
         public static void Throws<TException>(string message, Action act, Predicate<TException> checker) where TException : Exception
         {

@@ -48,7 +48,7 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionResults
             }
             else
             {
-                //TODO - match other actions
+                // TODO - match other actions
                 url = this.NavigationManager.NavigateURL();
             }
 

@@ -18,7 +18,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void FindTabIdTriesAllProviders()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -28,17 +28,17 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            //Act
+            // Act
             request.FindTabId();
 
-            //Assert
+            // Assert
             provider.Verify(x => x.TryFindTabId(request, out i), Times.Exactly(2));
         }
 
         [Test]
         public void FindTabIdStopCallingProvidersAfterOneSuccess()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -48,17 +48,17 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            //Act
+            // Act
             request.FindTabId();
 
-            //Assert
+            // Assert
             provider.Verify(x => x.TryFindTabId(request, out i), Times.Once());
         }
 
         [Test]
         public void FindModuleIdTriesAllProviders()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -68,17 +68,17 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            //Act
+            // Act
             request.FindModuleId();
 
-            //Assert
+            // Assert
             provider.Verify(x => x.TryFindModuleId(request, out i), Times.Exactly(2));
         }
 
         [Test]
         public void FindModuleIdStopCallingProvidersAfterOneSuccess()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -88,17 +88,17 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            //Act
+            // Act
             request.FindModuleId();
 
-            //Assert
+            // Assert
             provider.Verify(x => x.TryFindModuleId(request, out i), Times.Once());
         }
 
         [Test]
         public void FindModuleInfoTriesAllProviders()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -108,17 +108,17 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            //Act
+            // Act
             request.FindModuleInfo();
 
-            //Assert
+            // Assert
             provider.Verify(x => x.TryFindModuleInfo(request, out moduleInfo), Times.Exactly(2));
         }
 
         [Test]
         public void FindModuleInfoStopCallingProvidersAfterOneSuccess()
         {
-            //Arrange
+            // Arrange
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -128,10 +128,10 @@ namespace DotNetNuke.Tests.Web.Api
             configuration.AddTabAndModuleInfoProvider(provider.Object);
             request.Properties[HttpPropertyKeys.HttpConfigurationKey] = configuration;
 
-            //Act
+            // Act
             request.FindModuleInfo();
 
-            //Assert
+            // Assert
             provider.Verify(x => x.TryFindModuleInfo(request, out moduleInfo), Times.Once());
         }
     }

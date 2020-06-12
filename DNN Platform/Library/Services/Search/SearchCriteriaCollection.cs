@@ -59,9 +59,9 @@ namespace DotNetNuke.Services.Search
         /// <param name="value">A criteria string with which to initialize the collection</param>
         public SearchCriteriaCollection(string value)
         {
-            //split search criteria into words
+            // split search criteria into words
             string[] words = value.Split(' ');
-            //Add all criteria without modifiers
+            // Add all criteria without modifiers
             foreach (string word in words)
             {
                 var criterion = new SearchCriteria();
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Search
                     this.Add(criterion);
                 }
             }
-            //Add all mandatory criteria
+            // Add all mandatory criteria
             foreach (string word in words)
             {
                 var criterion = new SearchCriteria();
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Search
                     this.Add(criterion);
                 }
             }
-            //Add all excluded criteria
+            // Add all excluded criteria
             foreach (string word in words)
             {
                 var criterion = new SearchCriteria();

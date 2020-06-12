@@ -335,7 +335,7 @@ namespace DotNetNuke.Security.Roles
             this.RSVPCode = Null.SetNullString(dr["RSVPCode"]);
             this.IconFile = Null.SetNullString(dr["IconFile"]);
 
-            //New properties may not be present if called before 6.2 Upgrade has been executed
+            // New properties may not be present if called before 6.2 Upgrade has been executed
             try
             {
                 int mode = Null.SetNullInteger(dr["SecurityMode"]);
@@ -366,7 +366,7 @@ namespace DotNetNuke.Security.Roles
                         this.Status = RoleStatus.Approved;
                         break;
                 }
-                //check for values only relevant to UserRoles
+                // check for values only relevant to UserRoles
                 var schema = dr.GetSchemaTable();
                 if (schema != null)
                 {
@@ -384,11 +384,11 @@ namespace DotNetNuke.Security.Roles
             }
             catch (IndexOutOfRangeException)
             {
-                //do nothing
+                // do nothing
             }
 
 
-            //Fill base class fields
+            // Fill base class fields
             this.FillInternal(dr);
         }
 
@@ -507,7 +507,7 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public void ReadXml(XmlReader reader)
         {
-            //Set status to approved by default
+            // Set status to approved by default
             this.Status = RoleStatus.Approved;
 
             while (reader.Read())
@@ -649,10 +649,10 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("role");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("rolename", this.RoleName);
             writer.WriteElementString("description", this.Description);
             writer.WriteElementString("billingfrequency", this.BillingFrequency);
@@ -710,7 +710,7 @@ namespace DotNetNuke.Security.Roles
                     break;
             }
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 
@@ -734,7 +734,7 @@ namespace DotNetNuke.Security.Roles
         {
             if (url.StartsWith("/") && HttpContext.Current != null) 
             {
-                //server absolute path
+                // server absolute path
                 return Globals.AddHTTP(HttpContext.Current.Request.Url.Host) + url;
             }
             return url;

@@ -16,11 +16,11 @@ namespace DotNetNuke.Tests.Core.Collections
     [TestFixture]
     public class NaiveLockingListTests
     {
-        //Most of the tests here are very simple, as the real functionality is provided by List<T>
-        //these tests only ensure that the methods are actually wired up
-        //Complicated threading tests would be nice, but are not practical as the
-        //NaiveLockList releases all locks immediately making it impossible to ensure
-        //a lock is held while launching another thread in the test
+        // Most of the tests here are very simple, as the real functionality is provided by List<T>
+        // these tests only ensure that the methods are actually wired up
+        // Complicated threading tests would be nice, but are not practical as the
+        // NaiveLockList releases all locks immediately making it impossible to ensure
+        // a lock is held while launching another thread in the test
 
         [Test]
         public void Add()

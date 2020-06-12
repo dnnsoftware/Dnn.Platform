@@ -46,7 +46,7 @@ namespace Dnn.ExportImport.Components.Scheduler
         {
             try
             {
-                //TODO: do some clean-up for very old import/export jobs/logs
+                // TODO: do some clean-up for very old import/export jobs/logs
 
                 var job = EntitiesController.Instance.GetFirstActiveJob();
                 if (job == null)
@@ -126,7 +126,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                     this.ScheduleHistoryItem.Succeeded = true;
 
-                    //restore schedule item running timelapse to default.
+                    // restore schedule item running timelapse to default.
                     if (succeeded
                         && this.ScheduleHistoryItem.TimeLapse == EmergencyScheduleFrequency
                         && this.ScheduleHistoryItem.TimeLapseMeasurement == EmergencyScheduleFrequencyUnit)
@@ -160,7 +160,7 @@ namespace Dnn.ExportImport.Components.Scheduler
 
                     Logger.Trace("Site Export/Import: Job Finished");
                 }
-                //SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
+                // SetLastSuccessfulIndexingDateTime(ScheduleHistoryItem.ScheduleID, ScheduleHistoryItem.StartDate);
             }
             catch (Exception ex)
             {
@@ -168,10 +168,10 @@ namespace Dnn.ExportImport.Components.Scheduler
                 this.ScheduleHistoryItem.AddLogNote("<br/>Export/Import EXCEPTION: " + ex.Message);
                 this.Errored(ref ex);
                 // this duplicates the logging
-                //if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
-                //{
+                // if (ScheduleHistoryItem.ScheduleSource != ScheduleSource.STARTED_FROM_BEGIN_REQUEST)
+                // {
                 //    Exceptions.LogException(ex);
-                //}
+                // }
             }
         }
     }

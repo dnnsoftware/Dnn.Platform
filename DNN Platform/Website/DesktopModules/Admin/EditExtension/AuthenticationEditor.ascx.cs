@@ -103,11 +103,11 @@ namespace DotNetNuke.Modules.Admin.EditExtension
 
                 if (this.SettingsControl != null)
                 {
-					//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-                    //this is necessary for the Localization in PageBase
+					// set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+                    // this is necessary for the Localization in PageBase
                     this.SettingsControl.ID = Path.GetFileNameWithoutExtension(this.AuthSystem.SettingsControlSrc);
 
-                    //Add Container to Controls
+                    // Add Container to Controls
                     this.pnlSettings.Controls.AddAt(0, this.SettingsControl);
                 }
                 else

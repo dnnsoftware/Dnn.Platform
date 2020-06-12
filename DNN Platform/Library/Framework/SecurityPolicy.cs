@@ -55,7 +55,7 @@ namespace DotNetNuke.Framework
         {
             if (!m_Initialized)
             {
-                //test RelectionPermission
+                // test RelectionPermission
                 CodeAccessPermission securityTest;
                 try
                 {
@@ -65,11 +65,11 @@ namespace DotNetNuke.Framework
                 }
                 catch
                 {
-                    //code access security error
+                    // code access security error
                     m_ReflectionPermission = false;
                 }
 				
-                //test WebPermission
+                // test WebPermission
                 try
                 {
                     securityTest = new WebPermission(PermissionState.Unrestricted);
@@ -78,11 +78,11 @@ namespace DotNetNuke.Framework
                 }
                 catch
                 {
-                    //code access security error
+                    // code access security error
                     m_WebPermission = false;
                 }
 				
-                //test WebHosting Permission (Full Trust)
+                // test WebHosting Permission (Full Trust)
                 try
                 {
                     securityTest = new AspNetHostingPermission(AspNetHostingPermissionLevel.Unrestricted);
@@ -91,12 +91,12 @@ namespace DotNetNuke.Framework
                 }
                 catch
                 {
-                    //code access security error
+                    // code access security error
                     m_AspNetHostingPermission = false;
                 }
                 m_Initialized = true;
 
-                //Test for Unmanaged Code permission
+                // Test for Unmanaged Code permission
                 try
                 {
                     securityTest = new SecurityPermission(SecurityPermissionFlag.UnmanagedCode);

@@ -107,7 +107,7 @@ namespace DotNetNuke.Web.Common.Internal
 
             // register the assembly-lookup to correct the breaking rename in DNN 9.2
             DotNetNuke.Services.Zip.SharpZipLibRedirect.RegisterSharpZipLibRedirect();
-            //DotNetNukeSecurity.Initialize();
+            // DotNetNukeSecurity.Initialize();
         }
         
         private static void RegisterIfNotAlreadyRegistered<TConcrete>() where TConcrete : class, new()
@@ -155,7 +155,7 @@ namespace DotNetNuke.Web.Common.Internal
                 Logger.Error(e);
             }
 
-            //Shutdown Lucene, but not when we are installing
+            // Shutdown Lucene, but not when we are installing
             if (Globals.Status != Globals.UpgradeStatus.Install)
             {
                 Logger.Trace("Disposing Lucene");

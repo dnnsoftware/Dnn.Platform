@@ -218,14 +218,14 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         private void BindData()
         {
-            //bind all portal roles to dropdownlist
+            // bind all portal roles to dropdownlist
             if (this.RoleId == Null.NullInteger)
             {
                 if (this.cboRoles.Items.Count == 0)
                 {
                     var roles = RoleController.Instance.GetRoles(this.PortalId, x => x.Status == RoleStatus.Approved);
 
-                    //Remove access to Admin Role if use is not a member of the role
+                    // Remove access to Admin Role if use is not a member of the role
                     int roleIndex = Null.NullInteger;
                     foreach (RoleInfo tmpRole in roles)
                     {
@@ -252,7 +252,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if (this.Role != null)
                     {
-                        //cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
+                        // cboRoles.Items.Add(new ListItem(Role.RoleName, Role.RoleID.ToString()));
                         this.cboRoles.AddItem(this.Role.RoleName, this.Role.RoleID.ToString());
                         this.cboRoles.Items[0].Selected = true;
                         this.lblTitle.Text = string.Format(Localization.GetString("RoleTitle.Text", this.LocalResourceFile), this.Role.RoleName, this.Role.RoleID);
@@ -262,10 +262,10 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
             }
 
-            //bind all portal users to dropdownlist
+            // bind all portal users to dropdownlist
             if (this.UserId == -1)
             {
-				//Make sure user has enough permissions
+				// Make sure user has enough permissions
                 if (this.Role.RoleName == this.PortalSettings.AdministratorRoleName && !PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName))
                 {
                     UI.Skins.Skin.AddModuleMessage(this, Localization.GetString("NotAuthorized", this.LocalResourceFile), ModuleMessage.ModuleMessageType.YellowWarning);
@@ -280,7 +280,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     {
                         foreach (UserInfo objUser in UserController.GetUsers(this.PortalId))
                         {
-                            //cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
+                            // cboUsers.Items.Add(new ListItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString()));
                             this.cboUsers.AddItem(objUser.DisplayName + " (" + objUser.Username + ")", objUser.UserID.ToString());
                         }
                     }
@@ -388,7 +388,7 @@ namespace DotNetNuke.Modules.Admin.Security
                     expiryDate = objUserRole.ExpiryDate;
                 }
             }
-            else //new role assignment
+            else // new role assignment
             {
                 RoleInfo objRole = RoleController.Instance.GetRole(this.PortalId, r => r.RoleID == RoleId);
 
@@ -432,10 +432,10 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             base.DataBind();
 
-            //Localize Headers
+            // Localize Headers
             Localization.LocalizeDataGrid(ref this.grdUserRoles, this.LocalResourceFile);
 
-            //Bind the role data to the datalist
+            // Bind the role data to the datalist
             this.BindData();
 
             this.BindGrid();
@@ -453,11 +453,11 @@ namespace DotNetNuke.Modules.Admin.Security
         /// -----------------------------------------------------------------------------
         public bool DeleteButtonVisible(int UserID, int RoleID)
         {
-            //[DNN-4285] Check if the role can be removed (only handles case of Administrator and Administrator Role
+            // [DNN-4285] Check if the role can be removed (only handles case of Administrator and Administrator Role
             bool canDelete = RoleController.CanRemoveUserFromRole(this.PortalSettings, UserID, RoleID);
             if (RoleID == this.PortalSettings.AdministratorRoleId && canDelete)
             {
-				//User can only delete if in Admin role
+				// User can only delete if in Admin role
                 canDelete = PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
             }
             return canDelete;
@@ -567,12 +567,12 @@ namespace DotNetNuke.Modules.Admin.Security
                 this.placeIsOwner.Visible = ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both));
                 this.placeIsOwnerHeader.Visible = ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both));
             }
-            catch (ThreadAbortException exc) //Do nothing if ThreadAbort as this is caused by a redirect
+            catch (ThreadAbortException exc) // Do nothing if ThreadAbort as this is caused by a redirect
             {
                 Logger.Debug(exc);
 
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -612,7 +612,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
             if (!String.IsNullOrEmpty(this.txtUsers.Text))
             {
-				//validate username
+				// validate username
                 UserInfo objUser = UserController.GetUserByName(this.PortalId, this.txtUsers.Text);
                 if (objUser != null)
                 {
@@ -660,7 +660,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 {
                     if ((this.Role != null) && (this.User != null))
                     {
-						//do not modify the portal Administrator account dates
+						// do not modify the portal Administrator account dates
                         if (this.User.UserID == this.PortalSettings.AdministratorId && this.Role.RoleID == this.PortalSettings.AdministratorRoleId)
                         {
                         	this.effectiveDatePicker.SelectedDate = null;
@@ -687,19 +687,19 @@ namespace DotNetNuke.Modules.Admin.Security
                             datExpiryDate = Null.NullDate;
                         }
 
-                        //Add User to Role
+                        // Add User to Role
                         var isOwner = false;
 
                         if (((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both)))
                             isOwner = this.chkIsOwner.Checked;
 
                         RoleController.AddUserRole(this.User, this.Role, this.PortalSettings, RoleStatus.Approved, datEffectiveDate, datExpiryDate, this.chkNotify.Checked, isOwner);
-                        this.chkIsOwner.Checked = false; //reset the checkbox
+                        this.chkIsOwner.Checked = false; // reset the checkbox
                     }
                 }
                 this.BindGrid();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -764,7 +764,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 item.Cells[5].Visible = ((this.Role.SecurityMode == SecurityMode.SocialGroup) || (this.Role.SecurityMode == SecurityMode.Both));
 
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Search
     {
 		#region "Shared/Static Methods"
 
-        //return the provider
+        // return the provider
         public static SearchDataStoreProvider Instance()
         {
             return ComponentFactory.GetComponent<SearchDataStoreProvider>();

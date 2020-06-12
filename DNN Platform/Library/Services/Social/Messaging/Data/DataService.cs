@@ -34,7 +34,7 @@ namespace DotNetNuke.Services.Social.Messaging.Data
         /// <returns>The id of the newly created message</returns>
         public int SaveMessage(Message message, int portalId, int createUpdateUserId)
         {
-            //need to fix groupmail
+            // need to fix groupmail
             return this._provider.ExecuteScalar<int>("CoreMessaging_SaveMessage", message.MessageID, portalId, message.To, message.From, message.Subject, message.Body, message.ConversationId, message.ReplyAllAllowed, message.SenderUserID, createUpdateUserId);
         }
 

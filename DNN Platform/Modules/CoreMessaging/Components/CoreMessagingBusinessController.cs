@@ -35,7 +35,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                             {
                                 if (portal.UserTabId > Null.NullInteger)
                                 {
-                                    //Find TabInfo
+                                    // Find TabInfo
                                     var tab = TabController.Instance.GetTab(portal.UserTabId, portal.PortalID, true);
                                     if (tab != null)
                                     {
@@ -43,10 +43,10 @@ namespace DotNetNuke.Modules.CoreMessaging.Components
                                         {
                                             if (module.DesktopModule.FriendlyName == "Messaging")
                                             {
-                                                //Delete the Module from the Modules list
+                                                // Delete the Module from the Modules list
                                                 ModuleController.Instance.DeleteTabModule(module.TabID, module.ModuleID, false);
 
-                                                //Add new module to the page
+                                                // Add new module to the page
                                                 Upgrade.AddModuleToPage(tab, moduleDefinition.ModuleDefID, "Message Center", "", true);
 
                                                 break;

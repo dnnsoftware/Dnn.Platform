@@ -33,7 +33,7 @@ namespace DotNetNuke.Instrumentation
         internal static Level LevelWarn;
         internal static Level LevelError;
         internal static Level LevelFatal;
-        //add custom logging levels (below trace value of 20000)
+        // add custom logging levels (below trace value of 20000)
         internal static Level LevelLogInfo = new Level(10001, "LogInfo"); 
         internal static Level LevelLogError = new Level(10002, "LogError");
            

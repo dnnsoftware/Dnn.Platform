@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.ModuleCache
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(PurgeModuleCache));
         public PurgeModuleCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            this.ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
+            this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
         public override void DoWork()
@@ -41,24 +41,24 @@ namespace DotNetNuke.Services.ModuleCache
                     }
                     catch (NotSupportedException exc)
                     {
-						//some Module caching providers don't use this feature
+						// some Module caching providers don't use this feature
                         Logger.Debug(exc);
 
                     }
                 }
-                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
             }
-            catch (Exception exc) //REQUIRED
+            catch (Exception exc) // REQUIRED
             {
-                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
                 this.ScheduleHistoryItem.AddLogNote(string.Format("Purging Module cache task failed: {0}.", exc.ToString()));
 
-                //notification that we have errored
-                this.Errored(ref exc); //REQUIRED
+                // notification that we have errored
+                this.Errored(ref exc); // REQUIRED
 				
-				//log the exception
-                Exceptions.Exceptions.LogException(exc); //OPTIONAL
+				// log the exception
+                Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }
     }

@@ -13,7 +13,7 @@ using DotNetNuke.UI.Modules;
 
 namespace DotNetNuke.Modules.DigitalAssets.Components.ExtensionPoint.ToolBarButton
 {
-    //TODO Create the Custom IToolBarButtonExtensionPoint Export attribute
+    // TODO Create the Custom IToolBarButtonExtensionPoint Export attribute
     [Export(typeof(IToolBarButtonExtensionPoint))]
     [ExportMetadata("Module", "DigitalAssets")]
     [ExportMetadata("Name", "DigitalAssetsToolBarButton")]

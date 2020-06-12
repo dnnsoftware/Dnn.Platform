@@ -261,18 +261,18 @@ namespace DotNetNuke.UI.Skins
 
         private void InjectControlPanel()
         {
-            //if querystring dnnprintmode=true, controlpanel will not be shown
+            // if querystring dnnprintmode=true, controlpanel will not be shown
             if (this.Request.QueryString["dnnprintmode"] != "true" && !UrlUtils.InPopUp() && this.Request.QueryString["hidecommandbar"] != "true")
             {
                 if (Host.AllowControlPanelToDetermineVisibility || (ControlPanelBase.IsPageAdminInternal() || ControlPanelBase.IsModuleAdminInternal())) 
                 {
-                    //ControlPanel processing
+                    // ControlPanel processing
                     var controlPanel = ControlUtilities.LoadControl<ControlPanelBase>(this, Host.ControlPanel);
                     var form = (HtmlForm)this.Parent.FindControl("Form");
 
                     if (controlPanel.IncludeInControlHierarchy)
                     {
-                        //inject ControlPanel control into skin
+                        // inject ControlPanel control into skin
                         if (this.ControlPanel == null || HostController.Instance.GetBoolean("IgnoreControlPanelWrapper", false))
                         {
                             if (form != null)
@@ -289,7 +289,7 @@ namespace DotNetNuke.UI.Skins
                             this.ControlPanel.Controls.Add(controlPanel);
                         }
 
-                        //register admin.css
+                        // register admin.css
                         ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                     }
                 }
@@ -311,15 +311,15 @@ namespace DotNetNuke.UI.Skins
 
         private void LoadPanes()
         {
-            //iterate page controls
+            // iterate page controls
             foreach (Control ctlControl in this.Controls)
             {
                 var objPaneControl = ctlControl as HtmlContainerControl;
 
-                //Panes must be runat=server controls so they have to have an ID
+                // Panes must be runat=server controls so they have to have an ID
                 if (objPaneControl != null && !string.IsNullOrEmpty(objPaneControl.ID))
                 {
-                    //load the skin panes
+                    // load the skin panes
                     switch (objPaneControl.TagName.ToLowerInvariant())
                     {
                         case "td":
@@ -332,18 +332,18 @@ namespace DotNetNuke.UI.Skins
                         case "main":
                         case "article":
                         case "aside":
-                            //content pane
+                            // content pane
                             if (!objPaneControl.ID.Equals("controlpanel", StringComparison.InvariantCultureIgnoreCase))
                             {
-                                //Add to the PortalSettings (for use in the Control Panel)
+                                // Add to the PortalSettings (for use in the Control Panel)
                                 this.PortalSettings.ActiveTab.Panes.Add(objPaneControl.ID);
 
-                                //Add to the Panes collection
+                                // Add to the Panes collection
                                 this.Panes.Add(objPaneControl.ID.ToLowerInvariant(), new Pane(objPaneControl));
                             }
                             else
                             {
-                                //Control Panel pane
+                                // Control Panel pane
                                 this._controlPanel = objPaneControl;
                             }
                             break;
@@ -364,16 +364,16 @@ namespace DotNetNuke.UI.Skins
                 }
                 ctlSkin = ControlUtilities.LoadControl<Skin>(page, skinPath);
                 ctlSkin.SkinSrc = skinSrc;
-                //call databind so that any server logic in the skin is executed
+                // call databind so that any server logic in the skin is executed
                 ctlSkin.DataBind();
             }
             catch (Exception exc)
             {
-                //could not load user control
+                // could not load user control
                 var lex = new PageLoadException("Unhandled error loading page.", exc);
                 if (TabPermissionController.CanAdminPage())
                 {
-                    //only display the error to administrators
+                    // only display the error to administrators
                     var skinError = (Label)page.FindControl("SkinError");
                     skinError.Text = string.Format(Localization.GetString("SkinLoadError", Localization.GlobalResourceFile), skinPath, page.Server.HtmlEncode(exc.Message));
                     skinError.Visible = true;
@@ -388,7 +388,7 @@ namespace DotNetNuke.UI.Skins
             var success = true;
             if (ModuleInjectionManager.CanInjectModule(module, this.PortalSettings))
             {
-                //We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
+                // We need to ensure that Content Item exists since in old versions Content Items are not needed for modules
                 this.EnsureContentItemForModule(module);
 
                 Pane pane = this.GetPane(module);
@@ -431,7 +431,7 @@ namespace DotNetNuke.UI.Skins
             bool success = true;
             if (TabPermissionController.CanViewPage())
             {
-                //We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
+                // We need to ensure that Content Item exists since in old versions Content Items are not needed for tabs
                 this.EnsureContentItemForTab(this.PortalSettings.ActiveTab);
 
                 // Versioning checks.
@@ -455,7 +455,7 @@ namespace DotNetNuke.UI.Skins
                     }
                 }
 
-                //check portal expiry date
+                // check portal expiry date
                 if (!this.CheckExpired())
                 {
                     if ((this.PortalSettings.ActiveTab.StartDate < DateAndTime.Now && this.PortalSettings.ActiveTab.EndDate > DateAndTime.Now) || TabPermissionController.CanAdminPage() || Globals.IsLayoutMode())
@@ -480,7 +480,7 @@ namespace DotNetNuke.UI.Skins
             }
             else
             {
-				//If request localized page which haven't complete translate yet, redirect to default language version.
+				// If request localized page which haven't complete translate yet, redirect to default language version.
 	            var redirectUrl = Globals.AccessDeniedURL(Localization.GetString("TabAccess.Error"));
                 
                 // Current locale will use default if did'nt find any
@@ -498,7 +498,7 @@ namespace DotNetNuke.UI.Skins
 
         private void EnsureContentItemForTab(Entities.Tabs.TabInfo tabInfo)
         {
-            //If tab exists but ContentItem not, then we create it
+            // If tab exists but ContentItem not, then we create it
             if (tabInfo.ContentItemId == Null.NullInteger && tabInfo.TabID != Null.NullInteger)
             {
                 TabController.Instance.CreateContentItem(tabInfo);
@@ -508,7 +508,7 @@ namespace DotNetNuke.UI.Skins
 
         private void EnsureContentItemForModule(ModuleInfo module)
         {
-            //If module exists but ContentItem not, then we create it
+            // If module exists but ContentItem not, then we create it
             if (module.ContentItemId == Null.NullInteger && module.ModuleID != Null.NullInteger)
             {
                 ModuleController.Instance.CreateContentItem(module);
@@ -591,16 +591,16 @@ namespace DotNetNuke.UI.Skins
         {
             base.OnInit(e);
 
-            //Load the Panes
+            // Load the Panes
             this.LoadPanes();
 
-            //Load the Module Control(s)
+            // Load the Module Control(s)
             bool success = Globals.IsAdminControl() ? this.ProcessSlaveModule() : this.ProcessMasterModules();
 
-            //Load the Control Panel
+            // Load the Control Panel
             this.InjectControlPanel();
 
-            //Register any error messages on the Skin
+            // Register any error messages on the Skin
             if (this.Request.QueryString["error"] != null && Host.ShowCriticalErrors)
             {
                 AddPageMessage(this, Localization.GetString("CriticalError.Error"), " ", ModuleMessage.ModuleMessageType.RedError);
@@ -618,7 +618,7 @@ namespace DotNetNuke.UI.Skins
 
             if (!TabPermissionController.CanAdminPage() && !success)
             {
-                //only display the warning to non-administrators (administrators will see the errors)
+                // only display the warning to non-administrators (administrators will see the errors)
                 AddPageMessage(this, Localization.GetString("ModuleLoadWarning.Error"), string.Format(Localization.GetString("ModuleLoadWarning.Text"), this.PortalSettings.Email), ModuleMessage.ModuleMessageType.YellowWarning);
             }
 
@@ -637,7 +637,7 @@ namespace DotNetNuke.UI.Skins
                 ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
             }
 
-            //Process the Panes attributes
+            // Process the Panes attributes
             this.ProcessPanes();
         }
 
@@ -666,12 +666,12 @@ namespace DotNetNuke.UI.Skins
             var isSpecialPageMode = UrlUtils.InPopUp() || this.Request.QueryString["dnnprintmode"] == "true";
             if (TabPermissionController.CanAddContentToPage() && Globals.IsEditMode() && !isSpecialPageMode)
             {
-                //Register Drag and Drop plugin
+                // Register Drag and Drop plugin
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                 ClientResourceManager.RegisterStyleSheet(this.Page, "~/resources/shared/stylesheets/dnn.dragDrop.css", FileOrder.Css.FeatureCss);
                 ClientResourceManager.RegisterScript(this.Page, "~/resources/shared/scripts/dnn.dragDrop.js");
 
-                //Register Client Script
+                // Register Client Script
                 var sb = new StringBuilder();
                 sb.AppendLine(" (function ($) {");
                 sb.AppendLine("     $(document).ready(function () {");
@@ -846,8 +846,8 @@ namespace DotNetNuke.UI.Skins
         public static ModuleMessage GetModuleMessageControl(string heading, string message, ModuleMessage.ModuleMessageType moduleMessageType, string iconImage)
         {
 
-            //Use this to get a module message control
-            //with a standard DotNetNuke icon
+            // Use this to get a module message control
+            // with a standard DotNetNuke icon
             var s = new Skin();
             var moduleMessage = (ModuleMessage)s.LoadControl("~/admin/skins/ModuleMessage.ascx");
             moduleMessage.Heading = heading;
@@ -889,7 +889,7 @@ namespace DotNetNuke.UI.Skins
         {
             Skin skin = null;
 
-            //attempt to find and load a popup skin from the assigned skinned source
+            // attempt to find and load a popup skin from the assigned skinned source
             string skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
             if (!String.IsNullOrEmpty(skinSource))
             {
@@ -901,17 +901,17 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            //error loading popup skin - load default popup skin
+            // error loading popup skin - load default popup skin
             if (skin == null)
             {
                 skinSource = Globals.HostPath + "Skins/_default/popUpSkin.ascx";
                 skin = LoadSkin(page, skinSource);
             }
 
-            //set skin path
+            // set skin path
             page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
 
-            //set skin id to an explicit short name to reduce page payload and make it standards compliant
+            // set skin id to an explicit short name to reduce page payload and make it standards compliant
             skin.ID = "dnn";
 
             return skin;
@@ -928,14 +928,14 @@ namespace DotNetNuke.UI.Skins
             Skin skin = null;
             string skinSource = Null.NullString;
 
-            //skin preview
+            // skin preview
             if ((page.Request.QueryString["SkinSrc"] != null))
             {
                 skinSource = SkinController.FormatSkinSrc(Globals.QueryStringDecode(page.Request.QueryString["SkinSrc"]) + ".ascx", page.PortalSettings);
                 skin = LoadSkin(page, skinSource);
             }
 
-            //load user skin ( based on cookie )
+            // load user skin ( based on cookie )
             if (skin == null)
             {
                 HttpCookie skinCookie = page.Request.Cookies["_SkinSrc" + page.PortalSettings.PortalId];
@@ -949,11 +949,11 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            //load assigned skin
+            // load assigned skin
             if (skin == null)
             {
-                //DNN-6170 ensure skin value is culture specific
-                //skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
+                // DNN-6170 ensure skin value is culture specific
+                // skinSource = Globals.IsAdminSkin() ? SkinController.FormatSkinSrc(page.PortalSettings.DefaultAdminSkin, page.PortalSettings) : page.PortalSettings.ActiveTab.SkinSrc;
                 skinSource = Globals.IsAdminSkin() ? PortalController.GetPortalSetting("DefaultAdminSkin", page.PortalSettings.PortalId,
                     Host.DefaultPortalSkin, page.PortalSettings.CultureCode) : page.PortalSettings.ActiveTab.SkinSrc;
                 if (!String.IsNullOrEmpty(skinSource))
@@ -963,17 +963,17 @@ namespace DotNetNuke.UI.Skins
                 }
             }
 
-            //error loading skin - load default
+            // error loading skin - load default
             if (skin == null)
             {
                 skinSource = SkinController.FormatSkinSrc(SkinController.GetDefaultPortalSkin(), page.PortalSettings);
                 skin = LoadSkin(page, skinSource);
             }
 
-            //set skin path
+            // set skin path
             page.PortalSettings.ActiveTab.SkinPath = SkinController.FormatSkinPath(skinSource);
 
-            //set skin id to an explicit short name to reduce page payload and make it standards compliant
+            // set skin id to an explicit short name to reduce page payload and make it standards compliant
             skin.ID = "dnn";
 
             return skin;
@@ -990,7 +990,7 @@ namespace DotNetNuke.UI.Skins
         {
             bool bSuccess = true;
 
-            //try to inject the module into the pane
+            // try to inject the module into the pane
             try
             {
                 if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId || this.PortalSettings.ActiveTab.ParentId == this.PortalSettings.UserTabId)
@@ -1009,7 +1009,7 @@ namespace DotNetNuke.UI.Skins
             }
             catch (ThreadAbortException)
             {
-                //Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
+                // Response.Redirect may called in module control's OnInit method, so it will cause ThreadAbortException, no need any action here.
             }
             catch (Exception ex)
             {

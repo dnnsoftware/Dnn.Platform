@@ -219,7 +219,7 @@ namespace DotNetNuke.Modules.Html
 
         private string TokeniseLinks(string content, int portalId)
         {
-            //Replace any relative portal root reference by a token "{{PortalRoot}}"
+            // Replace any relative portal root reference by a token "{{PortalRoot}}"
             var portal = PortalController.Instance.GetPortal(portalId);
             var portalRoot = UrlUtils.Combine(Globals.ApplicationPath, portal.HomeDirectory);
             if (!portalRoot.StartsWith("/"))
@@ -467,16 +467,16 @@ namespace DotNetNuke.Modules.Html
                 tLen = strToken.Length + 2;
                 string uploadDirectory = strUploadDirectory.ToLowerInvariant();
 
-                //find position of first occurrance:
+                // find position of first occurrance:
                 P = strHTML.IndexOf(strToken + "=\"", StringComparison.InvariantCultureIgnoreCase);
                 while (P != -1)
                 {
                     sbBuff.Append(strHTML.Substring(S, P - S + tLen));
-                    //keep charactes left of URL
+                    // keep charactes left of URL
                     S = P + tLen;
-                    //save startpos of URL
+                    // save startpos of URL
                     R = strHTML.IndexOf("\"", S);
-                    //end of URL
+                    // end of URL
                     if (R >= 0)
                     {
                         strURL = strHTML.Substring(S, R - S).ToLowerInvariant();
@@ -508,12 +508,12 @@ namespace DotNetNuke.Modules.Html
                         }
                         // add upload directory
                         if (!strURL.StartsWith("/")
-                            && !String.IsNullOrEmpty(strURL.Trim())) //We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
+                            && !String.IsNullOrEmpty(strURL.Trim())) // We don't write the UploadDirectory if the token/attribute has not value. Therefore we will avoid an unnecessary request
                         {
                             sbBuff.Append(uploadDirectory);
                         }
                     }
-                    //find position of next occurrance
+                    // find position of next occurrance
                     P = strHTML.IndexOf(strToken + "=\"", S + strURL.Length + 2, StringComparison.InvariantCultureIgnoreCase);
                 }
 
@@ -521,7 +521,7 @@ namespace DotNetNuke.Modules.Html
                 {
                     sbBuff.Append(strHTML.Substring(S));
                 }
-                //append characters of last URL and behind
+                // append characters of last URL and behind
             }
 
             return sbBuff.ToString();
@@ -624,7 +624,7 @@ namespace DotNetNuke.Modules.Html
                     TabController.Instance.UpdateTabSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     if (ReplaceExistingSettings)
                     {
-                        //Get All Modules on the current Tab
+                        // Get All Modules on the current Tab
                         foreach (var kvp in ModuleController.Instance.GetTabModules(ObjectID))
                         {
                             this.ClearModuleSettings(kvp.Value);
@@ -635,12 +635,12 @@ namespace DotNetNuke.Modules.Html
                     PortalController.UpdatePortalSetting(ObjectID, "WorkflowID", WorkflowID.ToString());
                     if (ReplaceExistingSettings)
                     {
-                        //Get All Tabs aon the Site
+                        // Get All Tabs aon the Site
                         foreach (var kvp in TabController.Instance.GetTabsByPortal(ObjectID))
                         {
                             TabController.Instance.DeleteTabSetting(kvp.Value.TabID, "WorkFlowID");
                         }
-                        //Get All Modules in the current Site
+                        // Get All Modules in the current Site
                         foreach (ModuleInfo objModule in ModuleController.Instance.GetModules(ObjectID))
                         {
                             this.ClearModuleSettings(objModule);
@@ -838,10 +838,10 @@ namespace DotNetNuke.Modules.Html
             switch (Version)
             {
                 case "05.01.02":
-                    //remove the Code SubDirectory
+                    // remove the Code SubDirectory
                     Config.RemoveCodeSubDirectory("HTML");
 
-                    //Once the web.config entry is done we can safely remove the HTML folder
+                    // Once the web.config entry is done we can safely remove the HTML folder
                     var arrPaths = new string[1];
                     arrPaths[0] = "App_Code\\HTML\\";
                     FileSystemUtils.DeleteFiles(arrPaths);

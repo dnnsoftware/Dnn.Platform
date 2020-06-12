@@ -25,7 +25,7 @@ namespace Dnn.ExportImport.Components.Dto
 
         public void ConvertToLocal(UserInfo userInfo)
         {
-            //Nothing to convert.
+            // Nothing to convert.
         }
     }
 }

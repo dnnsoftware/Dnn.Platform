@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Localization
             this.Text = Null.SetNullString(dr["CultureName"]);
             this.Fallback = Null.SetNullString(dr["FallbackCulture"]);
 
-            //These fields may not be populated (for Host level locales)
+            // These fields may not be populated (for Host level locales)
             DataTable schemaTable = dr.GetSchemaTable();
             bool hasColumns = schemaTable.Select("ColumnName = 'IsPublished' Or ColumnName = 'PortalID'").Length == 2;
             
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Localization
                 this.PortalId = Null.SetNullInteger(dr["PortalID"]);
             }
             
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
 

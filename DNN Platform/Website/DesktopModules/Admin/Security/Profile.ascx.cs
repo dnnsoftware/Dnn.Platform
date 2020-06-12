@@ -127,7 +127,7 @@ namespace DesktopModules.Admin.Security
         public override void DataBind()
         {
 		
-            //Before we bind the Profile to the editor we need to "update" the visible data
+            // Before we bind the Profile to the editor we need to "update" the visible data
             var properties = new ProfilePropertyDefinitionCollection();
 			var imageType = new ListController().GetListEntryInfo("DataType", "Image");
             foreach (ProfilePropertyDefinition profProperty in this.UserProfile.ProfileProperties)
@@ -165,11 +165,11 @@ namespace DesktopModules.Admin.Security
             base.OnInit(e);
             this.ID = "Profile.ascx";
 
-            //Get the base Page
+            // Get the base Page
             var basePage = this.Page as PageBase;
             if (basePage != null)
             {
-				//Check if culture is RTL
+				// Check if culture is RTL
                 this.ProfileProperties.LabelMode = basePage.PageCulture.TextInfo.IsRightToLeft ? LabelMode.Right : LabelMode.Left;
             }
             this.ProfileProperties.LocalResourceFile = this.LocalResourceFile;
@@ -206,11 +206,11 @@ namespace DesktopModules.Admin.Security
             {
                 if (this.User.UserID == this.PortalSettings.AdministratorId)
                 {
-                    //Clear the Portal Cache
+                    // Clear the Portal Cache
                     DataCache.ClearPortalCache(this.UserPortalID, true);
                 }
 
-                //Update DisplayName to conform to Format
+                // Update DisplayName to conform to Format
                 this.UpdateDisplayName();
 
                 if (this.PortalSettings.Registration.RequireUniqueDisplayName)
@@ -225,7 +225,7 @@ namespace DesktopModules.Admin.Security
 
                 var properties = (ProfilePropertyDefinitionCollection)this.ProfileProperties.DataSource;
 
-                //Update User's profile
+                // Update User's profile
                 this.User = ProfileController.UpdateUserProfile(this.User, properties);
 
                 this.OnProfileUpdated(EventArgs.Empty);

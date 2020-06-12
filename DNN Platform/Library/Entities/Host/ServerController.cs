@@ -119,16 +119,16 @@ namespace DotNetNuke.Entities.Host
                 || string.IsNullOrEmpty(existServer.Url)
                 || (string.IsNullOrEmpty(existServer.UniqueId) && !string.IsNullOrEmpty(GetServerUniqueId())))
             {
-                //try to detect the server url from url adapter.
+                // try to detect the server url from url adapter.
                 server.Url = existServer == null || string.IsNullOrEmpty(existServer.Url) ? GetServerUrl() : existServer.Url;
-                //try to detect the server unique id from url adapter.
+                // try to detect the server unique id from url adapter.
                 server.UniqueId = existServer == null || string.IsNullOrEmpty(existServer.UniqueId) ? GetServerUniqueId() : existServer.UniqueId;
 
                 UpdateServer(server);
             }
 
             
-            //log the server info
+            // log the server info
             var log = new LogInfo();
             log.AddProperty(existServer != null ? "Server Updated" : "Add New Server", server.ServerName);
             log.AddProperty("IISAppName", server.IISAppName);

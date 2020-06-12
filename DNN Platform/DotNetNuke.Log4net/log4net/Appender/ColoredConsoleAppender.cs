@@ -545,15 +545,15 @@ namespace log4net.Appender
 			IntPtr consoleHandle,
 			out CONSOLE_SCREEN_BUFFER_INFO bufferInfo);
 
-//		[DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)]
-//		private static extern bool WriteConsoleW(
-//			IntPtr hConsoleHandle,
-//			[MarshalAs(UnmanagedType.LPWStr)] string strBuffer,
-//			UInt32 bufferLen,
-//			out UInt32 written,
-//			IntPtr reserved);
+// [DllImport("Kernel32.dll", SetLastError=true, CharSet=CharSet.Unicode)]
+// private static extern bool WriteConsoleW(
+// IntPtr hConsoleHandle,
+// [MarshalAs(UnmanagedType.LPWStr)] string strBuffer,
+// UInt32 bufferLen,
+// out UInt32 written,
+// IntPtr reserved);
 
-		//private const UInt32 STD_INPUT_HANDLE = unchecked((UInt32)(-10));
+		// private const UInt32 STD_INPUT_HANDLE = unchecked((UInt32)(-10));
 		private const UInt32 STD_OUTPUT_HANDLE = unchecked((UInt32)(-11));
 		private const UInt32 STD_ERROR_HANDLE = unchecked((UInt32)(-12));
 

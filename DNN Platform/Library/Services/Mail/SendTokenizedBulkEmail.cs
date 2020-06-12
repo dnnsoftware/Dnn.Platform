@@ -247,17 +247,17 @@ namespace DotNetNuke.Services.Mail
         /// <remarks></remarks>
         private void SendConfirmationMail(int numRecipients, int numMessages, int numErrors, string subject, string startedAt, string mailErrors, string recipientList)
 		{
-            //send confirmation, use resource string like:
-        	//Operation started at: [Custom:0]<br>
-            //EmailRecipients:      [Custom:1]<b
-            //EmailMessages sent:   [Custom:2]<br>
-            //Operation Completed:  [Custom:3]<br>
-            //Number of Errors:     [Custom:4]<br>
-            //Error Report:<br>
-            //[Custom:5]
+            // send confirmation, use resource string like:
+        	// Operation started at: [Custom:0]<br>
+            // EmailRecipients:      [Custom:1]<b
+            // EmailMessages sent:   [Custom:2]<br>
+            // Operation Completed:  [Custom:3]<br>
+            // Number of Errors:     [Custom:4]<br>
+            // Error Report:<br>
+            // [Custom:5]
             //--------------------------------------
-            //Recipients:
-            //[custom:6]
+            // Recipients:
+            // [custom:6]
             var parameters = new ArrayList
                                  {
                                      startedAt,
@@ -348,7 +348,7 @@ namespace DotNetNuke.Services.Mail
                     newAttachment = new Attachment(memoryStream, attachment.ContentType);
                     newAttachment.ContentStream.Position = 0;
                     attachments.Add(newAttachment);
-                    //reset original position
+                    // reset original position
                     attachment.ContentStream.Position = 0;
                     memoryStream = null;
                 }
@@ -437,7 +437,7 @@ namespace DotNetNuke.Services.Mail
                     UserInfo user = objUser;
                     ProfileController.GetUserProfile(ref user);
                     var userRole = RoleController.Instance.GetUserRole(this._portalSettings.PortalId, objUser.UserID, roleInfo.RoleID);
-                    //only add if user role has not expired and effectivedate has been passed
+                    // only add if user role has not expired and effectivedate has been passed
                     if ((userRole.EffectiveDate <= DateTime.Now || Null.IsNull(userRole.EffectiveDate)) && (userRole.ExpiryDate >= DateTime.Now || Null.IsNull(userRole.ExpiryDate)))
                     {
                         this.ConditionallyAddUser(objUser, ref keyList, ref userList);
@@ -466,9 +466,9 @@ namespace DotNetNuke.Services.Mail
             
             try
             {
-				//send to recipients
+				// send to recipients
                 string body = this._body;
-                if (this.BodyFormat == MailFormat.Html) //Add Base Href for any images inserted in to the email.
+                if (this.BodyFormat == MailFormat.Html) // Add Base Href for any images inserted in to the email.
                 {
                     var host = this.PortalAlias.Contains("/") ? this.PortalAlias.Substring(0, this.PortalAlias.IndexOf('/')) : this.PortalAlias;
                     body = "<html><head><base href='http://" + host + "'><title>" + this.Subject + "</title></head><body>" + body + "</body></html>";
@@ -487,7 +487,7 @@ namespace DotNetNuke.Services.Mail
                 {
                     case AddressMethods.Send_TO:
                     case AddressMethods.Send_Relay:
-                        //optimization:
+                        // optimization:
                         if (replaceTokens)
                         {
                             individualBody = (this._tokenReplace.Cacheability(this._body) == CacheLevel.notCacheable);
@@ -565,7 +565,7 @@ namespace DotNetNuke.Services.Mail
                         {
                             if (replaceTokens)
                             {
-								//no access to User properties possible!
+								// no access to User properties possible!
                                 var tr = new TokenReplace(Scope.Configuration);
                                 body = tr.ReplaceEnvironmentTokens(this._body);
                                 subject = tr.ReplaceEnvironmentTokens(this.Subject);
@@ -609,7 +609,7 @@ namespace DotNetNuke.Services.Mail
                 }
                 this.SendConfirmationMail(recipients, messagesSent, errors, subject, startedAt, mailErrors.ToString(), mailRecipients.ToString());
             }
-            catch (Exception exc) //send mail failure
+            catch (Exception exc) // send mail failure
             {
                 Logger.Error(exc);
 
@@ -654,7 +654,7 @@ namespace DotNetNuke.Services.Mail
             {
                 if (disposing)
                 {
-                    //get rid of managed resources
+                    // get rid of managed resources
                     foreach (Attachment attachment in this._attachments)
                     {
                         attachment.Dispose();

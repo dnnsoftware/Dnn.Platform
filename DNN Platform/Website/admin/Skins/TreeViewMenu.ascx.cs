@@ -340,7 +340,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
 			
-			//add goto Parent node
+			// add goto Parent node
             if (blnAddUpNode)
             {
                 var objParentNode = new DNNNode();
@@ -353,20 +353,20 @@ namespace DotNetNuke.UI.Skins.Controls
                 objParentNode.ClickAction = eClickAction.PostBack;
                 objNodes.InsertBefore(0, objParentNode);
             }
-            foreach (DNNNode objPNode in objNodes) //clean up to do in processnodes???
+            foreach (DNNNode objPNode in objNodes) // clean up to do in processnodes???
             {
                 this.ProcessNodes(objPNode);
             }
             this.Bind(objNodes);
 
-            //technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
+            // technically this should always be a dnntree.  If using dynamic controls Nav.ascx should be used.  just being safe.
             if (this.Control.NavigationControl is DnnTree)
             {
                 var objTree = (DnnTree)this.Control.NavigationControl;
                 if (objTree.SelectedTreeNodes.Count > 0)
                 {
                     var objTNode = (TreeNode)objTree.SelectedTreeNodes[1];
-                    if (objTNode.DNNNodes.Count > 0) //only expand it if nodes are not pending
+                    if (objTNode.DNNNodes.Count > 0) // only expand it if nodes are not pending
                     {
                         objTNode.Expand();
                     }
@@ -379,7 +379,7 @@ namespace DotNetNuke.UI.Skins.Controls
             if (!String.IsNullOrEmpty(objParent.Image))
             {
             }
-            else if (objParent.HasNodes) //imagepath applied in provider...
+            else if (objParent.HasNodes) // imagepath applied in provider...
             {
                 objParent.Image = this.ResolveUrl(this.NodeClosedImage);
             }
@@ -474,7 +474,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 {
                     this.BuildTree(null, false);
 					
-					//Main Table Properties
+					// Main Table Properties
                     if (!String.IsNullOrEmpty(this.Width))
                     {
                         this.tblMain.Width = this.Width;
@@ -485,7 +485,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         this.tblMain.Attributes.Add("class", this.CssClass);
                     }
 					
-					//Header Properties
+					// Header Properties
                     if (!String.IsNullOrEmpty(this.HeaderCssClass))
                     {
                         this.cellHeader.Attributes.Add("class", this.HeaderCssClass);
@@ -496,13 +496,13 @@ namespace DotNetNuke.UI.Skins.Controls
                         this.lblHeader.CssClass = this.HeaderTextCssClass;
                     }
 					
-					//Header Text (if set)
+					// Header Text (if set)
                     if (!String.IsNullOrEmpty(this.HeaderText))
                     {
                         this.lblHeader.Text = this.HeaderText;
                     }
 					
-					//ResourceKey overrides if found
+					// ResourceKey overrides if found
                     if (!String.IsNullOrEmpty(this.ResourceKey))
                     {
                         string strHeader = Localization.GetString(this.ResourceKey, Localization.GetResourceFile(this, MyFileName));
@@ -512,7 +512,7 @@ namespace DotNetNuke.UI.Skins.Controls
                         }
                     }
 					
-					//If still not set get default key
+					// If still not set get default key
                     if (String.IsNullOrEmpty(this.lblHeader.Text))
                     {
                         string strHeader = Localization.GetString("Title", Localization.GetResourceFile(this, MyFileName));
@@ -527,7 +527,7 @@ namespace DotNetNuke.UI.Skins.Controls
                     }
                     this.tblHeader.Visible = this.IncludeHeader;
 					
-					//Main Panel Properties
+					// Main Panel Properties
                     if (!String.IsNullOrEmpty(this.BodyCssClass))
                     {
                         this.cellBody.Attributes.Add("class", this.BodyCssClass);

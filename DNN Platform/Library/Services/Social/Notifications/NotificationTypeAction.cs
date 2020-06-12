@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.Social.Notifications
             this.Order = Convert.ToInt32(dr["Order"]);
             this.APICall = dr["APICall"].ToString();
 
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
 

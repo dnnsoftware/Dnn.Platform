@@ -18,7 +18,7 @@ namespace DotNetNuke.Entities.Groups
 {
     public class GroupInfo : RoleInfo, IPropertyAccess 
     {
-        //private RoleInfo roleInfo;
+        // private RoleInfo roleInfo;
         public GroupInfo() {
         
         }
@@ -36,21 +36,21 @@ namespace DotNetNuke.Entities.Groups
 
 
         }
-        //public RoleInfo Role {
+        // public RoleInfo Role {
         //    get {
         //        return roleInfo;
         //    }
         //    set {
         //        roleInfo = value;
         //    }
-        //}
-        //public int GroupId {
+        // }
+        // public int GroupId {
         //    get {
         //        return RoleID;
         //    }
-        //}
+        // }
        
-        //public int ModuleId { get; set; }
+        // public int ModuleId { get; set; }
 
            
         public string Street {

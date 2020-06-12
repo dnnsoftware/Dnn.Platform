@@ -55,12 +55,12 @@ namespace DotNetNuke.Web.InternalServices
             this.HtmlModuleDefitionId = modDef != null ? modDef.ModuleDefID : -1;
         }
 
-        //this constructor is for unit tests
-        internal SearchServiceController(int htmlModuleDefitionId)//, TabController newtabController, ModuleController newmoduleController)
+        // this constructor is for unit tests
+        internal SearchServiceController(int htmlModuleDefitionId)// , TabController newtabController, ModuleController newmoduleController)
         {
             this.HtmlModuleDefitionId = htmlModuleDefitionId;
-            //_tabController = newtabController;
-            //_moduleController = newmoduleController;
+            // _tabController = newtabController;
+            // _moduleController = newmoduleController;
         }
 
         #region private methods
@@ -165,7 +165,7 @@ namespace DotNetNuke.Web.InternalServices
             if (portalId == -1) portalId = this.PortalSettings.ActiveTab.PortalID;
             if (portalId > -1 && !list.Contains(portalId)) list.Add(portalId);
 
-            //Add Host 
+            // Add Host 
             var userInfo = this.UserInfo;
             if (userInfo.IsSuperUser)
                 list.Add(-1);
@@ -263,7 +263,7 @@ namespace DotNetNuke.Web.InternalServices
            
             foreach (var result in searchResults.Results)
             {
-                //var key = result.TabId + result.Url;
+                // var key = result.TabId + result.Url;
                 var key = result.Url;
                 if (!tabGroups.ContainsKey(key))
                 {
@@ -271,7 +271,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    //when the result is a user search type, we should only show one result
+                    // when the result is a user search type, we should only show one result
                     // and if duplicate, we should also reduce the totalHit number.
                     if (result.SearchTypeId != userSearchTypeId ||
                         tabGroups[key].All(r => r.Url != result.Url))
@@ -292,12 +292,12 @@ namespace DotNetNuke.Web.InternalServices
             {
                 var group = new GroupedDetailView();
 
-                //first entry
+                // first entry
                 var first = results[0];
                 group.Title = showFriendlyTitle ? this.GetFriendlyTitle(first) : first.Title;
                 group.DocumentUrl = first.Url;
 
-                //Find a different title for multiple entries with same url
+                // Find a different title for multiple entries with same url
                 if (results.Count > 1)
                 {
                     if (first.TabId > 0)
@@ -315,7 +315,7 @@ namespace DotNetNuke.Web.InternalServices
                         }
                     }
                 }
-                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.HtmlModuleDefitionId) //special handling for Html module
+                else if (first.ModuleDefId > 0 && first.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
                 {
                     var tabTitle = this.GetTabTitleFromModuleId(first.ModuleId);
                     if (!string.IsNullOrEmpty(tabTitle))
@@ -369,7 +369,7 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (var preview in previews)
             {
-                //if the document type is user, then try to add user pic into preview's custom attributes.
+                // if the document type is user, then try to add user pic into preview's custom attributes.
                 if (userSearchSource != null && preview.DocumentTypeName == userSearchSource.LocalizedName)
                 {
                     var match = GroupedBasicViewRegex.Match(preview.DocumentUrl);
@@ -436,7 +436,7 @@ namespace DotNetNuke.Web.InternalServices
 
         private string GetTitle(SearchResult result, bool showFriendlyTitle = false)
         {
-            if (result.ModuleDefId > 0 && result.ModuleDefId == this.HtmlModuleDefitionId) //special handling for Html module
+            if (result.ModuleDefId > 0 && result.ModuleDefId == this.HtmlModuleDefitionId) // special handling for Html module
             {
                 var tabTitle = this.GetTabTitleFromModuleId(result.ModuleId);
                 if (!string.IsNullOrEmpty(tabTitle))

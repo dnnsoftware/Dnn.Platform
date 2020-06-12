@@ -53,19 +53,19 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 return;
             }
 
-            //Carry out first time initialization tasks
+            // Carry out first time initialization tasks
             Initialize.Init(app);
 			
-            //only do this if we havn't already attempted an install.  This prevents PreSendRequestHeaders from
-            //trying to add this item way to late.  We only want the first run through to do anything.
-            //also, we use the context to store whether or not we've attempted an add, as it's thread-safe and
-            //scoped to the request.  An instance of this module can service multiple requests at the same time,
-            //so we cannot use a member variable.
+            // only do this if we havn't already attempted an install.  This prevents PreSendRequestHeaders from
+            // trying to add this item way to late.  We only want the first run through to do anything.
+            // also, we use the context to store whether or not we've attempted an add, as it's thread-safe and
+            // scoped to the request.  An instance of this module can service multiple requests at the same time,
+            // so we cannot use a member variable.
             if (!app.Context.Items.Contains(InstalledKey))
             {
-                //log the install attempt in the HttpContext
-                //must do this first as several IF statements
-                //below skip full processing of this method
+                // log the install attempt in the HttpContext
+                // must do this first as several IF statements
+                // below skip full processing of this method
                 app.Context.Items.Add(InstalledKey, true);
                 var settings = RequestFilterSettings.GetSettings();
                 if ((settings == null || settings.Rules.Count == 0 || !settings.Enabled))
@@ -74,9 +74,9 @@ namespace DotNetNuke.HttpModules.RequestFilter
                 }
                 foreach (var rule in settings.Rules)
                 {
-                    //Added ability to determine the specific value types for addresses
-                    //this check was necessary so that your rule could deal with IPv4 or IPv6
-                    //To use this mode, add ":IPv4" or ":IPv6" to your servervariable name.
+                    // Added ability to determine the specific value types for addresses
+                    // this check was necessary so that your rule could deal with IPv4 or IPv6
+                    // To use this mode, add ":IPv4" or ":IPv6" to your servervariable name.
                     var varArray = rule.ServerVariable.Split(':');
                     var varVal = request.ServerVariables[varArray[0]];
                     if (varArray[0].EndsWith("_ADDR", StringComparison.InvariantCultureIgnoreCase) && varArray.Length > 1)

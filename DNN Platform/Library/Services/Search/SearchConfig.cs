@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (Exception exc)
             {
-                //we just want to trap the error as we may not be installed so there will be no Settings
+                // we just want to trap the error as we may not be installed so there will be no Settings
                 Logger.Error(exc);
 
             }
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Search
             }
             catch (Exception exc)
             {
-                //we just want to trap the error as we may not be installed so there will be no Settings
+                // we just want to trap the error as we may not be installed so there will be no Settings
                 Logger.Error(exc);
 
             }

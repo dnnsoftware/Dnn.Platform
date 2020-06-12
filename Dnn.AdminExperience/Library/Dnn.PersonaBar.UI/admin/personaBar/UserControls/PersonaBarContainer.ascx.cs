@@ -80,7 +80,7 @@ namespace Dnn.PersonaBar.UI.UserControls
                 return false;
             }
 
-            //copied this logic from DotNetNuke.UI.Skins.Skin.InjectControlPanel
+            // copied this logic from DotNetNuke.UI.Skins.Skin.InjectControlPanel
             if (this.Request.QueryString["dnnprintmode"] == "true" || this.Request.QueryString["popUp"] == "true")
                 return false;
 
@@ -93,7 +93,7 @@ namespace Dnn.PersonaBar.UI.UserControls
             this.RegisterPersonaBarStyleSheet();
 
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
-            JavaScript.RequestRegistration(CommonJs.DnnPlugins); //We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
+            JavaScript.RequestRegistration(CommonJs.DnnPlugins); // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();

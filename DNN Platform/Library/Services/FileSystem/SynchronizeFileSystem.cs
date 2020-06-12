@@ -27,14 +27,14 @@ namespace DotNetNuke.Services.FileSystem
         {
             try
             {
-				//notification that the event is progressing
-                this.Progressing(); //OPTIONAL
+				// notification that the event is progressing
+                this.Progressing(); // OPTIONAL
 
                 this.Synchronize();
 
-                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote("File System Synchronized."); //OPTIONAL
+                this.ScheduleHistoryItem.AddLogNote("File System Synchronized."); // OPTIONAL
             }
             catch (Exception exc)
             {
@@ -42,11 +42,11 @@ namespace DotNetNuke.Services.FileSystem
 
                 this.ScheduleHistoryItem.AddLogNote("File System Synchronization failed. " + exc);
 
-                //notification that we have errored
+                // notification that we have errored
                 this.Errored(ref exc);
 				
-				//log the exception
-                Exceptions.Exceptions.LogException(exc); //OPTIONAL
+				// log the exception
+                Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }
 
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.FileSystem
             folderManager.Synchronize(Null.NullInteger);
 
             var portals = PortalController.Instance.GetPortals();
-            //Sync Portals
+            // Sync Portals
 			for (var intIndex = 0; intIndex <= portals.Count - 1; intIndex++)
             {
                 var portal = (PortalInfo)portals[intIndex];

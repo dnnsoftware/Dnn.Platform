@@ -201,7 +201,7 @@ namespace DotNetNuke.Common.Utilities
 
                         canvas.DrawImage(original, 0, 0, imgSize.Width, imgSize.Height);
 
-                        //newImg.Save
+                        // newImg.Save
                         ImageFormat imgFormat = ImageFormat.Bmp;
                         if (extension.Equals(".png", StringComparison.InvariantCultureIgnoreCase))
                         {
@@ -255,7 +255,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception)
             {
-                //suppress unexpected exceptions
+                // suppress unexpected exceptions
             }
 
 

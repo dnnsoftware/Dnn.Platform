@@ -69,7 +69,7 @@ namespace DotNetNuke.Collections.Internal
         public void Dispose()
         {
             this._isDisposed = true;
-            //todo remove disposable from interface?
+            // todo remove disposable from interface?
         }
 
         #endregion

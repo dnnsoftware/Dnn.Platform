@@ -16,28 +16,28 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
         [Test]
         public void GetModuleRequestResult_Returns_ModuleRequestResult_If_Present()
         {
-            //Arrange
+            // Arrange
             var httpContext = MockHelper.CreateMockHttpContext();
             var expectedResult = new ModuleRequestResult();
             httpContext.Items[HttpContextExtensions.ModuleRequestResultKey] = expectedResult;
 
-            //Act
+            // Act
             var result = httpContext.GetModuleRequestResult();
 
-            //Assert
+            // Assert
             Assert.AreSame(expectedResult, result);
         }
 
         [Test]
         public void GetModuleRequestResult_Returns_Null_If_Not_Present()
         {
-            //Arrange
+            // Arrange
             var httpContext = MockHelper.CreateMockHttpContext();
 
-            //Act
+            // Act
             var result = httpContext.GetModuleRequestResult();
 
-            //Assert
+            // Assert
             Assert.IsNull(result);
         }
 
@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Routing
             var expectedResult = new ModuleRequestResult();
             httpContext.Items[HttpContextExtensions.ModuleRequestResultKey] = expectedResult;
 
-            //Act and Assert
+            // Act and Assert
             Assert.IsTrue(httpContext.HasModuleRequestResult());
         }
 

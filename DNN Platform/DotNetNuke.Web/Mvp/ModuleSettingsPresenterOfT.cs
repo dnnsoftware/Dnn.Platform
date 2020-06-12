@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.Mvp
 
             if (this.IsPostBack)
             {
-                //Initialize dictionaries as LoadSettings is not called on Postback
+                // Initialize dictionaries as LoadSettings is not called on Postback
                 this.View.Model.ModuleSettings = new Dictionary<string, string>();
                 this.View.Model.TabModuleSettings = new Dictionary<string, string>();
             }

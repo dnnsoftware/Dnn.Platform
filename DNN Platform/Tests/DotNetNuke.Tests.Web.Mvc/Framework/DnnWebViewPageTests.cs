@@ -18,7 +18,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         [Test]
         public void InitHelpers_Sets_Dnn_Property()
         {
-            //Arrange
+            // Arrange
             var mockViewPage = new Mock<DnnWebViewPage>() { CallBase = true };
             var mockController = new Mock<ControllerBase>();
             var mockDnnController = mockController.As<IDnnController>();
@@ -28,10 +28,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
                                     };
             mockViewPage.Object.ViewContext = viewContext;
 
-            //Act
+            // Act
             mockViewPage.Object.InitHelpers();
 
-            //Assert
+            // Assert
             Assert.NotNull(mockViewPage.Object.Dnn);
             Assert.IsInstanceOf<DnnHelper>(mockViewPage.Object.Dnn);
         }
@@ -39,7 +39,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         [Test]
         public void InitHelpers_Sets_Html_Property()
         {
-            //Arrange
+            // Arrange
             var mockViewPage = new Mock<DnnWebViewPage>() { CallBase = true };
             var mockController = new Mock<ControllerBase>();
             var mockDnnController = mockController.As<IDnnController>();
@@ -49,10 +49,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             };
             mockViewPage.Object.ViewContext = viewContext;
 
-            //Act
+            // Act
             mockViewPage.Object.InitHelpers();
 
-            //Assert
+            // Assert
             Assert.NotNull(mockViewPage.Object.Html);
             Assert.IsInstanceOf<DnnHtmlHelper>(mockViewPage.Object.Html);
         }
@@ -60,7 +60,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         [Test]
         public void InitHelpers_Sets_Dnn_Property_For_Strongly_Typed_Helper()
         {
-            //Arrange
+            // Arrange
             var mockViewPage = new Mock<DnnWebViewPage<Dog>>() { CallBase = true };
             var mockController = new Mock<ControllerBase>();
             var mockDnnController = mockController.As<IDnnController>();
@@ -70,10 +70,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             };
             mockViewPage.Object.ViewContext = viewContext;
 
-            //Act
+            // Act
             mockViewPage.Object.InitHelpers();
 
-            //Assert
+            // Assert
             Assert.NotNull(mockViewPage.Object.Html);
             Assert.IsInstanceOf<DnnHtmlHelper<Dog>>(mockViewPage.Object.Html);
         }
@@ -81,7 +81,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
         [Test]
         public void InitHelpers_Sets_Url_Property()
         {
-            //Arrange
+            // Arrange
             var mockViewPage = new Mock<DnnWebViewPage>() { CallBase = true };
             var mockController = new Mock<ControllerBase>();
             var mockDnnController = mockController.As<IDnnController>();
@@ -91,10 +91,10 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework
             };
             mockViewPage.Object.ViewContext = viewContext;
 
-            //Act
+            // Act
             mockViewPage.Object.InitHelpers();
 
-            //Assert
+            // Assert
             Assert.NotNull(mockViewPage.Object.Url);
             Assert.IsInstanceOf<DnnUrlHelper>(mockViewPage.Object.Url);
         }

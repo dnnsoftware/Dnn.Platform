@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (string.IsNullOrEmpty(this._FileName) && this._xmlMerge.ConfigUpdateChangedNodes)
                 {
-                    //Save the XmlDocument
+                    // Save the XmlDocument
                     Config.Save(this.TargetConfig, this.TargetFile.FullName);
                     this.Log.AddInfo(Util.CONFIG_Committed + " - " + this.TargetFile.Name);
                 }
@@ -140,33 +140,33 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (string.IsNullOrEmpty(this._FileName))
                 {
-					//First backup the config file
+					// First backup the config file
                     Util.BackupFile(this.TargetFile, this.PhysicalSitePath, this.Log);
 
-                    //Create an XmlDocument for the config file
+                    // Create an XmlDocument for the config file
                     this._TargetConfig = new XmlDocument { XmlResolver = null };
                     this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
 
-                    //Create XmlMerge instance from InstallConfig source
+                    // Create XmlMerge instance from InstallConfig source
                     this._xmlMerge = new XmlMerge(new StringReader(this.InstallConfig), this.Package.Version.ToString(), this.Package.Name);
 
-                    //Update the Config file - Note that this method does not save the file - we will save it in Commit
+                    // Update the Config file - Note that this method does not save the file - we will save it in Commit
                     this._xmlMerge.UpdateConfig(this.TargetConfig);
                     this.Completed = true;
                     this.Log.AddInfo(Util.CONFIG_Updated + " - " + this.TargetFile.Name);
                 }
                 else
                 {
-					//Process external file
+					// Process external file
                     string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._FileName);
                     if (File.Exists(strConfigFile))
                     {
-						//Create XmlMerge instance from config file source
+						// Create XmlMerge instance from config file source
                         using (var stream = File.OpenText(strConfigFile))
                         {
                             this._xmlMerge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " Install");
 
-                            //Process merge
+                            // Process merge
                             this._xmlMerge.UpdateConfigs(false);
                         }
 
@@ -195,18 +195,18 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 XPathNavigator nav = manifestNav.SelectSingleNode("config");
 
-                //Get the name of the target config file to update
+                // Get the name of the target config file to update
                 XPathNavigator nodeNav = nav.SelectSingleNode("configFile");
                 string targetFileName = nodeNav.Value;
                 if (!string.IsNullOrEmpty(targetFileName))
                 {
                     this._TargetFile = new InstallFile(targetFileName, "", this.Package.InstallerInfo);
                 }
-                //Get the Install config changes
+                // Get the Install config changes
                 nodeNav = nav.SelectSingleNode("install");
                 this._InstallConfig = nodeNav.InnerXml;
 
-                //Get the UnInstall config changes
+                // Get the UnInstall config changes
                 nodeNav = nav.SelectSingleNode("uninstall");
                 this._UnInstallConfig = nodeNav.InnerXml;
             }
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//Do nothing as the changes are all in memory
+			// Do nothing as the changes are all in memory
             this.Log.AddInfo(Util.CONFIG_RolledBack + " - " + this.TargetFile.Name);
         }
 
@@ -235,31 +235,31 @@ namespace DotNetNuke.Services.Installer.Installers
             {
                 if (!string.IsNullOrEmpty(this.UnInstallConfig))
                 {
-                    //Create an XmlDocument for the config file
+                    // Create an XmlDocument for the config file
                     this._TargetConfig = new XmlDocument { XmlResolver = null };
                     this.TargetConfig.Load(Path.Combine(this.PhysicalSitePath, this.TargetFile.FullName));
 
-                    //Create XmlMerge instance from UnInstallConfig source
+                    // Create XmlMerge instance from UnInstallConfig source
                     var merge = new XmlMerge(new StringReader(this.UnInstallConfig), this.Package.Version.ToString(), this.Package.Name);
 
-                    //Update the Config file - Note that this method does save the file
+                    // Update the Config file - Note that this method does save the file
                     merge.UpdateConfig(this.TargetConfig, this.TargetFile.FullName);
                 }
             }
             else
             {
-				//Process external file
+				// Process external file
                 string strConfigFile = Path.Combine(this.Package.InstallerInfo.TempInstallFolder, this._UninstallFileName);
                 if (File.Exists(strConfigFile))
                 {
-					//Create XmlMerge instance from config file source
+					// Create XmlMerge instance from config file source
                     StreamReader stream = File.OpenText(strConfigFile);
                     var merge = new XmlMerge(stream, this.Package.Version.ToString(3), this.Package.Name + " UnInstall");
 
-                    //Process merge
+                    // Process merge
                     merge.UpdateConfigs();
 
-                    //Close stream
+                    // Close stream
                     stream.Close();
                 }
             }

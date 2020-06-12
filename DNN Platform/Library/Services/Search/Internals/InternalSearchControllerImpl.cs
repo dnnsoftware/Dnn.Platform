@@ -170,7 +170,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         public string GetSearchDocumentTypeDisplayName(SearchResult searchResult)
         {
-            //ModuleDefId will be zero for non-module
+            // ModuleDefId will be zero for non-module
             var key = string.Format("{0}-{1}", searchResult.SearchTypeId, searchResult.ModuleDefId);
             var keys = CBO.Instance.GetCachedObject<IDictionary<string, string>>(
                             new CacheItemArgs(key, 120, CacheItemPriority.Default), this.SearchDocumentTypeDisplayNameCallBack, false);
@@ -213,26 +213,26 @@ namespace DotNetNuke.Services.Search.Internals
             var doc = new Document();
             var sb = new StringBuilder();
 
-            //TODO - Set setOmitTermFreqAndPositions
-            //TODO - Check if Numeric fields need to have Store.YES or Store.NO
-            //TODO - Should ModifiedTime be mandatory
-            //TODO - Is Locale needed for a single-language site
-            //TODO - Sorting
+            // TODO - Set setOmitTermFreqAndPositions
+            // TODO - Check if Numeric fields need to have Store.YES or Store.NO
+            // TODO - Should ModifiedTime be mandatory
+            // TODO - Is Locale needed for a single-language site
+            // TODO - Sorting
 
-            //Field.Store.YES    | Stores the value. When the value is stored, the original String in its entirety is recorded in the index
-            //Field.Store.NO     | Doesn’t store the value. This option is often used along with Index.ANALYZED to index a large text field that doesn’t need to be retrieved
+            // Field.Store.YES    | Stores the value. When the value is stored, the original String in its entirety is recorded in the index
+            // Field.Store.NO     | Doesn’t store the value. This option is often used along with Index.ANALYZED to index a large text field that doesn’t need to be retrieved
             //                   | in its original form, such as bodies of web pages, or any other type of text document.
-            //Index.ANALYZED     | Use the analyzer to break the field’s value into a stream of separate tokens and make each token searchable
-            //Index.NOT_ANALYZED | Do index the field, but don’t analyze the String value.Instead, treat the Field’s entire value as a single token and make that token searchable.
+            // Index.ANALYZED     | Use the analyzer to break the field’s value into a stream of separate tokens and make each token searchable
+            // Index.NOT_ANALYZED | Do index the field, but don’t analyze the String value.Instead, treat the Field’s entire value as a single token and make that token searchable.
 
             // Generic and Additional SearchDocument Params
             this.AddSearchDocumentParamters(doc, searchDocument, sb);
 
 
-            //Remove the existing document from Lucene
+            // Remove the existing document from Lucene
             this.DeleteSearchDocumentInternal(searchDocument, false);
 
-            //Add only when Document is active. The previous call would have otherwise deleted the document if it existed earlier
+            // Add only when Document is active. The previous call would have otherwise deleted the document if it existed earlier
             if (searchDocument.IsActive)
             {
                 Thread.SetData(Thread.GetNamedDataSlot(Constants.TlsSearchInfo), searchDocument);
@@ -259,14 +259,14 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 const int commitBatchSize = 1024 * 16;
                 var idx = 0;
-                //var added = false;
+                // var added = false;
 
                 foreach (var searchDoc in searchDocs)
                 {
                     try
                     {
                         this.AddSearchDocumentInternal(searchDoc, (++idx % commitBatchSize) == 0);
-                        //added = true;
+                        // added = true;
                     }
                     catch (Exception ex)
                     {
@@ -274,12 +274,12 @@ namespace DotNetNuke.Services.Search.Internals
                     }
                 }
 
-                //Note: modified to do commit only once at the end of scheduler job
+                // Note: modified to do commit only once at the end of scheduler job
                 // check so we don't commit again
-                //if (added && (idx % commitBatchSize) != 0)
-                //{
+                // if (added && (idx % commitBatchSize) != 0)
+                // {
                 //    Commit();
-                //}
+                // }
             }
         }
 
@@ -381,7 +381,7 @@ namespace DotNetNuke.Services.Search.Internals
 
         private void AddSearchDocumentParamters(Document doc, SearchDocument searchDocument, StringBuilder sb)
         {
-            //mandatory fields
+            // mandatory fields
             doc.Add(new Field(Constants.UniqueKeyTag, SearchHelper.Instance.StripTagsNoAttributes(searchDocument.UniqueKey, true), Field.Store.YES, Field.Index.NOT_ANALYZED));
             doc.Add(new NumericField(Constants.PortalIdTag, Field.Store.YES, true).SetIntValue(searchDocument.PortalId));
             doc.Add(new NumericField(Constants.SearchTypeTag, Field.Store.YES, true).SetIntValue(searchDocument.SearchTypeId));

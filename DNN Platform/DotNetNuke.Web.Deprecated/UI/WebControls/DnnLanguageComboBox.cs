@@ -297,7 +297,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             Personalization.SetProfile("LanguageDisplayMode", this._viewTypePersonalizationKey, this._modeRadioButtonList.SelectedValue);
 
-            //Resort
+            // Resort
             this.BindData(true);
 
             this.OnModeChanged(EventArgs.Empty);

@@ -42,7 +42,7 @@ namespace DotNetNuke.Data
 
         public override IDataReader ExecuteSql(string connectionString, CommandType commandType, int commandTimeout, string query)
         {
-            //return SqlHelper.ExecuteReader(ConnectionString, CommandType, Query);
+            // return SqlHelper.ExecuteReader(ConnectionString, CommandType, Query);
             return PetaPocoHelper.ExecuteReader(connectionString, commandType, commandTimeout, query);
         }
 

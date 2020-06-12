@@ -69,7 +69,7 @@ namespace DotNetNuke.Web.Api
                 return matches.First();
             }
 
-            //only errors thrown beyond this point
+            // only errors thrown beyond this point
             if (matches.Count == 0)
             {
                 throw new HttpResponseException(request.CreateErrorResponse(HttpStatusCode.NotFound, string.Format(Localization.GetString("ControllerNotFound", Localization.ExceptionsResourceFile), request.RequestUri, string.Join(", ", namespaces))));

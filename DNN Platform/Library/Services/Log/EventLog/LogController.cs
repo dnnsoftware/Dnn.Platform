@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Log.EventLog
     public partial class LogController : ServiceLocator<ILogController, LogController>, ILogController
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(LogController));
-        private const int WriterLockTimeout = 10000; //milliseconds
+        private const int WriterLockTimeout = 10000; // milliseconds
         private static readonly ReaderWriterLockSlim LockLog = new ReaderWriterLockSlim();
 
         protected override Func<ILogController> GetFactory()
@@ -184,16 +184,16 @@ namespace DotNetNuke.Services.Log.EventLog
                         }
                     }
                     
-                    //Get portal name if name isn't set
+                    // Get portal name if name isn't set
                     if (logInfo.LogPortalID != Null.NullInteger && String.IsNullOrEmpty(logInfo.LogPortalName))
                     {
                         logInfo.LogPortalName = PortalController.Instance.GetPortal(logInfo.LogPortalID).PortalName;
                     }
 
-                    //Check if Log Type exists
+                    // Check if Log Type exists
                     if (!this.GetLogTypeInfoDictionary().ContainsKey(logInfo.LogTypeKey))
                     {
-                        //Add new Log Type
+                        // Add new Log Type
                         var logType = new LogTypeInfo()
                                             {
                                                 LogTypeKey = logInfo.LogTypeKey,
@@ -228,7 +228,7 @@ namespace DotNetNuke.Services.Log.EventLog
 		                }
 		                catch (Exception)
 		                {
-			                if (Globals.Status != Globals.UpgradeStatus.Upgrade) //this may caught exception during upgrade because old logging provider has problem in it.
+			                if (Globals.Status != Globals.UpgradeStatus.Upgrade) // this may caught exception during upgrade because old logging provider has problem in it.
 			                {
 				                throw;
 			                }

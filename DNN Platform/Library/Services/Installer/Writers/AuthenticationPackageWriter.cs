@@ -62,11 +62,11 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WriteAuthenticationComponent(XmlWriter writer)
         {
-			//Start component Element
+			// Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", "AuthenticationSystem");
 
-            //Start authenticationService Element
+            // Start authenticationService Element
             writer.WriteStartElement("authenticationService");
 
             writer.WriteElementString("type", this.AuthSystem.AuthenticationType);
@@ -74,10 +74,10 @@ namespace DotNetNuke.Services.Installer.Writers
             writer.WriteElementString("loginControlSrc", this.AuthSystem.LoginControlSrc);
             writer.WriteElementString("logoffControlSrc", this.AuthSystem.LogoffControlSrc);
 
-            //End authenticationService Element
+            // End authenticationService Element
             writer.WriteEndElement();
 
-            //End component Element
+            // End component Element
             writer.WriteEndElement();
         }
 		
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void WriteManifestComponent(XmlWriter writer)
         {
-			//Write Authentication Component
+			// Write Authentication Component
             this.WriteAuthenticationComponent(writer);
         }
     }

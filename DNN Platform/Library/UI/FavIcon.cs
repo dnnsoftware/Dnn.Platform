@@ -63,7 +63,7 @@ namespace DotNetNuke.UI.Internals
 
             if (fromCache == null)
             {
-                //only create an instance of FavIcon when there is a cache miss
+                // only create an instance of FavIcon when there is a cache miss
                 string favIconPath = new FavIcon(portalId).GetRelativeUrl();
                 if (!string.IsNullOrEmpty(favIconPath))
                 {
@@ -74,8 +74,8 @@ namespace DotNetNuke.UI.Internals
                     headerLink = "";
                 }
 
-                //cache link or empty string to ensure we don't always have a
-                //cache miss when no favicon is in use
+                // cache link or empty string to ensure we don't always have a
+                // cache miss when no favicon is in use
                 UpdateCachedHeaderLink(portalId, headerLink);
             }
             else

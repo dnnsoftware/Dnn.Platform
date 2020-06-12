@@ -141,7 +141,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 {
                     this._allTools = new Dictionary<string, RibbonBarToolInfo>
                                     {
-										//Framework
+										// Framework
                                         {"PageSettings", new RibbonBarToolInfo("PageSettings", false, false, "", "", "", true)},
                                         {"CopyPage", new RibbonBarToolInfo("CopyPage", false, false, "", "", "", true)},
                                         {"DeletePage", new RibbonBarToolInfo("DeletePage", false, true, "", "", "", true)},
@@ -151,7 +151,7 @@ namespace DotNetNuke.Web.UI.WebControls
                                         {"CopyPermissionsToChildren", new RibbonBarToolInfo("CopyPermissionsToChildren", false, true, "", "", "", false)},
                                         {"CopyDesignToChildren", new RibbonBarToolInfo("CopyDesignToChildren", false, true, "", "", "", false)},
                                         {"Help", new RibbonBarToolInfo("Help", false, false, "_Blank", "", "", false)},
-										//Modules On Tabs
+										// Modules On Tabs
                                         {"Console", new RibbonBarToolInfo("Console", false, false, "", "Console", "", false)},
                                         {"HostConsole", new RibbonBarToolInfo("HostConsole", true, false, "", "Console", "", false)},
                                         {"UploadFile", new RibbonBarToolInfo("UploadFile", false, false, "", "", "WebUpload", true)},
@@ -293,12 +293,12 @@ namespace DotNetNuke.Web.UI.WebControls
                     {
                         this.DnnLink.NavigateUrl = this.BuildToolUrl();
 
-                        //can't find the page, disable it?
+                        // can't find the page, disable it?
                         if ((string.IsNullOrEmpty(this.DnnLink.NavigateUrl)))
                         {
                             this.DnnLink.Enabled = false;
                         }
-                        //create popup event
+                        // create popup event
                         else if (this.ToolInfo.ShowAsPopUp && PortalSettings.EnablePopUps)
                         {
                             // Prevent PageSettings in a popup if SSL is enabled and enforced, which causes redirection/javascript broswer security issues.
@@ -406,8 +406,8 @@ namespace DotNetNuke.Web.UI.WebControls
                     returnValue = !string.IsNullOrEmpty(Host.HelpURL);
                     break;
                 default:
-                    //if it has a module definition, look it up and check permissions
-                    //if it doesn't exist, assume no permission
+                    // if it has a module definition, look it up and check permissions
+                    // if it doesn't exist, assume no permission
                     string friendlyName = "";
                     if ((this.ToolInfo.ToolName == toolName))
                     {

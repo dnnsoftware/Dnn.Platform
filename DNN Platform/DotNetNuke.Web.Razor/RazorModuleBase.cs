@@ -28,12 +28,12 @@ namespace DotNetNuke.Web.Razor
 
                 if (!(File.Exists(this.Server.MapPath(scriptFile))))
                 {
-                    //Try VB (vbhtml)
+                    // Try VB (vbhtml)
                     scriptFile = scriptFolder + "_" + fileRoot + ".vbhtml";
 
                     if (!(File.Exists(this.Server.MapPath(scriptFile))))
                     {
-                        //Return ""
+                        // Return ""
                         scriptFile = "";
                     }
                 }

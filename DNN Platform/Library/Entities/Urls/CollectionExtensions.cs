@@ -34,14 +34,14 @@ namespace DotNetNuke.Entities.Urls
                         case XmlNodeType.Element:
                             if (rdr.Name == "parameterReplace")
                             {
-                                //now set up the action
+                                // now set up the action
                                 string portalIdRaw = rdr.GetAttribute("portalId");
                                 int rulePortalId = -1;
                                 if (portalIdRaw != null)
                                 {
                                     Int32.TryParse(portalIdRaw, out rulePortalId);
                                 }
-                                //807 : if portal specific then import all regardless of portal id specified
+                                // 807 : if portal specific then import all regardless of portal id specified
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
                                 {
                                     int actionCount = 0;
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Urls
                             {
                                 var tabMessages = new List<string>();
                                 int actionCount = 0;
-                                //now set up the action
+                                // now set up the action
                                 string portalIdRaw = rdr.GetAttribute("rulePortalId");
                                 if (string.IsNullOrEmpty(portalIdRaw))
                                 {
@@ -139,7 +139,7 @@ namespace DotNetNuke.Entities.Urls
                                     Int32.TryParse(portalIdRaw, out rulePortalId);
                                 }
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalSpecific)
-                                //if portal specific, all rules are assumed to belong to the portal
+                                // if portal specific, all rules are assumed to belong to the portal
                                 {
                                     string tabIdRaw = rdr.GetAttribute("tabIds");
                                     string tabNames = rdr.GetAttribute("tabNames");
@@ -169,18 +169,18 @@ namespace DotNetNuke.Entities.Urls
                                         };
                                         if (fromDefault)
                                         {
-                                            //check for 'fromDefault' attribute
+                                            // check for 'fromDefault' attribute
                                             action.ForDefaultPage = true;
                                             action.TabId = -2;
                                         }
                                         else
                                         {
-                                            //or support the older convention, which was to include a tabid of -2
+                                            // or support the older convention, which was to include a tabid of -2
                                             action.ForDefaultPage = tabId == -2;
                                         }
                                         if (fromSiteRoot)
                                         {
-                                            action.TabId = -3; //site root marker
+                                            action.TabId = -3; // site root marker
                                         }
                                         List<ParameterRedirectAction> tabActionCol;
                                         if (actions.ContainsKey(action.TabId))
@@ -241,7 +241,7 @@ namespace DotNetNuke.Entities.Urls
                                 }
                                 if (rulePortalId == portalId || rulePortalId == -1 || portalId == -1 || portalSpecific)
                                 {
-                                    //now set up the action
+                                    // now set up the action
                                     string tabIdRaw = rdr.GetAttribute("tabIds");
                                     string tabNames = rdr.GetAttribute("tabNames");
                                     string name = rdr.GetAttribute("name");
@@ -266,7 +266,7 @@ namespace DotNetNuke.Entities.Urls
                                         }
                                         else
                                         {
-                                            //older rule specified tabid -3 meant site root
+                                            // older rule specified tabid -3 meant site root
                                             action.ForSiteRoot = tabId == -3;
                                         }
 

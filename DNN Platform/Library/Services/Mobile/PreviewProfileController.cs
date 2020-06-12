@@ -69,7 +69,7 @@ namespace DotNetNuke.Services.Mobile
 			var delProfile = this.GetProfileById(portalId, id);
 			if (delProfile != null)
 			{
-				//update the list order
+				// update the list order
 				this.GetProfilesByPortal(portalId).Where(p => p.SortOrder > delProfile.SortOrder).ToList().ForEach(p =>
 																												{
 																													p.SortOrder--;

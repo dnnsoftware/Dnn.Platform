@@ -117,7 +117,7 @@ namespace DotNetNuke.Modules.Html
 
                     this.txtSearchDescLength.Text = this.ModuleSettings.SearchDescLength.ToString();
                 }
-                //Module failed to load
+                // Module failed to load
             }
             catch (Exception exc)
             {
@@ -166,7 +166,7 @@ namespace DotNetNuke.Modules.Html
                         break;
                 }
 
-                //Module failed to load
+                // Module failed to load
             }
             catch (Exception exc)
             {

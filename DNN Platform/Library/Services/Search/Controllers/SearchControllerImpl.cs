@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private Sort GetSort(SearchQuery query)
         {
-            var sort = Sort.RELEVANCE; //default sorting - relevance is always descending.
+            var sort = Sort.RELEVANCE; // default sorting - relevance is always descending.
             if (query.SortField != SortFields.Relevance)
             {
                 var reverse = query.SortDirection != SortDirections.Ascending;
@@ -207,13 +207,13 @@ namespace DotNetNuke.Services.Search.Controllers
 
         private void ApplySearchTypeIdFilter(BooleanQuery query, SearchQuery searchQuery)
         {
-            //Special handling for Module Search
+            // Special handling for Module Search
             if (searchQuery.SearchTypeIds.Count() == 1 && searchQuery.SearchTypeIds.Contains(this._moduleSearchTypeId))
             {
-                //When moduleid is specified, we ignore other searchtypeid or moduledefinitionid. Major security check
+                // When moduleid is specified, we ignore other searchtypeid or moduledefinitionid. Major security check
                 if (searchQuery.ModuleId > 0)
                 {
-                    //this is the main hook for module based search. Occur.MUST is a requirement for this condition or else results from other modules will be found
+                    // this is the main hook for module based search. Occur.MUST is a requirement for this condition or else results from other modules will be found
                     query.Add(NumericRangeQuery.NewIntRange(Constants.ModuleIdTag, searchQuery.ModuleId, searchQuery.ModuleId, true, true), Occur.MUST);
                 }
                 else
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Search.Controllers
                         modDefQuery.Add(NumericRangeQuery.NewIntRange(Constants.ModuleDefIdTag, moduleDefId, moduleDefId, true, true), Occur.SHOULD);
                     }
                     if (searchQuery.ModuleDefIds.Any())
-                        query.Add(modDefQuery, Occur.MUST); //Note the MUST
+                        query.Add(modDefQuery, Occur.MUST); // Note the MUST
                 }
 
                 query.Add(NumericRangeQuery.NewIntRange(Constants.SearchTypeTag, this._moduleSearchTypeId, this._moduleSearchTypeId, true, true), Occur.MUST);
@@ -414,9 +414,9 @@ namespace DotNetNuke.Services.Search.Controllers
             var results = new List<SearchResult>();
             var totalHits = 0;
 
-            //****************************************************************************
+            // ****************************************************************************
             // First Fetch and determine starting item of current page
-            //****************************************************************************
+            // ****************************************************************************
             if (searchQuery.PageSize > 0)
             {
                 var luceneResults = LuceneController.Instance.Search(new LuceneSearchContext
@@ -428,9 +428,9 @@ namespace DotNetNuke.Services.Search.Controllers
                 results = luceneResults.Results.Select(this.GetSearchResultFromLuceneResult).ToList();
                 totalHits = luceneResults.TotalHits;
 
-                //****************************************************************************
-                //Adding URL Links to final trimmed results
-                //****************************************************************************
+                // ****************************************************************************
+                // Adding URL Links to final trimmed results
+                // ****************************************************************************
                 foreach (var result in results)
                 {
                     if (string.IsNullOrEmpty(result.Url))

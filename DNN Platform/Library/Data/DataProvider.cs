@@ -55,11 +55,11 @@ namespace DotNetNuke.Data
         {
             get
             {
-                //Get Connection string from web.config
+                // Get Connection string from web.config
                 string connectionString = Config.GetConnectionString();
                 if (string.IsNullOrEmpty(connectionString))
                 {
-                    //Use connection string specified in provider
+                    // Use connection string specified in provider
                     connectionString = this.Settings["connectionString"];
                 }
                 return connectionString;
@@ -127,7 +127,7 @@ namespace DotNetNuke.Data
 
         private static DateTime FixDate(DateTime dateToFix)
         {
-            //Fix for Sql Dates having a minimum value of January 1, 1753
+            // Fix for Sql Dates having a minimum value of January 1, 1753
             // or maximum value of December 31, 9999
             if (dateToFix <= SqlDateTime.MinValue.Value)
                 dateToFix = SqlDateTime.MinValue.Value.AddDays(1);
@@ -300,7 +300,7 @@ namespace DotNetNuke.Data
                 for (int i = 0; i <= ex.Errors.Count - 1; i++)
                 {
                     SqlError sqlError = ex.Errors[i];
-                    if (sqlError.Number == 2812 && sqlError.Class == 16) //2812 - 16 means SP could not be found
+                    if (sqlError.Number == 2812 && sqlError.Class == 16) // 2812 - 16 means SP could not be found
                     {
                         noStoredProc = true;
                         break;
@@ -418,7 +418,7 @@ namespace DotNetNuke.Data
         {
             if ((Major >= 5 || (Major == 4 && Minor == 9 && Build > 0)))
             {
-                //If the version > 4.9.0 use the new sproc, which is added in 4.9.1 script
+                // If the version > 4.9.0 use the new sproc, which is added in 4.9.1 script
                 this.ExecuteNonQuery("UpdateDatabaseVersionAndName", Major, Minor, Build, Name);
             }
             else
@@ -2497,7 +2497,7 @@ namespace DotNetNuke.Data
         {
             if ((userList.Count == 0))
             {
-                //No users to process, quit method
+                // No users to process, quit method
                 return;
             }
             foreach (string key in userList.Keys)
@@ -2548,7 +2548,7 @@ namespace DotNetNuke.Data
             {
                 Logger.Debug(ex);
 
-                //If not a duplicate (throw an Exception)
+                // If not a duplicate (throw an Exception)
                 retValue = -ex.Number;
                 if (ex.Number != DuplicateKey)
                 {
@@ -3629,7 +3629,7 @@ namespace DotNetNuke.Data
 
         public virtual void PurgeLog()
         {
-            //Because event log is run on application end, app may not be fully installed, so check for the sproc first
+            // Because event log is run on application end, app may not be fully installed, so check for the sproc first
             string sql = "IF EXISTS (SELECT * FROM sysobjects WHERE id = object_id(N'" + this.DatabaseOwner + this.ObjectQualifier +
                          "PurgeEventLog') AND OBJECTPROPERTY(id, N'IsProcedure') = 1) " + " BEGIN " +
                          "    EXEC " + this.DatabaseOwner + this.ObjectQualifier + "PurgeEventLog" + " END ";
@@ -4382,7 +4382,7 @@ namespace DotNetNuke.Data
             }
             catch
             {
-                //error in SQL query
+                // error in SQL query
                 return null;
             }
         }

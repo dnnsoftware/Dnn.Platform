@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.UserControls
                 string strMode = "";
                 UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
-                //Check if Personal Preference is set
+                // Check if Personal Preference is set
                 if (objUserInfo.UserID >= 0)
                 {
                     if (Personalization.GetProfile("DotNetNuke.TextEditor", "PreferredTextEditor") != null)
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.UserControls
                     }
                 }
 				
-				//If no Preference Check if Viewstate has been saved
+				// If no Preference Check if Viewstate has been saved
                 if (String.IsNullOrEmpty(strMode))
                 {
                     if (this.ViewState["DesktopMode"] != null && !String.IsNullOrEmpty(this.ViewState["DesktopMode"].ToString()))
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.UserControls
                     }
                 }
 				
-				//Finally if still no value Use default
+				// Finally if still no value Use default
                 if (String.IsNullOrEmpty(strMode))
                 {
                     strMode = this.DefaultMode;
@@ -167,13 +167,13 @@ namespace DotNetNuke.UI.UserControls
                         {
                             case "T":
                                 return this.Encode(HtmlUtils.ConvertToHtml(RemoveBaseTags(this.TxtDesktopHTML.Text)));
-                                //break;
+                                // break;
                             case "R":
                                 return RemoveBaseTags(this.TxtDesktopHTML.Text);
-                                //break;
+                                // break;
                             default:
                                 return this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
-                                //break;
+                                // break;
                         }
                     default:
                         return this.IsRichEditorAvailable ? this.Encode(RemoveBaseTags(this._richTextEditor.Text)) : this.Encode(RemoveBaseTags(this.TxtDesktopHTML.Text));
@@ -330,7 +330,7 @@ namespace DotNetNuke.UI.UserControls
                 this.OptView.SelectedIndex = 0;
             }
 			
-			//Set the text render mode for basic mode
+			// Set the text render mode for basic mode
             if (this.OptRender.SelectedIndex != -1)
             {
                 this.TextRenderMode = this.OptRender.SelectedItem.Value;
@@ -409,13 +409,13 @@ namespace DotNetNuke.UI.UserControls
             
             try
             {
-				//Populate Radio Button Lists
+				// Populate Radio Button Lists
                 this.PopulateLists();
 
-                //Get the current user
-                //UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
+                // Get the current user
+                // UserInfo objUserInfo = UserController.Instance.GetCurrentUserInfo();
 
-                //Set the width and height of the controls
+                // Set the width and height of the controls
                 if (this.IsRichEditorAvailable)
                 {
                     this._richTextEditor.Width = this.Width;
@@ -427,7 +427,7 @@ namespace DotNetNuke.UI.UserControls
                 this.PanelView.Width = this.Width;
                 this.PanelTextEditor.Width = this.Width;
 
-                //Optionally display the radio button lists
+                // Optionally display the radio button lists
                 if (!this.ChooseMode)
                 {
                     this.PanelView.Visible = false;
@@ -437,7 +437,7 @@ namespace DotNetNuke.UI.UserControls
                     this.DivBasicRender.Visible = false;
                 }
 
-                //Load the editor
+                // Load the editor
                 if (this.IsRichEditorAvailable)
                 {
                     this.PlcEditor.Controls.Add(this._richTextEditor.HtmlEditorControl);
@@ -445,7 +445,7 @@ namespace DotNetNuke.UI.UserControls
 
                 this.SetPanels();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

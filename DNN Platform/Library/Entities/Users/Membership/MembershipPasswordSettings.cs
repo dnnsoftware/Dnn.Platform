@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Users.Membership
         /// </summary>
         public MembershipPasswordSettings(int portalId)
         {
-            //portalId not used currently - left in place for potential site specific settings
+            // portalId not used currently - left in place for potential site specific settings
             this.PortalId = portalId;
 
             if (HttpContext.Current != null && !IsInstallRequest(HttpContext.Current.Request))
@@ -95,7 +95,7 @@ namespace DotNetNuke.Entities.Users.Membership
                 this.NumberOfPasswordsStored = Host.Host.MembershipNumberPasswords;
                 this.NumberOfDaysBeforePasswordReuse = Host.Host.MembershipDaysBeforePasswordReuse;
             }
-            else //setup default values during install process.
+            else // setup default values during install process.
             {
                 this.EnableStrengthMeter = true;
                 this.EnableBannedList = true;

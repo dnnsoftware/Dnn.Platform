@@ -216,18 +216,18 @@ namespace DotNetNuke.Services.Localization
                 bool enabled = false;
                 Dictionary<string, Locale> dicLocales = this.GetLocales(portalId);
 
-                //if ((!dicLocales.ContainsKey(localeCode)))
+                // if ((!dicLocales.ContainsKey(localeCode)))
                 string locale = localeCode;
                 if (dicLocales.FirstOrDefault(x => x.Key.ToLower() == locale.ToLower()).Key == null)
                 {
-                    //if localecode is neutral (en, es,...) try to find a locale that has the same language
+                    // if localecode is neutral (en, es,...) try to find a locale that has the same language
                     if (localeCode.IndexOf("-", StringComparison.Ordinal) == -1)
                     {
                         foreach (string strLocale in dicLocales.Keys)
                         {
                             if (strLocale.Split('-')[0].ToLower() == localeCode.ToLower())
                             {
-                                //set the requested _localecode to the full locale
+                                // set the requested _localecode to the full locale
                                 localeCode = strLocale;
                                 enabled = true;
                                 break;
@@ -243,7 +243,7 @@ namespace DotNetNuke.Services.Localization
             }
             catch (Exception ex)
             {
-                //item could not be retrieved  or error
+                // item could not be retrieved  or error
                 Exceptions.Exceptions.LogException(ex);
                 return false;
             }

@@ -21,7 +21,7 @@ namespace DotNetNuke.Security.Roles
     {
 		#region Shared/Static Methods
 
-        //return the provider
+        // return the provider
         public static RoleProvider Instance()
         {
             return ComponentFactory.GetComponent<RoleProvider>();
@@ -61,7 +61,7 @@ namespace DotNetNuke.Security.Roles
 
         #region RoleGroup Methods
 
-        //Role Groups
+        // Role Groups
         public abstract int CreateRoleGroup(RoleGroupInfo roleGroup);
 
         public abstract void DeleteRoleGroup(RoleGroupInfo roleGroup);

@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.Skins.Controls
             return Localization.GetString("SeeAllNotification", Localization.GetResourceFile(this, MyFileName));
         }
 
-        //This method is copied from user skin object
+        // This method is copied from user skin object
         private int GetMessageTab()
         {
             var cacheKey = string.Format("MessageCenterTab:{0}:{1}", this.PortalSettings.PortalId, this.PortalSettings.CultureCode);
@@ -76,21 +76,21 @@ namespace DotNetNuke.UI.Skins.Controls
             if (messageTabId > 0)
                 return messageTabId;
 
-            //Find the Message Tab
+            // Find the Message Tab
             messageTabId = this.FindMessageTab();
 
-            //save in cache
-            //NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
+            // save in cache
+            // NOTE - This cache is not being cleared. There is no easy way to clear this, except Tools->Clear Cache
             DataCache.SetCache(cacheKey, messageTabId, TimeSpan.FromMinutes(20));
 
             return messageTabId;
         }
 
-        //This method is copied from user skin object
+        // This method is copied from user skin object
         private int FindMessageTab()
         {
-            //On brand new install the new Message Center Module is on the child page of User Profile Page 
-            //On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
+            // On brand new install the new Message Center Module is on the child page of User Profile Page 
+            // On Upgrade to 6.2.0, the Message Center module is on the User Profile Page
             var profileTab = TabController.Instance.GetTab(this.PortalSettings.UserTabId, this.PortalSettings.PortalId, false);
             if (profileTab != null)
             {
@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
             }
 
-            //default to User Profile Page
+            // default to User Profile Page
             return this.PortalSettings.UserTabId;            
         }        
 

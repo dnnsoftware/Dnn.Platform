@@ -280,10 +280,10 @@ namespace DotNetNuke.UI.WebControls
             string buttonText = Null.NullString;
             string imageURL = Null.NullString;
 
-            //Begin Button Row
+            // Begin Button Row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-            //Begin Button Cell
+            // Begin Button Cell
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             switch (buttonType)
             {
@@ -313,12 +313,12 @@ namespace DotNetNuke.UI.WebControls
                     break;
             }
 			
-            //Render Hyperlink
+            // Render Hyperlink
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackEventReference(this.GetPostBackOptions(buttonType)));
             writer.AddAttribute(HtmlTextWriterAttribute.Title, buttonText);
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-            //Render Image
+            // Render Image
             if (!string.IsNullOrEmpty(imageURL))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveClientUrl(imageURL));
@@ -332,19 +332,19 @@ namespace DotNetNuke.UI.WebControls
                 writer.Write(buttonText);
             }
 			
-            //End of Hyperlink
+            // End of Hyperlink
             writer.RenderEndTag();
 
-            //End of Button Cell
+            // End of Button Cell
             writer.RenderEndTag();
 
-            //Render end of Button Row
+            // Render end of Button Row
             writer.RenderEndTag();
         }
 
         private void RenderButtons(HtmlTextWriter writer)
         {
-			//render table
+			// render table
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
             if (this.ShowAddButton)
@@ -356,18 +356,18 @@ namespace DotNetNuke.UI.WebControls
                 this.RenderButton("AddAll", writer);
             }
 
-            //Begin Button Row
+            // Begin Button Row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
-            //Begin Button Cell
+            // Begin Button Cell
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
 
             writer.Write("&nbsp;");
 
-        	//End of Button Cell
+        	// End of Button Cell
             writer.RenderEndTag();
 
-            //Render end of Button Row
+            // Render end of Button Row
             writer.RenderEndTag();
 
             if (this.ShowRemoveButton)
@@ -379,7 +379,7 @@ namespace DotNetNuke.UI.WebControls
                 this.RenderButton("RemoveAll", writer);
             }
 
-            //Render end of table
+            // Render end of table
             writer.RenderEndTag();
         }
 
@@ -395,20 +395,20 @@ namespace DotNetNuke.UI.WebControls
                         style.AddAttributesToRender(writer);
                     }
 					
-                    //Render ListBox
+                    // Render ListBox
                     writer.AddAttribute(HtmlTextWriterAttribute.Multiple, "multiple");
                     writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + listType);
                     writer.RenderBeginTag(HtmlTextWriterTag.Select);
                     for (int i = 0; i <= list.Count - 1; i++)
                     {
-						//Render option tags for each item
+						// Render option tags for each item
                         writer.AddAttribute(HtmlTextWriterAttribute.Value, list.Get(i));
                         writer.RenderBeginTag(HtmlTextWriterTag.Option);
                         writer.Write(list.GetKey(i));
                         writer.RenderEndTag();
                     }
 					
-                    //Render ListBox end
+                    // Render ListBox end
                     writer.RenderEndTag();
                 }
             }
@@ -416,7 +416,7 @@ namespace DotNetNuke.UI.WebControls
 
         private void RenderHeader(HtmlTextWriter writer)
         {
-			//render Header row
+			// render Header row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
             if (this.HeaderStyle != null)
             {
@@ -436,13 +436,13 @@ namespace DotNetNuke.UI.WebControls
             writer.Write(Localization.GetString(this.ID + "_Selected", this.LocalResourceFile));
             writer.RenderEndTag();
 
-            //Render end of Header Row
+            // Render end of Header Row
             writer.RenderEndTag();
         }
 
         private void RenderListBoxes(HtmlTextWriter writer)
         {
-			//render List Boxes row
+			// render List Boxes row
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
@@ -457,7 +457,7 @@ namespace DotNetNuke.UI.WebControls
             this.RenderListBox("Selected", this.SelectedDataSource, this.SelectedListBoxStyle, writer);
             writer.RenderEndTag();
 
-            //Render end of List Boxes Row
+            // Render end of List Boxes Row
             writer.RenderEndTag();
         }
 
@@ -520,20 +520,20 @@ namespace DotNetNuke.UI.WebControls
 
         protected override void RenderContents(HtmlTextWriter writer)
         {
-			//render table
+			// render table
             if (this.ContainerStyle != null)
             {
                 this.ContainerStyle.AddAttributesToRender(writer);
             }
             writer.RenderBeginTag(HtmlTextWriterTag.Table);
 
-            //Render Header Row
+            // Render Header Row
             this.RenderHeader(writer);
 
-            //Render ListBox row
+            // Render ListBox row
             this.RenderListBoxes(writer);
 
-            //Render end of table
+            // Render end of table
             writer.RenderEndTag();
         }
 		

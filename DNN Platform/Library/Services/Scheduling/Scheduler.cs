@@ -22,22 +22,22 @@ namespace DotNetNuke.Services.Scheduling
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(Scheduler));
         internal static class CoreScheduler
         {
-            //This is the heart of the scheduler mechanism.
-            //This class manages running new events according
-            //to the schedule.
+            // This is the heart of the scheduler mechanism.
+            // This class manages running new events according
+            // to the schedule.
             //
-            //This class can also react to the three
-            //scheduler events (Started, Progressing and Completed)
+            // This class can also react to the three
+            // scheduler events (Started, Progressing and Completed)
             private static bool _threadPoolInitialized;
 
-            //The MaxThreadCount establishes the maximum
-            //threads you want running simultaneously
-            //for spawning SchedulerClient processes
+            // The MaxThreadCount establishes the maximum
+            // threads you want running simultaneously
+            // for spawning SchedulerClient processes
             private static int _maxThreadCount;
             private static int _activeThreadCount;
 
-            //If KeepRunning gets switched to false, 
-            //the scheduler stops running.
+            // If KeepRunning gets switched to false, 
+            // the scheduler stops running.
             private static bool _forceReloadSchedule;
             private static bool _debug;
 
@@ -46,23 +46,23 @@ namespace DotNetNuke.Services.Scheduling
             private static readonly SharedList<ScheduleItem> ScheduleQueue;
             private static readonly SharedList<ScheduleHistoryItem> ScheduleInProgress;
 
-            //This is our array that holds the process group
-            //where our threads will be kicked off.
+            // This is our array that holds the process group
+            // where our threads will be kicked off.
             private static ProcessGroup[] _processGroup;
 
-            //A ReaderWriterLockSlim will protect our objects
-            //in memory from being corrupted by simultaneous
-            //thread operations.  This block of code below
-            //establishes variables to help keep track
-            //of the ReaderWriter locks.
+            // A ReaderWriterLockSlim will protect our objects
+            // in memory from being corrupted by simultaneous
+            // thread operations.  This block of code below
+            // establishes variables to help keep track
+            // of the ReaderWriter locks.
             private static int _readerTimeouts;
             private static int _writerTimeouts;
             private static readonly TimeSpan LockTimeout = TimeSpan.FromSeconds(45);
             private static readonly ReaderWriterLockSlim StatusLock = new ReaderWriterLockSlim();
             private static ScheduleStatus _status = ScheduleStatus.STOPPED;
 
-            //If KeepRunning gets switched to false, 
-            //the scheduler stops running.
+            // If KeepRunning gets switched to false, 
+            // the scheduler stops running.
             public static bool KeepThreadAlive = true;
             public static bool KeepRunning = true;
 
@@ -115,7 +115,7 @@ namespace DotNetNuke.Services.Scheduling
 
             private static int GetProcessGroup()
             {
-                //return a random process group
+                // return a random process group
                 var r = new Random();
                 return r.Next(0, _numberOfProcessGroups - 1);
             }
@@ -251,7 +251,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 catch (Exception)
                 {
-                    //catches edge-case where schedule runs before webserver registration
+                    // catches edge-case where schedule runs before webserver registration
                     return null;
                 }
                     
@@ -283,10 +283,10 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     try
                     {
-                        //objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
+                        // objQueueReadWriteLock.EnterWriteLock(WriteTimeout)
                         using (ScheduleQueue.GetWriteLock(LockTimeout))
                         {
-                            //Do a second check just in case
+                            // Do a second check just in case
                             if (!ScheduleQueueContains(scheduleHistoryItem) &&
                                 !IsInProgress(scheduleHistoryItem))
                             {
@@ -308,16 +308,16 @@ namespace DotNetNuke.Services.Scheduling
 	        private delegate void AddToScheduleInProgressDelegate(ScheduleHistoryItem item);
             public static void FireEvents()
             {
-                //This method uses a thread pool to
-                //call the SchedulerClient methods that need
-                //to be called.
+                // This method uses a thread pool to
+                // call the SchedulerClient methods that need
+                // to be called.
 
-                //For each item in the queue that there
-                //is an open thread for, set the object
-                //in the array to a new ProcessGroup object.
-                //Pass in the ScheduleItem to the ProcessGroup
-                //so the ProcessGroup can pass it around for
-                //logging and notifications.
+                // For each item in the queue that there
+                // is an open thread for, set the object
+                // in the array to a new ProcessGroup object.
+                // Pass in the ScheduleItem to the ProcessGroup
+                // so the ProcessGroup can pass it around for
+                // logging and notifications.
 	            lock (ScheduleQueue)
 	            {
 		            var scheduleList = new List<ScheduleItem>();
@@ -568,7 +568,7 @@ namespace DotNetNuke.Services.Scheduling
                     {
                         try
                         {
-                            //ScheduleStatus is a value type a copy is returned (enumeration)
+                            // ScheduleStatus is a value type a copy is returned (enumeration)
                             return _status;
                         }
                         finally
@@ -580,7 +580,7 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 catch (ApplicationException)
                 {
-                    //The reader lock request timed out.
+                    // The reader lock request timed out.
                     Interlocked.Increment(ref _readerTimeouts);
                 }
                 return ScheduleStatus.NOT_SET;
@@ -592,7 +592,7 @@ namespace DotNetNuke.Services.Scheduling
             /// <param name="sourceOfHalt">Initiator of Halt</param>
             public static void Halt(string sourceOfHalt)
             {
-				//should do nothing if the scheduler havn't start yet.
+				// should do nothing if the scheduler havn't start yet.
             	var currentStatus = GetScheduleStatus();
 				if (currentStatus == ScheduleStatus.NOT_SET || currentStatus == ScheduleStatus.STOPPED)
 				{
@@ -605,8 +605,8 @@ namespace DotNetNuke.Services.Scheduling
 
                 KeepRunning = false;
 
-                //wait for up to 120 seconds for thread
-                //to shut down
+                // wait for up to 120 seconds for thread
+                // to shut down
                 for (int i = 0; i <= 120; i++)
                 {
                     if (GetScheduleStatus() == ScheduleStatus.STOPPED)
@@ -731,7 +731,7 @@ namespace DotNetNuke.Services.Scheduling
 
             private static string ServerGroupServers(ServerInfo thisServer)
             {
-                //Get the servers
+                // Get the servers
                 var servers = ServerController.GetEnabledServers().Where(s =>  s.ServerGroup == thisServer.ServerGroup);
                 return servers.Aggregate(string.Empty, (current, serverInfo) => current + ServerController.GetServerName(serverInfo) + ",");
             }
@@ -756,7 +756,7 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     using (ScheduleQueue.GetWriteLock(LockTimeout))
                     {
-                        //the scheduleitem instances may not be equal even though the scheduleids are equal
+                        // the scheduleitem instances may not be equal even though the scheduleids are equal
                         var item = ScheduleQueue.FirstOrDefault(si => si.ScheduleID == scheduleItem.ScheduleID);
                         if (item != null)
                         {
@@ -780,18 +780,18 @@ namespace DotNetNuke.Services.Scheduling
                     log.AddProperty("EVENT", eventName.ToString());
                     LogController.Instance.AddLog(log);
 
-                    //We allow for three threads to run simultaneously.
-                    //As long as we have an open thread, continue.
+                    // We allow for three threads to run simultaneously.
+                    // As long as we have an open thread, continue.
 
-                    //Load the queue to determine which schedule
-                    //items need to be run. 
+                    // Load the queue to determine which schedule
+                    // items need to be run. 
                     LoadQueueFromEvent(eventName);
 
                     while (GetScheduleQueueCount() > 0)
                     {
                         SetScheduleStatus(ScheduleStatus.RUNNING_EVENT_SCHEDULE);
 
-                        //Fire off the events that need running.
+                        // Fire off the events that need running.
                         if (GetScheduleQueueCount() > 0)
                         {
                             FireEvents();
@@ -800,12 +800,12 @@ namespace DotNetNuke.Services.Scheduling
 
                         if (_writerTimeouts > 20 || _readerTimeouts > 20)
                         {
-                            //Wait for 10 minutes so we don't fill up the logs
+                            // Wait for 10 minutes so we don't fill up the logs
                             Thread.Sleep(TimeSpan.FromMinutes(10));
                         }
                         else
                         {
-                            //Wait for 10 seconds to avoid cpu overutilization
+                            // Wait for 10 seconds to avoid cpu overutilization
                             Thread.Sleep(TimeSpan.FromSeconds(10));
                         }
 
@@ -825,10 +825,10 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    //note:locking inside this method is highly misleading
-                    //as there is no lock in place between when the caller
-                    //decides to call this method and when the lock is acquired
-                    //the value could easily change in that time
+                    // note:locking inside this method is highly misleading
+                    // as there is no lock in place between when the caller
+                    // decides to call this method and when the lock is acquired
+                    // the value could easily change in that time
                     if (StatusLock.TryEnterWriteLock(LockTimeout))
                     {
                         try
@@ -860,8 +860,8 @@ namespace DotNetNuke.Services.Scheduling
 
                     _activeThreadCount = 0;
 
-                    //This is where the action begins.
-                    //Loop until KeepRunning = false
+                    // This is where the action begins.
+                    // Loop until KeepRunning = false
                     if (SchedulingProvider.SchedulerMode != SchedulerMode.REQUEST_METHOD || _debug)
                     {
                         var log = new LogInfo();
@@ -890,27 +890,27 @@ namespace DotNetNuke.Services.Scheduling
                             {
                                 SetScheduleStatus(ScheduleStatus.RUNNING_REQUEST_SCHEDULE);
                             }
-                            //Load the queue to determine which schedule
-                            //items need to be run. 
+                            // Load the queue to determine which schedule
+                            // items need to be run. 
 
                             LoadQueueFromTimer();
 
-                            //Keep track of when the queue was last refreshed
-                            //so we can perform a refresh periodically
+                            // Keep track of when the queue was last refreshed
+                            // so we can perform a refresh periodically
                             DateTime lastQueueRefresh = DateTime.Now;
                             bool refreshQueueSchedule = false;
 
-                            //We allow for [MaxThreadCount] threads to run 
-                            //simultaneously.  As long as we have an open thread
-                            //and we don't have to refresh the queue, continue
-                            //to loop.
-                            //refreshQueueSchedule can get set to true near bottom of loop
-                            //not sure why R# thinks it is always false
+                            // We allow for [MaxThreadCount] threads to run 
+                            // simultaneously.  As long as we have an open thread
+                            // and we don't have to refresh the queue, continue
+                            // to loop.
+                            // refreshQueueSchedule can get set to true near bottom of loop
+                            // not sure why R# thinks it is always false
                             // ReSharper disable ConditionIsAlwaysTrueOrFalse
                             while (FreeThreads > 0 && !refreshQueueSchedule && KeepRunning && !_forceReloadSchedule)
                             // ReSharper restore ConditionIsAlwaysTrueOrFalse
                             {
-                                //Fire off the events that need running.
+                                // Fire off the events that need running.
                                 if (SchedulingProvider.SchedulerMode == SchedulerMode.TIMER_METHOD)
                                 {
                                     SetScheduleStatus(ScheduleStatus.RUNNING_TIMER_SCHEDULE);
@@ -934,8 +934,8 @@ namespace DotNetNuke.Services.Scheduling
 
                                 if (_writerTimeouts > 20 || _readerTimeouts > 20)
                                 {
-                                    //Some kind of deadlock on a resource.
-                                    //Wait for 10 minutes so we don't fill up the logs
+                                    // Some kind of deadlock on a resource.
+                                    // Wait for 10 minutes so we don't fill up the logs
                                     if (KeepRunning)
                                     {
                                         Thread.Sleep(TimeSpan.FromMinutes(10));
@@ -947,7 +947,7 @@ namespace DotNetNuke.Services.Scheduling
                                 }
                                 else
                                 {
-                                    //Wait for 10 seconds to avoid cpu overutilization
+                                    // Wait for 10 seconds to avoid cpu overutilization
                                     if (KeepRunning)
                                     {
                                         Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -957,8 +957,8 @@ namespace DotNetNuke.Services.Scheduling
                                         return;
                                     }
 
-                                    //Refresh queue from database every 10 minutes
-                                    //if there are no items currently in progress
+                                    // Refresh queue from database every 10 minutes
+                                    // if there are no items currently in progress
                                     if ((lastQueueRefresh.AddMinutes(10) <= DateTime.Now || _forceReloadSchedule) && FreeThreads == _maxThreadCount)
                                     {
                                         refreshQueueSchedule = true;
@@ -967,14 +967,14 @@ namespace DotNetNuke.Services.Scheduling
                                 }
                             }
 
-                            //There are no available threads, all threads are being
-                            //used.  Wait 10 seconds until one is available
+                            // There are no available threads, all threads are being
+                            // used.  Wait 10 seconds until one is available
                             if (KeepRunning)
                             {
                                 if (refreshQueueSchedule == false)
                                 {
                                     SetScheduleStatus(ScheduleStatus.WAITING_FOR_OPEN_THREAD);
-                                    Thread.Sleep(10000); //sleep for 10 seconds
+                                    Thread.Sleep(10000); // sleep for 10 seconds
                                 }
                             }
                             else
@@ -985,7 +985,7 @@ namespace DotNetNuke.Services.Scheduling
                         catch (Exception exc)
                         {
                             Exceptions.Exceptions.ProcessSchedulerException(exc);
-                            //sleep for 10 minutes
+                            // sleep for 10 minutes
                             Thread.Sleep(600000);
                         }
                     }
@@ -1026,15 +1026,15 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     ScheduleHistoryItem scheduleHistoryItem = schedulerClient.ScheduleHistoryItem;
 
-                    //Remove the object in the ScheduleInProgress collection
+                    // Remove the object in the ScheduleInProgress collection
                     RemoveFromScheduleInProgress(scheduleHistoryItem);
 
-                    //A SchedulerClient is notifying us that their
-                    //process has completed.  Decrease our ActiveThreadCount
+                    // A SchedulerClient is notifying us that their
+                    // process has completed.  Decrease our ActiveThreadCount
                     Interlocked.Decrement(ref _activeThreadCount);
 
-                    //Update the schedule item object property
-                    //to note the end time and next start
+                    // Update the schedule item object property
+                    // to note the end time and next start
                     scheduleHistoryItem.EndDate = DateTime.Now;
 
                     if (scheduleHistoryItem.ScheduleSource == ScheduleSource.STARTED_FROM_EVENT)
@@ -1099,13 +1099,13 @@ namespace DotNetNuke.Services.Scheduling
                         }
                     }
 
-                    //Update the ScheduleHistory in the database
+                    // Update the ScheduleHistory in the database
                     UpdateScheduleHistory(scheduleHistoryItem);
 
                     if (scheduleHistoryItem.NextStart != Null.NullDate)
                     {
-                        //Put the object back into the ScheduleQueue
-                        //collection with the new NextStart date.
+                        // Put the object back into the ScheduleQueue
+                        // collection with the new NextStart date.
                         scheduleHistoryItem.StartDate = Null.NullDate;
                         scheduleHistoryItem.EndDate = Null.NullDate;
                         scheduleHistoryItem.LogNotes = "";
@@ -1145,18 +1145,18 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    //Remove the object in the ScheduleInProgress collection
+                    // Remove the object in the ScheduleInProgress collection
                     RemoveFromScheduleInProgress(scheduleHistoryItem);
 
-                    //A SchedulerClient is notifying us that their
-                    //process has errored.  Decrease our ActiveThreadCount
+                    // A SchedulerClient is notifying us that their
+                    // process has errored.  Decrease our ActiveThreadCount
                     Interlocked.Decrement(ref _activeThreadCount);
 
 
                     Exceptions.Exceptions.ProcessSchedulerException(exception);
 
-                    //Update the schedule item object property
-                    //to note the end time and next start
+                    // Update the schedule item object property
+                    // to note the end time and next start
                     scheduleHistoryItem.EndDate = DateTime.Now;
                     if (scheduleHistoryItem.ScheduleSource == ScheduleSource.STARTED_FROM_EVENT)
                     {
@@ -1189,13 +1189,13 @@ namespace DotNetNuke.Services.Scheduling
                                 break;
                         }
                     }
-                    //Update the ScheduleHistory in the database
+                    // Update the ScheduleHistory in the database
                     UpdateScheduleHistory(scheduleHistoryItem);
 
                     if (scheduleHistoryItem.NextStart != Null.NullDate && scheduleHistoryItem.RetryTimeLapse != Null.NullInteger)
                     {
-                        //Put the object back into the ScheduleQueue
-                        //collection with the new NextStart date.
+                        // Put the object back into the ScheduleQueue
+                        // collection with the new NextStart date.
                         scheduleHistoryItem.StartDate = Null.NullDate;
                         scheduleHistoryItem.EndDate = Null.NullDate;
                         scheduleHistoryItem.LogNotes = "";
@@ -1205,7 +1205,7 @@ namespace DotNetNuke.Services.Scheduling
 
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
-                        //Write out the log entry for this event
+                        // Write out the log entry for this event
                         var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_FAILURE"};
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
@@ -1234,11 +1234,11 @@ namespace DotNetNuke.Services.Scheduling
             {
                 try
                 {
-                    //A SchedulerClient is notifying us that their
-                    //process is in progress.  Informational only.
+                    // A SchedulerClient is notifying us that their
+                    // process is in progress.  Informational only.
                     if (schedulerClient.ScheduleHistoryItem.RetainHistoryNum > 0)
                     {
-                        //Write out the log entry for this event
+                        // Write out the log entry for this event
                         var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_PROGRESSING"};
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", schedulerClient.GetType().FullName);
@@ -1270,24 +1270,24 @@ namespace DotNetNuke.Services.Scheduling
                 {
                     scheduleHistoryItem.ThreadID = Thread.CurrentThread.GetHashCode();
 
-                    //Put the object in the ScheduleInProgress collection
-                    //and remove it from the ScheduleQueue
+                    // Put the object in the ScheduleInProgress collection
+                    // and remove it from the ScheduleQueue
                     RemoveFromScheduleQueue(scheduleHistoryItem);
                     AddToScheduleInProgress(scheduleHistoryItem);
 
-                    //A SchedulerClient is notifying us that their
-                    //process has started.  Increase our ActiveThreadCount
+                    // A SchedulerClient is notifying us that their
+                    // process has started.  Increase our ActiveThreadCount
                     Interlocked.Increment(ref _activeThreadCount);
                     activeThreadCountIncremented = true;
 
-                    //Update the schedule item
-                    //object property to note the start time.
+                    // Update the schedule item
+                    // object property to note the start time.
                     scheduleHistoryItem.StartDate = DateTime.Now;
                     AddScheduleHistory(scheduleHistoryItem);
                     
                     if (scheduleHistoryItem.RetainHistoryNum > 0)
                     {
-                        //Write out the log entry for this event
+                        // Write out the log entry for this event
                         var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_STARTED"};
                         log.AddProperty("THREAD ID", Thread.CurrentThread.GetHashCode().ToString());
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);
@@ -1303,10 +1303,10 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 catch (Exception exc)
                 {
-                    //Decrement the ActiveThreadCount because
-                    //otherwise the number of active threads
-                    //will appear to be climbing when in fact
-                    //no tasks are being executed.
+                    // Decrement the ActiveThreadCount because
+                    // otherwise the number of active threads
+                    // will appear to be climbing when in fact
+                    // no tasks are being executed.
                     if (activeThreadCountIncremented)
                     {
                         Interlocked.Decrement(ref _activeThreadCount);
@@ -1338,26 +1338,26 @@ namespace DotNetNuke.Services.Scheduling
                 }
             }
 
-            //DNN-5001
+            // DNN-5001
             public static void StopScheduleInProgress(ScheduleItem scheduleItem, ScheduleHistoryItem runningscheduleHistoryItem)
             {
                 try
                 {
-                    //attempt to stop task only if it is still in progress
+                    // attempt to stop task only if it is still in progress
                     if (GetScheduleItemFromScheduleInProgress(scheduleItem) != null)
                     {
                         var scheduleHistoryItem = GetScheduleItemFromScheduleInProgress(scheduleItem);
                         scheduleHistoryItem.ScheduleHistoryID = runningscheduleHistoryItem.ScheduleHistoryID;
                         scheduleHistoryItem.StartDate = runningscheduleHistoryItem.StartDate;
-                        //Remove the object in the ScheduleInProgress collection
+                        // Remove the object in the ScheduleInProgress collection
                         RemoveFromScheduleInProgress(scheduleHistoryItem);
 
-                        //A SchedulerClient is notifying us that their
-                        //process has completed.  Decrease our ActiveThreadCount
+                        // A SchedulerClient is notifying us that their
+                        // process has completed.  Decrease our ActiveThreadCount
                         Interlocked.Decrement(ref _activeThreadCount);
 
-                        //Update the schedule item object property
-                        //to note the end time and next start
+                        // Update the schedule item object property
+                        // to note the end time and next start
                         scheduleHistoryItem.EndDate = DateTime.Now;
 
                         if (scheduleHistoryItem.ScheduleSource == ScheduleSource.STARTED_FROM_EVENT)
@@ -1435,14 +1435,14 @@ namespace DotNetNuke.Services.Scheduling
                                 }
                             }
                         }
-                        //Update the ScheduleHistory in the database
+                        // Update the ScheduleHistory in the database
                         UpdateScheduleHistory(scheduleHistoryItem);
 
 
                         if (scheduleHistoryItem.NextStart != Null.NullDate)
                         {
-                            //Put the object back into the ScheduleQueue
-                            //collection with the new NextStart date.
+                            // Put the object back into the ScheduleQueue
+                            // collection with the new NextStart date.
                             scheduleHistoryItem.StartDate = Null.NullDate;
                             scheduleHistoryItem.EndDate = Null.NullDate;
                             scheduleHistoryItem.LogNotes = "";
@@ -1450,7 +1450,7 @@ namespace DotNetNuke.Services.Scheduling
                             AddToScheduleQueue(scheduleHistoryItem);
                         }
 
-                        //Write out the log entry for this event
+                        // Write out the log entry for this event
                         var log = new LogInfo {LogTypeKey = "SCHEDULER_EVENT_COMPLETED"};
                         log.AddProperty("REASON", "Scheduler task has been stopped manually");
                         log.AddProperty("TYPE", scheduleHistoryItem.TypeFullName);

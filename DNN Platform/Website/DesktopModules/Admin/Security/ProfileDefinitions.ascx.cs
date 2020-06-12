@@ -212,11 +212,11 @@ namespace DotNetNuke.Modules.Admin.Users
             int currentOrder = profileProperty.ViewOrder;
             int nextOrder = nextProfileProperty.ViewOrder;
 
-            //Swap ViewOrders
+            // Swap ViewOrders
             profileProperty.ViewOrder = nextOrder;
             nextProfileProperty.ViewOrder = currentOrder;
 
-            //Refresh Grid
+            // Refresh Grid
             this.ProfileProperties.Sort();
             this.BindGrid();
         }
@@ -253,7 +253,7 @@ namespace DotNetNuke.Modules.Admin.Users
             bool allRequired = true;
             bool allVisible = true;
 
-            //Check whether the checkbox column headers are true or false
+            // Check whether the checkbox column headers are true or false
             foreach (ProfilePropertyDefinition profProperty in this.ProfileProperties)
             {
                 if (profProperty.Required == false)
@@ -273,7 +273,7 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (ReferenceEquals(column.GetType(), typeof(CheckBoxColumn)))
                 {
-                    //Manage CheckBox column events
+                    // Manage CheckBox column events
                     var checkBoxColumn = (CheckBoxColumn)column;
                     if (checkBoxColumn.DataField == "Required")
                     {
@@ -341,7 +341,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 profileProperty.Visible = checkBox.Checked;
             }
 
-            //assign vieworder
+            // assign vieworder
             for (int i = 0; i <= newOrder.Length - 1; i++)
             {
                 this.ProfileProperties[Convert.ToInt32(newOrder[i])].ViewOrder = i;
@@ -357,16 +357,16 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if (savedState != null)
             {
-                //Load State from the array of objects that was saved with SaveViewState.
+                // Load State from the array of objects that was saved with SaveViewState.
                 var myState = (object[])savedState;
 
-                //Load Base Controls ViewState
+                // Load Base Controls ViewState
                 if (myState[0] != null)
                 {
                     base.LoadViewState(myState[0]);
                 }
 
-                //Load ModuleID
+                // Load ModuleID
                 if (myState[1] != null)
                 {
                     this._profileProperties = (ProfilePropertyDefinitionCollection)myState[1];
@@ -378,7 +378,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             var allStates = new object[2];
 
-            //Save the Base Controls ViewState
+            // Save the Base Controls ViewState
             allStates[0] = base.SaveViewState();
             allStates[1] = this.ProfileProperties;
 
@@ -417,10 +417,10 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 this.UpdateProperties();
 
-                //Redirect to upadte page
+                // Redirect to upadte page
                 this.Response.Redirect(this.Request.RawUrl, true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -458,7 +458,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
                 else if (ReferenceEquals(column.GetType(), typeof(ImageCommandColumn)))
                 {
-                    //Manage Delete Confirm JS
+                    // Manage Delete Confirm JS
                     var imageColumn = (ImageCommandColumn)column;
                     switch (imageColumn.CommandName)
                     {
@@ -467,9 +467,9 @@ namespace DotNetNuke.Modules.Admin.Users
                             imageColumn.Text = Localization.GetString("Delete", this.LocalResourceFile);
                             break;
                         case "Edit":
-                            //The Friendly URL parser does not like non-alphanumeric characters
-                            //so first create the format string with a dummy value and then
-                            //replace the dummy value with the FormatString place holder
+                            // The Friendly URL parser does not like non-alphanumeric characters
+                            // so first create the format string with a dummy value and then
+                            // replace the dummy value with the FormatString place holder
                             string formatString = this.EditUrl("PropertyDefinitionID", "KEYFIELD", "EditProfileProperty");
                             formatString = formatString.Replace("KEYFIELD", "{0}");
                             imageColumn.NavigateURLFormatString = formatString;
@@ -505,7 +505,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.BindGrid();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -538,7 +538,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (e.IsAll)
             {
-                //Update All the properties
+                // Update All the properties
                 foreach (ProfilePropertyDefinition profProperty in this.ProfileProperties)
                 {
                     switch (propertyName)
@@ -554,7 +554,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             else
             {
-                //Update the indexed property
+                // Update the indexed property
                 ProfilePropertyDefinition profileProperty = this.ProfileProperties[e.Item.ItemIndex];
                 switch (propertyName)
                 {
@@ -611,7 +611,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 switch (e.Item.ItemType)
                 {
                     case ListItemType.Header:
-                        //we combined the header label and checkbox in same place, so it is control 1 instead of 0
+                        // we combined the header label and checkbox in same place, so it is control 1 instead of 0
                         ((WebControl)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).Attributes.Add("onclick", "dnn.util.checkallChecked(this," + COLUMN_REQUIRED + ");");
                         ((CheckBox)e.Item.Cells[COLUMN_REQUIRED].Controls[1]).AutoPostBack = false;
 

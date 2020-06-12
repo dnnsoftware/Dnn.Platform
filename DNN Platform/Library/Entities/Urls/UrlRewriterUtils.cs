@@ -122,20 +122,20 @@ namespace DotNetNuke.Entities.Urls
         {
             if (ex != null)
             {
-                //831 : improve exception logging by logging custom properties instead of just the raw exception
-                //this logic prevents a site logging an exception for every request made.  Instead 
-                //the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
-                //create a cache key for this exception type
+                // 831 : improve exception logging by logging custom properties instead of just the raw exception
+                // this logic prevents a site logging an exception for every request made.  Instead 
+                // the exception will be logged once for the life of the cache / application restart or 1 hour, whichever is shorter.
+                // create a cache key for this exception type
                 string cacheKey = ex.GetType().ToString();
-                //see if there is an existing object logged for this exception type
+                // see if there is an existing object logged for this exception type
                 object existingEx = DataCache.GetCache(cacheKey);
                 if (existingEx == null)
                 {
-                    //if there was no existing object logged for this exception type, this is a new exception
+                    // if there was no existing object logged for this exception type, this is a new exception
                     DateTime expire = DateTime.Now.AddHours(1);
                     DataCache.SetCache(cacheKey, cacheKey, expire);
-                    //just store the cache key - it doesn't really matter
-                    //create a log event
+                    // just store the cache key - it doesn't really matter
+                    // create a log event
                     var log = new LogInfo { LogTypeKey = "GENERAL_EXCEPTION" };
                     log.AddProperty("Url Processing Exception", "Exception in Url Rewriting Process");
                     log.AddProperty("Http Status", status);
@@ -184,7 +184,7 @@ namespace DotNetNuke.Entities.Urls
                     log.BypassBuffering = true;
                     LogController.Instance.AddLog(log);
 
-                    //Log this error in lig4net
+                    // Log this error in lig4net
                     Logger.Error(ex);
                 }
             }

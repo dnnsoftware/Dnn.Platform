@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Authentication
             this.AuthenticationType = Null.SetNullString(dr["AuthenticationType"]);
             this.AuthenticationToken = Null.SetNullString(dr["AuthenticationToken"]);
 
-            //Fill base class fields
+            // Fill base class fields
             this.FillInternal(dr);
         }
 

@@ -31,7 +31,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
 
         public DNNFriendlyUrlProvider()
         {
-            //Read the configuration specific information for this provider
+            // Read the configuration specific information for this provider
             var objProvider = (Provider)this._providerConfiguration.Providers[ProviderName];
 
             if (!String.IsNullOrEmpty(objProvider.Attributes["urlFormat"]))
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.Url.FriendlyUrl
                         break;
                 }
             }
-            //instance the correct provider implementation
+            // instance the correct provider implementation
             switch (this._urlFormat)
             {
                 case UrlFormatType.Advanced:

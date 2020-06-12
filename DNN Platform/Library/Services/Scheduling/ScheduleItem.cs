@@ -204,7 +204,7 @@ namespace DotNetNuke.Services.Scheduling
                     this.ScheduleStartDate = Null.SetNullDateTime(dr["ScheduleStartDate"]);
                 }
             }
-            //Fill BaseEntityInfo
+            // Fill BaseEntityInfo
             base.FillInternal(dr);
         }
 

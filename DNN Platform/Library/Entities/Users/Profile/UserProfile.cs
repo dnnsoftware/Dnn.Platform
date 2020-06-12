@@ -34,12 +34,12 @@ namespace DotNetNuke.Entities.Users
     {
         #region Public Constants
 
-        //Name properties
+        // Name properties
         public const string USERPROFILE_FirstName = "FirstName";
         public const string USERPROFILE_LastName = "LastName";
         public const string USERPROFILE_Title = "Title";
 
-        //Address Properties
+        // Address Properties
         public const string USERPROFILE_Unit = "Unit";
         public const string USERPROFILE_Street = "Street";
         public const string USERPROFILE_City = "City";
@@ -47,16 +47,16 @@ namespace DotNetNuke.Entities.Users
         public const string USERPROFILE_Region = "Region";
         public const string USERPROFILE_PostalCode = "PostalCode";
 
-        //Phone contact
+        // Phone contact
         public const string USERPROFILE_Telephone = "Telephone";
         public const string USERPROFILE_Cell = "Cell";
         public const string USERPROFILE_Fax = "Fax";
 
-        //Online contact
+        // Online contact
         public const string USERPROFILE_Website = "Website";
         public const string USERPROFILE_IM = "IM";
 
-        //Preferences
+        // Preferences
         public const string USERPROFILE_Photo = "Photo";
         public const string USERPROFILE_TimeZone = "TimeZone";
         public const string USERPROFILE_PreferredLocale = "PreferredLocale";
@@ -71,7 +71,7 @@ namespace DotNetNuke.Entities.Users
 
         private UserInfo _user;
 
-        //collection to store all profile properties.
+        // collection to store all profile properties.
         private ProfilePropertyDefinitionCollection _profileProperties;
 
         #endregion
@@ -313,7 +313,7 @@ namespace DotNetNuke.Entities.Users
                             string rootFolder = "";
                             if (fileInfo.PortalId == Null.NullInteger)
                             {
-                                //Host
+                                // Host
                                 rootFolder = Globals.HostPath;
                             }
                             else
@@ -366,16 +366,16 @@ namespace DotNetNuke.Entities.Users
         {
             get
             {
-                //First set to Server
+                // First set to Server
                 TimeZoneInfo _TimeZone = TimeZoneInfo.Local;
 
-                //Next check if there is a Property Setting
+                // Next check if there is a Property Setting
                 string _TimeZoneId = this.GetPropertyValue(USERPROFILE_PreferredTimeZone);
                 if (!string.IsNullOrEmpty(_TimeZoneId))
                 {
                     _TimeZone = TimeZoneInfo.FindSystemTimeZoneById(_TimeZoneId);
                 }
-                //Next check if there is a Portal Setting
+                // Next check if there is a Portal Setting
                 else
                 {
                     PortalSettings _PortalSettings = PortalController.Instance.GetCurrentPortalSettings();
@@ -385,7 +385,7 @@ namespace DotNetNuke.Entities.Users
                     }
                 }
 
-                //still we can't find it or it's somehow set to null
+                // still we can't find it or it's somehow set to null
                 return _TimeZone ?? (TimeZoneInfo.Local);
             }
             set
@@ -630,7 +630,7 @@ namespace DotNetNuke.Entities.Users
             {
                 profileProp.PropertyValue = propValue;
 
-                //Set the IsDirty flag
+                // Set the IsDirty flag
                 if (profileProp.IsDirty)
                 {
                     this._IsDirty = true;

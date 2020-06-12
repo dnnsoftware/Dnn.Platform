@@ -48,16 +48,16 @@ namespace DotNetNuke.Tests.Integration.Modules.DDRMenu
         [Test]
         public void Page_Should_Able_To_Duplicate_With_Ddr_Menu_On_It()
         {
-            //Create new page with DDR Menu on it
+            // Create new page with DDR Menu on it
             int tabId;
             this.CreateNewPage(Null.NullInteger, out tabId);
             int moduleId;
             this.AddModuleToPage(tabId, "DDRMenu", out moduleId);
 
-            //apply module settings.
+            // apply module settings.
             ModuleController.SetModuleSettingValue(moduleId, "MenuStyle", "Menus/MainMenu");
 
-            //Copy Page
+            // Copy Page
             int copyTabId;
             this.CreateNewPage(tabId, out copyTabId);
         }

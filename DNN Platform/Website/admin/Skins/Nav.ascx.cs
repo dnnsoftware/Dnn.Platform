@@ -32,27 +32,27 @@ namespace DotNetNuke.UI.Skins.Controls
                 string strDownArrow;
                 var objSkins = new SkinController();
 				
-				//image for right facing arrow
+				// image for right facing arrow
                 if (!String.IsNullOrEmpty(this.IndicateChildImageSub))
                 {
                     strRightArrow = this.IndicateChildImageSub;
                 }
                 else
                 {
-                    strRightArrow = "breadcrumb.gif"; //removed APPIMAGEPATH token - https://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
+                    strRightArrow = "breadcrumb.gif"; // removed APPIMAGEPATH token - https://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
                 }
 				
-				//image for down facing arrow
+				// image for down facing arrow
                 if (!String.IsNullOrEmpty(this.IndicateChildImageRoot))
                 {
                     strDownArrow = this.IndicateChildImageRoot;
                 }
                 else
                 {
-                    strDownArrow = "menu_down.gif"; //removed APPIMAGEPATH token - https://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
+                    strDownArrow = "menu_down.gif"; // removed APPIMAGEPATH token - https://www.dnnsoftware.com/Community/ForumsDotNetNuke/tabid/795/forumid/76/threadid/85554/scope/posts/Default.aspx
                 }
 				
-				//Set correct image path for all separator images
+				// Set correct image path for all separator images
                 if (!String.IsNullOrEmpty(this.SeparatorHTML))
                 {
                     this.SeparatorHTML = this.FixImagePath(this.SeparatorHTML);
@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             DNNNodeCollection objNodes;
             objNodes = this.GetNavigationNodes(objNode);
-            this.Control.ClearNodes(); //since we always bind we need to clear the nodes for providers that maintain their state
+            this.Control.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.Bind(objNodes);
         }
 

@@ -90,7 +90,7 @@ namespace DotNetNuke.Services.Mobile
 					}
 					else
 					{
-						//get from database
+						// get from database
 						this._matchRules = CBO.FillCollection<MatchRule>(DataProvider.Instance().GetRedirectionRules(this.Id)).Cast<IMatchRule>().ToList();
 					}
 				}

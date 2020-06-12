@@ -117,10 +117,10 @@ namespace Dnn.EditBar.UI.Controllers
 
             this.Page.Items.Add("ContentEditorManager", this);
 
-            //if there is pending work cookie, then reset it
+            // if there is pending work cookie, then reset it
             this.CheckPendingData();
 
-            //if there is callback data cookie, then process the module for drag.
+            // if there is callback data cookie, then process the module for drag.
             this.CheckCallbackData();
 
             this.EnsureChildControls();
@@ -146,7 +146,7 @@ namespace Dnn.EditBar.UI.Controllers
                     continue;
                 }
 
-                //create update panel
+                // create update panel
                 var updatePanel = new UpdatePanel
                 {
                     UpdateMode = UpdatePanelUpdateMode.Conditional,
@@ -156,7 +156,7 @@ namespace Dnn.EditBar.UI.Controllers
 
                 try
                 {
-                    //find update panels in pane and fire the unload event for a known issue: CONTENT-4039
+                    // find update panels in pane and fire the unload event for a known issue: CONTENT-4039
                     var updatePanels = this.GetUpdatePanelsInPane(pane);
                     updatePanels.ForEach(p => p.Unload += this.UpdatePanelUnloadEvent);
                     updatePanel.Unload += this.UpdatePanelUnloadEvent;
@@ -229,7 +229,7 @@ namespace Dnn.EditBar.UI.Controllers
         private void RegisterClientResources()
         {
             ClientResourceManager.EnableAsyncPostBackHandler();
-            //register drop down list required resources
+            // register drop down list required resources
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/components/DropDownList/dnn.DropDownList.css", FileOrder.Css.ResourceCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, "~/Resources/Shared/scripts/jquery/dnn.jScrollBar.css", FileOrder.Css.ResourceCss);
 
@@ -252,7 +252,7 @@ namespace Dnn.EditBar.UI.Controllers
             ServicesFramework.Instance.RequestAjaxScriptSupport();
 
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            //We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
+            // We need to add the Dnn JQuery plugins because the Edit Bar removes the Control Panel from the page
             JavaScript.RequestRegistration(CommonJs.KnockoutMapping);
 
             ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Components/Tokeninput/jquery.tokeninput.js");
@@ -480,7 +480,7 @@ namespace Dnn.EditBar.UI.Controllers
                         {
                             this.RemoveTabModule(tabId, moduleId);
 
-                            //remove related modules
+                            // remove related modules
                             ModuleController.Instance.GetTabModules(tabId).Values
                                 .Where(m => m.CreatedOnDate > module.CreatedOnDate && m.CreatedByUserID == module.CreatedByUserID)
                                 .ForEach(m =>
@@ -500,7 +500,7 @@ namespace Dnn.EditBar.UI.Controllers
         {
             ModuleController.Instance.DeleteTabModule(tabId, moduleId, false);
 
-            //remove that module control
+            // remove that module control
             var moduleControl = ControlUtilities.FindFirstDescendent<Container>(this.Skin,
                 c => c.ID == "ctr" + moduleId);
 

@@ -43,10 +43,10 @@ namespace DotNetNuke.UI.WebControls
         {
             PortalSettings _portalSettings = Globals.GetPortalSettings();
 
-            //Get the Pages
+            // Get the Pages
             List<TabInfo> listTabs = TabController.GetPortalTabs(_portalSettings.PortalId, Null.NullInteger, true, "<" + Localization.GetString("None_Specified") + ">", true, false, true, true, false);
 
-            //Render the Select Tag
+            // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
@@ -55,22 +55,22 @@ namespace DotNetNuke.UI.WebControls
             {
                 TabInfo tab = listTabs[tabIndex];
 
-                //Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, tab.TabID.ToString());
 
                 if (tab.TabID == this.IntegerValue)
                 {
-					//Add the Selected Attribute
+					// Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
 				
-                //Render Option Tag
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(tab.IndentedTabName);
                 writer.RenderEndTag();
             }
 			
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 
@@ -84,10 +84,10 @@ namespace DotNetNuke.UI.WebControls
         {
             TabInfo linkedTabInfo = TabController.Instance.GetTab(this.IntegerValue, Globals.GetPortalSettings().PortalId, false);
 
-            //don't render anything if we didn't find the tab
+            // don't render anything if we didn't find the tab
             if (linkedTabInfo != null)
             {
-                //Not really sure how to get a good TabID and ModuleID but it's only for tracking so not to concerned
+                // Not really sure how to get a good TabID and ModuleID but it's only for tracking so not to concerned
                 int tabID = 0;
                 int moduleID = 0;
                 Int32.TryParse(this.Page.Request.QueryString["tabid"], out tabID);

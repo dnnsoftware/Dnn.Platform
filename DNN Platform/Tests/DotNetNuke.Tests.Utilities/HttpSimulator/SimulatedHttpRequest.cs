@@ -89,10 +89,10 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             return (this._port == 443) ? true : false;
         }
 
-        //public override string GetProtocol()
-        //{
+        // public override string GetProtocol()
+        // {
         //    return (_port == 443) ? "https:" : "http:";
-        //}
+        // }
 
 	    /// <summary>
 	    /// Gets the headers.

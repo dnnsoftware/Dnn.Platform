@@ -22,7 +22,7 @@ using System.Web.UI;
 [assembly: AssemblyDescription("Open Source Web Application Framework")]
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible(false)]
-//The following GUID is for the ID of the typelib if this project is exposed to COM
+// The following GUID is for the ID of the typelib if this project is exposed to COM
 
 [assembly: Guid("a5e0864a-df43-4b6a-8e5f-3ba6b368d876")]
 

@@ -85,7 +85,7 @@ namespace DotNetNuke.Common.Lists
                 }
                 catch
                 {
-                    //ignore
+                    // ignore
                 }
                 if (string.IsNullOrEmpty(res)) { res = this._Text; };
                 return res;

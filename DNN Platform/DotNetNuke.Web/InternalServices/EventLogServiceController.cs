@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.InternalServices
             int i;
             for (i = 0; i <= objLogProperties.Count - 1; i++)
             {
-                //display the values in the Panel child controls.
+                // display the values in the Panel child controls.
                 var ldi = (LogDetailInfo)objLogProperties[i];
                 if (ldi.PropertyName == "Message")
                 {

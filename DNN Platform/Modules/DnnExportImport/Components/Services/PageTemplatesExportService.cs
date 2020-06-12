@@ -33,11 +33,11 @@ namespace Dnn.ExportImport.Components.Services
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob)) return;
-            //Skip the export if all the folders have been processed already.
+            // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 1)
                 return;
 
-            //Create Zip File to hold files
+            // Create Zip File to hold files
             var skip = this.GetCurrentSkip();
             var currentIndex = skip;
             var totalTemplatesExported = 0;
@@ -60,7 +60,7 @@ namespace Dnn.ExportImport.Components.Services
                             .ToList();
                     var totalTemplates = templates.Count;
 
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalTemplates : this.CheckPoint.TotalItems;
                     if (this.CheckPointStageCallback(this)) return;
 
@@ -79,7 +79,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.ProcessedItems++;
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalTemplates;
                         currentIndex++;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
                     }
                     this.CheckPoint.Stage++;
@@ -99,7 +99,7 @@ namespace Dnn.ExportImport.Components.Services
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob)) return;
-            //Skip the export if all the templates have been processed already.
+            // Skip the export if all the templates have been processed already.
             if (this.CheckPoint.Stage >= 2 || this.CheckPoint.Completed)
                 return;
 

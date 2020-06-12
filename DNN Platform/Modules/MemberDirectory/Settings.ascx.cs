@@ -128,16 +128,16 @@ namespace DotNetNuke.Modules.MemberDirectory
                 System.Web.UI.WebControls.ListItemCollection propertiesCollection = this.GetPropertiesCollection(profileResourceFile);
                     
                 
-                //Bind the ListItemCollection to the list
+                // Bind the ListItemCollection to the list
                 this.propertyList.DataSource = propertiesCollection;
                 this.propertyList.DataBind();
 
-                //Insert custom properties to the Search field lists
+                // Insert custom properties to the Search field lists
                 propertiesCollection.Insert(0, new ListItem(Localization.GetString("Username", this.LocalResourceFile), "Username"));
                 propertiesCollection.Insert(1, new ListItem(Localization.GetString("DisplayName", this.LocalResourceFile), "DisplayName"));
                 propertiesCollection.Insert(2, new ListItem(Localization.GetString("Email", this.LocalResourceFile), "Email"));
 
-                //Bind the properties collection in the Search Field Lists
+                // Bind the properties collection in the Search Field Lists
 
                 this.searchField1List.DataSource = propertiesCollection;
                 this.searchField1List.DataBind();

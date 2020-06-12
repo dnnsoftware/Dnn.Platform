@@ -40,7 +40,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (taxonomyTerms.Count > 0 || taxonomyVocabularies.Count > 0)
                 {
                     var scopeTypes = CBO.FillCollection<TaxonomyScopeType>(DataProvider.Instance().GetAllScopeTypes());
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? scopeTypes.Count : this.CheckPoint.TotalItems;
                     if (this.CheckPoint.TotalItems == scopeTypes.Count)
                     {
@@ -52,8 +52,8 @@ namespace Dnn.ExportImport.Components.Services
                     this.CheckPointStageCallback(this);
 
                     this.Repository.CreateItems(scopeTypes);
-                    //Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
-                    //CheckPoint.ProcessedItems += scopeTypes.Count;
+                    // Result.AddSummary("Exported Taxonomy Scopes", scopeTypes.Count.ToString()); -- not imported so don't show
+                    // CheckPoint.ProcessedItems += scopeTypes.Count;
                 }
                 this.CheckPoint.Progress = 25;
 
@@ -63,8 +63,8 @@ namespace Dnn.ExportImport.Components.Services
                     if (vocabularyTypes == null)
                         vocabularyTypes = CBO.FillCollection<TaxonomyVocabularyType>(DataProvider.Instance().GetAllVocabularyTypes());
                     this.Repository.CreateItems(vocabularyTypes);
-                    //Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
-                    //CheckPoint.ProcessedItems += vocabularyTypes.Count;
+                    // Result.AddSummary("Exported Vocabulary Types", vocabularyTypes.Count.ToString()); -- not imported so don't show
+                    // CheckPoint.ProcessedItems += vocabularyTypes.Count;
                 }
 
                 this.Repository.CreateItems(taxonomyTerms);
@@ -100,16 +100,16 @@ namespace Dnn.ExportImport.Components.Services
             if (this.CheckPoint.Stage > 0) return;
             if (this.CheckCancelled(importJob)) return;
 
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
             if (this.CheckPoint.Stage == 0)
             {
                 var otherScopeTypes = this.Repository.GetAllItems<TaxonomyScopeType>().ToList();
-                //the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
-                //CheckPoint.Progress = 10;
+                // the table Taxonomy_ScopeTypes is used for lookup only and never changed/updated in the database
+                // CheckPoint.Progress = 10;
 
-                //var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
-                //the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
+                // var otherVocabularyTypes = Repository.GetAllItems<TaxonomyVocabularyType>().ToList();
+                // the table Taxonomy_VocabularyTypes is used for lookup only and never changed/updated in the database
                 this.CheckPoint.Progress = 20;
 
                 var otherVocabularies = this.Repository.GetAllItems<TaxonomyVocabulary>().ToList();
@@ -205,7 +205,7 @@ namespace Dnn.ExportImport.Components.Services
             IList<TaxonomyVocabulary> otherVocabularies, IList<TaxonomyTerm> otherTaxonomyTerms)
         {
             var dataService = Util.GetDataService();
-            //var vocabularyController = new VocabularyController();
+            // var vocabularyController = new VocabularyController();
             var localTaxonomyTerms = GetTaxonomyTerms(importDto.PortalId, DateUtils.GetDatabaseUtcTime().AddYears(1), null);
             foreach (var other in otherTaxonomyTerms)
             {

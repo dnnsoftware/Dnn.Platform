@@ -57,9 +57,9 @@ namespace DotNetNuke.HttpModules.Compression
         /// </summary>
         internal void WriteHeaders()
         {
-            //this is dangerous.  if Response.End is called before the filter is used, directly or indirectly,
-            //the content will not pass through the filter.  However, this header will still be appended.  
-            //Look for handling cases in PreRequestSendHeaders and Pre
+            // this is dangerous.  if Response.End is called before the filter is used, directly or indirectly,
+            // the content will not pass through the filter.  However, this header will still be appended.  
+            // Look for handling cases in PreRequestSendHeaders and Pre
             HttpContext.Current.Response.AppendHeader("Content-Encoding", this.ContentEncoding);
             HttpContext.Current.Response.AppendHeader("X-Compressed-By", "DotNetNuke-Compression");
             this._HasWrittenHeaders = true;

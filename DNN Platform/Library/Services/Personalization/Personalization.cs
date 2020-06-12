@@ -23,22 +23,22 @@ namespace DotNetNuke.Services.Personalization
         {
             HttpContext context = HttpContext.Current;
 
-            //First try and load Personalization object from the Context
+            // First try and load Personalization object from the Context
             var personalization = (PersonalizationInfo)context.Items["Personalization"];
 
-            //If the Personalization object is nothing load it and store it in the context for future calls
+            // If the Personalization object is nothing load it and store it in the context for future calls
             if (personalization == null)
             {
                 var _portalSettings = (PortalSettings)context.Items["PortalSettings"];
 
-                //load the user info object
+                // load the user info object
                 UserInfo UserInfo = UserController.Instance.GetCurrentUserInfo();
 
-                //get the personalization object
+                // get the personalization object
                 var personalizationController = new PersonalizationController();
                 personalization = personalizationController.LoadProfile(UserInfo.UserID, _portalSettings.PortalId);
 
-                //store it in the context
+                // store it in the context
                 context.Items.Add("Personalization", personalization);
             }
             return personalization;

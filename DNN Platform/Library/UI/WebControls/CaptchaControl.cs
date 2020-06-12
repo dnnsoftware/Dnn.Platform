@@ -349,7 +349,7 @@ namespace DotNetNuke.UI.WebControls
 			var url = this.ResolveUrl(this.RenderUrl);
 			url += "?" + KEY + "=" + Encrypt(this.EncodeTicket(), DateTime.Now.AddSeconds(this.Expiration));
 
-			//Append the Alias to the url so that it doesn't lose track of the alias it's currently on
+			// Append the Alias to the url so that it doesn't lose track of the alias it's currently on
 			var _portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 			url += "&alias=" + _portalSettings.PortalAlias.HTTPAlias;
 			return url;
@@ -559,7 +559,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                     g = Graphics.FromImage(bmp);
 
-                    //Create Text
+                    // Create Text
                     GraphicsPath textPath = CreateText(text, width, height, g);
                     if (String.IsNullOrEmpty(backgroundImage))
                     {
@@ -680,7 +680,7 @@ namespace DotNetNuke.UI.WebControls
 			}
 		    var challenge = sb.ToString();
 
-            //NOTE: this could be a problem in a web farm using in-memory caching where
+            // NOTE: this could be a problem in a web farm using in-memory caching where
             // the request might go to another server in the farm. Also, in a system
             // with a single server or web-farm, the cache might be cleared
             // which will cause a problem in such case unless sticky sessions are used.
@@ -698,23 +698,23 @@ namespace DotNetNuke.UI.WebControls
 		{
             if (savedState != null)
             {
-                //Load State from the array of objects that was saved at SaveViewState.
+                // Load State from the array of objects that was saved at SaveViewState.
                 var myState = (object[])savedState;
 
-                //Load the ViewState of the Base Control
+                // Load the ViewState of the Base Control
                 if (myState[0] != null)
                 {
                     base.LoadViewState(myState[0]);
                 }
 
-                //Load the CAPTCHA Text from the ViewState
+                // Load the CAPTCHA Text from the ViewState
                 if (myState[1] != null)
                 {
                     this._CaptchaText = Convert.ToString(myState[1]);
                 }
             }
-            //var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
-            //_CaptchaText
+            // var cacheKey = string.Format(DataCache.CaptchaCacheKey, masterPortalId);
+            // _CaptchaText
                 
 		}
 
@@ -723,13 +723,13 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
-			//Generate Random Challenge Text
+			// Generate Random Challenge Text
 			this._CaptchaText = this.GetNextCaptcha();
 
-			//Enable Viewstate Encryption
+			// Enable Viewstate Encryption
 			this.Page.RegisterRequiresViewStateEncryption();
 
-			//Call Base Class method
+			// Call Base Class method
 			base.OnPreRender(e);
 		}
 
@@ -750,11 +750,11 @@ namespace DotNetNuke.UI.WebControls
 		{
 			this.ControlStyle.AddAttributesToRender(writer);
 
-			//Render outer <div> Tag
+			// Render outer <div> Tag
 			writer.AddAttribute("class", "dnnLeft");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-			//Render image <img> Tag
+			// Render image <img> Tag
 			writer.AddAttribute(HtmlTextWriterAttribute.Src, this.GetUrl());
 			writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
 			if (!String.IsNullOrEmpty(this.ToolTip))
@@ -768,7 +768,7 @@ namespace DotNetNuke.UI.WebControls
 			writer.RenderBeginTag(HtmlTextWriterTag.Img);
 			writer.RenderEndTag();
 			
-			//Render Help Text
+			// Render Help Text
 			if (!String.IsNullOrEmpty(this.Text))
 			{
 				writer.RenderBeginTag(HtmlTextWriterTag.Div);
@@ -776,7 +776,7 @@ namespace DotNetNuke.UI.WebControls
 				writer.RenderEndTag();
 			}
 			
-			//Render text box <input> Tag
+			// Render text box <input> Tag
 			this.TextBoxStyle.AddAttributesToRender(writer);
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
 			writer.AddAttribute(HtmlTextWriterAttribute.Style, "width:" + this.Width);
@@ -805,7 +805,7 @@ namespace DotNetNuke.UI.WebControls
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();
 
-			//Render error message
+			// Render error message
 			if (!this.IsValid && this.Page.IsPostBack && !string.IsNullOrEmpty(this._UserText))
 			{
 				this.ErrorStyle.AddAttributesToRender(writer);
@@ -814,7 +814,7 @@ namespace DotNetNuke.UI.WebControls
 				writer.RenderEndTag();
 			}
 			
-			//Render </div>
+			// Render </div>
 			writer.RenderEndTag();
 		}
 

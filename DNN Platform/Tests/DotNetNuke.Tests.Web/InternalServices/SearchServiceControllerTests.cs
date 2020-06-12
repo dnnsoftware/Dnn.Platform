@@ -101,7 +101,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         [SetUp]
         public void SetUp()
         {
-            //Arrange
+            // Arrange
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.ResetContainer();
 
@@ -131,7 +131,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                     .Returns(new Dictionary<string, string>() { { tabKey, TabSearchTypeName }, { userKey, UserSearchTypeName } });
             CBO.SetTestableInstance(this._mockCBO.Object);
 
-            //create instance of the SearchServiceController
+            // create instance of the SearchServiceController
             var request = new HttpRequestMessage();
             var configuration = new HttpConfiguration();
             var provider = new Mock<ITabAndModuleInfoProvider>();
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         }
         private void SetupDataProvider()
         {
-            //Standard DataProvider Path for Logging
+            // Standard DataProvider Path for Logging
             this._mockDataProvider.Setup(d => d.GetProviderPath()).Returns("");
 
             this._mockDataProvider.Setup(d => d.GetPortals(It.IsAny<string>())).Returns<string>(this.GetPortalsCallBack);
@@ -295,7 +295,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
             table.Rows.Add(0, 0, "test", "descr", "domain", -1, DateTime.Now, -1, DateTime.Now);
             return table.CreateDataReader();
         }
-        //return 2 test tabs(TabId 56 - Home,  TabId 57 - AboutUs)
+        // return 2 test tabs(TabId 56 - Home,  TabId 57 - AboutUs)
         private IDataReader GetTabs()
         {
             var table = new DataTable("Tabs");
@@ -348,7 +348,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             return table.CreateDataReader();
         }
-        //return 4 html modules (TabId 56 - Home: ModuleIDs:367, 368, 370  TabId 57 - AboutUs: 378//)
+        // return 4 html modules (TabId 56 - Home: ModuleIDs:367, 368, 370  TabId 57 - AboutUs: 378//)
         private IDataReader GetSearchModules()
         {
             var table = new DataTable("SearchModules");
@@ -449,7 +449,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
                            "664BAA98-7E24-461F-8180-36527619D042", "");
             return table.CreateDataReader();
         }
-        //returns 2 moduledefinitions - Text/HTML and Journal
+        // returns 2 moduledefinitions - Text/HTML and Journal
         private IDataReader GetModuleDefinitions()
         {
             var table = new DataTable("ModuleDefinitions");
@@ -469,7 +469,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
 
             return table.CreateDataReader();
         }
-        //returns all search types - 3 SearchTypes - module, tab, user
+        // returns all search types - 3 SearchTypes - module, tab, user
         private  IDataReader GetAllSearchTypes()
         {
             var table = new DataTable("SearchTypes");
@@ -554,16 +554,16 @@ namespace DotNetNuke.Tests.Web.InternalServices
             const string tabUrl1 = "mysite/Home";
             const string tabUrl2 = "mysite/AboutUs";
 
-            //first tab with 2 modules
+            // first tab with 2 modules
             var doc1 = new SearchDocument { UniqueKey = "key01", TabId = TabId1, Url = tabUrl1, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow };
             var doc2 = new SearchDocument { UniqueKey = "key02", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId2, Body = moduleBody, RoleId = 731};
             var doc3 = new SearchDocument { UniqueKey = "key03", TabId = TabId1, Title = keyword, Url = tabUrl1, SearchTypeId = ModuleSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, ModuleDefId = HtmlModuleDefId, ModuleId = HtmlModuleId1, Body = moduleBody, RoleId = 731 };
            
-            //second tab with 1 module
+            // second tab with 1 module
             var doc4 = new SearchDocument { UniqueKey = "key04", TabId = TabId2, Url = tabUrl2, Title = keyword, SearchTypeId = TabSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId0 };
             var doc5 = new SearchDocument { UniqueKey = "key05", TabId = TabId2, Title = keyword, Url = tabUrl2, SearchTypeId = ModuleSearchTypeId, ModuleDefId = HtmlModuleId, ModuleId = HtmlModuleId3, ModifiedTimeUtc = DateTime.UtcNow, Body = moduleBody, RoleId = 731 };
             
-            //user doc
+            // user doc
             var userdoc = new SearchDocument { UniqueKey = "key06", Url = userUrl, Title = keyword, SearchTypeId = UserSearchTypeId, ModifiedTimeUtc = DateTime.UtcNow, RoleId = RoleId731 };
             this._internalSearchController.AddSearchDocument(doc1);
             this._internalSearchController.AddSearchDocument(doc2);
@@ -579,22 +579,22 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 RoleId = 731
             };
 
-            //Run 
+            // Run 
             var search = this.GetGroupedDetailViewResults(query);
             
-            //Assert
+            // Assert
             var groupedDetailViews = search as List<GroupedDetailView> ?? search.ToList();
             
-            //Overall 3 groups - tab1, tab2 and user
+            // Overall 3 groups - tab1, tab2 and user
             Assert.AreEqual(3, groupedDetailViews.Count());
             
-            //Tab 1 has 2 DetailViews 
+            // Tab 1 has 2 DetailViews 
             Assert.AreEqual(2, groupedDetailViews.Single(x => x.DocumentUrl == tabUrl1).Results.Count());
 
-            //Tab 2 has 1 DetailViews 
+            // Tab 2 has 1 DetailViews 
             Assert.AreEqual(1, groupedDetailViews.Single(x => x.DocumentUrl == tabUrl2).Results.Count());
 
-            //UserUrl has 1 DetailViews 
+            // UserUrl has 1 DetailViews 
             Assert.AreEqual(1, groupedDetailViews.Single(x => x.DocumentUrl == userUrl).Results.Count());
         }
 
@@ -631,26 +631,26 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 WildCardSearch = true
             };
 
-            //Run 
+            // Run 
             var search = this.GetGroupBasicViewResults(query);
-            //Assert - overall 2 groups: tabs and users
+            // Assert - overall 2 groups: tabs and users
             var groupedBasicViews = search as List<GroupedBasicView> ?? search.ToList();
             Assert.AreEqual(2, groupedBasicViews.Count());
 
-            //1 User results 
+            // 1 User results 
             Assert.AreEqual(1, groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.Count());
 
-            //User result should have 1 attribute(avatar)
+            // User result should have 1 attribute(avatar)
             Assert.AreEqual(1, groupedBasicViews.Single(x => x.DocumentTypeName == "user").Results.ElementAt(0).Attributes.Count());
 
-            //2 Tabs results
+            // 2 Tabs results
             Assert.AreEqual(2, groupedBasicViews.Single(x => x.DocumentTypeName == "tab").Results.Count());
         }
 
         [Test]
         public void ModifyingDocumentsDoesNotCreateDuplicates()
         {
-            //Arrange
+            // Arrange
             const string tabUrl = "mysite/ContentUrl";
             const string title = "content title";
             const string contentBody = "content body";
@@ -709,10 +709,10 @@ namespace DotNetNuke.Tests.Web.InternalServices
                 WildCardSearch = true
             };
 
-            //Run 
+            // Run 
             var searchResults = this.GetGroupedDetailViewResults(query).ToList();
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, searchResults.Count());
             Assert.AreEqual(1, searchResults.First().Results.Count);
             Assert.AreEqual(tabUrl, searchResults.First().Results.First().DocumentUrl);

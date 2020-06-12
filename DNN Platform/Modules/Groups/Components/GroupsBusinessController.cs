@@ -73,10 +73,10 @@ namespace DotNetNuke.Modules.Groups.Components
         {
             var actions = new List<NotificationTypeAction>();
             
-            //DesktopModule should not be null
+            // DesktopModule should not be null
             var deskModuleId = DesktopModuleController.GetDesktopModuleByFriendlyName("Social Groups").DesktopModuleID;
 
-            //GroupPendingNotification
+            // GroupPendingNotification
             var type = new NotificationType { Name = "GroupPendingNotification", Description = "Group Pending Notification", DesktopModuleId = deskModuleId};
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
@@ -96,14 +96,14 @@ namespace DotNetNuke.Modules.Groups.Components
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
             }
 
-            //GroupApprovedNotification
+            // GroupApprovedNotification
             type = new NotificationType { Name = "GroupApprovedNotification", Description = "Group Approved Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
                 NotificationsController.Instance.CreateNotificationType(type);
             }
 
-            //GroupCreatedNotification
+            // GroupCreatedNotification
             type = new NotificationType { Name = "GroupCreatedNotification", Description = "Group Created Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
@@ -119,14 +119,14 @@ namespace DotNetNuke.Modules.Groups.Components
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
             }
 
-            //GroupRejectedNotification
+            // GroupRejectedNotification
             type = new NotificationType { Name = "GroupRejectedNotification", Description = "Group Rejected Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
                 NotificationsController.Instance.CreateNotificationType(type);
             }
 
-            //GroupMemberPendingNotification
+            // GroupMemberPendingNotification
             type = new NotificationType { Name = "GroupMemberPendingNotification", Description = "Group Member Pending Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
@@ -148,14 +148,14 @@ namespace DotNetNuke.Modules.Groups.Components
                 NotificationsController.Instance.SetNotificationTypeActions(actions, type.NotificationTypeId);
             }
 
-            //GroupMemberApprovedNotification
+            // GroupMemberApprovedNotification
             type = new NotificationType { Name = "GroupMemberApprovedNotification", Description = "Group Member Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {
                 NotificationsController.Instance.CreateNotificationType(type);
             }
 
-            //GroupMemberRejectedNotification
+            // GroupMemberRejectedNotification
             type = new NotificationType { Name = "GroupMemberRejectedNotification", Description = "Group Rejected Notification", DesktopModuleId = deskModuleId };
             if (NotificationsController.Instance.GetNotificationType(type.Name) == null)
             {

@@ -50,9 +50,9 @@ namespace DotNetNuke.Services.ImprovementsProgram
 
         public bool IsBeaconEnabledForControlBar(UserInfo user)
         {
-            //check for Update Service Opt-in
-            //check if a host or admin
-            //check if currently on a host/admin page
+            // check for Update Service Opt-in
+            // check if a host or admin
+            // check if currently on a host/admin page
             var enabled = false;
 
             if (Host.ParticipateInImprovementProg && !IsAlphaMode)
@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.ImprovementsProgram
             if (!string.IsNullOrEmpty(filePath))
                 qparams["f"] = HttpUtility.UrlEncode(filePath);
 
-            //add package and version to context of request
+            // add package and version to context of request
             string packageName = DotNetNukeContext.Current.Application.Name;
             string installVersion = Common.Globals.FormatVersion(DotNetNukeContext.Current.Application.Version, "00", 3, "");
             if (!string.IsNullOrEmpty(packageName))

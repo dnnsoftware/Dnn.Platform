@@ -121,10 +121,10 @@ namespace DotNetNuke.Admin.Containers
 
                 if (this.ActionRoot.Visible)
                 {
-                    //Add Menu Items
+                    // Add Menu Items
                     foreach (ModuleAction rootAction in this.ActionRoot.Actions)
                     {
-                        //Process Children
+                        // Process Children
                         var actions = new List<ModuleAction>();
                         foreach (ModuleAction action in rootAction.Actions)
                         {
@@ -178,7 +178,7 @@ namespace DotNetNuke.Admin.Containers
                         || TabController.Instance.GetTabsByModuleID(this.ModuleContext.ModuleId).Count > 1;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

@@ -31,19 +31,19 @@ namespace DotNetNuke.Tests.Core.Framework
         [Test]
         public void RequestingAjaxAntiForgeryIsNoted()
         {
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             ServicesFramework.Instance.RequestAjaxAntiForgerySupport();
 
-            //Assert
+            // Assert
             Assert.IsTrue(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired);
         }
 
         [Test]
         public void NoAjaxAntiForgeryRequestMeansNotRequired()
         {
-            //Assert
+            // Assert
             Assert.IsFalse(ServicesFrameworkInternal.Instance.IsAjaxAntiForgerySupportRequired);
         }
     }

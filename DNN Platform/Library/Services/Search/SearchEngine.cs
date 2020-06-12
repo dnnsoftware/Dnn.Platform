@@ -57,35 +57,35 @@ namespace DotNetNuke.Services.Search
         /// -----------------------------------------------------------------------------
         internal void IndexContent()
         {
-            //Index TAB META-DATA
+            // Index TAB META-DATA
             var tabIndexer = new TabIndexer();
             var searchDocsCount = this.GetAndStoreSearchDocuments(tabIndexer);
             var indexedSearchDocumentCount = searchDocsCount;
             this.AddIdexingResults("Tabs Indexed", searchDocsCount);
 
-            //Index MODULE META-DATA from modules that inherit from ModuleSearchBase
+            // Index MODULE META-DATA from modules that inherit from ModuleSearchBase
             var moduleIndexer = new ModuleIndexer(true);
             searchDocsCount = this.GetAndStoreModuleMetaData(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
             this.AddIdexingResults("Modules (Metadata) Indexed", searchDocsCount);
 
-            //Index MODULE CONTENT from modules that inherit from ModuleSearchBase
+            // Index MODULE CONTENT from modules that inherit from ModuleSearchBase
             searchDocsCount = this.GetAndStoreSearchDocuments(moduleIndexer);
             indexedSearchDocumentCount += searchDocsCount;
 
-            //Index all Defunct ISearchable module content
+            // Index all Defunct ISearchable module content
 #pragma warning disable 0618
             var searchItems = this.GetContent(moduleIndexer);
             SearchDataStoreProvider.Instance().StoreSearchItems(searchItems);
 #pragma warning restore 0618
             indexedSearchDocumentCount += searchItems.Count;
 
-            //Both ModuleSearchBase and ISearchable module content count
+            // Both ModuleSearchBase and ISearchable module content count
             this.AddIdexingResults("Modules (Content) Indexed", searchDocsCount + searchItems.Count);
 
             if (!HostController.Instance.GetBoolean("DisableUserCrawling", false))
             {
-                //Index User data
+                // Index User data
                 var userIndexer = new UserIndexer();
                 var userIndexed = this.GetAndStoreSearchDocuments(userIndexer);
                 indexedSearchDocumentCount += userIndexed;
@@ -226,7 +226,7 @@ namespace DotNetNuke.Services.Search
             var portals = PortalController.Instance.GetPortals();
             DateTime indexSince;
             var indexedCount = 0;
-            //DateTime startDate
+            // DateTime startDate
 
             foreach (var portal in portals.Cast<PortalInfo>())
             {

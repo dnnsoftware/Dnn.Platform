@@ -33,7 +33,7 @@ namespace DotNetNuke.Web.Api.Auth
             var response = this.OnInboundRequest(request, cancellationToken);
             if (response != null)
             {
-                response.RequestMessage = response.RequestMessage ?? request; //if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
+                response.RequestMessage = response.RequestMessage ?? request; // if someone returns new HttpResponseMessage(), fill in the requestMessage for other handlers in the chain
                 return Task<HttpResponseMessage>.Factory.StartNew(() => response, cancellationToken);
             }
 

@@ -53,7 +53,7 @@ namespace DotNetNuke.Tests.Utilities
 
             LoadDnnProviders("data;logging;caching;authentication;members;roles;profiles;permissions;folder;clientcapability");
 
-            //fix Globals.ApplicationMapPath
+            // fix Globals.ApplicationMapPath
             var appPath = this.WebsitePhysicalAppPath;
             if (!string.IsNullOrEmpty(appPath))
             {
@@ -61,11 +61,11 @@ namespace DotNetNuke.Tests.Utilities
                 mappath.SetValue(null, appPath);
             }
 
-            //fix Globals.Status
+            // fix Globals.Status
             var status = typeof(Globals).GetField("_status", BindingFlags.Static | BindingFlags.NonPublic);
             status.SetValue(null, Globals.UpgradeStatus.None);
 
-            //fix membership
+            // fix membership
             var providerProp = typeof(Membership).GetField("s_Provider", BindingFlags.Static | BindingFlags.NonPublic);
             providerProp.SetValue(null, Membership.Providers["AspNetSqlMembershipProvider"]);
 
@@ -162,7 +162,7 @@ namespace DotNetNuke.Tests.Utilities
                                 var type = providerValue.Type;
                                 var assembly = providerValue.Name;
 
-                                if (type.Contains(", "))  //get the straight typename, no assembly, for the cache key
+                                if (type.Contains(", "))  // get the straight typename, no assembly, for the cache key
                                 {
                                     assembly = type.Substring(type.IndexOf(", ") + 1);
                                     type = type.Substring(0, type.IndexOf(", "));

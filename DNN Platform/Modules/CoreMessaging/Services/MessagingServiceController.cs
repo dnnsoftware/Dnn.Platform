@@ -427,7 +427,7 @@ namespace DotNetNuke.Modules.CoreMessaging.Services
 			messageObj.Body = message.Body;
 			messageObj.DisplayDate = message.DisplayDate;
 			messageObj.ReplyAllAllowed = message.ReplyAllAllowed;
-			//base entity properties
+			// base entity properties
 			messageObj.CreatedByUserID = message.CreatedByUserID;
 			messageObj.CreatedOnDate = message.CreatedOnDate;
 			messageObj.LastModifiedByUserID = message.LastModifiedByUserID;

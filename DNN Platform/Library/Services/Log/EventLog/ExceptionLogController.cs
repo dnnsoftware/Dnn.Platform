@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Log.EventLog
 			log.LogTypeKey = logType.ToString();
 			if (logType == ExceptionLogType.SEARCH_INDEXER_EXCEPTION)
 			{
-				//Add SearchException Properties
+				// Add SearchException Properties
 				var objSearchException = (SearchException)objException;
 				log.LogProperties.Add(new LogDetailInfo("ModuleId", objSearchException.SearchItem.ModuleId.ToString()));
 				log.LogProperties.Add(new LogDetailInfo("SearchItemId", objSearchException.SearchItem.SearchItemId.ToString()));
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Log.EventLog
 			}
 			else if (logType == ExceptionLogType.MODULE_LOAD_EXCEPTION)
 			{
-				//Add ModuleLoadException Properties
+				// Add ModuleLoadException Properties
 				var objModuleLoadException = (ModuleLoadException)objException;
 				log.LogProperties.Add(new LogDetailInfo("ModuleId", objModuleLoadException.ModuleId.ToString()));
 				log.LogProperties.Add(new LogDetailInfo("ModuleDefId", objModuleLoadException.ModuleDefId.ToString()));
@@ -107,13 +107,13 @@ namespace DotNetNuke.Services.Log.EventLog
 			}
 			else if (logType == ExceptionLogType.SECURITY_EXCEPTION)
 			{
-				//Add SecurityException Properties
+				// Add SecurityException Properties
 				var objSecurityException = (SecurityException)objException;
 				log.LogProperties.Add(new LogDetailInfo("Querystring", objSecurityException.Querystring));
 				log.LogProperties.Add(new LogDetailInfo("IP", objSecurityException.IP));
 			}
 
-			//Add BasePortalException Properties
+			// Add BasePortalException Properties
 			var objBasePortalException = new BasePortalException(objException.ToString(), objException);
 			log.LogProperties.Add(new LogDetailInfo("AbsoluteURL", objBasePortalException.AbsoluteURL));
 			log.LogProperties.Add(new LogDetailInfo("DefaultDataProvider", objBasePortalException.DefaultDataProvider));
@@ -132,8 +132,8 @@ namespace DotNetNuke.Services.Log.EventLog
                 Instance.AddLog(log);
             }
 
-			//when current user is host user and exception is PageLoadException, try to log the log guid into cookies.
-			//so that this log can be picked and do more action on it later.
+			// when current user is host user and exception is PageLoadException, try to log the log guid into cookies.
+			// so that this log can be picked and do more action on it later.
 			if (logType == ExceptionLogType.PAGE_LOAD_EXCEPTION && HttpContext.Current != null && UserController.Instance.GetCurrentUserInfo().IsSuperUser)
 			{
                 HttpContext.Current.Response.Cookies.Add(

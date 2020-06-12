@@ -30,12 +30,12 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         public void NoMatchReturnsFallback()
         {
             const string fallback = "fallback";
-            //Arrange
+            // Arrange
             
-            //Act
+            // Act
             var ret  = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], fallback);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ret, fallback);
         }
 
@@ -43,77 +43,77 @@ namespace DotNetNuke.Tests.Core.Services.Localization
         [ExpectedException(typeof(ArgumentException))]
         public void CultureCodesCannotBeNull()
         {
-            //Arrange
+            // Arrange
             
 
-            //Act
+            // Act
             TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(null);
 
-            //Assert
+            // Assert
         }
 
         [Test]
         [ExpectedException(typeof(ArgumentException))]
         public void FallBackCannotBeNull()
         {
-            //Arrange
+            // Arrange
             
 
-            //Act
+            // Act
             TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new string[0], null);
 
-            //Assert
+            // Assert
         }
 
         [Test]
         public void PerfectMatchPossible()
         {
-            //Arrange
+            // Arrange
             this._mockHttpContext.Setup(x => x.Request.UserLanguages).Returns(new[] {"de-DE"});
 
-            //Act
+            // Act
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(this._standardCultureCodes);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ret, "de-DE");
         }
 
         [Test]
         public void QParamsAreIgnored()
         {
-            //Arrange
+            // Arrange
             this._mockHttpContext.Setup(x => x.Request.UserLanguages).Returns(new[] { "de-DE;q=0.8" });
 
-            //Act
+            // Act
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(this._standardCultureCodes);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ret, "de-DE");
         }
 
         [Test]
         public void MatchOnOnlyLanguage()
         {
-            //Arrange
+            // Arrange
             this._mockHttpContext.Setup(x => x.Request.UserLanguages).Returns(new[] { "fr-FR" });
 
-            //Act
+            // Act
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(this._standardCultureCodes);
 
-            //Assert
+            // Assert
             Assert.AreEqual(ret, "fr-CA");
         }
 
         [Test]
         public void PerfectMatchPreferredToFirstMatch()
         {
-            //Arrange
+            // Arrange
             this._mockHttpContext.Setup(x => x.Request.UserLanguages).Returns(new[] { "fr-FR" });
 
-            //Act
+            // Act
             var ret = TestableLocalization.Instance.BestCultureCodeBasedOnBrowserLanguages(new[] {"fr-CA", "fr-FR"});
 
-            //Assert
+            // Assert
             Assert.AreEqual(ret, "fr-FR");
         }
 

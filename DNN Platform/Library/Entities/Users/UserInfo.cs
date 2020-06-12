@@ -310,15 +310,15 @@ namespace DotNetNuke.Entities.Users
             Scope internScope;
             if (this.UserID == -1 && currentScope > Scope.Configuration)
             {
-                internScope = Scope.Configuration; //anonymous users only get access to displayname
+                internScope = Scope.Configuration; // anonymous users only get access to displayname
             }
             else if (this.UserID != accessingUser.UserID && !this.isAdminUser(ref accessingUser) && currentScope > Scope.DefaultSettings)
             {
-                internScope = Scope.DefaultSettings; //registerd users can access username and userID as well
+                internScope = Scope.DefaultSettings; // registerd users can access username and userID as well
             }
             else
             {
-                internScope = currentScope; //admins and user himself can access all data
+                internScope = currentScope; // admins and user himself can access all data
             }
             string outputFormat = format == string.Empty ? "g" : format;
             switch (propertyName.ToLowerInvariant())
@@ -353,7 +353,7 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
                     return (PropertyAccess.FormatString(this.Email, format));
-                case "firstname": //using profile property is recommended!
+                case "firstname": // using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
@@ -367,7 +367,7 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
                     return (this.IsSuperUser.ToString(formatProvider));
-                case "lastname": //using profile property is recommended!
+                case "lastname": // using profile property is recommended!
                     if (internScope < Scope.DefaultSettings)
                     {
                         propertyNotFound = true;
@@ -395,7 +395,7 @@ namespace DotNetNuke.Entities.Users
                         return PropertyAccess.ContentLocked;
                     }
                     return (PropertyAccess.FormatString(this.Username, format));
-                case "fullname": //fullname is obsolete, it will return DisplayName
+                case "fullname": // fullname is obsolete, it will return DisplayName
                     if (internScope < Scope.Configuration)
                     {
                         propertyNotFound = true;
@@ -466,7 +466,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public bool IsInRole(string role)
         {
-            //super users should always be verified.
+            // super users should always be verified.
             if (this.IsSuperUser)
             {
                 return role != "Unverified Users";
@@ -526,7 +526,7 @@ namespace DotNetNuke.Entities.Users
         /// -----------------------------------------------------------------------------
         public void UpdateDisplayName(string format)
         {
-            //Replace Tokens
+            // Replace Tokens
             format = format.Replace("[USERID]", this.UserID.ToString(CultureInfo.InvariantCulture));
             format = format.Replace("[FIRSTNAME]", this.FirstName);
             format = format.Replace("[LASTNAME]", this.LastName);

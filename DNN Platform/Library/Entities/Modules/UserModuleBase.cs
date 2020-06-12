@@ -133,7 +133,7 @@ namespace DotNetNuke.Entities.Modules
                 {
                     if (this.PortalSettings.UserTabId != -1)
                     {
-						//user defined tab
+						// user defined tab
                         if (this.PortalSettings.ActiveTab.TabID == this.PortalSettings.UserTabId)
                         {
                             _IsProfile = true;
@@ -141,7 +141,7 @@ namespace DotNetNuke.Entities.Modules
                     }
                     else
                     {
-						//admin tab
+						// admin tab
                         if (this.Request.QueryString["ctl"] != null)
                         {
                             string ctl = this.Request.QueryString["ctl"];
@@ -296,7 +296,7 @@ namespace DotNetNuke.Entities.Modules
                 newUser.PortalID = this.PortalId;
             }
 
-            //Initialise the ProfileProperties Collection
+            // Initialise the ProfileProperties Collection
             string lc = new Localization().CurrentUICulture;
 
             newUser.Profile.InitialiseProfile(this.PortalId);
@@ -304,7 +304,7 @@ namespace DotNetNuke.Entities.Modules
 
             newUser.Profile.PreferredLocale = lc;
 
-            //Set default countr
+            // Set default countr
             string country = Null.NullString;
             country = this.LookupCountry();
             if (!String.IsNullOrEmpty(country))
@@ -318,7 +318,7 @@ namespace DotNetNuke.Entities.Modules
 
                 newUser.Profile.Country = country;
             }
-            //Set AffiliateId
+            // Set AffiliateId
             int AffiliateId = Null.NullInteger;
             if (this.Request.Cookies["AffiliateId"] != null)
             {
@@ -337,47 +337,47 @@ namespace DotNetNuke.Entities.Modules
             _GeoIPFile = "controls/CountryListBox/Data/GeoIP.dat";
             if (this.Page.Request.UserHostAddress == "127.0.0.1")
             {
-				//'The country cannot be detected because the user is local.
+				// 'The country cannot be detected because the user is local.
                 IsLocal = true;
-                //Set the IP address in case they didn't specify LocalhostCountryCode
+                // Set the IP address in case they didn't specify LocalhostCountryCode
                 IP = this.Page.Request.UserHostAddress;
             }
             else
             {
-				//Set the IP address so we can find the country
+				// Set the IP address so we can find the country
                 IP = this.Page.Request.UserHostAddress;
             }
-            //Check to see if we need to generate the Cache for the GeoIPData file
+            // Check to see if we need to generate the Cache for the GeoIPData file
             if (this.Context.Cache.Get("GeoIPData") == null && _CacheGeoIPData)
             {
-				//Store it as	well as	setting	a dependency on	the	file
+				// Store it as	well as	setting	a dependency on	the	file
                 this.Context.Cache.Insert("GeoIPData", CountryLookup.FileToMemory(this.Context.Server.MapPath(_GeoIPFile)), new CacheDependency(this.Context.Server.MapPath(_GeoIPFile)));
             }
 			
-            //Check to see if the request is a localhost request
-            //and see if the LocalhostCountryCode is specified
+            // Check to see if the request is a localhost request
+            // and see if the LocalhostCountryCode is specified
             if (IsLocal)
             {
                 return Null.NullString;
             }
 			
-            //Either this is a remote request or it is a local
-            //request with no LocalhostCountryCode specified
+            // Either this is a remote request or it is a local
+            // request with no LocalhostCountryCode specified
             CountryLookup _CountryLookup;
 
-            //Check to see if we are using the Cached
-            //version of the GeoIPData file
+            // Check to see if we are using the Cached
+            // version of the GeoIPData file
             if (_CacheGeoIPData)
             {
-				//Yes, get it from cache
+				// Yes, get it from cache
                 _CountryLookup = new CountryLookup((MemoryStream)this.Context.Cache.Get("GeoIPData"));
             }
             else
             {
-				//No, get it from file
+				// No, get it from file
                 _CountryLookup = new CountryLookup(this.Context.Server.MapPath(_GeoIPFile));
             }
-            //Get the country code based on the IP address
+            // Get the country code based on the IP address
             string country = Null.NullString;
             try
             {
@@ -421,9 +421,9 @@ namespace DotNetNuke.Entities.Modules
             var message = ModuleMessage.ModuleMessageType.RedError;
             if (register)
             {
-				//send notification to portal administrator of new user registration
-				//check the receive notification setting first, but if register type is Private, we will always send the notification email.
-				//because the user need administrators to do the approve action so that he can continue use the website.
+				// send notification to portal administrator of new user registration
+				// check the receive notification setting first, but if register type is Private, we will always send the notification email.
+				// because the user need administrators to do the approve action so that he can continue use the website.
 				if (this.PortalSettings.EnableRegisterNotification || this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PrivateRegistration)
 				{
 				    strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationAdmin, this.PortalSettings);
@@ -432,13 +432,13 @@ namespace DotNetNuke.Entities.Modules
 
                 var loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
-                //complete registration
+                // complete registration
                 switch (this.PortalSettings.UserRegistration)
                 {
                     case (int)Globals.PortalRegistrationType.PrivateRegistration:
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationPrivate, this.PortalSettings);
 
-                        //show a message that a portal administrator has to verify the user credentials
+                        // show a message that a portal administrator has to verify the user credentials
                         if (string.IsNullOrEmpty(strMessage))
                         {
                             strMessage += Localization.GetString("PrivateConfirmationMessage", Localization.SharedResourceFile);
@@ -454,7 +454,7 @@ namespace DotNetNuke.Entities.Modules
                         UserController.UserLogin(this.PortalSettings.PortalId, newUser.Username, newUser.Membership.Password, "", this.PortalSettings.PortalName, "", ref loginStatus, false);
                         break;
                 }
-                //store preferredlocale in cookie
+                // store preferredlocale in cookie
                 Localization.SetLanguage(newUser.Profile.PreferredLocale);
                 if (this.IsRegister && message == ModuleMessage.ModuleMessageType.RedError)
                 {
@@ -469,7 +469,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 if (notify)
                 {
-					//Send Notification to User
+					// Send Notification to User
                     if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.VerifiedRegistration)
                     {
                         strMessage += Mail.SendMail(newUser, MessageType.UserRegistrationVerified, this.PortalSettings);
@@ -512,7 +512,7 @@ namespace DotNetNuke.Entities.Modules
 
         private string LocalizeNotificationText(string text, string locale, UserInfo user, PortalSettings portalSettings)
         {
-            //This method could need a custom ArrayList in future notification types. Currently it is null
+            // This method could need a custom ArrayList in future notification types. Currently it is null
             return Localization.GetSystemMessage(locale, portalSettings, text, user, Localization.GlobalResourceFile, null, "", portalSettings.AdministratorId);            
         }
 

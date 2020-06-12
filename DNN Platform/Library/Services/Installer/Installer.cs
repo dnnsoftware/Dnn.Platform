@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Installer
         public Installer(string tempFolder, string manifest, string physicalSitePath, bool loadManifest)
         {
             this.Packages = new SortedList<int, PackageInstaller>();
-            //Called from Interactive installer - default IgnoreWhiteList to false
+            // Called from Interactive installer - default IgnoreWhiteList to false
             this.InstallerInfo = new InstallerInfo(tempFolder, manifest, physicalSitePath) { IgnoreWhiteList = false };
 
             if (loadManifest)
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Installer
 
             this._inputStream = new MemoryStream();
             inputStream.CopyTo(this._inputStream);
-            //Called from Batch installer - default IgnoreWhiteList to true
+            // Called from Batch installer - default IgnoreWhiteList to true
             this.InstallerInfo = new InstallerInfo(inputStream, physicalSitePath) { IgnoreWhiteList = true };
 
             if (loadManifest)
@@ -190,11 +190,11 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         private void InstallPackages(ref bool clearClientCache)
         {
-			//Iterate through all the Packages
+			// Iterate through all the Packages
             for (int index = 0; index <= this.Packages.Count - 1; index++)
             {
                 PackageInstaller installer = this.Packages.Values[index];
-				//Check if package is valid
+				// Check if package is valid
                 if (installer.Package.IsValid)
                 {
                     if (installer.Package.InstallerInfo.PackageID > Null.NullInteger || installer.Package.InstallerInfo.RepairInstall)
@@ -258,7 +258,7 @@ namespace DotNetNuke.Services.Installer
         /// -----------------------------------------------------------------------------
         private void ProcessPackages(XPathNavigator rootNav)
         {
-			//Parse the package nodes
+			// Parse the package nodes
             foreach (XPathNavigator nav in rootNav.Select("packages/package"))
             {
                 int order = this.Packages.Count;
@@ -276,7 +276,7 @@ namespace DotNetNuke.Services.Installer
         {
             var doc = new XPathDocument(stream);
 
-            //Read the root node to determine what version the manifest is
+            // Read the root node to determine what version the manifest is
             XPathNavigator rootNav = doc.CreateNavigator();
             rootNav.MoveToFirstChild();
             string packageType = Null.NullString;
@@ -297,7 +297,7 @@ namespace DotNetNuke.Services.Installer
             {
                 case "package":
                     this.InstallerInfo.IsLegacyMode = false;
-                    //Parse the package nodes
+                    // Parse the package nodes
                     this.ProcessPackages(rootNav);
                     break;
                 case "module":
@@ -350,31 +350,31 @@ namespace DotNetNuke.Services.Installer
                     var sb = new StringBuilder();
                     using (var writer = XmlWriter.Create(sb, XmlUtils.GetXmlWriterSettings(ConformanceLevel.Fragment)))
                     {
-                        //Write manifest start element
+                        // Write manifest start element
                         PackageWriterBase.WriteManifestStartElement(writer);
 
-                        //Legacy Module - Process each folder
+                        // Legacy Module - Process each folder
                         foreach (XPathNavigator folderNav in rootNav.Select("folders/folder"))
                         {
                             var modulewriter = new ModulePackageWriter(folderNav, info);
                             modulewriter.WriteManifest(writer, true);
                         }
 
-                        //Write manifest end element
+                        // Write manifest end element
                         PackageWriterBase.WriteManifestEndElement(writer);
 
-                        //Close XmlWriter
+                        // Close XmlWriter
                         writer.Close();
                     }
 
-                    //Load manifest into XPathDocument for processing
+                    // Load manifest into XPathDocument for processing
                     legacyDoc = new XPathDocument(new StringReader(sb.ToString()));
 
-                    //Parse the package nodes
+                    // Parse the package nodes
                     nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
                     break;
                 case "languagepack":
-                    //Legacy Language Pack
+                    // Legacy Language Pack
                     var languageWriter = new LanguagePackWriter(rootNav, info);
                     info.LegacyError = languageWriter.LegacyError;
                     if (string.IsNullOrEmpty(info.LegacyError))
@@ -382,17 +382,17 @@ namespace DotNetNuke.Services.Installer
                         legacyManifest = languageWriter.WriteManifest(false);
                         legacyDoc = new XPathDocument(new StringReader(legacyManifest));
 
-                        //Parse the package nodes
+                        // Parse the package nodes
                         nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
                     }
                     break;
                 case "skinobject":
-                    //Legacy Skin Object
+                    // Legacy Skin Object
                     var skinControlwriter = new SkinControlPackageWriter(rootNav, info);
                     legacyManifest = skinControlwriter.WriteManifest(false);
                     legacyDoc = new XPathDocument(new StringReader(legacyManifest));
 
-                    //Parse the package nodes
+                    // Parse the package nodes
                     nav = legacyDoc.CreateNavigator().SelectSingleNode("dotnetnuke");
                     break;
             }
@@ -462,7 +462,7 @@ namespace DotNetNuke.Services.Installer
                 this.InstallPackages(ref clearClientCache);
                 if (clearClientCache)
                 {
-                    //Update the version of the client resources - so the cache is cleared
+                    // Update the version of the client resources - so the cache is cleared
                     HostController.Instance.IncrementCrmVersion(true);
                 }
             }
@@ -474,7 +474,7 @@ namespace DotNetNuke.Services.Installer
             }
             finally
             {
-				//Delete Temp Folder
+				// Delete Temp Folder
                 if (!string.IsNullOrEmpty(this.TempInstallFolder))
                 {
                     Globals.DeleteFolderRecursive(this.TempInstallFolder);
@@ -491,10 +491,10 @@ namespace DotNetNuke.Services.Installer
                 bStatus = false;
             }
 			
-            //log installation event
+            // log installation event
             this.LogInstallEvent("Package", "Install");
 
-            //when the installer initialized by file stream, we need save the file stream into backup folder.
+            // when the installer initialized by file stream, we need save the file stream into backup folder.
             if (this._inputStream != null && bStatus && this.Packages.Any())
             {
                 Task.Run(() =>
@@ -503,7 +503,7 @@ namespace DotNetNuke.Services.Installer
                 });
             }
 
-            //Clear Host Cache
+            // Clear Host Cache
             DataCache.ClearHostCache(true);
 
             if (Config.GetFcnMode() == Config.FcnMode.Disabled.ToString())
@@ -533,7 +533,7 @@ namespace DotNetNuke.Services.Installer
             }
             else if (deleteTemp)
             {
-				//Delete Temp Folder
+				// Delete Temp Folder
                 this.DeleteTempFolder();
             }
         }
@@ -566,7 +566,7 @@ namespace DotNetNuke.Services.Installer
             {
                 this.InstallerInfo.Log.EndJob(Util.UNINSTALL_Success);
             }
-            //log installation event
+            // log installation event
             this.LogInstallEvent("Package", "UnInstall");
             return true;
         }

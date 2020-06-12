@@ -41,7 +41,7 @@ namespace DotNetNuke.Entities.Portals
 
         public PortalGroupController(IDataService dataService, IPortalController portalController)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataService", dataService);
             Requires.NotNull("portalController", portalController);
 
@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Portals
 
             this.RemoveProfileDefinitions(portal);
 
-            //Add portal to group
+            // Add portal to group
             portal.PortalGroupID = portalGroup.PortalGroupId;
             PortalController.Instance.UpdatePortalInfo(portal);
             this.LogEvent(EventLogController.EventLogType.PORTAL_ADDEDTOPORTALGROUP, portalGroup, portal);
@@ -263,12 +263,12 @@ namespace DotNetNuke.Entities.Portals
 
         public int AddPortalGroup(PortalGroupInfo portalGroup)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("portalGroup", portalGroup);
 
             portalGroup.PortalGroupId = this._dataService.AddPortalGroup(portalGroup, UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Update portal
+            // Update portal
             var portal = this._portalController.GetPortal(portalGroup.MasterPortalId);
             if (portal != null)
             {
@@ -284,11 +284,11 @@ namespace DotNetNuke.Entities.Portals
 
         public void DeletePortalGroup(PortalGroupInfo portalGroup)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("portalGroup", portalGroup);
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
 
-            //Update portal
+            // Update portal
             var portal = this._portalController.GetPortal(portalGroup.MasterPortalId);
             if (portal != null)
             {
@@ -322,14 +322,14 @@ namespace DotNetNuke.Entities.Portals
 
         public void RemovePortalFromGroup(PortalInfo portal, PortalGroupInfo portalGroup, bool copyUsers, UserCopiedCallback callback)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("portal", portal);
             Requires.PropertyNotNegative("portal", "PortalId", portal.PortalID);
             Requires.NotNull("portalGroup", portalGroup);
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
             Requires.PropertyNotNegative("portalGroup", "MasterPortalId", portalGroup.MasterPortalId);
 
-            //Callback to update progress bar
+            // Callback to update progress bar
             var args = new UserCopiedEventArgs
             {
                 TotalUsers = 0,
@@ -340,7 +340,7 @@ namespace DotNetNuke.Entities.Portals
             };
             callback(args);
 
-            //Remove portal from group
+            // Remove portal from group
             this.DeleteSharedModules(portal);
             portal.PortalGroupID = -1;
             PortalController.Instance.UpdatePortalInfo(portal);
@@ -358,7 +358,7 @@ namespace DotNetNuke.Entities.Portals
 
                     UserController.CopyUserToPortal(masterUser, portal, false);
 
-                    //Callback to update progress bar
+                    // Callback to update progress bar
                     args = new UserCopiedEventArgs
                     {
                         TotalUsers = users.Count,
@@ -372,7 +372,7 @@ namespace DotNetNuke.Entities.Portals
             }
             else
             {
-                //Get admin users
+                // Get admin users
                 var adminUsers = RoleController.Instance.GetUsersByRole(Null.NullInteger, portal.AdministratorRoleName)
                     .Where(u => RoleController.Instance.GetUserRole(portal.PortalID, u.UserID, portal.AdministratorRoleId) != null);
 
@@ -380,7 +380,7 @@ namespace DotNetNuke.Entities.Portals
                 {
                     UserController.CopyUserToPortal(user, portal, false);
 
-                    //Callback to update progress bar
+                    // Callback to update progress bar
                     args = new UserCopiedEventArgs
                     {
                         TotalUsers = 1,
@@ -392,7 +392,7 @@ namespace DotNetNuke.Entities.Portals
                     callback(args);
                 }
             }
-            //Callback to update progress bar
+            // Callback to update progress bar
             args = new UserCopiedEventArgs
             {
                 TotalUsers = 1,
@@ -407,7 +407,7 @@ namespace DotNetNuke.Entities.Portals
 
         public void UpdatePortalGroup(PortalGroupInfo portalGroup)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("portalGroup", portalGroup);
             Requires.PropertyNotNegative("portalGroup", "PortalGroupId", portalGroup.PortalGroupId);
 

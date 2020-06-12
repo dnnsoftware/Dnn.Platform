@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
-            //do not select item during data binding, item will select later
+            // do not select item during data binding, item will select later
             var selectedValue = this.SelectedValue;
             this.SelectedValue = null;
 
@@ -109,7 +109,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
             this.Attributes.Add("PortalPath", this.Portal != null ? this.Portal.HomeDirectory : string.Empty);
             this.Attributes.Add("HostPath", Globals.HostPath);
 
-            //OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
+            // OnClientSelectedIndexChanged = "selectedIndexChangedMethod";
             var indexChangedMethod = @"function selectedIndexChangedMethod(sender, eventArgs){
     var value = eventArgs.get_item().get_value();
     value = value.replace('[L]', sender.get_attributes().getAttribute('PortalPath'));
@@ -118,25 +118,25 @@ namespace DotNetNuke.Web.UI.WebControls.Internal
 }";
             this.Page.ClientScript.RegisterClientScriptBlock(this.GetType(), "OnClientSelectedIndexChanged", indexChangedMethod, true);
 
-            //foreach (var item in Items)
-            //{
+            // foreach (var item in Items)
+            // {
             //    if (string.IsNullOrEmpty(item.Value))
             //    {
             //        continue;
             //    }
 
-            //    var tooltip = item.Value.Replace("[G]", Globals.HostPath);
+            // var tooltip = item.Value.Replace("[G]", Globals.HostPath);
             //    if (Portal != null)
             //    {
             //        tooltip = tooltip.Replace("[L]", Portal.HomeDirectory);
             //    }
 
-            //    item.ToolTip = tooltip;
+            // item.ToolTip = tooltip;
             //    if (item.Value.Equals(SelectedValue))
             //    {
             //        ToolTip = tooltip;
             //    }
-            //}
+            // }
         }
 
         #endregion

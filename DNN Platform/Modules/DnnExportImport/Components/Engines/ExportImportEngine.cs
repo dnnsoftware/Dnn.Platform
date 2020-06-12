@@ -72,14 +72,14 @@ namespace Dnn.ExportImport.Components.Engines
 
             var checkpoints = EntitiesController.Instance.GetJobChekpoints(exportJob.JobId);
 
-            //Delete so we start a fresh export database; only if there is no previous checkpoint exists
+            // Delete so we start a fresh export database; only if there is no previous checkpoint exists
             if (checkpoints.Count == 0)
             {
                 if (finfo.Directory != null && finfo.Directory.Exists)
                 {
                     finfo.Directory.Delete(true);
                 }
-                //Clear all the files in finfo.Directory. Create if doesn't exists.
+                // Clear all the files in finfo.Directory. Create if doesn't exists.
                 finfo.Directory?.Create();
                 result.AddSummary("Starting Exporting Repository", finfo.Name);
             }
@@ -189,7 +189,7 @@ namespace Dnn.ExportImport.Components.Engines
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
-                        //WARN: this is a case where there is a broken parent-children hierarchy
+                        // WARN: this is a case where there is a broken parent-children hierarchy
                         //      and/or there are BasePortableService implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
@@ -208,14 +208,14 @@ namespace Dnn.ExportImport.Components.Engines
             }
             else if (exportJob.JobStatus == JobStatus.InProgress)
             {
-                //Create Export Summary for manifest file.
+                // Create Export Summary for manifest file.
                 var summary = new ImportExportSummary();
                 using (var ctx = new ExportImportRepository(dbName))
                 {
                     BaseController.BuildJobSummary(exportJob.Directory, ctx, summary);
                 }
                 DoPacking(exportJob, dbName);
-                //Complete the job.
+                // Complete the job.
                 exportJob.JobStatus = JobStatus.Successful;
                 SetLastJobStartTime(scheduleHistoryItem.ScheduleID, exportJob.CreatedOnDate);
 
@@ -364,7 +364,7 @@ namespace Dnn.ExportImport.Components.Engines
                     nextLevelServices.Clear();
                     if (implementors.Count > 0 && parentServices.Count == 0)
                     {
-                        //WARN: this is a case where there is a broken parent-children hierarchy
+                        // WARN: this is a case where there is a broken parent-children hierarchy
                         //      and/or there are BasePortableService implementations without a known parent.
                         parentServices = implementors;
                         implementors.Clear();
@@ -521,7 +521,7 @@ namespace Dnn.ExportImport.Components.Engines
             if (exportDto.IncludeProperfileProperties)
                 includedItems.Add(Constants.Category_ProfileProps);
 
-            //This might be added always.
+            // This might be added always.
             if (exportDto.IncludeExtensions)
                 includedItems.Add(Constants.Category_Packages);
 

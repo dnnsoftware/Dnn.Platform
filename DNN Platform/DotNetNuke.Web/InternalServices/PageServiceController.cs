@@ -52,10 +52,10 @@ namespace DotNetNuke.Web.InternalServices
         {
             var urlPath = dto.Path.ValueOrEmpty().TrimStart('/');
             bool modified;
-            //Clean Url
+            // Clean Url
             var options = UrlRewriterUtils.ExtendOptionsForCustomURLs( UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId)) );
             
-            //now clean the path
+            // now clean the path
             urlPath = FriendlyUrlController.CleanNameForUrl(urlPath, options, out modified);
             if (modified)
             {
@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.InternalServices
                     });
             }
 
-            //Validate for uniqueness
+            // Validate for uniqueness
             urlPath = FriendlyUrlController.ValidateUrl(urlPath, -1, this.PortalSettings, out modified);
             if (modified)
             {
@@ -89,12 +89,12 @@ namespace DotNetNuke.Web.InternalServices
 
             if (dto.StatusCodeKey.ToString(CultureInfo.InvariantCulture) == "200")
             {
-                //We need to check if we are updating a current url or creating a new 200
+                // We need to check if we are updating a current url or creating a new 200
                 var tabUrl = tab.TabUrls.SingleOrDefault(t => t.SeqNum == dto.Id
                                                                 && t.HttpStatus == "200");
                 if (tabUrl == null)
                 {
-                    //Just create Url
+                    // Just create Url
                     tabUrl = new TabUrlInfo
                                     {
                                         TabId = tab.TabID,
@@ -111,12 +111,12 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    //Change the original 200 url to a redirect
+                    // Change the original 200 url to a redirect
                     tabUrl.HttpStatus = "301";
                     tabUrl.SeqNum = dto.Id;
                     TabController.Instance.SaveTabUrl(tabUrl, this.PortalId, true);
 
-                    //Add new custom url
+                    // Add new custom url
                     tabUrl.Url = dto.Path.ValueOrEmpty();
                     tabUrl.HttpStatus = "200";
                     tabUrl.SeqNum = tab.TabUrls.Max(t => t.SeqNum) + 1;
@@ -125,7 +125,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             else
             {
-                //Just update the url
+                // Just update the url
                 var tabUrl = new TabUrlInfo
                                     {
                                         TabId = tab.TabID,

@@ -62,7 +62,7 @@ namespace DotNetNuke.UI.ControlPanel
             }
             catch (ThreadAbortException)
             {
-              //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+              // Do nothing we are not logging ThreadAbortxceptions caused by redirects      
             }
             catch (Exception ex)
             {
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.SitesLst.DataValueField = "PortalID";
             this.SitesLst.DataBind();
 
-            //SitesLst.Items.Insert(0, new ListItem(string.Empty));
+            // SitesLst.Items.Insert(0, new ListItem(string.Empty));
             this.SitesLst.InsertItem(0, string.Empty, string.Empty);
         }
 

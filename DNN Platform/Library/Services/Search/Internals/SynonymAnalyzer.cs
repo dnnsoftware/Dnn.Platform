@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Search.Internals
             var stops = GetStopWords();
             var wordLengthMinMax = SearchHelper.Instance.GetSearchMinMaxLength();
 
-            //Note: the order of filtering is important for both operation and performane, so we try to make it work faster
+            // Note: the order of filtering is important for both operation and performane, so we try to make it work faster
             // Also, note that filters are applied from the innermost outwards.
             // According to Lucene's documentaiton the StopFilter performs a case-sensitive lookup of each token in a set of stop
             // words. It relies on being fed already lowercased tokens. Therefore, DO NOT reverse the order of these filters.
@@ -79,7 +79,7 @@ namespace DotNetNuke.Services.Search.Internals
 
             if (searchStopWords != null && !string.IsNullOrEmpty(searchStopWords.StopWords))
             {
-                //TODO Use cache from InternalSearchController
+                // TODO Use cache from InternalSearchController
                 var cultureInfo = new CultureInfo(cultureCode ?? "en-US");
                 var strArray = searchStopWords.StopWords.Split(',').Select(s => s.ToLower(cultureInfo)).ToArray();
                 var set = new CharArraySet(strArray.Length, false);

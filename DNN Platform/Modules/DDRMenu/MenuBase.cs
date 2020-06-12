@@ -185,7 +185,7 @@ namespace DotNetNuke.Web.DDRMenu
                     var tagName = nodeText.Substring(1, nodeText.Length - 1);
 			        if (!string.IsNullOrEmpty(tagName))
 			        {
-                        //flatten nodes first. tagged pages should be flattened and not heirarchical
+                        // flatten nodes first. tagged pages should be flattened and not heirarchical
                         if (flattenedNodes != new MenuNode())
 			                flattenedNodes.Children = this.RootNode.FlattenChildren(this.RootNode);
 

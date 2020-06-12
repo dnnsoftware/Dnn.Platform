@@ -206,7 +206,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
                                 this.DefaultCacheTime = int.Parse(elementvalue);
                             }
                             break;
-                        case "permissions": //Ignore permissons node
+                        case "permissions": // Ignore permissons node
                             reader.Skip();
                             break;
                         case "definitionName":
@@ -231,25 +231,25 @@ namespace DotNetNuke.Entities.Modules.Definitions
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("moduleDefinition");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("friendlyName", this.FriendlyName);
             writer.WriteElementString("definitionName", this.DefinitionName);
             writer.WriteElementString("defaultCacheTime", this.DefaultCacheTime.ToString());
 
-            //Write start of Module Controls
+            // Write start of Module Controls
             writer.WriteStartElement("moduleControls");
-            //Iterate through controls
+            // Iterate through controls
             foreach (ModuleControlInfo control in this.ModuleControls.Values)
             {
                 control.WriteXml(writer);
             }
-            //Write end of Module Controls
+            // Write end of Module Controls
             writer.WriteEndElement();
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 

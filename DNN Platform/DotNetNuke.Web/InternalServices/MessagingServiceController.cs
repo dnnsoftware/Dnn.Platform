@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.InternalServices
                         iconfile = UserController.Instance.GetUserProfilePictureUrl(user.UserID, 32, 32)
                     }).ToList();
 
-                //Roles should be visible to Administrators or User in the Role.
+                // Roles should be visible to Administrators or User in the Role.
                 var roles = RoleController.Instance.GetRolesBasicSearch(portalId, numResults, q);
                 results.AddRange(from roleInfo in roles
                                     where

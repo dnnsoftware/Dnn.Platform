@@ -99,12 +99,12 @@ namespace DotNetNuke.Entities.Tabs
             this.PageHeadText = Null.NullString;
             this.SiteMapPriority = 0.5F;
 
-            //UniqueId, Version Guid, and Localized Version Guid should be initialised to a new value
+            // UniqueId, Version Guid, and Localized Version Guid should be initialised to a new value
             this.UniqueId = Guid.NewGuid();
             this.VersionGuid = Guid.NewGuid();
             this.LocalizedVersionGuid = Guid.NewGuid();
 
-            //Default Language Guid should be initialised to a null Guid
+            // Default Language Guid should be initialised to a null Guid
             this.DefaultLanguageGuid = Null.NullGuid;
 
             this.IsVisible = true;
@@ -381,7 +381,7 @@ namespace DotNetNuke.Entities.Tabs
                 bool isTranslated = true;
                 if (this.DefaultLanguageTab != null)
                 {
-                    //Child language
+                    // Child language
                     isTranslated = (this.LocalizedVersionGuid == this.DefaultLanguageTab.LocalizedVersionGuid);
                 }
                 return isTranslated;
@@ -543,19 +543,19 @@ namespace DotNetNuke.Entities.Tabs
                         switch (this.TabType)
                         {
                             case TabType.Normal:
-                                //normal tab
+                                // normal tab
                                 fullUrl = TestableGlobals.Instance.NavigateURL(this.TabID, this.IsSuperTab);
                                 break;
                             case TabType.Tab:
-                                //alternate tab url
+                                // alternate tab url
                                 fullUrl = TestableGlobals.Instance.NavigateURL(Convert.ToInt32(this.Url));
                                 break;
                             case TabType.File:
-                                //file url
+                                // file url
                                 fullUrl = TestableGlobals.Instance.LinkClick(this.Url, this.TabID, Null.NullInteger);
                                 break;
                             case TabType.Url:
-                                //external url
+                                // external url
                                 fullUrl = this.Url;
                                 break;
                         }
@@ -925,7 +925,7 @@ namespace DotNetNuke.Entities.Tabs
 
             this.Clone(clonedTab, this);
 
-            //localized properties
+            // localized properties
             clonedTab.UniqueId = this.UniqueId;
             clonedTab.VersionGuid = this.VersionGuid;
             clonedTab.DefaultLanguageGuid = this.DefaultLanguageGuid;
@@ -946,7 +946,7 @@ namespace DotNetNuke.Entities.Tabs
         /// -----------------------------------------------------------------------------
         public override void Fill(IDataReader dr)
         {
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
             this.UniqueId = Null.SetNullGuid(dr["UniqueId"]);
             this.VersionGuid = Null.SetNullGuid(dr["VersionGuid"]);

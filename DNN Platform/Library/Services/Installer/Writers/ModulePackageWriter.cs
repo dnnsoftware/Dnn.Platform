@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this.DesktopModule = new DesktopModuleInfo();
 
-            //Create a Package
+            // Create a Package
             this.Package = new PackageInfo(installer);
 
             this.ReadLegacyManifest(manifestNav, true);
@@ -136,12 +136,12 @@ namespace DotNetNuke.Services.Installer.Writers
             moduleControl.ControlKey = Util.ReadElement(controlNav, "key");
             moduleControl.ControlTitle = Util.ReadElement(controlNav, "title");
 
-            //Write controlSrc
+            // Write controlSrc
             string controlSrc = Util.ReadElement(controlNav, "src");
             if (!(controlSrc.StartsWith("desktopmodules", StringComparison.InvariantCultureIgnoreCase) || !controlSrc.EndsWith(".ascx", StringComparison.InvariantCultureIgnoreCase)))
             {
-				//this code allows a developer to reference an ASCX file in a different folder than the module folder ( good for ASCX files shared between modules where you want only a single copy )
-                //or it allows the developer to use webcontrols rather than usercontrols
+				// this code allows a developer to reference an ASCX file in a different folder than the module folder ( good for ASCX files shared between modules where you want only a single copy )
+                // or it allows the developer to use webcontrols rather than usercontrols
 
                 controlSrc = Path.Combine("DesktopModules", Path.Combine(moduleFolder, controlSrc));
             }
@@ -186,7 +186,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void ProcessModuleFiles(string folder, string basePath)
         {
-			//we are going to drill down through the folders to add the files
+			// we are going to drill down through the folders to add the files
             foreach (string fileName in Directory.GetFiles(folder))
             {
                 string name = fileName.Replace(basePath + "\\", "");
@@ -196,13 +196,13 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void ProcessModuleFolders(string folder, string basePath)
         {
-			//Process Folders recursively
+			// Process Folders recursively
             foreach (string directoryName in Directory.GetDirectories(folder))
             {
                 this.ProcessModuleFolders(directoryName, basePath);
             }
 			
-            //process files
+            // process files
             this.ProcessModuleFiles(folder, basePath);
         }
 
@@ -217,7 +217,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 definition.DefaultCacheTime = int.Parse(cacheTime);
             }
 			
-            //Process legacy controls Node
+            // Process legacy controls Node
             foreach (XPathNavigator controlNav in moduleNav.Select("controls/control"))
             {
                 ProcessControls(controlNav, moduleFolder, definition);
@@ -229,7 +229,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             if (processModule)
             {
-				//Version 2 of legacy manifest
+				// Version 2 of legacy manifest
                 string name = Util.ReadElement(folderNav, "name");
                 this.DesktopModule.FolderName = name;
                 this.DesktopModule.ModuleName = name;
@@ -273,25 +273,25 @@ namespace DotNetNuke.Services.Installer.Writers
                 this.DesktopModule.Description = Util.ReadElement(folderNav, "description");
                 this.DesktopModule.BusinessControllerClass = Util.ReadElement(folderNav, "businesscontrollerclass");
 
-                //Process legacy modules Node
+                // Process legacy modules Node
                 foreach (XPathNavigator moduleNav in folderNav.Select("modules/module"))
                 {
                     this.ProcessModules(moduleNav, this.DesktopModule.FolderName);
                 }
             }
 			
-            //Process legacy files Node
+            // Process legacy files Node
             foreach (XPathNavigator fileNav in folderNav.Select("files/file"))
             {
                 string fileName = Util.ReadElement(fileNav, "name");
                 string filePath = Util.ReadElement(fileNav, "path");
 
-                //In Legacy Modules the file can be physically located in the Root of the zip folder - or in the path/file location
-                //First test the folder
+                // In Legacy Modules the file can be physically located in the Root of the zip folder - or in the path/file location
+                // First test the folder
                 string sourceFileName;
                 if (filePath.Contains("[app_code]"))
                 {
-					//Special case for App_code - files can be in App_Code\ModuleName or root
+					// Special case for App_code - files can be in App_Code\ModuleName or root
                     sourceFileName = Path.Combine(filePath, fileName).Replace("[app_code]", "App_Code\\" + this.DesktopModule.FolderName);
                 }
                 else
@@ -304,7 +304,7 @@ namespace DotNetNuke.Services.Installer.Writers
                     sourceFileName = fileName;
                 }
 				
-				//In Legacy Modules the assembly is always in "bin" - ignore the path element
+				// In Legacy Modules the assembly is always in "bin" - ignore the path element
                 if (fileName.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
                 {
                     this.AddFile("bin/" + fileName, sourceFileName);
@@ -315,7 +315,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
             }
 			
-            //Process resource file Node
+            // Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
                 this.AddResourceFile(new InstallFile(Util.ReadElement(folderNav, "resourcefile"), this.Package.InstallerInfo));
@@ -324,25 +324,25 @@ namespace DotNetNuke.Services.Installer.Writers
 
         private void WriteEventMessage(XmlWriter writer)
         {
-			//Start Start eventMessage
+			// Start Start eventMessage
             writer.WriteStartElement("eventMessage");
 
-            //Write Processor Type
+            // Write Processor Type
             writer.WriteElementString("processorType", "DotNetNuke.Entities.Modules.EventMessageProcessor, DotNetNuke");
 
-            //Write Processor Type
+            // Write Processor Type
             writer.WriteElementString("processorCommand", "UpgradeModule");
 
-            //Write Event Message Attributes
+            // Write Event Message Attributes
             writer.WriteStartElement("attributes");
 
-            //Write businessControllerClass Attribute
+            // Write businessControllerClass Attribute
             writer.WriteElementString("businessControllerClass", this.DesktopModule.BusinessControllerClass);
 
-            //Write businessControllerClass Attribute
+            // Write businessControllerClass Attribute
             writer.WriteElementString("desktopModuleID", "[DESKTOPMODULEID]");
 
-            //Write upgradeVersionsList Attribute
+            // Write upgradeVersionsList Attribute
             string upgradeVersions = Null.NullString;
             this.Versions.Sort();
             foreach (string version in this.Versions)
@@ -355,33 +355,33 @@ namespace DotNetNuke.Services.Installer.Writers
             }
             writer.WriteElementString("upgradeVersionsList", upgradeVersions);
 
-            //End end of Event Message Attribues
+            // End end of Event Message Attribues
             writer.WriteEndElement();
 
-            //End component Element
+            // End component Element
             writer.WriteEndElement();
         }
 
         private void WriteModuleComponent(XmlWriter writer)
         {
-			//Start component Element
+			// Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", "Module");
 
-            //Write Module Manifest
+            // Write Module Manifest
             if (this.AppCodeFiles.Count > 0)
             {
                 this.DesktopModule.CodeSubDirectory = this.DesktopModule.FolderName;
             }
             CBO.SerializeObject(this.DesktopModule, writer);
 
-            //Write EventMessage
+            // Write EventMessage
             if (!string.IsNullOrEmpty(this.DesktopModule.BusinessControllerClass))
             {
                 this.WriteEventMessage(writer);
             }
 			
-            //End component Element
+            // End component Element
             writer.WriteEndElement();
         }
 		
@@ -391,7 +391,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         protected override void WriteManifestComponent(XmlWriter writer)
         {
-			//Write Module Component
+			// Write Module Component
             this.WriteModuleComponent(writer);
         }
 		

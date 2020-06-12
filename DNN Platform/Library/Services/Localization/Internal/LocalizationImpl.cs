@@ -30,10 +30,10 @@ namespace DotNetNuke.Services.Localization.Internal
             foreach (string langHeader in HttpContextSource.Current.Request.UserLanguages ?? new string[0])
             {
                 string lang = langHeader;
-                //strip any ;q=xx
+                // strip any ;q=xx
                 lang = lang.Split(';')[0];
 
-                //check for exact match e.g. de-DE == de-DE
+                // check for exact match e.g. de-DE == de-DE
                 if (lang.Contains('-'))
                 {
                     var match = values.FirstOrDefault(x => x == lang);
@@ -43,12 +43,12 @@ namespace DotNetNuke.Services.Localization.Internal
                     }
                 }
 
-                //only keep the initial language value
+                // only keep the initial language value
                 if (lang.Length > 1)
                 {
                     lang = lang.Substring(0, 2);
 
-                    //check for language match e.g. en-GB == en-US because en == en
+                    // check for language match e.g. en-GB == en-US because en == en
                     var match = values.FirstOrDefault(x => x.StartsWith(lang));
                     if (match != null)
                     {

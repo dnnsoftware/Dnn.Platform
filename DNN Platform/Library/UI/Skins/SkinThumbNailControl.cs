@@ -111,7 +111,7 @@ namespace DotNetNuke.UI.Skins
             }
             set
             {
-				//select current skin
+				// select current skin
                 int intIndex;
                 for (intIndex = 0; intIndex <= this.OptSkin.Items.Count - 1; intIndex++)
                 {
@@ -193,12 +193,12 @@ namespace DotNetNuke.UI.Skins
         /// <param name="strSkinFile">The File Name without extension</param>
         private static string FormatSkinName(string strSkinFolder, string strSkinFile)
         {
-            if (strSkinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase)) //host folder
+            if (strSkinFolder.Equals("_default", StringComparison.InvariantCultureIgnoreCase)) // host folder
             {
                 return strSkinFile;
             }
 			
-			//portal folder
+			// portal folder
             switch (strSkinFile.ToLowerInvariant())
             {
                 case "skin":
@@ -224,11 +224,11 @@ namespace DotNetNuke.UI.Skins
 
             var strThumbnail = strImage.Replace(Path.GetFileName(strImage), "thumbnail_" + Path.GetFileName(strImage));
 
-            //check if image has changed
+            // check if image has changed
             if (File.Exists(strThumbnail))
             {
-                //var d1 = File.GetLastWriteTime(strThumbnail);
-                //var d2 = File.GetLastWriteTime(strImage);
+                // var d1 = File.GetLastWriteTime(strThumbnail);
+                // var d2 = File.GetLastWriteTime(strImage);
                 if (File.GetLastWriteTime(strThumbnail) == File.GetLastWriteTime(strImage))
                 {
                     blnCreate = false;
@@ -236,48 +236,48 @@ namespace DotNetNuke.UI.Skins
             }
             if (blnCreate)
             {
-                const int intSize = 140; //size of the thumbnail 
+                const int intSize = 140; // size of the thumbnail 
                 Image objImage;
                 try
                 {
                     objImage = Image.FromFile(strImage);
 					
-					//scale the image to prevent distortion
+					// scale the image to prevent distortion
                     int intWidth;
                     int intHeight;
                     double dblScale;
                     if (objImage.Height > objImage.Width)
                     {
-						//The height was larger, so scale the width 
+						// The height was larger, so scale the width 
                         dblScale = (double)intSize / objImage.Height;
                         intHeight = intSize;
                         intWidth = Convert.ToInt32(objImage.Width * dblScale);
                     }
                     else
                     {
-						//The width was larger, so scale the height 
+						// The width was larger, so scale the height 
                         dblScale = (double)intSize / objImage.Width;
                         intWidth = intSize;
                         intHeight = Convert.ToInt32(objImage.Height * dblScale);
                     }
                     
-					//create the thumbnail image
+					// create the thumbnail image
 					var objThumbnail = objImage.GetThumbnailImage(intWidth, intHeight, null, IntPtr.Zero);
                     
-					//delete the old file ( if it exists )
+					// delete the old file ( if it exists )
 					if (File.Exists(strThumbnail))
                     {
                         File.Delete(strThumbnail);
                     }
                     
-					//save the thumbnail image 
+					// save the thumbnail image 
 					objThumbnail.Save(strThumbnail, objImage.RawFormat);
                     
-					//set the file attributes
+					// set the file attributes
 					File.SetAttributes(strThumbnail, FileAttributes.Normal);
                     File.SetLastWriteTime(strThumbnail, File.GetLastWriteTime(strImage));
 
-                    //tidy up
+                    // tidy up
                     objImage.Dispose();
                     objThumbnail.Dispose();
                 }
@@ -316,16 +316,16 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void LoadAllSkins(bool includeNotSpecified)
         {
-            //default value
+            // default value
             if (includeNotSpecified)
             {
                 this.AddDefaultSkin();
             }
 			
-            //load host skins (includeNotSpecified = false as we have already added it)
+            // load host skins (includeNotSpecified = false as we have already added it)
             this.LoadHostSkins(false);
 
-            //load portal skins (includeNotSpecified = false as we have already added it)
+            // load portal skins (includeNotSpecified = false as we have already added it)
             this.LoadPortalSkins(false);
         }
 
@@ -340,13 +340,13 @@ namespace DotNetNuke.UI.Skins
         public void LoadHostSkins(bool includeNotSpecified)
         {
 
-            //default value
+            // default value
             if (includeNotSpecified)
             {
                 this.AddDefaultSkin();
             }
 			
-			//load host skins
+			// load host skins
             var strRoot = Globals.HostMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
             {
@@ -371,13 +371,13 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void LoadPortalSkins(bool includeNotSpecified)
         {
-            //default value
+            // default value
             if (includeNotSpecified)
             {
                 this.AddDefaultSkin();
             }
 			
-			//load portal skins
+			// load portal skins
             var strRoot = this.PortalSettings.HomeDirectoryMapPath + this.SkinRoot;
             if (Directory.Exists(strRoot))
             {
@@ -401,7 +401,7 @@ namespace DotNetNuke.UI.Skins
         /// -----------------------------------------------------------------------------
         public void LoadSkins(string strFolder, string skinType, bool includeNotSpecified)
         {
-            //default value
+            // default value
             if (includeNotSpecified)
             {
                 this.AddDefaultSkin();

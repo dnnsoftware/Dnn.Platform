@@ -216,7 +216,7 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         private void OnCheckedChanged(object sender, DNNDataGridCheckChangedEventArgs e)
         {
-            //Add the column to the Event Args
+            // Add the column to the Event Args
             e.Column = this;
             if (this.CheckedChanged != null)
             {

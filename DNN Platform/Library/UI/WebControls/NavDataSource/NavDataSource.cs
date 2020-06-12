@@ -15,7 +15,7 @@ namespace DotNetNuke.UI.WebControls
     [AspNetHostingPermission(SecurityAction.Demand, Level = AspNetHostingPermissionLevel.Minimal)]
     public class NavDataSource : HierarchicalDataSourceControl
     {
-        //Return a strongly typed view for the current data source control.
+        // Return a strongly typed view for the current data source control.
         private NavDataSourceView view;
 
         protected override HierarchicalDataSourceView GetHierarchicalView(string viewPath)

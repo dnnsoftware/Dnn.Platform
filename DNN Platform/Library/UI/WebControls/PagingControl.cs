@@ -277,8 +277,8 @@ namespace DotNetNuke.UI.WebControls
             this.tablePageNumbers = new Table();
             this.cellDisplayStatus = new TableCell();
             this.cellDisplayLinks = new TableCell();
-            //cellDisplayStatus.CssClass = "Normal";
-            //cellDisplayLinks.CssClass = "Normal";
+            // cellDisplayStatus.CssClass = "Normal";
+            // cellDisplayLinks.CssClass = "Normal";
             this.tablePageNumbers.CssClass = String.IsNullOrEmpty(this.CssClass) ? "PagingTable" : this.CssClass;
             var intRowIndex = this.tablePageNumbers.Rows.Add(new TableRow());
             this.PageNumbers = new Repeater();
@@ -286,9 +286,9 @@ namespace DotNetNuke.UI.WebControls
             this.PageNumbers.ItemTemplate = I;
             this.BindPageNumbers(this.TotalRecords, this.PageSize);
             this.cellDisplayStatus.HorizontalAlign = HorizontalAlign.Left;
-            //cellDisplayStatus.Width = new Unit("50%");
+            // cellDisplayStatus.Width = new Unit("50%");
             this.cellDisplayLinks.HorizontalAlign = HorizontalAlign.Right;
-            //cellDisplayLinks.Width = new Unit("50%");
+            // cellDisplayLinks.Width = new Unit("50%");
             var intTotalPages = this._totalPages;
             if (intTotalPages == 0)
             {

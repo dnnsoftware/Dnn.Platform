@@ -21,14 +21,14 @@ namespace DotNetNuke.Services.Localization
             // fix DNN-26330	 Removing a language pack extension removes the language
             // we should not delete language when deleting language pack, as there is just a loose relationship
 
-            //if (languagePack.PackageType == LanguagePackType.Core)
-            //{
+            // if (languagePack.PackageType == LanguagePackType.Core)
+            // {
             //    Locale language = LocaleController.Instance.GetLocale(languagePack.LanguageID);
             //    if (language != null)
             //    {
             //        Localization.DeleteLanguage(language);
             //    }
-            //}
+            // }
 
             DataProvider.Instance().DeleteLanguagePack(languagePack.LanguagePackID);
             EventLogController.Instance.AddLog(languagePack, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.LANGUAGEPACK_DELETED);
@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Localization
         {
             if (languagePack.LanguagePackID == Null.NullInteger)
             {
-				//Add Language Pack
+				// Add Language Pack
                 languagePack.LanguagePackID = DataProvider.Instance().AddLanguagePack(languagePack.PackageID,
                                                                                       languagePack.LanguageID,
                                                                                       languagePack.DependentPackageID,
@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Localization
             }
             else
             {
-				//Update LanguagePack
+				// Update LanguagePack
                 DataProvider.Instance().UpdateLanguagePack(languagePack.LanguagePackID,
                                                            languagePack.PackageID,
                                                            languagePack.LanguageID,

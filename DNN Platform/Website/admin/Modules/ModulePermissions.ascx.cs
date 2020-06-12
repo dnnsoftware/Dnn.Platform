@@ -64,13 +64,13 @@ namespace DotNetNuke.Modules.Admin.Modules
         {
             base.OnInit(e);
 
-            //get ModuleId
+            // get ModuleId
             if ((this.Request.QueryString["ModuleId"] != null))
             {
                 this._moduleId = Int32.Parse(this.Request.QueryString["ModuleId"]);
             }
 
-            //Verify that the current user has access to edit this module
+            // Verify that the current user has access to edit this module
             if (!ModulePermissionController.HasModuleAccess(SecurityAccessLevel.ViewPermissions, String.Empty, this.Module))
             {
                 this.Response.Redirect(Globals.AccessDeniedURL(), true);
@@ -116,7 +116,7 @@ namespace DotNetNuke.Modules.Admin.Modules
 
                     ModulePermissionController.SaveModulePermissions(this.Module);
 
-                    //Navigate back to admin page
+                    // Navigate back to admin page
                     this.Response.Redirect(this.ReturnURL, true);
                 }
             }

@@ -153,12 +153,12 @@ namespace DotNetNuke.Services.Cache
                 {
                     if (clearRuntime)
                     {
-						//remove item from runtime cache
+						// remove item from runtime cache
                         this.RemoveInternal(Convert.ToString(objDictionaryEntry.Key));
                     }
                     else
                     {
-						//Call provider's remove method
+						// Call provider's remove method
                         this.Remove(Convert.ToString(objDictionaryEntry.Key));
                     }
                 }
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.Cache
             this.RemoveCacheKey(DataCache.ContentTypesCacheKey, clearRuntime);
             this.RemoveCacheKey(DataCache.JavaScriptLibrariesCacheKey, clearRuntime);
 
-            //Clear "portal keys" for Host
+            // Clear "portal keys" for Host
             this.ClearFolderCacheInternal(-1, clearRuntime);
             this.ClearDesktopModuleCacheInternal(-1, clearRuntime);
             this.ClearCacheKeysByPortalInternal(-1, clearRuntime);
@@ -260,7 +260,7 @@ namespace DotNetNuke.Services.Cache
             var locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
             {
-                //At least attempt to remove default locale
+                // At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
                 this.RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, defaultLocale), clearRuntime);
                 this.RemoveCacheKey(String.Format(DataCache.PortalCacheKey, portalId, Null.NullString), clearRuntime);
@@ -288,7 +288,7 @@ namespace DotNetNuke.Services.Cache
                 }
             }
 			
-            //Clear "portal keys" for Portal
+            // Clear "portal keys" for Portal
             this.ClearFolderCacheInternal(portalId, clearRuntime);
             this.ClearCacheKeysByPortalInternal(portalId, clearRuntime);
             this.ClearDesktopModuleCacheInternal(portalId, clearRuntime);
@@ -308,7 +308,7 @@ namespace DotNetNuke.Services.Cache
             Dictionary<string, Locale> locales = LocaleController.Instance.GetLocales(portalId);
             if (locales == null || locales.Count == 0)
             {
-                //At least attempt to remove default locale
+                // At least attempt to remove default locale
                 string defaultLocale = PortalController.GetPortalDefaultLanguage(portalId);
                 this.RemoveCacheKey(string.Format(DataCache.TabPathCacheKey, defaultLocale, portalId), clearRuntime);
             }
@@ -328,12 +328,12 @@ namespace DotNetNuke.Services.Cache
         {
             if (clearRuntime)
             {
-				//remove item from runtime cache
+				// remove item from runtime cache
                 this.RemoveInternal(GetCacheKey(CacheKey));
             }
             else
             {
-				//Call provider's remove method
+				// Call provider's remove method
                 this.Remove(GetCacheKey(CacheKey));
             }
         }
@@ -342,12 +342,12 @@ namespace DotNetNuke.Services.Cache
         {
             if (clearRuntime)
             {
-				//remove item from runtime cache
+				// remove item from runtime cache
                 this.RemoveInternal(string.Format(GetCacheKey(CacheKeyBase), parameters));
             }
             else
             {
-				//Call provider's remove method
+				// Call provider's remove method
                 this.Remove(string.Format(GetCacheKey(CacheKeyBase), parameters));
             }
         }
@@ -398,9 +398,9 @@ namespace DotNetNuke.Services.Cache
 
 	    private void ReloadServicesFrameworkRoutes()
 	    {
-            //registration of routes when the servers is operating is done as part of the cache
-            //because the web request cahcing provider is the only inter-server communication channel
-            //that is reliable
+            // registration of routes when the servers is operating is done as part of the cache
+            // because the web request cahcing provider is the only inter-server communication channel
+            // that is reliable
             ServicesRoutingManager.RegisterServiceRoutes();
 	    }
 
@@ -410,9 +410,9 @@ namespace DotNetNuke.Services.Cache
 		/// <param name="cacheKey">The cache key.</param>
         protected void RemoveInternal(string cacheKey)
         {
-			//attempt remove from private dictionary
+			// attempt remove from private dictionary
             DataCache.RemoveFromPrivateDictionary(cacheKey);
-            //remove item from memory
+            // remove item from memory
             if (Cache[cacheKey] != null)
             {
                 Cache.Remove(cacheKey);

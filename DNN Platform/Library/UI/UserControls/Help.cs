@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.UserControls
                 }
 
                 this._key = objModuleControl.ControlKey;
-                //display module info to Host users
+                // display module info to Host users
                 if (this.UserInfo.IsSuperUser)
                 {
                     string strInfo = Localization.GetString("lblInfo.Text", Localization.GetResourceFile(this, this.MyFileName));
@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.UserControls
             {
                 this.Response.Redirect(Convert.ToString(this.ViewState["UrlReferrer"]), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

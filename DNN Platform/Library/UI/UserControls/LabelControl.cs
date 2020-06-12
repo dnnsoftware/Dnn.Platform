@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.UserControls
 			{
 				this.RegisterClientDependencies();
 			}
-			catch (Exception exc) //Module failed to load
+			catch (Exception exc) // Module failed to load
 			{
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}
@@ -183,10 +183,10 @@ namespace DotNetNuke.UI.UserControls
 		{
 			base.OnPreRender(e);
 
-			//get the localised text
+			// get the localised text
 			if (String.IsNullOrEmpty(this.ResourceKey))
 			{
-				//Set Resource Key to the ID of the control
+				// Set Resource Key to the ID of the control
 				this.ResourceKey = this.ID;
 			}
 			if ((!string.IsNullOrEmpty(this.ResourceKey)))
@@ -195,16 +195,16 @@ namespace DotNetNuke.UI.UserControls
 				if (!string.IsNullOrEmpty(localText))
 				{
 					this.Text = localText + this.Suffix;
-					//NoHelpLabelText = Text;
+					// NoHelpLabelText = Text;
 				}
 				else
 				{
 					this.Text += this.Suffix;
-					//NoHelpLabelText = Text;
+					// NoHelpLabelText = Text;
 				}
 			}
 
-			//Set Help Key to the Resource Key plus ".Help"
+			// Set Help Key to the Resource Key plus ".Help"
 			if (String.IsNullOrEmpty(this.HelpKey))
 			{
 				this.HelpKey = this.ResourceKey + ".Help";
@@ -219,8 +219,8 @@ namespace DotNetNuke.UI.UserControls
 			if (string.IsNullOrEmpty(this.HelpText))
 			{
 				this.pnlHelp.Visible = this.cmdHelp.Visible = false;
-                //lblHelp.Visible = false;
-                //lblNoHelpLabel.Visible = true;
+                // lblHelp.Visible = false;
+                // lblNoHelpLabel.Visible = true;
 			}
 
 			if (!string.IsNullOrEmpty(this.CssClass))
@@ -228,7 +228,7 @@ namespace DotNetNuke.UI.UserControls
 				this.lblLabel.CssClass = this.CssClass;
 			}
 
-			//find the reference control in the parents Controls collection
+			// find the reference control in the parents Controls collection
 			if (!String.IsNullOrEmpty(this.ControlName))
 			{
 				var c = this.Parent.FindControl(this.ControlName);
@@ -250,7 +250,7 @@ namespace DotNetNuke.UI.UserControls
 		{
             JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
             JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-            //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
+            // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 		}
 
 		#endregion

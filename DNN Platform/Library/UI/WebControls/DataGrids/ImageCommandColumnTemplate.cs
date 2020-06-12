@@ -355,7 +355,7 @@ namespace DotNetNuke.UI.WebControls
             }
             else
             {
-				//Bind Image Button
+				// Bind Image Button
                 if (!String.IsNullOrEmpty(this.ImageURL) && this.ShowImage)
                 {
                     var colIcon = (ImageButton)sender;
@@ -366,7 +366,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 if (!String.IsNullOrEmpty(this.Text) && !this.ShowImage)
                 {
-					//Bind Link Button
+					// Bind Link Button
                     var colLink = (LinkButton)sender;
                     container = (DataGridItem)colLink.NamingContainer;
                     keyValue = this.GetValue(container);

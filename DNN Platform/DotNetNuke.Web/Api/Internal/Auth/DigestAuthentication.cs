@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             if (this._password != null)
             {
                 this.IsNonceStale = !(IsNonceValid(this._request.RequestParams["nonce"]));
-                //Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
+                // Services.Logging.LoggingController.SimpleLog(String.Format("Request hash: {0} - Response Hash: {1}", _request.RequestParams("response"), HashedDigest))
                 if ((!this.IsNonceStale) && this._request.RequestParams["response"] == this.CalculateHashedDigest())
                 {
                     this.IsValid = true;
@@ -73,7 +73,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             }
             var password = UserController.GetPassword(ref user, "");
             
-            //Try to validate user
+            // Try to validate user
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
             user = UserController.ValidateUser(this._portalId, user.Username, password, "DNN", "", this._ipAddress, ref loginStatus);
 
@@ -98,14 +98,14 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             {
                 unhashedDigest = String.Format("{0}:{1}:{2}", ha1, this._request.RequestParams["nonce"], ha2);
             }
-            //Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
+            // Services.Logging.LoggingController.SimpleLog(A1, HA1, A2, HA2, unhashedDigest)
             return unhashedDigest;
         }
 
         private static string CreateMd5HashBinHex(string val)
         {
-            //Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
-            //Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
+            // Services.Logging.LoggingController.SimpleLog(String.Format("Creating Hash for {0}", val))
+            // Services.Logging.LoggingController.SimpleLog(String.Format("Back and forth: {0}", Encoding.Default.GetString(Encoding.Default.GetBytes(val))))
             byte[] bha1 = Md5.ComputeHash(Encoding.Default.GetBytes(val));
             string ha1 = "";
             for (int i = 0; i <= 15; i++)
@@ -115,7 +115,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             return ha1;
         }
 
-        //the nonce is created in DotNetNuke.Web.Api.DigestAuthMessageHandler
+        // the nonce is created in DotNetNuke.Web.Api.DigestAuthMessageHandler
         private static bool IsNonceValid(string nonce)
         {
             DateTime expireTime;

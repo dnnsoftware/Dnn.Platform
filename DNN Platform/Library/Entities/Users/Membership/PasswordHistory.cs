@@ -27,7 +27,7 @@ namespace DotNetNuke.Entities.Users.Membership
             this.Password = (dr["Password"]).ToString();
             this.PasswordSalt = (dr["PasswordSalt"]).ToString();
 
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
 

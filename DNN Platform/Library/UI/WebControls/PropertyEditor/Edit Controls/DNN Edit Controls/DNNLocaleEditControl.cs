@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.WebControls
 			writer.RenderBeginTag(HtmlTextWriterTag.Input);
 			writer.RenderEndTag();
 			writer.Write(Localization.GetString("EnglishName", Localization.GlobalResourceFile));
-			//writer.Write("<br />");
+			// writer.Write("<br />");
 
 			writer.AddAttribute(HtmlTextWriterAttribute.Type, "radio");
             writer.AddAttribute("aria-label", "Mode");
@@ -112,7 +112,7 @@ namespace DotNetNuke.UI.WebControls
 				localeName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(culture.EnglishName);
 			}
 			
-			//Add the Value Attribute
+			// Add the Value Attribute
 			writer.AddAttribute(HtmlTextWriterAttribute.Value, culture.Name);
 
 			if (this.IsSelected(culture.Name))
@@ -120,7 +120,7 @@ namespace DotNetNuke.UI.WebControls
 				writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
 			}
 			
-			//Render Option Tag
+			// Render Option Tag
 			writer.RenderBeginTag(HtmlTextWriterTag.Option);
 			writer.Write(localeName);
 			writer.RenderEndTag();
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void OnAttributesChanged()
 		{
-			//Get the List settings out of the "Attributes"
+			// Get the List settings out of the "Attributes"
 			if ((this.CustomAttributes != null))
 			{
 				foreach (Attribute attribute in this.CustomAttributes)
@@ -171,7 +171,7 @@ namespace DotNetNuke.UI.WebControls
 		/// <param name="writer">A HtmlTextWriter.</param>
 		protected override void RenderEditMode(HtmlTextWriter writer)
 		{
-			//Render div
+			// Render div
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnLeft");
 			writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
@@ -197,7 +197,7 @@ namespace DotNetNuke.UI.WebControls
 
 		    var promptValue = this.StringValue == Null.NullString && cultures.Count > 1 && !this.Required;
 
-            //Render the Select Tag
+            // Render the Select Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
 			writer.AddAttribute(HtmlTextWriterAttribute.Id, this.ClientID);
 		    if (promptValue)
@@ -206,13 +206,13 @@ namespace DotNetNuke.UI.WebControls
 		    }
 			writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
-			//Render None selected option
-			//Add the Value Attribute
+			// Render None selected option
+			// Add the Value Attribute
 			writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
 
 			if (this.StringValue == Null.NullString)
 			{
-				//Add the Selected Attribute
+				// Add the Selected Attribute
 				writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
 			}
 			writer.RenderBeginTag(HtmlTextWriterTag.Option);
@@ -224,7 +224,7 @@ namespace DotNetNuke.UI.WebControls
 		        this.RenderOption(writer, culture);
 		    }
 
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
 
 			if (promptValue)
@@ -249,20 +249,20 @@ function onLocaleChanged(element){
 			    writer.RenderEndTag();
             }
 
-			//Render break
+			// Render break
 			writer.Write("<br />");
 
-			//Render Span
+			// Render Span
 			writer.AddAttribute(HtmlTextWriterAttribute.Class, "dnnFormRadioButtons");
 			writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-			//Render Button Row
+			// Render Button Row
 			this.RenderModeButtons(writer);
 
-			//close span
+			// close span
 			writer.RenderEndTag();
 
-			//close div
+			// close div
 			writer.RenderEndTag();
 		}
 		

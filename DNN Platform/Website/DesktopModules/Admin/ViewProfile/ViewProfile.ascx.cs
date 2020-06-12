@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
         {
             base.OnInit(e);
 
-			//throw 404 so that deleted profile is not reindexed
+			// throw 404 so that deleted profile is not reindexed
 			if (this.ProfileUser == null || this.ProfileUser.IsDeleted)
 			{
                 UrlUtils.Handle404Exception(this.Response, PortalSettings.Current);
@@ -189,9 +189,9 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                             .Replace("\r", string.Empty)
                             .Replace("\n", " ")
                             .Replace(";", string.Empty)
-                            .Replace("://", ":||") //protect http protocols won't be replaced in next step
+                            .Replace("://", ":||") // protect http protocols won't be replaced in next step
                             .Replace("//", string.Empty)
-                            .Replace(":||", "://"); //restore http protocols
+                            .Replace(":||", "://"); // restore http protocols
                     }
                     sb.Append(value + "\"" + ");");
                     sb.Append('\n');
@@ -221,7 +221,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 			}
 			catch (Exception exc)
 			{
-				//Module failed to load
+				// Module failed to load
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}
 		}
@@ -232,7 +232,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
 		private string GetRedirectUrl()
 		{
-			//redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
+			// redirect user to default page if not specific the home tab, do this action to prevent loop redirect.
 			var homeTabId = this.ModuleContext.PortalSettings.HomeTabId;
 			string redirectUrl;
 
@@ -251,18 +251,18 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
         private void ProcessQuerystring()
         {
-            //in case someone is being redirected to here from an e-mail link action we need to process that here
+            // in case someone is being redirected to here from an e-mail link action we need to process that here
 
             var action = this.Request.QueryString["action"];
 
-            if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) //action requested but not logged in.
+            if (!this.Request.IsAuthenticated && !string.IsNullOrEmpty(action)) // action requested but not logged in.
             {
                 string loginUrl = Common.Globals.LoginURL(this.Request.RawUrl, false);
                 this.Response.Redirect(loginUrl);
             }
             if (this.Request.IsAuthenticated && !string.IsNullOrEmpty(action) ) // only process this for authenticated requests
             {
-                //current user, i.e. the one that the request was for
+                // current user, i.e. the one that the request was for
                 var currentUser = UserController.Instance.GetCurrentUserInfo();
                 // the initiating user,i.e. the one who wanted to be friend
                 // note that in this case here currentUser is visiting the profile of initiatingUser, most likely from a link in the notification e-mail
@@ -270,7 +270,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
 
                 if (initiatingUser.UserID == currentUser.UserID)
                 {
-                    return; //do not further process for users who are on their own profile page
+                    return; // do not further process for users who are on their own profile page
                 }
 
                 var friendRelationship = RelationshipController.Instance.GetFriendRelationship(currentUser, initiatingUser);
@@ -297,7 +297,7 @@ namespace DotNetNuke.Modules.Admin.ViewProfile
                         }
                         catch
                         {
-                            //ignore
+                            // ignore
                         }
                     }
                 }

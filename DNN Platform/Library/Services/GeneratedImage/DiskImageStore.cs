@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.GeneratedImage
                 _cachePath = value;
             }
         }
-        public static bool EnableAutoPurge { get; set; } //turn on/off purge feature
+        public static bool EnableAutoPurge { get; set; } // turn on/off purge feature
 
         public static TimeSpan PurgeInterval
         {

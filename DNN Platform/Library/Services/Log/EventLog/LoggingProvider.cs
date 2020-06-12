@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Log.EventLog
 		
 		#region "Shared/Static Methods"
 
-        //return the provider
+        // return the provider
 		public static LoggingProvider Instance()
         {
             return ComponentFactory.GetComponent<LoggingProvider>();

@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.Archived = Null.SetNullBoolean(dr["Archived"]);
             this.Read = Null.SetNullBoolean(dr["Read"]);
             
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
             
         }

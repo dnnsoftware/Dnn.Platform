@@ -118,7 +118,7 @@ namespace Dnn.Modules.Console
 
                     foreach (string val in ConsoleController.GetSizeValues())
                     {
-                        //DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
+                        // DefaultSize.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultSize.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
                     this.SelectDropDownListItem(ref this.DefaultSize, "DefaultSize");
@@ -131,7 +131,7 @@ namespace Dnn.Modules.Console
                     }
                     foreach (var val in ConsoleController.GetViewValues())
                     {
-                        //DefaultView.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
+                        // DefaultView.Items.Add(new ListItem(Localization.GetString(val, LocalResourceFile), val));
                         this.DefaultView.AddItem(Localization.GetString(val, this.LocalResourceFile), val);
                     }
                     this.SelectDropDownListItem(ref this.DefaultView, "DefaultView");
@@ -164,7 +164,7 @@ namespace Dnn.Modules.Console
                 }
 
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -174,7 +174,7 @@ namespace Dnn.Modules.Console
         {
             try
             {
-				//validate console width value
+				// validate console width value
                 var wdth = string.Empty;
                 if ((this.ConsoleWidth.Text.Trim().Length > 0))
                 {
@@ -260,20 +260,20 @@ namespace Dnn.Modules.Console
                 var tabPathField = (HiddenField)e.Item.FindControl("tabPath");
 
                 visibilityDropDown.Items.Clear();
-                //visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));
+                // visibilityDropDown.Items.Add(new ListItem(LocalizeString("AllUsers"), "AllUsers"));
                 visibilityDropDown.AddItem(this.LocalizeString("AllUsers"), "AllUsers");
                 if (this.modeList.SelectedValue == "Profile")
                 {
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("Friends"), "Friends"));
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("User"), "User"));
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Friends"), "Friends"));
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("User"), "User"));
 
                     visibilityDropDown.AddItem(this.LocalizeString("Friends"), "Friends");
                     visibilityDropDown.AddItem(this.LocalizeString("User"), "User");
                 }
                 else
                 {
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("Owner"), "Owner"));
-                    //visibilityDropDown.Items.Add(new ListItem(LocalizeString("Members"), "Members"));
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Owner"), "Owner"));
+                    // visibilityDropDown.Items.Add(new ListItem(LocalizeString("Members"), "Members"));
 
                     visibilityDropDown.AddItem(this.LocalizeString("Owner"), "Owner");
                     visibilityDropDown.AddItem(this.LocalizeString("Members"), "Members");

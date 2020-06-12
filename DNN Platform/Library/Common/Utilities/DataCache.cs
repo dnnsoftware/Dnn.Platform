@@ -44,14 +44,14 @@ namespace DotNetNuke.Common.Utilities
     public class DataCache
     {
     	private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(DataCache));
-        //Host keys
+        // Host keys
         public const string SecureHostSettingsCacheKey = "SecureHostSettings";
         public const string UnSecureHostSettingsCacheKey = "UnsecureHostSettings";
         public const string HostSettingsCacheKey = "HostSettings";
         public const CacheItemPriority HostSettingsCachePriority = CacheItemPriority.NotRemovable;
         public const int HostSettingsCacheTimeOut = 20;
 
-        //Portal keys
+        // Portal keys
         public const string PortalAliasCacheKey = "PortalAlias";
         public const CacheItemPriority PortalAliasCachePriority = CacheItemPriority.NotRemovable;
         public const int PortalAliasCacheTimeOut = 200;
@@ -80,7 +80,7 @@ namespace DotNetNuke.Common.Utilities
         public const CacheItemPriority PortalGroupsCachePriority = CacheItemPriority.High;
         public const int PortalGroupsCacheTimeOut = 20;
 
-        //Tab cache keys
+        // Tab cache keys
         public const string TabCacheKey = "Tab_Tabs{0}";
         public const string TabSettingsCacheKey = "TabSettings{0}";
         public const CacheItemPriority TabCachePriority = CacheItemPriority.High;
@@ -342,7 +342,7 @@ namespace DotNetNuke.Common.Utilities
 
         internal static void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
         {
-            //if the item was removed from the cache, log the key and reason to the event log
+            // if the item was removed from the cache, log the key and reason to the event log
             try
             {
                 if (Globals.Status == Globals.UpgradeStatus.None)
@@ -369,7 +369,7 @@ namespace DotNetNuke.Common.Utilities
             }
             catch (Exception exc)
             {
-                //Swallow exception            
+                // Swallow exception            
                 Logger.Error(exc);
             }
         }
@@ -382,7 +382,7 @@ namespace DotNetNuke.Common.Utilities
                 dictionaryCache.Clear();
             }
 
-            //log the cache clear event
+            // log the cache clear event
             var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.CACHE_REFRESH.ToString()};
             log.LogProperties.Add(new LogDetailInfo("*", "Refresh"));
             LogController.Instance.AddLog(log);
@@ -506,7 +506,7 @@ namespace DotNetNuke.Common.Utilities
             // if item is not cached
             if (objObject == null)
             {
-                //Get Unique Lock for cacheKey
+                // Get Unique Lock for cacheKey
                 object @lock = GetUniqueLockObject(cacheItemArgs.CacheKey);
 
                 // prevent other threads from entering this block while we regenerate the cache
@@ -556,7 +556,7 @@ namespace DotNetNuke.Common.Utilities
                             }
                         }
 
-                        //This thread won so remove unique Lock from collection
+                        // This thread won so remove unique Lock from collection
                         RemoveUniqueLockObject(cacheItemArgs.CacheKey);
                     }
                 }
@@ -632,7 +632,7 @@ namespace DotNetNuke.Common.Utilities
             {
                 try
                 {
-                    //Try to get lock Object (for key) from Dictionary
+                    // Try to get lock Object (for key) from Dictionary
                     if (lockDictionary.ContainsKey(key))
                     {
                         @lock = lockDictionary[key];
@@ -649,13 +649,13 @@ namespace DotNetNuke.Common.Utilities
                 {
                     try
                     {
-                        //Double check dictionary
+                        // Double check dictionary
                         if (!lockDictionary.ContainsKey(key))
                         {
-                            //Create new lock
+                            // Create new lock
                             lockDictionary[key] = new object();
                         }
-                        //Retrieve lock
+                        // Retrieve lock
                         @lock = lockDictionary[key];
                     }
                     finally
@@ -672,10 +672,10 @@ namespace DotNetNuke.Common.Utilities
             if (!dictionaryLock.TryEnterWriteLock(_5seconds)) return;
             try
             {
-                //check dictionary
+                // check dictionary
                 if (lockDictionary.ContainsKey(key))
                 {
-                    //Remove lock
+                    // Remove lock
                     lockDictionary.Remove(key);
                 }
             }
@@ -743,7 +743,7 @@ namespace DotNetNuke.Common.Utilities
         {
             if (objObject != null)
             {
-                //if no OnRemoveCallback value is specified, use the default method
+                // if no OnRemoveCallback value is specified, use the default method
                 if (OnRemoveCallback == null)
                 {
                     OnRemoveCallback = ItemRemovedCallback;

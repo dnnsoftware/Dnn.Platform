@@ -72,13 +72,13 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_True_For_BlackBerry9105V1()
         {
-            //Arrange
+            // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(blackBerry9105V1);
 
             // Act
             var bIsMobile = clientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsTrue(bIsMobile);
         }
 
@@ -92,78 +92,78 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Act
             var bIsMobile = clientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsTrue(bIsMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_True_For_WP7()
         {
-            //Arrange
+            // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(wp7UserAgent);
 
             // Act
             var bIsMobile = clientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsTrue(bIsMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_True_For_IPad()
         {
-            //Arrange
+            // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(iPadTabletUserAgent);
 
             // Act            
             var bIsMobile = clientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsTrue(bIsMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_True_For_SamsungGalaxyGTP1000()
         {
-            //var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", string.Empty);
-            //simulator.SetHeader("user-agent", samsungGalaxyTablet);
-            //simulator.SimulateRequest();
-            //var capabilities = new HttpCapabilitiesDefaultProvider().GetBrowserCapabilities(HttpContext.Current.Request);
+            // var simulator = new Instance.Utilities.HttpSimulator.HttpSimulator("/", string.Empty);
+            // simulator.SetHeader("user-agent", samsungGalaxyTablet);
+            // simulator.SimulateRequest();
+            // var capabilities = new HttpCapabilitiesDefaultProvider().GetBrowserCapabilities(HttpContext.Current.Request);
             
-            //Arrange
+            // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(samsungGalaxyTablet);
 
             // Act
             var isMobile = clientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsTrue(isMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_EmptyUserAgent()
         {
-            //Arrange
+            // Arrange
             var clientCapability = this._clientCapabilityProvider.GetClientCapability(String.Empty);
 
             // Act
             var bIsMmobile = clientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsMmobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_NullUserAgent()
         {
-            //Arrange
+            // Arrange
             String agent = null;
             var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(agent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsMobile);
         }
 
@@ -176,7 +176,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsTrue(bIsMobile);
         }
 
@@ -187,52 +187,52 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer8()
         {
-            //Arrange
+            // Arrange
             var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(msIE8UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer9()
         {
-            //Arrange
+            // Arrange
             var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(msIE9UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_InternetExplorer10()
         {
-            //Arrange
+            // Arrange
             var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(msIE10UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsMobile);
         }
 
         [Test]
         public void AspNetClientCapability_IsMobile_Returns_False_For_FireFox()
         {
-            //Arrange
+            // Arrange
             var AspNetClientCapability = this._clientCapabilityProvider.GetClientCapability(fireFox5NT61UserAgent);
 
             // Act
             var bIsMobile = AspNetClientCapability.IsMobile;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsMobile);
         }
 
@@ -248,7 +248,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Act
             var bIsTablet = clientCapability.IsTablet;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsTablet);
         }
 
@@ -261,7 +261,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Act
             var bIsTablet = clientCapability.IsTablet;
 
-            //Assert
+            // Assert
             Assert.IsTrue(bIsTablet);
         }
 
@@ -278,7 +278,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Act
             var bSupportsFlash = clientCapability.SupportsFlash;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bSupportsFlash);
         }
 
@@ -295,7 +295,7 @@ namespace DotNetNuke.Tests.AspNetClientCapabilityProviderTest
             // Act
             var bIsTablet = clientCapability.IsTablet;
 
-            //Assert
+            // Assert
             Assert.IsFalse(bIsTablet);
         }
 

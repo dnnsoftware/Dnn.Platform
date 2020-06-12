@@ -56,13 +56,13 @@ namespace DotNetNuke.Services.Log.EventLog
             {
                 reader.ReadStartElement("LogProperty");
 
-                //Create new LogDetailInfo object
+                // Create new LogDetailInfo object
                 var logDetail = new LogDetailInfo();
 
-                //Load it from the Xml
+                // Load it from the Xml
                 logDetail.ReadXml(reader);
 
-                //Add to the collection
+                // Add to the collection
                 this.Add(logDetail);
 
             } while (reader.ReadToNextSibling("LogProperty"));

@@ -52,7 +52,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
         [Test]
         public void UserPreferencesController_ShouldThrowArgumentNullException_WhenNullDataServiceIsPassedInTheConstructor()
         {
-            //Act, Assert
+            // Act, Assert
             Assert.Throws<ArgumentNullException>(() => new UserPreferencesController(null));
         }
         #endregion
@@ -70,7 +70,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 (int)userPreference.MessagesEmailFrequency,
                 (int)userPreference.NotificationsEmailFrequency)).Verifiable();
 
-            //Act
+            // Act
             this.userPrefencesController.SetUserPreference(userPreference);
 
             // Assert
@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
                 Constants.PORTAL_ValidPortalId,
                 Constants.UserID_User12)).Returns(UserPreferenceDataReaderMockHelper.CreateEmptyUserPreferenceReader);
 
-            //Act
+            // Act
             var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert
@@ -112,7 +112,7 @@ namespace DotNetNuke.Tests.Core.Controllers.Messaging
             this.mockDataService.Setup(ds => ds.GetUserPreference(Constants.PORTAL_ValidPortalId, Constants.UserID_User12))
                 .Returns(UserPreferenceDataReaderMockHelper.CreateUserPreferenceReader(expectedUserPreference));
 
-            //Act
+            // Act
             var userPreference = this.userPrefencesController.GetUserPreference(user);
 
             // Assert

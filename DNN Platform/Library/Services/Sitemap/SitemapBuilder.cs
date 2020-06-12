@@ -145,7 +145,7 @@ namespace DotNetNuke.Services.Sitemap
                         {
                             url.Priority = providerPriorityValue;
                         }
-                        if (url.Priority > 0 && url.Priority >= excludePriority) //#RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
+                        if (url.Priority > 0 && url.Priority >= excludePriority) // #RS# a valid sitemap needs priorities larger then 0, otherwise the sitemap will be rejected by google as invalid
                         {
                             allUrls.Add(url);
                         }
@@ -346,8 +346,8 @@ namespace DotNetNuke.Services.Sitemap
             writer.WriteElementString("changefreq", sitemapUrl.ChangeFrequency.ToString().ToLowerInvariant());
             writer.WriteElementString("priority", sitemapUrl.Priority.ToString("F01", CultureInfo.InvariantCulture));
 
-            //if (sitemapUrl.AlternateUrls != null)
-            //{
+            // if (sitemapUrl.AlternateUrls != null)
+            // {
             //    foreach (AlternateUrl alternate in sitemapUrl.AlternateUrls)
             //    {
             //        writer.WriteStartElement("link", "http://www.w3.org/1999/xhtml");
@@ -356,7 +356,7 @@ namespace DotNetNuke.Services.Sitemap
             //        writer.WriteAttributeString("href", alternate.Url);
             //        writer.WriteEndElement();
             //    }
-            //}
+            // }
             writer.WriteEndElement();
         }
 
@@ -461,7 +461,7 @@ namespace DotNetNuke.Services.Sitemap
                     }
 
 
-                    //'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
+                    // 'ProvidersHelper.InstantiateProviders(section.Providers, _providers, GetType(SiteMapProvider))
                 }
             }
         }

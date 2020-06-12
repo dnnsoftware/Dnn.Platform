@@ -31,7 +31,7 @@ namespace DotNetNuke.Security.Permissions
 		#region "Private Members"
 		
         private int _TabID;
-        //local property declarations
+        // local property declarations
 		private int _TabPermissionID;
 		
 		#endregion
@@ -118,7 +118,7 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public void Fill(IDataReader dr)
         {
-            //Call the base classes fill method to ppoulate base class proeprties
+            // Call the base classes fill method to ppoulate base class proeprties
 			base.FillInternal(dr);
             this.TabPermissionID = Null.SetNullInteger(dr["TabPermissionID"]);
             this.TabID = Null.SetNullInteger(dr["TabID"]);

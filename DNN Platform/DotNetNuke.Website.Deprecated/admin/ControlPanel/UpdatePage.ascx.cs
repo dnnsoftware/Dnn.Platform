@@ -107,10 +107,10 @@ namespace DotNetNuke.UI.ControlPanel
                     errMsg = ex.Message;
                 }
 
-                //Clear the Tab's Cached modules
+                // Clear the Tab's Cached modules
                 DataCache.ClearModuleCache(PortalSettings.ActiveTab.TabID);
 
-                //Update Cached Tabs as TabPath may be needed before cache is cleared
+                // Update Cached Tabs as TabPath may be needed before cache is cleared
                 TabInfo tempTab;
                 if (TabController.Instance.GetTabsByPortal(PortalSettings.ActiveTab.PortalID).TryGetValue(tab.TabID, out tempTab))
                 {
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                //Weird - but the activetab has different skin src value than getting from the db
+                // Weird - but the activetab has different skin src value than getting from the db
                 if (((this._currentTab == null)))
                 {
                     this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
@@ -242,13 +242,13 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            //No portal skins added, remove the header
+            // No portal skins added, remove the header
             if ((this.SkinLst.Items.Count == 2))
             {
                 this.SkinLst.Items.Remove(1);
             }
 
-            //load host skins
+            // load host skins
             var hostSkinsHeader = new RadComboBoxItem(this.GetString("HostSkins"), string.Empty) {Enabled = false, CssClass = "SkinListHeader"};
             this.SkinLst.Items.Add(hostSkinsHeader);
 
@@ -279,7 +279,7 @@ namespace DotNetNuke.UI.ControlPanel
                 }
             }
 
-            //Set the selected item
+            // Set the selected item
             this.SkinLst.SelectedIndex = 0;
             if ((!string.IsNullOrEmpty(this.CurrentTab.SkinSrc)))
             {
@@ -318,10 +318,10 @@ namespace DotNetNuke.UI.ControlPanel
             this.LocationLst.ClearSelection();
             this.LocationLst.Items.Clear();
 
-            //LocationLst.Items.Add(new ListItem(GetString("NoLocationSelection"), ""));
-            //LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
-            //LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
-            //LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
+            // LocationLst.Items.Add(new ListItem(GetString("NoLocationSelection"), ""));
+            // LocationLst.Items.Add(new ListItem(GetString("Before"), "BEFORE"));
+            // LocationLst.Items.Add(new ListItem(GetString("After"), "AFTER"));
+            // LocationLst.Items.Add(new ListItem(GetString("Child"), "CHILD"));
 
             this.LocationLst.AddItem(this.GetString("NoLocationSelection"), "");
             this.LocationLst.AddItem(this.GetString("Before"), "BEFORE");
@@ -341,7 +341,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PageLst.DataSource = RibbonBarManager.GetPagesList().Where(t => !this.IsParentTab(t, this.CurrentTab.TabID));
             this.PageLst.DataBind();
 
-            //PageLst.Items.Insert(0, new ListItem(GetString("NoPageSelection"), string.Empty));
+            // PageLst.Items.Insert(0, new ListItem(GetString("NoPageSelection"), string.Empty));
             this.PageLst.InsertItem(0, this.GetString("NoPageSelection"), string.Empty);
             this.PageLst.SelectedIndex = 0;
         }

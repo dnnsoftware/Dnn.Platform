@@ -170,7 +170,7 @@ namespace DotNetNuke.Tests.Urls
             }
             this._tabId = tab.TabID;
 
-            //Add Portal Aliases
+            // Add Portal Aliases
             var aliasController = PortalAliasController.Instance;
             TestUtil.ReadStream(String.Format("{0}", "Aliases"), (line, header) =>
                             {
@@ -262,13 +262,13 @@ namespace DotNetNuke.Tests.Urls
 
             this.ProcessRequest(settings, testHelper);
 
-            //Test expected response status
+            // Test expected response status
             Assert.AreEqual(expectedStatus, testHelper.Response.StatusCode);
 
             switch (expectedStatus)
             {
                 case 200:
-                    //Test expected rewrite path
+                    // Test expected rewrite path
                     if (!String.IsNullOrEmpty(expectedResult))
                     {
                         Assert.AreEqual(expectedResult, testHelper.Result.RewritePath.TrimStart('/'));
@@ -276,7 +276,7 @@ namespace DotNetNuke.Tests.Urls
                     break;
                 case 301:
                 case 302:
-                    //Test for final Url if redirected
+                    // Test for final Url if redirected
                     Assert.IsTrue(expectedRedirectUrl.Equals(testHelper.Result.FinalUrl.TrimStart('/'), StringComparison.InvariantCultureIgnoreCase));
                     Assert.AreEqual(redirectReason, testHelper.Result.Reason.ToString(), "Redirect reason incorrect");
                     break;
@@ -485,7 +485,7 @@ namespace DotNetNuke.Tests.Urls
                 tab.TabName = testPageName;
                 TabController.Instance.UpdateTab(tab);
 
-                //Refetch tab from DB
+                // Refetch tab from DB
                 tab = TabController.Instance.GetTab(tab.TabID, tab.PortalID, false);
             }
 

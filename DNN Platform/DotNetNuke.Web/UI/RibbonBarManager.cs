@@ -76,7 +76,7 @@ namespace DotNetNuke.Web.UI
                 if ((PortalSettings.Current.SSLEnabled))
                 {
                     newTab.IsSecure = parentTab.IsSecure;
-                    //Inherit from parent
+                    // Inherit from parent
                 }
             }
             else
@@ -86,7 +86,7 @@ namespace DotNetNuke.Web.UI
                 newTab.Level = 0;
             }
 
-            //Inherit permissions from parent
+            // Inherit permissions from parent
             newTab.TabPermissions.Clear();
             if ((newTab.PortalID != Null.NullInteger && (parentTab != null)))
             {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Web.UI
             }
             else if ((newTab.PortalID != Null.NullInteger))
             {
-                //Give admin full permission
+                // Give admin full permission
                 ArrayList permissions = PermissionController.GetPermissionsByTab();
 
                 foreach (PermissionInfo permission in permissions)
@@ -168,13 +168,13 @@ namespace DotNetNuke.Web.UI
 
         public static bool CanMovePage()
         {
-            //Cannot move the host console page
+            // Cannot move the host console page
             if ((IsHostConsolePage()))
             {
                 return false;
             }
 
-            //Page Editors - Can only move children they have 'Manage' permission to, they cannot move the top level page
+            // Page Editors - Can only move children they have 'Manage' permission to, they cannot move the top level page
             if ((!PortalSecurity.IsInRole("Administrators")))
             {
                 int parentTabID = PortalSettings.Current.ActiveTab.ParentId;
@@ -196,9 +196,9 @@ namespace DotNetNuke.Web.UI
 
         public static int SaveTabInfoObject(TabInfo tab, TabInfo relativeToTab, TabRelativeLocation location, string templateFileId)
         {
-            //Validation:
-            //Tab name is required
-            //Tab name is invalid
+            // Validation:
+            // Tab name is required
+            // Tab name is invalid
 			string invalidType;
 			if (!TabController.IsValidTabName(tab.TabName, out invalidType))
 			{
@@ -225,8 +225,8 @@ namespace DotNetNuke.Web.UI
 
                     if ((defaultLanguageSelectedTab == null))
                     {
-                        //get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
-                        //if none are found get a list of all the tabs from the default language and then select the last one
+                        // get the siblings from the selectedtab and iterate through until you find a sibbling with a corresponding defaultlanguagetab
+                        // if none are found get a list of all the tabs from the default language and then select the last one
                         var selectedTabSibblings = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(tab.CultureCode, true).AsList();
                         foreach (TabInfo sibling in selectedTabSibblings)
                         {
@@ -238,12 +238,12 @@ namespace DotNetNuke.Web.UI
                             }
                         }
 
-                        //still haven't found it
+                        // still haven't found it
                         if ((defaultLanguageSelectedTab == null))
                         {
                             var defaultLanguageTabs = TabController.Instance.GetTabsByPortal(tab.PortalID).WithCulture(PortalSettings.Current.DefaultLanguage, true).AsList();
                             defaultLanguageSelectedTab = defaultLanguageTabs[defaultLanguageTabs.Count];
-                            //get the last tab
+                            // get the last tab
                         }
                     }
 
@@ -254,7 +254,7 @@ namespace DotNetNuke.Web.UI
 
             if ((location != TabRelativeLocation.NOTSET))
             {
-                //Check Host tab - don't allow adding before or after
+                // Check Host tab - don't allow adding before or after
                 if ((IsHostConsolePage(relativeToTab) && (location == TabRelativeLocation.AFTER || location == TabRelativeLocation.BEFORE)))
                 {
                     throw new DotNetNukeException("You cannot add or move pages before or after the Host tab.", DotNetNukeErrorCode.HostBeforeAfterError);
@@ -262,7 +262,7 @@ namespace DotNetNuke.Web.UI
 
                 TabInfo parentTab = GetParentTab(relativeToTab, location);
                 string permissionList = "ADD,COPY,EDIT,MANAGE";
-                //Check permissions for Page Editors when moving or inserting
+                // Check permissions for Page Editors when moving or inserting
                 if ((!PortalSecurity.IsInRole("Administrators")))
                 {
                     if (((parentTab == null) || !TabPermissionController.HasTabPermission(parentTab.TabPermissions, permissionList)))
@@ -290,7 +290,7 @@ namespace DotNetNuke.Web.UI
             }
 
             tab.TabPath = Globals.GenerateTabPath(tab.ParentId, tab.TabName);
-            //check whether have conflict between tab path and portal alias.
+            // check whether have conflict between tab path and portal alias.
             if (TabController.IsDuplicateWithPortalAlias(PortalSettings.Current.PortalId, tab.TabPath))
             {
                 throw new DotNetNukeException("The page path is duplicate with a site alias", DotNetNukeErrorCode.DuplicateWithAlias);
@@ -302,7 +302,7 @@ namespace DotNetNuke.Web.UI
                 {
                     if ((tab.TabPermissions.Count == 0 && tab.PortalID != Null.NullInteger))
                     {
-                        //Give admin full permission
+                        // Give admin full permission
                         ArrayList permissions = PermissionController.GetPermissionsByTab();
 
                         foreach (PermissionInfo permission in permissions)
@@ -388,7 +388,7 @@ namespace DotNetNuke.Web.UI
 					xmlDoc.Load(FileManager.Instance.GetFileContent(templateFile));
                     TabController.DeserializePanes(xmlDoc.SelectSingleNode("//portal/tabs/tab/panes"), tab.PortalID, tab.TabID, PortalTemplateModuleAction.Ignore, new Hashtable());
                     
-                    //save tab permissions
+                    // save tab permissions
                     DeserializeTabPermissions(xmlDoc.SelectNodes("//portal/tabs/tab/tabpermissions/permission"), tab);
                 }
                 catch (Exception ex)

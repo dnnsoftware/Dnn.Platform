@@ -19,7 +19,7 @@ namespace Dnn.ExportImport.Dto.Workflow
         public string RoleName { get; set; }
         public int? UserID { get; set; }
         public string Username { get; set; }
-        //public int? ModuleDefID { get; set; }
+        // public int? ModuleDefID { get; set; }
 
         public int? CreatedByUserID { get; set; }
         public DateTime? CreatedOnDate { get; set; }

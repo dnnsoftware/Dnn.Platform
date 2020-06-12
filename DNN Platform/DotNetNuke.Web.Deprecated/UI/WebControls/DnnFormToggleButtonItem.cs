@@ -27,7 +27,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         #endregion
 
-        //private DnnRadButton _checkBox;
+        // private DnnRadButton _checkBox;
         private CheckBox _checkBox;
 
         public DnnFormToggleButtonItem()
@@ -57,13 +57,13 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override WebControl CreateControlInternal(Control container)
         {
-            //_checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
+            // _checkBox = new DnnRadButton {ID = ID + "_CheckBox", ButtonType = RadButtonType.ToggleButton, ToggleType = ButtonToggleType.CheckBox, AutoPostBack = false};
             this._checkBox = new CheckBox{ ID = this.ID + "_CheckBox", AutoPostBack = false };
 
             this._checkBox.CheckedChanged += this.CheckedChanged;
             container.Controls.Add(this._checkBox);
 
-            //Load from ControlState
+            // Load from ControlState
             if (!this._checkBox.Page.IsPostBack)
             {
             }

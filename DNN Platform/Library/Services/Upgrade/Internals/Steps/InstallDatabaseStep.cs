@@ -42,7 +42,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             var installConfig = InstallController.Instance.GetInstallConfig();
             var providerPath = DataProvider.Instance().GetProviderPath();
 
-            //Step 1 - Install Base Database. Only when it's not already installed. Globals.DataBaseVersion is null when SPs are not present
+            // Step 1 - Install Base Database. Only when it's not already installed. Globals.DataBaseVersion is null when SPs are not present
             if (Globals.DataBaseVersion == null)
             {
                 var defaultProvider = Config.GetDefaultProvider("data").Name;
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 Globals.UpdateDataBaseVersion(new Version(installConfig.Version));
 
                 this.Details = Localization.Localization.GetString("InstallingMembershipDatabaseScriptStep", this.LocalInstallResourceFile);
-                //Optionally Install the memberRoleProvider
+                // Optionally Install the memberRoleProvider
                 var exceptions = Upgrade.InstallMemberRoleProvider(providerPath, false);
 				if (!string.IsNullOrEmpty(exceptions))
 				{
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             this.Percentage = percentForEachStep * counter++;
 
-            //Step 2 - Process the Upgrade Script files
+            // Step 2 - Process the Upgrade Script files
             var versions = new List<Version>();
             var scripts = Upgrade.GetUpgradeScripts(providerPath, DataProvider.Instance().GetVersion());
             if (scripts.Count > 0)
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             this.Percentage = percentForEachStep * counter++;
 
-            //Step 3 - Perform version specific application upgrades
+            // Step 3 - Perform version specific application upgrades
             foreach (Version ver in versions)
             {
                 string description = Localization.Localization.GetString("UpgradingVersionApplication", this.LocalInstallResourceFile);
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Percentage = percentForEachStep * counter++;
 
 
-			//Step 4 - Execute config file updates
+			// Step 4 - Execute config file updates
 			foreach (Version ver in versions)
 			{
 				string description = Localization.Localization.GetString("UpdatingConfigFile", this.LocalInstallResourceFile);
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 			}
 			this.Percentage = percentForEachStep * counter++;
 
-            //Step 5 - Delete files which are no longer used
+            // Step 5 - Delete files which are no longer used
             foreach (Version ver in versions)
             {
                 string description = Localization.Localization.GetString("DeletingOldFiles", this.LocalInstallResourceFile);
@@ -159,11 +159,11 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             this.Percentage = percentForEachStep * counter++;
 
-            //Step 6 - Perform general application upgrades
+            // Step 6 - Perform general application upgrades
             this.Details = Localization.Localization.GetString("UpgradingNormalApplication", this.LocalInstallResourceFile);
             Upgrade.UpgradeApplication();
 
-            //Step 7 - Save Accept DNN Terms flag
+            // Step 7 - Save Accept DNN Terms flag
             HostController.Instance.Update("AcceptDnnTerms", "Y");
 
             DataCache.ClearHostCache(true);

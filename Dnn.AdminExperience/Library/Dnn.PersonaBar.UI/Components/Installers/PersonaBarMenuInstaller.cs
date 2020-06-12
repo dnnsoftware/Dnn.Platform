@@ -214,7 +214,7 @@ namespace Dnn.PersonaBar.UI.Components.Installers
             foreach (PortalInfo portal in portals)
             {
                 var portalId = portal.PortalID;
-                //when default permission already initialized, then package need to save default permission immediately.
+                // when default permission already initialized, then package need to save default permission immediately.
                 if (MenuPermissionController.PermissionAlreadyInitialized(portalId))
                 {
                     MenuPermissionController.SaveMenuDefaultPermissions(portalId, menuItem, roleName);

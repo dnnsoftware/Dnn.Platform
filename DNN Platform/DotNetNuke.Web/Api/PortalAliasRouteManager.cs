@@ -85,7 +85,7 @@ namespace DotNetNuke.Web.Api
             return string.Format("{0}API/{1}/{2}", this.GeneratePrefixString(count), moduleFolderName, url);
         }
 
-        //TODO: this method need remove after drop use old api format.
+        // TODO: this method need remove after drop use old api format.
         [Obsolete("Replaced with GetRouteUrl.  Scheduled for removal in v11.0.0")]
         public static string GetOldRouteUrl(string moduleFolderName, string url, int count)
         {
@@ -104,8 +104,8 @@ namespace DotNetNuke.Web.Api
         {
             if (this._prefixCounts == null)
             {
-                //prefixCounts are required for each route that is mapped but they only change
-                //when a new portal is added so cache them until that time
+                // prefixCounts are required for each route that is mapped but they only change
+                // when a new portal is added so cache them until that time
 
                 
                 var portals = PortalController.Instance.GetPortals();

@@ -62,78 +62,78 @@ namespace log4net.Util
 
 		#region Public Static Methods
 
-//		/// <summary>
-//		/// Concatenates two string arrays.
-//		/// </summary>
-//		/// <param name="l">Left array.</param>
-//		/// <param name="r">Right array.</param>
-//		/// <returns>Array containing both left and right arrays.</returns>
-//		public static string[] ConcatenateArrays(string[] l, string[] r) 
-//		{
-//			return (string[])ConcatenateArrays(l, r);
-//		}
+// /// <summary>
+// /// Concatenates two string arrays.
+// /// </summary>
+// /// <param name="l">Left array.</param>
+// /// <param name="r">Right array.</param>
+// /// <returns>Array containing both left and right arrays.</returns>
+// public static string[] ConcatenateArrays(string[] l, string[] r) 
+// {
+// return (string[])ConcatenateArrays(l, r);
+// }
 
-//		/// <summary>
-//		/// Concatenates two arrays.
-//		/// </summary>
-//		/// <param name="l">Left array</param>
-//		/// <param name="r">Right array</param>
-//		/// <returns>Array containing both left and right arrays.</returns>
-//		public static Array ConcatenateArrays(Array l, Array r) 
-//		{
-//			if (l == null)
-//			{
-//				throw new ArgumentNullException("l");
-//			}
-//			if (r == null)
-//			{
-//				throw new ArgumentNullException("r");
-//			}
+// /// <summary>
+// /// Concatenates two arrays.
+// /// </summary>
+// /// <param name="l">Left array</param>
+// /// <param name="r">Right array</param>
+// /// <returns>Array containing both left and right arrays.</returns>
+// public static Array ConcatenateArrays(Array l, Array r) 
+// {
+// if (l == null)
+// {
+// throw new ArgumentNullException("l");
+// }
+// if (r == null)
+// {
+// throw new ArgumentNullException("r");
+// }
 //
-//			int len = l.Length + r.Length;
-//			Array a = Array.CreateInstance(l.GetType(), len);
+// int len = l.Length + r.Length;
+// Array a = Array.CreateInstance(l.GetType(), len);
 //
-//			Array.Copy(l, 0, a, 0, l.Length);
-//			Array.Copy(r, 0, a, l.Length, r.Length);
+// Array.Copy(l, 0, a, 0, l.Length);
+// Array.Copy(r, 0, a, l.Length, r.Length);
 //
-//			return a;
-//		}
+// return a;
+// }
   
-//		/// <summary>
-//		/// Converts string escape characters back to their correct values.
-//		/// </summary>
-//		/// <param name="s">String to convert.</param>
-//		/// <returns>Converted result.</returns>
-//		public static string ConvertSpecialChars(string s) 
-//		{
-//			if (s == null)
-//			{
-//				throw new ArgumentNullException("s");
-//			}
-//			char c;
-//			int len = s.Length;
-//			StringBuilder buf = new StringBuilder(len);
-//	
-//			int i = 0;
-//			while(i < len) 
-//			{
-//				c = s[i++];
-//				if (c == '\\') 
-//				{
-//					c =  s[i++];
-//					if (c == 'n')	  c = '\n';
-//					else if (c == 'r') c = '\r';
-//					else if (c == 't') c = '\t';
-//					else if (c == 'f') c = '\f';
-//					else if (c == '\b') c = '\b';					
-//					else if (c == '\"') c = '\"';				
-//					else if (c == '\'') c = '\'';			
-//					else if (c == '\\') c = '\\';			
-//				}
-//				buf.Append(c);	  
-//			}
-//			return buf.ToString();
-//		}
+// /// <summary>
+// /// Converts string escape characters back to their correct values.
+// /// </summary>
+// /// <param name="s">String to convert.</param>
+// /// <returns>Converted result.</returns>
+// public static string ConvertSpecialChars(string s) 
+// {
+// if (s == null)
+// {
+// throw new ArgumentNullException("s");
+// }
+// char c;
+// int len = s.Length;
+// StringBuilder buf = new StringBuilder(len);
+// 
+// int i = 0;
+// while(i < len) 
+// {
+// c = s[i++];
+// if (c == '\\') 
+// {
+// c =  s[i++];
+// if (c == 'n')	  c = '\n';
+// else if (c == 'r') c = '\r';
+// else if (c == 't') c = '\t';
+// else if (c == 'f') c = '\f';
+// else if (c == '\b') c = '\b';					
+// else if (c == '\"') c = '\"';				
+// else if (c == '\'') c = '\'';			
+// else if (c == '\\') c = '\\';			
+// }
+// buf.Append(c);	  
+// }
+// return buf.ToString();
+// }
 
 		/// <summary>
 		/// Converts a string to a <see cref="bool" /> value.
@@ -164,34 +164,34 @@ namespace log4net.Util
 			return defaultValue;
 		}
 
-//		/// <summary>
-//		/// Converts a string to an integer.
-//		/// </summary>
-//		/// <param name="argValue">String to convert.</param>
-//		/// <param name="defaultValue">The default value.</param>
-//		/// <returns>The <see cref="int" /> value of <paramref name="argValue" />.</returns>
-//		/// <remarks>
-//		/// <para>
-//		/// <paramref name="defaultValue"/> is returned when <paramref name="argValue"/>
-//		/// cannot be converted to a <see cref="int" /> value.
-//		/// </para>
-//		/// </remarks>
-//		public static int ToInt(string argValue, int defaultValue) 
-//		{
-//			if (argValue != null) 
-//			{
-//				string s = argValue.Trim();
-//				try 
-//				{
-//					return int.Parse(s, NumberFormatInfo.InvariantInfo);
-//				}
-//				catch (Exception e) 
-//				{
-//					LogLog.Error(declaringType, "OptionConverter: [" + s + "] is not in proper int form.", e);
-//				}
-//			}
-//			return defaultValue;
-//		}
+// /// <summary>
+// /// Converts a string to an integer.
+// /// </summary>
+// /// <param name="argValue">String to convert.</param>
+// /// <param name="defaultValue">The default value.</param>
+// /// <returns>The <see cref="int" /> value of <paramref name="argValue" />.</returns>
+// /// <remarks>
+// /// <para>
+// /// <paramref name="defaultValue"/> is returned when <paramref name="argValue"/>
+// /// cannot be converted to a <see cref="int" /> value.
+// /// </para>
+// /// </remarks>
+// public static int ToInt(string argValue, int defaultValue) 
+// {
+// if (argValue != null) 
+// {
+// string s = argValue.Trim();
+// try 
+// {
+// return int.Parse(s, NumberFormatInfo.InvariantInfo);
+// }
+// catch (Exception e) 
+// {
+// LogLog.Error(declaringType, "OptionConverter: [" + s + "] is not in proper int form.", e);
+// }
+// }
+// return defaultValue;
+// }
 
 		/// <summary>
 		/// Parses a file size into a number.
@@ -326,20 +326,20 @@ namespace log4net.Util
 			return null;
 		}
 
-//		/// <summary>
-//		/// Looks up the <see cref="IConvertFrom"/> for the target type.
-//		/// </summary>
-//		/// <param name="target">The type to lookup the converter for.</param>
-//		/// <returns>The converter for the specified type.</returns>
-//		public static IConvertFrom GetTypeConverter(Type target)
-//		{
-//			IConvertFrom converter = ConverterRegistry.GetConverter(target);
-//			if (converter == null)
-//			{
-//				throw new InvalidOperationException("No type converter defined for [" + target + "]");
-//			}
-//			return converter;
-//		}
+// /// <summary>
+// /// Looks up the <see cref="IConvertFrom"/> for the target type.
+// /// </summary>
+// /// <param name="target">The type to lookup the converter for.</param>
+// /// <returns>The converter for the specified type.</returns>
+// public static IConvertFrom GetTypeConverter(Type target)
+// {
+// IConvertFrom converter = ConverterRegistry.GetConverter(target);
+// if (converter == null)
+// {
+// throw new InvalidOperationException("No type converter defined for [" + target + "]");
+// }
+// return converter;
+// }
 
 		/// <summary>
 		/// Checks if there is an appropriate type conversion from the source type to the target type.
@@ -432,37 +432,37 @@ namespace log4net.Util
 			throw new ArgumentException("Cannot convert source object [" + sourceInstance.ToString() + "] to target type [" + targetType.Name + "]", "sourceInstance");
 		}
 
-//		/// <summary>
-//		/// Finds the value corresponding to <paramref name="key"/> in 
-//		/// <paramref name="props"/> and then perform variable substitution 
-//		/// on the found value.
-//		/// </summary>
-//		/// <param name="key">The key to lookup.</param>
-//		/// <param name="props">The association to use for lookups.</param>
-//		/// <returns>The substituted result.</returns>
-//		public static string FindAndSubst(string key, System.Collections.IDictionary props) 
-//		{
-//			if (props == null)
-//			{
-//				throw new ArgumentNullException("props");
-//			}
+// /// <summary>
+// /// Finds the value corresponding to <paramref name="key"/> in 
+// /// <paramref name="props"/> and then perform variable substitution 
+// /// on the found value.
+// /// </summary>
+// /// <param name="key">The key to lookup.</param>
+// /// <param name="props">The association to use for lookups.</param>
+// /// <returns>The substituted result.</returns>
+// public static string FindAndSubst(string key, System.Collections.IDictionary props) 
+// {
+// if (props == null)
+// {
+// throw new ArgumentNullException("props");
+// }
 //
-//			string v = props[key] as string;
-//			if (v == null) 
-//			{
-//				return null;	  
-//			}
-//	
-//			try 
-//			{
-//				return SubstituteVariables(v, props);
-//			} 
-//			catch(Exception e) 
-//			{
-//				LogLog.Error(declaringType, "OptionConverter: Bad option value [" + v + "].", e);
-//				return v;
-//			}	
-//		}
+// string v = props[key] as string;
+// if (v == null) 
+// {
+// return null;	  
+// }
+// 
+// try 
+// {
+// return SubstituteVariables(v, props);
+// } 
+// catch(Exception e) 
+// {
+// LogLog.Error(declaringType, "OptionConverter: Bad option value [" + v + "].", e);
+// return v;
+// }	
+// }
 
 		/// <summary>
 		/// Instantiates an object given a class name.

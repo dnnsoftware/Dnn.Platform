@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Content
         [SetUp]
         public void SetUp()
         {
-            //Register MockCachingProvider
+            // Register MockCachingProvider
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
             MockComponentProvider.CreateDataProvider().Setup(c => c.GetProviderPath()).Returns(string.Empty);
         }

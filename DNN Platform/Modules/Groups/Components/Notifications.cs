@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Groups.Components {
             
 
 
-            //Need to add from sender details
+            // Need to add from sender details
             var notification = new Notification
             {
                 NotificationTypeID = notificationType.NotificationTypeId,
@@ -106,7 +106,7 @@ namespace DotNetNuke.Modules.Groups.Components {
             body = body.Replace("[ProfileUrl]", Globals.UserProfileURL(recipient.UserID));
             body = tokenReplace.ReplaceGroupItemTokens(body);
 
-            //Need to add from sender details
+            // Need to add from sender details
             var notification = new Notification
             {
                 NotificationTypeID = notificationType.NotificationTypeId,

@@ -38,7 +38,7 @@ namespace DotNetNuke.Web.Mvp
 
         protected override void LoadViewState(object savedState)
         {
-            //Call the base class to load any View State
+            // Call the base class to load any View State
             base.LoadViewState(savedState);
             AttributeBasedViewStateSerializer.DeSerialize(this.Model, this.ViewState);
         }
@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.Mvp
         protected override object SaveViewState()
         {
             AttributeBasedViewStateSerializer.Serialize(this.Model, this.ViewState);
-            //Call the base class to save the View State
+            // Call the base class to save the View State
             return base.SaveViewState();
         }
     }

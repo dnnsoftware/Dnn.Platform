@@ -26,14 +26,14 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void SetsWwwAuthenticateHeaderOn401()
         {
-            //Arrange
+            // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
 
-            //Act
+            // Act
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
             StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
@@ -41,30 +41,30 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void OmitsWwwAuthenticateHeaderOn401FromXmlHttpRequest()
         {
-            //Arrange
+            // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
             response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "XmlHttpRequest");
 
-            //Act
+            // Act
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
-            //Assert
+            // Assert
             CollectionAssert.IsEmpty(response.Headers.WwwAuthenticate);
         }
 
         [Test]
         public void MissingXmlHttpRequestValueDoesntThrowNullException()
         {
-            //Arrange
+            // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = new HttpRequestMessage() };
             response.RequestMessage.Headers.Add("X-REQUESTED-WITH", "");
 
-            //Act
+            // Act
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
             StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
@@ -72,20 +72,20 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void ResponseWithNullRequestReturnsUnauthorized()
         {
-            //Arrange
+            // Arrange
             var response = new HttpResponseMessage(HttpStatusCode.Unauthorized) { RequestMessage = null };
 
-            //Act
+            // Act
             var handler = new DigestAuthMessageHandler(true, false);
             handler.OnOutboundResponse(response, new CancellationToken());
 
-            //Assert
+            // Assert
             Assert.AreEqual("Digest", response.Headers.WwwAuthenticate.First().Scheme);
             StringAssert.Contains("realm=\"DNNAPI\"", response.Headers.WwwAuthenticate.First().Parameter);
         }
 
-        //todo unit test actual authentication code
-        //very hard to unit test inbound authentication code as it dips into untestable bits of usercontroller etc.
-        //need to write controllers with interfaces and servicelocator
+        // todo unit test actual authentication code
+        // very hard to unit test inbound authentication code as it dips into untestable bits of usercontroller etc.
+        // need to write controllers with interfaces and servicelocator
     }
 }

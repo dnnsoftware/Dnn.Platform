@@ -31,16 +31,16 @@ namespace Dnn.ExportImport.Components.Services
 
         public override string ParentCategory => null;
 
-        public override uint Priority => 18; //execute before pages service.
+        public override uint Priority => 18; // execute before pages service.
 
         public override void ExportData(ExportImportJob exportJob, ExportDto exportDto)
         {
             if (this.CheckCancelled(exportJob)) return;
-            //Skip the export if all the folders have been processed already.
+            // Skip the export if all the folders have been processed already.
             if (this.CheckPoint.Stage >= 1)
                 return;
 
-            //Create Zip File to hold files
+            // Create Zip File to hold files
             var skip = this.GetCurrentSkip();
             var currentIndex = skip;
             var totalPackagesExported = 0;
@@ -54,12 +54,12 @@ namespace Dnn.ExportImport.Components.Services
                     var fromDate = exportDto.FromDateUtc ?? Constants.MinDbTime;
                     var toDate = exportDto.ToDateUtc;
 
-                    //export skin packages.
+                    // export skin packages.
                     var extensionPackagesBackupFolder = Path.Combine(Globals.ApplicationMapPath, DotNetNuke.Services.Installer.Util.BackupInstallPackageFolder);
                     var skinPackageFiles = Directory.GetFiles(extensionPackagesBackupFolder).Where(f => this.IsValidPackage(f, fromDate, toDate)).ToList();
                     var totalPackages = skinPackageFiles.Count;
 
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? totalPackages : this.CheckPoint.TotalItems;
                     if (this.CheckPointStageCallback(this)) return;
 
@@ -78,7 +78,7 @@ namespace Dnn.ExportImport.Components.Services
                         this.CheckPoint.ProcessedItems++;
                         this.CheckPoint.Progress = this.CheckPoint.ProcessedItems * 100.0 / totalPackages;
                         currentIndex++;
-                        //After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
+                        // After every 10 items, call the checkpoint stage. This is to avoid too many frequent updates to DB.
                         if (currentIndex % 10 == 0 && this.CheckPointStageCallback(this)) return;
                     }
 
@@ -99,7 +99,7 @@ namespace Dnn.ExportImport.Components.Services
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
             if (this.CheckCancelled(importJob)) return;
-            //Skip the export if all the templates have been processed already.
+            // Skip the export if all the templates have been processed already.
             if (this.CheckPoint.Stage >= 1 || this.CheckPoint.Completed)
                 return;
 
@@ -231,7 +231,7 @@ namespace Dnn.ExportImport.Components.Services
                         }
                         catch (Exception)
                         {
-                            //ignore
+                            // ignore
                         }
                     }
                 }
@@ -254,16 +254,16 @@ namespace Dnn.ExportImport.Components.Services
 
                     if (installer.IsValid)
                     {
-                        //Reset Log
+                        // Reset Log
                         installer.InstallerInfo.Log.Logs.Clear();
 
-                        //Set the IgnnoreWhiteList flag
+                        // Set the IgnnoreWhiteList flag
                         installer.InstallerInfo.IgnoreWhiteList = true;
 
-                        //Set the Repair flag
+                        // Set the Repair flag
                         installer.InstallerInfo.RepairInstall = true;
 
-                        //Install
+                        // Install
                         installer.Install();
                     }
                 }
@@ -282,7 +282,7 @@ namespace Dnn.ExportImport.Components.Services
                 InstallerInfo = { PortalID = Null.NullInteger }
             };
 
-            //Read the manifest
+            // Read the manifest
             if (installer.InstallerInfo.ManifestFile != null)
             {
                 installer.ReadManifest(true);

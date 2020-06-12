@@ -124,7 +124,7 @@ namespace DotNetNuke.UI.WebControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-					//Try and cast the value to an DateTime
+					// Try and cast the value to an DateTime
                     var dteString = this.OldValue as string;
                     dteValue = DateTime.Parse(dteString, CultureInfo.InvariantCulture);
                 }

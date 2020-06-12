@@ -86,7 +86,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                 this._FileType = UploadType.File;
                 if ((this.Request.QueryString["ftype"] != null))
                 {
-					//The select statement ensures that the parameter can be converted to UploadType
+					// The select statement ensures that the parameter can be converted to UploadType
                     switch (this.Request.QueryString["ftype"].ToLowerInvariant())
                     {
                         case "file":
@@ -234,7 +234,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
         {
             base.OnInit(e);
 
-            //Customise the Control Title
+            // Customise the Control Title
             this.ModuleConfiguration.ModuleTitle = Localization.GetString("UploadType" + this.FileType, this.LocalResourceFile);
         }
 
@@ -258,7 +258,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
             {
                 this.CheckSecurity();
 
-                //Get localized Strings
+                // Get localized Strings
                 string strHost = Localization.GetString("HostRoot", this.LocalResourceFile);
                 string strPortal = Localization.GetString("PortalRoot", this.LocalResourceFile);
 
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                     this.chkUnzip.Checked = false;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -312,14 +312,14 @@ namespace DotNetNuke.Modules.Admin.FileManager
 
                 var postedFile = this.cmdBrowse.PostedFile;
 
-                //Get localized Strings
+                // Get localized Strings
                 Localization.GetString("InvalidExt", this.LocalResourceFile);
                 var strFileName = Path.GetFileName(postedFile.FileName);
                 if (!String.IsNullOrEmpty(postedFile.FileName))
                 {
                     switch (this.FileType)
                     {
-                        case UploadType.File: //content files
+                        case UploadType.File: // content files
                             try
                             {
                                 var folder = FolderManager.Instance.GetFolder(this.ddlFolders.SelectedItemValueAsInt);
@@ -370,7 +370,7 @@ namespace DotNetNuke.Modules.Admin.FileManager
                     this.lblMessage.Text = strMessage;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

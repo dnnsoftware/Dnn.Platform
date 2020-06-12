@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.Html
             {
                 this.WorkflowID = new HtmlTextController().GetWorkflow(this.ModuleId, this.TabId, this.PortalId).Value;
 
-                //Add an Action Event Handler to the Skin
+                // Add an Action Event Handler to the Skin
                 this.AddActionHandler(this.ModuleAction_Click);
             }
             catch (Exception exc)
@@ -107,7 +107,7 @@ namespace DotNetNuke.Modules.Html
 
                 if ((htmlTextInfo != null))
                 {
-                    //don't decode yet (this is done in FormatHtmlText)
+                    // don't decode yet (this is done in FormatHtmlText)
                     contentString = htmlTextInfo.Content;
                 }
                 else
@@ -152,7 +152,7 @@ namespace DotNetNuke.Modules.Html
                 // add content to module
                 this.lblContent.Controls.Add(new LiteralControl(HtmlTextController.FormatHtmlText(this.ModuleId, contentString, this.Settings, this.PortalSettings, this.Page)));
 
-                //set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
+                // set normalCheckBox on the content wrapper to prevent form decoration if its disabled.
                 if (!this.Settings.UseDecorate)
                 {
                     this.lblContent.CssClass = string.Format("{0} normalCheckBox", this.lblContent.CssClass);

@@ -318,7 +318,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.FromUserID = Null.SetNullInteger(dr["FromUserID"]);
             this.FromUserName = Null.SetNullString(dr["FromUserName"]);
             this.ToUserID = Null.SetNullInteger(dr["ToUserID"]);
-            //'_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
+            // '_ToUserName = Null.SetNullString(dr.Item("ToUserName"))
             this.ReplyTo = Null.SetNullInteger(dr["ReplyTo"]);
             this.Status = (MessageStatusType)Enum.Parse(typeof(MessageStatusType), Null.SetNullString(dr["Status"]));
             this.Body = Null.SetNullString(dr["Body"]);
@@ -335,7 +335,7 @@ namespace DotNetNuke.Services.Messaging.Data
             this.Conversation = Null.SetNullGuid(dr["Conversation"]);
 
 
-            //'Conversation = New Guid(g)
+            // 'Conversation = New Guid(g)
         }
 
         public int KeyID

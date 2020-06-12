@@ -20,13 +20,13 @@ namespace DotNetNuke.UI.Skins
 
         public void WriteXml(XmlWriter writer)
         {
-			//Write start of main elemenst 
+			// Write start of main elemenst 
             writer.WriteStartElement("skin");
 
             writer.WriteElementString("skinName", this.SkinName);
             writer.WriteElementString("inUse", this.InUse.ToString());
 
-            //Write end of Host Info 
+            // Write end of Host Info 
             writer.WriteEndElement();
         }
     }

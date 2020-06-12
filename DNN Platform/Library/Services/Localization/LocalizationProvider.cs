@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Localization
 
         public string GetString(string key, string resourceFileRoot, string language, PortalSettings portalSettings, bool disableShowMissingKeys)
         {
-            //make the default translation property ".Text"
+            // make the default translation property ".Text"
             if (key.IndexOf(".", StringComparison.Ordinal) < 1)
             {
                 key += ".Text";
@@ -62,7 +62,7 @@ namespace DotNetNuke.Services.Localization
             string resourceValue = Null.NullString;
             bool keyFound = TryGetStringInternal(key, language, resourceFileRoot, portalSettings, ref resourceValue);
 
-            //If the key can't be found then it doesn't exist in the Localization Resources
+            // If the key can't be found then it doesn't exist in the Localization Resources
             if (Localization.ShowMissingKeys && !disableShowMissingKeys)
             {
                 if (keyFound)
@@ -196,8 +196,8 @@ namespace DotNetNuke.Services.Localization
                 return new Dictionary<string, string>();
             }
 
-            //clone the dictionart so that when merge values into dictionart, it won't
-            //affect the cache data.
+            // clone the dictionart so that when merge values into dictionart, it won't
+            // affect the cache data.
             res = res.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
             res = MergeResourceFile(res, GetResourceFileName(resourceFile, systemLanguage, portalSettings.PortalId));
             if (defaultLanguage != systemLanguage)
@@ -261,28 +261,28 @@ namespace DotNetNuke.Services.Localization
             string filePath = null;
             try
             {
-                //Get resource file lookup to determine if the resource file even exists
+                // Get resource file lookup to determine if the resource file even exists
                 SharedDictionary<string, bool> resourceFileExistsLookup = GetResourceFileLookupDictionary();
 
                 if (ResourceFileMayExist(resourceFileExistsLookup, cacheKey))
                 {
-                    //check if an absolute reference for the resource file was used
+                    // check if an absolute reference for the resource file was used
                     if (cacheKey.Contains(":\\") && Path.IsPathRooted(cacheKey))
                     {
-                        //if an absolute reference, check that the file exists
+                        // if an absolute reference, check that the file exists
                         if (File.Exists(cacheKey))
                         {
                             filePath = cacheKey;
                         }
                     }
 
-                    //no filepath found from an absolute reference, try and map the path to get the file path
+                    // no filepath found from an absolute reference, try and map the path to get the file path
                     if (filePath == null)
                     {
                         filePath = HostingEnvironment.MapPath(Globals.ApplicationPath + cacheKey);
                     }
 
-                    //The file is not in the lookup, or we know it exists as we have found it before
+                    // The file is not in the lookup, or we know it exists as we have found it before
                     if (File.Exists(filePath))
                     {
                         if (filePath != null)
@@ -303,7 +303,7 @@ namespace DotNetNuke.Services.Localization
                         }
                         cacheItemArgs.CacheDependency = new DNNCacheDependency(filePath);
 
-                        //File exists so add it to lookup with value true, so we are safe to try again
+                        // File exists so add it to lookup with value true, so we are safe to try again
                         using (resourceFileExistsLookup.GetWriteLock())
                         {
                             resourceFileExistsLookup[cacheKey] = true;
@@ -311,7 +311,7 @@ namespace DotNetNuke.Services.Localization
                     }
                     else
                     {
-                        //File does not exist so add it to lookup with value false, so we don't try again
+                        // File does not exist so add it to lookup with value false, so we don't try again
                         using (resourceFileExistsLookup.GetWriteLock())
                         {
                             resourceFileExistsLookup[cacheKey] = false;
@@ -372,7 +372,7 @@ namespace DotNetNuke.Services.Localization
                             resourceFile = resourceFileRoot + ".resx";
                             break;
                         default:
-                            resourceFile = resourceFileRoot + ".ascx.resx"; //a portal module
+                            resourceFile = resourceFileRoot + ".ascx.resx"; // a portal module
                             break;
                     }
                 }
@@ -421,17 +421,17 @@ namespace DotNetNuke.Services.Localization
 
         private static bool TryGetFromResourceFile(string key, string resourceFile, string userLanguage, string fallbackLanguage, string defaultLanguage, int portalID, ref string resourceValue)
         {
-            //Try the user's language first
+            // Try the user's language first
             bool bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, userLanguage), portalID, ref resourceValue);
 
             if (!bFound && fallbackLanguage != userLanguage)
             {
-                //Try fallback language next
+                // Try fallback language next
                 bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, fallbackLanguage), portalID, ref resourceValue);
             }
             if (!bFound && !(defaultLanguage == userLanguage || defaultLanguage == fallbackLanguage))
             {
-                //Try default Language last
+                // Try default Language last
                 bFound = TryGetFromResourceFile(key, GetResourceFileName(resourceFile, defaultLanguage), portalID, ref resourceValue);
             }
             return bFound;
@@ -439,16 +439,16 @@ namespace DotNetNuke.Services.Localization
 
         private static bool TryGetFromResourceFile(string key, string resourceFile, int portalID, ref string resourceValue)
         {
-            //Try Portal Resource File
+            // Try Portal Resource File
             bool bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.Portal, ref resourceValue);
             if (!bFound)
             {
-                //Try Host Resource File
+                // Try Host Resource File
                 bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.Host, ref resourceValue);
             }
             if (!bFound)
             {
-                //Try Portal Resource File
+                // Try Portal Resource File
                 bFound = TryGetFromResourceFile(key, resourceFile, portalID, CustomizedLocale.None, ref resourceValue);
             }
             return bFound;
@@ -460,20 +460,20 @@ namespace DotNetNuke.Services.Localization
             string fallbackLanguage = Localization.SystemLocale;
             int portalId = Null.NullInteger;
 
-            //Get the default language
+            // Get the default language
             if (portalSettings != null)
             {
                 defaultLanguage = portalSettings.DefaultLanguage;
                 portalId = portalSettings.PortalId;
             }
 
-            //Set the userLanguage if not passed in
+            // Set the userLanguage if not passed in
             if (String.IsNullOrEmpty(userLanguage))
             {
                 userLanguage = Thread.CurrentThread.CurrentUICulture.ToString();
             }
 
-            //Default the userLanguage to the defaultLanguage if not set
+            // Default the userLanguage to the defaultLanguage if not set
             if (String.IsNullOrEmpty(userLanguage))
             {
                 userLanguage = defaultLanguage;
@@ -483,7 +483,7 @@ namespace DotNetNuke.Services.Localization
             {
                 if (Globals.Status != Globals.UpgradeStatus.Install)
                 {
-                    //Get Fallback language, but not when we are installing (because we may not have a database yet)
+                    // Get Fallback language, but not when we are installing (because we may not have a database yet)
                     userLocale = LocaleController.Instance.GetLocale(userLanguage);
                 }
             }
@@ -501,13 +501,13 @@ namespace DotNetNuke.Services.Localization
                 resourceFile = Localization.SharedResourceFile;
             }
 
-            //Try the resource file for the key
+            // Try the resource file for the key
             bool bFound = TryGetFromResourceFile(key, resourceFile, userLanguage, fallbackLanguage, defaultLanguage, portalId, ref resourceValue);
             if (!bFound)
             {
                 if (Localization.SharedResourceFile.ToLowerInvariant() != resourceFile.ToLowerInvariant())
                 {
-                    //try to use a module specific shared resource file
+                    // try to use a module specific shared resource file
                     string localSharedFile = resourceFile.Substring(0, resourceFile.LastIndexOf("/", StringComparison.Ordinal) + 1) + Localization.LocalSharedResourceFile;
 
                     if (localSharedFile.ToLowerInvariant() != resourceFile.ToLowerInvariant())
@@ -547,8 +547,8 @@ namespace DotNetNuke.Services.Localization
                 resourceFileName = "~/" + resourceFileName;
             }
 
-            //Local resource files are either named ~/... or <ApplicationPath>/...
-            //The following logic creates a cachekey of /....
+            // Local resource files are either named ~/... or <ApplicationPath>/...
+            // The following logic creates a cachekey of /....
             string cacheKey = resourceFileName.Replace("~/", "/").ToLowerInvariant();
             if (!String.IsNullOrEmpty(Globals.ApplicationPath))
             {
@@ -569,12 +569,12 @@ namespace DotNetNuke.Services.Localization
                 }
             }
 
-            //Get resource file lookup to determine if the resource file even exists
+            // Get resource file lookup to determine if the resource file even exists
             SharedDictionary<string, bool> resourceFileExistsLookup = GetResourceFileLookupDictionary();
 
             if (ResourceFileMayExist(resourceFileExistsLookup, cacheKey))
             {
-                //File is not in lookup or its value is true so we know it exists
+                // File is not in lookup or its value is true so we know it exists
                 Dictionary<string, string> dicResources = GetResourceFile(cacheKey);
                 if (dicResources != null)
                 {

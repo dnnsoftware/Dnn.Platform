@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Dto.Pages
         public DateTime? LastModifiedOnDate { get; set; }
         public string IconFileLarge { get; set; }
         public string CultureCode { get; set; }
-        public int? ContentItemID { get; set; }  //FK
+        public int? ContentItemID { get; set; }  // FK
         public Guid UniqueId { get; set; }
         public Guid VersionGuid { get; set; }
         public Guid? DefaultLanguageGuid { get; set; }

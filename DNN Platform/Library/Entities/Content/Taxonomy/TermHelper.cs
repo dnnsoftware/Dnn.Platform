@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
                 vocabularyId = vocabulary.VocabularyId;
             }
 
-            //get all terms info
+            // get all terms info
             var allTerms = new List<Term>();
             var vocabularies = from v in vocabularyController.GetVocabularies()
                                where (v.ScopeType.ScopeType == "Portal" && v.ScopeId == tabPortalId && !v.Name.Equals("Tags", StringComparison.OrdinalIgnoreCase))

@@ -93,7 +93,7 @@ namespace DotNetNuke.Web.UI.WebControls
             bool returnValue = true;
             if ((this.Visible && this.CheckToolVisibility))
             {
-                //Hide group if all tools are invisible
+                // Hide group if all tools are invisible
                 bool foundTool = false;
                 ControlCollection controls = this._contentContainer.Controls;
                 returnValue = this.AreChildToolsVisible(ref controls, ref foundTool);

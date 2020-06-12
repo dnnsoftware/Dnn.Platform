@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Status = StepStatus.Running;
 
 
-            //Set Status to None
+            // Set Status to None
             Globals.SetStatus(Globals.UpgradeStatus.None);
 
 
@@ -77,11 +77,11 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
 
             var serverPath = Globals.ApplicationMapPath + "\\";
 
-            //Get the Portal Alias
+            // Get the Portal Alias
             var portalAlias = domain;
             if (portal.PortAliases.Count > 0) portalAlias = portal.PortAliases[0];
 
-            //Verify that portal alias is not present
+            // Verify that portal alias is not present
             if (PortalAliasController.Instance.GetPortalAlias(portalAlias.ToLowerInvariant()) != null)
             {
                 string description = Localization.Localization.GetString("SkipCreatingSite", this.LocalInstallResourceFile);
@@ -89,19 +89,19 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 return;
             }
 
-            //Create default email
+            // Create default email
             var email = portal.AdminEmail;
             if (string.IsNullOrEmpty(email))
             {
                 email = "admin@" + domain.Replace("www.", "");
-                //Remove any domain subfolder information ( if it exists )
+                // Remove any domain subfolder information ( if it exists )
                 if (email.IndexOf("/") != -1)
                 {
                     email = email.Substring(0, email.IndexOf("/"));
                 }
             }
 
-            //install LP if installing in a different language
+            // install LP if installing in a different language
             string culture = installConfig.InstallCulture;
             if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -133,18 +133,18 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             if (portal.IsChild)
                 childPath = portalAlias.Substring(portalAlias.LastIndexOf("/") + 1);
 
-            //Create Folder Mappings config
+            // Create Folder Mappings config
             if (!String.IsNullOrEmpty(installConfig.FolderMappingsSettings))
             {
                 FolderMappingsConfigController.Instance.SaveConfig(installConfig.FolderMappingsSettings);
             }
-            //add item to identity install from install wizard.
+            // add item to identity install from install wizard.
             if (HttpContext.Current != null)
             {
                 HttpContext.Current.Items.Add("InstallFromWizard", true);
             }
 
-            //Create Portal
+            // Create Portal
             var portalId = PortalController.Instance.CreatePortal(portal.PortalName,
                                                      userInfo,
                                                      portal.Description,
@@ -164,28 +164,28 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 }
             }
 
-            //remove en-US from portal if installing in a different language
+            // remove en-US from portal if installing in a different language
             if (!culture.Equals("en-us", StringComparison.InvariantCultureIgnoreCase))
             {
                 var locale = LocaleController.Instance.GetLocale("en-US");
                 Localization.Localization.RemoveLanguageFromPortal(portalId, locale.LanguageId, true);
             }
 
-            //Log user in to site
+            // Log user in to site
             var loginStatus = UserLoginStatus.LOGIN_FAILURE;
             UserController.UserLogin(portalId, userInfo.Username, installConfig.SuperUser.Password, "", "", "", ref loginStatus, false);
 
             InstallController.Instance.RemoveFromInstallConfig("//dotnetnuke/superuser/password");
         }
 
-        //private void CreateFolderMappingConfig(string folderMappinsSettings)
-        //{
+        // private void CreateFolderMappingConfig(string folderMappinsSettings)
+        // {
         //    string folderMappingsConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DotNetNuke.folderMappings.config");
         //    if (!File.Exists(folderMappingsConfigPath))
         //    {
         //        File.AppendAllText(folderMappingsConfigPath, "<folderMappingsSettings>" + folderMappinsSettings + "</folderMappingsSettings>");
         //    }
-        //}
+        // }
 
         #endregion
 

@@ -16,7 +16,7 @@ namespace DotNetNuke.Web.ConfigSection
         private const string ForceSslTag = "forceSSL";
 
         [ConfigurationProperty(NameTag, DefaultValue = "", IsRequired = true)]
-        //[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
+        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 60)]
         public string Name
         {
             get
@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.ConfigSection
         }
 
         [ConfigurationProperty(ClassNameTag, DefaultValue = "", IsRequired = true)]
-        //[StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
+        // [StringValidator(InvalidCharacters = "~!@#$%^&*()[]{}/;'\"|\\", MinLength = 1, MaxLength = 300)]
         public string ClassName
         {
             get

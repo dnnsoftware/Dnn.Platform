@@ -148,7 +148,7 @@ namespace Dnn.ExportImport.Components.Common
             if (File.Exists(filePath))
             {
                 var content = File.ReadAllText(filePath);
-                //TODO: This might throw error if file is corrupt. Should we handle error here?
+                // TODO: This might throw error if file is corrupt. Should we handle error here?
                 item = JsonConvert.DeserializeObject<T>(content);
             }
         }

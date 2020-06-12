@@ -188,7 +188,7 @@ namespace DotNetNuke.Common.Lists
 
             var lists = new SortedList<string, ListInfo>();
             lists.Add(list.Key, list);
-            //add Children
+            // add Children
             if (includeChildren)
             {
                 foreach (KeyValuePair<string, ListInfo> listPair in this.GetListInfoDictionary(list.PortalID))
@@ -199,7 +199,7 @@ namespace DotNetNuke.Common.Lists
                     }
                 }
             }
-            //Delete items in reverse order so deeper descendants are removed before their parents
+            // Delete items in reverse order so deeper descendants are removed before their parents
             for (int i = lists.Count - 1; i >= 0; i += -1)
             {
                 this.DeleteList(lists.Values[i].Name, lists.Values[i].ParentKey, lists.Values[i].PortalID);

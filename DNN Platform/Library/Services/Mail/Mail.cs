@@ -47,8 +47,8 @@ namespace DotNetNuke.Services.Mail
             // Can be "0", empty or Null - anonymous, "1" - basic, "2" - NTLM. 
             if (smtpAuthentication == "1" || smtpAuthentication == "2")
             {
-                //if the senderAddress is the email address of the Host then switch it smtpUsername if different
-                //if display name of senderAddress is empty, then use Host.HostTitle for it
+                // if the senderAddress is the email address of the Host then switch it smtpUsername if different
+                // if display name of senderAddress is empty, then use Host.HostTitle for it
                 if (mailMessage.Sender != null)
                 {
                     var senderAddress = mailMessage.Sender.Address;
@@ -76,19 +76,19 @@ namespace DotNetNuke.Services.Mail
                 }
             }
 
-            //attachments
+            // attachments
             foreach (var attachment in attachments)
             {
                 mailMessage.Attachments.Add(attachment);
             }
 
-            //message
+            // message
             mailMessage.SubjectEncoding = bodyEncoding;
             mailMessage.Subject = HtmlUtils.StripWhiteSpace(subject, true);
             mailMessage.BodyEncoding = bodyEncoding;
 
-            //added support for multipart html messages
-            //add text part as alternate view
+            // added support for multipart html messages
+            // add text part as alternate view
             var PlainView = AlternateView.CreateAlternateViewFromString(ConvertToText(body), null, "text/plain");
             mailMessage.AlternateViews.Add(PlainView);
             if (mailMessage.IsBodyHtml)
@@ -102,7 +102,7 @@ namespace DotNetNuke.Services.Mail
             {
                 try
                 {
-                    //to workaround problem in 4.0 need to specify host name
+                    // to workaround problem in 4.0 need to specify host name
                     using (var smtpClient = new SmtpClient())
                     {
                         var smtpHostParts = smtpServer.Split(':');
@@ -126,16 +126,16 @@ namespace DotNetNuke.Services.Mail
                         switch (smtpAuthentication)
                         {
                             case "":
-                            case "0": //anonymous
+                            case "0": // anonymous
                                 break;
-                            case "1": //basic
+                            case "1": // basic
                                 if (!String.IsNullOrEmpty(smtpUsername) && !String.IsNullOrEmpty(smtpPassword))
                                 {
                                     smtpClient.UseDefaultCredentials = false;
                                     smtpClient.Credentials = new NetworkCredential(smtpUsername, smtpPassword);
                                 }
                                 break;
-                            case "2": //NTLM
+                            case "2": // NTLM
                                 smtpClient.UseDefaultCredentials = true;
                                 break;
                         }
@@ -156,7 +156,7 @@ namespace DotNetNuke.Services.Mail
                         retValue = Localize.GetString("SMTPConfigurationProblem") + " ";
                     }
 
-                    //mail configuration problem
+                    // mail configuration problem
                     if (exc.InnerException != null)
                     {
                         retValue += string.Concat(exc.Message, Environment.NewLine, exc.InnerException.Message);
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Mail
         public static bool IsValidEmailAddress(string Email, int portalid)
         {
             string pattern = Null.NullString;
-            //During install Wizard we may not have a valid PortalID
+            // During install Wizard we may not have a valid PortalID
             if (portalid != Null.NullInteger)
             {
                 pattern = Convert.ToString(UserController.GetUserSettings(portalid)["Security_EmailValidation"]);
@@ -271,7 +271,7 @@ namespace DotNetNuke.Services.Mail
         /// -----------------------------------------------------------------------------
         public static string SendMail(int portalId, int userId, MessageType msgType, PortalSettings settings)
         {
-            //Send Notification to User
+            // Send Notification to User
             var user = UserController.Instance.GetUserById(portalId, userId);
             int toUser = user.UserID;
             string locale = user.Profile.PreferredLocale;
@@ -545,7 +545,7 @@ namespace DotNetNuke.Services.Mail
         public static string SendMail(string mailFrom, string mailSender, string mailTo, string cc, string bcc, string replyTo, MailPriority priority, string subject, MailFormat bodyFormat, Encoding bodyEncoding,
                                       string body, List<Attachment> attachments, string smtpServer, string smtpAuthentication, string smtpUsername, string smtpPassword, bool smtpEnableSSL)
         {
-            //SMTP server configuration
+            // SMTP server configuration
             if (string.IsNullOrWhiteSpace(smtpServer) && !string.IsNullOrWhiteSpace(Host.SMTPServer))
             {
                 smtpServer = Host.SMTPServer;
@@ -587,19 +587,19 @@ namespace DotNetNuke.Services.Mail
 
             if (!String.IsNullOrEmpty(mailTo))
             {
-                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 mailTo = mailTo.Replace(";", ",");
                 mailMessage.To.Add(mailTo);
             }
             if (!String.IsNullOrEmpty(cc))
             {
-                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 cc = cc.Replace(";", ",");
                 mailMessage.CC.Add(cc);
             }
             if (!String.IsNullOrEmpty(bcc))
             {
-                //translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
+                // translate semi-colon delimiters to commas as ASP.NET 2.0 does not support semi-colons
                 bcc = bcc.Replace(";", ",");
                 mailMessage.Bcc.Add(bcc);
             }

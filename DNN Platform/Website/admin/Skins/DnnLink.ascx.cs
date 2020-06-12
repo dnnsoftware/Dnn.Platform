@@ -30,7 +30,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
             if (!string.IsNullOrEmpty(this.Target))
                 this.aDnnLink.Target = this.Target;
-            //set home page link to community URL
+            // set home page link to community URL
 
             string url = "http://www.dnnsoftware.com/community?utm_source=dnn-install&utm_medium=web-link&utm_content=gravity-skin-link&utm_campaign=dnn-install";
             string utmTerm = "&utm_term=cms-by-dnn";
@@ -38,10 +38,10 @@ namespace DotNetNuke.UI.Skins.Controls
             int charPos = 0; string linkText = "CMS by DNN";
             if (hostName.Length > 0)
             {
-                //convert first letter of hostname to int pos in alphabet
+                // convert first letter of hostname to int pos in alphabet
                 charPos = char.ToUpper(hostName[0]) - 64;
             }
-            //vary link by first letter of host name
+            // vary link by first letter of host name
             if (charPos <= 5)
             {
                 linkText = "Open Source ASP.NET CMS by DNN"; 

@@ -67,7 +67,7 @@ namespace DotNetNuke.UI
         /// -----------------------------------------------------------------------------
         private static void AddChildActions(ModuleAction parentAction, DNNNode parentNode, DNNNode rootNode, IActionControl actionControl, int intDepth)
         {
-            //Add Menu Items
+            // Add Menu Items
             foreach (ModuleAction action in parentAction.Actions)
             {
                 bool isActionPending = IsActionPending(parentNode, rootNode, intDepth);
@@ -75,13 +75,13 @@ namespace DotNetNuke.UI
                 {
                     if (isActionPending == false)
                     {
-                        //A title (text) of ~ denotes a break
+                        // A title (text) of ~ denotes a break
                         parentNode.DNNNodes.AddBreak();
                     }
                 }
                 else
                 {
-                    //if action is visible and user has permission 
+                    // if action is visible and user has permission 
                     if (action.Visible &&
                         (action.Secure != SecurityAccessLevel.Anonymous ||
                             (!ModuleHost.IsViewMode(actionControl.ModuleControl.ModuleContext.Configuration, PortalSettings.Current))
@@ -97,7 +97,7 @@ namespace DotNetNuke.UI
                             DNNNode node = parentNode.DNNNodes[i];
                             node.ID = action.ID.ToString();
                             node.Key = action.ID.ToString();
-                            node.Text = action.Title; //no longer including SPACE in generic node collection, each control must handle how they want to display
+                            node.Text = action.Title; // no longer including SPACE in generic node collection, each control must handle how they want to display
                             if (string.IsNullOrEmpty(action.ClientScript) && string.IsNullOrEmpty(action.Url) && string.IsNullOrEmpty(action.CommandArgument))
                             {
                                 node.Enabled = false;
@@ -124,7 +124,7 @@ namespace DotNetNuke.UI
                                 }
                             }
                             node.Image = action.Icon;
-                            if (action.HasChildren()) //if action has children then call function recursively
+                            if (action.HasChildren()) // if action has children then call function recursively
                             {
                                 AddChildActions(action, node, rootNode, actionControl, intDepth);
                             }
@@ -150,14 +150,14 @@ namespace DotNetNuke.UI
         private static void AddNode(TabInfo objTab, DNNNodeCollection objNodes, Hashtable objBreadCrumbs, PortalSettings objPortalSettings, ToolTipSource eToolTips, IDictionary<string, DNNNode> nodesLookup)
         {
             var objNode = new DNNNode();
-            if (objTab.Title == "~") //NEW!
+            if (objTab.Title == "~") // NEW!
             {
-                //A title (text) of ~ denotes a break
+                // A title (text) of ~ denotes a break
                 objNodes.AddBreak();
             }
             else
             {
-                //assign breadcrumb and selected properties
+                // assign breadcrumb and selected properties
                 if (objBreadCrumbs.Contains(objTab.TabID))
                 {
                     objNode.BreadCrumb = true;
@@ -205,14 +205,14 @@ namespace DotNetNuke.UI
 
         private static bool IsActionPending(DNNNode objParentNode, DNNNode objRootNode, int intDepth)
         {
-            //if we aren't restricting depth then its never pending
+            // if we aren't restricting depth then its never pending
             if (intDepth == -1)
             {
                 return false;
             }
 
-            //parents level + 1 = current node level
-            //if current node level - (roots node level) <= the desired depth then not pending
+            // parents level + 1 = current node level
+            // if current node level - (roots node level) <= the desired depth then not pending
             if (objParentNode.Level + 1 - objRootNode.Level <= intDepth)
             {
                 return false;
@@ -223,22 +223,22 @@ namespace DotNetNuke.UI
         private static bool IsTabPending(TabInfo objTab, DNNNode objParentNode, DNNNode objRootNode, int intDepth, Hashtable objBreadCrumbs, int intLastBreadCrumbId, bool blnPOD)
         {
             //
-            //A
-            //|
+            // A
+            // |
             //--B
-            //| |
-            //| --B-1
-            //| | |
-            //| | --B-1-1
-            //| | |
-            //| | --B-1-2
-            //| |
-            //| --B-2
-            //|   |
-            //|   --B-2-1
-            //|   |
-            //|   --B-2-2
-            //|
+            // | |
+            // | --B-1
+            // | | |
+            // | | --B-1-1
+            // | | |
+            // | | --B-1-2
+            // | |
+            // | --B-2
+            // |   |
+            // |   --B-2-1
+            // |   |
+            // |   --B-2-2
+            // |
             //--C
             //  |
             //  --C-1
@@ -253,14 +253,14 @@ namespace DotNetNuke.UI
             //    |
             //    --C-2-2
 
-            //if we aren't restricting depth then its never pending
+            // if we aren't restricting depth then its never pending
             if (intDepth == -1)
             {
                 return false;
             }
 
-            //parents level + 1 = current node level
-            //if current node level - (roots node level) <= the desired depth then not pending
+            // parents level + 1 = current node level
+            // if current node level - (roots node level) <= the desired depth then not pending
             if (objParentNode.Level + 1 - objRootNode.Level <= intDepth)
             {
                 return false;
@@ -270,20 +270,20 @@ namespace DotNetNuke.UI
             //--- These checks below are here so tree becomes expands to selected node ---
             if (blnPOD)
             {
-                //really only applies to controls with POD enabled, since the root passed in may be some node buried down in the chain
-                //and the depth something like 1.  We need to include the appropriate parent's and parent siblings
-                //Why is the check for POD required?  Well to allow for functionality like RootOnly requests.  We do not want any children
-                //regardless if they are a breadcrumb
+                // really only applies to controls with POD enabled, since the root passed in may be some node buried down in the chain
+                // and the depth something like 1.  We need to include the appropriate parent's and parent siblings
+                // Why is the check for POD required?  Well to allow for functionality like RootOnly requests.  We do not want any children
+                // regardless if they are a breadcrumb
 
-                //if tab is in the breadcrumbs then obviously not pending
+                // if tab is in the breadcrumbs then obviously not pending
                 if (objBreadCrumbs.Contains(objTab.TabID))
                 {
                     return false;
                 }
 
-                //if parent is in the breadcrumb and it is not the last breadcrumb then not pending
-                //in tree above say we our breadcrumb is (A, B, B-2) we want our tree containing A, B, B-2 AND B-1 AND C since A and B are expanded
-                //we do NOT want B-2-1 and B-2-2, thus the check for Last Bread Crumb
+                // if parent is in the breadcrumb and it is not the last breadcrumb then not pending
+                // in tree above say we our breadcrumb is (A, B, B-2) we want our tree containing A, B, B-2 AND B-1 AND C since A and B are expanded
+                // we do NOT want B-2-1 and B-2-2, thus the check for Last Bread Crumb
                 if (objBreadCrumbs.Contains(objTab.ParentId) && intLastBreadCrumbId != objTab.ParentId)
                 {
                     return false;
@@ -308,7 +308,7 @@ namespace DotNetNuke.UI
             PortalSettings objPortalSettings = PortalController.Instance.GetCurrentPortalSettings();
             bool showHidden = (intNavNodeOptions & (int)NavNodeOptions.IncludeHiddenNodes) == (int)NavNodeOptions.IncludeHiddenNodes;
 
-            if (CanShowTab(objTab, TabPermissionController.CanAdminPage(), true, showHidden)) //based off of tab properties, is it shown
+            if (CanShowTab(objTab, TabPermissionController.CanAdminPage(), true, showHidden)) // based off of tab properties, is it shown
             {
                 DNNNodeCollection objParentNodes;
                 DNNNode objParentNode;
@@ -320,10 +320,10 @@ namespace DotNetNuke.UI
                 objParentNodes = objParentNode.DNNNodes;
                 if (objTab.TabID == intStartTabId)
                 {
-                    //is this the starting tab
+                    // is this the starting tab
                     if ((intNavNodeOptions & (int)NavNodeOptions.IncludeParent) != 0)
                     {
-                        //if we are including parent, make sure there is one, then add
+                        // if we are including parent, make sure there is one, then add
                         if (objTabLookup[objTab.ParentId] != null)
                         {
                             AddNode((TabInfo)objTabLookup[objTab.ParentId], objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
@@ -335,29 +335,29 @@ namespace DotNetNuke.UI
                     }
                     if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) != 0)
                     {
-                        //if we are including our self (starting tab) then add
+                        // if we are including our self (starting tab) then add
                         AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                     }
                 }
                 else if (((intNavNodeOptions & (int)NavNodeOptions.IncludeSiblings) != 0) && IsTabSibling(objTab, intStartTabId, objTabLookup))
                 {
-                    //is this a sibling of the starting node, and we are including siblings, then add it
+                    // is this a sibling of the starting node, and we are including siblings, then add it
                     AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                 }
                 else
                 {
-                    if (blnParentFound) //if tabs parent already in hierarchy (as is the case when we are sending down more than 1 level)
+                    if (blnParentFound) // if tabs parent already in hierarchy (as is the case when we are sending down more than 1 level)
                     {
-                        //parent will be found for siblings.  Check to see if we want them, if we don't make sure tab is not a sibling
+                        // parent will be found for siblings.  Check to see if we want them, if we don't make sure tab is not a sibling
                         if (((intNavNodeOptions & (int)NavNodeOptions.IncludeSiblings) != 0) || IsTabSibling(objTab, intStartTabId, objTabLookup) == false)
                         {
-                            //determine if tab should be included or marked as pending
+                            // determine if tab should be included or marked as pending
                             bool blnPOD = (intNavNodeOptions & (int)NavNodeOptions.MarkPendingNodes) != 0;
                             if (IsTabPending(objTab, objParentNode, objRootNode, intDepth, objBreadCrumbs, intLastBreadCrumbId, blnPOD))
                             {
                                 if (blnPOD)
                                 {
-                                    objParentNode.HasNodes = true; //mark it as a pending node
+                                    objParentNode.HasNodes = true; // mark it as a pending node
                                 }
                             }
                             else
@@ -368,7 +368,7 @@ namespace DotNetNuke.UI
                     }
                     else if ((intNavNodeOptions & (int)NavNodeOptions.IncludeSelf) == 0 && objTab.ParentId == intStartTabId)
                     {
-                        //if not including self and parent is the start id then add 
+                        // if not including self and parent is the start id then add 
                         AddNode(objTab, objParentNodes, objBreadCrumbs, objPortalSettings, eToolTips, nodesLookup);
                     }
                 }
@@ -386,7 +386,7 @@ namespace DotNetNuke.UI
 
         public static bool CanShowTab(TabInfo tab, bool isAdminMode, bool showDisabled, bool showHidden)
         {
-            //if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
+            // if tab is visible, not deleted, not expired (or admin), and user has permission to see it...
             return ((tab.IsVisible || showHidden) && tab.HasAVisibleVersion && !tab.IsDeleted &&
                     (!tab.DisableLink || showDisabled) &&
                     (((tab.StartDate < DateTime.Now || tab.StartDate == Null.NullDate) &&
@@ -594,7 +594,7 @@ namespace DotNetNuke.UI
                 objTabLookup.Add(objTab.TabID, objTab);
             }
 
-            //convert dnn nodes to dictionary.
+            // convert dnn nodes to dictionary.
             var nodesDict = new Dictionary<string, DNNNode>();
             SaveDnnNodesToDictionary(nodesDict, objRootNodes);
 

@@ -128,7 +128,7 @@ namespace DotNetNuke.Services.Installer.Writers
         /// -----------------------------------------------------------------------------
         protected override void WriteCustomManifest(XmlWriter writer)
         {
-			//Write language Elements
+			// Write language Elements
             writer.WriteElementString("code", this._Language.Code);
             if (this._PackageType == LanguagePackType.Core)
             {

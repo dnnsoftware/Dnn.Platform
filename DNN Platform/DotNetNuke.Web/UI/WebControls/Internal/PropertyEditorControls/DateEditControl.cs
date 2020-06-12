@@ -116,7 +116,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
                 DateTime dteValue = Null.NullDate;
                 try
                 {
-					//Try and cast the value to an DateTime
+					// Try and cast the value to an DateTime
                     var dteString = this.OldValue as string;
                     if (!string.IsNullOrEmpty(dteString))
                     {

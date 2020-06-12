@@ -56,7 +56,7 @@ namespace DotNetNuke.UI.Containers
             {
                 this.BindDropDown();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -72,7 +72,7 @@ namespace DotNetNuke.UI.Containers
                     this.ProcessAction(cboActions.SelectedItem.Value);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.Containers
             {
                 ClientAPI.RegisterClientVariable(this.Page, "__dnn_CSAction_" + this.Control.NavigationControl.ClientID + "_" + objParent.ID, objParent.JSFunction, true);
             }
-            objParent.ClickAction = eClickAction.None; //since GO button is handling actions dont allow selected index change fire postback
+            objParent.ClickAction = eClickAction.None; // since GO button is handling actions dont allow selected index change fire postback
 
             foreach (DNNNode objNode in objParent.DNNNodes)
             {

@@ -131,8 +131,8 @@ namespace DotNetNuke.UI.Modules
         {
             get
             {
-                //Perform tri-state switch check to avoid having to perform a security
-                //role lookup on every property access (instead caching the result)
+                // Perform tri-state switch check to avoid having to perform a security
+                // role lookup on every property access (instead caching the result)
                 if (!this._isEditable.HasValue)
                 {
                     bool blnPreview = (this.PortalSettings.UserMode == PortalSettings.Mode.View) || this.PortalSettings.IsLocked;
@@ -228,7 +228,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     this._settings = new ModuleController().GetModuleSettings(this.ModuleId, this.TabId);
 
-                    //add the TabModuleSettings to the ModuleSettings
+                    // add the TabModuleSettings to the ModuleSettings
                     Hashtable tabModuleSettings = new ModuleController().GetTabModuleSettings(this.TabModuleId, this.TabId);
                     foreach (string strKey in tabModuleSettings.Keys)
                     {
@@ -379,10 +379,10 @@ namespace DotNetNuke.UI.Modules
         /// -----------------------------------------------------------------------------
         private void AddMenuMoveActions()
         {
-            //module movement
+            // module movement
             this._moduleMoveActions = new ModuleAction(this.GetNextActionID(), Localization.GetString(ModuleActionType.MoveRoot, Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty, string.Empty, string.Empty, false);
 
-            //move module up/down
+            // move module up/down
             if (this.Configuration != null)
             {
                 if ((this.Configuration.ModuleOrder != 0) && (this.Configuration.PaneModuleIndex > 0))
@@ -433,7 +433,7 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            //move module to pane
+            // move module to pane
             foreach (object obj in this.PortalSettings.ActiveTab.Panes)
             {
                 var pane = obj as string;
@@ -474,7 +474,7 @@ namespace DotNetNuke.UI.Modules
                 {
                     count += action.Actions.Count;
 
-                    //Recursively call to see if this collection has any child actions that would affect the count
+                    // Recursively call to see if this collection has any child actions that would affect the count
                     count = GetActionsCount(count, action.Actions);
                 }
             }
@@ -499,7 +499,7 @@ namespace DotNetNuke.UI.Modules
             this._moduleGenericActions = new ModuleAction(this.GetNextActionID(), Localization.GetString("ModuleGenericActions.Action", Localization.GlobalResourceFile), string.Empty, string.Empty, string.Empty);
             int maxActionId = Null.NullInteger;
 
-            //check if module Implements Entities.Modules.IActionable interface
+            // check if module Implements Entities.Modules.IActionable interface
             var actionable = this._moduleControl as IActionable;
             if (actionable != null)
             {
@@ -533,7 +533,7 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            //Make sure the Next Action Id counter is correct
+            // Make sure the Next Action Id counter is correct
             int actionCount = GetActionsCount(this._actions.Count, this._actions);
             if (this._nextActionId < maxActionId)
             {
@@ -544,7 +544,7 @@ namespace DotNetNuke.UI.Modules
                 this._nextActionId = actionCount;
             }
 
-            //Custom injection of Module Settings when shared as ViewOnly
+            // Custom injection of Module Settings when shared as ViewOnly
             if (this.Configuration != null && (this.Configuration.IsShared && this.Configuration.IsShareableViewOnly)
                     && TabPermissionController.CanAddContentToPage())
             {
@@ -581,7 +581,7 @@ namespace DotNetNuke.UI.Modules
 
             if (!string.IsNullOrEmpty(this.Configuration.DesktopModule.BusinessControllerClass))
             {
-                //check if module implements IPortable interface, and user has Admin permissions
+                // check if module implements IPortable interface, and user has Admin permissions
                 if (this.Configuration.DesktopModule.IsPortable)
                 {
                     if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "EXPORT", this.Configuration))
@@ -620,7 +620,7 @@ namespace DotNetNuke.UI.Modules
                 }
             }
 
-            //help module actions available to content editors and administrators
+            // help module actions available to content editors and administrators
             const string permisisonList = "CONTENT,DELETE,EDIT,EXPORT,IMPORT,MANAGE";
             if (ModulePermissionController.HasModulePermission(this.Configuration.ModulePermissions, permisisonList) 
                     && request.QueryString["ctl"] != "Help"
@@ -629,10 +629,10 @@ namespace DotNetNuke.UI.Modules
                 this.AddHelpActions();
             }
 
-            //Add Print Action
+            // Add Print Action
             if (this.Configuration.DisplayPrint)
             {
-                //print module action available to everyone
+                // print module action available to everyone
                 this.AddPrintAction();
             }
 
@@ -656,7 +656,7 @@ namespace DotNetNuke.UI.Modules
             {
                 if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "DELETE", this.Configuration))
                 {
-                    //Check if this is the owner instance of a shared module.
+                    // Check if this is the owner instance of a shared module.
                     string confirmText = "confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteModule.Confirm")) + "')";
                     if (!this.Configuration.IsShared)
                     {
@@ -695,7 +695,7 @@ namespace DotNetNuke.UI.Modules
 
                 if (ModulePermissionController.HasModuleAccess(SecurityAccessLevel.Admin, "MANAGE", this.Configuration))
                 {
-                    //module movement
+                    // module movement
                     this.AddMenuMoveActions();
                 }
             }

@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Attempt to get the SkinControl
+				// Attempt to get the SkinControl
                 SkinControlInfo skinControl = SkinControlController.GetSkinControlByPackageID(this.Package.PackageID);
                 if (skinControl != null)
                 {
@@ -98,7 +98,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Attempt to get the SkinControl
+				// Attempt to get the SkinControl
                 this.InstalledSkinControl = SkinControlController.GetSkinControlByKey(this.SkinControl.ControlKey);
 
                 if (this.InstalledSkinControl != null)
@@ -106,7 +106,7 @@ namespace DotNetNuke.Services.Installer.Installers
                     this.SkinControl.SkinControlID = this.InstalledSkinControl.SkinControlID;
                 }
 				
-                //Save SkinControl
+                // Save SkinControl
                 this.SkinControl.PackageID = this.Package.PackageID;
                 this.SkinControl.SkinControlID = SkinControlController.SaveSkinControl(this.SkinControl);
 
@@ -126,7 +126,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            //Load the SkinControl from the manifest
+            // Load the SkinControl from the manifest
             this.SkinControl = CBO.DeserializeObject<SkinControlInfo>(new StringReader(manifestNav.InnerXml));
 
             if (this.Log.Valid)
@@ -143,15 +143,15 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Rollback()
         {
-			//If Temp SkinControl exists then we need to update the DataStore with this 
+			// If Temp SkinControl exists then we need to update the DataStore with this 
             if (this.InstalledSkinControl == null)
             {
-				//No Temp SkinControl - Delete newly added SkinControl
+				// No Temp SkinControl - Delete newly added SkinControl
                 this.DeleteSkinControl();
             }
             else
             {
-				//Temp SkinControl - Rollback to Temp
+				// Temp SkinControl - Rollback to Temp
                 SkinControlController.SaveSkinControl(this.InstalledSkinControl);
             }
         }

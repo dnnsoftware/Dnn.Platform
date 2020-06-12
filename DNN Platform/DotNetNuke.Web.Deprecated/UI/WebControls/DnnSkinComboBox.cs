@@ -79,7 +79,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected override void PerformDataBinding(IEnumerable dataSource)
         {
-            //do not select item during data binding, item will select later
+            // do not select item during data binding, item will select later
             var selectedValue = this.SelectedValue;
             this.SelectedValue = string.Empty;
 

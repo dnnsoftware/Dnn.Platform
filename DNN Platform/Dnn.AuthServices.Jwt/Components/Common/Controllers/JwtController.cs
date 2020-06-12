@@ -275,7 +275,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
 
         private static JwtSecurityToken CreateJwtToken(byte[] symmetricKey, string issuer, PersistedToken ptoken, IEnumerable<string> roles)
         {
-            //var key = Convert.FromBase64String(symmetricKey);
+            // var key = Convert.FromBase64String(symmetricKey);
             var credentials = new SigningCredentials(
                 new InMemorySymmetricSecurityKey(symmetricKey),
                 "http://www.w3.org/2001/04/xmldsig-more#hmac-sha256",
@@ -301,7 +301,7 @@ namespace Dnn.AuthServices.Jwt.Components.Common.Controllers
         {
             if (authHdr == null)
             {
-                //if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request"); // too verbose; shows in all web requests
+                // if (Logger.IsTraceEnabled) Logger.Trace("Authorization header not present in the request"); // too verbose; shows in all web requests
                 return null;
             }
 

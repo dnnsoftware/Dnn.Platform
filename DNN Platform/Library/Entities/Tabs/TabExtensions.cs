@@ -29,7 +29,7 @@ namespace DotNetNuke.Entities.Tabs
                     if (redirect.SeqNum >= seqNum)
                     {
                         seqNum = redirect.SeqNum + 1;
-                        //602 : when seqnum == 0, then duplicate key problems arise
+                        // 602 : when seqnum == 0, then duplicate key problems arise
                         if (seqNum == 0)
                         {
                             seqNum++;
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Tabs
                     if (redirect.SeqNum <= seqNum)
                     {
                         seqNum = redirect.SeqNum - 1;
-                        //602 : don't allow seqnum to become zero
+                        // 602 : don't allow seqnum to become zero
                         if (seqNum == 0)
                         {
                             seqNum--;
@@ -77,7 +77,7 @@ namespace DotNetNuke.Entities.Tabs
                     }
                 }
             }
-            //look at the results
+            // look at the results
             if (lastCustomUrl != null)
             {
                 result = lastCustomUrl;

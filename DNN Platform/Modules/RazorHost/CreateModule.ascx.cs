@@ -68,7 +68,7 @@ namespace DotNetNuke.Modules.RazorHost
 
         private void Create()
         {
-            //Create new Folder
+            // Create new Folder
             string folderMapPath = this.Server.MapPath(string.Format("~/DesktopModules/RazorModules/{0}", this.txtFolder.Text));
             if (Directory.Exists(folderMapPath))
             {
@@ -77,11 +77,11 @@ namespace DotNetNuke.Modules.RazorHost
             }
             else
             {
-                //Create folder
+                // Create folder
                 Directory.CreateDirectory(folderMapPath);
             }
 
-            //Create new Module Control
+            // Create new Module Control
             string moduleControlMapPath = folderMapPath + "/" + this.ModuleControl;
             try
             {
@@ -98,7 +98,7 @@ namespace DotNetNuke.Modules.RazorHost
                 return;
             }
 
-            //Copy Script to new Folder
+            // Copy Script to new Folder
             string scriptSourceFile = this.Server.MapPath(string.Format(this.razorScriptFileFormatString, this.scriptList.SelectedValue));
             string scriptTargetFile = folderMapPath + "/" + this.scriptList.SelectedValue;
             try
@@ -112,7 +112,7 @@ namespace DotNetNuke.Modules.RazorHost
                 return;
             }
 
-            //Create new Manifest in target folder
+            // Create new Manifest in target folder
 			string manifestMapPath = folderMapPath + "/" + this.ModuleControl.Replace(".ascx", ".dnn");
 			try
 			{
@@ -131,10 +131,10 @@ namespace DotNetNuke.Modules.RazorHost
 				return;
 			}
 
-            //Register Module
+            // Register Module
             ModuleDefinitionInfo moduleDefinition = this.ImportManifest(manifestMapPath);
 
-			//remove the manifest file
+			// remove the manifest file
 	        try
 	        {
 				FileWrapper.Instance.Delete(manifestMapPath);
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.RazorHost
 	        }
 
 
-            //Optionally goto new Page
+            // Optionally goto new Page
             if (this.chkAddPage.Checked)
             {
                 string tabName = "Test " + this.txtName.Text + " Page";
@@ -154,7 +154,7 @@ namespace DotNetNuke.Modules.RazorHost
 
                 if (tabID == Null.NullInteger)
                 {
-                    //Create a new page
+                    // Create a new page
                     var newTab = new TabInfo();
                     newTab.TabName = "Test " + this.txtName.Text + " Page";
                     newTab.ParentId = Null.NullInteger;
@@ -184,7 +184,7 @@ namespace DotNetNuke.Modules.RazorHost
             }
             else
             {
-                //Redirect to main extensions page
+                // Redirect to main extensions page
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
         }
@@ -198,10 +198,10 @@ namespace DotNetNuke.Modules.RazorHost
 
                 if (_Installer.IsValid)
                 {
-                    //Reset Log
+                    // Reset Log
                     _Installer.InstallerInfo.Log.Logs.Clear();
 
-                    //Install
+                    // Install
                     _Installer.Install();
 
                     if (_Installer.IsValid)
@@ -295,7 +295,7 @@ namespace DotNetNuke.Modules.RazorHost
             {
                 this.Response.Redirect(this._navigationManager.NavigateURL(), true);
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -315,7 +315,7 @@ namespace DotNetNuke.Modules.RazorHost
                     this.Create();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

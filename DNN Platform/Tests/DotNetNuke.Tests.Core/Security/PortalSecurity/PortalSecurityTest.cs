@@ -118,13 +118,13 @@ namespace DotNetNuke.Tests.Core.Security.PortalSecurity
         public void Html_Source_Tag_Should_Not_Be_Allowed(string html, string expectedOutput, 
             DotNetNuke.Security.PortalSecurity.FilterFlag markup)
         {
-            //Arrange
+            // Arrange
             var portalSecurity = new DotNetNuke.Security.PortalSecurity();
 
-            //Act
+            // Act
             var filterOutput = portalSecurity.InputFilter(html, markup);
 
-            //Assert
+            // Assert
             Assert.AreEqual(filterOutput, expectedOutput);
         }
         #endregion

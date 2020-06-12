@@ -115,26 +115,26 @@ namespace Dnn.Module.ModuleCreator
             var modulePath = "";
             var sourceCode = Null.NullString;
 
-            //iterate through files in template folder
+            // iterate through files in template folder
             string[] fileList = Directory.GetFiles(moduleTemplatePath);
             foreach (string filePath in fileList)
             {
                 modulePath = this.Server.MapPath("DesktopModules/" + this.GetFolderName() + "/");
 
-                //open file
+                // open file
                 using (TextReader tr = new StreamReader(filePath))
                 {
                     sourceCode = tr.ReadToEnd();
                     tr.Close();
                 }
 
-                //replace tokens
+                // replace tokens
                 sourceCode = sourceCode.Replace("_OWNER_", this.GetOwner());
                 sourceCode = sourceCode.Replace("_MODULE_", this.GetModule());
                 sourceCode = sourceCode.Replace("_CONTROL_", this.GetControl());
                 sourceCode = sourceCode.Replace("_YEAR_", DateTime.Now.Year.ToString());
 
-                //get filename
+                // get filename
                 fileName = Path.GetFileName(filePath);
                 fileName = fileName.Replace("template", this.GetControl());
                 fileName = fileName.Replace("_OWNER_", this.GetOwner());
@@ -172,16 +172,16 @@ namespace Dnn.Module.ModuleCreator
                         break;
                 }
 
-                //check if folder exists
+                // check if folder exists
                 if (!Directory.Exists(modulePath))
                 {
                     Directory.CreateDirectory(modulePath);
                 }
 
-                //check if file already exists
+                // check if file already exists
                 if (!File.Exists(modulePath + fileName))
                 {
-                    //create file
+                    // create file
                     using (TextWriter tw = new StreamWriter(modulePath + fileName))
                     {
                         tw.WriteLine(sourceCode);
@@ -216,7 +216,7 @@ namespace Dnn.Module.ModuleCreator
         {
             var strFolder = Null.NullString;
             strFolder += this.txtOwner.Text + "/" + this.txtModule.Text;
-            //return folder and remove any spaces that might appear in folder structure
+            // return folder and remove any spaces that might appear in folder structure
             return strFolder.Replace(" ", "");
         }
 
@@ -224,7 +224,7 @@ namespace Dnn.Module.ModuleCreator
         {
             var strClass = Null.NullString;
             strClass += this.txtOwner.Text + "." + this.txtModule.Text;
-            //return class and remove any spaces that might appear in class name
+            // return class and remove any spaces that might appear in class name
             return strClass.Replace(" ", "");
         }
 
@@ -241,14 +241,14 @@ namespace Dnn.Module.ModuleCreator
                 {
                     var controlName = Null.NullString;
 
-                    //Create module folder
+                    // Create module folder
                     this.CreateModuleFolder();
 
-                    //Create module control
+                    // Create module control
                     controlName = this.CreateModuleControl();
                     if (controlName != "")
                     {
-                        //Create package
+                        // Create package
                         var objPackage = new PackageInfo();
                         objPackage.Name = this.GetClassName();
                         objPackage.FriendlyName = this.txtModule.Text;
@@ -263,7 +263,7 @@ namespace Dnn.Module.ModuleCreator
                         objPackage.ReleaseNotes = "This package has no Release Notes.";
                         PackageController.Instance.SaveExtensionPackage(objPackage);
 
-                        //Create desktopmodule
+                        // Create desktopmodule
                         var objDesktopModule = new DesktopModuleInfo();
                         objDesktopModule.DesktopModuleID = Null.NullInteger;
                         objDesktopModule.ModuleName = this.GetClassName();
@@ -283,7 +283,7 @@ namespace Dnn.Module.ModuleCreator
 						objDesktopModule.DesktopModuleID = DesktopModuleController.SaveDesktopModule(objDesktopModule, false, true);
 						objDesktopModule = DesktopModuleController.GetDesktopModule(objDesktopModule.DesktopModuleID, Null.NullInteger);
 
-                        //Add OwnerName to the DesktopModule taxonomy and associate it with this module
+                        // Add OwnerName to the DesktopModule taxonomy and associate it with this module
                         var vocabularyId = -1;
                         var termId = -1;
                         var objTermController = DotNetNuke.Entities.Content.Common.Util.GetTermController();
@@ -305,21 +305,21 @@ namespace Dnn.Module.ModuleCreator
                         var objContent = objContentController.GetContentItem(objDesktopModule.ContentItemId);
                         objTermController.AddTermToContent(objTerm, objContent);
 
-                        //Add desktopmodule to all portals
+                        // Add desktopmodule to all portals
                         DesktopModuleController.AddDesktopModuleToPortals(objDesktopModule.DesktopModuleID);
 
-                        //Create module definition
+                        // Create module definition
                         var objModuleDefinition = new ModuleDefinitionInfo();
                         objModuleDefinition.ModuleDefID = Null.NullInteger;
                         objModuleDefinition.DesktopModuleID = objDesktopModule.DesktopModuleID;
                         // need core enhancement to have a unique DefinitionName
                         objModuleDefinition.FriendlyName = this.GetClassName();
-                        //objModuleDefinition.FriendlyName = txtModule.Text;
-                        //objModuleDefinition.DefinitionName = GetClassName();
+                        // objModuleDefinition.FriendlyName = txtModule.Text;
+                        // objModuleDefinition.DefinitionName = GetClassName();
                         objModuleDefinition.DefaultCacheTime = 0;
                         objModuleDefinition.ModuleDefID = ModuleDefinitionController.SaveModuleDefinition(objModuleDefinition, false, true);
 
-                        //Create modulecontrol
+                        // Create modulecontrol
                         var objModuleControl = new ModuleControlInfo();
                         objModuleControl.ModuleControlID = Null.NullInteger;
                         objModuleControl.ModuleDefID = objModuleDefinition.ModuleDefID;
@@ -334,12 +334,12 @@ namespace Dnn.Module.ModuleCreator
                         objModuleControl.SupportsPopUps = false;
                         ModuleControlController.AddModuleControl(objModuleControl);
 
-                        //Update current module to reference new moduledefinition
+                        // Update current module to reference new moduledefinition
                         var objModule = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
                         objModule.ModuleDefID = objModuleDefinition.ModuleDefID;
                         objModule.ModuleTitle = this.txtModule.Text;
 
-                        //HACK - need core enhancement to be able to update ModuleDefID
+                        // HACK - need core enhancement to be able to update ModuleDefID
                         using (DotNetNuke.Data.DataProvider.Instance().ExecuteSQL(
                             "UPDATE {databaseOwner}{objectQualifier}Modules SET ModuleDefID=" + objModule.ModuleDefID + " WHERE ModuleID=" + this.ModuleId))
                         {

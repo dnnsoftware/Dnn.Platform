@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Analytics.Config
                         return null;
                     }
 					
-                    //Create a FileStream for the Config file
+                    // Create a FileStream for the Config file
                     fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
 
                     var doc = new XPathDocument(fileReader);
@@ -114,14 +114,14 @@ namespace DotNetNuke.Services.Analytics.Config
                     }
                     if (File.Exists(filePath))
                     {
-						//Set back into Cache
+						// Set back into Cache
                         DataCache.SetCache(cacheKey, Config, new DNNCacheDependency(filePath));
                     }
                 }
             }
             catch (Exception ex)
             {
-				//log it
+				// log it
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.ADMIN_ALERT.ToString()};
                 log.AddProperty("Analytics.AnalyticsConfiguration", "GetConfig Failed");
                 log.AddProperty("FilePath", filePath);
@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Analytics.Config
             {
                 if (fileReader != null)
                 {
-					//Close the Reader
+					// Close the Reader
                     fileReader.Close();
                 }
             }
@@ -145,11 +145,11 @@ namespace DotNetNuke.Services.Analytics.Config
             string cacheKey = analyticsEngineName + "." + PortalSettings.Current.PortalId;
             if (config.Settings != null)
             {
-                //Create a new Xml Serializer
+                // Create a new Xml Serializer
                 var ser = new XmlSerializer(typeof(AnalyticsConfiguration));
                 string filePath = "";
 
-                //Create a FileStream for the Config file
+                // Create a FileStream for the Config file
                 filePath = PortalSettings.Current.HomeDirectoryMapPath + "\\" + analyticsEngineName + ".config";
                 if (File.Exists(filePath))
                 {
@@ -158,10 +158,10 @@ namespace DotNetNuke.Services.Analytics.Config
                 using (var fileWriter = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Write))
                 using (var writer = new StreamWriter(fileWriter))
                 {
-                    //Serialize the AnalyticsConfiguration
+                    // Serialize the AnalyticsConfiguration
                     ser.Serialize(writer, config);
 
-                    //Close the Writers
+                    // Close the Writers
                     writer.Close();
                     fileWriter.Close();
                 }

@@ -11,7 +11,7 @@ namespace DotNetNuke.Collections.Internal
     public class NaiveLockingList<T> : IList<T>
     {
         private readonly SharedList<T> _list = new SharedList<T>();
-        //TODO is no recursion the correct policy
+        // TODO is no recursion the correct policy
         
         void DoInReadLock(Action action)
         {
@@ -55,9 +55,9 @@ namespace DotNetNuke.Collections.Internal
 
         public IEnumerator<T> GetEnumerator()
         {
-            //disposal of enumerator will release read lock
-            //TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
-            //if using RWLS
+            // disposal of enumerator will release read lock
+            // TODO is there a need for some sort of timed release?  the timmer must release from the correct thread
+            // if using RWLS
             var readLock = this._list.GetReadLock();
             return new NaiveLockingEnumerator(this._list.GetEnumerator(), readLock);
         }
@@ -186,12 +186,12 @@ namespace DotNetNuke.Collections.Internal
                 {
                     if (disposing)
                     {
-                        //dispose managed resrources here
+                        // dispose managed resrources here
                         this._enumerator.Dispose();
                         this._readLock.Dispose();
                     }
 
-                    //dispose unmanaged resrources here
+                    // dispose unmanaged resrources here
                     this._isDisposed = true;
                 }
             }

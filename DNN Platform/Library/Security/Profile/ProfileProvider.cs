@@ -21,7 +21,7 @@ namespace DotNetNuke.Security.Profile
 
         #region "Shared/Static Methods"
 
-        //return the provider		
+        // return the provider		
 		public static ProfileProvider Instance()
         {
             return ComponentFactory.GetComponent<ProfileProvider>();

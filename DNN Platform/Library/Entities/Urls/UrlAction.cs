@@ -21,7 +21,7 @@ namespace DotNetNuke.Entities.Urls
     /// </summary>
     public class UrlAction
     {
-        //829 add in constructor that works around physical path length restriction
+        // 829 add in constructor that works around physical path length restriction
         public UrlAction(HttpRequest request)
         {
             this.BrowserType = BrowserTypes.Normal;
@@ -34,14 +34,14 @@ namespace DotNetNuke.Entities.Urls
             }
             catch (PathTooLongException)
             {
-                //don't handle exception, but put something into the physical path
-                physicalPath = request.ApplicationPath; //will be no file for this location
+                // don't handle exception, but put something into the physical path
+                physicalPath = request.ApplicationPath; // will be no file for this location
                 this.VirtualPath = StateBoolean.True;
             }
             catch (ArgumentException)
             {
-                //don't handle exception, but put something into the physical path
-                physicalPath = request.ApplicationPath; //will be no file for this location
+                // don't handle exception, but put something into the physical path
+                physicalPath = request.ApplicationPath; // will be no file for this location
                 this.VirtualPath = StateBoolean.True;
             }
             finally
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Urls
         public Uri Url { get; set; }
         public bool DoRewrite { get; set; }
         public bool FriendlyRewrite { get; set; }
-        //friendlyRewrite means it was rewritten without looking up the tabid in the url
+        // friendlyRewrite means it was rewritten without looking up the tabid in the url
         public bool BypassCachedDictionary { get; set; }
         public string RewritePath { get; set; }
         public string RawUrl { get; set; }
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Urls
 
         public StateBoolean CanRewrite { get; set; }
 
-        //the alias for the current request
+        // the alias for the current request
         public PortalAliasInfo PortalAlias
         {
             get { return this._portalAlias; }
@@ -149,12 +149,12 @@ namespace DotNetNuke.Entities.Urls
                 this._portalAlias = value;
             }
         }
-        //the primary alias, if different to the current alias
+        // the primary alias, if different to the current alias
         public PortalAliasInfo PrimaryAlias { get; set; }
         public DotNetNuke.Entities.Portals.PortalSettings.PortalAliasMapping PortalAliasMapping {get; set; }
         public bool CustomParmRewrite { get; set; }
 
-        //737 : mobile browser identificatino
+        // 737 : mobile browser identificatino
         public BrowserTypes BrowserType { get; private set; }
 
         public bool IsPhysicalResource { get; set; }
@@ -245,7 +245,7 @@ namespace DotNetNuke.Entities.Urls
 
         public void SetBrowserType(HttpRequest request, HttpResponse response, FriendlyUrlSettings settings)
         {
-            //set the mobile browser type
+            // set the mobile browser type
             if (request != null && response != null && settings != null)
             {
                 this.BrowserType = FriendlyUrlController.GetBrowserType(request, response, settings);
@@ -259,7 +259,7 @@ namespace DotNetNuke.Entities.Urls
             {
                 if (!string.IsNullOrEmpty(regexExpr))
                 {
-                    //if a regex match, redirect Not allowed
+                    // if a regex match, redirect Not allowed
                     this.RedirectAllowed = !Regex.IsMatch(path, regexExpr, RegexOptions.IgnoreCase);
                 }
                 else
@@ -269,8 +269,8 @@ namespace DotNetNuke.Entities.Urls
             }
             catch (Exception ex)
             {
-                this.RedirectAllowed = true; //default : true, unless regex allows it.  So if regex causes an exception
-                //then we should allow the redirect
+                this.RedirectAllowed = true; // default : true, unless regex allows it.  So if regex causes an exception
+                // then we should allow the redirect
 
                 UrlRewriterUtils.LogExceptionInRequest(ex, "Not Set", this);
                 this.Ex = ex;

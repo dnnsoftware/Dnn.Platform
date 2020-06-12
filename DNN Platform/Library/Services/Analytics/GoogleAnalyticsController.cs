@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Analytics
             switch (Version)
             {
                 case "05.06.00":
-                    //previous module versions
+                    // previous module versions
                     using (StreamReader fileReader = this.GetConfigFile())
                     {
                         if (fileReader != null)
@@ -58,17 +58,17 @@ namespace DotNetNuke.Services.Analytics
                             {
                                 string currFileHashValue = "";
 
-                                //calculate md5 hash of existing file
+                                // calculate md5 hash of existing file
                                 currFileHashValue = Convert.ToBase64String(md5.ComputeHash(fileEncoding.GetBytes(fileReader.ReadToEnd())));
                                 fileReader.Close();
 
                                 IEnumerable<string> result = (from h in TRADITIONAL_FILEHASHES where h == currFileHashValue select h);
 
-                                //compare md5 hash
+                                // compare md5 hash
                                 if (result.Any())
                                 {
-                                    //Copy new config file from \Config
-                                    //True causes .config to be overwritten
+                                    // Copy new config file from \Config
+                                    // True causes .config to be overwritten
                                     Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.SiteAnalytics, true);
                                 }
                             }
@@ -101,7 +101,7 @@ namespace DotNetNuke.Services.Analytics
             }
             catch (Exception ex)
             {
-                //log it
+                // log it
                 var log = new LogInfo {LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString()};
                 log.AddProperty("GoogleAnalytics.UpgradeModule", "GetConfigFile Failed");
                 log.AddProperty("FilePath", filePath);

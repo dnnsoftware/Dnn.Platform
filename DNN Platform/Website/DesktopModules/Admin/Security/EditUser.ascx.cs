@@ -77,10 +77,10 @@ namespace DotNetNuke.Modules.Admin.Users
                 {
                     if (this.Request.QueryString["returnurl"] != null)
                     {
-                        //return to the url passed to register
+                        // return to the url passed to register
                         _RedirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                        //clean the return url to avoid possible XSS attack.
+                        // clean the return url to avoid possible XSS attack.
                         _RedirectURL = UrlUtils.ValidReturnUrl(_RedirectURL);
 
                         if (_RedirectURL.Contains("?returnurl"))
@@ -93,11 +93,11 @@ namespace DotNetNuke.Modules.Admin.Users
                     }
                     if (String.IsNullOrEmpty(_RedirectURL))
                     {
-                        //redirect to current page
+                        // redirect to current page
                         _RedirectURL = this._navigationManager.NavigateURL();
                     }
                 }
-                else //redirect to after registration page
+                else // redirect to after registration page
                 {
                     _RedirectURL = this._navigationManager.NavigateURL(this.PortalSettings.Registration.RedirectAfterRegistration);
                 }
@@ -180,7 +180,7 @@ namespace DotNetNuke.Modules.Admin.Users
         {
             if (this.User != null)
             {
-                //If trying to add a SuperUser - check that user is a SuperUser
+                // If trying to add a SuperUser - check that user is a SuperUser
                 if (this.VerifyUserPermissions() == false)
                 {
                     return;
@@ -238,7 +238,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     this.VanityUrlRow.Visible = true;
                     if (String.IsNullOrEmpty(this.User.VanityUrl))
                     {
-                        //Clean Display Name
+                        // Clean Display Name
                         bool modified;
                         var options = UrlRewriterUtils.GetOptionsFromSettings(urlSettings);
                         var cleanUrl = FriendlyUrlController.CleanNameForUrl(this.User.DisplayName, options, out modified);
@@ -271,7 +271,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return false;
             }
 
-            //Check if User is a member of the Current Portal (or a member of the MasterPortal if PortalGroups enabled)
+            // Check if User is a member of the Current Portal (or a member of the MasterPortal if PortalGroups enabled)
             if (this.User.PortalID != Null.NullInteger && this.User.PortalID != this.PortalId)
             {
                 this.AddModuleMessage("InvalidUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -279,7 +279,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 return false;
             }
 
-            //Check if User is a SuperUser and that the current User is a SuperUser
+            // Check if User is a SuperUser and that the current User is a SuperUser
             if (this.User.IsSuperUser && !this.UserInfo.IsSuperUser)
             {
                 this.AddModuleMessage("NoUser", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -288,7 +288,7 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.IsEdit)
             {
-                //Check if user has admin rights
+                // Check if user has admin rights
                 if (!this.IsAdmin || (this.User.IsInRole(this.PortalSettings.AdministratorRoleName) && !PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName)))
                 {
                     this.AddModuleMessage("NotAuthorized", ModuleMessage.ModuleMessageType.YellowWarning, true);
@@ -304,7 +304,7 @@ namespace DotNetNuke.Modules.Admin.Users
                     {
                         if (!PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName))
                         {
-                            //Display current user's profile
+                            // Display current user's profile
                             this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.UserTabId, "", "UserID=" + this.UserInfo.UserID), true);
                         }
                     }
@@ -346,7 +346,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         private void UpdateDisplayName()
         {
-            //Update DisplayName to conform to Format
+            // Update DisplayName to conform to Format
             if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
             {
                 this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
@@ -382,27 +382,27 @@ namespace DotNetNuke.Modules.Admin.Users
             JavaScript.RequestRegistration(CommonJs.Knockout);
 
 
-            //Set the Membership Control Properties
+            // Set the Membership Control Properties
             this.ctlMembership.ID = "Membership";
             this.ctlMembership.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlMembership.UserId = this.UserId;
 
-            //Set the Password Control Properties
+            // Set the Password Control Properties
             this.ctlPassword.ID = "Password";
             this.ctlPassword.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlPassword.UserId = this.UserId;
 
-            //Set the Profile Control Properties
+            // Set the Profile Control Properties
             this.ctlProfile.ID = "Profile";
             this.ctlProfile.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlProfile.UserId = this.UserId;
 
-            //Set the Services Control Properties
+            // Set the Services Control Properties
             this.ctlServices.ID = "MemberServices";
             this.ctlServices.ModuleConfiguration = this.ModuleConfiguration;
             this.ctlServices.UserId = this.UserId;
 
-            //Define DisplayName filed Enabled Property:
+            // Define DisplayName filed Enabled Property:
             object setting = GetSetting(this.UserPortalID, "Security_DisplayNameFormat");
             if ((setting != null) && (!string.IsNullOrEmpty(Convert.ToString(setting))))
             {
@@ -422,10 +422,10 @@ namespace DotNetNuke.Modules.Admin.Users
 
             try
             {
-                //Bind the User information to the controls
+                // Bind the User information to the controls
                 this.BindData();
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -466,7 +466,7 @@ namespace DotNetNuke.Modules.Admin.Users
                 this.AddModuleMessage("UserDeleteError", ModuleMessage.ModuleMessageType.RedError, true);
             }
 
-            //DNN-26777
+            // DNN-26777
             PortalSecurity.Instance.SignOut();
             this.Response.Redirect(this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId));
         }
@@ -477,15 +477,15 @@ namespace DotNetNuke.Modules.Admin.Users
             {
                 if (this.User.UserID == this.PortalSettings.AdministratorId)
                 {
-                    //Clear the Portal Cache
+                    // Clear the Portal Cache
                     DataCache.ClearPortalCache(this.UserPortalID, true);
                 }
                 try
                 {
-                    //Update DisplayName to conform to Format
+                    // Update DisplayName to conform to Format
                     this.UpdateDisplayName();
 
-                    //DNN-5874 Check if unique display name is required
+                    // DNN-5874 Check if unique display name is required
                     if (this.PortalSettings.Registration.RequireUniqueDisplayName)
                     {
                         var usersWithSameDisplayName = (List<UserInfo>)MembershipProvider.Instance().GetUsersBasicSearch(this.PortalId, 0, 2, "DisplayName", true, "DisplayName", this.User.DisplayName);
@@ -504,7 +504,7 @@ namespace DotNetNuke.Modules.Admin.Users
                         {
                             UserController.ChangeUsername(this.User.UserID, this.User.Email);
 
-                            //after username changed, should redirect to login page to let user authenticate again.
+                            // after username changed, should redirect to login page to let user authenticate again.
                             var loginUrl = Globals.LoginURL(HttpUtility.UrlEncode(this.Request.RawUrl), false);
                             var spliter = loginUrl.Contains("?") ? "&" : "?";
                             loginUrl = $"{loginUrl}{spliter}username={this.User.Email}&usernameChanged=true";
@@ -569,18 +569,18 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (status == PasswordUpdateStatus.Success)
             {
-                //Send Notification to User
+                // Send Notification to User
                 try
                 {
                     var accessingUser = (UserInfo)HttpContext.Current.Items["UserInfo"];
                     if (accessingUser.UserID != this.User.UserID)
                     {
-                        //The password was changed by someone else 
+                        // The password was changed by someone else 
                         Mail.SendMail(this.User, MessageType.PasswordReminder, this.PortalSettings);
                     }
                     else
                     {
-                        //The User changed his own password
+                        // The User changed his own password
                         Mail.SendMail(this.User, MessageType.UserUpdatedOwnPassword, this.PortalSettings);
                         PortalSecurity.Instance.SignIn(this.User, false);
                     }
@@ -612,13 +612,13 @@ namespace DotNetNuke.Modules.Admin.Users
             }
             if (this.IsUser)
             {
-                //Notify the user that his/her profile was updated
+                // Notify the user that his/her profile was updated
                 Mail.SendMail(this.User, MessageType.ProfileUpdated, this.PortalSettings);
 
                 ProfilePropertyDefinition localeProperty = this.User.Profile.GetProperty("PreferredLocale");
                 if (localeProperty.IsDirty)
                 {
-                    //store preferredlocale in cookie, if none specified set to portal default.
+                    // store preferredlocale in cookie, if none specified set to portal default.
                     if (this.User.Profile.PreferredLocale == string.Empty)
                     {
                         Localization.SetLanguage(PortalController.GetPortalDefaultLanguage(this.User.PortalID));
@@ -630,8 +630,8 @@ namespace DotNetNuke.Modules.Admin.Users
                 }
             }
 
-            //Redirect to same page (this will update all controls for any changes to profile
-            //and leave us at Page 0 (User Credentials)
+            // Redirect to same page (this will update all controls for any changes to profile
+            // and leave us at Page 0 (User Credentials)
             this.Response.Redirect(this.Request.RawUrl, true);
         }
 

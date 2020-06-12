@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 if (ci.IsNeutralCulture)
                 {
-                    //Neutral culture do not include region information
+                    // Neutral culture do not include region information
                     return "";
                 }
                 else
@@ -88,7 +88,7 @@ namespace DotNetNuke.Services.Tokens
             {
                 if (ci.IsNeutralCulture)
                 {
-                    //Neutral culture do not include region information
+                    // Neutral culture do not include region information
                     return "";
                 }
                 else

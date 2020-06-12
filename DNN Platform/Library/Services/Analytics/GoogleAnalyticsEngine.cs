@@ -60,7 +60,7 @@ namespace DotNetNuke.Services.Analytics
                 return "";
             }
 
-            //check whether setting to not track traffic if current user is host user or website administrator.
+            // check whether setting to not track traffic if current user is host user or website administrator.
             if (!trackForAdmin &&
                 (UserController.Instance.GetCurrentUserInfo().IsSuperUser
                  ||

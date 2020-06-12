@@ -405,7 +405,7 @@ namespace DotNetNuke.UI.UserControls
 		{
 			var countryCode = this.cboCountry.SelectedItem.Value;
 			var ctlEntry = new ListController();
-			//listKey in format "Country.US:Region"
+			// listKey in format "Country.US:Region"
 			var listKey = "Country." + countryCode;
 			var entryCollection = ctlEntry.GetListEntryInfoItems("Region", listKey);
 
@@ -653,10 +653,10 @@ namespace DotNetNuke.UI.UserControls
 					this.txtCell.TabIndex = Convert.ToInt16(this.StartTabIndex + 8);
 					this.txtFax.TabIndex = Convert.ToInt16(this.StartTabIndex + 9);
 
-					//<tam:note modified to test Lists
-					//Dim objRegionalController As New RegionalController
-					//cboCountry.DataSource = objRegionalController.GetCountries
-					//<this test using method 2: get empty collection then get each entry list on demand & store into cache
+					// <tam:note modified to test Lists
+					// Dim objRegionalController As New RegionalController
+					// cboCountry.DataSource = objRegionalController.GetCountries
+					// <this test using method 2: get empty collection then get each entry list on demand & store into cache
 
 					var ctlEntry = new ListController();
 					var entryCollection = ctlEntry.GetListEntryInfoItems("Country");
@@ -780,7 +780,7 @@ namespace DotNetNuke.UI.UserControls
 			{
 				this.UpdateRequiredFields();
 			}
-			catch (Exception exc) //Module failed to load
+			catch (Exception exc) // Module failed to load
 			{
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}

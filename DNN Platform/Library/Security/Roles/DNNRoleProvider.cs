@@ -44,7 +44,7 @@ namespace DotNetNuke.Security.Roles
 
         private void AddDNNUserRole(UserRoleInfo userRole)
         {
-            //Add UserRole to DNN
+            // Add UserRole to DNN
             userRole.UserRoleID = Convert.ToInt32(this.dataProvider.AddUserRole(userRole.PortalID, userRole.UserID, userRole.RoleID,
                                                                 (int)userRole.Status, userRole.IsOwner,
                                                                 userRole.EffectiveDate, userRole.ExpiryDate, 
@@ -209,12 +209,12 @@ namespace DotNetNuke.Security.Roles
             bool createStatus = true;
             try
             {
-				//Add UserRole to DNN
+				// Add UserRole to DNN
                 this.AddDNNUserRole(userRole);
             }
             catch (Exception exc)
             {
-				//Clear User (duplicate User information)
+				// Clear User (duplicate User information)
                 Logger.Error(exc);
 
                 createStatus = false;

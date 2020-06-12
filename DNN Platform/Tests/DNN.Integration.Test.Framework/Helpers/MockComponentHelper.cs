@@ -27,7 +27,7 @@ namespace DNN.Integration.Test.Framework.Helpers
                 ComponentFactory.Container = new SimpleContainer();
             }
 
-            //Try and get mock
+            // Try and get mock
             var mockComp = ComponentFactory.GetComponent<Mock<T>>();
             var objComp = ComponentFactory.GetComponent<T>();
 

@@ -16,14 +16,14 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DatabaseConnectionProvider_Instance_Method_Returns_Instance()
         {
-            //Arrange
+            // Arrange
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DatabaseConnectionProvider>(new FakeDbConnectionProvider());
 
-            //Act
+            // Act
             var provider = DatabaseConnectionProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<DatabaseConnectionProvider>(provider);
             Assert.IsInstanceOf<FakeDbConnectionProvider>(provider);
         }
@@ -31,15 +31,15 @@ namespace DotNetNuke.Tests.Data
         [Test]
         public void DatabaseConnectionProvider_Instance_Method_Returns_Same_Instances()
         {
-            //Arrange
+            // Arrange
             ComponentFactory.Container = new SimpleContainer();
             ComponentFactory.RegisterComponentInstance<DatabaseConnectionProvider>(new FakeDbConnectionProvider());
 
-            //Act
+            // Act
             var provider1 = DatabaseConnectionProvider.Instance();
             var provider2 = DatabaseConnectionProvider.Instance();
 
-            //Assert
+            // Assert
             Assert.IsInstanceOf<DatabaseConnectionProvider>(provider1);
             Assert.IsInstanceOf<DatabaseConnectionProvider>(provider2);
             Assert.AreSame(provider1, provider2);

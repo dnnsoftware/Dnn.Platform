@@ -22,7 +22,7 @@ namespace DotNetNuke.Authentication.LiveConnect.Components
 
         public LiveClient(int portalId, AuthMode mode) : base(portalId, mode, "Live")
         {
-            //DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
+            // DNN-6464 Correct TokenEndpoint and AuthorizationEndpoint Urls
             // Add TokenMethod of Post to conform to other OAuth extensions
             this.TokenMethod = HttpMethod.POST;
             this.TokenEndpoint = new Uri("https://login.live.com/oauth20_token.srf");

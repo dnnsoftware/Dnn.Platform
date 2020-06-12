@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Exceptions
             }
             else
             {
-                //get the last server error
+                // get the last server error
                 var exc = this.Server.GetLastError();
                 try
                 {
@@ -118,8 +118,8 @@ namespace DotNetNuke.Services.Exceptions
                 }
                 catch
                 {
-                    //No exception was found...you shouldn't end up here
-                    //unless you go to this aspx page URL directly
+                    // No exception was found...you shouldn't end up here
+                    // unless you go to this aspx page URL directly
                     localizedMessage = Localization.Localization.GetString("UnhandledError.Text", Localization.Localization.GlobalResourceFile);
                     this.ErrorPlaceHolder.Controls.Add(new LiteralControl(localizedMessage));
                 }

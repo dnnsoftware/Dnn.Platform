@@ -40,9 +40,9 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.CssClass += " dnnLabel";
             
 
-            //var outerPanel = new Panel();
-            //outerPanel.CssClass = "dnnLabel";
-            //Controls.Add(outerPanel);            
+            // var outerPanel = new Panel();
+            // outerPanel.CssClass = "dnnLabel";
+            // Controls.Add(outerPanel);            
 
             var outerLabel = new System.Web.UI.HtmlControls.HtmlGenericControl { TagName = "label" };
             this.Controls.Add(outerLabel);
@@ -60,7 +60,7 @@ namespace DotNetNuke.Web.UI.WebControls
 			
 			if (!String.IsNullOrEmpty(toolTipText))
 			{
-				//CssClass += "dnnLabel";
+				// CssClass += "dnnLabel";
 
 			    var tooltipPanel = new Panel() { CssClass = "dnnTooltip"};
                 this.Controls.Add(tooltipPanel);
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
                 JavaScript.RegisterClientReference(this.Page, ClientAPI.ClientNamespaceReferences.dnn);
                 JavaScript.RequestRegistration(CommonJs.DnnPlugins);
-                //ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
+                // ClientResourceManager.RegisterScript(this.Page, "~/Resources/Shared/Scripts/initTooltips.js");
 			}
 		}
 

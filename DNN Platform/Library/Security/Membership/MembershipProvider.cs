@@ -35,7 +35,7 @@ namespace DotNetNuke.Security.Membership
 		
 		#region Shared/Static Methods
 
-        //return the provider
+        // return the provider
 		public static MembershipProvider Instance()
         {
             return ComponentFactory.GetComponent<MembershipProvider>();

@@ -23,7 +23,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [SetUp]
         public void SetUp()
         {
-            //Create a Container
+            // Create a Container
             ComponentFactory.Container = new SimpleContainer();
             MockComponentProvider.CreateDataCacheProvider();
         }
@@ -37,7 +37,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Columns.Add("IntProp", typeof(int));
             cboTable.Rows.Add(colValue);
 
-            //Assert.AreEqual(12, moq.Object["TestColumn"]);
+            // Assert.AreEqual(12, moq.Object["TestColumn"]);
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Columns.Add("StringProp", typeof(String));
             cboTable.Rows.Add(colValue);
 
-            //Assert.AreEqual(12, moq.Object["TestColumn"]);
+            // Assert.AreEqual(12, moq.Object["TestColumn"]);
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
@@ -73,7 +73,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
             cboTable.Columns.Add("DateTimeProp", typeof(DateTime));
             cboTable.Rows.Add(colValue);
 
-            //Assert.AreEqual(12, moq.Object["TestColumn"]);
+            // Assert.AreEqual(12, moq.Object["TestColumn"]);
 
             var result = CBO.FillObject<IntPoco>(cboTable.CreateDataReader());
 
@@ -83,7 +83,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         }
 
         [Test]
-        //DNNPRO-13404 - Object does not implement IConvertible 
+        // DNNPRO-13404 - Object does not implement IConvertible 
         public void CBO_FillObject_binary()
         {
             var cboTable = new DataTable("CBOTable");

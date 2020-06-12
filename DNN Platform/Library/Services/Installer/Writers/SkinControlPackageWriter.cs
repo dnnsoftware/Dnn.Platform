@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Installer.Writers
         {
             this.SkinControl = new SkinControlInfo();
 
-            //Create a Package
+            // Create a Package
             this.Package = new PackageInfo(installer);
 
             this.ReadLegacyManifest(manifestNav, true);
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 this.Package.Name = Util.ReadElement(folderNav, "name");
                 this.Package.FriendlyName = this.Package.Name;
 
-                //Process legacy controls Node
+                // Process legacy controls Node
                 foreach (XPathNavigator controlNav in folderNav.Select("modules/module/controls/control"))
                 {
                     this.SkinControl.ControlKey = Util.ReadElement(controlNav, "key");
@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 }
             }
 			
-            //Process legacy files Node
+            // Process legacy files Node
             foreach (XPathNavigator fileNav in folderNav.Select("files/file"))
             {
                 string fileName = Util.ReadElement(fileNav, "name");
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Writers
                 this.AddFile(Path.Combine(filePath, fileName), fileName);
             }
 			
-            //Process resource file Node
+            // Process resource file Node
             if (!string.IsNullOrEmpty(Util.ReadElement(folderNav, "resourcefile")))
             {
                 this.AddFile(Util.ReadElement(folderNav, "resourcefile"));
@@ -116,14 +116,14 @@ namespace DotNetNuke.Services.Installer.Writers
 		
         protected override void WriteManifestComponent(XmlWriter writer)
         {
-			//Start component Element
+			// Start component Element
             writer.WriteStartElement("component");
             writer.WriteAttributeString("type", "SkinObject");
 
-            //Write SkinControl Manifest
+            // Write SkinControl Manifest
             CBO.SerializeObject(this.SkinControl, writer);
 
-            //End component Element
+            // End component Element
             writer.WriteEndElement();
         }
 		

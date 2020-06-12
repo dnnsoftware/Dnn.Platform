@@ -52,7 +52,7 @@ namespace DotNetNuke.Services.Social.Messaging
         internal const string ConstSortColumnFrom = "From";
         internal const string ConstSortColumnSubject = "Subject";
         internal const bool ConstAscending = true;
-        internal const double DefaultMessagingThrottlingInterval = 0.5; //default MessagingThrottlingInterval set to 30 seconds.
+        internal const double DefaultMessagingThrottlingInterval = 0.5; // default MessagingThrottlingInterval set to 30 seconds.
 
         #endregion
 
@@ -70,7 +70,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
         public MessagingController(IDataService dataService)
         {
-            //Argument Contract
+            // Argument Contract
             Requires.NotNull("dataService", dataService);
 
             this._dataService = dataService;
@@ -151,7 +151,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ArgumentException(string.Format(Localization.Localization.GetString("MsgToListTooBigError", Localization.Localization.ExceptionsResourceFile), ConstMaxTo, sbTo.Length));
             }
 
-            //Cannot send message if within ThrottlingInterval
+            // Cannot send message if within ThrottlingInterval
             var waitTime = InternalMessagingController.Instance.WaitTimeForNextMessage(sender);
             if (waitTime > 0)
             {
@@ -159,13 +159,13 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new ThrottlingIntervalNotMetException(string.Format(Localization.Localization.GetString("MsgThrottlingIntervalNotMet", Localization.Localization.ExceptionsResourceFile), interval));
             }
 
-            //Cannot have attachments if it's not enabled
+            // Cannot have attachments if it's not enabled
             if (fileIDs != null && fileIDs.Count > 0 && !InternalMessagingController.Instance.AttachmentsAllowed(sender.PortalID))
             {
                 throw new AttachmentsNotAllowed(Localization.Localization.GetString("MsgAttachmentsNotAllowed", Localization.Localization.ExceptionsResourceFile));
             }
 
-            //Cannot exceed RecipientLimit
+            // Cannot exceed RecipientLimit
             var recipientCount = 0;
             if (users != null) recipientCount += users.Count;
             if (roles != null) recipientCount += roles.Count;
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 throw new RecipientLimitExceededException(Localization.Localization.GetString("MsgRecipientLimitExceeded", Localization.Localization.ExceptionsResourceFile));
             }
 
-            //Profanity Filter
+            // Profanity Filter
             var profanityFilterSetting = this.GetPortalSetting("MessagingProfanityFilters", sender.PortalID, "NO");
             if (profanityFilterSetting.Equals("YES", StringComparison.InvariantCultureIgnoreCase))
             {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
             message.MessageID = this._dataService.SaveMessage(message, PortalController.GetEffectivePortalId(UserController.Instance.GetCurrentUserInfo().PortalID), UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //associate attachments
+            // associate attachments
             if (fileIDs != null)
             {
                 foreach (var attachment in fileIDs.Select(fileId => new MessageAttachment { MessageAttachmentID = Null.NullInteger, FileID = fileId, MessageID = message.MessageID }))
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 }
             }
 
-            //send message to Roles
+            // send message to Roles
             if (roles != null)
             {
                 var roleIds = string.Empty;
@@ -214,7 +214,7 @@ namespace DotNetNuke.Services.Social.Messaging
                 this._dataService.CreateMessageRecipientsForRole(message.MessageID, roleIds, UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            //send message to each User - this should be called after CreateMessageRecipientsForRole.
+            // send message to each User - this should be called after CreateMessageRecipientsForRole.
             if (users == null)
             {
                 users = new List<UserInfo>();
@@ -231,7 +231,7 @@ namespace DotNetNuke.Services.Social.Messaging
 
                 if (recipient == null)
                 { 
-                    //add sender as a recipient of the message
+                    // add sender as a recipient of the message
                     recipient = new MessageRecipient { MessageID = message.MessageID, UserID = sender.UserID, Read = false, RecipientID = Null.NullInteger };
                     recipient.RecipientID = this._dataService.SaveMessageRecipient(recipient, UserController.Instance.GetCurrentUserInfo().UserID);
                 }

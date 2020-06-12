@@ -1307,9 +1307,9 @@ namespace log4net.Core
 		{
 			object forceCreation = null;
 
-			//Unlock the cache so that new values can be stored
-			//This may not be ideal if we are no longer in the correct context
-			//and someone calls fix. 
+			// Unlock the cache so that new values can be stored
+			// This may not be ideal if we are no longer in the correct context
+			// and someone calls fix. 
 			this.m_cacheUpdatable = true;
 
 			// determine the flags that we are actually fixing
@@ -1382,7 +1382,7 @@ namespace log4net.Core
 			{
 			}
 
-			//Finaly lock everything we've cached.
+			// Finaly lock everything we've cached.
 			this.m_cacheUpdatable = false;
 		}
 

@@ -149,23 +149,23 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
             if (hasher == null) throw new InvalidOperationException("No hashing type found by name " + hashType);
             using (hasher)
             {
-                //convert our string into byte array
+                // convert our string into byte array
                 var byteArray = Encoding.UTF8.GetBytes(str);
 
-                //get the hashed values created by our SHA1CryptoServiceProvider
+                // get the hashed values created by our SHA1CryptoServiceProvider
                 var hashedByteArray = hasher.ComputeHash(byteArray);
 
-                //create a StringBuilder object
+                // create a StringBuilder object
                 var stringBuilder = new StringBuilder();
 
-                //loop to each each byte
+                // loop to each each byte
                 foreach (var b in hashedByteArray)
                 {
-                    //append it to our StringBuilder
+                    // append it to our StringBuilder
                     stringBuilder.Append(b.ToString("x2").ToLowerInvariant());
                 }
 
-                //return the hashed value
+                // return the hashed value
                 return stringBuilder.ToString();
             }
         }
@@ -272,7 +272,7 @@ WHERE tm.TabID = {tabId} AND md.FriendlyName = '{moduleName}'");
         public static IWebApiConnector ClearHostCache()
         {
             var connector = LoginUser(AppConfigHelper.HostUserName);
-            //connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
+            // connector.PostJson("API/internalservices/controlbar/ClearHostCache", null);
             connector.PostJson("API/PersonaBar/Server/ClearCache", null);
             return connector;
         }

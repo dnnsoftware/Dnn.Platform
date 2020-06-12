@@ -114,7 +114,7 @@ namespace DotNetNuke.Tests.Utilities
 
         #region ContentItem Constants
 
-        //Valid Content values
+        // Valid Content values
         public const int CONTENT_ValidContentItemId = 1;
         public const string CONTENT_ValidContent = "Content";
         public const string CONTENT_ValidContentKey = "ContentKey";
@@ -130,7 +130,7 @@ namespace DotNetNuke.Tests.Utilities
         public const int CONTENT_ValidStartTabId = 10;
         public const int CONTENT_ValidStartModuleId = 100;
 
-        //InValid Content values
+        // InValid Content values
         public const int CONTENT_InValidContentItemId = 999;
         public const string CONTENT_InValidContent = "";
         public const int CONTENT_InValidModuleId = 888;

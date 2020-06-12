@@ -99,7 +99,7 @@ namespace DotNetNuke.UI.WebControls
 					this.ViewState["SelectionMode"] = value;
 					if (this.Controls.Count > 0)
 					{
-						this.CreateChildControls(); //Recreate if already created
+						this.CreateChildControls(); // Recreate if already created
 					}
 				}
 			}
@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.WebControls
 					this.ViewState["SelectionObject"] = value;
 					if (this.Controls.Count > 0)
 					{
-						this.CreateChildControls(); //Recreate if already created 
+						this.CreateChildControls(); // Recreate if already created 
 					}
 				}
 			}
@@ -157,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
 					this.ViewState["ItemStyle"] = value;
 					if (this.Controls.Count > 0)
 					{
-						this.CreateChildControls(); //Recreate if already created 
+						this.CreateChildControls(); // Recreate if already created 
 					}
 				}
 			}
@@ -186,7 +186,7 @@ namespace DotNetNuke.UI.WebControls
 					this.ViewState["ListDirection"] = value;
 					if (this.Controls.Count > 0)
 					{
-						this.CreateChildControls(); //Recreate if already created 
+						this.CreateChildControls(); // Recreate if already created 
 					}
 				}
 			}
@@ -203,7 +203,7 @@ namespace DotNetNuke.UI.WebControls
 				var a = new ArrayList();
 				if (this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
 				{
-					//return single language
+					// return single language
 					PortalSettings _Settings = PortalController.Instance.GetCurrentPortalSettings();
 					foreach (string strLocale in LocaleController.Instance.GetLocales(_Settings.PortalId).Keys)
 					{
@@ -212,7 +212,7 @@ namespace DotNetNuke.UI.WebControls
 				}
 				else
 				{
-					//create list of selected languages
+					// create list of selected languages
 					foreach (CultureInfo c in this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture))
 					{
 						if (this.SelectionMode == LanguageSelectionMode.Single)
@@ -331,7 +331,7 @@ namespace DotNetNuke.UI.WebControls
 			}
 			this.pnlControl.Controls.Add(new LiteralControl("</ul>"));
 
-			//Hide if not more than one language
+			// Hide if not more than one language
 			if (this.GetCultures(this.SelectionObject == LanguageSelectionObject.SpecificCulture).Length < 2)
 			{
 				this.Visible = false;

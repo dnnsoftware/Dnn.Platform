@@ -27,12 +27,12 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         {
             var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var encryptedValue = _provider.EncryptParameter(message, encryptionKey);
 
-            //Assert
+            // Assert
             Assert.AreNotEqual(message, encryptedValue);
         }
 
@@ -41,12 +41,12 @@ namespace DotNetNuke.Tests.Core.Services.CryptographyProviders
         {
             var message = "Hello world!";
             var encryptionKey = Config.GetDecryptionkey();
-            //Arrange
+            // Arrange
 
-            //Act
+            // Act
             var decryptedValue = _provider.DecryptParameter(message, encryptionKey);
 
-            //Assert
+            // Assert
             Assert.AreEqual(string.Empty, decryptedValue);
         }
     }

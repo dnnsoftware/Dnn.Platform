@@ -37,7 +37,7 @@ namespace Dnn.ExportImport.Components.Services
                 var roleGroups = CBO.FillCollection<ExportRoleGroup>(
                     DataProvider.Instance().GetAllRoleGroups(exportJob.PortalId, toDate, fromDate));
 
-                //Update the total items count in the check points. This should be updated only once.
+                // Update the total items count in the check points. This should be updated only once.
                 this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? roleGroups.Count : this.CheckPoint.TotalItems;
                 if (this.CheckPoint.TotalItems == roleGroups.Count)
                 {
@@ -92,7 +92,7 @@ namespace Dnn.ExportImport.Components.Services
             if (this.CheckPoint.Stage > 2) return;
 
             if (this.CheckCancelled(importJob)) return;
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
             this.CheckPointStageCallback(this);
 
@@ -220,11 +220,11 @@ namespace Dnn.ExportImport.Components.Services
                                 : null;
 
                             localRoleInfo.RoleName = other.RoleName;
-                            localRoleInfo.AutoAssignment = false; //other.AutoAssignment; CP: said do not do this
+                            localRoleInfo.AutoAssignment = false; // other.AutoAssignment; CP: said do not do this
                             localRoleInfo.BillingFrequency = other.BillingFrequency;
                             localRoleInfo.BillingPeriod = other.BillingPeriod ?? 0;
                             localRoleInfo.Description = other.Description;
-                            localRoleInfo.IconFile = other.IconFile;      //TODO: map to local file
+                            localRoleInfo.IconFile = other.IconFile;      // TODO: map to local file
                             localRoleInfo.IsPublic = other.IsPublic;
                             localRoleInfo.IsSystemRole = other.IsSystemRole;
                             localRoleInfo.RoleGroupID = group?.LocalId ?? Null.NullInteger;
@@ -265,7 +265,7 @@ namespace Dnn.ExportImport.Components.Services
                         BillingFrequency = other.BillingFrequency,
                         BillingPeriod = other.BillingPeriod ?? 0,
                         Description = other.Description,
-                        IconFile = other.IconFile,      //TODO: map to local file
+                        IconFile = other.IconFile,      // TODO: map to local file
                         IsPublic = other.IsPublic,
                         IsSystemRole = other.IsSystemRole,
                         RoleGroupID = group?.LocalId ?? Null.NullInteger,
@@ -285,7 +285,7 @@ namespace Dnn.ExportImport.Components.Services
                 }
             }
 
-            //set created/updated for any added/modified item
+            // set created/updated for any added/modified item
             if (roleItems.Count > 0)
                 RefreshRecordsUserIds(roleItems);
         }
@@ -319,7 +319,7 @@ namespace Dnn.ExportImport.Components.Services
                             localRoleInfo.Settings[other.SettingName] = other.SettingValue;
                             RoleController.Instance.UpdateRoleSettings(localRoleInfo, false);
                             this.Result.AddLogEntry("Updated role setting", other.SettingName);
-                            //No need to clear cache as the caller will do it one time at end
+                            // No need to clear cache as the caller will do it one time at end
                         }
                         else
                         {

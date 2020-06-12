@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Urls
         internal BasicFriendlyUrlProvider(NameValueCollection attributes)
             : base(attributes)
         {
-            //Read the attributes for this provider
+            // Read the attributes for this provider
             this._includePageName = String.IsNullOrEmpty(attributes["includePageName"]) || bool.Parse(attributes["includePageName"]);
             this._regexMatch = !String.IsNullOrEmpty(attributes["regexMatch"]) ? attributes["regexMatch"] : RegexMatchExpression;
             this._fileExtension = !String.IsNullOrEmpty(attributes["fileExtension"]) ? attributes["fileExtension"] : ".aspx";
@@ -118,8 +118,8 @@ namespace DotNetNuke.Entities.Urls
                     }
                     if ((String.IsNullOrEmpty(matchString)))
                     {
-                        //Manage the special case where original url contains the alias as
-                        //http://www.domain.com/Default.aspx?alias=www.domain.com/child"
+                        // Manage the special case where original url contains the alias as
+                        // http://www.domain.com/Default.aspx?alias=www.domain.com/child"
                         Match portalMatch = Regex.Match(originalUrl, "^?alias=" + portalAlias, RegexOptions.IgnoreCase);
                         if (!ReferenceEquals(portalMatch, Match.Empty))
                         {
@@ -129,8 +129,8 @@ namespace DotNetNuke.Entities.Urls
 
                     if ((String.IsNullOrEmpty(matchString)))
                     {
-                        //Manage the special case of child portals 
-                        //http://www.domain.com/child/default.aspx
+                        // Manage the special case of child portals 
+                        // http://www.domain.com/child/default.aspx
                         string tempurl = HttpContext.Current.Request.Url.Host + Globals.ResolveUrl(friendlyPath);
                         if (!tempurl.Contains(portalAlias))
                         {
@@ -206,7 +206,7 @@ namespace DotNetNuke.Entities.Urls
                     string pathToAppend = "";
                     string[] pair = nameValuePairs[i].Split(Convert.ToChar("="));
 
-                    //Add name part of name/value pair
+                    // Add name part of name/value pair
                     if ((friendlyPath.EndsWith("/")))
                     {
                         pathToAppend = pathToAppend + pair[0];
@@ -221,7 +221,7 @@ namespace DotNetNuke.Entities.Urls
                         {
                             if ((Regex.IsMatch(pair[1], this._regexMatch) == false))
                             {
-                                //Contains Non-AlphaNumeric Characters
+                                // Contains Non-AlphaNumeric Characters
                                 if ((pair[0].ToLowerInvariant() == "tabid"))
                                 {
                                     if (Globals.NumberMatchRegex.IsMatch(pair[1]))
@@ -243,7 +243,7 @@ namespace DotNetNuke.Entities.Urls
                             }
                             else
                             {
-                                //Rewrite into URL, contains only alphanumeric and the % or space
+                                // Rewrite into URL, contains only alphanumeric and the % or space
                                 if (String.IsNullOrEmpty(queryStringSpecialChars))
                                 {
                                     queryStringSpecialChars = pair[0] + "=" + pair[1];
@@ -369,13 +369,13 @@ namespace DotNetNuke.Entities.Urls
                                                     : this.GetFriendlyAlias("~/register.aspx", portalAlias, true);
                                     break;
                                 default:
-                                    //Return Search engine friendly version
+                                    // Return Search engine friendly version
                                     return this.GetFriendlyQueryString(tab, this.GetFriendlyAlias(path, portalAlias, true), pageName);
                             }
                         }
                         else
                         {
-                            //Return Search engine friendly version
+                            // Return Search engine friendly version
                             return this.GetFriendlyQueryString(tab, this.GetFriendlyAlias(path, portalAlias, true), pageName);
                         }
                     }
@@ -383,7 +383,7 @@ namespace DotNetNuke.Entities.Urls
             }
             else
             {
-                //Return Search engine friendly version
+                // Return Search engine friendly version
                 friendlyPath = this.GetFriendlyQueryString(tab, this.GetFriendlyAlias(path, portalAlias, isPagePath), pageName);
             }
 

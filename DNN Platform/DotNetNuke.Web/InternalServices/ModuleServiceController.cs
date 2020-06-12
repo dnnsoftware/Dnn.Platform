@@ -83,8 +83,8 @@ namespace DotNetNuke.Web.InternalServices
             var moduleOrder = postData.ModuleOrder;
             if (moduleOrder > 0)
             {
-                //DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
-                //index count of deleted modules and will cause order issue.
+                // DNN-7099: the deleted modules won't show in page, so when the module index calculated from client, it will lost the 
+                // index count of deleted modules and will cause order issue.
                 var deletedModules = ModuleController.Instance.GetTabModules(postData.TabId).Values.Where(m => m.IsDeleted);
                 foreach (var module in deletedModules)
                 {

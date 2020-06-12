@@ -175,7 +175,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 return;
             }
             
-            //Module could be restored in the same version
+            // Module could be restored in the same version
             var existingTabDetails =
                 TabVersionDetailController.Instance.GetTabVersionDetails(targetVersion.TabVersionId)
                     .Where(tvd => tvd.ModuleId == module.ModuleID);
@@ -205,14 +205,14 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
                 TabVersionDetailController.Instance.DeleteTabVersionDetail(existingTabDetail.TabVersionId,
                     existingTabDetail.TabVersionDetailId);
                 
-                //When a module is added in the same version, then we should do nothing with it
+                // When a module is added in the same version, then we should do nothing with it
                 if (existingTabDetail.Action == TabVersionDetailAction.Added)
                 {
                     return;
                 }
             }
 
-            //Do not add module to Tab Version Details if it has been hard deleted
+            // Do not add module to Tab Version Details if it has been hard deleted
             ModuleInfo moduleInfo = ModuleController.Instance.GetModule(module.ModuleID, module.TabID, false);
             if (moduleInfo != null)
             {

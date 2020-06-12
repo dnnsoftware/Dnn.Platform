@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             this.Details = Localization.Localization.GetString("CreateSuperUser", this.LocalInstallResourceFile);
             var installConfig = InstallController.Instance.GetInstallConfig();
 
-            //if any super user (even deleted) is found - exit
+            // if any super user (even deleted) is found - exit
             var superUsers = UserController.GetUsers(true, true, Null.NullInteger);
             if (superUsers != null && superUsers.Count > 0)
             {
@@ -44,13 +44,13 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 return;
             }
 
-            //Set admin user to be a superuser
+            // Set admin user to be a superuser
             var adminSuperUser = UserController.GetUserByName(0, installConfig.SuperUser.UserName);
             if (adminSuperUser != null)
             {
                 adminSuperUser.IsSuperUser = true;
                 adminSuperUser.Membership.UpdatePassword = false;
-				//refresh the profile to get definitions for super user.
+				// refresh the profile to get definitions for super user.
 	            adminSuperUser.Profile = null;
 				adminSuperUser.Profile.PreferredLocale = installConfig.SuperUser.Locale;
 				adminSuperUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
@@ -58,7 +58,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
             }
             else
             {
-                //Construct UserInfo object
+                // Construct UserInfo object
                 var superUser = new UserInfo
                                 {
                                     PortalID = -1,
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.Upgrade.InternalController.Steps
                 superUser.Profile.PreferredTimeZone = TimeZoneInfo.Local;
                 superUser.Membership.UpdatePassword = false;
                 
-                //Create SuperUser if not present
+                // Create SuperUser if not present
                 if (UserController.GetUserByName(superUser.PortalID, superUser.Username) == null)
                     UserController.CreateUser(ref superUser);
             }

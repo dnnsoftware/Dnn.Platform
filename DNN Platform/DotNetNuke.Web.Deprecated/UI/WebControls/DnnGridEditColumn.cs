@@ -30,7 +30,7 @@ namespace DotNetNuke.Web.UI.WebControls
         {
             DnnGridEditColumn dnnGridColumn = new DnnGridEditColumn();
 
-            //you should override CopyBaseProperties if you have some column specific properties
+            // you should override CopyBaseProperties if you have some column specific properties
             dnnGridColumn.CopyBaseProperties(this);
 
             return dnnGridColumn;

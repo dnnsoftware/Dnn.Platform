@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.WebControls
 
 				this.EnsureChildControls();
 
-				//Localize the Label and the Help text
+				// Localize the Label and the Help text
 				this.lblHelp.Attributes["resourcekey"] = this._ResourceKey + ".Help";
 				this.lblLabel.Attributes["resourcekey"] = this._ResourceKey + ".Text";
 			}
@@ -264,7 +264,7 @@ namespace DotNetNuke.UI.WebControls
             aHelpPin.Attributes.Add("aria-label", "Pin");
             this.pnlHelp.Controls.Add(aHelpPin);
 
-            //Controls.Add(label);
+            // Controls.Add(label);
             this.Controls.Add(this.pnlTooltip);
 		}
 
@@ -274,13 +274,13 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void OnDataBinding(EventArgs e)
 		{
-			//If there is a DataSource bind the relevent Properties
+			// If there is a DataSource bind the relevent Properties
 			if (this.DataSource != null)
 			{
 				this.EnsureChildControls();
 				if (!String.IsNullOrEmpty(this.DataField))
 				{
-					//DataBind the Label (via the Resource Key)
+					// DataBind the Label (via the Resource Key)
 					var dataRow = (DataRowView)this.DataSource;
 					if (this.ResourceKey == string.Empty)
 					{
@@ -309,7 +309,7 @@ namespace DotNetNuke.UI.WebControls
 		/// </summary>
 		protected override void OnPreRender(EventArgs e)
 		{
-			//Make sure the Child Controls are created before assigning any properties
+			// Make sure the Child Controls are created before assigning any properties
 			this.EnsureChildControls();
 
             if (this.Required)
@@ -317,13 +317,13 @@ namespace DotNetNuke.UI.WebControls
                 this.lblLabel.CssClass += " dnnFormRequired";
             }
 
-			//DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
+			// DNNClientAPI.EnableMinMax(cmdHelp, pnlHelp, true, DNNClientAPI.MinMaxPersistanceType.None);
 			if (this.EditControl != null)
 			{
 				this.label.Attributes.Add("for", this.EditControl is EditControl ? ((EditControl)this.EditControl).EditControlClientId : this.EditControl.ClientID);
 			}
 
-            //make sure the help container have the default css class to active js handler.
+            // make sure the help container have the default css class to active js handler.
             if (!this.pnlHelp.ControlStyle.CssClass.Contains("dnnClear"))
             {
                 this.pnlHelp.ControlStyle.CssClass = string.Format("dnnClear {0}", this.pnlHelp.ControlStyle.CssClass);

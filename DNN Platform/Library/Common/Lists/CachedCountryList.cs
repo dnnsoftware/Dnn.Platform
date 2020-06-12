@@ -61,7 +61,7 @@ namespace DotNetNuke.Common.Lists
 			}
 			catch (Exception)
 			{
-				//do nothing here.
+				// do nothing here.
 			}
 			if (res == null)
 			{

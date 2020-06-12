@@ -97,8 +97,8 @@ namespace DotNetNuke.HttpModules.Membership
             AuthenticateRequest(new HttpContextWrapper(application.Context), false);
         }
 
-        //DNN-6973: if the authentication cookie set by cookie slide in membership,
-        //then use SignIn method instead if current portal is in portal group.
+        // DNN-6973: if the authentication cookie set by cookie slide in membership,
+        // then use SignIn method instead if current portal is in portal group.
         private void OnPreSendRequestHeaders(object sender, EventArgs e)
         {
             var application = (HttpApplication)sender;
@@ -143,13 +143,13 @@ namespace DotNetNuke.HttpModules.Membership
             HttpRequestBase request = context.Request;
             HttpResponseBase response = context.Response;
 
-            //First check if we are upgrading/installing
+            // First check if we are upgrading/installing
             if (!Initialize.ProcessHttpModule(context.ApplicationInstance.Request, allowUnknownExtensions, false))
             {
                 return;
             }
 
-            //Obtain PortalSettings from Current Context
+            // Obtain PortalSettings from Current Context
             PortalSettings portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
             bool isActiveDirectoryAuthHeaderPresent = false;
@@ -165,25 +165,25 @@ namespace DotNetNuke.HttpModules.Membership
             if (request.IsAuthenticated && !isActiveDirectoryAuthHeaderPresent && portalSettings != null)  
             {
                 var user = UserController.GetCachedUser(portalSettings.PortalId, context.User.Identity.Name);
-                //if current login is from windows authentication, the ignore the process
+                // if current login is from windows authentication, the ignore the process
                 if (user == null && context.User is WindowsPrincipal)
                 {
                     return;
                 }
 
-                //authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
+                // authenticate user and set last login ( this is necessary for users who have a permanent Auth cookie set ) 
                 if (RequireLogout(context, user))
                 {
                     var portalSecurity = PortalSecurity.Instance;
                     portalSecurity.SignOut();
 
-                    //Remove user from cache
+                    // Remove user from cache
                     if (user != null)
                     {
                         DataCache.ClearUserCache(portalSettings.PortalId, context.User.Identity.Name);
                     }
 
-                    //Redirect browser back to home page
+                    // Redirect browser back to home page
                     response.Redirect(request.RawUrl, true);
                     return;
                 }
@@ -199,16 +199,16 @@ namespace DotNetNuke.HttpModules.Membership
                     HttpContext.Current.Items.Add(DotNetNuke.UI.Skins.Skin.OnInitMessageType, ModuleMessage.ModuleMessageType.GreenSuccess);
                 }
 
-                //if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
+                // if users LastActivityDate is outside of the UsersOnlineTimeWindow then record user activity
                 if (DateTime.Compare(user.Membership.LastActivityDate.AddMinutes(Host.UsersOnlineTimeWindow), DateTime.Now) < 0)
                 {
-                    //update LastActivityDate and IP Address for user
+                    // update LastActivityDate and IP Address for user
                     user.Membership.LastActivityDate = DateTime.Now;
                     user.LastIPAddress = UserRequestIPAddressController.Instance.GetUserRequestIPAddress(request);
                     UserController.UpdateUser(portalSettings.PortalId, user, false, false);
                 }
 
-                //check for RSVP code
+                // check for RSVP code
                 if (request.QueryString["rsvp"] != null && !string.IsNullOrEmpty(request.QueryString["rsvp"]))
                 {
                     foreach (var role in RoleController.Instance.GetRoles(portalSettings.PortalId, r => (r.SecurityMode != SecurityMode.SocialGroup || r.IsPublic) && r.Status == RoleStatus.Approved))
@@ -220,7 +220,7 @@ namespace DotNetNuke.HttpModules.Membership
                     }
                 }
 
-                //save userinfo object in context
+                // save userinfo object in context
                 if (context.Items["UserInfo"] != null)
                 {
                     context.Items["UserInfo"] = user;
@@ -230,7 +230,7 @@ namespace DotNetNuke.HttpModules.Membership
                     context.Items.Add("UserInfo", user);
                 }
 
-                //Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
+                // Localization.SetLanguage also updates the user profile, so this needs to go after the profile is loaded
                 if (request.RawUrl != null && !ServicesModule.ServiceApi.IsMatch(request.RawUrl))
                 {
                     Localization.SetLanguage(user.Profile.PreferredLocale);

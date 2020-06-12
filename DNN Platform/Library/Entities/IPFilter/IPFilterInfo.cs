@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Host
             catch (IndexOutOfRangeException)
             {
             
-                //else swallow the error
+                // else swallow the error
             }
 
             this.IPAddress = Null.SetNullString(dr["IPAddress"]);

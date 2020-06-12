@@ -28,7 +28,7 @@ namespace DotNetNuke.Tests.Urls
         {
             try
             {
-                //Read Test File Data
+                // Read Test File Data
                 TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, "TestFile"), (line, header) =>
                             {
                                 var fieldList = new Dictionary<string, string>();
@@ -74,7 +74,7 @@ namespace DotNetNuke.Tests.Urls
         {
             var settings = new FriendlyUrlSettings(portalId);
 
-            //Read Test Settings
+            // Read Test Settings
             TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
             {
                 string[] fields = line.Split(',');
@@ -110,7 +110,7 @@ namespace DotNetNuke.Tests.Urls
         {
             var dictionary = new Dictionary<string, string>();
 
-            //Read Test Settings
+            // Read Test Settings
             TestUtil.ReadStream(String.Format("{0}\\{1}\\{2}", testType, testName, settingsFile), (line, header) =>
             {
                 string[] fields = line.Split(',');

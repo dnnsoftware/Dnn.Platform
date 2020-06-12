@@ -282,7 +282,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_EmptyString_When_TargetPage_IsDeleted()
         {
-            //prepare rule to a deleted tab on the same portal
+            // prepare rule to a deleted tab on the same portal
             this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, AnotherPageOnSamePortal, EnabledFlag, (int)TargetType.Tab, DeletedPageOnSamePortal, 1);
             Assert.AreEqual(string.Empty, this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, AnotherPageOnSamePortal));
         }
@@ -301,13 +301,13 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			Assert.AreEqual(this.NavigateUrl(AnotherPageOnSamePortal), this._redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         }
 
-        //[Test]
-        //public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
-        //{
+        // [Test]
+        // public void RedirectionController_GetRedirectionUrl_Returns_HomePageOfOtherPortal_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
+        // {
         //    PrepareHomePageToHomePageRedirectionRule();
         //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 1));
         //    Assert.AreEqual(DotNetNuke.Common.Globals.AddHTTP(PortalAlias1), _redirectionController.GetRedirectUrl(iphoneUserAgent, Portal0, 2));            
-        //}
+        // }
 
         [Test]
         public void RedirectionController_GetRedirectionUrl_Returns_ExternalSite_When_Surfing_AnyPageOfCurrentPortal_OnMobile()
@@ -378,25 +378,25 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 			Assert.AreEqual(string.Empty, url);
 		}
 
-        //[Test]
-        //public void RedirectionController_GetFullSiteUrl_When_Redirect_Between_Different_Portals()
-        //{
+        // [Test]
+        // public void RedirectionController_GetFullSiteUrl_When_Redirect_Between_Different_Portals()
+        // {
         //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, "1", 1);
 
-        //    var url = _redirectionController.GetFullSiteUrl(Portal1, HomePageOnPortal1);
+        // var url = _redirectionController.GetFullSiteUrl(Portal1, HomePageOnPortal1);
 			
-        //    Assert.AreEqual(Globals.AddHTTP(PortalAlias0), url);
-        //}
+        // Assert.AreEqual(Globals.AddHTTP(PortalAlias0), url);
+        // }
 
-        //[Test]
-        //public void RedirectionController_GetFullSiteUrl_When_Redirect_In_Same_Portal()
-        //{
+        // [Test]
+        // public void RedirectionController_GetFullSiteUrl_When_Redirect_In_Same_Portal()
+        // {
         //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, HomePageOnPortal0, EnabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, 1);
 
-        //    var url = _redirectionController.GetFullSiteUrl(Portal1, AnotherPageOnSamePortal);
+        // var url = _redirectionController.GetFullSiteUrl(Portal1, AnotherPageOnSamePortal);
 
-        //    //Assert.AreEqual(string.Empty, url);
-        //}
+        // //Assert.AreEqual(string.Empty, url);
+        // }
 
 		[Test]
 		public void RedirectionController_GetFullSiteUrl_When_Redirect_To_DifferentUrl()
@@ -426,37 +426,37 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             string redirectUrlPage1 = "m.yahoo.com";
             string redirectUrlPage2 = "m.cnn.com";
 
-            //first page goes to one url
+            // first page goes to one url
             this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, Page1, EnabledFlag, (int)TargetType.Url, redirectUrlPage1, 1);
 
-            //second page goes to another url (this is Tablet - it should not matter)
+            // second page goes to another url (this is Tablet - it should not matter)
             this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, Page2, EnabledFlag, (int)TargetType.Url, redirectUrlPage2, 1);
 
             var mobileUrlForPage1 = this._redirectionController.GetMobileSiteUrl(Portal0, Page1);
             var mobileUrlForPage2 = this._redirectionController.GetMobileSiteUrl(Portal0, Page2);
             var mobileUrlForPage3 = this._redirectionController.GetMobileSiteUrl(Portal0, Page3);
 
-            //First Page returns link to first url
+            // First Page returns link to first url
             Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage1), mobileUrlForPage1);
 
-            //Second Page returns link to second url
+            // Second Page returns link to second url
             Assert.AreEqual(String.Format("{0}?nomo=0", redirectUrlPage2), mobileUrlForPage2);
             
-            //Third Page returns link to first url - as this is the first found url and third page has no redirect defined
+            // Third Page returns link to first url - as this is the first found url and third page has no redirect defined
             Assert.AreEqual(mobileUrlForPage3, String.Format("{0}?nomo=0", redirectUrlPage1));
         }
 
-        //[Test]
-        //public void RedirectionController_GetMobileSiteUrl_Works_When_Page_Redirects_To_Another_Portal()
-        //{
+        // [Test]
+        // public void RedirectionController_GetMobileSiteUrl_Works_When_Page_Redirects_To_Another_Portal()
+        // {
         //    //first page goes to one second portal
         //    _dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.MobilePhone, 1, -1, EnabledFlag, (int)TargetType.Portal, Portal1, 1);            
 
-        //    var mobileUrlForPage1 = _redirectionController.GetMobileSiteUrl(Portal0, Page1);
+        // var mobileUrlForPage1 = _redirectionController.GetMobileSiteUrl(Portal0, Page1);
 
-        //    //First Page returns link to home page of other portal
+        // //First Page returns link to home page of other portal
         //    Assert.AreEqual(Globals.AddHTTP(PortalAlias1), mobileUrlForPage1);
-        //}
+        // }
 
         [Test]
         public void RedirectionController_GetMobileSiteUrl_When_Redirect_To_DifferentUrl()
@@ -879,7 +879,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
 
 		private void PrepareData()
 		{
-			//id, portalId, name, type, sortOrder, sourceTabId, includeChildTabs, targetType, targetValue, enabled
+			// id, portalId, name, type, sortOrder, sourceTabId, includeChildTabs, targetType, targetValue, enabled
             this._dtRedirections.Rows.Add(1, Portal0, "R4", (int)RedirectionType.Other, 4, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
             this._dtRedirections.Rows.Add(2, Portal0, "R2", (int)RedirectionType.Tablet, 2, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
             this._dtRedirections.Rows.Add(3, Portal0, "R3", (int)RedirectionType.AllMobile, 3, -1, DisabledFlag, (int)TargetType.Portal, "1", EnabledFlag);
@@ -888,7 +888,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
             this._dtRedirections.Rows.Add(6, Portal0, "R6", (int)RedirectionType.MobilePhone, 6, -1, DisabledFlag, (int)TargetType.Tab, HomePageOnPortal0, EnabledFlag);
             this._dtRedirections.Rows.Add(7, Portal0, "R7", (int)RedirectionType.MobilePhone, 7, -1, DisabledFlag, (int)TargetType.Url, ExternalSite, EnabledFlag);
 
-			//id, redirectionId, capability, expression
+			// id, redirectionId, capability, expression
 			this._dtRules.Rows.Add(1, 1, "mobile_browser", "Safari");
 			this._dtRules.Rows.Add(2, 1, "device_os_version", "4.0");
 
@@ -901,7 +901,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Other, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
 
-            //id, redirectionId, capability, expression
+            // id, redirectionId, capability, expression
             this._dtRules.Rows.Add(1, 1, "mobile_browser", "Opera Mini");
             this._dtRules.Rows.Add(2, 1, "device_os", "Symbian OS");
         }
@@ -910,7 +910,7 @@ namespace DotNetNuke.Tests.Core.Services.Mobile
         {
             this._dtRedirections.Rows.Add(1, Portal0, "R1", (int)RedirectionType.Other, 1, -1, DisabledFlag, (int)TargetType.Tab, AnotherPageOnSamePortal, EnabledFlag);
 
-            //id, redirectionId, capability, expression
+            // id, redirectionId, capability, expression
             this._dtRules.Rows.Add(1, 1, "mobile_browser", "Opera Mini");
             this._dtRules.Rows.Add(2, 1, "device_os", "iPhone OS");
         }

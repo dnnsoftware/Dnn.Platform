@@ -183,7 +183,7 @@ namespace DotNetNuke.Entities.Content.Workflow
                 var user = this.GetUserThatHaveStartedOrSubmittedDraftState(workflow, contentItem, stateTransaction);
                 if (user == null)
                 {
-                    //Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
+                    // Services.Exceptions.Exceptions.LogException(new WorkflowException(Localization.GetExceptionMessage("WorkflowAuthorNotFound", "Author cannot be found. Notification won't be sent")));
                     return;
                 }
 
@@ -499,7 +499,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             var contentItem = this._contentController.GetContentItem(contentItemId);
             var workflow = this._workflowManager.GetWorkflow(contentItem);
 
-            //If already exists a started workflow
+            // If already exists a started workflow
             if (workflow != null && !this.IsWorkflowCompleted(contentItem))
             {
                 throw new WorkflowInvalidOperationException(Localization.GetExceptionMessage("WorkflowAlreadyStarted", "Workflow cannot get started for this Content Item. It already has a started workflow."));
@@ -512,12 +512,12 @@ namespace DotNetNuke.Entities.Content.Workflow
 
             var initialTransaction = this.CreateInitialTransaction(contentItemId, workflow.FirstState.StateID, userId);
 
-            //Perform action before starting workflow
+            // Perform action before starting workflow
             this.PerformWorkflowActionOnStateChanging( initialTransaction, WorkflowActionTypes.StartWorkflow);
             this.UpdateContentItemWorkflowState(workflow.FirstState.StateID, contentItem);
 
-            //Send notifications to stater
-            if (workflow.WorkflowID != this._systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) //This notification is not sent in Direct Publish WF
+            // Send notifications to stater
+            if (workflow.WorkflowID != this._systemWorkflowManager.GetDirectPublishWorkflow(workflow.PortalID).WorkflowID) // This notification is not sent in Direct Publish WF
             {
                 this.SendNotificationToWorkflowStarter(initialTransaction, workflow, contentItem, userId, WorkflowActionTypes.StartWorkflow);                
             }
@@ -529,7 +529,7 @@ namespace DotNetNuke.Entities.Content.Workflow
             this.AddWorkflowLog(contentItem, WorkflowLogType.WorkflowStarted, userId);
             this.AddWorkflowLog(contentItem, WorkflowLogType.StateInitiated, userId);
 
-            //Perform action after starting workflow
+            // Perform action after starting workflow
             this.PerformWorkflowActionOnStateChanged(initialTransaction, WorkflowActionTypes.StartWorkflow);
         }
 
@@ -669,7 +669,7 @@ namespace DotNetNuke.Entities.Content.Workflow
 
         public bool IsWorkflowOnDraft(int contentItemId)
         {
-            var contentItem = this._contentController.GetContentItem(contentItemId); //Ensure DB values
+            var contentItem = this._contentController.GetContentItem(contentItemId); // Ensure DB values
             return this.IsWorkflowOnDraft(contentItem);
         }
 

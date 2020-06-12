@@ -40,7 +40,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
         }
 
@@ -182,7 +182,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
             return null;
         }
@@ -201,7 +201,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
             return null;
         }
@@ -222,7 +222,7 @@ namespace DotNetNuke.Web.Client
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
             return null;
         }

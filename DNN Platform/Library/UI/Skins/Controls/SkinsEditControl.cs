@@ -214,7 +214,7 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnPreRender(e);
 
-            //Register control for PostBack
+            // Register control for PostBack
             this.Page.RegisterRequiresPostBack(this);
         }
 
@@ -243,21 +243,21 @@ namespace DotNetNuke.UI.Skins.Controls
             {
                 foreach (KeyValuePair<int, string> kvp in this.DictionaryValue)
                 {
-					//Render Hyperlink
+					// Render Hyperlink
                     writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Delete_" + kvp.Key, false));
                     writer.AddAttribute(HtmlTextWriterAttribute.Onclick, "javascript:return confirm('" + ClientAPI.GetSafeJSString(Localization.GetString("DeleteItem")) + "');");
                     writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdDelete", this.LocalResourceFile));
                     writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-                    //Render Image
+                    // Render Image
                     writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Delete"));
                     writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
                     writer.RenderBeginTag(HtmlTextWriterTag.Img);
 
-                    //Render end of Image
+                    // Render end of Image
                     writer.RenderEndTag();
 
-                    //Render end of Hyperlink
+                    // Render end of Hyperlink
                     writer.RenderEndTag();
 
                     this.ControlStyle.AddAttributesToRender(writer);
@@ -275,21 +275,21 @@ namespace DotNetNuke.UI.Skins.Controls
                 }
                 writer.WriteBreak();
 
-                //Create Add Row
-                //Render Hyperlink
+                // Create Add Row
+                // Render Hyperlink
                 writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, "Add", false));
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, Localization.GetString("cmdAdd", this.LocalResourceFile));
                 writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-                //Render Image
+                // Render Image
                 writer.AddAttribute(HtmlTextWriterAttribute.Src, IconController.IconURL("Add"));
                 writer.AddAttribute(HtmlTextWriterAttribute.Border, "0");
                 writer.RenderBeginTag(HtmlTextWriterTag.Img);
 
-                //Render end of Image
+                // Render end of Image
                 writer.RenderEndTag();
 
-                //Render end of Hyperlink
+                // Render end of Hyperlink
                 writer.RenderEndTag();
 
                 this.ControlStyle.AddAttributesToRender(writer);

@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.Containers
             base.OnLoad(e);
             try
             {
-				//public attributes
+				// public attributes
                 if (!String.IsNullOrEmpty(this.BorderWidth))
                 {
                     this.imgIcon.BorderWidth = Unit.Parse(this.BorderWidth);
@@ -69,7 +69,7 @@ namespace DotNetNuke.UI.Containers
                     }
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

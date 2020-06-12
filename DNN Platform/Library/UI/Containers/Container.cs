@@ -139,7 +139,7 @@ namespace DotNetNuke.UI.Containers
         {
             get
             {
-				//This finds a reference to the containing skin
+				// This finds a reference to the containing skin
                 return Skins.Skin.GetParentSkin(this);
             }
         }
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.Containers
             ISkinControl skinControl;
             foreach (Control childControl in control.Controls)
             {
-				//check if control is an action control
+				// check if control is an action control
                 actions = childControl as IActionControl;
                 if (actions != null)
                 {
@@ -196,14 +196,14 @@ namespace DotNetNuke.UI.Containers
                     actions.Action += this.ModuleActionClick;
                 }
 
-                //check if control is an actionLink control
+                // check if control is an actionLink control
                 var actionLink = childControl as ActionLink;
                 if (actionLink != null)
                 {
                     actionLink.ModuleControl = this.ModuleControl;
                 }
 
-				//check if control is a skin control
+				// check if control is a skin control
                 skinControl = childControl as ISkinControl;
                 if (skinControl != null)
                 {
@@ -211,7 +211,7 @@ namespace DotNetNuke.UI.Containers
                 }
                 if (childControl.HasControls())
                 {
-					//recursive call for child controls
+					// recursive call for child controls
                     this.ProcessChildControls(childControl);
                 }
             }
@@ -230,7 +230,7 @@ namespace DotNetNuke.UI.Containers
 
             this.SetBorder();
 
-            //display visual indicator if module is only visible to administrators
+            // display visual indicator if module is only visible to administrators
 			string viewRoles = this.ModuleConfiguration.InheritViewPermissions
                                    ? TabPermissionController.GetTabPermissions(this.ModuleConfiguration.TabID, this.ModuleConfiguration.PortalID).ToString("VIEW")
                                    : this.ModuleConfiguration.ModulePermissions.ToString("VIEW");
@@ -274,14 +274,14 @@ namespace DotNetNuke.UI.Containers
         /// </summary>
         private void ProcessFooter()
         {
-			//inject the footer
+			// inject the footer
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Footer))
             {
                 var footer = new Literal {Text = this.ModuleConfiguration.Footer};
                 this.ContentPane.Controls.Add(footer);
             }
 			
-            //inject an end comment around the module content
+            // inject an end comment around the module content
             if (!Globals.IsAdminControl())
             {
                 this.ContentPane.Controls.Add(new LiteralControl("<!-- End_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
@@ -296,11 +296,11 @@ namespace DotNetNuke.UI.Containers
         {
             if (!Globals.IsAdminControl())
             {
-				//inject a start comment around the module content
+				// inject a start comment around the module content
                 this.ContentPane.Controls.Add(new LiteralControl("<!-- Start_Module_" + this.ModuleConfiguration.ModuleID + " -->"));
             }
 			
-            //inject the header
+            // inject the header
             if (!String.IsNullOrEmpty(this.ModuleConfiguration.Header))
             {
                 var header = new Literal {Text = this.ModuleConfiguration.Header};
@@ -319,7 +319,7 @@ namespace DotNetNuke.UI.Containers
 
             if (this.ContentPane != null)
             {
-				//Process Content Pane Attributes
+				// Process Content Pane Attributes
                 this.ProcessContentPane();
 
                 // always add the actions menu as the first item in the content pane.
@@ -328,30 +328,30 @@ namespace DotNetNuke.UI.Containers
                     JavaScript.RequestRegistration(CommonJs.DnnPlugins);
                     this.ContentPane.Controls.Add(this.LoadControl(this.PortalSettings.DefaultModuleActionMenu));
 
-                    //register admin.css
+                    // register admin.css
                     ClientResourceManager.RegisterAdminStylesheet(this.Page, Globals.HostPath + "admin.css");
                 }
 
-                //Process Module Header
+                // Process Module Header
                 this.ProcessHeader();
 
-                //Try to load the module control
+                // Try to load the module control
                 this._moduleHost = new ModuleHost(this.ModuleConfiguration, this.ParentSkin, this);
                 if (this._tracelLogger.IsDebugEnabled)
                     this._tracelLogger.Debug($"Container.ProcessModule Info (TabId:{this.PortalSettings.ActiveTab.TabID},ModuleID: {this.ModuleConfiguration.ModuleDefinition.DesktopModuleID}): ControlPane.Controls.Add(ModuleHost:{this._moduleHost.ID})");
 
                 this.ContentPane.Controls.Add(this.ModuleHost);
 
-                //Process Module Footer
+                // Process Module Footer
                 this.ProcessFooter();
 				
-				//Process the Action Controls
+				// Process the Action Controls
                 if (this.ModuleHost != null && this.ModuleControl != null)
                 {
                     this.ProcessChildControls(this);
                 }
 				
-				//Add Module Stylesheets
+				// Add Module Stylesheets
                 this.ProcessStylesheets(this.ModuleHost != null);
             }
             if (this._tracelLogger.IsDebugEnabled)
@@ -368,7 +368,7 @@ namespace DotNetNuke.UI.Containers
             ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerPath + "container.css", FileOrder.Css.ContainerCss);
             ClientResourceManager.RegisterStyleSheet(this.Page, this.ContainerSrc.Replace(".ascx", ".css"), FileOrder.Css.SpecificContainerCss);
 
-            //process the base class module properties 
+            // process the base class module properties 
             if (includeModuleCss)
             {
                 string controlSrc = this.ModuleConfiguration.ModuleControl.ControlSrc;
@@ -518,13 +518,13 @@ namespace DotNetNuke.UI.Containers
         /// listeners on the Container directly, rather than through the helper method in PortalModuleBase.</remarks>
         private void ModuleActionClick(object sender, ActionEventArgs e)
         {
-			//Search through the listeners
+			// Search through the listeners
             foreach (ModuleActionEventListener listener in this.ParentSkin.ActionEventListeners)
             {			
-				//If the associated module has registered a listener
+				// If the associated module has registered a listener
                 if (e.ModuleConfiguration.ModuleID == listener.ModuleID)
                 {
-					//Invoke the listener to handle the ModuleAction_Click event
+					// Invoke the listener to handle the ModuleAction_Click event
                     listener.ActionEvent.Invoke(sender, e);
                 }
             }

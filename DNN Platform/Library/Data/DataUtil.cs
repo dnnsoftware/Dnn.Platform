@@ -98,7 +98,7 @@ namespace DotNetNuke.Data
         {
             Type modelType = typeof(TEntity);
 
-            //Get the primary key
+            // Get the primary key
             var primaryKeyName = GetPrimaryKeyProperty(modelType, String.Empty);
 
             return GetPropertyValue<TEntity, TProperty>(item, primaryKeyName);

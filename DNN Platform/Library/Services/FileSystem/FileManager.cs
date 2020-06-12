@@ -171,11 +171,11 @@ namespace DotNetNuke.Services.FileSystem
                 {
                     if (!image.PropertyIdList.Any(x => x == 274)) return;
 
-                    var orientation = image.GetPropertyItem(274); //Find rotation/flip meta property
+                    var orientation = image.GetPropertyItem(274); // Find rotation/flip meta property
                     if (orientation == null) return;
 
                     var flip = OrientationToFlipType(orientation.Value[0].ToString());
-                    if (flip == RotateFlipType.RotateNoneFlipNone) return; //No rotation or flip required
+                    if (flip == RotateFlipType.RotateNoneFlipNone) return; // No rotation or flip required
 
                     image.RotateFlip(flip);
                     var newOrientation = new byte[2];
@@ -367,7 +367,7 @@ namespace DotNetNuke.Services.FileSystem
 
             this.CheckFileAddingRestrictions(folder, fileName, checkPermissions, ignoreWhiteList);
 
-            //DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
+            // DNN-2949 If IgnoreWhiteList is set to true , then file should be copied and info logged into Event Viewer
             if (!this.IsAllowedExtension(fileName) && ignoreWhiteList)
             {
                 var log = new LogInfo { LogTypeKey = EventLogController.EventLogType.HOST_ALERT.ToString() };
@@ -443,7 +443,7 @@ namespace DotNetNuke.Services.FileSystem
                             }
                             else
                             {
-                                //File Events for updating will be not fired. Only events for adding nust be fired
+                                // File Events for updating will be not fired. Only events for adding nust be fired
                                 this.UpdateFile(file, true, false);
                             }
                             contentFileName = this.ProcessVersioning(folder, oldFile, file, createdByUserID);
@@ -451,7 +451,7 @@ namespace DotNetNuke.Services.FileSystem
                         else
                         {
                             contentFileName = this.UpdateWhileApproving(folder, createdByUserID, file, oldFile, fileContent);
-                            //This case will be to overwrite an existing file or initial file workflow
+                            // This case will be to overwrite an existing file or initial file workflow
                             this.ManageFileAdding(createdByUserID, folderWorkflow, fileExists, file);
                         }
                     }
@@ -471,8 +471,8 @@ namespace DotNetNuke.Services.FileSystem
 
                 try
                 {
-                    //add file into database first if folder provider is default providers
-                    //add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
+                    // add file into database first if folder provider is default providers
+                    // add file into database after file saved into folder provider for remote folder providers to avoid multiple thread issue.
                     if (isDatabaseProvider)
                     {
                         if (folderWorkflow == null || !fileExists)
@@ -533,7 +533,7 @@ namespace DotNetNuke.Services.FileSystem
 
                 DataCache.RemoveCache("GetFileById" + file.FileId);
                 this.ClearFolderCache(folder.PortalID);
-                var addedFile = this.GetFile(file.FileId, true); //The file could be pending to be approved, but it should be returned
+                var addedFile = this.GetFile(file.FileId, true); // The file could be pending to be approved, but it should be returned
 
                 this.NotifyFileAddingEvents(folder, createdByUserID, fileExists, folderWorkflow, addedFile);
 
@@ -644,7 +644,7 @@ namespace DotNetNuke.Services.FileSystem
                                                                   "The portal has no space available to store the specified file. The file has not been added."));
             }
 
-            //Publish Period
+            // Publish Period
             if (oldFile != null && FileLockingController.Instance.IsFileOutOfPublishPeriod(oldFile, folder.PortalID, createdByUserId))
             {
                 throw new FileLockedException(
@@ -668,14 +668,14 @@ namespace DotNetNuke.Services.FileSystem
             }
             else
             {
-                //File Events for updating will not be fired. Only events for adding nust be fired
+                // File Events for updating will not be fired. Only events for adding nust be fired
                 this.UpdateFile(file, true, false);
             }
             if (folderWorkflow != null && this.StartWorkflow(createdByUserID, folderWorkflow, fileExists, file.ContentItemID))
             {
-                if (!fileExists) //if file exists it could have been published. So We don't have to update the field
+                if (!fileExists) // if file exists it could have been published. So We don't have to update the field
                 {
-                    //Maybe here we can set HasBeenPublished as 0
+                    // Maybe here we can set HasBeenPublished as 0
                     DataProvider.Instance().SetFileHasBeenPublished(file.FileId, false);
                 }
             }
@@ -743,7 +743,7 @@ namespace DotNetNuke.Services.FileSystem
                 try
                 {
 
-                    //check for existing file
+                    // check for existing file
                     var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                     if (existingFile != null)
                     {
@@ -794,7 +794,7 @@ namespace DotNetNuke.Services.FileSystem
 
             using (var fileContent = this.GetFileContent(file))
             {
-                //check for existing file
+                // check for existing file
                 var existingFile = this.GetFile(destinationFolder, file.FileName, true);
                 if (existingFile != null)
                 {
@@ -1121,7 +1121,7 @@ namespace DotNetNuke.Services.FileSystem
             Requires.NotNull("file", file);
             Requires.NotNull("destinationFolder", destinationFolder);
 
-            //check whether the file is already in the dest folder.
+            // check whether the file is already in the dest folder.
             if (file.FolderId == destinationFolder.FolderID)
             {
                 return file;
@@ -1133,7 +1133,7 @@ namespace DotNetNuke.Services.FileSystem
                 throw new FileLockedException(Localization.Localization.GetExceptionMessage(lockReason, "File locked. The file cannot be updated. Reason: " + lockReason));
             }
 
-            //check for existing file
+            // check for existing file
             var existingFile = this.GetFile(destinationFolder, file.FileName, true);
             if (existingFile != null)
             {
@@ -1148,12 +1148,12 @@ namespace DotNetNuke.Services.FileSystem
 
             if (destinationFolderMapping.FolderMappingID == sourceFolderMapping.FolderMappingID && destinationFolderProvider.SupportsMoveFile)
             {
-                //Implement Move
+                // Implement Move
                 destinationFolderProvider.MoveFile(file, destinationFolder);
             }
             else
             {
-                //Implement Copy/Delete
+                // Implement Copy/Delete
                 using (var fileContent = this.GetFileContent(file))
                 {
                     if (destinationFolderMapping.MappingName == "Database")
@@ -1564,20 +1564,20 @@ namespace DotNetNuke.Services.FileSystem
 
             var isDatabaseMapping = FolderMappingController.Instance.GetFolderMapping(folder.PortalID, folder.FolderMappingID).MappingName == "Database";
 
-            //If the file does not exist, then the field would not has value. 
-            //Currently, first upload has not version file
+            // If the file does not exist, then the field would not has value. 
+            // Currently, first upload has not version file
             if (oldFile == null || !oldFile.HasBeenPublished)
             {
                 return file.FileName;
             }
-            if (workflowCompleted) //We assume User can add content to folder
+            if (workflowCompleted) // We assume User can add content to folder
             {
                 return isDatabaseMapping ? FileVersionController.Instance.AddFileVersion(file, createdByUserID, false, false, content) : FileVersionController.Instance.AddFileVersion(file, createdByUserID, false);
             }
 
             if (this.CanUpdateWhenApproving(folder, contentController.GetContentItem(file.ContentItemID), createdByUserID))
             {
-                //Update the Unpublished version
+                // Update the Unpublished version
                 var versions = FileVersionController.Instance.GetFileVersions(file).ToArray();
                 if (versions.Any())
                 {
@@ -1805,9 +1805,9 @@ namespace DotNetNuke.Services.FileSystem
         {
             var extension = Path.GetExtension(fileName);
 
-            //regex matches a dot followed by 1 or more chars followed by a semi-colon
-            //regex is meant to block files like "foo.asp;.png" which can take advantage
-            //of a vulnerability in IIS6 which treasts such files as .asp, not .png
+            // regex matches a dot followed by 1 or more chars followed by a semi-colon
+            // regex is meant to block files like "foo.asp;.png" which can take advantage
+            // of a vulnerability in IIS6 which treasts such files as .asp, not .png
             return !string.IsNullOrEmpty(extension)
                    && this.WhiteList.IsAllowedExtension(extension)
                    && !Globals.FileExtensionRegex.IsMatch(fileName);
@@ -1816,7 +1816,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <summary>This member is reserved for internal use and is not intended to be used directly from your code.</summary>
         internal virtual bool IsValidFilename(string fileName)
         {
-            //regex ensures the file is a valid filename and doesn't include illegal characters
+            // regex ensures the file is a valid filename and doesn't include illegal characters
             return Globals.FileValidNameRegex.IsMatch(fileName);
         }
 
@@ -1916,7 +1916,7 @@ namespace DotNetNuke.Services.FileSystem
         /// <returns>The file info</returns>
         internal virtual IFileInfo UpdateFile(IFileInfo file, bool updateLazyload)
         {
-            //By default File Events will be fired
+            // By default File Events will be fired
             return this.UpdateFile(file, updateLazyload, true);
         }
 
@@ -1971,10 +1971,10 @@ namespace DotNetNuke.Services.FileSystem
         private static bool ValidMetadata(IFileInfo file, out string exceptionMessage)
         {
             exceptionMessage = "";
-            //TODO check dynamically all required fields from MetadataInfo
+            // TODO check dynamically all required fields from MetadataInfo
 
-            //TODO check dynamically all max lengths from MetadataInfo
-            //TODO Use the MaxLength from MetadataInfo
+            // TODO check dynamically all max lengths from MetadataInfo
+            // TODO Use the MaxLength from MetadataInfo
             if (!string.IsNullOrEmpty(file.Title) && file.Title.Length > 256)
             {
                 exceptionMessage = Localization.Localization.GetExceptionMessage("MaxLengthExceeded", "The maximum length of the field {0} has been exceeded", DefaultMetadataNames.Title);

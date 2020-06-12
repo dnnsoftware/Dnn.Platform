@@ -67,7 +67,7 @@ namespace DotNetNuke.UI.Utilities
         [Obsolete("This method has been deprecated and its code replaced in the 7.1.0 release. Scheduled removal in v10.0.0.")]
         public static void AddBodyOnloadEventHandler(Page objPage, string strJSFunction)
         {
-            //legacy implementation replaced
+            // legacy implementation replaced
             AddBodyOnLoad(objPage, strJSFunction, strJSFunction);
         }
 
@@ -240,8 +240,8 @@ namespace DotNetNuke.UI.Utilities
                         }
                         break;
                     case MinMaxPersistanceType.Personalization:
-                        //Regardless if we determine whether or not the browser supports client-side personalization
-                        //we need to store these keys to properly display or hide the content (They are needed in MinMaxContentVisible)
+                        // Regardless if we determine whether or not the browser supports client-side personalization
+                        // we need to store these keys to properly display or hide the content (They are needed in MinMaxContentVisible)
                         AddAttribute(objButton, "userctr", strPersonalizationNamingCtr);
                         AddAttribute(objButton, "userkey", strPersonalizationKey);
                         if (EnableClientPersonalization(strPersonalizationNamingCtr, strPersonalizationKey, objButton.Page))
@@ -459,20 +459,20 @@ namespace DotNetNuke.UI.Utilities
             }
         }
 
-        //enables callbacks for request, and registers personalization key to be accessible from client
-        //returns true when browser is capable of callbacks
+        // enables callbacks for request, and registers personalization key to be accessible from client
+        // returns true when browser is capable of callbacks
         public static bool EnableClientPersonalization(string strNamingContainer, string strKey, Page objPage)
         {
             if (ClientAPI.BrowserSupportsFunctionality(ClientAPI.ClientFunctionality.XMLHTTP))
             {
-				//Instead of sending the callback js function down to the client, we are hardcoding
-                //it on the client.  DNN owns the interface, so there is no worry about an outside
-                //entity changing it on us.  We are simply calling this here to register all the appropriate
-                //js libraries
+				// Instead of sending the callback js function down to the client, we are hardcoding
+                // it on the client.  DNN owns the interface, so there is no worry about an outside
+                // entity changing it on us.  We are simply calling this here to register all the appropriate
+                // js libraries
                 ClientAPI.GetCallbackEventReference(objPage, "", "", "", "");
 
-                //in order to limit the keys that can be accessed and written we are storing the enabled keys
-                //in this shared hash table
+                // in order to limit the keys that can be accessed and written we are storing the enabled keys
+                // in this shared hash table
                 lock (m_objEnabledClientPersonalizationKeys.SyncRoot)
                 {
                     if (IsPersonalizationKeyRegistered(strNamingContainer + ClientAPI.CUSTOM_COLUMN_DELIMITER + strKey) == false)

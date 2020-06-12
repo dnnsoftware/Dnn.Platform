@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Profile
             ProfilePropertyDefinition oldTimeZone = properties["TimeZone"];
             if (newTimeZone != null && oldTimeZone != null)
             {
-                //Old timezone is present but new is not...we will set that up.
+                // Old timezone is present but new is not...we will set that up.
                 if (!string.IsNullOrEmpty(oldTimeZone.PropertyValue) && string.IsNullOrEmpty(newTimeZone.PropertyValue))
                 {
                     int oldOffset;
@@ -60,7 +60,7 @@ namespace DotNetNuke.Security.Profile
                     newTimeZone.PropertyValue = timeZoneInfo.Id;
                     this.UpdateUserProfile(user);
                 }
-                //It's also possible that the new value is set but not the old value. We need to make them backwards compatible
+                // It's also possible that the new value is set but not the old value. We need to make them backwards compatible
                 else if (!string.IsNullOrEmpty(newTimeZone.PropertyValue) && string.IsNullOrEmpty(oldTimeZone.PropertyValue))
                 {
                     TimeZoneInfo timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(newTimeZone.PropertyValue);
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Profile
             int portalId = user.IsSuperUser ? Globals.glbSuperUserAppName : user.PortalID;
             var properties = ProfileController.GetPropertyDefinitionsByPortal(portalId, true, false);
 
-            //Load the Profile properties
+            // Load the Profile properties
             if (user.UserID > Null.NullInteger)
             {
                 var key = this.GetProfileCacheKey(user);
@@ -120,7 +120,7 @@ namespace DotNetNuke.Security.Profile
                     {
                         while (dr.Read())
                         {
-                            //Ensure the data reader returned is valid
+                            // Ensure the data reader returned is valid
                             if (!string.Equals(dr.GetName(0), "ProfileID", StringComparison.InvariantCultureIgnoreCase))
                             {
                                 break;
@@ -151,10 +151,10 @@ namespace DotNetNuke.Security.Profile
                 }
             }
                       
-            //Clear the profile
+            // Clear the profile
             user.Profile.ProfileProperties.Clear();
             
-			//Add the properties to the profile
+			// Add the properties to the profile
 			foreach (ProfilePropertyDefinition property in properties)
             {
                 profProperty = property;
@@ -165,10 +165,10 @@ namespace DotNetNuke.Security.Profile
                 user.Profile.ProfileProperties.Add(profProperty);
             }
 
-            //Clear IsDirty Flag
+            // Clear IsDirty Flag
             user.Profile.ClearIsDirty();
 
-            //Ensure old and new TimeZone properties are in synch
+            // Ensure old and new TimeZone properties are in synch
             this.UpdateTimeZoneInfo(user, properties);
         }
 
@@ -187,18 +187,18 @@ namespace DotNetNuke.Security.Profile
 
             ProfilePropertyDefinitionCollection properties = user.Profile.ProfileProperties;
 
-            //Ensure old and new TimeZone properties are in synch
+            // Ensure old and new TimeZone properties are in synch
             var newTimeZone = properties["PreferredTimeZone"];
             var oldTimeZone = properties["TimeZone"];
             if (oldTimeZone != null && newTimeZone != null)
-            {   //preference given to new property, if new is changed then old should be updated as well.
+            {   // preference given to new property, if new is changed then old should be updated as well.
                 if (newTimeZone.IsDirty && !string.IsNullOrEmpty(newTimeZone.PropertyValue))
                 {
                     var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(newTimeZone.PropertyValue);
                     if (timeZoneInfo != null)
                         oldTimeZone.PropertyValue = timeZoneInfo.BaseUtcOffset.TotalMinutes.ToString(CultureInfo.InvariantCulture);
                 }
-                //however if old is changed, we need to update new as well
+                // however if old is changed, we need to update new as well
                 else if (oldTimeZone.IsDirty)
                 {
                     int oldOffset;

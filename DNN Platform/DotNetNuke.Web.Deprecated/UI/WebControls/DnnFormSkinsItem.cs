@@ -19,10 +19,10 @@ namespace DotNetNuke.Web.UI.WebControls
 {
     public class DnnFormSkinsItem : DnnFormItemBase
     {
-        //private DropDownList _containerCombo;
+        // private DropDownList _containerCombo;
         private DnnComboBox _containerCombo;
         private object _containerValue;
-        //private DropDownList _skinCombo;
+        // private DropDownList _skinCombo;
         private DnnComboBox _skinCombo;
         private object _skinValue;
 
@@ -72,7 +72,7 @@ namespace DotNetNuke.Web.UI.WebControls
             skinLabel.CssClass += "dnnFormSkinLabel";
             panel.Controls.Add(skinLabel);
 
-            //_skinCombo = new DropDownList { ID = ID + "_SkinComboBox" };
+            // _skinCombo = new DropDownList { ID = ID + "_SkinComboBox" };
             this._skinCombo = new DnnComboBox { ID = this.ID + "_SkinComboBox" };
             this._skinCombo.CssClass += "dnnFormSkinInput"; 
             this._skinCombo.SelectedIndexChanged += this.SkinIndexChanged;
@@ -84,7 +84,7 @@ namespace DotNetNuke.Web.UI.WebControls
             containerLabel.CssClass += "dnnFormSkinLabel";
             panel.Controls.Add(containerLabel);
 
-            //_containerCombo = new DropDownList { ID = ID + "_ContainerComboBox" };
+            // _containerCombo = new DropDownList { ID = ID + "_ContainerComboBox" };
             this._containerCombo = new DnnComboBox { ID = this.ID + "_ContainerComboBox" };
             this._containerCombo.CssClass += "dnnFormSkinInput";
             this._containerCombo.SelectedIndexChanged += this.ContainerIndexChanged;

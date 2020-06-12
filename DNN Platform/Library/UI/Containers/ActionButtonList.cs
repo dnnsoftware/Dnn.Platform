@@ -190,10 +190,10 @@ namespace DotNetNuke.UI.Containers
             {
                 if (action != null && this.ActionManager.IsVisible(action))
                 {
-					//Create a new ActionCommandButton
+					// Create a new ActionCommandButton
                     var actionButton = new ActionCommandButton();
 
-                    //Set all the properties
+                    // Set all the properties
                     actionButton.ModuleAction = action;
                     actionButton.ModuleControl = this.ModuleControl;
                     actionButton.CommandName = this.CommandName;
@@ -202,7 +202,7 @@ namespace DotNetNuke.UI.Containers
                     actionButton.DisplayIcon = this.DisplayIcon;
                     actionButton.ImageUrl = this.ImageURL;
 
-                    //Add a handler for the Action Event
+                    // Add a handler for the Action Event
                     actionButton.Action += this.ActionButtonClick;
 
                     this.Controls.Add(actionButton);

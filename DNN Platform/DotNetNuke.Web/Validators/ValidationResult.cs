@@ -67,7 +67,7 @@ namespace DotNetNuke.Web.Validators
         {
             Requires.NotNull("other", other);
 
-            //Just concatenate the errors collection
+            // Just concatenate the errors collection
             return new ValidationResult(this._Errors.Concat(other.Errors));
         }
 

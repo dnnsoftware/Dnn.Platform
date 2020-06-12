@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.WebControls
 
             foreach (FieldEditorControl editor in this.Fields)
             {
-                //Check whether Field is readonly
+                // Check whether Field is readonly
                 string fieldName = editor.Editor.Name;
                 ProfilePropertyDefinitionCollection definitions = editor.DataSource as ProfilePropertyDefinitionCollection;
                 ProfilePropertyDefinition definition = definitions[fieldName];
@@ -71,7 +71,7 @@ namespace DotNetNuke.UI.WebControls
                     }
                 }
 
-                //We need to wire up the RegionControl to the CountryControl
+                // We need to wire up the RegionControl to the CountryControl
                 if (editor.Editor is DNNRegionEditControl)
                 {
                     string country = null;
@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.WebControls
                         }
                     }
 					
-                    //Create a ListAttribute for the Region
+                    // Create a ListAttribute for the Region
 					string countryKey = "Unknown";
 					int entryId;
 					if (int.TryParse(country, out entryId))

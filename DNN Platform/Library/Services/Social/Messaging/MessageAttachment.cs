@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Social.Messaging
             this.MessageID = Convert.ToInt32(dr["MessageID"]);
             this.FileID = Convert.ToInt32(dr["FileID"]);
             
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
             
         }

@@ -120,7 +120,7 @@ namespace DotNetNuke.Entities.Modules
             this.ControlType = (SecurityAccessLevel)Enum.Parse(typeof(SecurityAccessLevel), Null.SetNullString(dr["ControlType"]));
             this.ViewOrder = Null.SetNullInteger(dr["ViewOrder"]);
             this.SupportsPopUps = Null.SetNullBoolean(dr["SupportsPopUps"]);
-			//Call the base classes fill method to populate base class proeprties
+			// Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
 
@@ -217,10 +217,10 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("moduleControl");
 
-            //write out properties
+            // write out properties
             this.WriteXmlInternal(writer);
             writer.WriteElementString("controlTitle", this.ControlTitle);
             writer.WriteElementString("controlType", this.ControlType.ToString());
@@ -231,7 +231,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 writer.WriteElementString("viewOrder", this.ViewOrder.ToString());
             }
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 

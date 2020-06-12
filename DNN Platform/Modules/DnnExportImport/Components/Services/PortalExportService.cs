@@ -45,11 +45,11 @@ namespace Dnn.ExportImport.Components.Services
                 {
                     portalSettings = CBO.FillCollection<ExportPortalSetting>(DataProvider.Instance().GetPortalSettings(exportJob.PortalId, toDate, fromDate));
 
-                    //Migrate only allowed portal settings.
+                    // Migrate only allowed portal settings.
                     portalSettings =
                         portalSettings.Where(x => settingToMigrate.Any(setting => setting.Trim().Equals(x.SettingName, StringComparison.InvariantCultureIgnoreCase))).ToList();
 
-                    //Update the total items count in the check points. This should be updated only once.
+                    // Update the total items count in the check points. This should be updated only once.
                     this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? portalSettings.Count : this.CheckPoint.TotalItems;
                     if (this.CheckPoint.TotalItems == portalSettings.Count)
                     {
@@ -89,7 +89,7 @@ namespace Dnn.ExportImport.Components.Services
 
         public override void ImportData(ExportImportJob importJob, ImportDto importDto)
         {
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? this.GetImportTotal() : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this)) return;
             if (this.CheckPoint.Stage > 1) return;

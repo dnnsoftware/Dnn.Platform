@@ -38,8 +38,8 @@ namespace DotNetNuke.Common.Controls
         {
             base.OnInit(e);
 
-            //CODEGEN: This method call is required by the Web Form Designer
-			//Do not modify it using the code editor.
+            // CODEGEN: This method call is required by the Web Form Designer
+			// Do not modify it using the code editor.
 			this.InitializeComponent();
         }
 
@@ -61,7 +61,7 @@ namespace DotNetNuke.Common.Controls
                     this.lblPrivacy.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_PORTAL_PRIVACY");
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

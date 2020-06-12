@@ -64,7 +64,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         protected override void FillInternal(IDataReader dr)
         {
-			//Call EntityBaseInfo's implementation
+			// Call EntityBaseInfo's implementation
             base.FillInternal(dr);
             this.ControlKey = Null.SetNullString(dr["ControlKey"]);
             this.ControlSrc = Null.SetNullString(dr["ControlSrc"]);
@@ -93,7 +93,7 @@ namespace DotNetNuke.Entities.Modules
 
         protected void WriteXmlInternal(XmlWriter writer)
         {
-			//write out properties
+			// write out properties
             writer.WriteElementString("controlKey", this.ControlKey);
             writer.WriteElementString("controlSrc", this.ControlSrc);
             writer.WriteElementString("supportsPartialRendering", this.SupportsPartialRendering.ToString());

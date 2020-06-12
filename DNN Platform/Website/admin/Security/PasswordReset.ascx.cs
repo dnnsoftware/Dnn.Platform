@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
-            //1. Check New Password and Confirm are the same
+            // 1. Check New Password and Confirm are the same
             if (this.txtPassword.Text != this.txtConfirmPassword.Text)
             {
                 this.resetMessages.Visible = true;
@@ -209,7 +209,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 return;
             }
 
-            //Check New Password is not same as username or banned
+            // Check New Password is not same as username or banned
             var settings = new MembershipPasswordSettings(this.User.PortalID);
 
             if (settings.EnableBannedList)
@@ -230,7 +230,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 var testUser = UserController.GetUserByEmail(this.PortalId, username); // one additonal call to db to see if an account with that email actually exists
                 if (testUser != null)
                 {
-                    username = testUser.Username; //we need the username of the account in order to change the password in the next step
+                    username = testUser.Username; // we need the username of the account in order to change the password in the next step
                 }
             }
             string errorMessage;
@@ -249,7 +249,7 @@ namespace DotNetNuke.Modules.Admin.Security
             }
             else
             {
-                //check user has a valid profile
+                // check user has a valid profile
                 var user = UserController.GetUserByName(this.PortalSettings.PortalId, username);
                 var validStatus = UserController.ValidateUser(user, this.PortalSettings.PortalId, false);
                 if (validStatus == UserValidStatus.UPDATEPROFILE)
@@ -260,7 +260,7 @@ namespace DotNetNuke.Modules.Admin.Security
                 }
                 else
                 {
-                    //Log user in to site
+                    // Log user in to site
                     this.LogSuccess();
                     var loginStatus = UserLoginStatus.LOGIN_FAILURE;
                     UserController.UserLogin(this.PortalSettings.PortalId, username, this.txtPassword.Text, "", "", "", ref loginStatus, false);
@@ -279,36 +279,36 @@ namespace DotNetNuke.Modules.Admin.Security
             {
                 if (this.Request.QueryString["returnurl"] != null)
                 {
-                    //return to the url passed to signin
+                    // return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
 
                 if (this.Request.Cookies["returnurl"] != null)
                 {
-                    //return to the url passed to signin
+                    // return to the url passed to signin
                     redirectURL = HttpUtility.UrlDecode(this.Request.Cookies["returnurl"].Value);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectURL = UrlUtils.ValidReturnUrl(redirectURL);
                 }
                 if (String.IsNullOrEmpty(redirectURL))
                 {
                     if (this.PortalSettings.RegisterTabId != -1 && this.PortalSettings.HomeTabId != -1)
                     {
-                        //redirect to portal home page specified
+                        // redirect to portal home page specified
                         redirectURL = this._navigationManager.NavigateURL(this.PortalSettings.HomeTabId);
                     }
                     else
                     {
-                        //redirect to current page
+                        // redirect to current page
                         redirectURL = this._navigationManager.NavigateURL();
                     }
                 }
             }
-            else //redirect to after login page
+            else // redirect to after login page
             {
                 redirectURL = this._navigationManager.NavigateURL(Convert.ToInt32(setting));
             }
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.Admin.Security
 	        this.resetMessages.Visible = this.divPassword.Visible = false;
             this.lblHelp.Text = this.lblInfo.Text = string.Empty;
 
-            //redirect page after 5 seconds
+            // redirect page after 5 seconds
             var script = string.Format("setTimeout(function(){{location.href = '{0}';}}, {1});", redirectURL, RedirectTimeout);
             if (ScriptManager.GetCurrent(this.Page) != null)
             {

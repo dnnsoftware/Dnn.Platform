@@ -100,7 +100,7 @@ namespace DotNetNuke.Modules.Groups
                 if (roleInfo != null)
                 {
 
-                    if (this.txtGroupName.Visible) //if this is visible assume that we're editing the groupname
+                    if (this.txtGroupName.Visible) // if this is visible assume that we're editing the groupname
                     {
                         if (this.txtGroupName.Text != roleInfo.RoleName)
                         {
@@ -148,7 +148,7 @@ namespace DotNetNuke.Modules.Groups
                         }
                     }
 
-                    //Clear Roles Cache
+                    // Clear Roles Cache
                     DataCache.RemoveCache("GetRoles");
 
                 }

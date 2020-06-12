@@ -31,7 +31,7 @@ namespace DotNetNuke.Security.Permissions
     {
         #region Private Members
 
-        //Folder Permission Keys
+        // Folder Permission Keys
         private const string AdminFolderPermissionKey = "WRITE";
         private const string AddFolderPermissionKey = "WRITE";
         private const string BrowseFolderPermissionKey = "BROWSE";
@@ -40,7 +40,7 @@ namespace DotNetNuke.Security.Permissions
         private const string ManageFolderPermissionKey = "WRITE";
         private const string ViewFolderPermissionKey = "READ";
 
-        //Module Permission Keys
+        // Module Permission Keys
         private const string AdminModulePermissionKey = "EDIT";
         private const string ContentModulePermissionKey = "EDIT";
         private const string DeleteModulePermissionKey = "EDIT";
@@ -49,7 +49,7 @@ namespace DotNetNuke.Security.Permissions
         private const string ManageModulePermissionKey = "EDIT";
         private const string ViewModulePermissionKey = "VIEW";
 
-        //Page Permission Keys
+        // Page Permission Keys
         private const string AddPagePermissionKey = "EDIT";
         private const string AdminPagePermissionKey = "EDIT";
         private const string ContentPagePermissionKey = "EDIT";
@@ -66,7 +66,7 @@ namespace DotNetNuke.Security.Permissions
 
         #region Shared/Static Methods
 
-        //return the provider
+        // return the provider
         public virtual string LocalResourceFile
         {
             get
@@ -214,22 +214,22 @@ namespace DotNetNuke.Security.Permissions
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     var modulePermissionInfo = CBO.FillObject<ModulePermissionInfo>(dr, false);
 
-                    //add Module Permission to dictionary
+                    // add Module Permission to dictionary
                     if (dic.ContainsKey(modulePermissionInfo.ModuleID))
                     {
                         dic[modulePermissionInfo.ModuleID].Add(modulePermissionInfo);
                     }
                     else
                     {
-                        //Create new ModulePermission Collection for ModuleId
+                        // Create new ModulePermission Collection for ModuleId
                         var collection = new ModulePermissionCollection {modulePermissionInfo};
 
-                        //Add Permission to Collection
+                        // Add Permission to Collection
 
-                        //Add Collection to Dictionary
+                        // Add Collection to Dictionary
                         dic.Add(modulePermissionInfo.ModuleID, collection);
                     }
                 }
@@ -240,7 +240,7 @@ namespace DotNetNuke.Security.Permissions
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return dic;
@@ -280,21 +280,21 @@ namespace DotNetNuke.Security.Permissions
                 {
                     while (dr.Read())
                     {
-                        //fill business object
+                        // fill business object
                         var tabPermissionInfo = CBO.FillObject<TabPermissionInfo>(dr, false);
 
-                        //add Tab Permission to dictionary
+                        // add Tab Permission to dictionary
                         if (dic.ContainsKey(tabPermissionInfo.TabID))
                         {
-                            //Add TabPermission to TabPermission Collection already in dictionary for TabId
+                            // Add TabPermission to TabPermission Collection already in dictionary for TabId
                             dic[tabPermissionInfo.TabID].Add(tabPermissionInfo);
                         }
                         else
                         {
-                            //Create new TabPermission Collection for TabId
+                            // Create new TabPermission Collection for TabId
                             var collection = new TabPermissionCollection { tabPermissionInfo };
 
-                            //Add Collection to Dictionary
+                            // Add Collection to Dictionary
                             dic.Add(tabPermissionInfo.TabID, collection);
                         }
                     }
@@ -305,7 +305,7 @@ namespace DotNetNuke.Security.Permissions
                 }
                 finally
                 {
-                    //close datareader
+                    // close datareader
                     CBO.CloseDataReader(dr, true);
                 }
             }
@@ -318,8 +318,8 @@ namespace DotNetNuke.Security.Permissions
             return (PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(folder.FolderPermissions.ToString(AdminFolderPermissionKey)))
                    && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(permissionKey));
-            //Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
-            //&& !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
+            // Deny on Edit permission on folder shouldn't take away any other explicitly Allowed
+            // && !PortalSecurity.IsDenied(folder.FolderPermissions.ToString(AdminFolderPermissionKey));
         }
 
         private bool HasPagePermission(TabInfo tab, string permissionKey)
@@ -327,8 +327,8 @@ namespace DotNetNuke.Security.Permissions
             return (PortalSecurity.IsInRoles(tab.TabPermissions.ToString(permissionKey))
                     || PortalSecurity.IsInRoles(tab.TabPermissions.ToString(AdminPagePermissionKey)))
                    && !PortalSecurity.IsDenied(tab.TabPermissions.ToString(permissionKey));
-            //Deny on Edit permission on page shouldn't take away any other explicitly Allowed
-            //&&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
+            // Deny on Edit permission on page shouldn't take away any other explicitly Allowed
+            // &&!PortalSecurity.IsDenied(tab.TabPermissions.ToString(AdminPagePermissionKey));
         }
 
         private bool IsDeniedModulePermission(ModulePermissionCollection modulePermissions, string permissionKey)
@@ -412,21 +412,21 @@ namespace DotNetNuke.Security.Permissions
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     var desktopModulePermissionInfo = CBO.FillObject<DesktopModulePermissionInfo>(dr, false);
 
-                    //add DesktopModule Permission to dictionary
+                    // add DesktopModule Permission to dictionary
                     if (dic.ContainsKey(desktopModulePermissionInfo.PortalDesktopModuleID))
                     {
-                        //Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
+                        // Add DesktopModulePermission to DesktopModulePermission Collection already in dictionary for TabId
                         dic[desktopModulePermissionInfo.PortalDesktopModuleID].Add(desktopModulePermissionInfo);
                     }
                     else
                     {
-                        //Create new DesktopModulePermission Collection for DesktopModulePermissionID
+                        // Create new DesktopModulePermission Collection for DesktopModulePermissionID
                         var collection = new DesktopModulePermissionCollection { desktopModulePermissionInfo };
 
-                        //Add Collection to Dictionary
+                        // Add Collection to Dictionary
                         dic.Add(desktopModulePermissionInfo.PortalDesktopModuleID, collection);
                     }
                 }
@@ -437,7 +437,7 @@ namespace DotNetNuke.Security.Permissions
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return dic;
@@ -651,7 +651,7 @@ namespace DotNetNuke.Security.Permissions
         {
             if ((folder.FolderPermissions != null))
             {
-                //Ensure that if role/user has been given a permission that is not Read/Browse then they also need Read/Browse
+                // Ensure that if role/user has been given a permission that is not Read/Browse then they also need Read/Browse
                 var permController = new PermissionController();
                 ArrayList permArray = permController.GetPermissionByCodeAndKey("SYSTEM_FOLDER", "READ");
                 PermissionInfo readPerm = null;
@@ -672,7 +672,7 @@ namespace DotNetNuke.Security.Permissions
                 {
                     if (folderPermission.PermissionKey != "BROWSE" && folderPermission.PermissionKey != "READ" && folderPermission.AllowAccess)
                     {
-                        //Try to add Read permission
+                        // Try to add Read permission
                         var newFolderPerm = new FolderPermissionInfo(readPerm)
                                                 {
                                                     FolderID = folderPermission.FolderID, 
@@ -683,7 +683,7 @@ namespace DotNetNuke.Security.Permissions
 
                         additionalPermissions.Add(newFolderPerm);
 
-                        //Try to add Browse permission
+                        // Try to add Browse permission
                         newFolderPerm = new FolderPermissionInfo(browsePerm)
                                             {
                                                 FolderID = folderPermission.FolderID, 
@@ -820,15 +820,15 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public virtual ModulePermissionCollection GetModulePermissions(int moduleID, int tabID)
         {
-            //Get the Tab ModulePermission Dictionary
+            // Get the Tab ModulePermission Dictionary
             Dictionary<int, ModulePermissionCollection> dictionary = this.GetModulePermissions(tabID);
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             ModulePermissionCollection modulePermissions;
             bool found = dictionary.TryGetValue(moduleID, out modulePermissions);
             if (!found)
             {
-                //Return empty collection
+                // Return empty collection
                 modulePermissions = new ModulePermissionCollection();
             }
             return modulePermissions;
@@ -883,7 +883,7 @@ namespace DotNetNuke.Security.Permissions
 
                             if (TabPermissionController.CanAddContentToPage(tab))
                             {
-                                //Need to check for Deny Edit at the Module Level
+                                // Need to check for Deny Edit at the Module Level
                                 if (permissionKey == "CONTENT")
                                 {
                                     isAuthorized = !this.IsDeniedModulePermission(moduleConfiguration, permissionKey);
@@ -1125,15 +1125,15 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public virtual TabPermissionCollection GetTabPermissions(int tabId, int portalId)
         {
-            //Get the Portal TabPermission Dictionary
+            // Get the Portal TabPermission Dictionary
             Dictionary<int, TabPermissionCollection> dicTabPermissions = this.GetTabPermissions(portalId);
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             TabPermissionCollection tabPermissions;
             bool bFound = dicTabPermissions.TryGetValue(tabId, out tabPermissions);
             if (!bFound)
             {
-                //Return empty collection
+                // Return empty collection
                 tabPermissions = new TabPermissionCollection();
             }
             return tabPermissions;
@@ -1230,15 +1230,15 @@ namespace DotNetNuke.Security.Permissions
         /// -----------------------------------------------------------------------------
         public virtual DesktopModulePermissionCollection GetDesktopModulePermissions(int portalDesktopModuleId)
         {
-            //Get the Tab DesktopModulePermission Dictionary
+            // Get the Tab DesktopModulePermission Dictionary
             Dictionary<int, DesktopModulePermissionCollection> dicDesktopModulePermissions = GetDesktopModulePermissions();
 
-            //Get the Collection from the Dictionary
+            // Get the Collection from the Dictionary
             DesktopModulePermissionCollection desktopModulePermissions;
             bool bFound = dicDesktopModulePermissions.TryGetValue(portalDesktopModuleId, out desktopModulePermissions);
             if (!bFound)
             {
-                //Return empty collection
+                // Return empty collection
                 desktopModulePermissions = new DesktopModulePermissionCollection();
             }
             return desktopModulePermissions;

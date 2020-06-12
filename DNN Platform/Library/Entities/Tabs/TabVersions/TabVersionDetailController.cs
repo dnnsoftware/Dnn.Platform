@@ -23,7 +23,7 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
         
         public IEnumerable<TabVersionDetail> GetTabVersionDetails(int tabVersionId, bool ignoreCache = false)
         {
-            //if we are not using the cache
+            // if we are not using the cache
             if (ignoreCache || Host.Host.PerformanceSetting == Globals.PerformanceSettings.NoCaching)
             {
                 return CBO.FillCollection<TabVersionDetail>(Provider.GetTabVersionDetails(tabVersionId));

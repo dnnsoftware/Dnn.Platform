@@ -108,7 +108,7 @@ namespace DotNetNuke.Services.Authentication
             this.LoginControlSrc = Null.SetNullString(dr["LoginControlSrc"]);
             this.LogoffControlSrc = Null.SetNullString(dr["LogoffControlSrc"]);
 
-            //Fill base class fields
+            // Fill base class fields
             this.FillInternal(dr);
         }
 

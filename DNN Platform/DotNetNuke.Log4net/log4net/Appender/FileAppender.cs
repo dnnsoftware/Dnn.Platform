@@ -208,7 +208,7 @@ namespace log4net.Appender
 			}
 			public override void EndWrite(IAsyncResult asyncResult)
 			{
-				//No-op, it has already been handled
+				// No-op, it has already been handled
 			}
 #endif
 
@@ -588,7 +588,7 @@ namespace log4net.Appender
 			/// </remarks>
 			public override void ReleaseLock()
 			{
-				//NOP
+				// NOP
 			}
 
 			/// <summary>
@@ -596,7 +596,7 @@ namespace log4net.Appender
 			/// </summary>
 			public override void ActivateOptions()
 			{
-				//NOP
+				// NOP
 			}
 
 			/// <summary>
@@ -604,7 +604,7 @@ namespace log4net.Appender
 			/// </summary>
 			public override void OnClose()
 			{
-				//NOP
+				// NOP
 			}
 		}
 
@@ -706,7 +706,7 @@ namespace log4net.Appender
 			/// </summary>
 			public override void ActivateOptions()
 			{
-				//NOP
+				// NOP
 			}
 
 			/// <summary>
@@ -714,7 +714,7 @@ namespace log4net.Appender
 			/// </summary>
 			public override void OnClose()
 			{
-				//NOP
+				// NOP
 			}
 		}
 
@@ -1225,7 +1225,7 @@ namespace log4net.Appender
 		{
 			if (this.m_stream != null)
 			{
-				//WriteFooter can be called even before a file is opened
+				// WriteFooter can be called even before a file is opened
 				this.m_stream.AcquireLock();
 				try
 				{

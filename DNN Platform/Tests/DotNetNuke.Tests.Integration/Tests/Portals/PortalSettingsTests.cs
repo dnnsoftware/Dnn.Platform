@@ -32,11 +32,11 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         [Test]
         public void Saving_Non_Secure_Value_Doesnt_Encrypt_It()
         {
-            //Act
+            // Act
             PortalController.UpdatePortalSetting(this.PortalId, this._settingName, this._settingValue, true, null, false);
             var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, "");
 
-            //Assert
+            // Assert
             Assert.AreNotEqual(result, "");
             Assert.AreEqual(this._settingValue, result);
         }
@@ -44,13 +44,13 @@ namespace DotNetNuke.Tests.Integration.Tests.Portals
         [Test]
         public void Saving_Secure_Value_Encrypts_It()
         {
-            //Act
+            // Act
             PortalController.UpdatePortalSetting(this.PortalId, this._settingName, this._settingValue, true, null, true);
 
             var result = PortalController.GetPortalSetting(this._settingName, this.PortalId, "");
             var decrypted = DotNetNuke.Security.FIPSCompliant.DecryptAES(result, Config.GetDecryptionkey(), Host.GUID);
 
-            //Assert
+            // Assert
             Assert.AreNotEqual(result, "");
             Assert.AreNotEqual(this._settingValue, result);
             Assert.AreEqual(decrypted, this._settingValue);

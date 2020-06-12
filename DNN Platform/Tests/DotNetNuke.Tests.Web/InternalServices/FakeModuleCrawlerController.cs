@@ -42,7 +42,7 @@ namespace DotNetNuke.Tests.Web.InternalServices
         {
             // This logic tests that based on ID we give permission to test recursive
             // search in SearchControllerImpl.GetSecurityTrimmedResults() method.
-            //The logic here is all documents with AuthorUserId's 6-9, 16-19, 26-29, etc. have
+            // The logic here is all documents with AuthorUserId's 6-9, 16-19, 26-29, etc. have
             // permission, while the rest don't
             return (searchResult.AuthorUserId % 10) > 5;
         }

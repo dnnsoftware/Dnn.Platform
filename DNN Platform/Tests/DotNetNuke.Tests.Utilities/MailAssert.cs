@@ -19,12 +19,12 @@ namespace DotNetNuke.Tests.Utilities
         {
             string emailContent = File.ReadAllText(emailFileName);
 
-            //Separate the content from the EmailAddress information
+            // Separate the content from the EmailAddress information
             const string contentLineRegex = "(base64)(.*(\n)+)+";
             Match match = Regex.Match(@emailContent, contentLineRegex, RegexOptions.Singleline);
             Assert.IsTrue(match.Success, "Could not find content Line! Looking in file: " + emailFileName);
 
-            //Convert the EmailAddress content
+            // Convert the EmailAddress content
             emailContent = match.Groups[2].Value.Replace("\r\n", "");
 
             byte[] b = Convert.FromBase64String(emailContent);

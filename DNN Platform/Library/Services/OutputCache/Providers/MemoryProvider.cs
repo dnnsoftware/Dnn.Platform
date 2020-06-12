@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.OutputCache.Providers
         {
             get
             {
-                //create singleton of the cache object
+                // create singleton of the cache object
                 if (runtimeCache == null)
                 {
                     runtimeCache = HttpRuntime.Cache;

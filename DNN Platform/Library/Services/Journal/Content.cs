@@ -44,8 +44,8 @@ namespace DotNetNuke.Services.Journal {
             objContent.ContentItemId = Util.GetContentController().AddContentItem(objContent);
 
             // Add Terms
-            //var cntTerm = new Terms();
-            //cntTerm.ManageQuestionTerms(objPost, objContent);
+            // var cntTerm = new Terms();
+            // cntTerm.ManageQuestionTerms(objPost, objContent);
 
             return objContent;
         }
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Journal {
             var objContent = Util.GetContentController().GetContentItem(objJournalItem.ContentItemId);
 
             if (objContent == null) return;
-            //Only update content the contentitem if it was created by the journal
+            // Only update content the contentitem if it was created by the journal
             if ((objContent.ContentTypeId == GetContentTypeID("DNNCorp_JournalProfile") && objJournalItem.ProfileId > 0)
                     || (objContent.ContentTypeId == GetContentTypeID("DNNCorp_JournalGroup") && objJournalItem.SocialGroupId > 0))
             {
@@ -71,8 +71,8 @@ namespace DotNetNuke.Services.Journal {
             
 
             // Update Terms
-            //var cntTerm = new Terms();
-            //cntTerm.ManageQuestionTerms(objPost, objContent);
+            // var cntTerm = new Terms();
+            // cntTerm.ManageQuestionTerms(objPost, objContent);
         }
 
         /// <summary>
@@ -85,8 +85,8 @@ namespace DotNetNuke.Services.Journal {
             if (objContent == null) return;
 
             // remove any metadata/terms associated first (perhaps we should just rely on ContentItem cascade delete here?)
-            //var cntTerms = new Terms();
-            //cntTerms.RemoveQuestionTerms(objContent);
+            // var cntTerms = new Terms();
+            // cntTerms.RemoveQuestionTerms(objContent);
 
             Util.GetContentController().DeleteContentItem(objContent);
         }

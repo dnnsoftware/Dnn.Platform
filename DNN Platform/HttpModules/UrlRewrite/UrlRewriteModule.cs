@@ -30,16 +30,16 @@ namespace DotNetNuke.HttpModules
         {
             this._providerToUse = DotNetNuke.Common.Utilities.Config.GetFriendlyUrlProvider();
 
-            //bind events depending on currently configured friendly url provider
-            //note that the current configured friendly url provider determines what type 
-            //of url rewriting is required.
+            // bind events depending on currently configured friendly url provider
+            // note that the current configured friendly url provider determines what type 
+            // of url rewriting is required.
 
             switch (this._providerToUse)
             {
                 case "advanced":
                     var advancedRewriter = new AdvancedUrlRewriter();
                     this._urlRewriter = advancedRewriter;
-                    //bind the rewrite event to the begin request event
+                    // bind the rewrite event to the begin request event
                     application.BeginRequest += this._urlRewriter.RewriteUrl;
                     break;
                 default:

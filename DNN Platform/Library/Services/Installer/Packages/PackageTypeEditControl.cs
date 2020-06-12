@@ -41,13 +41,13 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
         {
             IList<PackageType> packageTypes = PackageController.Instance.GetExtensionPackageTypes();
 
-            //Render the Select Tag
+            // Render the Select Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID);
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
 
-            //Add the Not Specified Option
+            // Add the Not Specified Option
             writer.AddAttribute(HtmlTextWriterAttribute.Value, Null.NullString);
 
             if (this.StringValue == Null.NullString)
@@ -55,29 +55,29 @@ namespace DotNetNuke.Services.Installer.Packages.WebControls
                 writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
             }
 			
-            //Render Option Tag
+            // Render Option Tag
             writer.RenderBeginTag(HtmlTextWriterTag.Option);
             writer.Write("<" + DNNLocalization.GetString("Not_Specified", DNNLocalization.SharedResourceFile) + ">");
             writer.RenderEndTag();
 
             foreach (PackageType type in packageTypes)
             {
-				//Add the Value Attribute
+				// Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, type.PackageType);
 
                 if (type.PackageType == this.StringValue)
                 {
-					//Add the Selected Attribute
+					// Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
 				
-				//Render Option Tag
+				// Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(type.PackageType);
                 writer.RenderEndTag();
             }
 			
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 		

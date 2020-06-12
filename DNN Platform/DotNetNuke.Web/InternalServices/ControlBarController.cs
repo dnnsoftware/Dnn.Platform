@@ -114,9 +114,9 @@ namespace DotNetNuke.Web.InternalServices
             }
             if (sortBookmarks)
             {
-                //sort bookmarked modules
+                // sort bookmarked modules
                 filteredList = bookmarkedModules.OrderBy(m => m.Key).Concat(filteredList.Except(bookmarkedModules));
-                //move Html on top
+                // move Html on top
                 filteredList = (filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant())).
                                 Concat(filteredList.Except((filteredList.Where(m => m.Key.ToLowerInvariant() == topModule.ToLowerInvariant()))));
             }
@@ -388,7 +388,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 catch (System.Threading.ThreadAbortException)
                 {
-                    //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+                    // Do nothing we are not logging ThreadAbortxceptions caused by redirects      
                 }
                 catch (Exception ex)
                 {
@@ -421,7 +421,7 @@ namespace DotNetNuke.Web.InternalServices
             }
             catch (System.Threading.ThreadAbortException)
             {
-                //Do nothing we are not logging ThreadAbortxceptions caused by redirects      
+                // Do nothing we are not logging ThreadAbortxceptions caused by redirects      
             }
             catch (Exception ex)
             {
@@ -580,8 +580,8 @@ namespace DotNetNuke.Web.InternalServices
         public bool CanAddModuleToPage()
         {
             return true;
-            //If we are not in an edit page
-            //return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
+            // If we are not in an edit page
+            // return (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["mid"])) && (string.IsNullOrEmpty(HttpContext.Current.Request.QueryString["ctl"]));
         }
 
         private bool ActiveTabHasChildren()
@@ -643,7 +643,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     newModule.ModuleID = Null.NullInteger;
 
-                    //copy module settings and tab module settings
+                    // copy module settings and tab module settings
                     newModule.ModuleSettings.Clear();
                     foreach (var key in moduleInfo.ModuleSettings.Keys)
                     {
@@ -656,7 +656,7 @@ namespace DotNetNuke.Web.InternalServices
                         newModule.TabModuleSettings.Add(key, moduleInfo.TabModuleSettings[key]);
                     }
 
-                    //reset the module id
+                    // reset the module id
                     newModule.ModuleID = ModuleController.Instance.AddModule(newModule);
 
                     if (!string.IsNullOrEmpty(newModule.DesktopModule.BusinessControllerClass))
@@ -682,7 +682,7 @@ namespace DotNetNuke.Web.InternalServices
                 }
                 else
                 {
-                    //copy tab module settings
+                    // copy tab module settings
                     newModule.TabModuleSettings.Clear();
                     foreach (var key in moduleInfo.TabModuleSettings.Keys)
                     {
@@ -692,8 +692,8 @@ namespace DotNetNuke.Web.InternalServices
                     ModuleController.Instance.AddModule(newModule);
                 }
 
-                //if the tab of original module has custom stylesheet defined, then also copy the stylesheet
-                //to the destination tab if its custom stylesheet is empty.
+                // if the tab of original module has custom stylesheet defined, then also copy the stylesheet
+                // to the destination tab if its custom stylesheet is empty.
                 var originalTab = TabController.Instance.GetTab(moduleInfo.TabID, moduleInfo.PortalID);
                 var targetTab = PortalSettings.Current.ActiveTab;
                 if (originalTab != null
@@ -707,7 +707,7 @@ namespace DotNetNuke.Web.InternalServices
 
                 if (remote)
                 {
-                    //Ensure the Portal Admin has View rights
+                    // Ensure the Portal Admin has View rights
                     var permissionController = new PermissionController();
                     ArrayList arrSystemModuleViewPermissions = permissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
                     this.AddModulePermission(newModule,
@@ -716,13 +716,13 @@ namespace DotNetNuke.Web.InternalServices
                                     Null.NullInteger,
                                     true);
 
-                    //Set PortalID correctly
+                    // Set PortalID correctly
                     newModule.OwnerPortalID = newModule.PortalID;
                     newModule.PortalID = PortalSettings.Current.PortalId;
                     ModulePermissionController.SaveModulePermissions(newModule);
                 }
 
-                //Add Event Log
+                // Add Event Log
                 EventLogController.Instance.AddLog(newModule, PortalSettings.Current, userID, "", EventLogController.EventLogType.MODULE_CREATED);
 
                 return newModule.ModuleID;
@@ -764,10 +764,10 @@ namespace DotNetNuke.Web.InternalServices
 
             foreach (ModuleInfo m in PortalSettings.Current.ActiveTab.Modules)
             {
-                //if user is allowed to view module and module is not deleted
+                // if user is allowed to view module and module is not deleted
                 if (ModulePermissionController.CanViewModule(m) && !m.IsDeleted)
                 {
-                    //modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
+                    // modules which are displayed on all tabs should not be displayed on the Admin or Super tabs
                     if (!m.AllTabs || !PortalSettings.Current.ActiveTab.IsSuperTab)
                     {
                         if (string.Equals(m.PaneName, pane, StringComparison.OrdinalIgnoreCase))
@@ -846,7 +846,7 @@ namespace DotNetNuke.Web.InternalServices
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //set the culture of the module to that of the tab
+                    // set the culture of the module to that of the tab
                     var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }
@@ -863,7 +863,7 @@ namespace DotNetNuke.Web.InternalServices
                 {
                     tabModuleId = objModule.ModuleID;
                 }
-                //update the position to let later modules with add after previous one.
+                // update the position to let later modules with add after previous one.
                 position = ModuleController.Instance.GetTabModule(objModule.TabModuleID).ModuleOrder + 1;
             }
 

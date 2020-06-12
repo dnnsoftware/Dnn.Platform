@@ -100,7 +100,7 @@ namespace DotNetNuke.Entities.Icons
 
             string fileName = string.Format("{0}/{1}_{2}_{3}.png", PortalSettings.Current.DefaultIconLocation, key, size, style);
 
-            //In debug mode, we want to warn (onluy once) if icon is not present on disk
+            // In debug mode, we want to warn (onluy once) if icon is not present on disk
 #if DEBUG
             CheckIconOnDisk(fileName);
 #endif

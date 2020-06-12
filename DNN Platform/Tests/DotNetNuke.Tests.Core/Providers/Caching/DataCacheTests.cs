@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
         [SetUp]
         public void SetUp()
         {
-            //Create a Container
+            // Create a Container
             ComponentFactory.Container = new SimpleContainer();
 
             this.mockCache = MockComponentProvider.CreateNew<CachingProvider>();
@@ -378,7 +378,7 @@ namespace DotNetNuke.Tests.Core.Providers.Caching
 
         private void ItemRemovedCallback(string key, object value, CacheItemRemovedReason removedReason)
         {
-            //do nothing
+            // do nothing
         }
 
         #endregion

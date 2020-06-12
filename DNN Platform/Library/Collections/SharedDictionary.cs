@@ -240,7 +240,7 @@ namespace DotNetNuke.Collections.Internal
             this.EnsureNotDisposed();
             this.EnsureReadAccess();
 
-            //todo nothing ensures read lock is held for life of enumerator
+            // todo nothing ensures read lock is held for life of enumerator
             return this._dict.GetEnumerator();
         }
 
@@ -258,11 +258,11 @@ namespace DotNetNuke.Collections.Internal
             {
                 if (disposing)
                 {
-                    //dispose managed resrources here
+                    // dispose managed resrources here
                     this._dict = null;
                 }
 
-                //dispose unmanaged resrources here
+                // dispose unmanaged resrources here
                 this._lockController.Dispose();
                 this._lockController = null;
                 this._isDisposed = true;

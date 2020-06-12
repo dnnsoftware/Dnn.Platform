@@ -134,7 +134,7 @@ namespace Dnn.ExportImport.Components.Services
             var exportedTabs = this.Repository.GetItems<ExportTab>(x => x.IsSystem == (this.Category == Constants.Category_Templates))
                 .OrderBy(t => t.Level).ThenBy(t => t.ParentId).ThenBy(t => t.TabOrder).ToList();
 
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? exportedTabs.Count : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this)) return;
             var progressStep = 100.0 / exportedTabs.OrderByDescending(x => x.Id).Count(x => x.Id < this._totals.LastProcessedId);
@@ -157,7 +157,7 @@ namespace Dnn.ExportImport.Components.Services
                 this.CheckPoint.StageData = JsonConvert.SerializeObject(this._totals);
             }
 
-            //repair pages which linked to other pages
+            // repair pages which linked to other pages
             this.RepairReferenceTabs(referenceTabs, localTabs, exportedTabs);
 
             this._searchedParentTabs.Clear();
@@ -207,7 +207,7 @@ namespace Dnn.ExportImport.Components.Services
                         // this is not saved when adding the tab; so set it explicitly
                         localTab.IsVisible = otherTab.IsVisible;
                         EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
-                        //Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
+                        // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                         if (localTab.UniqueId != otherTab.UniqueId && !DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                         {
                             localTab.UniqueId = otherTab.UniqueId;
@@ -296,8 +296,8 @@ namespace Dnn.ExportImport.Components.Services
                 // this is not saved upon updating the tab
                 localTab.IsVisible = otherTab.IsVisible;
                 EntitiesController.Instance.SetTabSpecificData(localTab.TabID, false, localTab.IsVisible);
-                //_tabController.UpdateTab(localTab); // to clear cache
-                //Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
+                // _tabController.UpdateTab(localTab); // to clear cache
+                // Try to set the unique id of existing page same as source page unique id, if possible. This will help for future updates etc.
                 if (!DataProvider.Instance().CheckTabUniqueIdExists(otherTab.UniqueId))
                 {
                     localTab.UniqueId = otherTab.UniqueId;
@@ -395,7 +395,7 @@ namespace Dnn.ExportImport.Components.Services
         {
             try
             {
-                //update tab with import flag, to trigger update event handler.
+                // update tab with import flag, to trigger update event handler.
                 if (localTab.TabSettings.ContainsKey("TabImported"))
                 {
                     localTab.TabSettings["TabImported"] = "Y";
@@ -502,8 +502,8 @@ namespace Dnn.ExportImport.Components.Services
 
                 if (isUpdate)
                 {
-                    //UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
-                    //Result.AddLogEntry("Updated tab permission", other.PermissionKey);
+                    // UNDONE: Do we really need to update an existing permission? It won't do anything; permissions are immutable
+                    // Result.AddLogEntry("Updated tab permission", other.PermissionKey);
                 }
                 else
                 {
@@ -545,10 +545,10 @@ namespace Dnn.ExportImport.Components.Services
                             local.RoleID = roleId.Value;
                         }
                         localTab.TabPermissions.Add(local, true);
-                        //UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
-                        //var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
-                        //var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
-                        //UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
+                        // UNDONE: none set; not possible until after saving all tab permissions as donbefore exiting this method
+                        // var createdBy = Util.GetUserIdByName(_exportImportJob, other.CreatedByUserID, other.CreatedByUserName);
+                        // var modifiedBy = Util.GetUserIdByName(_exportImportJob, other.LastModifiedByUserID, other.LastModifiedByUserName);
+                        // UpdateTabPermissionChangers(local.TabPermissionID, createdBy, modifiedBy);
                         this.Result.AddLogEntry("Added tab permission", $"{other.PermissionKey} - {other.PermissionID}");
                         count++;
                     }
@@ -705,7 +705,7 @@ namespace Dnn.ExportImport.Components.Services
                         Header = other.Header,
                         Footer = other.Footer,
                         CultureCode = other.CultureCode,
-                        //UniqueId = other.UniqueId,
+                        // UniqueId = other.UniqueId,
                         UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                         VersionGuid = other.VersionGuid,
                         DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -718,10 +718,10 @@ namespace Dnn.ExportImport.Components.Services
                         PortalID = this._exportImportJob.PortalId
                     };
 
-                    //Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
+                    // Logger.Error($"Local Tab ID={local.TabID}, ModuleID={local.ModuleID}, ModuleDefID={local.ModuleDefID}");
                     try
                     {
-                        //this will create up to 2 records:  Module (if it is not already there) and TabModule
+                        // this will create up to 2 records:  Module (if it is not already there) and TabModule
                         otherModule.LocalId = this._moduleController.AddModule(local);
                         other.LocalId = local.TabModuleID;
                         this.Repository.UpdateItem(otherModule);
@@ -804,7 +804,7 @@ namespace Dnn.ExportImport.Components.Services
                                     Header = other.Header,
                                     Footer = other.Footer,
                                     CultureCode = other.CultureCode,
-                                    //UniqueId = other.UniqueId,
+                                    // UniqueId = other.UniqueId,
                                     UniqueId = DataProvider.Instance().CheckTabModuleUniqueIdExists(other.UniqueId) ? Guid.NewGuid() : other.UniqueId,
                                     VersionGuid = other.VersionGuid,
                                     DefaultLanguageGuid = other.DefaultLanguageGuid ?? Guid.Empty,
@@ -815,7 +815,7 @@ namespace Dnn.ExportImport.Components.Services
                                     PortalID = this._exportImportJob.PortalId
                                 };
 
-                                //this will create up to 2 records:  Module (if it is not already there) and TabModule
+                                // this will create up to 2 records:  Module (if it is not already there) and TabModule
                                 otherModule.LocalId = this._moduleController.AddModule(local);
                                 other.LocalId = local.TabModuleID;
                                 this.Repository.UpdateItem(otherModule);
@@ -1173,7 +1173,7 @@ namespace Dnn.ExportImport.Components.Services
                             var controller = businessController as IPortable;
                             if (controller != null)
                             {
-                                //Note: there is no chek whether the content exists or not to manage conflict resolution
+                                // Note: there is no chek whether the content exists or not to manage conflict resolution
                                 if (isNew || this._importDto.CollisionResolution == CollisionResolution.Overwrite)
                                 {
                                     var restoreCount = 0;
@@ -1382,7 +1382,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.Title = otherTab.Title;
             localTab.Description = otherTab.Description;
             localTab.KeyWords = otherTab.KeyWords;
-            //localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
+            // localTab.IsDeleted = otherTab.IsDeleted; // DO NOT enable this; leave this to other logic
             localTab.Url = otherTab.Url;
             localTab.SkinSrc = otherTab.SkinSrc;
             localTab.ContainerSrc = otherTab.ContainerSrc;
@@ -1395,7 +1395,7 @@ namespace Dnn.ExportImport.Components.Services
             localTab.SiteMapPriority = otherTab.SiteMapPriority;
             localTab.IconFileLarge = otherTab.IconFileLarge;
             localTab.CultureCode = otherTab.CultureCode;
-            //localTab.UniqueId = otherTab.UniqueId;
+            // localTab.UniqueId = otherTab.UniqueId;
             localTab.VersionGuid = otherTab.VersionGuid;
             localTab.LocalizedVersionGuid = otherTab.LocalizedVersionGuid;
             localTab.Level = otherTab.Level;
@@ -1506,7 +1506,7 @@ namespace Dnn.ExportImport.Components.Services
                     this._exportDto.IncludeDeletions, this.IncludeSystem, toDate, fromDate) // ordered by TabID
                 .OrderBy(tab => tab.TabPath).ToArray();
 
-            //Update the total items count in the check points. This should be updated only once.
+            // Update the total items count in the check points. This should be updated only once.
             this.CheckPoint.TotalItems = this.CheckPoint.TotalItems <= 0 ? allTabs.Length : this.CheckPoint.TotalItems;
             if (this.CheckPointStageCallback(this)) return;
             var progressStep = 100.0 / allTabs.Length;
@@ -1515,7 +1515,7 @@ namespace Dnn.ExportImport.Components.Services
                 ? allTabs.Length
                 : allTabs.Count(otherPg => IsTabIncluded(otherPg, allTabs, selectedPages));
 
-            //Note: We assume no new tabs were added while running; otherwise, some tabs might get skipped.
+            // Note: We assume no new tabs were added while running; otherwise, some tabs might get skipped.
             for (var index = 0; index < allTabs.Length; index++)
             {
                 if (this.CheckCancelled(this._exportImportJob)) break;
@@ -1526,7 +1526,7 @@ namespace Dnn.ExportImport.Components.Services
                 if (this.IncludeSystem || isAllIncluded || IsTabIncluded(otherPg, allTabs, selectedPages))
                 {
                     var tab = this._tabController.GetTab(otherPg.TabID, portalId);
-                    //Do not export tab which has never been published.
+                    // Do not export tab which has never been published.
                     if (tab.HasBeenPublished)
                     {
                         var exportPage = this.SaveExportPage(tab);
@@ -1868,12 +1868,12 @@ namespace Dnn.ExportImport.Components.Services
 
         private void UpdateTotalProcessedPackages()
         {
-            //HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
+            // HACK: get skin packages checkpoint and add "_totals.TotalPackages" to it
             var packagesCheckpoint = EntitiesController.Instance.GetJobChekpoints(this._exportImportJob.JobId).FirstOrDefault(
                 cp => cp.Category == Constants.Category_Packages);
             if (packagesCheckpoint != null)
             {
-                //Note: if restart of job occurs, these will report wrong values
+                // Note: if restart of job occurs, these will report wrong values
                 packagesCheckpoint.TotalItems += this._totals.TotalPackages;
                 packagesCheckpoint.ProcessedItems += this._totals.TotalPackages;
                 EntitiesController.Instance.UpdateJobChekpoint(packagesCheckpoint);

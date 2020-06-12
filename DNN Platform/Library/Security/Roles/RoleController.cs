@@ -65,7 +65,7 @@ namespace DotNetNuke.Security.Roles
         {
             if (role.AutoAssignment)
             {
-                //loop through users for portal and add to role
+                // loop through users for portal and add to role
                 var arrUsers = UserController.GetUsers(role.PortalID);
                 foreach (UserInfo objUser in arrUsers)
                 {
@@ -75,7 +75,7 @@ namespace DotNetNuke.Security.Roles
                     }
                     catch (Exception exc)
                     {
-                        //user already belongs to role
+                        // user already belongs to role
                         Logger.Error(exc);
                     }
                 }
@@ -95,7 +95,7 @@ namespace DotNetNuke.Security.Roles
                     provider.RemoveUserFromRole(portalId, user, userRole);
                     EventLogController.Instance.AddLog(userRole, PortalController.Instance.GetCurrentPortalSettings(), UserController.Instance.GetCurrentUserInfo().UserID, "", EventLogController.EventLogType.ROLE_UPDATED);
 
-                    //Remove the UserInfo from the Cache, as it has been modified
+                    // Remove the UserInfo from the Cache, as it has been modified
                     DataCache.ClearUserCache(portalId, user.Username);
                     Instance.ClearRoleCache(portalId);
 
@@ -151,7 +151,7 @@ namespace DotNetNuke.Security.Roles
                 Status = MessageStatusType.Unread
             };
 
-            //_messagingController.SaveMessage(_message);
+            // _messagingController.SaveMessage(_message);
             Mail.SendEmail(PortalSettings.Email, objUser.Email, _message.Subject, _message.Body);
         }
 
@@ -192,7 +192,7 @@ namespace DotNetNuke.Security.Roles
             UserRoleInfo userRole = this.GetUserRole(portalId, userId, roleId);
             if (userRole == null)
             {
-                //Create new UserRole
+                // Create new UserRole
                 userRole = new UserRoleInfo
                 {
                     UserID = userId,
@@ -217,7 +217,7 @@ namespace DotNetNuke.Security.Roles
             }
 
             EventManager.Instance.OnRoleJoined(new RoleEventArgs() { Role = this.GetRoleById(portalId, roleId), User = user });
-            //Remove the UserInfo and Roles from the Cache, as they have been modified
+            // Remove the UserInfo and Roles from the Cache, as they have been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
         }
@@ -239,7 +239,7 @@ namespace DotNetNuke.Security.Roles
 
             if (role.SecurityMode != SecurityMode.SecurityRole)
             {
-                //remove group artifacts
+                // remove group artifacts
                 var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
 
                 IFileManager _fileManager = FileManager.Instance;
@@ -254,14 +254,14 @@ namespace DotNetNuke.Security.Roles
                 JournalController.Instance.SoftDeleteJournalItemByGroupId(portalSettings.PortalId, role.RoleID);
             }
 
-            //Get users before deleting role
+            // Get users before deleting role
             var users = role.UserCount > 0 ? this.GetUsersByRole(role.PortalID, role.RoleName) : Enumerable.Empty<UserInfo>();
 
             provider.DeleteRole(role);
 
             EventManager.Instance.OnRoleDeleted(new RoleEventArgs() { Role = role });
 
-            //Remove the UserInfo objects of users that have been members of the group from the cache, as they have been modified
+            // Remove the UserInfo objects of users that have been members of the group from the cache, as they have been modified
             foreach (var user in users)
             {
                 DataCache.ClearUserCache(role.PortalID, user.Username);
@@ -272,7 +272,7 @@ namespace DotNetNuke.Security.Roles
             // queue remove role/group from search index
             var document = new SearchDocumentToDelete
             {
-                //PortalId = role.PortalID,
+                // PortalId = role.PortalID,
                 RoleId = role.RoleID, // this is unique and sufficient
             };
 
@@ -388,7 +388,7 @@ namespace DotNetNuke.Security.Roles
             {
                 if (userRole != null && userRole.ServiceFee > 0.0 && userRole.IsTrialUsed)
                 {
-                    //Expire Role so we retain trial used data
+                    // Expire Role so we retain trial used data
                     userRole.ExpiryDate = DateTime.Now.AddDays(-1);
                     userRole.Status = status;
                     userRole.IsOwner = isOwner;
@@ -397,7 +397,7 @@ namespace DotNetNuke.Security.Roles
                 }
                 else
                 {
-                    //Delete Role
+                    // Delete Role
                     DeleteUserRoleInternal(portalId, userId, roleId);
                     EventLogController.Instance.AddLog("UserId",
                                        userId.ToString(CultureInfo.InvariantCulture),
@@ -484,7 +484,7 @@ namespace DotNetNuke.Security.Roles
                     this.AddUserRole(portalId, userId, roleId, status, isOwner, EffectiveDate, ExpiryDate);
                 }
             }
-            //Remove the UserInfo from the Cache, as it has been modified
+            // Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(portalId, user.Username);
             Instance.ClearRoleCache(portalId);
         }
@@ -524,7 +524,7 @@ namespace DotNetNuke.Security.Roles
         {
             var userRole = Instance.GetUserRole(portalSettings.PortalId, user.UserID, role.RoleID);
 
-            //update assignment
+            // update assignment
             Instance.AddUserRole(portalSettings.PortalId, user.UserID, role.RoleID, status, isOwner, effectiveDate, expiryDate);
 
             UserController.UpdateUser(portalSettings.PortalId, user);
@@ -532,7 +532,7 @@ namespace DotNetNuke.Security.Roles
             {
                 EventLogController.Instance.AddLog("Role", role.RoleName, portalSettings, user.UserID, EventLogController.EventLogType.USER_ROLE_CREATED);
 
-                //send notification
+                // send notification
                 if (notifyUser)
                 {
                     SendNotification(user, role, portalSettings, UserRoleActions.@add);
@@ -548,7 +548,7 @@ namespace DotNetNuke.Security.Roles
                 }
             }
 
-            //Remove the UserInfo from the Cache, as it has been modified
+            // Remove the UserInfo from the Cache, as it has been modified
             DataCache.ClearUserCache(portalSettings.PortalId, user.Username);
         }
 
@@ -567,9 +567,9 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static bool CanRemoveUserFromRole(PortalSettings PortalSettings, int UserId, int RoleId)
         {
-            //[DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
-            //HACK: Duplicated in CanRemoveUserFromRole(PortalInfo, Integer, Integer) method below
-            //changes to this method should be reflected in the other method as well
+            // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
+            // HACK: Duplicated in CanRemoveUserFromRole(PortalInfo, Integer, Integer) method below
+            // changes to this method should be reflected in the other method as well
             return !((PortalSettings.AdministratorId == UserId && PortalSettings.AdministratorRoleId == RoleId) || PortalSettings.RegisteredRoleId == RoleId);
         }
 
@@ -588,9 +588,9 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static bool CanRemoveUserFromRole(PortalInfo PortalInfo, int UserId, int RoleId)
         {
-            //[DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
-            //HACK: Duplicated in CanRemoveUserFromRole(PortalSettings, Integer, Integer) method above
-            //changes to this method should be reflected in the other method as well
+            // [DNN-4285] Refactored this check into a method for use in SecurityRoles.ascx.vb
+            // HACK: Duplicated in CanRemoveUserFromRole(PortalSettings, Integer, Integer) method above
+            // changes to this method should be reflected in the other method as well
 
             return !((PortalInfo.AdministratorId == UserId && PortalInfo.AdministratorRoleId == RoleId) || PortalInfo.RegisteredRoleId == RoleId);
         }
@@ -702,14 +702,14 @@ namespace DotNetNuke.Security.Roles
         /// -----------------------------------------------------------------------------
         public static void SerializeRoleGroups(XmlWriter writer, int portalID)
         {
-            //Serialize Role Groups
+            // Serialize Role Groups
             writer.WriteStartElement("rolegroups");
             foreach (RoleGroupInfo objRoleGroup in GetRoleGroups(portalID))
             {
                 CBO.SerializeObject(objRoleGroup, writer);
             }
 
-            //Serialize Global Roles
+            // Serialize Global Roles
             var globalRoleGroup = new RoleGroupInfo(Null.NullInteger, portalID, true)
             {
                 RoleGroupName = "GlobalRoles",

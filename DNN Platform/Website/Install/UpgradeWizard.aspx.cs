@@ -180,15 +180,15 @@ namespace DotNetNuke.Services.Install
         
         private static void LaunchUpgrade()
         {
-            //Get current Script time-out
+            // Get current Script time-out
             var scriptTimeOut = HttpContext.Current.Server.ScriptTimeout;
 
-            //Set Script timeout to MAX value
+            // Set Script timeout to MAX value
             HttpContext.Current.Server.ScriptTimeout = int.MaxValue;
 
             if (_culture != null) Thread.CurrentThread.CurrentUICulture = new CultureInfo(_culture);
 
-            //bail out early if upgrade is in progress
+            // bail out early if upgrade is in progress
             if (_upgradeRunning)
                 return;
 
@@ -200,7 +200,7 @@ namespace DotNetNuke.Services.Install
             _upgradeRunning = true;
             _upgradeProgress = 0;
 
-            //Output the current time for the user
+            // Output the current time for the user
             CurrentStepActivity(string.Concat(Localization.Localization.GetString("UpgradeStarted", LocalResourceFile),
                 ":", DateTime.Now.ToString()));
 
@@ -245,10 +245,10 @@ namespace DotNetNuke.Services.Install
             _upgradeProgress = 100;
             CurrentStepActivity(Localization.Localization.GetString("UpgradeDone", LocalResourceFile));
 
-            //indicate we are done
+            // indicate we are done
             _upgradeRunning = false;
 
-            //restore Script timeout
+            // restore Script timeout
             HttpContext.Current.Server.ScriptTimeout = scriptTimeOut;
 
         }
@@ -275,23 +275,23 @@ namespace DotNetNuke.Services.Install
             }
             catch (Exception)
             {
-                //TODO - do something                
+                // TODO - do something                
             }
         }
 
 		private void CompleteUpgrade()
         {
-            //Delete the status file.
+            // Delete the status file.
             try
             {
                 File.Delete(StatusFile);
             }
             catch (Exception)
             {
-                //Do nothing
+                // Do nothing
             }
 
-            //remove installwizard files added back by upgrade package
+            // remove installwizard files added back by upgrade package
             Upgrade.Upgrade.DeleteInstallerFiles();
 
             Config.Touch();
@@ -379,10 +379,10 @@ namespace DotNetNuke.Services.Install
 				this.CompleteUpgrade();
 			}
             
-            //Create Status Files
+            // Create Status Files
             if (!this.Page.IsPostBack)
             {
-                //Reset the accept terms flag
+                // Reset the accept terms flag
                 HostController.Instance.Update("AcceptDnnTerms", "N");
                 if (!File.Exists(StatusFile)) File.CreateText(StatusFile).Close();
                 Upgrade.Upgrade.RemoveInvalidAntiForgeryCookie();
@@ -392,15 +392,15 @@ namespace DotNetNuke.Services.Install
         
         #region Web Methods
 
-        //steps shown in UI
+        // steps shown in UI
         static IInstallationStep upgradeDatabase = new InstallDatabaseStep();
         static IInstallationStep upgradeExtensions = new InstallExtensionsStep();
         static IInstallationStep iisVerification = new IISVerificationStep();
 
-        //Ordered List of Steps (and weight in percentage) to be executed
+        // Ordered List of Steps (and weight in percentage) to be executed
         private static IDictionary<IInstallationStep, int> _steps = new Dictionary<IInstallationStep, int>
             {
-            //{new AddFcnModeStep(), 1},
+            // {new AddFcnModeStep(), 1},
                 {iisVerification, 1 },
                 {upgradeDatabase, 49}, 
                 {upgradeExtensions, 49}, 
@@ -463,7 +463,7 @@ namespace DotNetNuke.Services.Install
                 // DNN-8833: Must run this after all other upgrade steps are done; sequence is important.
                 HostController.Instance.Update("DnnImprovementProgram", accountInfo["dnnImprovementProgram"], false);
 
-                //DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
+                // DNN-9355: reset the installer files check flag after each upgrade, to make sure the installer files removed.
                 HostController.Instance.Update("InstallerFilesRemoved", "False", true);
             }
         }
@@ -502,7 +502,7 @@ namespace DotNetNuke.Services.Install
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
 
             return data;

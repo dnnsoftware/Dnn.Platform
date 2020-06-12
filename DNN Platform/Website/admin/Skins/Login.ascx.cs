@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.Skins.Controls
 				        this.loginLink.NavigateUrl = Globals.LoginURL(returnUrl, (this.Request.QueryString["override"] != null));
 				        this.enhancedLoginLink.NavigateUrl = this.loginLink.NavigateUrl;
 
-                        //avoid issues caused by multiple clicks of login link
+                        // avoid issues caused by multiple clicks of login link
                         var oneclick = "this.disabled=true;";
 			            if (this.Request.UserAgent != null && this.Request.UserAgent.Contains("MSIE 8.0") == false)
 			            {
@@ -153,7 +153,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
 				        if (this.PortalSettings.EnablePopUps && this.PortalSettings.LoginTabId == Null.NullInteger && !AuthenticationController.HasSocialAuthenticationEnabled(this))
 				        {
-					        //To avoid duplicated encodes of URL
+					        // To avoid duplicated encodes of URL
                             var clickEvent = "return " + UrlUtils.PopUpUrl(HttpUtility.UrlDecode(this.loginLink.NavigateUrl), this, this.PortalSettings, true, false, 300, 650);
 					        this.loginLink.Attributes.Add("onclick", clickEvent);
 					        this.enhancedLoginLink.Attributes.Add("onclick", clickEvent);

@@ -349,7 +349,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatingSuccessWhenUsingExistingMoniker()
         {
-            //Arrange
+            // Arrange
             const string query1 =
                  @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')
@@ -377,7 +377,7 @@ namespace DotNetNuke.Tests.Integration.Tests.Jwt
         [Test]
         public void ValidatingFailureWhenUsingNonExistingMoniker()
         {
-            //Arrange
+            // Arrange
             const string query1 =
                  @"SELECT TOP(1) TabModuleId FROM {objectQualifier}TabModules
 	                WHERE TabId IN (SELECT TabId FROM {objectQualifier}Tabs WHERE TabName='Activity Feed')

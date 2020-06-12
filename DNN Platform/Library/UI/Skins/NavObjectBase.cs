@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.Skins
 		#endregion
 
 		#region "Public Properties"
-		//JH - 2/5/07 - support for custom attributes
+		// JH - 2/5/07 - support for custom attributes
 		[DesignerSerializationVisibility(DesignerSerializationVisibility.Content), PersistenceMode(PersistenceMode.InnerProperty)]
         public List<CustomAttribute> CustomAttributes
         {

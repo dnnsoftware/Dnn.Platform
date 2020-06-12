@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (!this.IsPostBack)
             {
-                //Save the return Url in the cookie
+                // Save the return Url in the cookie
                 HttpContext.Current.Response.Cookies.Set(new HttpCookie("returnurl", this.RedirectURL)
                 {
                     Expires = DateTime.Now.AddMinutes(5),

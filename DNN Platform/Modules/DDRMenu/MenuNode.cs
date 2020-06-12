@@ -269,7 +269,7 @@ namespace DotNetNuke.Web.DDRMenu
                         case "target":
                             this.Target = reader.Value;
                             break;
-                        //default:
+                        // default:
                         //    throw new XmlException(String.Format("Unexpected attribute '{0}'", reader.Name));
                     }
                 }

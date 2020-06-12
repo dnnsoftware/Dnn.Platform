@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Urls
                     result = "&rr=dl";
                     break;
                 case RedirectReason.Disabled_Page:
-                    //838 : handle disabled page separately
+                    // 838 : handle disabled page separately
                     result = "&rr=db";
                     break;
                 case RedirectReason.Tab_Permanent_Redirect:
@@ -156,14 +156,14 @@ namespace DotNetNuke.Entities.Urls
             GetRedirectActionTokenAndValue(action, out token, out value);
             string tokenAndValue = token + "=" + value;
             bool addToken = true;
-            //look for existing action
+            // look for existing action
             bool hasDupes;
             Dictionary<string, string> tokensAndValues = GetRedirectTokensAndValuesFromRewritePath(existingRewritePath,
                                                                                                    out hasDupes);
-            //can't overwrite existing tokens in certain cases
+            // can't overwrite existing tokens in certain cases
             if (tokensAndValues.Count > 0)
             {
-                //only case we allow is an ovewrite of a do301=check by a do301=true or do302=true
+                // only case we allow is an ovewrite of a do301=check by a do301=true or do302=true
                 if (token == "do301" || token == "do302")
                 {
                     if (tokensAndValues.ContainsKey("do301") && tokensAndValues["do301"] == "check")
@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Urls
                         result = existingRewritePath.Replace("do301=check", tokenAndValue);
                     }
                 }
-                addToken = false; //already done
+                addToken = false; // already done
             }
             if (addToken)
             {
@@ -186,8 +186,8 @@ namespace DotNetNuke.Entities.Urls
                         result += "?" + tokenAndValue;
                     }
 
-                    //the reasonToken helps the rewrite process determine why a redirect is required
-                    //after the token is stored in the page dictionary
+                    // the reasonToken helps the rewrite process determine why a redirect is required
+                    // after the token is stored in the page dictionary
                     string reasonToken = GetRedirectReasonRewriteToken(reason);
                     if (reasonToken != "")
                     {
@@ -196,7 +196,7 @@ namespace DotNetNuke.Entities.Urls
                 }
                 else
                 {
-                    //special case : add the number of times a 301 has been requested
+                    // special case : add the number of times a 301 has been requested
                     if (tokenAndValue == "do301=true" && reason == RedirectReason.User_Profile_Url)
                     {
                         result += "&num301=2";
@@ -227,23 +227,23 @@ namespace DotNetNuke.Entities.Urls
                                                                 out RedirectReason reason, 
                                                                 out ActionType action)
         {
-            //init parms
+            // init parms
             newUrl = rewrittenUrl;
             action = result.Action;
             reason = result.Reason;
 
-            //get the action type from the rewrite path
+            // get the action type from the rewrite path
             ActionType foundAction;
             bool actionInPath = GetActionFromRewritePath(rewrittenUrl, out foundAction);
-            //only overrwrite action if it was found in the rewrite path
+            // only overrwrite action if it was found in the rewrite path
             if (actionInPath)
             {
                 action = foundAction;
             }
-            //get the list of redirect reason tokens from the url
+            // get the list of redirect reason tokens from the url
             List<string> redirectReasons = GetRedirectReasonTokensFromRewritePath(rewrittenUrl);
 
-            //when redirect action in path, and redirect reasons are empty, add custom redirect
+            // when redirect action in path, and redirect reasons are empty, add custom redirect
             if (redirectReasons.Count == 0 && action != ActionType.Continue)
             {
                 redirectReasons.Add("cr");
@@ -254,7 +254,7 @@ namespace DotNetNuke.Entities.Urls
                 switch (rrTkn)
                 {
                     case "up":
-                        //user profile redirect
+                        // user profile redirect
                         clearActionToken = true;
                         if (wasParms)
                         {
@@ -273,9 +273,9 @@ namespace DotNetNuke.Entities.Urls
                         }
                         else
                         {
-                            //if no parms, then we're not doing a userprofileaction redirect
+                            // if no parms, then we're not doing a userprofileaction redirect
                             reason = RedirectReason.Custom_Redirect;
-                            //then check for a 301 redirect
+                            // then check for a 301 redirect
                             action = ActionType.CheckFor301;
                         }
 
@@ -283,37 +283,37 @@ namespace DotNetNuke.Entities.Urls
 
                     case "dl":
                     case "db":
-                        //deleted tab dl 
-                        //disabled tab db
+                        // deleted tab dl 
+                        // disabled tab db
                         clearActionToken = true;
-                        //626 Deleted tab hanlding not working properyly - override
+                        // 626 Deleted tab hanlding not working properyly - override
                         if (settings.DeletedTabHandlingType == DeletedTabHandlingType.Do404Error)
                         {
-                            action = ActionType.Output404; //output a 404 as per settings
+                            action = ActionType.Output404; // output a 404 as per settings
                         }
 
-                        //838 : handle disabled pages separately
+                        // 838 : handle disabled pages separately
                         reason = rrTkn == "dl" ? RedirectReason.Deleted_Page : RedirectReason.Disabled_Page;
                         break;
 
                     case "pr":
-                        //pr = permanent redirect
+                        // pr = permanent redirect
                         reason = RedirectReason.Tab_Permanent_Redirect;
                         clearActionToken = true;
                         break;
 
                     case "sr":
-                        //sr = spaces replaced in url
+                        // sr = spaces replaced in url
                         clearActionToken = true;
                         reason = RedirectReason.Spaces_Replaced;
                         break;
 
                     case "hp":
-                        //hp = home page redirect
+                        // hp = home page redirect
                         if (wasParms)
                         {
-                            //cancel the home page replaced if there were parameters added and page extensions
-                            //are in use - otherwise a 404 will occur for the relative path
+                            // cancel the home page replaced if there were parameters added and page extensions
+                            // are in use - otherwise a 404 will occur for the relative path
                             reason = RedirectReason.Not_Redirected;
                             action = ActionType.Continue;
                             clearActionToken = true;
@@ -327,7 +327,7 @@ namespace DotNetNuke.Entities.Urls
 
 
                     default:
-                        //any other redirect with no reason is a custom redirect
+                        // any other redirect with no reason is a custom redirect
                         if (reason == RedirectReason.Not_Redirected)
                         {
                             reason = RedirectReason.Custom_Redirect;
@@ -338,12 +338,12 @@ namespace DotNetNuke.Entities.Urls
             }
             if (clearActionToken)
             {
-                //clear both action and reason
+                // clear both action and reason
                 newUrl = RemoveAnyRedirectTokensAndReasons(newUrl);
             }
             else
             {
-                //clear just reason
+                // clear just reason
                 newUrl = RemoveAnyRedirectReasons(newUrl);
             }
         }
@@ -357,7 +357,7 @@ namespace DotNetNuke.Entities.Urls
         internal static bool GetActionFromRewritePath(string rewrittenUrl, out ActionType action)
         {
             bool found = false;
-            action = ActionType.Continue; //default
+            action = ActionType.Continue; // default
             MatchCollection actionMatches = RedirectTokensRx.Matches(rewrittenUrl);
             foreach (Match actionMatch in actionMatches)
             {
@@ -394,10 +394,10 @@ namespace DotNetNuke.Entities.Urls
                             }
                             break;
                     }
-                    //if there is more than one match, if we have a solid action, then break
+                    // if there is more than one match, if we have a solid action, then break
                     if (action != ActionType.Continue)
                     {
-                        break; //this should, by rights, not happen in normal operation
+                        break; // this should, by rights, not happen in normal operation
                     }
                 }
             }
@@ -422,8 +422,8 @@ namespace DotNetNuke.Entities.Urls
         /// <returns></returns>
         internal static string RemoveAnyRedirectTokens(string path, NameValueCollection queryStringCol)
         {
-            //don't really care what the value is, but need it for replacing 
-            //the do301 is an internal value, used to control redirects from the page index
+            // don't really care what the value is, but need it for replacing 
+            // the do301 is an internal value, used to control redirects from the page index
             if (string.IsNullOrEmpty(path) == false)
             {
                 string val = null;
@@ -435,11 +435,11 @@ namespace DotNetNuke.Entities.Urls
                 {
                     val = "true";
                 }
-                //nix the 301 redirect query string value or terminal loops-a-plenty 
+                // nix the 301 redirect query string value or terminal loops-a-plenty 
                 path = path.Replace("&do301=" + val, "");
                 path = path.Replace("?do301=" + val, "");
 
-                //911 : object not set error
+                // 911 : object not set error
                 if (queryStringCol != null)
                 {
                     val = queryStringCol["do302"];
@@ -448,7 +448,7 @@ namespace DotNetNuke.Entities.Urls
                 {
                     val = "true";
                 }
-                //nix the 302 redirect query string value or terminal loops-a-plenty 
+                // nix the 302 redirect query string value or terminal loops-a-plenty 
                 path = path.Replace("&do302=" + val, "");
                 path = path.Replace("?do302=" + val, "");
             }
@@ -463,13 +463,13 @@ namespace DotNetNuke.Entities.Urls
         internal static string RemoveAnyRedirectTokensAndReasons(string rewritePath)
         {
             string result = RemoveAnyRedirectReasons(rewritePath);
-            //regex expression matches a token and removes it
+            // regex expression matches a token and removes it
             Match tokenMatch = RedirectTokensRx.Match(result);
             if (tokenMatch.Success)
             {
-                //tokenAndValue is the do301=true
+                // tokenAndValue is the do301=true
                 string tokenAndValue = tokenMatch.Value;
-                //p is either a ? or a &
+                // p is either a ? or a &
                 string p = tokenMatch.Groups["p"].Value;
                 if (p == "?")
                 {
@@ -482,14 +482,14 @@ namespace DotNetNuke.Entities.Urls
                     {
                         if (result.EndsWith("?") || result.EndsWith("&"))
                         {
-                            //trim end 
+                            // trim end 
                             result = result.Substring(0, result.Length - 1);
                         }
                     }
                 }
                 else
                 {
-                    //p == "&"
+                    // p == "&"
                     result = result.Replace("&" + tokenAndValue, "");
                 }
             }

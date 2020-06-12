@@ -187,7 +187,7 @@ namespace DotNetNuke.Modules.Html
         /// </summary>
         private void DisplayMasterLanguageContent()
         {
-            //Get master language
+            // Get master language
             var objModule = ModuleController.Instance.GetModule(this.ModuleId, this.TabId, false);
             if (objModule.DefaultLanguageModule != null)
             {
@@ -215,7 +215,7 @@ namespace DotNetNuke.Modules.Html
             this.cmdEdit.Enabled = false;
             this.cmdPreview.Enabled = true;
             this.cmdHistory.Enabled = true;
-            //DisplayMasterLanguageContent();
+            // DisplayMasterLanguageContent();
             this.DisplayMasterContentButton();
             this.ddlRender.Visible = true;
         }
@@ -302,7 +302,7 @@ namespace DotNetNuke.Modules.Html
         {
             this.txtContent.Visible = false;
             this.cmdSave.Visible = false;
-            //cmdPreview.Enabled = false;
+            // cmdPreview.Enabled = false;
             this.divPublish.Visible = false;
 
             this.divSubmittedContent.Visible = true;
@@ -317,7 +317,7 @@ namespace DotNetNuke.Modules.Html
             if ((lastPublishedContent != null))
             {
                 this.DisplayPreview(lastPublishedContent);
-                //DisplayHistory(lastPublishedContent);
+                // DisplayHistory(lastPublishedContent);
             }
             else
             {
@@ -465,7 +465,7 @@ namespace DotNetNuke.Modules.Html
                     var userCanEdit = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
                     this.lblMaxVersions.Text = maxVersions.ToString();
-                    this.dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); //min 5, max 10
+                    this.dgVersions.PageSize = Math.Min(Math.Max(maxVersions, 5), 10); // min 5, max 10
 
                     switch (workflowStates.Count)
                     {
@@ -480,7 +480,7 @@ namespace DotNetNuke.Modules.Html
                     if (htmlContentItemID != -1)
                     {
                         this.DisplayContent(htmlContent);
-                        //DisplayPreview(htmlContent);
+                        // DisplayPreview(htmlContent);
                         this.DisplayHistory(htmlContent);
                     }
                     else
@@ -491,7 +491,7 @@ namespace DotNetNuke.Modules.Html
                     this.divPublish.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phCurrentVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
                     this.phPreviewVersion.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
-                    //DisplayVersions();
+                    // DisplayVersions();
 
                     this.BindRenderItems();
                     this.ddlRender.SelectedValue = this.txtContent.Mode;
@@ -540,7 +540,7 @@ namespace DotNetNuke.Modules.Html
                     case WorkflowType.ContentStaging:
                         if (this.chkPublish.Checked)
                         {
-                            //if it's already published set it to draft
+                            // if it's already published set it to draft
                             if (htmlContent.StateID == publishedStateID)
                             {
                                 htmlContent.StateID = draftStateID;
@@ -548,12 +548,12 @@ namespace DotNetNuke.Modules.Html
                             else
                             {
                                 htmlContent.StateID = publishedStateID;
-                                //here it's in published mode
+                                // here it's in published mode
                             }
                         }
                         else
                         {
-                            //if it's already published set it back to draft
+                            // if it's already published set it back to draft
                             if ((htmlContent.StateID != draftStateID))
                             {
                                 htmlContent.StateID = draftStateID;
@@ -643,7 +643,7 @@ namespace DotNetNuke.Modules.Html
 
             if (item.RowType == DataControlRowType.DataRow)
             {
-                //Localize columns
+                // Localize columns
                 item.Cells[2].Text = Localization.GetString(item.Cells[2].Text, this.LocalResourceFile);
                 item.Cells[3].Text = Localization.GetString(item.Cells[3].Text, this.LocalResourceFile);
             }
@@ -655,7 +655,7 @@ namespace DotNetNuke.Modules.Html
             {
                 HtmlTextInfo htmlContent;
 
-                //disable delete button if user doesn't have delete rights???
+                // disable delete button if user doesn't have delete rights???
                 switch (e.CommandName.ToLowerInvariant())
                 {
                     case "remove":
@@ -686,12 +686,12 @@ namespace DotNetNuke.Modules.Html
                     else
                     {
                         this.DisplayContent(latestContent);
-                        //DisplayPreview(latestContent);
-                        //DisplayVersions();
+                        // DisplayPreview(latestContent);
+                        // DisplayVersions();
                     }
                 }
 
-                //Module failed to load
+                // Module failed to load
             }
             catch (Exception exc)
             {
@@ -731,7 +731,7 @@ namespace DotNetNuke.Modules.Html
                             switch (imageButton.CommandName.ToLowerInvariant())
                             {
                                 case "rollback":
-                                    //hide rollback for the first item
+                                    // hide rollback for the first item
                                     if (this.dgVersions.CurrentPageIndex == 0)
                                     {
                                         if ((e.Row.RowIndex == 0))
@@ -750,7 +750,7 @@ namespace DotNetNuke.Modules.Html
                                         msg.Replace("[VERSION]", htmlContent.Version.ToString()).Replace("[STATE]", htmlContent.StateName).Replace("[DATECREATED]", htmlContent.CreatedOnDate.ToString())
                                             .Replace("[USERNAME]", createdBy);
                                     imageButton.OnClientClick = "return confirm(\"" + msg + "\");";
-                                    //hide the delete button
+                                    // hide the delete button
                                     var showDelete = this.UserInfo.IsSuperUser || PortalSecurity.IsInRole(this.PortalSettings.AdministratorRoleName);
 
                                     if (!showDelete)

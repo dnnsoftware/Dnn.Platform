@@ -127,13 +127,13 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("moduleControl");
 
-            //write out properties
+            // write out properties
             this.WriteXmlInternal(writer);
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 

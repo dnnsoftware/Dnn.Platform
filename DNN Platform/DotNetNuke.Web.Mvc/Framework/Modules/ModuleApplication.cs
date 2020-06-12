@@ -47,7 +47,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
             DisableMvcResponseHeader = disableMvcResponseHeader;
             this.ControllerFactory = Globals.DependencyProvider.GetRequiredService<IControllerFactory>();
             this.ViewEngines = new ViewEngineCollection();
-            //ViewEngines.Add(new ModuleDelegatingViewEngine());
+            // ViewEngines.Add(new ModuleDelegatingViewEngine());
         }
 
         public virtual IControllerFactory ControllerFactory { get; set; }
@@ -95,7 +95,7 @@ namespace DotNetNuke.Web.Mvc.Framework.Modules
 
             var controllerName = this.RequestContext.RouteData.GetRequiredString("controller");
 
-            //Construct the controller using the ControllerFactory
+            // Construct the controller using the ControllerFactory
             var controller = this.ControllerFactory.CreateController(this.RequestContext, controllerName);
             try
             {

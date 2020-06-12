@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.UserControls
 					this.LastModifiedDate = this.Model.LastModifiedOnDate.ToString();
                 }
 
-                //check to see if updated check is redundant
+                // check to see if updated check is redundant
                 var isCreatorAndUpdater = this.CreatedByUser == this.LastModifiedByUser &&
                     Globals.NumberMatchRegex.IsMatch(this.CreatedByUser) && Globals.NumberMatchRegex.IsMatch(this.LastModifiedByUser);
 
@@ -108,7 +108,7 @@ namespace DotNetNuke.UI.UserControls
                     this.ShowUpdatedString(isCreatorAndUpdater);
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -124,7 +124,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    //contains a UserID
+                    // contains a UserID
                     UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.CreatedByUser));
                     if (userInfo != null)
                     {
@@ -139,7 +139,7 @@ namespace DotNetNuke.UI.UserControls
 
         private void ShowUpdatedString(bool isCreatorAndUpdater)
         {
-            //check to see if audit contains update information
+            // check to see if audit contains update information
             if (string.IsNullOrEmpty(this.LastModifiedDate))
             {
                 return;
@@ -157,7 +157,7 @@ namespace DotNetNuke.UI.UserControls
                 }
                 else
                 {
-                    //contains a UserID
+                    // contains a UserID
                     UserInfo userInfo = UserController.GetUserById(PortalController.Instance.GetCurrentPortalSettings().PortalId, int.Parse(this.LastModifiedByUser));
                     if (userInfo != null)
                     {

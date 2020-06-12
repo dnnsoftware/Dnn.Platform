@@ -186,7 +186,7 @@ namespace DotNetNuke.UI.Containers
             this.Visible = this.ActionManager.DisplayControl(objNodes);
             if (this.Visible)
             {
-                //since we always bind we need to clear the nodes for providers that maintain their state
+                // since we always bind we need to clear the nodes for providers that maintain their state
                 this.ProviderControl.ClearNodes();
                 foreach (DNNNode objNode in objNodes)
                 {
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.Containers
                 this.ProviderControl.MouseOverAction = NavigationProvider.HoverAction.Expand;
                 this.ProviderControl.MouseOverDisplay = NavigationProvider.HoverDisplay.None;
 
-                //style sheet settings
+                // style sheet settings
                 this.ProviderControl.CSSControl = "ModuleTitle_MenuBar";
                 this.ProviderControl.CSSContainerRoot = "ModuleTitle_MenuContainer";
                 this.ProviderControl.CSSNode = "ModuleTitle_MenuItem";
@@ -247,7 +247,7 @@ namespace DotNetNuke.UI.Containers
                 this.ProviderControl.StyleRoot = "background-color: Transparent; font-size: 1pt;";
                 this.ProviderControl.NodeClick += this.MenuItem_Click;
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }
@@ -304,10 +304,10 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnLoad(e);
 
-            //Add the Actions to the Action Root
+            // Add the Actions to the Action Root
             this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions);
 
-            //Set Menu Defaults
+            // Set Menu Defaults
             this.SetMenuDefaults();
         }
 
@@ -351,7 +351,7 @@ namespace DotNetNuke.UI.Containers
         private void ProviderControl_PopulateOnDemand(NavigationEventArgs args)
         {
             this.SetMenuDefaults();
-            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions); //Modules how add custom actions in control lifecycle will not have those actions populated...
+            this.ActionRoot.Actions.AddRange(this.ModuleControl.ModuleContext.Actions); // Modules how add custom actions in control lifecycle will not have those actions populated...
 
             ModuleAction objAction = this.ActionRoot;
             if (this.ActionRoot.ID != Convert.ToInt32(args.ID))
@@ -362,7 +362,7 @@ namespace DotNetNuke.UI.Containers
             {
                 args.Node = Navigation.GetActionNode(args.ID, this.ProviderControl.ID, objAction, this);
             }
-            this.ProviderControl.ClearNodes(); //since we always bind we need to clear the nodes for providers that maintain their state
+            this.ProviderControl.ClearNodes(); // since we always bind we need to clear the nodes for providers that maintain their state
             this.BindMenu(Navigation.GetActionNodes(objAction, args.Node, this, this.ExpandDepth));
         }
 		

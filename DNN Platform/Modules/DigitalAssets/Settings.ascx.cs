@@ -115,7 +115,7 @@ namespace DotNetNuke.Modules.DigitalAssets
 
         private void LoadFilterViewSettings()
         {
-            //handle upgrades where FilterCondition didn't exist
+            // handle upgrades where FilterCondition didn't exist
             SettingsRepository.SetDefaultFilterCondition(this.ModuleId);
 
             this.FilterOptionsRadioButtonsList.SelectedValue = SettingsRepository.GetFilterCondition(this.ModuleId).ToString();

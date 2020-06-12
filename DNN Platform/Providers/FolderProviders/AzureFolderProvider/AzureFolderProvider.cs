@@ -141,15 +141,15 @@ namespace DotNetNuke.Providers.FolderProviders.AzureFolderProvider
                                             var list = new List<IRemoteStorageItem>();
                                             do
                                             {
-                                                //This overload allows control of the page size. You can return all remaining results by passing null for the maxResults parameter,
-                                                //or by calling a different overload.
+                                                // This overload allows control of the page size. You can return all remaining results by passing null for the maxResults parameter,
+                                                // or by calling a different overload.
                                                 resultSegment = container.ListBlobsSegmented("", true, BlobListingDetails.All, synchBatchSize, continuationToken, null, null);
                                                 foreach (var blobItem in resultSegment.Results)
                                                 {
                                                     list.Add(new AzureRemoteStorageItem {Blob = new AzureBlob(blobItem as CloudBlob)});
                                                 }
 
-                                                //Get the continuation token.
+                                                // Get the continuation token.
                                                 continuationToken = resultSegment.ContinuationToken;
                                             }
                                             while (continuationToken != null);

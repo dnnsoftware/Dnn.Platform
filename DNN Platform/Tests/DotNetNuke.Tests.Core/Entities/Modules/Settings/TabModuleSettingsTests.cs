@@ -111,7 +111,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         private void SaveSettings_CallsUpdateTabModuleSetting_WithRightParameters(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new MyTabModuleSettings
             {
@@ -137,17 +137,17 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new MyTabModuleSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void SaveSettings_UpdatesCache()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var settings = new MyTabModuleSettings();
 
@@ -155,27 +155,27 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
             this.MockCache.Setup(c => c.Insert(CacheKey(moduleInfo), settings));
             var settingsRepository = new MyTabModuleSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.SaveSettings(moduleInfo, settings);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
         [Test]
         public void GetSettings_CallsGetCachedObject()
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
 
             this.MockTabModuleSettings(moduleInfo, new Hashtable());
             this.MockCache.Setup(c => c.GetItem("DNN_" + CacheKey(moduleInfo))).Returns(new MyTabModuleSettings());
             var settingsRepository = new MyTabModuleSettingsRepository();
 
-            //Act
+            // Act
             settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             this.MockRepository.VerifyAll();
         }
 
@@ -245,7 +245,7 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
         private void GetSettings_GetsValuesFrom_ModuleSettingsCollection(string stringValue, int integerValue, double doubleValue, bool booleanValue, DateTime datetimeValue, TimeSpan timeSpanValue, TestingEnum enumValue, ComplexType complexValue)
         {
-            //Arrange
+            // Arrange
             var moduleInfo = GetModuleInfo;
             var tabModuleSettings = new Hashtable
                                     {
@@ -263,10 +263,10 @@ namespace DotNetNuke.Tests.Core.Entities.Modules.Settings
 
             var settingsRepository = new MyTabModuleSettingsRepository();
 
-            //Act
+            // Act
             var settings = settingsRepository.GetSettings(moduleInfo);
 
-            //Assert
+            // Assert
             Assert.AreEqual(stringValue, settings.StringProperty, "The retrieved string property value is not equal to the stored one");
             Assert.AreEqual(integerValue, settings.IntegerProperty, "The retrieved integer property value is not equal to the stored one");
             Assert.AreEqual(doubleValue, settings.DoubleProperty, "The retrieved double property value is not equal to the stored one");

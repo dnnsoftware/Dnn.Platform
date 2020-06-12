@@ -190,7 +190,7 @@ namespace DotNetNuke.Common
                 tab = TabController.Instance.GetTab(tabID, isSuperTab ? Null.NullInteger : settings.PortalId, false);
             }
 
-            //only add language to url if more than one locale is enabled
+            // only add language to url if more than one locale is enabled
             if (settings != null && language != null && LocaleController.Instance.GetLocales(settings.PortalId).Count > 1)
             {
                 if (settings.ContentLocalizationEnabled)
@@ -209,7 +209,7 @@ namespace DotNetNuke.Common
                 }
                 else if (settings.EnableUrlLanguage)
                 {
-                    //legacy pre 5.5 behavior
+                    // legacy pre 5.5 behavior
                     if (language == "")
                     {
                         url += "&language=" + Thread.CurrentThread.CurrentCulture.Name;

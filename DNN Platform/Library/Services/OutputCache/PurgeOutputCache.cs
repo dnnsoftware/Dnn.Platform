@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.OutputCache
 
         public PurgeOutputCache(ScheduleHistoryItem objScheduleHistoryItem)
         {
-            this.ScheduleHistoryItem = objScheduleHistoryItem; //REQUIRED
+            this.ScheduleHistoryItem = objScheduleHistoryItem; // REQUIRED
         }
 
         public override void DoWork()
@@ -42,23 +42,23 @@ namespace DotNetNuke.Services.OutputCache
                     }
                     catch (NotSupportedException exc)
                     {
-						//some output caching providers don't use this feature
+						// some output caching providers don't use this feature
                         Logger.Debug(exc);
                     }
                 }
-                this.ScheduleHistoryItem.Succeeded = true; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = true; // REQUIRED
             }
-            catch (Exception exc) //REQUIRED
+            catch (Exception exc) // REQUIRED
             {
-                this.ScheduleHistoryItem.Succeeded = false; //REQUIRED
+                this.ScheduleHistoryItem.Succeeded = false; // REQUIRED
 
-                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging output cache task failed: {0}.", exc.ToString())); //OPTIONAL
+                this.ScheduleHistoryItem.AddLogNote(string.Format("Purging output cache task failed: {0}.", exc.ToString())); // OPTIONAL
 
-                //notification that we have errored
+                // notification that we have errored
                 this.Errored(ref exc);
 				
-				//log the exception
-                Exceptions.Exceptions.LogException(exc); //OPTIONAL
+				// log the exception
+                Exceptions.Exceptions.LogException(exc); // OPTIONAL
             }
         }
     }

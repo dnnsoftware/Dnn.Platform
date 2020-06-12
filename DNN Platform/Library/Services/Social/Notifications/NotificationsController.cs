@@ -187,7 +187,7 @@ namespace DotNetNuke.Services.Social.Notifications
 
             notification.NotificationID = this._dataService.SendNotification(notification, pid);
 
-            //send message to Roles
+            // send message to Roles
             if (roles != null)
             {
                 var roleIds = string.Empty;
@@ -202,7 +202,7 @@ namespace DotNetNuke.Services.Social.Notifications
                     UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            //send message to each User - this should be called after CreateMessageRecipientsForRole.
+            // send message to each User - this should be called after CreateMessageRecipientsForRole.
             if (users == null)
             {
                 users = new List<UserInfo>();
@@ -225,7 +225,7 @@ namespace DotNetNuke.Services.Social.Notifications
                     UserController.Instance.GetCurrentUserInfo().UserID);
             }
 
-            //if sendToast is true, then mark all recipients' as ready for toast.
+            // if sendToast is true, then mark all recipients' as ready for toast.
             if (notification.SendToast)
             {
                 foreach (var messageRecipient in InternalMessagingController.Instance.GetMessageRecipients(notification.NotificationID))
@@ -406,8 +406,8 @@ namespace DotNetNuke.Services.Social.Notifications
                 {
                     this._dataService.MarkToastSent(message.NotificationID, userInfo.UserID);
                 }
-                //Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
-                //This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
+                // Set the cache to empty toasts object because we don't want to make calls to database everytime for empty objects.
+                // This empty object cache would be cleared by MarkReadyForToast emthod when a new notification arrives for the user.
                 DataCache.SetCache(cacheKey, new List<Notification>());
             }
 

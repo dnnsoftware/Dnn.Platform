@@ -186,7 +186,7 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [Test]
         public void AddFile_Checks_Space_For_Stream_Length()
         {
-            //Arrange
+            // Arrange
             this.PrepareFileSecurityCheck();
             this._folderInfo.Setup(fi => fi.PortalID).Returns(Constants.CONTENT_ValidPortalId);
             this._folderInfo.Setup(fi => fi.FolderID).Returns(Constants.FOLDER_ValidFolderId);
@@ -215,10 +215,10 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
 
             this._workflowManager.Setup(we => we.GetWorkflow(It.IsAny<int>())).Returns((Workflow)null);
 
-            //Act
+            // Act
             this._mockFileManager.Object.AddFile(this._folderInfo.Object, Constants.FOLDER_ValidFileName, fileContent, true, false, Constants.CONTENTTYPE_ValidContentType);
 
-            //Assert
+            // Assert
             this._portalController.Verify(pc => pc.HasSpaceAvailable(Constants.CONTENT_ValidPortalId, fileContent.Length));
         }
 

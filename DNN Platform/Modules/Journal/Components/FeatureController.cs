@@ -41,7 +41,7 @@ namespace DotNetNuke.Modules.Journal.Components {
     /// </summary>
     /// -----------------------------------------------------------------------------
 
-    //uncomment the interfaces to add the support.
+    // uncomment the interfaces to add the support.
     public class FeatureController : ModuleSearchBase, IModuleSearchResultController
     {
         protected INavigationManager NavigationManager { get; }
@@ -59,23 +59,23 @@ namespace DotNetNuke.Modules.Journal.Components {
         /// <param name="moduleID">The Id of the module to be exported</param>
         /// -----------------------------------------------------------------------------
         public string ExportModule(int moduleID) {
-            //string strXML = "";
+            // string strXML = "";
 
-            //List<JournalInfo> colJournals = GetJournals(ModuleID);
-            //if (colJournals.Count != 0)
-            //{
+            // List<JournalInfo> colJournals = GetJournals(ModuleID);
+            // if (colJournals.Count != 0)
+            // {
             //    strXML += "<Journals>";
 
-            //    foreach (JournalInfo objJournal in colJournals)
+            // foreach (JournalInfo objJournal in colJournals)
             //    {
             //        strXML += "<Journal>";
             //        strXML += "<content>" + DotNetNuke.Common.Utilities.XmlUtils.XMLEncode(objJournal.Content) + "</content>";
             //        strXML += "</Journal>";
             //    }
             //    strXML += "</Journals>";
-            //}
+            // }
 
-            //return strXML;
+            // return strXML;
 
             throw new NotImplementedException("The method or operation is not implemented.");
         }
@@ -90,15 +90,15 @@ namespace DotNetNuke.Modules.Journal.Components {
         /// <param name="userId">The Id of the user performing the import</param>
         /// -----------------------------------------------------------------------------
         public void ImportModule(int moduleID, string content, string version, int userId) {
-            //XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
-            //foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
-            //{
+            // XmlNode xmlJournals = DotNetNuke.Common.Globals.GetContent(Content, "Journals");
+            // foreach (XmlNode xmlJournal in xmlJournals.SelectNodes("Journal"))
+            // {
             //    JournalInfo objJournal = new JournalInfo();
             //    objJournal.ModuleId = ModuleID;
             //    objJournal.Content = xmlJournal.SelectSingleNode("content").InnerText;
             //    objJournal.CreatedByUser = UserID;
             //    AddJournal(objJournal);
-            //}
+            // }
 
             throw new NotImplementedException("The method or operation is not implemented.");
         }
@@ -134,7 +134,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                         while (reader.Read())
                         {
                             var journalId = Convert.ToInt32(reader["JournalId"]);
-                            //var journalTypeId = reader["JournalTypeId"].ToString();
+                            // var journalTypeId = reader["JournalTypeId"].ToString();
                             var userId = Convert.ToInt32(reader["UserId"]);
                             var dateUpdated = Convert.ToDateTime(reader["DateUpdated"]);
                             var profileId = reader["ProfileId"].ToString();
@@ -189,7 +189,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                             break;
                         }
 
-                        //index comments for this journal
+                        // index comments for this journal
                         this.AddCommentItems(journalIds, searchDocuments);
                     }
                 }
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Journal.Components {
                 return true;
             }
 
-            //do not show items in private group
+            // do not show items in private group
             if (securityKeys.Any(s => s.StartsWith("R")))
             {
                 var groupId = Convert.ToInt32(securityKeys.First(s => s.StartsWith("R")).Substring(1));
@@ -274,7 +274,7 @@ namespace DotNetNuke.Modules.Journal.Components {
             var journalId = Convert.ToInt32(searchResult.UniqueKey.Split('_')[1]);
             var groupId = Convert.ToInt32(searchResult.Keywords["GroupId"]);
             var tabId = Convert.ToInt32(searchResult.Keywords["TabId"]);
-            //var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
+            // var tabModuleId = Convert.ToInt32(searchResult.Keywords["TabModuleId"]);
             var profileId = Convert.ToInt32(searchResult.Keywords["ProfileId"]);
 
             if (groupId > 0 && tabId > 0)

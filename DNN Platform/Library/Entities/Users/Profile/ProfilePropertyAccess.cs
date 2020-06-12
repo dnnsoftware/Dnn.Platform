@@ -45,12 +45,12 @@ namespace DotNetNuke.Entities.Users
 
             if (accessingUser != null)
             {
-                //Is Super User?
+                // Is Super User?
                 isAdmin = accessingUser.IsSuperUser;
 
 				if (!isAdmin && targetUser.PortalID != -1)
                 {
-                    //Is Administrator
+                    // Is Administrator
 	                var administratorRoleName = portalSettings != null
 		                ? portalSettings.AdministratorRoleName
 		                : PortalController.Instance.GetPortal(targetUser.PortalID).AdministratorRoleName;
@@ -133,7 +133,7 @@ namespace DotNetNuke.Entities.Users
         {
             var isAdminUser = IsAdminUser(portalSettings, accessingUser, targetUser);
 
-            //Use properties visible property but admins and hosts can always see the property
+            // Use properties visible property but admins and hosts can always see the property
             var isVisible = property.Visible || isAdminUser;
 
             if (isVisible && !isAdminUser)
@@ -144,7 +144,7 @@ namespace DotNetNuke.Entities.Users
                         isVisible = IsUser(accessingUser, targetUser);
                         if (!isVisible)
                         {
-                            //Relationships
+                            // Relationships
                             foreach (Relationship relationship in property.ProfileVisibility.RelationshipVisibilities)
                             {
                                 if (targetUser.Social.UserRelationships.Any(userRelationship =>
@@ -158,7 +158,7 @@ namespace DotNetNuke.Entities.Users
                                     break;
                                 }
                             }
-                            //Groups/Roles
+                            // Groups/Roles
                             if (property.ProfileVisibility.RoleVisibilities.Any(role => accessingUser.IsInRole(role.RoleName)))
                             {
                                 isVisible = true;
@@ -173,7 +173,7 @@ namespace DotNetNuke.Entities.Users
                         isVisible = IsMember(accessingUser);
                         break;
                     case UserVisibilityMode.AdminOnly:
-                        //accessing user not admin user so property is hidden (unless it is the user him/herself)
+                        // accessing user not admin user so property is hidden (unless it is the user him/herself)
                         isVisible = IsUser(accessingUser, targetUser);
                         break;
                 }
@@ -219,7 +219,7 @@ namespace DotNetNuke.Entities.Users
                         }
                         break;
                     case "image":
-                        //File is stored as a FileID
+                        // File is stored as a FileID
                         int fileID;
                         if (Int32.TryParse(property.PropertyValue, out fileID) && fileID > 0)
                         {

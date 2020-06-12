@@ -44,7 +44,7 @@ namespace DotNetNuke.Web.UI
             }
             set
             {
-                //todo: javascript encode for onclick events
+                // todo: javascript encode for onclick events
                 this._Message = value;
                 this._Message = this._Message.Replace("'", "\\'");
                 this._Message = this._Message.Replace("\"", "\\\"");
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.UI
             }
             set
             {
-                //todo: javascript encode for onclick events
+                // todo: javascript encode for onclick events
                 this._Title = value;
                 this._Title = this._Title.Replace("'", "\\'");
                 this._Title = this._Title.Replace("\"", "\\\"");

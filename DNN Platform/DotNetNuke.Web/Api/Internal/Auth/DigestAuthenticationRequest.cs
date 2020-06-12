@@ -14,16 +14,16 @@ namespace DotNetNuke.Web.Api.Internal.Auth
 
         public DigestAuthenticationRequest(string authorizationHeader, string httpMethod)
         {
-            //Authorization: Digest
-            //username="Mufasa",
-            //realm="testrealm@host.com",
-            //nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093",
-            //uri="/dir/index.html",
-            //qop=auth,
-            //nc=00000001,
-            //cnonce="0a4f113b",
-            //response="6629fae49393a05397450978507c4ef1",
-            //opaque="5ccc069c403ebaf9f0171e9517f40e41"
+            // Authorization: Digest
+            // username="Mufasa",
+            // realm="testrealm@host.com",
+            // nonce="dcd98b7102dd2f0e8b11d0f600bfb0c093",
+            // uri="/dir/index.html",
+            // qop=auth,
+            // nc=00000001,
+            // cnonce="0a4f113b",
+            // response="6629fae49393a05397450978507c4ef1",
+            // opaque="5ccc069c403ebaf9f0171e9517f40e41"
             try
             {
                 this.RequestParams = new NameValueCollection();
@@ -42,7 +42,7 @@ namespace DotNetNuke.Web.Api.Internal.Auth
             catch (Exception)
             {
                 
-                //suppress any issue e.g. another 401 from a different auth method
+                // suppress any issue e.g. another 401 from a different auth method
             }
             
         }

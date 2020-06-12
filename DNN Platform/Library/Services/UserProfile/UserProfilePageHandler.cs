@@ -39,13 +39,13 @@ namespace DotNetNuke.Services.UserProfile
 
             try
             {
-                //try UserId
+                // try UserId
                 if (!string.IsNullOrEmpty(context.Request.QueryString["UserId"]))
                 {
                     UserId = Int32.Parse(context.Request.QueryString["UserId"]);
                     if (UserController.GetUserById(PortalId, UserId) == null)
                     {
-                        //The user cannot be found (potential DOS)
+                        // The user cannot be found (potential DOS)
                         Exceptions.Exceptions.ProcessHttpException(context.Request);
 
                     }
@@ -53,7 +53,7 @@ namespace DotNetNuke.Services.UserProfile
 
                 if (UserId == Null.NullInteger)
                 {
-                    //try userName
+                    // try userName
                     if (!string.IsNullOrEmpty(context.Request.QueryString["UserName"]))
                     {
                         UserId = GetUserId(context.Request.QueryString["UserName"], PortalId);
@@ -62,20 +62,20 @@ namespace DotNetNuke.Services.UserProfile
 
                 if (UserId == Null.NullInteger)
                 {
-                    //try user
+                    // try user
                     string user = context.Request.QueryString["User"];
                     if (!string.IsNullOrEmpty(user))
                     {
                         if (!Int32.TryParse(user, out UserId))
                         {
-                            //User is not an integer, so try it as a name
+                            // User is not an integer, so try it as a name
                             UserId = GetUserId(user, PortalId);
                         }
                         else
                         {
                             if (UserController.GetUserById(PortalId, UserId) == null)
                             {
-                                //The user cannot be found (potential DOS)
+                                // The user cannot be found (potential DOS)
                                 Exceptions.Exceptions.ProcessHttpException(context.Request);
 
                             }
@@ -85,18 +85,18 @@ namespace DotNetNuke.Services.UserProfile
 
                 if (UserId == Null.NullInteger)
                 {
-                    //The user cannot be found (potential DOS)
+                    // The user cannot be found (potential DOS)
                     Exceptions.Exceptions.ProcessHttpException(context.Request);
                 }
             }
             catch (Exception exc)
             {
                 Logger.Debug(exc);
-                //The user cannot be found (potential DOS)
+                // The user cannot be found (potential DOS)
                 Exceptions.Exceptions.ProcessHttpException(context.Request);
             }
 
-            //Redirect to Userprofile Page
+            // Redirect to Userprofile Page
             context.Response.Redirect(Globals.UserProfileURL(UserId), true);
         }
 
@@ -120,7 +120,7 @@ namespace DotNetNuke.Services.UserProfile
             }
             else
             {
-                //The user cannot be found (potential DOS)
+                // The user cannot be found (potential DOS)
                 Exceptions.Exceptions.ProcessHttpException();
             }
             return _UserId;

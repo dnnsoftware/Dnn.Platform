@@ -9,7 +9,7 @@ using DotNetNuke.Web.Api;
 
 namespace DotNetNuke.Tests.Web.Api
 {
-    //various ServiceRouteMappers that will be reflected upon by the tests
+    // various ServiceRouteMappers that will be reflected upon by the tests
 
     public class ReflectedServiceRouteMappers
     {
@@ -34,7 +34,7 @@ namespace DotNetNuke.Tests.Web.Api
     {
         public ExceptionOnCreateInstanceServiceRouteMapper(int i)
         {
-            //no default constructor prevents Activator.CreateInstance from working
+            // no default constructor prevents Activator.CreateInstance from working
             Debug.WriteLine(i);
         }
 

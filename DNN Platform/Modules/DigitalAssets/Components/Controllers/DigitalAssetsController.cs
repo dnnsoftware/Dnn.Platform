@@ -284,7 +284,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
-                //The user cannot access the content
+                // The user cannot access the content
                 return new List<FolderViewModel>();
             }
             return AssetManager.Instance.GetFolders(folder, "FolderName", true).Select(this.GetFolderViewModel);
@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
             if (!FolderPermissionController.CanBrowseFolder((FolderInfo)folder))
             {
-                //The user cannot access the content               
+                // The user cannot access the content               
                 return;
             }
 
@@ -645,7 +645,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
 
         public virtual int GetInitialTab(NameValueCollection requestParams, NameValueCollection damState)
         {
-            return 0; //Always
+            return 0; // Always
         }
         #endregion
 
@@ -786,7 +786,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                     case "07.01.00":
                         ModuleDefinitionInfo mDef = ModuleDefinitionController.GetModuleDefinitionByFriendlyName("Digital Asset Management");
 
-                        //Add tab to Admin Menu
+                        // Add tab to Admin Menu
                         if (mDef != null)
                         {
                             var hostPage = Upgrade.AddHostPage("File Management",
@@ -795,7 +795,7 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                                                             "~/Icons/Sigma/Files_32X32_Standard.png",
                                                             true);
 
-                            //Add module to page
+                            // Add module to page
                             Upgrade.AddModuleToPage(hostPage, mDef.ModuleDefID, "File Management", "~/Icons/Sigma/Files_32X32_Standard.png", true);
 
                             Upgrade.AddAdminPages("File Management",
@@ -809,10 +809,10 @@ namespace DotNetNuke.Modules.DigitalAssets.Components.Controllers
                                                  true);
                         }
 
-                        //Remove Host File Manager page
+                        // Remove Host File Manager page
                         Upgrade.RemoveHostPage("File Manager");
 
-                        //Remove Admin File Manager Pages
+                        // Remove Admin File Manager Pages
                         Upgrade.RemoveAdminPages("//Admin//FileManager");
 
                         break;

@@ -87,14 +87,14 @@ namespace DotNetNuke.Web.UI.WebControls
                     writer.RenderEndTag();
                 }
             }
-            //MyBase.RenderChildren(writer)
+            // MyBase.RenderChildren(writer)
 
             writer.RenderEndTag();
-            //tr
+            // tr
             writer.RenderEndTag();
-            //table
+            // table
             writer.RenderEndTag();
-            //div
+            // div
 
             writer.AddAttribute("class", "barBottomLeft");
             writer.RenderBeginTag("div");

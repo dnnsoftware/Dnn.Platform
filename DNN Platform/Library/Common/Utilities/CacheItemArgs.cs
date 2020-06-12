@@ -141,7 +141,7 @@ namespace DotNetNuke.Common.Utilities
                 if (this._paramList == null)
                 {
                     this._paramList = new ArrayList();
-					//add additional params to this list if its not null
+					// add additional params to this list if its not null
 					if (this.Params != null)
 					{
 						foreach (object param in this.Params)

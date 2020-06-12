@@ -156,29 +156,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.DeleteFile(null);
         }
 
-        //[Test]
-        //public void DeleteFile_Calls_FileWrapper_Delete_When_File_Exists()
-        //{
+        // [Test]
+        // public void DeleteFile_Calls_FileWrapper_Delete_When_File_Exists()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
+        // _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(true);
 
-        //    _sfp.DeleteFile(_fileInfo.Object);
+        // _sfp.DeleteFile(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Once());
+        // }
 
-        //[Test]
-        //public void DeleteFile_Does_Not_Call_FileWrapper_Delete_When_File_Does_Not_Exist()
-        //{
+        // [Test]
+        // public void DeleteFile_Does_Not_Call_FileWrapper_Delete_When_File_Does_Not_Exist()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
+        // _fileWrapper.Setup(fw => fw.Exists(Constants.FOLDER_ValidFilePath)).Returns(false);
 
-        //    _sfp.DeleteFile(_fileInfo.Object);
+        // _sfp.DeleteFile(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Never());
-        //}
+        // _fileWrapper.Verify(fw => fw.Delete(Constants.FOLDER_ValidFilePath), Times.Never());
+        // }
 
         #endregion
 
@@ -303,29 +303,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.GetFileAttributes(null);
         }
 
-        //[Test]
-        //public void GetFileAttributes_Calls_FileWrapper_GetAttributes()
-        //{
+        // [Test]
+        // public void GetFileAttributes_Calls_FileWrapper_GetAttributes()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _sfp.GetFileAttributes(_fileInfo.Object);
+        // _sfp.GetFileAttributes(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath), Times.Once());
+        // }
 
-        //[Test]
-        //public void GetFileAttributes_Returns_File_Attributes_When_File_Exists()
-        //{
+        // [Test]
+        // public void GetFileAttributes_Returns_File_Attributes_When_File_Exists()
+        // {
         //    var expectedFileAttributes = FileAttributes.Normal;
 
-        //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+        // _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath)).Returns(expectedFileAttributes);
+        // _fileWrapper.Setup(fw => fw.GetAttributes(Constants.FOLDER_ValidFilePath)).Returns(expectedFileAttributes);
 
-        //    var result = _sfp.GetFileAttributes(_fileInfo.Object);
+        // var result = _sfp.GetFileAttributes(_fileInfo.Object);
 
-        //    Assert.AreEqual(expectedFileAttributes, result);
-        //}
+        // Assert.AreEqual(expectedFileAttributes, result);
+        // }
 
         [Test]
         public void GetFileAttributes_Returns_Null_When_File_Does_Not_Exist()
@@ -482,29 +482,29 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.GetLastModificationTime(null);
         }
 
-        //[Test]
-        //public void GetLastModificationTime_Calls_FileWrapper_GetLastWriteTime()
-        //{
+        // [Test]
+        // public void GetLastModificationTime_Calls_FileWrapper_GetLastWriteTime()
+        // {
         //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _sfp.GetLastModificationTime(_fileInfo.Object);
+        // _sfp.GetLastModificationTime(_fileInfo.Object);
 
-        //    _fileWrapper.Verify(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath), Times.Once());
+        // }
 
-        //[Test]
-        //public void GetLastModificationTime_Returns_Valid_Date_When_File_Exists()
-        //{
+        // [Test]
+        // public void GetLastModificationTime_Returns_Valid_Date_When_File_Exists()
+        // {
         //    var expectedDate = DateTime.Now;
 
-        //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+        // _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _fileWrapper.Setup(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath)).Returns(expectedDate);
+        // _fileWrapper.Setup(fw => fw.GetLastWriteTime(Constants.FOLDER_ValidFilePath)).Returns(expectedDate);
 
-        //    var result = _sfp.GetLastModificationTime(_fileInfo.Object);
+        // var result = _sfp.GetLastModificationTime(_fileInfo.Object);
 
-        //    Assert.AreEqual(expectedDate, result);
-        //}
+        // Assert.AreEqual(expectedDate, result);
+        // }
 
         [Test]
         public void GetLastModificationTime_Returns_Null_Date_When_File_Does_Not_Exist()
@@ -609,17 +609,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("")]        
         public void GetFileUrl_ReturnsStandardUrl_WhenFileUrlDoesNotContainInvalidCharactes(string fileNameChar)
         {
-            //Arrange
+            // Arrange
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
             var portalSettingsMock = this.GetPortalSettingsMock();
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
             this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
             this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
             
-            //Act
+            // Act
             var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
-            //Assert
+            // Assert
             Assert.IsFalse(fileUrl.ToLowerInvariant().Contains("linkclick"));
         }
         
@@ -636,17 +636,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
         [TestCase("%")]
         public void GetFileUrl_ReturnsLinkclickUrl_WhenFileUrlContainsInvalidCharactes(string fileNameChar)
         {
-            //Arrange
+            // Arrange
             var sfp = new Mock<StandardFolderProvider> { CallBase = true };
             var portalSettingsMock = this.GetPortalSettingsMock();
             sfp.Setup(fp => fp.GetPortalSettings(Constants.CONTENT_ValidPortalId)).Returns(portalSettingsMock);
             this._fileInfo.Setup(f => f.FileName).Returns($"MyFileName {fileNameChar} Copy");
             this._fileInfo.Setup(f => f.PortalId).Returns(Constants.CONTENT_ValidPortalId);
 
-            //Act
+            // Act
             var fileUrl = sfp.Object.GetFileUrl(this._fileInfo.Object);
 
-            //Assert
+            // Assert
             Assert.IsTrue(fileUrl.ToLowerInvariant().Contains("linkclick"));
         }
         #endregion
@@ -742,17 +742,17 @@ namespace DotNetNuke.Tests.Core.Providers.Folder
             this._sfp.SetFileAttributes(null, FileAttributes.Archive);
         }
 
-        //[Test]
-        //public void SetFileAttributes_Calls_FileWrapper_SetAttributes()
-        //{
+        // [Test]
+        // public void SetFileAttributes_Calls_FileWrapper_SetAttributes()
+        // {
         //    const FileAttributes validFileAttributes = FileAttributes.Archive;
 
-        //    _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
+        // _fileInfo.Setup(fi => fi.PhysicalPath).Returns(Constants.FOLDER_ValidFilePath);
 
-        //    _sfp.SetFileAttributes(_fileInfo.Object, validFileAttributes);
+        // _sfp.SetFileAttributes(_fileInfo.Object, validFileAttributes);
 
-        //    _fileWrapper.Verify(fw => fw.SetAttributes(Constants.FOLDER_ValidFilePath, validFileAttributes), Times.Once());
-        //}
+        // _fileWrapper.Verify(fw => fw.SetAttributes(Constants.FOLDER_ValidFilePath, validFileAttributes), Times.Once());
+        // }
 
         #endregion
 

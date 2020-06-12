@@ -63,8 +63,8 @@ namespace DotNetNuke.Services.Installer.Installers
             catch (Exception ex)
             {
                 this.Log.AddWarning(string.Format(Util.CLEANUP_ProcessError, ex.Message));
-                //DNN-9202: MUST NOT fail installation when cleanup files deletion fails
-                //return false;
+                // DNN-9202: MUST NOT fail installation when cleanup files deletion fails
+                // return false;
             }
             this.Log.AddInfo(string.Format(Util.CLEANUP_ProcessComplete, this.Version.ToString(3)));
             return true;
@@ -109,13 +109,13 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-				//Backup File
+				// Backup File
                 if (File.Exists(this.PhysicalBasePath + insFile.FullName))
                 {
                     Util.BackupFile(insFile, this.PhysicalBasePath, this.Log);
                 }
 				
-				//Delete file
+				// Delete file
                 Util.DeleteFile(insFile, this.PhysicalBasePath, this.Log);
                 return true;
             }
@@ -174,7 +174,7 @@ namespace DotNetNuke.Services.Installer.Installers
         /// -----------------------------------------------------------------------------
         public override void Commit()
         {
-			//Do nothing
+			// Do nothing
             base.Commit();
         }
 

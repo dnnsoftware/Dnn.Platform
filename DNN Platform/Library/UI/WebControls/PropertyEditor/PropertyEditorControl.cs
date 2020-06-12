@@ -355,12 +355,12 @@ namespace DotNetNuke.UI.WebControls
         {
             if (this.DataSource != null)
             {
-				//TODO:  We need to add code to support using the cache in the future
+				// TODO:  We need to add code to support using the cache in the future
                 const BindingFlags bindings = BindingFlags.Public | BindingFlags.Instance | BindingFlags.Static;
 
                 var properties = this.DataSource.GetType().GetProperties(bindings);
 
-                //Apply sort method
+                // Apply sort method
                 switch (this.SortMode)
                 {
                     case PropertySortType.Alphabetical:
@@ -426,7 +426,7 @@ namespace DotNetNuke.UI.WebControls
             var cell = new TableCell();
             row.Cells.Add(cell);
 
-            //Create a FieldEditor for this Row
+            // Create a FieldEditor for this Row
             var editor = new FieldEditorControl
                              {
                                  DataSource = this.DataSource,
@@ -585,7 +585,7 @@ namespace DotNetNuke.UI.WebControls
             }
             this.Controls.Add(panel);
 			
-			//Get the Hashtable
+			// Get the Hashtable
             if (this._sections == null)
             {
                 this._sections = new Hashtable();
@@ -615,14 +615,14 @@ namespace DotNetNuke.UI.WebControls
 
             if (!this.AutoGenerate)
             {
-				//Create a new table
+				// Create a new table
                 if (this.DisplayMode == EditorDisplayMode.Div)
                 {
                     this.AddFields();
                 }
                 else
                 {
-					//Add the Table to the Controls Collection
+					// Add the Table to the Controls Collection
                     table = new Table { ID = "tbl" };
                     this.AddFields(table);
                     this.Controls.Add(table);
@@ -642,7 +642,7 @@ namespace DotNetNuke.UI.WebControls
 								var groupData = this.UnderlyingDataSource.Cast<object>().Where(obj => this.GetCategory(obj) == strGroup.Trim() && this.GetRowVisibility(obj));
 	                            if (groupData.Count() > 0)
 	                            {
-		                            //Add header
+		                            // Add header
 		                            var header = new HtmlGenericControl("h2");
 		                            header.Attributes.Add("class", "dnnFormSectionHead");
 		                            header.Attributes.Add("id", strGroup);
@@ -656,7 +656,7 @@ namespace DotNetNuke.UI.WebControls
 		                            var link = new HyperLink() { Text = localizedGroupName, NavigateUrl = "#" };
 		                            header.Controls.Add(link);
 
-		                            //fieldset to hold properties in group
+		                            // fieldset to hold properties in group
 		                            var fieldset = new HtmlGenericControl("fieldset");
 		                            var container = new Panel();
 		                            fieldset.Controls.Add(container);
@@ -670,18 +670,18 @@ namespace DotNetNuke.UI.WebControls
                             }
                             else
                             {
-                                //Create a new table
+                                // Create a new table
                                 table = new Table { ID = "tbl" + strGroup };
                                 foreach (object obj in this.UnderlyingDataSource)
                                 {
                                     if (this.GetCategory(obj) == strGroup.Trim())
                                     {
-                                        //Add the Editor Row to the Table
+                                        // Add the Editor Row to the Table
                                         if (this.GetRowVisibility(obj))
                                         {
                                             if (table.Rows.Count == 0)
                                             {
-                                                //Add a Header
+                                                // Add a Header
                                                 this.AddHeader(table, strGroup);
                                             }
 
@@ -690,7 +690,7 @@ namespace DotNetNuke.UI.WebControls
                                     }
                                 }
 
-                                //Add the Table to the Controls Collection (if it has any rows)
+                                // Add the Table to the Controls Collection (if it has any rows)
                                 if (table.Rows.Count > 0)
                                 {
                                     this.Controls.Add(table);
@@ -701,12 +701,12 @@ namespace DotNetNuke.UI.WebControls
                 }
                 else
                 {
-					//Create a new table
+					// Create a new table
                     if (this.DisplayMode == EditorDisplayMode.Div)
                     {
                         foreach (object obj in this.UnderlyingDataSource)
                         {
-							//Add the Editor Row to the Table
+							// Add the Editor Row to the Table
                             if (this.GetRowVisibility(obj))
                             {
                                 this.AddEditorRow(obj);
@@ -724,7 +724,7 @@ namespace DotNetNuke.UI.WebControls
                             }
                         }
 						
-						//Add the Table to the Controls Collection
+						// Add the Table to the Controls Collection
                         this.Controls.Add(table);
                     }
                 }
@@ -741,7 +741,7 @@ namespace DotNetNuke.UI.WebControls
             var objProperty = (PropertyInfo)obj;
             var categoryString = Null.NullString;
 
-            //Get Category Field
+            // Get Category Field
             var categoryAttributes = objProperty.GetCustomAttributes(typeof(CategoryAttribute), true);
             if (categoryAttributes.Length > 0)
             {
@@ -803,7 +803,7 @@ namespace DotNetNuke.UI.WebControls
             }
             if (!isVisible && this.EditMode == PropertyEditorMode.Edit)
             {
-				//Check if property is required - as this will need to override visibility
+				// Check if property is required - as this will need to override visibility
                 object[] requiredAttributes = objProperty.GetCustomAttributes(typeof(RequiredAttribute), true);
                 if (requiredAttributes.Length > 0)
                 {
@@ -865,8 +865,8 @@ namespace DotNetNuke.UI.WebControls
         {
             if (this._itemChanged)
             {
-				//Rebind the control to the DataSource to make sure that the dependent
-                //editors are updated
+				// Rebind the control to the DataSource to make sure that the dependent
+                // editors are updated
                 this.DataBind();
             }
             if (String.IsNullOrEmpty(this.CssClass))
@@ -874,7 +874,7 @@ namespace DotNetNuke.UI.WebControls
                 this.CssClass = "dnnForm";
             }
 			
-			//Find the Min/Max buttons
+			// Find the Min/Max buttons
             if (this.GroupByMode == GroupByMode.Section && (this._sections != null))
             {
                 foreach (DictionaryEntry key in this._sections)
@@ -898,22 +898,22 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         public override void DataBind()
         {
-            //Invoke OnDataBinding so DataBinding Event is raised
+            // Invoke OnDataBinding so DataBinding Event is raised
             base.OnDataBinding(EventArgs.Empty);
 
-            //Clear Existing Controls
+            // Clear Existing Controls
             this.Controls.Clear();
 
-            //Clear Child View State as controls will be loaded from DataSource
+            // Clear Child View State as controls will be loaded from DataSource
             this.ClearChildViewState();
 
-            //Start Tracking ViewState
+            // Start Tracking ViewState
             this.TrackViewState();
 
-            //Create the Editor
+            // Create the Editor
             this.CreateEditor();
 
-            //Set flag so CreateChildConrols should not be invoked later in control's lifecycle
+            // Set flag so CreateChildConrols should not be invoked later in control's lifecycle
             this.ChildControlsCreated = true;
         }
 

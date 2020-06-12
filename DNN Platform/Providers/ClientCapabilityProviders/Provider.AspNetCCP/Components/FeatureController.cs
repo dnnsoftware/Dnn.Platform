@@ -123,7 +123,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider.Components
                     }
                 }
 
-                //remove the deleted rules
+                // remove the deleted rules
                 foreach (var deletedRule in deletedRules)
                 {
                     controller.DeleteRule(redirection.PortalId, redirection.Id, deletedRule.Id);

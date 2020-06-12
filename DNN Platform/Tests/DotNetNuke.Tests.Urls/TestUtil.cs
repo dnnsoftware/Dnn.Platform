@@ -20,7 +20,7 @@ namespace DotNetNuke.Tests.Urls
             var user = UserController.GetUserByName(portalId, userName);
             if (user == null)
             {
-                //Add User
+                // Add User
                 user = new UserInfo
                 {
                     PortalID = portalId,
@@ -33,7 +33,7 @@ namespace DotNetNuke.Tests.Urls
             }
             else
             {
-                //Update User
+                // Update User
                 user.VanityUrl = vanityUrl;
                 user.IsDeleted = false;
                 UserController.UpdateUser(portalId, user);

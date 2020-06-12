@@ -113,10 +113,10 @@ namespace DotNetNuke.Security.Permissions
             {
                 if (PermissionKey.Equals(permission.PermissionKey, StringComparison.InvariantCultureIgnoreCase))
                 {
-					//Deny permissions are prefixed with a "!"
+					// Deny permissions are prefixed with a "!"
                     string prefix = !permission.AllowAccess ? "!" : "";
 					
-                    //encode permission
+                    // encode permission
                     string permissionString;
                     if (Null.IsNull(permission.UserID))
                     {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Security.Permissions
                         permissionString = prefix + "[" + permission.UserID + "];";
                     }
 					
-                    //build permissions string ensuring that Deny permissions are inserted at the beginning and Grant permissions at the end
+                    // build permissions string ensuring that Deny permissions are inserted at the beginning and Grant permissions at the end
                     if (prefix == "!")
                     {
                         permissionsBuilder.Insert(0, permissionString);
@@ -139,10 +139,10 @@ namespace DotNetNuke.Security.Permissions
                 }
             }
 			
-            //get string
+            // get string
             string permissionsString = permissionsBuilder.ToString();
 
-            //ensure leading delimiter
+            // ensure leading delimiter
             if (!permissionsString.StartsWith(";"))
             {
                 permissionsString.Insert(0, ";");

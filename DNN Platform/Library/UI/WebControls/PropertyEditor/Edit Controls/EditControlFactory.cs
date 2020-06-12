@@ -37,12 +37,12 @@ namespace DotNetNuke.UI.WebControls
 
             if (editorInfo.Editor == "UseSystemType")
             {
-                //Use System Type
+                // Use System Type
                 propEditor = CreateEditControlInternal(editorInfo.Type);
             }
             else
             {
-                //Use Editor
+                // Use Editor
                 try
                 {
                     Type editType = Type.GetType(editorInfo.Editor, true, true);
@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
                 }
                 catch (TypeLoadException)
                 {
-                    //Use System Type
+                    // Use System Type
                     propEditor = CreateEditControlInternal(editorInfo.Type);
                 }
             }
@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
             }
             catch (Exception)
             {
-                //ignore
+                // ignore
             }
             return propEditor ?? new TextEditControl(systemType);
         }

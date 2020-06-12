@@ -21,8 +21,8 @@ namespace DotNetNuke.Services.Scheduling
     // ReSharper disable InconsistentNaming
     public enum EventName
     {
-        //do not add APPLICATION_END
-        //it will not reliably complete
+        // do not add APPLICATION_END
+        // it will not reliably complete
         APPLICATION_START
     }
 
@@ -55,7 +55,7 @@ namespace DotNetNuke.Services.Scheduling
     }
     // ReSharper restore InconsistentNaming
 
-    //set up our delegates so we can track and react to events of the scheduler clients
+    // set up our delegates so we can track and react to events of the scheduler clients
     public delegate void WorkStarted(SchedulerClient objSchedulerClient);
 
     public delegate void WorkProgressing(SchedulerClient objSchedulerClient);
@@ -90,10 +90,10 @@ namespace DotNetNuke.Services.Scheduling
                 }
                 MaxThreads = value;
 
-                //if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
-                //{
+                // if (!settings.TryGetValue("delayAtAppStart", out str) || !int.TryParse(str, out value))
+                // {
                 //    value = 60;
-                //}
+                // }
                 if (DotNetNuke.Common.Globals.Status != Globals.UpgradeStatus.Install)
                 {
                     DelayAtAppStart = HostController.Instance.GetInteger("SchedulerdelayAtAppStart", 1) * 60;
@@ -237,11 +237,11 @@ namespace DotNetNuke.Services.Scheduling
 
         public virtual void RunScheduleItemNow(ScheduleItem scheduleItem)
         {
-            //Do Nothing
+            // Do Nothing
         }
         public virtual void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
-            //Do Nothing
+            // Do Nothing
         }
         public abstract void RemoveFromScheduleInProgress(ScheduleItem scheduleItem);
 

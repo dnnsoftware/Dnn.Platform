@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.ControlPanels
             objModulePermission.PermissionKey = permission.PermissionKey;
             objModulePermission.AllowAccess = allowAccess;
 
-            //add the permission to the collection
+            // add the permission to the collection
             if (!objModule.ModulePermissions.Contains(objModulePermission))
             {
                 objModule.ModulePermissions.Add(objModulePermission);
@@ -223,7 +223,7 @@ namespace DotNetNuke.UI.ControlPanels
             objModule = ModuleController.Instance.GetModule(moduleId, tabId, false);
             if (objModule != null)
             {
-                //clone the module object ( to avoid creating an object reference to the data cache )
+                // clone the module object ( to avoid creating an object reference to the data cache )
                 ModuleInfo objClone = objModule.Clone();
                 objClone.TabID = this.PortalSettings.ActiveTab.TabID;
                 objClone.ModuleOrder = position;
@@ -307,21 +307,21 @@ namespace DotNetNuke.UI.ControlPanels
                         break;
                 }
 				
-                //get the default module view permissions
+                // get the default module view permissions
                 ArrayList arrSystemModuleViewPermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", "VIEW");
 
-                //get the permissions from the page
+                // get the permissions from the page
                 foreach (TabPermissionInfo objTabPermission in objTabPermissions)
                 {
                     if (objTabPermission.PermissionKey == "VIEW" && permissionType == ViewPermissionType.View)
                     {
-						//Don't need to explicitly add View permisisons if "Same As Page"
+						// Don't need to explicitly add View permisisons if "Same As Page"
                         continue;
                     }
 					
-                    //get the system module permissions for the permissionkey
+                    // get the system module permissions for the permissionkey
                     ArrayList arrSystemModulePermissions = objPermissionController.GetPermissionByCodeAndKey("SYSTEM_MODULE_DEFINITION", objTabPermission.PermissionKey);
-                    //loop through the system module permissions
+                    // loop through the system module permissions
                     int j;
                     for (j = 0; j <= arrSystemModulePermissions.Count - 1; j++)
                     {
@@ -329,7 +329,7 @@ namespace DotNetNuke.UI.ControlPanels
                         objSystemModulePermission = (PermissionInfo)arrSystemModulePermissions[j];
                         if (objSystemModulePermission.PermissionKey == "VIEW" && permissionType == ViewPermissionType.Edit && objTabPermission.PermissionKey != "EDIT")
                         {
-							//Only Page Editors get View permissions if "Page Editors Only"
+							// Only Page Editors get View permissions if "Page Editors Only"
                             continue;
                         }
                         ModulePermissionInfo objModulePermission = this.AddModulePermission(objModule,
@@ -338,7 +338,7 @@ namespace DotNetNuke.UI.ControlPanels
                                                                                        objTabPermission.UserID,
                                                                                        objTabPermission.AllowAccess);
 
-                        //ensure that every EDIT permission which allows access also provides VIEW permission
+                        // ensure that every EDIT permission which allows access also provides VIEW permission
                         if (objModulePermission.PermissionKey == "EDIT" && objModulePermission.AllowAccess)
                         {
                             ModulePermissionInfo objModuleViewperm = this.AddModulePermission(objModule,
@@ -349,16 +349,16 @@ namespace DotNetNuke.UI.ControlPanels
                         }
                     }
 					
-                    //Get the custom Module Permissions,  Assume that roles with Edit Tab Permissions
-                    //are automatically assigned to the Custom Module Permissions
+                    // Get the custom Module Permissions,  Assume that roles with Edit Tab Permissions
+                    // are automatically assigned to the Custom Module Permissions
                     if (objTabPermission.PermissionKey == "EDIT")
                     {
                         ArrayList arrCustomModulePermissions = objPermissionController.GetPermissionsByModuleDefID(objModule.ModuleDefID);
 
-                        //loop through the custom module permissions
+                        // loop through the custom module permissions
                         for (j = 0; j <= arrCustomModulePermissions.Count - 1; j++)
                         {
-							//create the module permission
+							// create the module permission
                             PermissionInfo objCustomModulePermission;
                             objCustomModulePermission = (PermissionInfo)arrCustomModulePermissions[j];
                             this.AddModulePermission(objModule, objCustomModulePermission, objTabPermission.RoleID, objTabPermission.UserID, objTabPermission.AllowAccess);
@@ -369,7 +369,7 @@ namespace DotNetNuke.UI.ControlPanels
                 if (PortalSettings.Current.ContentLocalizationEnabled)
                 {
                     Locale defaultLocale = LocaleController.Instance.GetDefaultLocale(PortalSettings.Current.PortalId);
-                    //set the culture of the module to that of the tab
+                    // set the culture of the module to that of the tab
                     var tabInfo = TabController.Instance.GetTab(objModule.TabID, PortalSettings.Current.PortalId, false);
                     objModule.CultureCode = tabInfo != null ? tabInfo.CultureCode : defaultLocale.Code;
                 }

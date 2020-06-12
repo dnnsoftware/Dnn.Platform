@@ -66,7 +66,7 @@ namespace DotNetNuke.Modules.MemberDirectory.Services
                                ? (this.PortalSettings.UserInfo.IsInRole(this.PortalSettings.AdministratorRoleName))
                                : (this.PortalSettings.UserInfo.IsInRole(group.RoleName));
 
-			//if current user can view the group page and group is public, then should be able to view members.
+			// if current user can view the group page and group is public, then should be able to view members.
 			if (!canView)
 			{
 				canView = ModulePermissionController.CanViewModule(this.ActiveModule) && group.IsPublic;

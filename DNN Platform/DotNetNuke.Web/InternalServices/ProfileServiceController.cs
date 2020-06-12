@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.InternalServices
         {
             bool modified;
 
-            //Clean Url
+            // Clean Url
             var options = UrlRewriterUtils.GetOptionsFromSettings(new FriendlyUrlSettings(this.PortalSettings.PortalId));
             var cleanUrl = FriendlyUrlController.CleanNameForUrl(vanityUrl.Url, options, out modified);
 
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.InternalServices
                         });
             }
 
-            //Validate for uniqueness
+            // Validate for uniqueness
             var uniqueUrl = FriendlyUrlController.ValidateUrl(cleanUrl, -1, this.PortalSettings, out modified);
 
 
@@ -81,7 +81,7 @@ namespace DotNetNuke.Web.InternalServices
 
             DataCache.RemoveCache(string.Format(CacheController.VanityUrlLookupKey, this.PortalSettings.PortalId));
 
-            //Url is clean and validated so we can update the User
+            // Url is clean and validated so we can update the User
             return this.Request.CreateResponse(HttpStatusCode.OK, new { Result = "success" });
         }
         

@@ -226,7 +226,7 @@ namespace DotNetNuke.Entities.Content.Taxonomy
             this.ScopeTypeId = Null.SetNullInteger(dr["ScopeTypeID"]);
             this.Weight = Null.SetNullInteger(dr["Weight"]);
 
-            //Fill base class properties
+            // Fill base class properties
             this.FillInternal(dr);
         }
 

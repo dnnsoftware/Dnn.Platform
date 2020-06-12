@@ -122,7 +122,7 @@ namespace DotNetNuke.Services.Social.Notifications
             this.DesktopModuleId = Null.SetNullInteger(dr["DesktopModuleID"]);
             this.IsTask = Null.SetNullBoolean(dr["IsTask"]);
 
-            //add audit column data
+            // add audit column data
             this.FillInternal(dr);
         }
 

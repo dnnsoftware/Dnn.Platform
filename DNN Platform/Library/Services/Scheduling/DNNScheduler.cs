@@ -40,9 +40,9 @@ namespace DotNetNuke.Services.Scheduling
 
         public override int AddSchedule(ScheduleItem scheduleItem)
         {
-            //Remove item from queue
+            // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
-            //save item
+            // save item
             scheduleItem.ScheduleID = SchedulingController.AddSchedule(scheduleItem.TypeFullName,
                                                                           scheduleItem.TimeLapse,
                                                                           scheduleItem.TimeLapseMeasurement,
@@ -56,10 +56,10 @@ namespace DotNetNuke.Services.Scheduling
                                                                           scheduleItem.Servers,
                                                                           scheduleItem.FriendlyName,
                                                                           scheduleItem.ScheduleStartDate);
-            //Add schedule to queue
+            // Add schedule to queue
             this.RunScheduleItemNow(scheduleItem);
 
-            //Return Id
+            // Return Id
             return scheduleItem.ScheduleID;
         }
 
@@ -181,7 +181,7 @@ namespace DotNetNuke.Services.Scheduling
 
         public override void RunScheduleItemNow(ScheduleItem scheduleItem, bool runNow)
         {
-            //Remove item from queue
+            // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
             var scheduleHistoryItem = new ScheduleHistoryItem(scheduleItem) { NextStart = runNow ? DateTime.Now : (scheduleItem.ScheduleStartDate != Null.NullDate ? scheduleItem.ScheduleStartDate : DateTime.Now) };
 
@@ -220,8 +220,8 @@ namespace DotNetNuke.Services.Scheduling
                 var newThread = new Thread(this.Start) {IsBackground = true};
                 newThread.Start();
 
-                //wait for up to 30 seconds for thread
-                //to start up
+                // wait for up to 30 seconds for thread
+                // to start up
                 for (int i = 0; i <= 30; i++)
                 {
                     if (this.GetScheduleStatus() != ScheduleStatus.STOPPED)
@@ -240,11 +240,11 @@ namespace DotNetNuke.Services.Scheduling
 
         public override void UpdateSchedule(ScheduleItem scheduleItem)
         {
-            //Remove item from queue
+            // Remove item from queue
             Scheduler.CoreScheduler.RemoveFromScheduleQueue(scheduleItem);
-            //save item
+            // save item
             SchedulingController.UpdateSchedule(scheduleItem);
-            //Update items that are already scheduled
+            // Update items that are already scheduled
             var futureHistory = this.GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().Where(h => h.NextStart > DateTime.Now);
 
             var scheduleItemStart = scheduleItem.ScheduleStartDate > DateTime.Now
@@ -257,14 +257,14 @@ namespace DotNetNuke.Services.Scheduling
             }
 
 
-            //Add schedule to queue
+            // Add schedule to queue
             this.RunScheduleItemNow(scheduleItem);
         }
 
-        //DNN-5001 Possibility to stop already running tasks
+        // DNN-5001 Possibility to stop already running tasks
         public override void RemoveFromScheduleInProgress(ScheduleItem scheduleItem)
         {
-            //get ScheduleHistoryItem of the running task
+            // get ScheduleHistoryItem of the running task
             var runningscheduleHistoryItem = this.GetScheduleHistory(scheduleItem.ScheduleID).Cast<ScheduleHistoryItem>().ElementAtOrDefault(0);
             Scheduler.CoreScheduler.StopScheduleInProgress(scheduleItem, runningscheduleHistoryItem);
         }

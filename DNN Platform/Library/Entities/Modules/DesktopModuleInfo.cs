@@ -131,18 +131,18 @@ namespace DotNetNuke.Entities.Modules
 
             public void WriteXml(XmlWriter writer)
             {
-                //Write start of main elemenst
+                // Write start of main elemenst
                 writer.WriteStartElement("page");
                 writer.WriteAttributeString("type", this.Type);
                 writer.WriteAttributeString("common", this.IsCommon.ToString().ToLowerInvariant());
 
-                //write out properties
+                // write out properties
                 writer.WriteElementString("name", this.Name);
                 writer.WriteElementString("icon", this.Icon);
                 writer.WriteElementString("largeIcon", this.LargeIcon);
                 writer.WriteElementString("description", this.Description);
 
-                //Write end of main element
+                // Write end of main element
                 writer.WriteEndElement();
             }
         }
@@ -463,7 +463,7 @@ namespace DotNetNuke.Entities.Modules
 		    this.Shareable = (ModuleSharing)Null.SetNullInteger(dr["Shareable"]);
             this.AdminPage = Null.SetNullString(dr["AdminPage"]);
             this.HostPage = Null.SetNullString(dr["HostPage"]);
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
 
@@ -576,10 +576,10 @@ namespace DotNetNuke.Entities.Modules
 
         public void WriteXml(XmlWriter writer)
         {
-            //Write start of main elemenst
+            // Write start of main elemenst
             writer.WriteStartElement("desktopModule");
 
-            //write out properties
+            // write out properties
             writer.WriteElementString("moduleName", this.ModuleName);
             writer.WriteElementString("foldername", this.FolderName);
             writer.WriteElementString("businessControllerClass", this.BusinessControllerClass);
@@ -588,7 +588,7 @@ namespace DotNetNuke.Entities.Modules
                 writer.WriteElementString("codeSubDirectory", this.CodeSubDirectory);
             }
 			
-            //Write out Supported Features
+            // Write out Supported Features
             writer.WriteStartElement("supportedFeatures");
             if (this.IsPortable)
             {
@@ -609,10 +609,10 @@ namespace DotNetNuke.Entities.Modules
                 writer.WriteEndElement();
             }
 
-            //Write end of Supported Features
+            // Write end of Supported Features
             writer.WriteEndElement();
 
-            //Write admin/host page info.
+            // Write admin/host page info.
             if (this.Page != null)
             {
                 this.Page.WriteXml(writer);
@@ -635,18 +635,18 @@ namespace DotNetNuke.Entities.Modules
                 writer.WriteEndElement();
             }
 
-            //Write start of Module Definitions
+            // Write start of Module Definitions
             writer.WriteStartElement("moduleDefinitions");
 
-            //Iterate through definitions
+            // Iterate through definitions
             foreach (ModuleDefinitionInfo definition in this.ModuleDefinitions.Values)
             {
                 definition.WriteXml(writer);
             }
-            //Write end of Module Definitions
+            // Write end of Module Definitions
             writer.WriteEndElement();
 
-            //Write end of main element
+            // Write end of main element
             writer.WriteEndElement();
         }
 
@@ -662,7 +662,7 @@ namespace DotNetNuke.Entities.Modules
         /// -----------------------------------------------------------------------------
         private void ClearFeature(DesktopModuleSupportedFeature feature)
         {
-			//And with the 1's complement of Feature to Clear the Feature flag
+			// And with the 1's complement of Feature to Clear the Feature flag
             this.SupportedFeatures = this.SupportedFeatures & ~((int)feature);
         }
 
@@ -777,13 +777,13 @@ namespace DotNetNuke.Entities.Modules
             {
                 reader.ReadStartElement("moduleDefinition");
 
-				//Create new ModuleDefinition object
+				// Create new ModuleDefinition object
                 var moduleDefinition = new ModuleDefinitionInfo();
 
-				//Load it from the Xml
+				// Load it from the Xml
                 moduleDefinition.ReadXml(reader);
 
-				//Add to the collection
+				// Add to the collection
                 this.ModuleDefinitions.Add(moduleDefinition.FriendlyName, moduleDefinition);
             } while (reader.ReadToNextSibling("moduleDefinition"));
 		}
@@ -791,7 +791,7 @@ namespace DotNetNuke.Entities.Modules
         private void ReadPageInfo(XmlReader reader)
         {
             this.Page = new PageInfo();
-            //Load it from the Xml
+            // Load it from the Xml
             this.Page.ReadXml(reader.ReadSubtree());
 
             if (this.Page.HasAdminPage())

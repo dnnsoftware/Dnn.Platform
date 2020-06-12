@@ -42,7 +42,7 @@ namespace DotNetNuke.Security.Cookies
             if (string.IsNullOrEmpty(cookieValue)) return;
 
             // keep in cache so hacking tries don't hit the database; it will expire automatically
-            //DataCache.ClearCache(GetKey(cookieValue));
+            // DataCache.ClearCache(GetKey(cookieValue));
             this._dataProvider.DeleteAuthCookie(cookieValue);
         }
 

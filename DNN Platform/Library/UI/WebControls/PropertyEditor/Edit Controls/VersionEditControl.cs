@@ -57,28 +57,28 @@ namespace DotNetNuke.UI.WebControls
 
         protected void RenderDropDownList(HtmlTextWriter writer, string type, int val)
         {
-            //Render the Select Tag
+            // Render the Select Tag
             writer.AddAttribute(HtmlTextWriterAttribute.Type, "text");
             writer.AddAttribute(HtmlTextWriterAttribute.Name, this.UniqueID + "_" + type);
             writer.AddStyleAttribute("width", "60px");
             writer.RenderBeginTag(HtmlTextWriterTag.Select);
             for (int i = 0; i <= 99; i++)
             {
-                //Add the Value Attribute
+                // Add the Value Attribute
                 writer.AddAttribute(HtmlTextWriterAttribute.Value, i.ToString());
                 if (val == i)
                 {
-                    //Add the Selected Attribute
+                    // Add the Selected Attribute
                     writer.AddAttribute(HtmlTextWriterAttribute.Selected, "selected");
                 }
 				
-                //Render Option Tag
+                // Render Option Tag
                 writer.RenderBeginTag(HtmlTextWriterTag.Option);
                 writer.Write(i.ToString("00"));
                 writer.RenderEndTag();
             }
 			
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 		
@@ -124,24 +124,24 @@ namespace DotNetNuke.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void RenderEditMode(HtmlTextWriter writer)
         {
-            //Render a containing span Tag
+            // Render a containing span Tag
             this.ControlStyle.AddAttributesToRender(writer);
             writer.RenderBeginTag(HtmlTextWriterTag.Span);
 
-            //Render Major
+            // Render Major
             this.RenderDropDownList(writer, "Major", this.Version.Major);
 
             writer.Write("&nbsp;");
 
-            //Render Minor
+            // Render Minor
             this.RenderDropDownList(writer, "Minor", this.Version.Minor);
 
             writer.Write("&nbsp;");
 
-            //Render Build
+            // Render Build
             this.RenderDropDownList(writer, "Build", this.Version.Build);
 
-            //Close Select Tag
+            // Close Select Tag
             writer.RenderEndTag();
         }
 

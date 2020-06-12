@@ -192,7 +192,7 @@ namespace DotNetNuke.Modules.Admin.EditExtension
                 {
                     this.packageType.Visible = false;
                 }
-                //Determine if Package is ready for packaging
+                // Determine if Package is ready for packaging
                 PackageWriterBase writer = PackageWriterFactory.GetWriter(this.Package);
                 this.cmdPackage.Visible = this.IsSuperTab && writer != null && Directory.Exists(Path.Combine(Globals.ApplicationMapPath, writer.BasePath));
 

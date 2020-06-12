@@ -422,8 +422,8 @@ namespace DotNetNuke.Services.Log.EventLog
                 for (int i = LogQueue.Count - 1; i >= 0; i += -1)
                 {
                     LogQueueItem logQueueItem = LogQueue[i];
-                    //in case the log was removed
-                    //by another thread simultaneously
+                    // in case the log was removed
+                    // by another thread simultaneously
                     if (logQueueItem != null)
                     {
                         WriteLog(logQueueItem);

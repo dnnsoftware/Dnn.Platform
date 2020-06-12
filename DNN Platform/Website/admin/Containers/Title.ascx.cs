@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Containers
         {
             base.OnPreRender(e);
 
-            //public attributes
+            // public attributes
             if (!String.IsNullOrEmpty(this.CssClass))
             {
                 this.titleLabel.CssClass = this.CssClass;

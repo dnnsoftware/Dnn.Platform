@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(OAuthClientBase));
         private const string HMACSHA1SignatureType = "HMAC-SHA1";
 
-        //oAuth 1
+        // oAuth 1
         private const string OAuthParameterPrefix = "oauth_";
         private const string OAuthConsumerKeyKey = "oauth_consumer_key";
         private const string OAuthCallbackKey = "oauth_callback";
@@ -51,7 +51,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         private const string OAuthVerifierKey = "oauth_verifier";
         private const string OAuthCallbackConfirmedKey = "oauth_callback_confirmed";
 
-        //oAuth 2
+        // oAuth 2
         private const string OAuthClientIdKey = "client_id";
         private const string OAuthClientSecretKey = "client_secret";
         private const string OAuthRedirectUriKey = "redirect_uri";
@@ -62,17 +62,17 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
         private const string UnreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
         
-        //DNN-6265 - Support OAuth V2 optional parameter resource, which is required by Microsoft Azure Active
-        //Directory implementation of OAuth V2
+        // DNN-6265 - Support OAuth V2 optional parameter resource, which is required by Microsoft Azure Active
+        // Directory implementation of OAuth V2
         private const string OAuthResourceKey = "resource";
 
         #endregion
 
         protected OAuthClientBase(int portalId, AuthMode mode, string service)
         {
-            //Set default Expiry to 14 days 
-            //oAuth v1 tokens do not expire
-            //oAuth v2 tokens have an expiry
+            // Set default Expiry to 14 days 
+            // oAuth v1 tokens do not expire
+            // oAuth v2 tokens have an expiry
             this.AuthTokenExpiry = new TimeSpan(14, 0, 0, 0);
             this.Service = service;
 
@@ -100,7 +100,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected string OAuthVersion { get; set; }
         protected HttpMethod TokenMethod { get; set; }
 
-        //oAuth 1
+        // oAuth 1
         protected string OAuthVerifier
         {
             get { return HttpContext.Current.Request.Params[OAuthVerifierKey]; }
@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected string TokenSecret { get; set; }
         protected string UserGuid { get; set; }
 
-        //oAuth 1 and 2
+        // oAuth 1 and 2
         protected Uri AuthorizationEndpoint { get; set; }
         protected string AuthToken { get; set; }
         protected TimeSpan AuthTokenExpiry { get; set; }
@@ -118,7 +118,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
         protected Uri TokenEndpoint { get; set; }
         protected string OAuthHeaderCode { get; set; }
 
-        //oAuth 2
+        // oAuth 2
         protected string AuthTokenName { get; set; }        
         protected string Scope { get; set; }
 		protected string AccessToken { get; set; }
@@ -127,7 +127,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             get { return HttpContext.Current.Request.Params[OAuthCodeKey]; }
         }
         
-        //DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
+        // DNN-6265 Support "Optional" Resource Parameter required by Azure AD Oauth V2 Solution
         protected string APIResource { get; set; }
 
         #endregion
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
                     if (!string.IsNullOrWhiteSpace(response))
                     {
-                        //response contains token and token secret. We only need the token.
+                        // response contains token and token secret. We only need the token.
                         NameValueCollection qs = HttpUtility.ParseQueryString(response);
 
                         if (qs[OAuthCallbackConfirmedKey] != null)
@@ -250,12 +250,12 @@ namespace DotNetNuke.Services.Authentication.OAuth
             IList<QueryParameter> parameters = new List<QueryParameter>();
             parameters.Add(new QueryParameter(OAuthClientIdKey, this.APIKey));
             parameters.Add(new QueryParameter(OAuthRedirectUriKey, HttpContext.Current.Server.UrlEncode(this.CallbackUri.ToString())));
-            //DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
+            // DNN-6265 Support for OAuth V2 Secrets which are not URL Friendly
             parameters.Add(new QueryParameter(OAuthClientSecretKey, HttpContext.Current.Server.UrlEncode(this.APISecret.ToString())));
             parameters.Add(new QueryParameter(OAuthGrantTyepKey, "authorization_code"));
             parameters.Add(new QueryParameter(OAuthCodeKey, this.VerificationCode));
 
-            //DNN-6265 Support for OAuth V2 optional parameter
+            // DNN-6265 Support for OAuth V2 optional parameter
             if (!String.IsNullOrEmpty(this.APIResource))
             {
                 parameters.Add(new QueryParameter("resource", this.APIResource));
@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
 
             if (response.Length > 0)
             {
-                //Store the Token and Token Secret
+                // Store the Token and Token Secret
                 NameValueCollection qs = HttpUtility.ParseQueryString(response);
                 if (qs[OAuthTokenKey] != null)
                 {
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
             string timeStamp = this.GenerateTimeStamp();
 
             string verifier = (uri == this.TokenEndpoint) ? this.OAuthVerifier : String.Empty;
-            //Generate Signature
+            // Generate Signature
             string sig = this.GenerateSignature(uri,
                                             this.AuthToken,
                                             this.TokenSecret,
@@ -345,14 +345,14 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request = WebRequest.CreateDefault(uri);
                 request.Method = "POST";
                 request.ContentType = "application/x-www-form-urlencoded";
-                //request.ContentType = "text/xml";
+                // request.ContentType = "text/xml";
                 request.ContentLength = byteArray.Length;
 				
 				if (!String.IsNullOrEmpty(this.OAuthHeaderCode))
 				{ 
 					byte[] API64 = Encoding.UTF8.GetBytes(this.APIKey + ":" + this.APISecret); 
 					string Api64Encoded = System.Convert.ToBase64String(API64); 
-					//Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
+					// Authentication providers needing an "Authorization: Basic/bearer base64(clientID:clientSecret)" header. OAuthHeaderCode might be: Basic/Bearer/empty.
 					request.Headers.Add("Authorization: " + this.OAuthHeaderCode + " " + Api64Encoded); 
 				}
 
@@ -368,7 +368,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 request = WebRequest.CreateDefault(this.GenerateRequestUri(uri.ToString(), parameters));
             }
 
-            //Add Headers
+            // Add Headers
             if (!String.IsNullOrEmpty(authHeader))
             {
                 request.Headers.Add(HttpRequestHeader.Authorization, authHeader);
@@ -616,7 +616,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                 objUserInfo = MembershipProvider.Instance().GetUserByUserName(settings.PortalId, userName);
                 if (objUserInfo != null)
                 {
-                    //user already exists... lets check for a token next... 
+                    // user already exists... lets check for a token next... 
                     var dnnAuthToken = MembershipProvider.Instance().GetUserByAuthToken(settings.PortalId, token, this.Service);
                     if (dnnAuthToken == null)
                     {
@@ -631,7 +631,7 @@ namespace DotNetNuke.Services.Authentication.OAuth
                                                                 ref loginStatus);
 
 
-            //Raise UserAuthenticated Event
+            // Raise UserAuthenticated Event
             var eventArgs = new UserAuthenticatedEventArgs(objUserInfo, token, loginStatus, this.Service)
                                             {
                                                 AutoRegister = true,

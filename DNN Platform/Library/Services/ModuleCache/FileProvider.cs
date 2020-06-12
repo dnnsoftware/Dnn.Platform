@@ -124,7 +124,7 @@ namespace DotNetNuke.Services.ModuleCache
             }
 			catch
 			{
-				//if check expire time failed, then force to expire the cache.
+				// if check expire time failed, then force to expire the cache.
 				return true;
 			}
             finally

@@ -102,7 +102,7 @@ namespace DotNetNuke.Services.Localization
             this.LanguageID = Null.SetNullInteger(dr["LanguageID"]);
             this.PackageID = Null.SetNullInteger(dr["PackageID"]);
             this.DependentPackageID = Null.SetNullInteger(dr["DependentPackageID"]);
-            //Call the base classes fill method to populate base class proeprties
+            // Call the base classes fill method to populate base class proeprties
             base.FillInternal(dr);
         }
 

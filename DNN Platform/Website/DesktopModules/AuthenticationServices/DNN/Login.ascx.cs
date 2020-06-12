@@ -121,7 +121,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                 this.registerLink.Visible = false;
             }
 
-            //see if the portal supports persistant cookies
+            // see if the portal supports persistant cookies
             this.chkCookie.Visible = Host.RememberCheckbox;
 
 
@@ -208,7 +208,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					}
 					catch (Exception ex)
 					{
-						//control not there
+						// control not there
 						Logger.Error(ex);
 					}
 				}
@@ -218,8 +218,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				}
 				catch (Exception ex)
 				{
-					//Not sure why this Try/Catch may be necessary, logic was there in old setFormFocus location stating the following
-					//control not there or error setting focus
+					// Not sure why this Try/Catch may be necessary, logic was there in old setFormFocus location stating the following
+					// control not there or error setting focus
 					Logger.Error(ex);
 				}
 			}
@@ -251,8 +251,8 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
                                         PortalSecurity.FilterFlag.NoAngleBrackets | 
                                         PortalSecurity.FilterFlag.NoMarkup);
 
-                //DNN-6093
-                //check if we use email address here rather than username
+                // DNN-6093
+                // check if we use email address here rather than username
                 UserInfo userByEmail = null;
                 var emailUsedAsUsername = PortalController.GetPortalSettingAsBoolean("Registration_UseEmailAsUserName", this.PortalId, false);                
 
@@ -263,7 +263,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 
                     if (userByEmail != null)
                     {
-                        //we need the username of the account in order to authenticate in the next step
+                        // we need the username of the account in order to authenticate in the next step
                         userName = userByEmail.Username; 
                     }
                 }
@@ -286,7 +286,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 					authenticated = (loginStatus != UserLoginStatus.LOGIN_FAILURE);
 				}
 				
-				//Raise UserAuthenticated Event
+				// Raise UserAuthenticated Event
 				var eventArgs = new UserAuthenticatedEventArgs(objUser, userName, loginStatus, "DNN")
 				                    {
 				                        Authenticated = authenticated, 
@@ -305,7 +305,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 		{
 			var redirectUrl = "";
 			var redirectAfterLogin = this.PortalSettings.Registration.RedirectAfterLogin;
-			if (checkSettings && redirectAfterLogin > 0) //redirect to after registration page
+			if (checkSettings && redirectAfterLogin > 0) // redirect to after registration page
 			{
 				redirectUrl = this._navigationManager.NavigateURL(redirectAfterLogin);
 			}
@@ -313,10 +313,10 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 			{
 				if (this.Request.QueryString["returnurl"] != null)
 				{
-					//return to the url passed to register
+					// return to the url passed to register
 					redirectUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
 
                     if (redirectUrl.Contains("?returnurl"))
@@ -331,7 +331,7 @@ namespace DotNetNuke.Modules.Admin.Authentication.DNN
 				}
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
-					//redirect to current page
+					// redirect to current page
 					redirectUrl = this._navigationManager.NavigateURL();
 				}
 			}

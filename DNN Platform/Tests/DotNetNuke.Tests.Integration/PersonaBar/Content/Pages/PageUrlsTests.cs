@@ -31,7 +31,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             var isEnglishEnabled = true;
             dynamic languageSettings = null;
 
-            //set default language to Spanish and disable en-US if it's enabled
+            // set default language to Spanish and disable en-US if it's enabled
             var connector = PrepareTest(out isEnglishEnabled, out languageSettings);
             var postData = new
             {
@@ -49,7 +49,7 @@ namespace DotNetNuke.Tests.Integration.PersonaBar.Content.Pages
             var response = connector.PostJson(CreateCustomUrlApi, postData, null).Content.ReadAsStringAsync().Result;
             var result = JsonConvert.DeserializeObject<dynamic>(response);
 
-            //reset changes
+            // reset changes
             ResetChanges(connector, isEnglishEnabled, languageSettings);
 
             Assert.IsTrue(bool.Parse(result.Success.ToString()));

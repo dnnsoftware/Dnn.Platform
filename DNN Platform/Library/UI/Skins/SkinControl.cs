@@ -188,18 +188,18 @@ namespace DotNetNuke.UI.Skins
                 }
                 if (!this.Page.IsPostBack)
                 {
-					//save persistent values
+					// save persistent values
                     this.ViewState["SkinControlWidth"] = this._Width;
                     this.ViewState["SkinRoot"] = this._SkinRoot;
                     this.ViewState["SkinSrc"] = this._SkinSrc;
 					
-					//set width of control
+					// set width of control
                     if (!String.IsNullOrEmpty(this._Width))
                     {
                         this.cboSkin.Width = Unit.Parse(this._Width);
                     }
 					
-					//set selected skin
+					// set selected skin
                     if (!String.IsNullOrEmpty(this._SkinSrc))
                     {
                         switch (this._SkinSrc.Substring(0, 3))
@@ -216,7 +216,7 @@ namespace DotNetNuke.UI.Skins
                     }
                     else
                     {
-						//no skin selected, initialized to site skin if any exists
+						// no skin selected, initialized to site skin if any exists
                         string strRoot = this._objPortal.HomeDirectoryMapPath + this.SkinRoot;
                         if (Directory.Exists(strRoot) && Directory.GetDirectories(strRoot).Length > 0)
                         {
@@ -227,7 +227,7 @@ namespace DotNetNuke.UI.Skins
                     this.LoadSkins();
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

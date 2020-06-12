@@ -50,11 +50,11 @@ namespace DotNetNuke.Entities.Portals
             var portalTabs = TabController.Instance.GetTabsByPortal(portalId);
             var hostTabs = TabController.Instance.GetTabsByPortal(Null.NullInteger);
 
-            //Check portal
+            // Check portal
             var activeTab = GetTab(tabId, portalTabs)
-                ?? GetTab(tabId, hostTabs)  //check host
-                ?? GetSpecialTab(portalId, portalSettings.SplashTabId) //check splash tab
-                ?? GetSpecialTab(portalId, portalSettings.HomeTabId); //check home tab
+                ?? GetTab(tabId, hostTabs)  // check host
+                ?? GetSpecialTab(portalId, portalSettings.SplashTabId) // check splash tab
+                ?? GetSpecialTab(portalId, portalSettings.HomeTabId); // check home tab
 
             if (activeTab == null)
             {
@@ -97,10 +97,10 @@ namespace DotNetNuke.Entities.Portals
                 TabInfo tab;
                 if (portalTabs.TryGetValue(tabId, out tab) || hostTabs.TryGetValue(tabId, out tab))
                 {
-                    //add tab to breadcrumb collection
+                    // add tab to breadcrumb collection
                     breadCrumbs.Insert(0, tab.Clone());
 
-                    //get the tab parent
+                    // get the tab parent
                     if (!Null.IsNull(tab.ParentId) && tabId != tab.ParentId)
                     {
                         tabId = tab.ParentId;
@@ -312,14 +312,14 @@ namespace DotNetNuke.Entities.Portals
         {
             if (Globals.IsAdminSkin())
             {
-                //DNN-6170 ensure skin value is culture specific
+                // DNN-6170 ensure skin value is culture specific
                 activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
                     Host.Host.DefaultAdminSkin, portalSettings.CultureCode)) ? portalSettings.DefaultAdminSkin : PortalController.GetPortalSetting("DefaultAdminSkin", portalSettings.PortalId,
                     Host.Host.DefaultAdminSkin, portalSettings.CultureCode);
             }
             else if (String.IsNullOrEmpty(activeTab.SkinSrc))
             {
-                //DNN-6170 ensure skin value is culture specific
+                // DNN-6170 ensure skin value is culture specific
                 activeTab.SkinSrc = String.IsNullOrEmpty(PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode)) ? portalSettings.DefaultPortalSkin : PortalController.GetPortalSetting("DefaultPortalSkin", portalSettings.PortalId,
                     Host.Host.DefaultPortalSkin, portalSettings.CultureCode);

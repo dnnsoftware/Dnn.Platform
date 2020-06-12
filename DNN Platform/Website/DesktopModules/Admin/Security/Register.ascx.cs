@@ -122,7 +122,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			if (this.PortalSettings.Registration.RegistrationFormType == 0)
 			{
-				//DisplayName
+				// DisplayName
 				if (String.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
 				{
 					this.AddField("DisplayName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
@@ -133,10 +133,10 @@ namespace DotNetNuke.Modules.Admin.Users
 					this.AddField("LastName", String.Empty, true, String.Empty, TextBoxMode.SingleLine);
 				}
 
-				//Email
+				// Email
 				this.AddField("Email", String.Empty, true, this.PortalSettings.Registration.EmailValidator, TextBoxMode.SingleLine);
 
-				//UserName
+				// UserName
 				if (!this.PortalSettings.Registration.UseEmailAsUserName)
 				{
 
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Users
 							TextBoxMode.SingleLine);
 				}
 
-				//Password
+				// Password
 				if (!this.PortalSettings.Registration.RandomPassword)
 				{
 					this.AddPasswordStrengthField("Password", "Membership", true);
@@ -156,7 +156,7 @@ namespace DotNetNuke.Modules.Admin.Users
 					}
 				}
 
-				//Password Q&A
+				// Password Q&A
 				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
 				{
 					this.AddField("PasswordQuestion", "Membership", true, String.Empty, TextBoxMode.SingleLine);
@@ -177,7 +177,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			else
 			{
 				var fields = this.PortalSettings.Registration.RegistrationFields.Split(',').ToList();
-				//append question/answer field when RequiresQuestionAndAnswer is enabled in config.
+				// append question/answer field when RequiresQuestionAndAnswer is enabled in config.
 				if (MembershipProviderConfig.RequiresQuestionAndAnswer)
 				{
 					if (!fields.Contains("PasswordQuestion"))
@@ -227,7 +227,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Verify that the current user has access to this page
+			// Verify that the current user has access to this page
 			if (this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.NoRegistration && this.Request.IsAuthenticated == false)
 			{
 			    try
@@ -236,7 +236,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			    }
 			    catch (ThreadAbortException)
 			    {
-                    //do nothing here.
+                    // do nothing here.
 			    }
 			}
 
@@ -254,12 +254,12 @@ namespace DotNetNuke.Modules.Admin.Users
 						if (authSystem.AuthenticationType != "DNN")
 						{
 							this.BindLoginControl(authLoginControl, authSystem);
-							//Check if AuthSystem is Enabled
+							// Check if AuthSystem is Enabled
 							if (authLoginControl.Enabled && authLoginControl.SupportsRegistration)
 							{
 								authLoginControl.Mode = AuthMode.Register;
 
-								//Add Login Control to List
+								// Add Login Control to List
 								this._loginControls.Add(authLoginControl);
 							}
 						}
@@ -278,13 +278,13 @@ namespace DotNetNuke.Modules.Admin.Users
 
 			if (this.Request.IsAuthenticated)
 			{
-				//if a Login Page has not been specified for the portal
+				// if a Login Page has not been specified for the portal
 				if (Globals.IsAdminControl())
 				{
-					//redirect to current page
+					// redirect to current page
 					this.Response.Redirect(this._navigationManager.NavigateURL(), true);
 				}
-				else //make module container invisible if user is not a page admin
+				else // make module container invisible if user is not a page admin
 				{
 					if (!TabPermissionController.CanAdminPage())
 					{
@@ -308,7 +308,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Display relevant message
+			// Display relevant message
 			this.userHelpLabel.Text = Localization.GetSystemMessage(this.PortalSettings, "MESSAGE_REGISTRATION_INSTRUCTIONS");
 			switch (this.PortalSettings.UserRegistration)
 			{
@@ -460,7 +460,7 @@ namespace DotNetNuke.Modules.Admin.Users
 					Visible = property.Visible,
 					Required = property.Required
 				};
-				//To check if the property has a deafult value
+				// To check if the property has a deafult value
 				if (!String.IsNullOrEmpty(property.DefaultValue))
 				{
 					formItem.Value = property.DefaultValue;
@@ -476,8 +476,8 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private void BindLoginControl(AuthenticationLoginBase authLoginControl, AuthenticationInfo authSystem)
 		{
-			//set the control ID to the resource file name ( ie. controlname.ascx = controlname )
-			//this is necessary for the Localization in PageBase
+			// set the control ID to the resource file name ( ie. controlname.ascx = controlname )
+			// this is necessary for the Localization in PageBase
 			authLoginControl.AuthenticationType = authSystem.AuthenticationType;
 			authLoginControl.ID = Path.GetFileNameWithoutExtension(authSystem.LoginControlSrc) + "_" + authSystem.AuthenticationType;
 			authLoginControl.LocalResourceFile = authLoginControl.TemplateSourceDirectory + "/" + Localization.LocalResourceDirectory + "/" +
@@ -490,7 +490,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private void CreateUser()
 		{
-			//Update DisplayName to conform to Format
+			// Update DisplayName to conform to Format
 			this.UpdateDisplayName();
 
 			this.User.Membership.Approved = this.PortalSettings.UserRegistration == (int)Globals.PortalRegistrationType.PublicRegistration;
@@ -503,10 +503,10 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				if (this.CreateStatus == UserCreateStatus.Success)
 				{
-					//hide the succesful captcha
+					// hide the succesful captcha
 					this.captchaRow.Visible = false;
 
-					//Assocate alternate Login with User and proceed with Login
+					// Assocate alternate Login with User and proceed with Login
 					if (!String.IsNullOrEmpty(this.AuthenticationType))
 					{
 						AuthenticationController.AddUserAuthentication(this.User.UserID, this.AuthenticationType, this.UserToken);
@@ -530,7 +530,7 @@ namespace DotNetNuke.Modules.Admin.Users
 					this.AddLocalizedModuleMessage(UserController.GetUserCreateStatus(this.CreateStatus), ModuleMessage.ModuleMessageType.RedError, true);
 				}
 			}
-			catch (Exception exc) //Module failed to load
+			catch (Exception exc) // Module failed to load
 			{
 				Exceptions.ProcessModuleLoadException(this, exc);
 			}
@@ -538,7 +538,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
 		private void UpdateDisplayName()
 		{
-			//Update DisplayName to conform to Format
+			// Update DisplayName to conform to Format
 			if (!string.IsNullOrEmpty(this.PortalSettings.Registration.DisplayNameFormat))
 			{
 				this.User.UpdateDisplayName(this.PortalSettings.Registration.DisplayNameFormat);
@@ -555,7 +555,7 @@ namespace DotNetNuke.Modules.Admin.Users
 			this.CreateStatus = UserCreateStatus.AddUser;
 			var portalSecurity = PortalSecurity.Instance;
 
-            //Check User Editor
+            // Check User Editor
             bool _IsValid = this.userForm.IsValid;
 
 		    if (_IsValid)
@@ -603,7 +603,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             if (this.PortalSettings.Registration.RegistrationFormType == 0)
 			{
-				//Update UserName
+				// Update UserName
 				if (this.PortalSettings.Registration.UseEmailAsUserName)
 				{
 					this.User.Username = this.User.Email;
@@ -613,10 +613,10 @@ namespace DotNetNuke.Modules.Admin.Users
 					}
 				}
 
-				//Check Password is valid
+				// Check Password is valid
 				if (!this.PortalSettings.Registration.RandomPassword)
 				{
-					//Check Password is Valid
+					// Check Password is Valid
 					if (this.CreateStatus == UserCreateStatus.AddUser && !UserController.ValidatePassword(this.User.Membership.Password))
 					{
 						this.CreateStatus = UserCreateStatus.InvalidPassword;
@@ -632,7 +632,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 				else
 				{
-					//Generate a random password for the user
+					// Generate a random password for the user
 					this.User.Membership.Password = UserController.GeneratePassword();
 					this.User.Membership.PasswordConfirm = this.User.Membership.Password;
 				}
@@ -640,13 +640,13 @@ namespace DotNetNuke.Modules.Admin.Users
 			}
 			else
 			{
-				//Set Username to Email
+				// Set Username to Email
 				if (String.IsNullOrEmpty(this.User.Username))
 				{
 					this.User.Username = this.User.Email;
 				}
 
-				//Set DisplayName
+				// Set DisplayName
 				if (String.IsNullOrEmpty(this.User.DisplayName))
 				{
 					this.User.DisplayName = String.IsNullOrEmpty(this.User.FirstName + " " + this.User.LastName)
@@ -654,14 +654,14 @@ namespace DotNetNuke.Modules.Admin.Users
 										   : this.User.FirstName + " " + this.User.LastName;
 				}
 
-				//Random Password
+				// Random Password
 				if (String.IsNullOrEmpty(this.User.Membership.Password))
 				{
-					//Generate a random password for the user
+					// Generate a random password for the user
 					this.User.Membership.Password = UserController.GeneratePassword();
 				}
 
-				//Password Confirm
+				// Password Confirm
 				if (!String.IsNullOrEmpty(this.User.Membership.PasswordConfirm))
 				{
 					if (this.User.Membership.Password != this.User.Membership.PasswordConfirm)
@@ -671,7 +671,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Validate banned password
+			// Validate banned password
 			var settings = new MembershipPasswordSettings(this.User.PortalID);
 
 			if (settings.EnableBannedList)
@@ -683,7 +683,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 
 			}
-			//Validate Profanity
+			// Validate Profanity
 			if (this.PortalSettings.Registration.UseProfanityFilter)
 			{
 				if (!portalSecurity.ValidateInput(this.User.Username, PortalSecurity.FilterFlag.NoProfanity))
@@ -699,7 +699,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Validate Unique User Name
+			// Validate Unique User Name
 			UserInfo user = UserController.GetUserByName(this.PortalId, this.User.Username);
 			if (user != null)
 			{
@@ -722,7 +722,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Validate Unique Display Name
+			// Validate Unique Display Name
 			if (this.CreateStatus == UserCreateStatus.AddUser && this.PortalSettings.Registration.RequireUniqueDisplayName)
 			{
 				user = UserController.Instance.GetUserByDisplayname(this.PortalId, this.User.DisplayName);
@@ -741,19 +741,19 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Check Question/Answer
+			// Check Question/Answer
 			if (this.CreateStatus == UserCreateStatus.AddUser && MembershipProviderConfig.RequiresQuestionAndAnswer)
 			{
 				if (string.IsNullOrEmpty(this.User.Membership.PasswordQuestion))
 				{
-					//Invalid Question
+					// Invalid Question
 					this.CreateStatus = UserCreateStatus.InvalidQuestion;
 				}
 				if (this.CreateStatus == UserCreateStatus.AddUser)
 				{
 					if (string.IsNullOrEmpty(this.User.Membership.PasswordAnswer))
 					{
-						//Invalid Question
+						// Invalid Question
 						this.CreateStatus = UserCreateStatus.InvalidAnswer;
 					}
 				}
@@ -770,7 +770,7 @@ namespace DotNetNuke.Modules.Admin.Users
 		{
 			var redirectUrl = "";
 			var redirectAfterRegistration = this.PortalSettings.Registration.RedirectAfterRegistration;
-			if (checkSetting && redirectAfterRegistration > 0) //redirect to after registration page
+			if (checkSetting && redirectAfterRegistration > 0) // redirect to after registration page
 			{
 				redirectUrl = this._navigationManager.NavigateURL(redirectAfterRegistration);
 			}
@@ -778,10 +778,10 @@ namespace DotNetNuke.Modules.Admin.Users
 			{
 				if (this.Request.QueryString["returnurl"] != null)
 				{
-					//return to the url passed to register
+					// return to the url passed to register
 					redirectUrl = HttpUtility.UrlDecode(this.Request.QueryString["returnurl"]);
 
-                    //clean the return url to avoid possible XSS attack.
+                    // clean the return url to avoid possible XSS attack.
                     redirectUrl = UrlUtils.ValidReturnUrl(redirectUrl);
 
                     if (redirectUrl.Contains("?returnurl"))
@@ -796,7 +796,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 				if (String.IsNullOrEmpty(redirectUrl))
 				{
-					//redirect to current page
+					// redirect to current page
 					redirectUrl = this._navigationManager.NavigateURL();
 				}
 			}
@@ -856,7 +856,7 @@ namespace DotNetNuke.Modules.Admin.Users
 				}
 			}
 
-			//Generate a random password for the user
+			// Generate a random password for the user
 			this.User.Membership.Password = UserController.GeneratePassword();
 
 			if (!String.IsNullOrEmpty(this.User.Email))

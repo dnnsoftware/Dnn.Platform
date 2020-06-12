@@ -66,7 +66,7 @@ namespace DotNetNuke.Web.UI.WebControls
         /// -----------------------------------------------------------------------------
         protected override void CreateChildControls()
         {
-            //First clear the controls collection
+            // First clear the controls collection
             this.Controls.Clear();
 
             this._Flag = new Image {ViewStateMode = ViewStateMode.Disabled};
@@ -78,7 +78,7 @@ namespace DotNetNuke.Web.UI.WebControls
             this._Label.ViewStateMode = ViewStateMode.Disabled;
             this.Controls.Add(this._Label);
 
-            //Call base class's method
+            // Call base class's method
 
             base.CreateChildControls();
         }

@@ -15,7 +15,7 @@ using DotNetNuke.Entities.Users.Membership;
 using DotNetNuke.Entities.Users.Social;
 using DotNetNuke.Instrumentation;
 using DotNetNuke.Services.Exceptions;
-//DNN-4016
+// DNN-4016
 using DotNetNuke.Services.Localization;
 using DotNetNuke.Services.Log.EventLog;
 using System;
@@ -183,7 +183,7 @@ namespace DotNetNuke.Security.Membership
             {
                 if (aspNetUser.LastLockoutDate < DateTime.Now.AddMinutes(-1 * Host.AutoAccountUnlockDuration))
                 {
-                    //Unlock user in Data Store
+                    // Unlock user in Data Store
                     if (aspNetUser.UnlockUser())
                     {
                         return true;
@@ -224,12 +224,12 @@ namespace DotNetNuke.Security.Membership
                                                           isApproved,
                                                           UserController.Instance.GetCurrentUserInfo().UserID));
 
-                //Save the user password history
+                // Save the user password history
                 new MembershipPasswordController().IsPasswordInHistory(user.UserID, user.PortalID, user.Membership.Password);
             }
             catch (Exception ex)
             {
-                //Clear User (duplicate User information)
+                // Clear User (duplicate User information)
                 Exceptions.LogException(ex);
                 user = null;
                 createStatus = UserCreateStatus.ProviderError;
@@ -323,7 +323,7 @@ namespace DotNetNuke.Security.Membership
 
         private static ArrayList FillUserCollection(int portalId, IDataReader dr, ref int totalRecords)
         {
-            //Note:  the DataReader returned from this method should contain 2 result sets.  The first set
+            // Note:  the DataReader returned from this method should contain 2 result sets.  The first set
             //       contains the TotalRecords, that satisfy the filter, the second contains the page
             //       of data
             var arrUsers = new ArrayList();
@@ -331,15 +331,15 @@ namespace DotNetNuke.Security.Membership
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     UserInfo user = FillUserInfo(portalId, dr, false);
-                    //add to collection
+                    // add to collection
                     arrUsers.Add(user);
                 }
-                //Get the next result (containing the total)
+                // Get the next result (containing the total)
                 dr.NextResult();
 
-                //Get the total no of records from the second result
+                // Get the total no of records from the second result
                 totalRecords = Globals.GetTotalRecords(ref dr);
             }
             catch (Exception exc)
@@ -348,7 +348,7 @@ namespace DotNetNuke.Security.Membership
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return arrUsers;
@@ -361,9 +361,9 @@ namespace DotNetNuke.Security.Membership
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     UserInfo user = FillUserAndProfile(portalId, dr);
-                    //add to collection
+                    // add to collection
                     users.Add(user);
                 }
             }
@@ -373,7 +373,7 @@ namespace DotNetNuke.Security.Membership
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return users;
@@ -384,7 +384,7 @@ namespace DotNetNuke.Security.Membership
             UserInfo user = null;
             bool bContinue = (String.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase));
 
-            //Ensure the data reader returned is valid
+            // Ensure the data reader returned is valid
             if (bContinue)
             {
                 user = new UserInfo
@@ -440,7 +440,7 @@ namespace DotNetNuke.Security.Membership
                         case "PasswordResetExpiration":
                             break;
                         default:
-                            //Probably a profile property
+                            // Probably a profile property
                             string name = dr.GetName(i);
                             userProfile.SetProfileProperty(name, Null.SetNullString(dr[name]));
                             break;
@@ -457,14 +457,14 @@ namespace DotNetNuke.Security.Membership
             UserInfo user = null;
             try
             {
-                //read datareader
+                // read datareader
                 bool bContinue = true;
                 if (closeDataReader)
                 {
                     bContinue = false;
                     if (dr.Read())
                     {
-                        //Ensure the data reader returned is valid
+                        // Ensure the data reader returned is valid
                         if (string.Equals(dr.GetName(0), "UserID", StringComparison.InvariantCultureIgnoreCase))
                         {
                             bContinue = true;
@@ -546,7 +546,7 @@ namespace DotNetNuke.Security.Membership
 
         private static void FillUserMembership(MembershipUser aspNetUser, UserInfo user)
         {
-            //Fill Membership Property
+            // Fill Membership Property
             if (aspNetUser != null)
             {
                 if (user.Membership == null)
@@ -564,7 +564,7 @@ namespace DotNetNuke.Security.Membership
 
                 if (user.IsSuperUser)
                 {
-                    //For superusers the Approved info is stored in aspnet membership
+                    // For superusers the Approved info is stored in aspnet membership
                     user.Membership.Approved = aspNetUser.IsApproved;
                 }
             }
@@ -626,7 +626,7 @@ namespace DotNetNuke.Security.Membership
                                                       PortalSecurity.FilterFlag.NoAngleBrackets |
                                                       PortalSecurity.FilterFlag.NoMarkup);
 
-            //Persist the Membership Properties to the AspNet Data Store
+            // Persist the Membership Properties to the AspNet Data Store
             MembershipUser membershipUser = System.Web.Security.Membership.GetUser(user.Username);
             membershipUser.Email = email;
             membershipUser.LastActivityDate = DateTime.Now;
@@ -742,13 +742,13 @@ namespace DotNetNuke.Security.Membership
                 throw new ArgumentException(Localization.GetExceptionMessage("InvalidUserName", "The username specified is invalid."));
             }
 
-            //read all the user account settings
+            // read all the user account settings
             var portalSettings = PortalController.Instance.GetCurrentPortalSettings();
             if (portalSettings != null)
             {
                 var settings = UserController.GetUserSettings(portalSettings.PortalId);
 
-                //User Name Validation
+                // User Name Validation
                 var userNameValidator = this.GetStringSetting(settings, "Security_UserNameValidation");
                 if (!string.IsNullOrEmpty(userNameValidator))
                 {
@@ -846,7 +846,7 @@ namespace DotNetNuke.Security.Membership
             Hashtable settings = UserController.GetUserSettings(user.PortalID);
             bool useProfanityFilter = Convert.ToBoolean(settings["Registration_UseProfanityFilter"]);
 
-            //Validate Profanity
+            // Validate Profanity
             if (useProfanityFilter)
             {
                 if (!portalSecurity.ValidateInput(user.Username, PortalSecurity.FilterFlag.NoProfanity))
@@ -902,15 +902,15 @@ namespace DotNetNuke.Security.Membership
             {
                 try
                 {
-                    //check if username exists in database for any portal
+                    // check if username exists in database for any portal
                     UserInfo objVerifyUser = this.GetUserByUserName(Null.NullInteger, user.Username);
                     if (objVerifyUser != null)
                     {
-                        //DNN-4016
-                        //the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
+                        // DNN-4016
+                        // the username exists so we should now verify the password, DNN-4016 or check for oauth user authentication.
                         if (ValidateUser(user.Username, user.Membership.Password))
                         {
-                            //check if user exists for the portal specified
+                            // check if user exists for the portal specified
                             objVerifyUser = this.GetUserByUserName(user.PortalID, user.Username);
                             if (objVerifyUser != null)
                             {
@@ -920,7 +920,7 @@ namespace DotNetNuke.Security.Membership
                                 }
                                 else
                                 {
-                                    //SuperUser who is not part of portal
+                                    // SuperUser who is not part of portal
                                     createStatus = UserCreateStatus.AddUserToPortal;
                                 }
                             }
@@ -931,36 +931,36 @@ namespace DotNetNuke.Security.Membership
                         }
                         else
                         {
-                            //not the same person - prevent registration
+                            // not the same person - prevent registration
                             createStatus = UserCreateStatus.UsernameAlreadyExists;
                         }
                     }
                     else
                     {
-                        //the user does not exist
+                        // the user does not exist
                         createStatus = UserCreateStatus.AddUser;
                     }
 
-                    //If new user - add to aspnet membership
+                    // If new user - add to aspnet membership
                     if (createStatus == UserCreateStatus.AddUser)
                     {
                         createStatus = CreateMemberhipUser(user);
                     }
 
-                    //If asp user has been successfully created or we are adding a existing user
-                    //to a new portal 
+                    // If asp user has been successfully created or we are adding a existing user
+                    // to a new portal 
                     if (createStatus == UserCreateStatus.Success || createStatus == UserCreateStatus.AddUserToPortal)
                     {
-                        //Create the DNN User Record
+                        // Create the DNN User Record
                         createStatus = this.CreateDNNUser(ref user);
                         if (createStatus == UserCreateStatus.Success)
                         {
-                            //Persist the Profile to the Data Store
+                            // Persist the Profile to the Data Store
                             ProfileController.UpdateUserProfile(user);
                         }
                     }
                 }
-                catch (Exception exc) //an unexpected error occurred
+                catch (Exception exc) // an unexpected error occurred
                 {
                     Exceptions.LogException(exc);
                     createStatus = UserCreateStatus.UnexpectedError;
@@ -1221,13 +1221,13 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override void GetUserMembership(ref UserInfo user)
         {
-            //Get AspNet MembershipUser
+            // Get AspNet MembershipUser
             MembershipUser aspnetUser = GetMembershipUser(user);
 
-            //Fill Membership Property
+            // Fill Membership Property
             FillUserMembership(aspnetUser, user);
 
-            //Get Online Status
+            // Get Online Status
             user.Membership.IsOnLine = this.IsUserOnline(user);
         }
 
@@ -1527,7 +1527,7 @@ namespace DotNetNuke.Security.Membership
                 }
                 else
                 {
-                    //Next try the Database
+                    // Next try the Database
                     onlineUser = CBO.FillObject<OnlineUserInfo>(this._dataProvider.GetOnlineUser(user.UserID));
                     if (onlineUser != null)
                     {
@@ -1551,7 +1551,7 @@ namespace DotNetNuke.Security.Membership
 
                 this._dataProvider.RemoveUser(user.UserID, user.PortalID);
 
-                //Prior to removing membership, ensure user is not present in any other portal
+                // Prior to removing membership, ensure user is not present in any other portal
                 UserInfo otherUser = this.GetUserByUserNameFromDataStore(Null.NullInteger, user.Username);
                 if (otherUser == null)
                 {
@@ -1579,7 +1579,7 @@ namespace DotNetNuke.Security.Membership
         /// -----------------------------------------------------------------------------
         public override string ResetPassword(UserInfo user, string passwordAnswer)
         {
-            //Get AspNet MembershipUser
+            // Get AspNet MembershipUser
             MembershipUser aspnetUser = GetMembershipUser(user);
 
             return this.RequiresQuestionAndAnswer ? aspnetUser.ResetPassword(passwordAnswer) : aspnetUser.ResetPassword();
@@ -1604,7 +1604,7 @@ namespace DotNetNuke.Security.Membership
                 return false;
             }
 
-            //Get AspNet MembershipUser
+            // Get AspNet MembershipUser
             MembershipUser aspnetUser = GetMembershipUser(user);
             if (aspnetUser.IsLockedOut)
             {
@@ -1746,10 +1746,10 @@ namespace DotNetNuke.Security.Membership
                 displayName = firstName + " " + lastName;
             }
 
-            //Persist the Membership to the Data Store
+            // Persist the Membership to the Data Store
             UpdateUserMembership(user);
 
-            //Persist the DNN User to the Database
+            // Persist the DNN User to the Database
             this._dataProvider.UpdateUser(user.UserID,
                                      user.PortalID,
                                      firstName,
@@ -1767,7 +1767,7 @@ namespace DotNetNuke.Security.Membership
                                      user.IsDeleted,
                                      UserController.Instance.GetCurrentUserInfo().UserID);
 
-            //Persist the Profile to the Data Store
+            // Persist the Profile to the Data Store
             ProfileController.UpdateUserProfile(user);
         }
 
@@ -1820,33 +1820,33 @@ namespace DotNetNuke.Security.Membership
         public override UserInfo UserLogin(int portalId, string username, string password, string authType,
                                            string verificationCode, ref UserLoginStatus loginStatus)
         {
-            //For now, we are going to ignore the possibility that the User may exist in the 
-            //Global Data Store but not in the Local DataStore ie. A shared Global Data Store
+            // For now, we are going to ignore the possibility that the User may exist in the 
+            // Global Data Store but not in the Local DataStore ie. A shared Global Data Store
 
-            //Initialise Login Status to Failure
+            // Initialise Login Status to Failure
             loginStatus = UserLoginStatus.LOGIN_FAILURE;
 
             DataCache.ClearUserCache(portalId, username);
             DataCache.ClearCache(GetCacheKey(username));
 
-            //Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
+            // Get a light-weight (unhydrated) DNN User from the Database, we will hydrate it later if neccessary
             UserInfo user = (authType == "DNN")
                                 ? this.GetUserByUserName(portalId, username)
                                 : this.GetUserByAuthToken(portalId, verificationCode, authType);
             if (user != null && !user.IsDeleted)
             {
-                //Get AspNet MembershipUser
+                // Get AspNet MembershipUser
                 MembershipUser aspnetUser = GetMembershipUser(user);
 
-                //Fill Membership Property from AspNet MembershipUser
+                // Fill Membership Property from AspNet MembershipUser
                 FillUserMembership(aspnetUser, user);
 
-                //Check if the User is Locked Out (and unlock if AutoUnlock has expired)
+                // Check if the User is Locked Out (and unlock if AutoUnlock has expired)
                 if (aspnetUser.IsLockedOut)
                 {
                     if (AutoUnlockUser(aspnetUser))
                     {
-                        //Unlock User
+                        // Unlock User
                         user.Membership.LockedOut = false;
                     }
                     else
@@ -1855,11 +1855,11 @@ namespace DotNetNuke.Security.Membership
                     }
                 }
 
-                //Check in a verified situation whether the user is Approved
+                // Check in a verified situation whether the user is Approved
                 if (user.Membership.Approved == false && user.IsSuperUser == false)
                 {
 
-                    //Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
+                    // Check Verification code (skip for FB, Google, Twitter, LiveID as it has no verification code)
                     if (this._socialAuthProviders.Contains(authType) && String.IsNullOrEmpty(verificationCode))
                     {
                         if (PortalController.Instance.GetCurrentPortalSettings().UserRegistration ==
@@ -1889,15 +1889,15 @@ namespace DotNetNuke.Security.Membership
 
                 }
 
-                //Verify User Credentials
+                // Verify User Credentials
                 bool bValid = false;
                 loginStatus = ValidateLogin(username, authType, user, loginStatus, password, ref bValid, portalId);
                 if (!bValid)
                 {
-                    //Clear the user object
+                    // Clear the user object
                     user = null;
 
-                    //Clear cache for user so that locked out & other status could be updated
+                    // Clear cache for user so that locked out & other status could be updated
                     DataCache.ClearUserCache(portalId, username);
                     DataCache.ClearCache(GetCacheKey(username));
 
@@ -1913,7 +1913,7 @@ namespace DotNetNuke.Security.Membership
             }
             else
             {
-                //Clear the user object
+                // Clear the user object
                 user = null;
             }
             return user;
@@ -1923,7 +1923,7 @@ namespace DotNetNuke.Security.Membership
 
         public static ArrayList FillUserCollection(int portalId, IDataReader dr)
         {
-            //Note:  the DataReader returned from this method should contain 2 result sets.  The first set
+            // Note:  the DataReader returned from this method should contain 2 result sets.  The first set
             //       contains the TotalRecords, that satisfy the filter, the second contains the page
             //       of data
             var arrUsers = new ArrayList();
@@ -1931,9 +1931,9 @@ namespace DotNetNuke.Security.Membership
             {
                 while (dr.Read())
                 {
-                    //fill business object
+                    // fill business object
                     UserInfo user = FillUserInfo(portalId, dr, false);
-                    //add to collection
+                    // add to collection
                     arrUsers.Add(user);
                 }
             }
@@ -1943,7 +1943,7 @@ namespace DotNetNuke.Security.Membership
             }
             finally
             {
-                //close datareader
+                // close datareader
                 CBO.CloseDataReader(dr, true);
             }
             return arrUsers;

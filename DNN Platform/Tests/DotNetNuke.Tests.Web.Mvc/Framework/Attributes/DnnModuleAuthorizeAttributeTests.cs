@@ -92,7 +92,7 @@ namespace DotNetNuke.Tests.Web.Mvc.Framework.Attributes
             sut.OnAuthorization(context);
 
             // Assert
-            //Assert.IsTrue(a.IsAuthorized);
+            // Assert.IsTrue(a.IsAuthorized);
             this._mockRepository.VerifyAll();
         }
 

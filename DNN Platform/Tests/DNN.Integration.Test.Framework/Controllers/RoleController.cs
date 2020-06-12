@@ -71,7 +71,7 @@ namespace DNN.Integration.Test.Framework.Controllers
         {
             // The fix for DNN-4288 prevented virtual roles from getting virtual
             // roles (i.e., with RoleID <= 0 which includes Administrator role).
-            //var results = DatabaseHelper.ExecuteStoredProcedure("GetRolesBasicSearch", portalId, 0, 10, roleName);
+            // var results = DatabaseHelper.ExecuteStoredProcedure("GetRolesBasicSearch", portalId, 0, 10, roleName);
 
             roleName = roleName.Replace("'", string.Empty);
             var query = string.Format("SELECT RoleID FROM {{objectQualifier}}Roles WHERE RoleName = N'{0}' AND PortalID={1};", roleName, portalId);

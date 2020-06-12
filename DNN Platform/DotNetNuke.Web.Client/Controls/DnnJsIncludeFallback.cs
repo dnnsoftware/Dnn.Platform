@@ -31,12 +31,12 @@ namespace DotNetNuke.Web.Client.ClientResourceManagement
 
             if (this.ObjectName.Contains("."))
             {
-                //generate function check
+                // generate function check
                 writer.Write("if (typeof " + this.ObjectName + " != 'function') {");
             }
             else
             {
-                //generate object check
+                // generate object check
                 writer.Write("if (typeof " + this.ObjectName + " == 'undefined') {");
             }
 

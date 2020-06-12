@@ -16,41 +16,41 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void GetTabAndModuleInfoProvidersReturnsEmptyWhenNoProvidersAdded()
         {
-            //Arrange
+            // Arrange
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             var providers = configuration.GetTabAndModuleInfoProviders();
 
-            //Assert
+            // Assert
             CollectionAssert.IsEmpty(providers);
         }
 
         [Test]
         public void AddTabAndModuleInfoProviderWorksForFirstProvider()
         {
-            //Arrange
+            // Arrange
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
 
-            //Assert
+            // Assert
             Assert.AreEqual(1, ((IEnumerable<ITabAndModuleInfoProvider>)configuration.Properties["TabAndModuleInfoProvider"]).Count());
         }
 
         [Test]
         public void AddTabAndModuleInfoProviderWorksForManyProviders()
         {
-            //Arrange
+            // Arrange
             var configuration = new HttpConfiguration();
 
-            //Act
+            // Act
             configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
             configuration.AddTabAndModuleInfoProvider(new StandardTabAndModuleInfoProvider());
 
-            //Assert
+            // Assert
             Assert.AreEqual(3, ((IEnumerable<ITabAndModuleInfoProvider>)configuration.Properties["TabAndModuleInfoProvider"]).Count());
         }
     }

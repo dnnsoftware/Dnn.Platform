@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Personalization
 {
     public class PersonalizationController
     {
-        //default implementation relies on HTTPContext
+        // default implementation relies on HTTPContext
         public void LoadProfile(HttpContext httpContext, int userId, int portalId)
         {
             this.LoadProfile(new HttpContextWrapper(httpContext), userId, portalId);
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Personalization
             }
         }
 
-        //override allows for manipulation of PersonalizationInfo outside of HTTPContext
+        // override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public PersonalizationInfo LoadProfile(int userId, int portalId)
         {
             var personalization = new PersonalizationInfo {UserId = userId, PortalId = portalId, IsModified = false};
@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Personalization
             }
             else
             {
-				//Anon User - so try and use cookie.
+				// Anon User - so try and use cookie.
                 HttpContext context = HttpContext.Current;
                 if (context != null && context.Request.Cookies["DNNPersonalization"] != null)
                 {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Personalization
         {
             var portalId = (int)cacheItemArgs.ParamList[0];
             var userId = (int)cacheItemArgs.ParamList[1];
-            var returnValue = Null.NullString; //Default is no profile
+            var returnValue = Null.NullString; // Default is no profile
             IDataReader dr = null;
             try
             {
@@ -83,7 +83,7 @@ namespace DotNetNuke.Services.Personalization
                 {
                     returnValue = dr["ProfileData"].ToString();
                 }
-                else //does not exist
+                else // does not exist
                 {
                     DataProvider.Instance().AddProfile(userId, portalId);
                 }
@@ -105,14 +105,14 @@ namespace DotNetNuke.Services.Personalization
             this.SaveProfile(personalization, personalization.UserId, personalization.PortalId);
         }
 
-        //default implementation relies on HTTPContext
+        // default implementation relies on HTTPContext
         public void SaveProfile(HttpContext httpContext, int userId, int portalId)
         {
             var objPersonalization = (PersonalizationInfo)httpContext.Items["Personalization"];
             this.SaveProfile(objPersonalization, userId, portalId);
         }
 
-        //override allows for manipulation of PersonalizationInfo outside of HTTPContext
+        // override allows for manipulation of PersonalizationInfo outside of HTTPContext
         public void SaveProfile(PersonalizationInfo personalization, int userId, int portalId)
         {
             if (personalization != null && personalization.IsModified)
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Personalization
                 }
                 else
                 {
-					//Anon User - so try and use cookie.
+					// Anon User - so try and use cookie.
                     var context = HttpContext.Current;
                     if (context != null)
                     {

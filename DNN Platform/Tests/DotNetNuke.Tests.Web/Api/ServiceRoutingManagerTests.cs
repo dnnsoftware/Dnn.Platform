@@ -61,7 +61,7 @@ namespace DotNetNuke.Tests.Web.Api
         {
             var assemblyLocator = new Mock<IAssemblyLocator>();
 
-            //including the assembly with object ensures that the assignabliity is done correctly
+            // including the assembly with object ensures that the assignabliity is done correctly
             var assembliesToReflect = new IAssembly[2];
             assembliesToReflect[0] = new AssemblyWrapper(this.GetType().Assembly);
             assembliesToReflect[1] = new AssemblyWrapper(typeof(Object).Assembly);
@@ -72,7 +72,7 @@ namespace DotNetNuke.Tests.Web.Api
 
             List<Type> types = locator.GetAllMatchingTypes(ServicesRoutingManager.IsValidServiceRouteMapper).ToList();
 
-            //if new ServiceRouteMapper classes are added to the assembly they willl likely need to be added here
+            // if new ServiceRouteMapper classes are added to the assembly they willl likely need to be added here
             CollectionAssert.AreEquivalent(
                 new[]
                     {
@@ -143,20 +143,20 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void UrlCanStartWithSlash()
         {
-            //Arrange
+            // Arrange
             this._mockPortalController.Setup(x => x.GetPortals()).Returns(new ArrayList());
             
-            //Act
+            // Act
             var srm = new ServicesRoutingManager(new RouteCollection());
 
-            //Assert
+            // Assert
             Assert.DoesNotThrow(() => srm.MapHttpRoute("name", "default", "/url", null, new[] { "foo" }));
         }
 
         [Test]
         public void NameIsInsertedInRouteDataTokens()
         {
-            //Arrange
+            // Arrange
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
             this._mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
@@ -166,10 +166,10 @@ namespace DotNetNuke.Tests.Web.Api
             var routeCollection = new RouteCollection();
             var srm = new ServicesRoutingManager(routeCollection);
 
-            //Act
+            // Act
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
 
-            //Assert
+            // Assert
             var route = (Route)routeCollection[0];
             Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
         }
@@ -177,7 +177,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void TwoRoutesOnTheSameFolderHaveSimilarNames()
         {
-            //Arrange
+            // Arrange
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
             this._mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
@@ -187,11 +187,11 @@ namespace DotNetNuke.Tests.Web.Api
             var routeCollection = new RouteCollection();
             var srm = new ServicesRoutingManager(routeCollection);
 
-            //Act
+            // Act
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
             srm.MapHttpRoute("folder", "another", "alt/url", new[] { "foo" });
 
-            //Assert
+            // Assert
             var route = (Route)routeCollection[0];
             Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
             route = (Route)routeCollection[1];
@@ -201,7 +201,7 @@ namespace DotNetNuke.Tests.Web.Api
         [Test]
         public void RoutesShouldHaveBackwardCompability()
         {
-            //Arrange
+            // Arrange
             var portalInfo = new ArrayList { new PortalInfo { PortalID = 0 } };
             this._mockPortalController.Setup(x => x.GetPortals()).Returns(portalInfo);
             var mockPac = new Mock<IPortalAliasController>();
@@ -211,10 +211,10 @@ namespace DotNetNuke.Tests.Web.Api
             var routeCollection = new RouteCollection();
             var srm = new ServicesRoutingManager(routeCollection);
 
-            //Act
+            // Act
             srm.MapHttpRoute("folder", "default", "url", new[] { "foo" });
 
-            //Assert
+            // Assert
             var route = (Route)routeCollection[0];
             Assert.AreEqual("folder-default-0", route.DataTokens["Name"]);
             route = (Route)routeCollection[1];

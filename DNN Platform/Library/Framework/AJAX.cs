@@ -43,7 +43,7 @@ namespace DotNetNuke.Framework
                 {
                     try
                     {
-                        using (var scriptManager = new ScriptManager //RadScriptManager
+                        using (var scriptManager = new ScriptManager // RadScriptManager
                                 {
                                     ID = "ScriptManager",
                                     EnableScriptGlobalization = true,
@@ -64,34 +64,34 @@ namespace DotNetNuke.Framework
                     }
                     catch
                     {
-                        //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
+                        // suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
                     }
                 }
                 if (page.Form != null)
                 {
                     try
                     {
-                        //DNN-9145 TODO
-                        //using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
-                        //{
-                        //	if (checkCdn)
-                        //	{
-                        //		stylesheetManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
-                        //		if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
-                        //		{
-                        //			stylesheetManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
-                        //		}
-                        //		if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
-                        //		{
-                        //			stylesheetManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
-                        //		}
-                        //	}
-                        //	page.Form.Controls.AddAt(0, stylesheetManager);
-                        //}
+                        // DNN-9145 TODO
+                        // using (var stylesheetManager = new RadStyleSheetManager { ID = "StylesheetManager", EnableHandlerDetection = false })
+                        // {
+                        // if (checkCdn)
+                        // {
+                        // stylesheetManager.CdnSettings.TelerikCdn = Host.EnableTelerikCdn ? TelerikCdnMode.Enabled : TelerikCdnMode.Disabled;
+                        // if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnBasicUrl))
+                        // {
+                        // stylesheetManager.CdnSettings.BaseUrl = Host.TelerikCdnBasicUrl;
+                        // }
+                        // if (stylesheetManager.CdnSettings.TelerikCdn != TelerikCdnMode.Disabled && !string.IsNullOrEmpty(Host.TelerikCdnSecureUrl))
+                        // {
+                        // stylesheetManager.CdnSettings.BaseSecureUrl = Host.TelerikCdnSecureUrl;
+                        // }
+                        // }
+                        // page.Form.Controls.AddAt(0, stylesheetManager);
+                        // }
                     }
                     catch
                     {
-                        //suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
+                        // suppress error adding script manager to support edge-case of module developers custom aspx pages that inherit from basepage and use code blocks
                     }
                 }
             }
@@ -198,24 +198,24 @@ namespace DotNetNuke.Framework
 
             for (int i = 0; i <= objControl.Parent.Controls.Count - 1; i++)
             {
-                //find offset of original control
+                // find offset of original control
                 if (objControl.Parent.Controls[i].ID == objControl.ID)
                 {
-                    //if ID matches
+                    // if ID matches
                     objControl.Parent.Controls.AddAt(i, updatePanel);
-                    //insert update panel in that position
+                    // insert update panel in that position
                     objContentTemplateContainer.Controls.Add(objControl);
-                    //inject passed in control into update panel
+                    // inject passed in control into update panel
                     break;
                 }
             }
 
             if (blnIncludeProgress)
             {
-                //create image for update progress control
+                // create image for update progress control
                 var objImage = new Image();
                 objImage.ImageUrl = "~/images/progressbar.gif";
-                //hardcoded
+                // hardcoded
                 objImage.AlternateText = "ProgressBar";
 
                 var updateProgress = new UpdateProgress();

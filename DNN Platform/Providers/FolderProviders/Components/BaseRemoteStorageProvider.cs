@@ -39,7 +39,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                 {
                     var list = this.GetObjectList(folderMapping, key);
                     
-                    //return list.FirstOrDefault(i => i.Key == key);
+                    // return list.FirstOrDefault(i => i.Key == key);
                     return list.FirstOrDefault(i => i.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase));
                 });
             
@@ -167,7 +167,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
         {
             var cacheKey = String.Format(this.ListObjectsCacheKey, folderMappingId);
             DataCache.RemoveCache(cacheKey);
-            //Clear cached objects
+            // Clear cached objects
             DataCache.ClearCache(String.Format(this.ObjectCacheKey, folderMappingId, String.Empty));
         }
 
@@ -233,7 +233,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             Requires.NotNull("folderPath", folderPath);
             Requires.NotNull("folderMapping", folderMapping);
 
-            //the root folder should always exist.
+            // the root folder should always exist.
             if (folderPath == "")
             {
                 return true;
@@ -263,7 +263,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             var list = this.GetObjectList(folderMapping, folder.MappedPath);
             var mappedPath = folder.MappedPath;
 
-            //return (from i in list
+            // return (from i in list
             //        let f = i.Key
             //        let r = (!string.IsNullOrEmpty(mappedPath) ? f.Replace(mappedPath, "") : f)
             //        where f.StartsWith(mappedPath, true, CultureInfo.InvariantCulture) && f.Length > mappedPath.Length && r.IndexOf("/", StringComparison.Ordinal) == -1
@@ -365,7 +365,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
                                    && r.IndexOf("/", StringComparison.Ordinal) > -1
                            select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
-            //var mylist =  (from o in list
+            // var mylist =  (from o in list
             //        let f = o.Key
             //        let r = (!string.IsNullOrEmpty(folderPath) ? RegexUtils.GetCachedRegex(Regex.Escape(folderPath)).Replace(f, string.Empty, 1) : f)
             //        where f.StartsWith(folderPath)
@@ -373,7 +373,7 @@ namespace DotNetNuke.Providers.FolderProviders.Components
             //            && r.IndexOf("/", StringComparison.Ordinal) > -1
             //        select folderPath + r.Substring(0, r.IndexOf("/", StringComparison.Ordinal)) + "/").Distinct().ToList();
 
-            //return mylist;
+            // return mylist;
 
         }
 

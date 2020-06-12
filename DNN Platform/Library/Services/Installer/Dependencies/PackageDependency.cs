@@ -40,7 +40,7 @@ namespace DotNetNuke.Services.Installer.Dependencies
             {
                 bool _IsValid = true;
 
-                //Get Package from DataStore
+                // Get Package from DataStore
                 PackageInfo package = PackageController.Instance.GetExtensionPackage(Null.NullInteger, (p) => p.Name.Equals(this.PackageName, StringComparison.OrdinalIgnoreCase));
                 if (package == null)
                 {

@@ -138,7 +138,7 @@ namespace DotNetNuke.UI.UserControls
 
             try
             {
-                //Localization
+                // Localization
                 this.Label1.Text = Localization.GetString("Available", Localization.GetResourceFile(this, this.MyFileName));
                 this.Label2.Text = Localization.GetString("Assigned", Localization.GetResourceFile(this, this.MyFileName));
                 this.cmdAdd.ToolTip = Localization.GetString("Add", Localization.GetResourceFile(this, this.MyFileName));
@@ -148,7 +148,7 @@ namespace DotNetNuke.UI.UserControls
 
                 if (!this.Page.IsPostBack)
                 {
-					//set dimensions of control
+					// set dimensions of control
                     if (!String.IsNullOrEmpty(this._ListBoxWidth))
                     {
                         this.lstAvailable.Width = Unit.Parse(this._ListBoxWidth);
@@ -160,30 +160,30 @@ namespace DotNetNuke.UI.UserControls
                         this.lstAssigned.Height = Unit.Parse(this._ListBoxHeight);
                     }
 					
-                    //load available
+                    // load available
                     this.lstAvailable.DataTextField = this._DataTextField;
                     this.lstAvailable.DataValueField = this._DataValueField;
                     this.lstAvailable.DataSource = this._Available;
                     this.lstAvailable.DataBind();
                     this.Sort(this.lstAvailable);
 
-                    //load selected
+                    // load selected
                     this.lstAssigned.DataTextField = this._DataTextField;
                     this.lstAssigned.DataValueField = this._DataValueField;
                     this.lstAssigned.DataSource = this._Assigned;
                     this.lstAssigned.DataBind();
                     this.Sort(this.lstAssigned);
 
-                    //set enabled
+                    // set enabled
                     this.lstAvailable.Enabled = this._Enabled;
                     this.lstAssigned.Enabled = this._Enabled;
 
-                    //save persistent values
+                    // save persistent values
                     this.ViewState[this.ClientID + "_ListBoxWidth"] = this._ListBoxWidth;
                     this.ViewState[this.ClientID + "_ListBoxHeight"] = this._ListBoxHeight;
                 }
             }
-            catch (Exception exc) //Module failed to load
+            catch (Exception exc) // Module failed to load
             {
                 Exceptions.ProcessModuleLoadException(this, exc);
             }

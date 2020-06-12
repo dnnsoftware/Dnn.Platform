@@ -37,7 +37,7 @@ namespace DotNetNuke.Common.Lists
         public ListEntryInfo Item(string key)
         {
             int index;
-            //<tam:note key to be lowercase for appropiated seeking>
+            // <tam:note key to be lowercase for appropiated seeking>
             try
             {
                 if (this._keyIndexLookup[key.ToLowerInvariant()] == null)
@@ -68,7 +68,7 @@ namespace DotNetNuke.Common.Lists
         public void Add(string key, ListEntryInfo value)
         {
             int index;
-            try //Do validation first
+            try // Do validation first
             {
                 index = base.List.Add(value);
                 this._keyIndexLookup.Add(key.ToLowerInvariant(), index);

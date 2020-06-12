@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Urls
         protected static void AutoAddAlias(HttpContext context)
         {
             var portalId = Host.Host.HostPortalID;
-            //the domain name was not found so try using the host portal's first alias
+            // the domain name was not found so try using the host portal's first alias
             if (portalId > Null.NullInteger)
             {
                 var portalAliasInfo = new PortalAliasInfo { PortalID = portalId, HTTPAlias = Globals.GetDomainName(context.Request, true) };

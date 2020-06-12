@@ -53,7 +53,7 @@ namespace DotNetNuke.HttpModules.Analytics
         {
             try
             {
-                //First check if we are upgrading/installing or if it is a non-page request
+                // First check if we are upgrading/installing or if it is a non-page request
                 var app = (HttpApplication)sender;
                 var request = app.Request;
 

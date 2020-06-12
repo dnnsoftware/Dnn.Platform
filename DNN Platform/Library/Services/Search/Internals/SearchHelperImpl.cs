@@ -589,14 +589,14 @@ namespace DotNetNuke.Services.Search.Internals
             {
                 var terms = new Dictionary<string, IList<string>>();
                 var groupTags = synonymsGroup.SynonymsTags.ToLowerInvariant().Split(',');
-                //add the first key first
+                // add the first key first
                 foreach (var tag in groupTags)
                 {
                     if (!terms.ContainsKey(tag))
                         terms.Add(tag, new List<string>());
                 }
 
-                //add synonyms
+                // add synonyms
                 foreach (var term in terms)
                 {
                     foreach (var syn in terms)
@@ -630,10 +630,10 @@ namespace DotNetNuke.Services.Search.Internals
         {
             const string setting = "SearchAdminInitialization";
 
-            //check portal settings first
+            // check portal settings first
             if (PortalController.GetPortalSetting(setting, portalId, "false") != "false") return;
             
-            //Portal may not be present, especially during installation
+            // Portal may not be present, especially during installation
             if (PortalController.Instance.GetPortal(portalId) == null) return;
 
             foreach (var locale in LocaleController.Instance.GetLocales(portalId).Values)
@@ -643,7 +643,7 @@ namespace DotNetNuke.Services.Search.Internals
                 var currentStopWords = CBO.FillCollection<SearchStopWords>(DataProvider.Instance().GetSearchStopWords(portalId, locale.Code)); 
                 if (currentStopWords == null || currentStopWords.Count == 0)
                 {
-                    //Add Default StopWord
+                    // Add Default StopWord
                     var defaultStopWords = Localization.Localization.GetString("DefaultStopwordGroup", resourceFile);
                     if (!string.IsNullOrEmpty(defaultStopWords)) DataProvider.Instance().AddSearchStopWords(defaultStopWords, 1, portalId, locale.Code);
                 }
@@ -651,12 +651,12 @@ namespace DotNetNuke.Services.Search.Internals
                 var currentSynonymGroups = CBO.FillCollection<SynonymsGroup>(DataProvider.Instance().GetAllSynonymsGroups(portalId, locale.Code));
                 if (currentSynonymGroups == null || currentSynonymGroups.Count == 0)
                 {
-                    //Add Default Synonym
+                    // Add Default Synonym
                     var defaultSynonymsGroup = Localization.Localization.GetString("DefaultSynonymGroup", resourceFile);
                     if (!string.IsNullOrEmpty(defaultSynonymsGroup)) DataProvider.Instance().AddSynonymsGroup(defaultSynonymsGroup, 1, portalId, locale.Code);
                 }
             }
-            //Update Portal Settings
+            // Update Portal Settings
             PortalController.UpdatePortalSetting(portalId, setting, "true", true);
         }
 

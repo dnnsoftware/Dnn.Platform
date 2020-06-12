@@ -22,18 +22,18 @@ namespace DotNetNuke.Services.Exceptions
         private string m_IP;
         private string m_Querystring;
 
-        //default constructor
+        // default constructor
         public SecurityException()
         {
         }
 
-        //constructor with exception message
+        // constructor with exception message
         public SecurityException(string message) : base(message)
         {
             this.InitilizePrivateVariables();
         }
 
-        //constructor with message and inner exception
+        // constructor with message and inner exception
         public SecurityException(string message, Exception inner) : base(message, inner)
         {
             this.InitilizePrivateVariables();
@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Exceptions
 
         private void InitilizePrivateVariables()
         {
-			//Try and get the Portal settings from httpcontext
+			// Try and get the Portal settings from httpcontext
             try
             {
                 if (HttpContext.Current.Request.UserHostAddress != null)
@@ -84,12 +84,12 @@ namespace DotNetNuke.Services.Exceptions
             }
         }
 
-        //public override void GetObjectData(SerializationInfo info, StreamingContext context)
-        //{
+        // public override void GetObjectData(SerializationInfo info, StreamingContext context)
+        // {
         //    //Serialize this class' state and then call the base class GetObjectData
         //    info.AddValue("m_IP", m_IP, typeof (string));
         //    info.AddValue("m_Querystring", m_Querystring, typeof (string));
         //    base.GetObjectData(info, context);
-        //}
+        // }
     }
 }

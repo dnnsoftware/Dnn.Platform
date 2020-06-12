@@ -29,14 +29,14 @@ namespace DotNetNuke.Web.Mvp
 
         protected ModulePresenterBase(TView view) : base(view)
         {
-            //Try and cast view to Control to get common control properties
+            // Try and cast view to Control to get common control properties
             var control = view as Control;
             if (control != null && control.Page != null)
             {
                 this.IsPostBack = control.Page.IsPostBack;
             }
 
-            //Try and cast view to IModuleControl to get the Context
+            // Try and cast view to IModuleControl to get the Context
             var moduleControl = view as IModuleControl;
             if (moduleControl != null)
             {

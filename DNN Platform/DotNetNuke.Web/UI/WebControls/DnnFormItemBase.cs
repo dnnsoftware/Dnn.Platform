@@ -139,7 +139,7 @@ namespace DotNetNuke.Web.UI.WebControls
             var value = this.Value as String;
             this.Validators.Clear();
 
-            //Add Validators
+            // Add Validators
             if (this.Required)
             {
                 var requiredValidator = new RequiredFieldValidator
@@ -195,7 +195,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         protected virtual void CreateControlHierarchy()
         {
-            //Load Item Style
+            // Load Item Style
             this.CssClass = "dnnFormItem";
             this.CssClass += (this.FormMode == DnnFormMode.Long) ? "" : " dnnFormShort";
 
@@ -204,7 +204,7 @@ namespace DotNetNuke.Web.UI.WebControls
                 this.ResourceKey = this.DataField;
             }
 
-            //Add Label
+            // Add Label
             var label = new DnnFormLabel 
                                 {
                                     LocalResourceFile = this.LocalResourceFile, 

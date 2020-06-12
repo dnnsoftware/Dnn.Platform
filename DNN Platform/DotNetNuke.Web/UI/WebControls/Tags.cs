@@ -123,7 +123,7 @@ namespace DotNetNuke.Web.UI.WebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Href, this.Page.ClientScript.GetPostBackClientHyperlink(this, buttonType));
             writer.RenderBeginTag(HtmlTextWriterTag.A);
 
-            //Image
+            // Image
             if (!string.IsNullOrEmpty(imageUrl))
             {
                 writer.AddAttribute(HtmlTextWriterAttribute.Src, this.ResolveUrl(imageUrl));
@@ -165,20 +165,20 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         if (existingTerm == null)
                         {
-                            //Not tagged
+                            // Not tagged
                             TermController termController = new TermController();
                             Term term =
                                 (from te in termController.GetTermsByVocabulary(this.TagVocabulary.VocabularyId) where te.Name.Equals(tagName, StringComparison.CurrentCultureIgnoreCase) select te).
                                     SingleOrDefault();
                             if (term == null)
                             {
-                                //Add term
+                                // Add term
                                 term = new Term(this.TagVocabulary.VocabularyId);
                                 term.Name = tagName;
                                 termController.AddTerm(term);
                             }
 
-                            //Add term to content
+                            // Add term to content
                             this.ContentItem.Terms.Add(term);
                             termController.AddTermToContent(term, this.ContentItem);
                         }
@@ -188,7 +188,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
             this.IsEditMode = false;
 
-            //Raise the Tags Updated Event
+            // Raise the Tags Updated Event
             this.OnTagsUpdate(EventArgs.Empty);
         }
 
@@ -234,31 +234,31 @@ namespace DotNetNuke.Web.UI.WebControls
 
         public override void RenderControl(HtmlTextWriter writer)
         {
-            //Render Outer Div
+            // Render Outer Div
             writer.AddAttribute(HtmlTextWriterAttribute.Class, this.RepeatDirection.ToLowerInvariant());
             writer.RenderBeginTag(HtmlTextWriterTag.Div);
 
-            //Render Categories
+            // Render Categories
             if (this.ShowCategories)
             {
-                //Render UL
+                // Render UL
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "categories");
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString("Category.ToolTip"));
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-                //Render Category Links
+                // Render Category Links
                 var categories = (from cat in this.ContentItem.Terms where cat.VocabularyId != this.TagVocabulary.VocabularyId select cat);
 
                 for (int i = 0; i <= categories.Count() - 1; i++)
                 {
                     if (i == 0)
                     {
-                        //First Category
+                        // First Category
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "first_tag");
                     }
                     else if (i == categories.Count() - 1)
                     {
-                        //Last Category
+                        // Last Category
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "last_tag");
                     }
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
@@ -273,24 +273,24 @@ namespace DotNetNuke.Web.UI.WebControls
 
             if (this.ShowTags)
             {
-                //Render UL
+                // Render UL
                 writer.AddAttribute(HtmlTextWriterAttribute.Class, "tags");
                 writer.AddAttribute(HtmlTextWriterAttribute.Title, this.LocalizeString("Tag.ToolTip"));
                 writer.RenderBeginTag(HtmlTextWriterTag.Ul);
 
-                //Render Tag Links
+                // Render Tag Links
                 var tags = (from cat in this.ContentItem.Terms where cat.VocabularyId == this.TagVocabulary.VocabularyId select cat);
 
                 for (int i = 0; i <= tags.Count() - 1; i++)
                 {
                     if (i == 0)
                     {
-                        //First Tag
+                        // First Tag
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "first_tag");
                     }
                     else if (i == tags.Count() - 1)
                     {
-                        //Last Tag
+                        // Last Tag
                         writer.AddAttribute(HtmlTextWriterAttribute.Class, "last_tag");
                     }
                     writer.RenderBeginTag(HtmlTextWriterTag.Li);
@@ -315,19 +315,19 @@ namespace DotNetNuke.Web.UI.WebControls
 
                         writer.Write("&nbsp;&nbsp;");
 
-                        //Render Save Button
+                        // Render Save Button
                         this.RenderButton(writer, "Save", this.SaveImageUrl);
 
                         writer.Write("&nbsp;&nbsp;");
 
-                        //Render Add Button
+                        // Render Add Button
                         this.RenderButton(writer, "Cancel", this.CancelImageUrl);
                     }
                     else
                     {
                         writer.Write("&nbsp;&nbsp;");
 
-                        //Render Add Button
+                        // Render Add Button
                         this.RenderButton(writer, "Add", this.AddImageUrl);
                     }
 

@@ -64,7 +64,7 @@ namespace DotNetNuke.HttpModules.Compression
             if (settings == null)
             {
                 settings = Default;
-                //Place this in a try/catch as during install the host settings will not exist
+                // Place this in a try/catch as during install the host settings will not exist
                 try
                 {
                     settings._preferredAlgorithm = (Algorithms)Host.HttpCompressionAlgorithm;
@@ -76,7 +76,7 @@ namespace DotNetNuke.HttpModules.Compression
 
                 string filePath = Common.Utilities.Config.GetPathToFile(Common.Utilities.Config.ConfigFileType.Compression);
 
-                //Create a FileStream for the Config file
+                // Create a FileStream for the Config file
                 using (var fileReader = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     var doc = new XPathDocument(fileReader);
@@ -87,7 +87,7 @@ namespace DotNetNuke.HttpModules.Compression
                 }
                 if ((File.Exists(filePath)))
                 {
-                    //Set back into Cache
+                    // Set back into Cache
                     DataCache.SetCache("CompressionConfig", settings, new DNNCacheDependency(filePath));
                 }
             }

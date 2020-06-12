@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.Authentication
         /// <returns></returns>
         public static UserAuthenticationInfo GetUserAuthentication(int userID)
         {
-            //Go to database
+            // Go to database
             return CBO.FillObject<UserAuthenticationInfo>(provider.GetUserAuthentication(userID));
 
         }
@@ -143,7 +143,7 @@ namespace DotNetNuke.Services.Authentication
             }
             if (authInfo == null)
             {
-				//Go to database
+				// Go to database
                 return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationService(authenticationID));
             }
             return authInfo;
@@ -169,7 +169,7 @@ namespace DotNetNuke.Services.Authentication
             }
             if (authInfo == null)
             {
-				//Go to database
+				// Go to database
                 return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByPackageID(packageID));
             }
             return authInfo;
@@ -195,7 +195,7 @@ namespace DotNetNuke.Services.Authentication
             }
             if (authInfo == null)
             {
-				//Go to database
+				// Go to database
                 return CBO.FillObject<AuthenticationInfo>(provider.GetAuthenticationServiceByType(authenticationType));
             }
             return authInfo;
@@ -305,7 +305,7 @@ namespace DotNetNuke.Services.Authentication
             {
                 if (TabPermissionController.CanViewPage())
                 {
-					//redirect to current page (or home page if current page is a profile page to reduce redirects)
+					// redirect to current page (or home page if current page is a profile page to reduce redirects)
 		            if (settings.ActiveTab.TabID == settings.UserTabId || settings.ActiveTab.ParentId == settings.UserTabId)
 		            {
                         _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
@@ -318,15 +318,15 @@ namespace DotNetNuke.Services.Authentication
                 }
                 else if (settings.HomeTabId != -1)
                 {
-					//redirect to portal home page specified
+					// redirect to portal home page specified
                     _RedirectURL = TestableGlobals.Instance.NavigateURL(settings.HomeTabId);
                 }
-                else //redirect to default portal root
+                else // redirect to default portal root
                 {
                     _RedirectURL = TestableGlobals.Instance.GetPortalDomainName(settings.PortalAlias.HTTPAlias, request, true) + "/" + Globals.glbDefaultPage;
                 }
             }
-            else //redirect to after logout page
+            else // redirect to after logout page
             {
 				_RedirectURL = TestableGlobals.Instance.NavigateURL(settings.Registration.RedirectAfterLogout);
             }
@@ -355,7 +355,7 @@ namespace DotNetNuke.Services.Authentication
                     return;
                 }
 				
-                //save the authenticationmethod as a cookie
+                // save the authenticationmethod as a cookie
                 HttpCookie cookie = null;
                 cookie = Response.Cookies.Get("authentication");
                 if ((cookie == null))

@@ -22,7 +22,7 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                //Attempt to get the Library
+                // Attempt to get the Library
                 var library = JavaScriptLibraryController.Instance.GetLibrary(l => l.PackageID == this.Package.PackageID);
 
                 if (library != null)
@@ -46,14 +46,14 @@ namespace DotNetNuke.Services.Installer.Installers
         {
             try
             {
-                //Attempt to get the JavaScript Library
+                // Attempt to get the JavaScript Library
                 this._installedLibrary = JavaScriptLibraryController.Instance.GetLibrary(l => l.LibraryName == this._library.LibraryName && l.Version == this._library.Version);
 
                 if (this._installedLibrary != null)
                 {
                     this._library.JavaScriptLibraryID = this._installedLibrary.JavaScriptLibraryID;
                 }
-                //Save JavaScript Library  to database
+                // Save JavaScript Library  to database
                 this._library.PackageID = this.Package.PackageID;
                 JavaScriptLibraryController.Instance.SaveLibrary(this._library);
 
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void ReadManifest(XPathNavigator manifestNav)
         {
-            //Load the JavaScript Library from the manifest
+            // Load the JavaScript Library from the manifest
             this._library = CBO.DeserializeObject<JavaScriptLibrary>(new StringReader(manifestNav.InnerXml));
             this._library.Version = this.Package.Version;
 
@@ -80,15 +80,15 @@ namespace DotNetNuke.Services.Installer.Installers
 
         public override void Rollback()
         {
-            //If Temp Library exists then we need to update the DataStore with this 
+            // If Temp Library exists then we need to update the DataStore with this 
             if (this._installedLibrary == null)
             {
-                //No Temp Library - Delete newly added library
+                // No Temp Library - Delete newly added library
                 this.DeleteLibrary();
             }
             else
             {
-                //Temp Library - Rollback to Temp
+                // Temp Library - Rollback to Temp
                 JavaScriptLibraryController.Instance.SaveLibrary(this._installedLibrary);
             }
         }

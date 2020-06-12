@@ -58,13 +58,13 @@ namespace DotNetNuke.UI.Skins.Controls
         {
             base.OnPreRender(e);
 
-            //if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Content))
-            //{
+            // if(!string.IsNullOrEmpty(Name) && !string.IsNullOrEmpty(Content))
+            // {
             //    var metaTag = new HtmlMeta();
             //    metaTag.Name = Name;
             //    metaTag.Content = Content;
             //    Page.Header.Controls.Add(metaTag);
-            //}
+            // }
 
             if ((!string.IsNullOrEmpty(this.Name) || !string.IsNullOrEmpty(this.HttpEquiv)) && !string.IsNullOrEmpty(this.Content))
             {

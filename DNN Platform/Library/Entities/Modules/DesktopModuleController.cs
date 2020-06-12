@@ -171,7 +171,7 @@ namespace DotNetNuke.Entities.Modules
             {
                 var controller = new DesktopModuleController();
                 controller.DeleteDesktopModule(desktopModule.DesktopModuleID);
-                //Delete the Package
+                // Delete the Package
                 PackageController.Instance.DeleteExtensionPackage(PackageController.Instance.GetExtensionPackage(Null.NullInteger, p => p.PackageID == desktopModule.PackageID));
             }
         }
@@ -310,7 +310,7 @@ namespace DotNetNuke.Entities.Modules
             }
             else
             {
-                //Update ContentItem If neccessary
+                // Update ContentItem If neccessary
                 if (desktopModule.ContentItemId == Null.NullInteger)
                 {
                     CreateContentItem(desktopModule);
@@ -336,7 +336,7 @@ namespace DotNetNuke.Entities.Modules
                                                  desktopModule.AdminPage,
                                                  desktopModule.HostPage);
 
-                //Update Tags
+                // Update Tags
                 if (saveTerms)
                 {
                     var termController = Util.GetTermController();

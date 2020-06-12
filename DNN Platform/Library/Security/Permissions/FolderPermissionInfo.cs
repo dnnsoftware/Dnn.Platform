@@ -20,7 +20,7 @@ namespace DotNetNuke.Security.Permissions
     {
 		#region "Private Members"
 		
-        //local property declarations
+        // local property declarations
         private int _folderID;
         private string _folderPath;
         private int _folderPermissionID;
