@@ -425,7 +425,7 @@ namespace DotNetNuke.UI.ControlPanel
             if (this.Request.IsAuthenticated)
             {
                 UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                if ((user != null))
+                if (user != null)
                 {
                     userID = user.UserID;
                 }
@@ -643,10 +643,10 @@ namespace DotNetNuke.UI.ControlPanel
             if (validModuleID && validTabID)
             {
                 ModuleInfo moduleInfo = ModuleController.Instance.GetModule(parsedModuleID, parsedTabID, false);
-                if ((moduleInfo != null))
+                if (moduleInfo != null)
                 {
                     DesktopModuleInfo moduleDesktopInfo = moduleInfo.DesktopModule;
-                    if ((moduleDesktopInfo != null))
+                    if (moduleDesktopInfo != null)
                     {
                         isPortable = moduleDesktopInfo.IsPortable;
                     }
@@ -796,12 +796,12 @@ namespace DotNetNuke.UI.ControlPanel
             if (this.PaneModulesLst.Items.Count <= 1)
             {
                 var listItem = this.PositionLst.FindItemByValue("ABOVE");
-                if ((listItem != null))
+                if (listItem != null)
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }
                 listItem = this.PositionLst.FindItemByValue("BELOW");
-                if ((listItem != null))
+                if (listItem != null)
                 {
                     this.PositionLst.Items.Remove(listItem);
                 }

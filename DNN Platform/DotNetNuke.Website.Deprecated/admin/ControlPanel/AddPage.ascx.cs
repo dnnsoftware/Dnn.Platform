@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.ControlPanel
         {
             get
             {
-                if ((this._newTabObject == null))
+                if (this._newTabObject == null)
                 {
                     this._newTabObject = RibbonBarManager.InitTabInfoObject(PortalSettings.ActiveTab);
                 }
@@ -233,7 +233,7 @@ namespace DotNetNuke.UI.ControlPanel
             this.PageLst.DataBind();
 
             var item = this.PageLst.FindItemByValue(PortalSettings.ActiveTab.TabID.ToString());
-            if ((item != null))
+            if (item != null)
             {
                 item.Selected = true;
             }

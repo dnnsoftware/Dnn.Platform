@@ -202,7 +202,7 @@ namespace DotNetNuke.UI.ControlPanels
                 if (this.Request.IsAuthenticated)
                 {
                     UserInfo user = UserController.Instance.GetCurrentUserInfo();
-                    if ((user != null))
+                    if (user != null)
                     {
                         bool isAdmin = user.IsInRole(PortalSettings.Current.AdministratorRoleName);
                         this.AdminPanel.Visible = isAdmin;

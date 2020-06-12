@@ -168,7 +168,7 @@ namespace DotNetNuke.UI.ControlPanel
             get
             {
                 // Weird - but the activetab has different skin src value than getting from the db
-                if ((this._currentTab == null))
+                if (this._currentTab == null)
                 {
                     this._currentTab = TabController.Instance.GetTab(PortalSettings.ActiveTab.TabID, PortalSettings.ActiveTab.PortalID, false);
                 }
@@ -286,7 +286,7 @@ namespace DotNetNuke.UI.ControlPanel
             if (!string.IsNullOrEmpty(this.CurrentTab.SkinSrc))
             {
                 RadComboBoxItem selectItem = this.SkinLst.FindItemByValue(this.CurrentTab.SkinSrc);
-                if ((selectItem != null))
+                if (selectItem != null)
                 {
                     selectItem.Selected = true;
                 }

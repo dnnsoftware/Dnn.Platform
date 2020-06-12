@@ -123,7 +123,7 @@ namespace DotNetNuke.Web.Razor
         {
             var compiledType = BuildManager.GetCompiledType(this.RazorScriptFile);
             object objectValue = null;
-            if ((compiledType != null))
+            if (compiledType != null)
             {
                 objectValue = RuntimeHelpers.GetObjectValue(Activator.CreateInstance(compiledType));
             }

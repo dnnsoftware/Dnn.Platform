@@ -46,7 +46,7 @@ namespace DotNetNuke.Web.UI
 
         public static TabInfo InitTabInfoObject(TabInfo relativeToTab, TabRelativeLocation location)
         {
-            if ((relativeToTab == null))
+            if (relativeToTab == null)
             {
                 if ((PortalSettings.Current != null) && (PortalSettings.Current.ActiveTab != null))
                 {
@@ -68,7 +68,7 @@ namespace DotNetNuke.Web.UI
 
             TabInfo parentTab = GetParentTab(relativeToTab, location);
 
-            if ((parentTab != null))
+            if (parentTab != null)
             {
                 newTab.PortalID = parentTab.PortalID;
                 newTab.ParentId = parentTab.TabID;
@@ -114,7 +114,7 @@ namespace DotNetNuke.Web.UI
 
         public static TabInfo GetParentTab(TabInfo relativeToTab, TabRelativeLocation location)
         {
-            if ((relativeToTab == null))
+            if (relativeToTab == null)
             {
                 return null;
             }
@@ -148,7 +148,7 @@ namespace DotNetNuke.Web.UI
                 }
             }
 
-            if ((portalTabs == null))
+            if (portalTabs == null)
             {
                 portalTabs = new List<TabInfo>();
             }
@@ -231,7 +231,7 @@ namespace DotNetNuke.Web.UI
                         foreach (TabInfo sibling in selectedTabSibblings)
                         {
                             TabInfo siblingDefaultTab = sibling.DefaultLanguageTab;
-                            if ((siblingDefaultTab != null))
+                            if (siblingDefaultTab != null)
                             {
                                 defaultLanguageSelectedTab = siblingDefaultTab;
                                 break;
@@ -273,7 +273,7 @@ namespace DotNetNuke.Web.UI
                     }
                 }
 
-                if ((parentTab != null))
+                if (parentTab != null)
                 {
                     tab.ParentId = parentTab.TabID;
                     tab.Level = parentTab.Level + 1;
@@ -408,7 +408,7 @@ namespace DotNetNuke.Web.UI
             {
                 TabInfo objtab = TabController.Instance.GetTab(tabID, portalID, false);
 
-                if ((objtab == null))
+                if (objtab == null)
                 {
                     return false;
                 }

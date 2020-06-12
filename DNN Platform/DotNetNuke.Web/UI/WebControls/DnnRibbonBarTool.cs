@@ -542,14 +542,14 @@ namespace DotNetNuke.Web.UI.WebControls
 
             string strURL = string.Empty;
 
-            if ((additionalParams == null))
+            if (additionalParams == null)
             {
                 additionalParams = new List<string>();
             }
 
             var moduleInfo = ModuleController.Instance.GetModuleByDefinition(portalId, this.ToolInfo.ModuleFriendlyName);
 
-            if ((moduleInfo != null))
+            if (moduleInfo != null)
             {
                 bool isHostPage = portalId == Null.NullInteger;
                 if (!string.IsNullOrEmpty(this.ToolInfo.ControlKey))

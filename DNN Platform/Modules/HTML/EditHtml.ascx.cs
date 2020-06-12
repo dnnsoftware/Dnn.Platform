@@ -146,7 +146,7 @@ namespace DotNetNuke.Modules.Html
             this.dnnSitePanelEditHTMLHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
             this.fsEditHtmlHistory.Visible = this.CurrentWorkflowType != WorkflowType.DirectPublish;
 
-            if ((this.CurrentWorkflowType == WorkflowType.DirectPublish))
+            if (this.CurrentWorkflowType == WorkflowType.DirectPublish)
             {
                 return;
             }

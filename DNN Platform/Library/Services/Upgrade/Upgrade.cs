@@ -436,7 +436,7 @@ namespace DotNetNuke.Services.Upgrade
                 };
                 tab.TabID = TabController.Instance.AddTab(tab, !isAdmin);
 
-                if ((permissions != null))
+                if (permissions != null)
                 {
                     foreach (TabPermissionInfo tabPermission in permissions)
                     {
@@ -697,7 +697,7 @@ namespace DotNetNuke.Services.Upgrade
         {
             var desktopModule = DesktopModuleController.GetDesktopModuleByModuleName(desktopModuleName, Null.NullInteger);
 
-            return (desktopModule != null);
+            return desktopModule != null;
         }
 
         private static void EnableModalPopUps()
@@ -1530,7 +1530,7 @@ namespace DotNetNuke.Services.Upgrade
             if (tabId != Null.NullInteger)
             {
                 tab = TabController.Instance.GetTab(tabId, Null.NullInteger, true);
-                if ((tab != null))
+                if (tab != null)
                 {
                     AddConsoleModuleSettings(moduleId);
                 }
@@ -1543,7 +1543,7 @@ namespace DotNetNuke.Services.Upgrade
                 if (tabId != Null.NullInteger)
                 {
                     tab = TabController.Instance.GetTab(tabId, portal.PortalID, true);
-                    if ((tab != null))
+                    if (tab != null)
                     {
                         moduleId = AddModuleToPage(tab, moduleDefId, "Basic Features", "", true);
                         AddConsoleModuleSettings(moduleId);
