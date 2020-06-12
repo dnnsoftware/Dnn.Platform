@@ -15,12 +15,12 @@ namespace Dnn.ExportImport.Components.Dto
     public class ExportFileInfo : IDateTimeConverter
     {
         /// <summary>
-        /// Path for exported files.
+        /// Gets or sets path for exported files.
         /// </summary>
         public string ExportPath { get; set; }
 
         /// <summary>
-        /// Formatted size of export file
+        /// Gets or sets formatted size of export file
         /// </summary>
         public string ExportSize { get; set; }
 

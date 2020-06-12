@@ -51,7 +51,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get the singleton instance of the <see cref="NullEnumerator" />.
+        /// Gets get the singleton instance of the <see cref="NullEnumerator" />.
         /// </summary>
         /// <returns>The singleton instance of the <see cref="NullEnumerator" />.</returns>
         /// <remarks>

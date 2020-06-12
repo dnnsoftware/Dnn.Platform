@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Authentication
     public abstract class AuthenticationConfigBase
     {
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered
+        /// Gets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>

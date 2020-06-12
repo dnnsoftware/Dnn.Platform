@@ -270,7 +270,7 @@ namespace log4net.ObjectRenderer
         }
 
         /// <summary>
-        /// Get the default renderer instance
+        /// Gets get the default renderer instance
         /// </summary>
         /// <value>the default renderer</value>
         /// <remarks>

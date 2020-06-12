@@ -14,12 +14,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     public class ImageGammaTransform : ImageTransform
     {
         /// <summary>
-        /// Sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5
+        /// Gets or sets the gamma value. Defaultvalue is 0. Range is 0.2 .. 5
         /// </summary>
         public double Gamma { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for this class
+        /// Gets provides an Unique String for this class
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Gamma;
 

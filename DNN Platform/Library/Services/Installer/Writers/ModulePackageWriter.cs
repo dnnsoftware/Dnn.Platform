@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Desktop Module
+        /// Gets or sets the associated Desktop Module
         /// </summary>
         /// <value>A DesktopModuleInfo object</value>
         /// -----------------------------------------------------------------------------

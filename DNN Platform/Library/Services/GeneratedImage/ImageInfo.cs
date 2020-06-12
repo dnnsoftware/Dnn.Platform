@@ -14,17 +14,17 @@ namespace DotNetNuke.Services.GeneratedImage
     public class ImageInfo
     {
         /// <summary>
-        /// Image
+        /// Gets image
         /// </summary>
         public Image Image { get; private set; }
 
         /// <summary>
-        /// Image byte buffer
+        /// Gets image byte buffer
         /// </summary>
         public byte[] ImageByteBuffer { get; private set; }
 
         /// <summary>
-        /// Http status code
+        /// Gets http status code
         /// </summary>
         public HttpStatusCode? HttpStatusCode { get; private set; }
 

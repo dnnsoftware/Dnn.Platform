@@ -70,7 +70,7 @@ namespace log4net.Layout
         void Format(TextWriter writer, LoggingEvent loggingEvent);
 
         /// <summary>
-        /// The content type output by this layout.
+        /// Gets the content type output by this layout.
         /// </summary>
         /// <value>The content type</value>
         /// <remarks>
@@ -84,7 +84,7 @@ namespace log4net.Layout
         string ContentType { get; }
 
         /// <summary>
-        /// The header for the layout format.
+        /// Gets the header for the layout format.
         /// </summary>
         /// <value>the layout header</value>
         /// <remarks>
@@ -96,7 +96,7 @@ namespace log4net.Layout
         string Header { get; }
 
         /// <summary>
-        /// The footer for the layout format.
+        /// Gets the footer for the layout format.
         /// </summary>
         /// <value>the layout footer</value>
         /// <remarks>
@@ -108,7 +108,7 @@ namespace log4net.Layout
         string Footer { get; }
 
         /// <summary>
-        /// Flag indicating if this layout handle exceptions
+        /// Gets a value indicating whether flag indicating if this layout handle exceptions
         /// </summary>
         /// <value><c>false</c> if this layout handles exceptions</value>
         /// <remarks>

@@ -85,7 +85,7 @@ namespace log4net
         }
 
         /// <summary>
-        /// The thread properties map
+        /// Gets the thread properties map
         /// </summary>
         /// <value>
         /// The thread properties map
@@ -102,7 +102,7 @@ namespace log4net
         }
 
         /// <summary>
-        /// The thread stacks
+        /// Gets the thread stacks
         /// </summary>
         /// <value>
         /// stack map

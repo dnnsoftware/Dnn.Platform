@@ -87,14 +87,14 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the name (ID) of the Pane
+        /// Gets or sets and sets the name (ID) of the Pane
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected string Name { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the HtmlContainerControl
+        /// Gets or sets and sets the HtmlContainerControl
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected HtmlContainerControl PaneControl { get; set; }

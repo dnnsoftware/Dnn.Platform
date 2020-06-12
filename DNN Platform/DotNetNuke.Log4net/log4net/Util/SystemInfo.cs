@@ -233,7 +233,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get the host name or machine name for the current machine
+        /// Gets get the host name or machine name for the current machine
         /// </summary>
         /// <value>
         /// The hostname or machine name
@@ -310,7 +310,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get this application's friendly name
+        /// Gets get this application's friendly name
         /// </summary>
         /// <value>
         /// The friendly name of this application as a string
@@ -367,7 +367,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get the start time for the current process.
+        /// Gets get the start time for the current process.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -393,7 +393,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get the UTC start time for the current process.
+        /// Gets get the UTC start time for the current process.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -418,7 +418,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Text to output when a <c>null</c> is encountered.
+        /// Gets or sets text to output when a <c>null</c> is encountered.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -438,7 +438,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Text to output when an unsupported feature is requested.
+        /// Gets or sets text to output when an unsupported feature is requested.
         /// </summary>
         /// <remarks>
         /// <para>

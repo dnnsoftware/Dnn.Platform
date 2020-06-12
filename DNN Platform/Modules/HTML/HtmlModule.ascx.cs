@@ -258,7 +258,7 @@ if(typeof dnn !== 'undefined' && typeof dnn.controls !== 'undefined' && typeof d
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   ModuleActions is an interface property that returns the module actions collection for the module
+        ///   Gets moduleActions is an interface property that returns the module actions collection for the module
         /// </summary>
         /// <remarks>
         /// </remarks>

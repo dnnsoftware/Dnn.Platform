@@ -80,7 +80,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The Encoding in which the output is written
+        /// Gets the Encoding in which the output is written
         /// </summary>
         /// <value>
         /// The <see cref="Encoding"/>

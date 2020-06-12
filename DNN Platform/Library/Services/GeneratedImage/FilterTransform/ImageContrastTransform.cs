@@ -13,12 +13,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     public class ImageContrastTransform : ImageTransform
     {
         /// <summary>
-        /// Sets the contrast value. Defaultvalue is 0. Range is -100 .. 100
+        /// Gets or sets the contrast value. Defaultvalue is 0. Range is -100 .. 100
         /// </summary>
         public double Contrast { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for this class
+        /// Gets provides an Unique String for this class
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.Contrast;
 

@@ -74,7 +74,7 @@ namespace DotNetNuke.Web.UI.WebControls
         private int _maxWidth = 135;
 
         /// <summary>
-        ///   Gets whether the control is on a Host or Portal Tab
+        ///   Gets a value indicating whether gets whether the control is on a Host or Portal Tab
         /// </summary>
         /// <value>A Boolean</value>
         protected bool IsHost
@@ -152,7 +152,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets the file PortalId to use
+        ///   Gets the file PortalId to use
         /// </summary>
         /// <remarks>
         ///   Defaults to PortalSettings.PortalId
@@ -285,7 +285,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets whether to Include Personal Folder
+        ///   Gets or sets a value indicating whether gets or sets whether to Include Personal Folder
         /// </summary>
         /// <remarks>
         ///   Defaults to false
@@ -337,7 +337,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets whether the combos have a "Not Specified" option
+        ///   Gets or sets a value indicating whether gets or sets whether the combos have a "Not Specified" option
         /// </summary>
         /// <remarks>
         ///   Defaults to True (ie no "Not Specified")
@@ -370,7 +370,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        ///   Gets or sets whether to Show the Upload Button
+        ///   Gets or sets a value indicating whether gets or sets whether to Show the Upload Button
         /// </summary>
         /// <remarks>
         ///   Defaults to True

@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the path of the Folder
+        /// Gets or sets and Sets the path of the Folder
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string FolderPath

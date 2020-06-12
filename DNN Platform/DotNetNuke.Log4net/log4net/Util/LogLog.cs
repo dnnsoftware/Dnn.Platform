@@ -67,7 +67,7 @@ namespace log4net.Util
         private readonly Exception exception;
 
         /// <summary>
-        /// The Type that generated the internal message.
+        /// Gets the Type that generated the internal message.
         /// </summary>
         public Type Source
         {
@@ -75,7 +75,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The DateTime stamp of when the internal message was received.
+        /// Gets the DateTime stamp of when the internal message was received.
         /// </summary>
         public DateTime TimeStamp
         {
@@ -83,7 +83,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The UTC DateTime stamp of when the internal message was received.
+        /// Gets the UTC DateTime stamp of when the internal message was received.
         /// </summary>
         public DateTime TimeStampUtc
         {
@@ -91,7 +91,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// A string indicating the severity of the internal message.
+        /// Gets a string indicating the severity of the internal message.
         /// </summary>
         /// <remarks>
         /// "log4net: ",
@@ -104,7 +104,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The internal log message.
+        /// Gets the internal log message.
         /// </summary>
         public string Message
         {
@@ -112,7 +112,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The Exception related to the message.
+        /// Gets the Exception related to the message.
         /// </summary>
         /// <remarks>
         /// Optional. Will be null if no Exception was passed.
@@ -293,7 +293,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Test if LogLog.Debug is enabled for output.
+        /// Gets a value indicating whether test if LogLog.Debug is enabled for output.
         /// </summary>
         /// <value>
         /// <c>true</c> if Debug is enabled
@@ -364,7 +364,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Test if LogLog.Warn is enabled for output.
+        /// Gets a value indicating whether test if LogLog.Warn is enabled for output.
         /// </summary>
         /// <value>
         /// <c>true</c> if Warn is enabled
@@ -435,7 +435,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Test if LogLog.Error is enabled for output.
+        /// Gets a value indicating whether test if LogLog.Error is enabled for output.
         /// </summary>
         /// <value>
         /// <c>true</c> if Error is enabled

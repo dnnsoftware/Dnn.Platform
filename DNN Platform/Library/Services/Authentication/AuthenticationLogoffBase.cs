@@ -23,7 +23,7 @@ namespace DotNetNuke.Services.Authentication
         private string _RedirectURL = Null.NullString;
 
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered
+        /// Gets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>
@@ -38,7 +38,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Type of Authentication associated with this control
+        /// Gets or sets and Sets the Type of Authentication associated with this control
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType

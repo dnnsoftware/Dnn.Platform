@@ -1131,7 +1131,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <c>DEBUG</c>
+        /// Gets a value indicating whether checks if this logger is enabled for the <c>DEBUG</c>
         /// level.
         /// </summary>
         /// <value>
@@ -1179,7 +1179,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <c>INFO</c> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <c>INFO</c> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>INFO</c> events,
@@ -1198,7 +1198,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <c>WARN</c> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <c>WARN</c> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>WARN</c> events,
@@ -1217,7 +1217,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <c>ERROR</c> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <c>ERROR</c> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>ERROR</c> events,
@@ -1235,7 +1235,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <c>FATAL</c> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <c>FATAL</c> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <c>FATAL</c> events,

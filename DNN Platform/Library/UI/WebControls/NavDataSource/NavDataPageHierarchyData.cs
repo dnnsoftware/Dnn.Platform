@@ -20,7 +20,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Returns nodes image
+        /// Gets nodes image
         /// </summary>
         /// <value>
         /// <placeholder>Returns nodes image</placeholder>
@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
+        /// Gets a value indicating whether indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.
         /// </summary>
         /// <value>
         /// <placeholder>Indicates whether the hierarchical data node that the IHierarchyData object represents has any child nodes.</placeholder>
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Returns node name
+        /// Gets node name
         /// </summary>
         /// <value>
         /// <placeholder>Returns node name</placeholder>
@@ -159,7 +159,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Returns value path of node
+        /// Gets value path of node
         /// </summary>
         /// <value>
         /// <placeholder>Returns value path of node</placeholder>
@@ -175,7 +175,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Returns node navigation url
+        /// Gets node navigation url
         /// </summary>
         /// <value>
         /// <placeholder>Returns node navigation url</placeholder>
@@ -191,7 +191,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Returns Node description
+        /// Gets node description
         /// </summary>
         /// <value>
         /// <placeholder>Returns Node description</placeholder>

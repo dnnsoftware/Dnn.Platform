@@ -21,22 +21,22 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     public class MessageThreadsView
     {
         /// <summary>
-        /// Total Number of Threads
+        /// Gets or sets total Number of Threads
         /// </summary>
         public int TotalThreads { get; set; }
 
         /// <summary>
-        /// Total Number of New (Unread) Threads
+        /// Gets or sets total Number of New (Unread) Threads
         /// </summary>
         public int TotalNewThreads { get; set; }
 
         /// <summary>
-        /// Total Number of Archived Threads
+        /// Gets or sets total Number of Archived Threads
         /// </summary>
         public int TotalArchivedThreads { get; set; }
 
         /// <summary>
-        /// List of Conversations
+        /// Gets or sets list of Conversations
         /// </summary>
         public List<MessageThreadView> Conversations { get; set; }
     }

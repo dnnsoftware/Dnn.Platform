@@ -48,7 +48,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Design Mode of the Column
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -83,7 +83,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Key Field that provides a Unique key to the data Item
+        /// Gets or sets the Key Field that provides a Unique key to the data Item
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Javascript text to attach to the OnClick Event
+        /// Gets or sets javascript text to attach to the OnClick Event
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -134,7 +134,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether an Image is displayed
+        /// Gets or sets a value indicating whether gets or sets whether an Image is displayed
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -162,7 +162,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// An flag that indicates whether the buttons are visible (this is overridden if
+        /// Gets or sets a value indicating whether an flag that indicates whether the buttons are visible (this is overridden if
         /// the VisibleField is set)
         /// changed
         /// </summary>
@@ -183,7 +183,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// An flag that indicates whether the buttons are visible.
+        /// Gets or sets an flag that indicates whether the buttons are visible.
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------

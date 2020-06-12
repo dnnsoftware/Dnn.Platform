@@ -48,7 +48,7 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets/sets the language to be used, e.g. for date format
+        /// Gets or sets /sets the language to be used, e.g. for date format
         /// </summary>
         /// <value>A string, representing the locale</value>
         public string Language

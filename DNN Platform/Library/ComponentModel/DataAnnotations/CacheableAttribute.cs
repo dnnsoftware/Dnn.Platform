@@ -52,17 +52,17 @@ namespace DotNetNuke.ComponentModel.DataAnnotations
         }
 
         /// <summary>
-        /// The root key to use for the cache
+        /// Gets or sets the root key to use for the cache
         /// </summary>
         public string CacheKey { get; set; }
 
         /// <summary>
-        /// The priority of the cached item.  The default value is CacheItemPriority.Default
+        /// Gets or sets the priority of the cached item.  The default value is CacheItemPriority.Default
         /// </summary>
         public CacheItemPriority CachePriority { get; set; }
 
         /// <summary>
-        /// The timeout multiplier used to cache the item. This value is multiple by the Host
+        /// Gets or sets the timeout multiplier used to cache the item. This value is multiple by the Host
         /// Performance Setting to determine the actual timeout value. The default value is 20.
         /// </summary>
         public int CacheTimeOut { get; set; }

@@ -159,7 +159,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Is error logging enabled
+        /// Gets a value indicating whether is error logging enabled
         /// </summary>
         /// <remarks>
         /// <para>
@@ -173,7 +173,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.
+        /// Gets the date the first error that trigged this error handler occurred, or <see cref="DateTime.MinValue"/> if it has not been triggered.
         /// </summary>
         public DateTime EnabledDate
         {
@@ -189,7 +189,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.
+        /// Gets the UTC date the first error that trigged this error handler occured, or <see cref="DateTime.MinValue"/> if it has not been triggered.
         /// </summary>
         public DateTime EnabledDateUtc
         {
@@ -197,7 +197,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The message from the first error that trigged this error handler.
+        /// Gets the message from the first error that trigged this error handler.
         /// </summary>
         public string ErrorMessage
         {
@@ -205,7 +205,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The exception from the first error that trigged this error handler.
+        /// Gets the exception from the first error that trigged this error handler.
         /// </summary>
         /// <remarks>
         /// May be <see langword="null" />.
@@ -216,7 +216,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The error code from the first error that trigged this error handler.
+        /// Gets the error code from the first error that trigged this error handler.
         /// </summary>
         /// <remarks>
         /// Defaults to <see cref="log4net.Core.ErrorCode.GenericFailure"/>

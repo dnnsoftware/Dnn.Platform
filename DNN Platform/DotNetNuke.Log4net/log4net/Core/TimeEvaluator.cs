@@ -91,7 +91,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// The time threshold in seconds to trigger after
+        /// Gets or sets the time threshold in seconds to trigger after
         /// </summary>
         /// <value>
         /// The time threshold in seconds to trigger after.

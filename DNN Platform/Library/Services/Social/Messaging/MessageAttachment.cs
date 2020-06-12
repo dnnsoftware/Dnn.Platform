@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Messaging
         private int _messageattachmentID = -1;
 
         /// <summary>
-        /// MessageAttachmentID - The primary key
+        /// Gets or sets messageAttachmentID - The primary key
         /// </summary>
         [XmlAttribute]
         public int MessageAttachmentID
@@ -45,19 +45,19 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>
-        /// MessageID of the message that contains this attachment
+        /// Gets or sets messageID of the message that contains this attachment
         /// </summary>
         [XmlAttribute]
         public int MessageID { get; set; }
 
         /// <summary>
-        /// The FileID of the attachment (what will be used against the Files table to provide the attachment)
+        /// Gets or sets the FileID of the attachment (what will be used against the Files table to provide the attachment)
         /// </summary>
         [XmlAttribute]
         public int FileID { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

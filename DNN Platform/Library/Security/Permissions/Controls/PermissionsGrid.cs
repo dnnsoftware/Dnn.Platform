@@ -220,7 +220,7 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>
-        /// Gets and Sets whether a Dynamic Column has been added
+        /// Gets or sets a value indicating whether gets and Sets whether a Dynamic Column has been added
         /// </summary>
         public bool DynamicColumnAdded
         {
@@ -269,12 +269,12 @@ namespace DotNetNuke.Security.Permissions.Controls
         }
 
         /// <summary>
-        /// Gets and Sets the collection of Roles to display
+        /// Gets or sets and Sets the collection of Roles to display
         /// </summary>
         public ArrayList Roles { get; set; }
 
         /// <summary>
-        /// Gets and Sets the ResourceFile to localize permissions
+        /// Gets or sets and Sets the ResourceFile to localize permissions
         /// </summary>
         public string ResourceFile { get; set; }
 

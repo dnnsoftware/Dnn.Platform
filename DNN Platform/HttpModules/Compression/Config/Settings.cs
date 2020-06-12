@@ -31,7 +31,7 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// The default settings.  Deflate + normal.
+        /// Gets the default settings.  Deflate + normal.
         /// </summary>
         public static Settings Default
         {
@@ -42,7 +42,7 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// The preferred algorithm to use for compression
+        /// Gets the preferred algorithm to use for compression
         /// </summary>
         public Algorithms PreferredAlgorithm
         {

@@ -39,7 +39,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public string IconImage { get; set; }
 
         /// <summary>
-        /// Check this message is shown as page message or module message.
+        /// Gets a value indicating whether check this message is shown as page message or module message.
         /// </summary>
         public bool IsModuleMessage
         {

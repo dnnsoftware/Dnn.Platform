@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User Id for this online user
+        /// Gets or sets and sets the User Id for this online user
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Obsolete("Support for users online was removed in 8.x, other solutions exist outside of the DNN Platform.  Scheduled removal in v11.0.0.")]

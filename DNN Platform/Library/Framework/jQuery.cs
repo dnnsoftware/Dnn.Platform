@@ -117,7 +117,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Checks whether the jQuery core script file exists locally.
+        /// Gets a value indicating whether checks whether the jQuery core script file exists locally.
         /// </summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery.
@@ -135,7 +135,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Checks whether the jQuery UI core script file exists locally.
+        /// Gets a value indicating whether checks whether the jQuery UI core script file exists locally.
         /// </summary>
         /// <remarks>
         /// This property checks for both the minified version and the full uncompressed version of jQuery UI.
@@ -185,7 +185,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
+        /// Gets a value indicating whether gets the HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.
         /// </summary>
         /// <value>
         /// <placeholder>The HostSetting to determine if we should use the standard jQuery script or the minified jQuery script.</placeholder>
@@ -207,7 +207,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Gets the HostSetting to determine if we should use a hosted version of the jQuery script.
+        /// Gets a value indicating whether gets the HostSetting to determine if we should use a hosted version of the jQuery script.
         /// </summary>
         /// <value>
         /// <placeholder>The HostSetting to determine if we should use a hosted version of the jQuery script.</placeholder>

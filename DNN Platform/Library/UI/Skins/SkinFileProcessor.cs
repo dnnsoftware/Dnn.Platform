@@ -323,7 +323,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            ///     Registration directives generated as a result of the Parse method.
+            ///     Gets registration directives generated as a result of the Parse method.
             /// </summary>
             /// <returns>ArrayList of formatted registration directives.</returns>
             /// <remarks>
@@ -600,7 +600,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            ///     Registration directives generated as a result of the Parse method.
+            ///     Gets registration directives generated as a result of the Parse method.
             /// </summary>
             /// <returns>ArrayList of formatted registration directives.</returns>
             /// <remarks>
@@ -884,7 +884,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            ///     List of regular expressions for processing HTML syntax.
+            ///     Gets list of regular expressions for processing HTML syntax.
             /// </summary>
             /// <returns>ArrayList of Regex objects formatted for the Parser method.</returns>
             /// <remarks>
@@ -914,7 +914,7 @@ namespace DotNetNuke.UI.Skins
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            ///     List of regular expressions for processing CSS syntax.
+            ///     Gets list of regular expressions for processing CSS syntax.
             /// </summary>
             /// <returns>ArrayList of Regex objects formatted for the Parser method.</returns>
             /// <remarks>

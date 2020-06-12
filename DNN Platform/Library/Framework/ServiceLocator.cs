@@ -37,7 +37,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        /// Returns a singleton of T
+        /// Gets a singleton of T
         /// </summary>
         public static TContract Instance
         {

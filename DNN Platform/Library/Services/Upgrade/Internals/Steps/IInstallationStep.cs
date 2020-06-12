@@ -20,22 +20,22 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
     public interface IInstallationStep
     {
         /// <summary>
-        /// Any details of the task while it's executing
+        /// Gets any details of the task while it's executing
         /// </summary>
         string Details { get; }
 
         /// <summary>
-        /// Percentage done
+        /// Gets percentage done
         /// </summary>
         int Percentage { get; }
 
         /// <summary>
-        /// Step Status
+        /// Gets step Status
         /// </summary>
         StepStatus Status { get; }
 
         /// <summary>
-        /// List of Errors
+        /// Gets list of Errors
         /// </summary>
         IList<string> Errors { get; }
 

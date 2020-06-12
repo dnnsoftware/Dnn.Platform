@@ -123,7 +123,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Actions for this module context
+        /// Gets or sets and sets the Actions for this module context
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModuleActionCollection Actions
@@ -75,7 +75,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Configuration (ModuleInfo) for this context
+        /// Gets or sets and sets the Module Configuration (ModuleInfo) for this context
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ModuleInfo Configuration
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The EditMode property is used to determine whether the user is in the
+        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
         /// Administrator role
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -107,14 +107,14 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the HelpUrl for this context
+        /// Gets or sets and sets the HelpUrl for this context
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string HelpURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the module is Editable (in Admin mode)
+        /// Gets a value indicating whether gets whether the module is Editable (in Admin mode)
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsEditable
@@ -161,7 +161,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the module ID for this context
+        /// Gets or sets and sets the module ID for this context
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int ModuleId
@@ -254,7 +254,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the tabnmodule ID for this context
+        /// Gets or sets the tabnmodule ID for this context
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabModuleId

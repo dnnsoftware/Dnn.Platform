@@ -75,7 +75,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
          /// -----------------------------------------------------------------------------
          /// <summary>
-         /// Gets and sets the Path for the Package's app code files
+         /// Gets or sets and sets the Path for the Package's app code files
          /// </summary>
          /// <value>A String</value>
          /// -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
          /// -----------------------------------------------------------------------------
          /// <summary>
-         /// Gets and sets the Path for the Package's assemblies
+         /// Gets or sets and sets the Path for the Package's assemblies
          /// </summary>
          /// <value>A String</value>
          /// -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Base Path for the Package
+        /// Gets or sets and sets the Base Path for the Package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// Gets and sets whether a project file is found in the folder
+ /// Gets or sets a value indicating whether gets and sets whether a project file is found in the folder
  /// </summary>
  /// <value>A String</value>
  /// -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to include Assemblies
+        /// Gets a value indicating whether gets whether to include Assemblies
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ namespace DotNetNuke.Services.Installer.Writers
         }
 
         /// <summary>
-        /// Gets and sets whether there are any errors in parsing legacy packages
+        /// Gets or sets and sets whether there are any errors in parsing legacy packages
         /// </summary>
         /// <value>
         /// <placeholder>And sets whether there are any errors in parsing legacy packages</placeholder>
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Package
+        /// Gets or sets the associated Package
         /// </summary>
         /// <value>An PackageInfo object</value>
         /// -----------------------------------------------------------------------------

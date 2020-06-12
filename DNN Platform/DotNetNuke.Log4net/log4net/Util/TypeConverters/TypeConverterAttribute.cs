@@ -91,7 +91,7 @@ namespace log4net.Util.TypeConverters
         }
 
         /// <summary>
-        /// The string type name of the type converter
+        /// Gets or sets the string type name of the type converter
         /// </summary>
         /// <value>
         /// The string type name of the type converter

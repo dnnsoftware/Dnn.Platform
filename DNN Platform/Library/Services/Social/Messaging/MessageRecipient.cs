@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Messaging
         private int _recipientID = -1;
 
         /// <summary>
-        /// RecipientID - The primary key
+        /// Gets or sets recipientID - The primary key
         /// </summary>
         [XmlAttribute]
         public int RecipientID
@@ -45,31 +45,31 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>
-        /// The messageID of who sent the message to this recipient
+        /// Gets or sets the messageID of who sent the message to this recipient
         /// </summary>
         [XmlAttribute]
         public int MessageID { get; set; }
 
         /// <summary>
-        /// The UserID of the user receiving the message
+        /// Gets or sets the UserID of the user receiving the message
         /// </summary>
         [XmlAttribute]
         public int UserID { get; set; }
 
         /// <summary>
-        /// Is Message read. True: Yes, False: No.
+        /// Gets or sets a value indicating whether is Message read. True: Yes, False: No.
         /// </summary>
         [XmlAttribute]
         public bool Read { get; set; }
 
         /// <summary>
-        /// Is Message archived. True: Yes, False: No.
+        /// Gets or sets a value indicating whether is Message archived. True: Yes, False: No.
         /// </summary>
         [XmlAttribute]
         public bool Archived { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

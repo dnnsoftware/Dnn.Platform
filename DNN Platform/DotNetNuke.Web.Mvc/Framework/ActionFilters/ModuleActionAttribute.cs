@@ -23,27 +23,27 @@ namespace DotNetNuke.Web.Mvc.Framework.ActionFilters
         }
 
         /// <summary>
-        /// The ControlKey property is the key for the module control
+        /// Gets or sets the ControlKey property is the key for the module control
         /// </summary>
         public string ControlKey { get; set; }
 
         /// <summary>
-        /// The Icon property is the url for the Icon to be used in the Module Actions menu.  An empty string will mean that the Edit "pencil" icon is used.
+        /// Gets or sets the Icon property is the url for the Icon to be used in the Module Actions menu.  An empty string will mean that the Edit "pencil" icon is used.
         /// </summary>
         public string Icon { get; set; }
 
         /// <summary>
-        /// The SecurityAccessLevel is an enum property that sets the security level for the module action.
+        /// Gets or sets the SecurityAccessLevel is an enum property that sets the security level for the module action.
         /// </summary>
         public SecurityAccessLevel SecurityAccessLevel { get; set; }
 
         /// <summary>
-        /// The Title property is the title for the Module Action.  This property is only used if the TitleKey is left blank.
+        /// Gets or sets the Title property is the title for the Module Action.  This property is only used if the TitleKey is left blank.
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// The TitleKey property is the localization key for the title for the Module Action.
+        /// Gets or sets the TitleKey property is the localization key for the title for the Module Action.
         /// </summary>
         public string TitleKey { get; set; }
 

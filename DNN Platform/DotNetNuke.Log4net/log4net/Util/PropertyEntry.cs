@@ -39,7 +39,7 @@ namespace log4net.Util
         private object m_value = null;
 
         /// <summary>
-        /// Property Key
+        /// Gets or sets property Key
         /// </summary>
         /// <value>
         /// Property Key
@@ -56,7 +56,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Property Value
+        /// Gets or sets property Value
         /// </summary>
         /// <value>
         /// Property Value

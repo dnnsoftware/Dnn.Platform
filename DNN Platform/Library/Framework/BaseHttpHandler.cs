@@ -16,7 +16,7 @@ namespace DotNetNuke.Framework
         private HttpContext _context;
 
         /// <summary>
-        ///   Returns the <see cref = "HttpContext" /> object for the incoming HTTP request.
+        ///   Gets the <see cref = "HttpContext" /> object for the incoming HTTP request.
         /// </summary>
         public HttpContext Context
         {
@@ -27,7 +27,7 @@ namespace DotNetNuke.Framework
         }
 
         /// <summary>
-        ///   Returns the <see cref = "HttpRequest" /> object for the incoming HTTP request.
+        ///   Gets the <see cref = "HttpRequest" /> object for the incoming HTTP request.
         /// </summary>
         public HttpRequest Request
         {

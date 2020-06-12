@@ -22,7 +22,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// When true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
+        /// Gets a value indicating whether when true, the module provider will be used for all tabs in the current portal.  Including a specific tabid switches value to false.
         /// </summary>
         public bool AllTabs
         {
@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Urls
         }
 
         /// <summary>
-        /// The DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.
+        /// Gets or sets the DesktopModuleId is used to associate a particular Extension Url Provider with a specific DotNetNuke extension.
         /// </summary>
         /// <remarks>
         /// If the Extension provider is not associated with any particular DotNetNuke extension, return null.
@@ -40,7 +40,7 @@ namespace DotNetNuke.Entities.Urls
         public int ExtensionUrlProviderId { get; set; }
 
         /// <summary>
-        /// When true, provider is active
+        /// Gets or sets a value indicating whether when true, provider is active
         /// </summary>
         public bool IsActive { get; set; }
 
@@ -51,19 +51,19 @@ namespace DotNetNuke.Entities.Urls
         public string ProviderType { get; set; }
 
         /// <summary>
-        /// When true, TransformFriendlyUrl is called for every Url in the portal
+        /// Gets or sets a value indicating whether when true, TransformFriendlyUrl is called for every Url in the portal
         /// When false, TransformFriendlyUrl is called only for tabs in the TabIds list
         /// </summary>
         public bool RewriteAllUrls { get; set; }
 
         /// <summary>
-        /// When true, CheckForRedirect is called for every Url in the portal
+        /// Gets or sets a value indicating whether when true, CheckForRedirect is called for every Url in the portal
         /// When false, CheckForRedirect is called only for tabs in the TabIds list
         /// </summary>
         public bool RedirectAllUrls { get; set; }
 
         /// <summary>
-        /// When true, ChangeFriendlyUrl is called for every generated Url called through the NavigateUrl API
+        /// Gets or sets a value indicating whether when true, ChangeFriendlyUrl is called for every generated Url called through the NavigateUrl API
         /// When false, ChangeFriendlyUrl is called only for tabs in the TabIds list
         /// </summary>
         public bool ReplaceAllUrls { get; set; }
@@ -73,7 +73,7 @@ namespace DotNetNuke.Entities.Urls
         public Dictionary<string, string> Settings { get; private set; }
 
         /// <summary>
-        /// Returns a list of TabIds where the module provider should be called when generating friendly urls
+        /// Gets a list of TabIds where the module provider should be called when generating friendly urls
         /// </summary>
         public List<int> TabIds { get; private set; }
 

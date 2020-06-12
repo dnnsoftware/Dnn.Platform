@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Items
+        /// Gets or sets and sets the Items
         /// </summary>
         /// <value>A List(Of String)</value>
         /// -----------------------------------------------------------------------------

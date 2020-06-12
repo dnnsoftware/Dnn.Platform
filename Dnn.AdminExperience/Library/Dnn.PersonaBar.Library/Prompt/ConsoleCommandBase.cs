@@ -246,7 +246,7 @@ namespace Dnn.PersonaBar.Library.Prompt
         public string ValidationMessage { get; private set; }
 
         /// <summary>
-        /// Resource key for the result html.
+        /// Gets resource key for the result html.
         /// </summary>
         public virtual string ResultHtml => this.LocalizeString($"Prompt_{this.GetType().Name}_ResultHtml");
     }

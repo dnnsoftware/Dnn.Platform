@@ -128,7 +128,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
         public IModuleControl ModuleControl { get; set; }

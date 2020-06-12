@@ -25,7 +25,7 @@ namespace DotNetNuke.Common.Utilities
         private int _retryTimes = 30;
 
         /// <summary>
-        /// Base path need to verify permission.
+        /// Gets base path need to verify permission.
         /// </summary>
         public string BasePath
         {

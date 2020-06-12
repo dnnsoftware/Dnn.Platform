@@ -11,17 +11,17 @@ namespace Dnn.ExportImport.Components.Dto
     public class ImportDto
     {
         /// <summary>
-        /// Specifies the version of the exportes schema.
+        /// Gets or sets specifies the version of the exportes schema.
         /// </summary>
         public string SchemaVersion { get; set; } = Constants.CurrentSchemaVersion;
 
         /// <summary>
-        /// ID of portal to import items to.
+        /// Gets or sets iD of portal to import items to.
         /// </summary>
         public int PortalId { get; set; }
 
         /// <summary>
-        /// Id of exported package to be imported
+        /// Gets or sets id of exported package to be imported
         /// </summary>
         /// <remarks>
         /// For security reasons, this name does not have a folder or extension name.
@@ -31,18 +31,18 @@ namespace Dnn.ExportImport.Components.Dto
         public string PackageId { get; set; }
 
         /// <summary>
-        /// Specifies what to do when there is a collision during the import process.
+        /// Gets or sets specifies what to do when there is a collision during the import process.
         /// See <see cref="CollisionResolution"/>
         /// </summary>
         public CollisionResolution CollisionResolution { get; set; } = CollisionResolution.Ignore;
 
         /// <summary>
-        /// Snapshot of the export dto from the import package
+        /// Gets or sets snapshot of the export dto from the import package
         /// </summary>
         public ExportDto ExportDto { get; set; }
 
         /// <summary>
-        /// Snapshot of the import file into.
+        /// Gets or sets snapshot of the import file into.
         /// </summary>
         public ExportFileInfo ExportFileInfo { get; set; }
 

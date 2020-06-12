@@ -53,7 +53,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets  aflag that indicates whether the user or role has permission
+        /// Gets or sets a value indicating whether gets and sets  aflag that indicates whether the user or role has permission
         /// </summary>
         /// <returns>A Boolean</returns>
         /// -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User's DisplayName
+        /// Gets or sets and sets the User's DisplayName
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role ID
+        /// Gets or sets and sets the Role ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role Name
+        /// Gets or sets and sets the Role Name
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User ID
+        /// Gets or sets and sets the User ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -153,7 +153,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User Name
+        /// Gets or sets and sets the User Name
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------

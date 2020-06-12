@@ -86,7 +86,7 @@ namespace log4net.Repository
     public interface ILoggerRepository
     {
         /// <summary>
-        /// The name of the repository
+        /// Gets or sets the name of the repository
         /// </summary>
         /// <value>
         /// The name of the repository
@@ -99,7 +99,7 @@ namespace log4net.Repository
         string Name { get; set; }
 
         /// <summary>
-        /// RendererMap accesses the object renderer map for this repository.
+        /// Gets rendererMap accesses the object renderer map for this repository.
         /// </summary>
         /// <value>
         /// RendererMap accesses the object renderer map for this repository.
@@ -116,7 +116,7 @@ namespace log4net.Repository
         RendererMap RendererMap { get; }
 
         /// <summary>
-        /// The plugin map for this repository.
+        /// Gets the plugin map for this repository.
         /// </summary>
         /// <value>
         /// The plugin map for this repository.
@@ -130,7 +130,7 @@ namespace log4net.Repository
         PluginMap PluginMap { get; }
 
         /// <summary>
-        /// Get the level map for the Repository.
+        /// Gets get the level map for the Repository.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -145,7 +145,7 @@ namespace log4net.Repository
         LevelMap LevelMap { get; }
 
         /// <summary>
-        /// The threshold for all events in this repository
+        /// Gets or sets the threshold for all events in this repository
         /// </summary>
         /// <value>
         /// The threshold for all events in this repository
@@ -256,7 +256,7 @@ namespace log4net.Repository
         void Log(LoggingEvent logEvent);
 
         /// <summary>
-        /// Flag indicates if this repository has been configured.
+        /// Gets or sets a value indicating whether flag indicates if this repository has been configured.
         /// </summary>
         /// <value>
         /// Flag indicates if this repository has been configured.
@@ -269,7 +269,7 @@ namespace log4net.Repository
         bool Configured { get; set; }
 
         /// <summary>
-        /// Collection of internal messages captured during the most
+        /// Gets or sets collection of internal messages captured during the most
         /// recent configuration process.
         /// </summary>
         ICollection ConfigurationMessages { get; set; }
@@ -315,7 +315,7 @@ namespace log4net.Repository
         event LoggerRepositoryConfigurationChangedEventHandler ConfigurationChanged;
 
         /// <summary>
-        /// Repository specific properties
+        /// Gets repository specific properties
         /// </summary>
         /// <value>
         /// Repository specific properties

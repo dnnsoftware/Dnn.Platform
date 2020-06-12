@@ -127,7 +127,7 @@ namespace log4net.Filter
         public abstract FilterDecision Decide(LoggingEvent loggingEvent);
 
         /// <summary>
-        /// Property to get and set the next filter
+        /// Gets or sets property to get and set the next filter
         /// </summary>
         /// <value>
         /// The next filter in the chain

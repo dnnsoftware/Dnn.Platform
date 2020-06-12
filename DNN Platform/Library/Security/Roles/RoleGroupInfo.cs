@@ -51,7 +51,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the RoleGroup Id
+        /// Gets or sets and sets the RoleGroup Id
         /// </summary>
         /// <value>An Integer representing the Id of the RoleGroup</value>
         /// -----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Portal Id for the RoleGroup
+        /// Gets or sets and sets the Portal Id for the RoleGroup
         /// </summary>
         /// <value>An Integer representing the Id of the Portal</value>
         /// -----------------------------------------------------------------------------
@@ -89,7 +89,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the RoleGroup Name
+        /// Gets or sets and sets the RoleGroup Name
         /// </summary>
         /// <value>A string representing the Name of the RoleGroup</value>
         /// -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an sets the Description of the RoleGroup
+        /// Gets or sets an sets the Description of the RoleGroup
         /// </summary>
         /// <value>A string representing the description of the RoleGroup</value>
         /// -----------------------------------------------------------------------------
@@ -163,7 +163,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

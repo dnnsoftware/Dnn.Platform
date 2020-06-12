@@ -46,7 +46,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Category
+        /// Gets or sets and sets the value of the Category
         /// </summary>
         /// <value>A string representing the Category of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Editor Type to use
+        /// Gets or sets and sets the value of the Editor Type to use
         /// </summary>
         /// <value>A string representing the Editor Type of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that determines the length
+        /// Gets or sets and sets the value of the Field that determines the length
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that is bound to the Label
+        /// Gets or sets and sets the value of the Field that is bound to the Label
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that determines whether an item is required
+        /// Gets or sets and sets the value of the Field that determines whether an item is required
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that is bound to the EditControl
+        /// Gets or sets and sets the value of the Field that is bound to the EditControl
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that is bound to the EditControl's
+        /// Gets or sets and sets the value of the Field that is bound to the EditControl's
         /// Expression DynamicContentValidator
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that is bound to the EditControl
+        /// Gets or sets and sets the value of the Field that is bound to the EditControl
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that determines whether the control is visible
+        /// Gets or sets and sets the value of the Field that determines whether the control is visible
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -155,7 +155,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field that determines the visibility
+        /// Gets or sets and sets the value of the Field that determines the visibility
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------

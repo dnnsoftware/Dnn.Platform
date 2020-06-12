@@ -69,7 +69,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Id of the Tab
+        /// Gets or sets and Sets the Id of the Tab
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabID

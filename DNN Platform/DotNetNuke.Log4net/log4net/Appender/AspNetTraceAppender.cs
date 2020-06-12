@@ -101,7 +101,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -115,7 +115,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The category parameter sent to the Trace method.
+        /// Gets or sets the category parameter sent to the Trace method.
         /// </summary>
         /// <remarks>
         /// <para>

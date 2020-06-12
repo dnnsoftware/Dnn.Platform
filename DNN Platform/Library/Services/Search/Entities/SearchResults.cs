@@ -17,13 +17,13 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchResults
     {
         /// <summary>
-        /// Total Hits found in Lucene
+        /// Gets or sets total Hits found in Lucene
         /// </summary>
         /// <remarks>This number will generally be larger than count of Results object as Results usually holds 10 items, whereas TotalHits indicates TOTAL hits in entire Lucene for the query supplied.</remarks>
         public int TotalHits { get; set; }
 
         /// <summary>
-        /// Collection of Results
+        /// Gets or sets collection of Results
         /// </summary>
         public IList<SearchResult> Results { get; set; }
 

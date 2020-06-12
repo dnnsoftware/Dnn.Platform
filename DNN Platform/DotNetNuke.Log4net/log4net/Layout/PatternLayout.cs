@@ -981,7 +981,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The pattern formatting string
+        /// Gets or sets the pattern formatting string
         /// </summary>
         /// <remarks>
         /// <para>

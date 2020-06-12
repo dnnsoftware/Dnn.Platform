@@ -171,7 +171,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Return all possible levels as a list of Level objects.
+        /// Gets return all possible levels as a list of Level objects.
         /// </summary>
         /// <returns>all possible levels as a list of Level objects</returns>
         /// <remarks>

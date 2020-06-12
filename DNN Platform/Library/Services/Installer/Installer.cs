@@ -135,7 +135,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the associated InstallerInfo is valid
+        /// Gets a value indicating whether gets whether the associated InstallerInfo is valid
         /// </summary>
         /// <value>True - if valid, False if not</value>
         /// -----------------------------------------------------------------------------

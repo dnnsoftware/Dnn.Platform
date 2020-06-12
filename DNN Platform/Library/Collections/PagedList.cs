@@ -78,22 +78,22 @@ namespace DotNetNuke.Collections
         }
 
         /// <summary>
-        ///   Gets a boolean indicating if there is a next page available
+        ///   Gets a value indicating whether gets a boolean indicating if there is a next page available
         /// </summary>
         public bool HasNextPage { get; private set; }
 
         /// <summary>
-        ///   Gets a boolean indicating if there is a previous page available
+        ///   Gets a value indicating whether gets a boolean indicating if there is a previous page available
         /// </summary>
         public bool HasPreviousPage { get; private set; }
 
         /// <summary>
-        ///   Gets a boolean indicating if this is the first page
+        ///   Gets a value indicating whether gets a boolean indicating if this is the first page
         /// </summary>
         public bool IsFirstPage { get; private set; }
 
         /// <summary>
-        ///   Gets a boolean indicating if this is the last page
+        ///   Gets a value indicating whether gets a boolean indicating if this is the last page
         /// </summary>
         public bool IsLastPage { get; private set; }
 
@@ -113,7 +113,7 @@ namespace DotNetNuke.Collections
         public int PageSize { get; set; }
 
         /// <summary>
-        ///   Gets or ses the total number of objects in the data store
+        ///   Gets or sets or ses the total number of objects in the data store
         /// </summary>
         public int TotalCount { get; set; }
     }

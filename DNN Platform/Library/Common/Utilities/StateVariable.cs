@@ -78,7 +78,7 @@ namespace DotNetNuke.Common.Utilities
         protected abstract void Remove(string key);
 
         /// <summary>
-        /// Indicates wether there is a value present or not
+        /// Gets a value indicating whether indicates wether there is a value present or not
         /// </summary>
         public bool HasValue
         {
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// Sets or gets the value in the current items
+        /// Gets or sets or gets the value in the current items
         /// </summary>
         /// <exception cref="InvalidOperationException">
         /// If you try to get a value while none is set use <see cref="ValueOrDefault"/> for safe access

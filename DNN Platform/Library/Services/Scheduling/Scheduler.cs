@@ -77,7 +77,7 @@ namespace DotNetNuke.Services.Scheduling
             }
 
             /// <summary>
-            /// tracks how many threads we have free to work with at any given time.
+            /// Gets tracks how many threads we have free to work with at any given time.
             /// </summary>
             public static int FreeThreads
             {

@@ -72,7 +72,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the appender will
+        /// Gets or sets a value indicating whether gets or sets a value that indicates whether the appender will
         /// flush at the end of each write.
         /// </summary>
         /// <remarks>
@@ -142,7 +142,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>

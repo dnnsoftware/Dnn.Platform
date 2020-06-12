@@ -15,12 +15,12 @@ namespace Dnn.PersonaBar.Library.Containers
     public interface IPersonaBarContainer
     {
         /// <summary>
-        /// Items allowed to defined in root level.
+        /// Gets items allowed to defined in root level.
         /// </summary>
         IList<string> RootItems { get; }
 
         /// <summary>
-        /// Indicate whether persona bar is available.
+        /// Gets a value indicating whether indicate whether persona bar is available.
         /// </summary>
         bool Visible { get; }
 

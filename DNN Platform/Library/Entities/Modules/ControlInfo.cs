@@ -30,7 +30,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Control Key
+        /// Gets or sets and sets the Control Key
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -38,7 +38,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Control Source
+        /// Gets or sets and sets the Control Source
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -46,7 +46,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a flag that determines whether the control support the AJAX
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the control support the AJAX
         /// Update Panel
         /// </summary>
         /// <returns>A Boolean</returns>

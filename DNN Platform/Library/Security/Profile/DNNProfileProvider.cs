@@ -67,7 +67,7 @@ namespace DotNetNuke.Security.Profile
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Provider Properties can be edited
+        /// Gets a value indicating whether gets whether the Provider Properties can be edited
         /// </summary>
         /// <returns>A Boolean</returns>
         /// -----------------------------------------------------------------------------

@@ -29,28 +29,28 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the ID of the User Record in the Authentication System
+        /// Gets or sets and Sets the ID of the User Record in the Authentication System
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int UserAuthenticationID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the PackageID for the Authentication System
+        /// Gets or sets and Sets the PackageID for the Authentication System
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int UserID { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID)
+        /// Gets or sets and Sets the type (name) of the Authentication System (eg DNN, OpenID, LiveID)
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the url for the Logoff Control
+        /// Gets or sets and Sets the url for the Logoff Control
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationToken { get; set; }
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

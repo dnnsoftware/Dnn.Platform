@@ -202,7 +202,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Has no appender warning been emitted
+        /// Gets or sets a value indicating whether has no appender warning been emitted
         /// </summary>
         /// <remarks>
         /// <para>
@@ -217,7 +217,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Get the root of this hierarchy
+        /// Gets get the root of this hierarchy
         /// </summary>
         /// <remarks>
         /// <para>
@@ -957,7 +957,7 @@ namespace log4net.Repository.Hierarchy
             private string m_levelDisplayName = null;
 
             /// <summary>
-            /// Value of the level
+            /// Gets or sets value of the level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -972,7 +972,7 @@ namespace log4net.Repository.Hierarchy
             }
 
             /// <summary>
-            /// Name of the level
+            /// Gets or sets name of the level
             /// </summary>
             /// <value>
             /// The name of the level
@@ -989,7 +989,7 @@ namespace log4net.Repository.Hierarchy
             }
 
             /// <summary>
-            /// Display name for the level
+            /// Gets or sets display name for the level
             /// </summary>
             /// <value>
             /// The display name of the level

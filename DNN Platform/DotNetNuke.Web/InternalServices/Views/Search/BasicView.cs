@@ -16,32 +16,32 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     public class BasicView
     {
         /// <summary>
-        /// Document's Title
+        /// Gets or sets document's Title
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Highlighted snippet from document
+        /// Gets or sets highlighted snippet from document
         /// </summary>
         public string Snippet { get; set; }
 
         /// <summary>
-        /// Description from document
+        /// Gets or sets description from document
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Link to the Document
+        /// Gets or sets link to the Document
         /// </summary>
         public string DocumentUrl { get; set; }
 
         /// <summary>
-        /// Display Name of the Document Type
+        /// Gets or sets display Name of the Document Type
         /// </summary>
         public string DocumentTypeName { get; set; }
 
         /// <summary>
-        /// Custom Attributes of the document.
+        /// Gets or sets custom Attributes of the document.
         /// </summary>
         public IDictionary<string, string> Attributes { get; set; }
 

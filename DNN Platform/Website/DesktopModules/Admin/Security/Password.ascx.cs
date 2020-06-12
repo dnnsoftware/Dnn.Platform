@@ -599,7 +599,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Update Status
+            /// Gets or sets and sets the Update Status
             /// </summary>
             public PasswordUpdateStatus UpdateStatus { get; set; }
         }

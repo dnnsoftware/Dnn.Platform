@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Cache
         }
 
         /// <summary>
-        /// Whether current caching provider disabled to expire cache.
+        /// Gets a value indicating whether whether current caching provider disabled to expire cache.
         /// </summary>
         /// <remarks>This setting shouldn't affect current server, cache should always expire in current server even this setting set to True.</remarks>
         protected static bool CacheExpirationDisable { get; private set; }

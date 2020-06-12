@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.GeneratedImage
         private ImageHandlerInternal Implementation { get; set; }
 
         /// <summary>
-        /// Enables server-side caching of the result
+        /// Gets or sets a value indicating whether enables server-side caching of the result
         /// </summary>
         public bool EnableServerCache
         {
@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Enables client-side caching of the result
+        /// Gets or sets a value indicating whether enables client-side caching of the result
         /// </summary>
         public bool EnableClientCache
         {
@@ -37,7 +37,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Sets the client-side cache expiration time
+        /// Gets or sets the client-side cache expiration time
         /// </summary>
         public TimeSpan ClientCacheExpiration
         {
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// List of Domains who are allowed to use the imagehandler when security is enabled
+        /// Gets or sets list of Domains who are allowed to use the imagehandler when security is enabled
         /// </summary>
         public string[] AllowedDomains
         {
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Sets the type of the result image. The handler will return ouput with MIME type matching this content
+        /// Gets or sets the type of the result image. The handler will return ouput with MIME type matching this content
         /// </summary>
         public ImageFormat ContentType
         {
@@ -76,7 +76,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Sets the image compression encoding for the result image. Default is 50L
+        /// Gets or sets the image compression encoding for the result image. Default is 50L
         /// </summary>
         public long ImageCompression
         {
@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Enables block mechanism for DDOS by referring IP
+        /// Gets or sets a value indicating whether enables block mechanism for DDOS by referring IP
         /// </summary>
         public bool EnableIPCount
         {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Sets the maximum amount of images an IP address is allowed to generate
+        /// Gets or sets the maximum amount of images an IP address is allowed to generate
         /// in the defined purge interval
         /// </summary>
         public int IPCountMaxCount
@@ -104,7 +104,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// Timespan for resetting the blocking
+        /// Gets or sets timespan for resetting the blocking
         /// </summary>
         public TimeSpan IPCountPurgeInterval
         {
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.GeneratedImage
         }
 
         /// <summary>
-        /// A list of image transforms that will be applied successively to the image
+        /// Gets a list of image transforms that will be applied successively to the image
         /// </summary>
         protected List<ImageTransform> ImageTransforms => this.Implementation.ImageTransforms;
 

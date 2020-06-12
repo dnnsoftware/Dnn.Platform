@@ -177,7 +177,7 @@ namespace DotNetNuke.Providers.AspNetClientCapabilityProvider
         }
 
         /// <summary>
-        /// Indicates whether tablet detection is supported in the available data set.
+        /// Gets a value indicating whether indicates whether tablet detection is supported in the available data set.
         /// </summary>
         public override bool SupportsTabletDetection
         {

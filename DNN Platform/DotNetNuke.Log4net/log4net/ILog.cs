@@ -834,7 +834,7 @@ namespace log4net
         void FatalFormat(IFormatProvider provider, string format, params object[] args);
 
         /// <summary>
-        /// Checks if this logger is enabled for the <see cref="Level.Debug"/> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <see cref="Level.Debug"/> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <see cref="Level.Debug"/> events, <c>false</c> otherwise.
@@ -905,7 +905,7 @@ namespace log4net
         bool IsDebugEnabled { get; }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <see cref="Level.Info"/> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <see cref="Level.Info"/> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <see cref="Level.Info"/> events, <c>false</c> otherwise.
@@ -919,7 +919,7 @@ namespace log4net
         bool IsInfoEnabled { get; }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <see cref="Level.Warn"/> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <see cref="Level.Warn"/> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <see cref="Level.Warn"/> events, <c>false</c> otherwise.
@@ -933,7 +933,7 @@ namespace log4net
         bool IsWarnEnabled { get; }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <see cref="Level.Error"/> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <see cref="Level.Error"/> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <see cref="Level.Error"/> events, <c>false</c> otherwise.
@@ -947,7 +947,7 @@ namespace log4net
         bool IsErrorEnabled { get; }
 
         /// <summary>
-        /// Checks if this logger is enabled for the <see cref="Level.Fatal"/> level.
+        /// Gets a value indicating whether checks if this logger is enabled for the <see cref="Level.Fatal"/> level.
         /// </summary>
         /// <value>
         /// <c>true</c> if this logger is enabled for <see cref="Level.Fatal"/> events, <c>false</c> otherwise.

@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
+        /// Gets a value indicating whether gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
         /// </summary>
         /// <remarks>
         /// Some providers (e.g. Standard) store their files/folders in a way that allows for anonymous access that bypasses DotNetNuke.
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a value indicating if the provider requires network connectivity to do its tasks.
+        /// Gets a value indicating whether gets a value indicating if the provider requires network connectivity to do its tasks.
         /// </summary>
         public virtual bool RequiresNetworkConnectivity
         {
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Indicates if the folder provider supports mapped paths when creating new folders
+        /// Gets a value indicating whether indicates if the folder provider supports mapped paths when creating new folders
         /// </summary>
         /// <remarks>
         /// If this method is not overrided it returns false

@@ -306,7 +306,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
             }
 
             /// <summary>
-            /// Gets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
+            /// Gets or sets and sets the time-out period (in minutes) allowed between requests before the session-state provider terminates the session.
             /// </summary>
             ///
             /// <returns>
@@ -576,14 +576,14 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public int Port { get; private set; }
 
         /// <summary>
-        /// Portion of the URL after the application.
+        /// Gets portion of the URL after the application.
         /// </summary>
         public string Page { get; private set; }
 
         private string _applicationPath = "/";
 
         /// <summary>
-        /// The same thing as the IIS Virtual directory. It's
+        /// Gets or sets the same thing as the IIS Virtual directory. It's
         /// what gets returned by Request.ApplicationPath.
         /// </summary>
         public string ApplicationPath
@@ -600,7 +600,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private string _physicalApplicationPath = WebsitePhysicalAppPath;
 
         /// <summary>
-        /// Physical path to the application (used for simulation purposes).
+        /// Gets or sets physical path to the application (used for simulation purposes).
         /// </summary>
         public string PhysicalApplicationPath
         {
@@ -618,7 +618,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         private string _physicalPath = WebsitePhysicalAppPath;
 
         /// <summary>
-        /// Physical path to the requested file (used for simulation purposes).
+        /// Gets physical path to the requested file (used for simulation purposes).
         /// </summary>
         public string PhysicalPath
         {
@@ -628,7 +628,7 @@ namespace DotNetNuke.Tests.Instance.Utilities.HttpSimulator
         public TextWriter ResponseWriter { get; set; }
 
         /// <summary>
-        /// Returns the text from the response to the simulated request.
+        /// Gets the text from the response to the simulated request.
         /// </summary>
         public string ResponseText
         {

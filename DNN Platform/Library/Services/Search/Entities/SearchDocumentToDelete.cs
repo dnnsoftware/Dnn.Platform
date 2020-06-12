@@ -18,46 +18,46 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchDocumentToDelete
     {
         /// <summary>
-        /// A key to uniquely identify a document in the Index
+        /// Gets or sets a key to uniquely identify a document in the Index
         /// </summary>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public string UniqueKey { get; set; }
 
         /// <summary>
-        /// RoleId (GroupId) for additional filtering [Optional]
+        /// Gets or sets roleId (GroupId) for additional filtering [Optional]
         /// </summary>
         /// <remarks>This property can be used while under Social Groups.</remarks>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public int RoleId { get; set; }
 
         /// <summary>
-        /// Portal Id
+        /// Gets or sets portal Id
         /// </summary>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public int PortalId { get; set; }
 
         /// <summary>
-        /// Tab Id of the Content [Optional]
+        /// Gets or sets tab Id of the Content [Optional]
         /// </summary>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public int TabId { get; set; }
 
         /// <summary>
-        /// Module Definition Id of the Content.
+        /// Gets or sets module Definition Id of the Content.
         /// </summary>
         /// <remarks>This is needed when SearchTypeId is for a Module</remarks>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public int ModuleDefId { get; set; }
 
         /// <summary>
-        /// Module Id of the Content
+        /// Gets or sets module Id of the Content
         /// </summary>
         /// <remarks>This is needed when SearchTypeId is for a Module</remarks>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public int ModuleId { get; set; }
 
         /// <summary>
-        /// User Id of the Author
+        /// Gets or sets user Id of the Author
         /// </summary>
         /// <remarks>Author's display name is automatically found and stored. AuthorName can be found in SearchResult.
         /// However, this may get out of date if Display Name is changed after Index.</remarks>
@@ -65,34 +65,34 @@ namespace DotNetNuke.Services.Search.Entities
         public int AuthorUserId { get; set; }
 
         /// <summary>
-        /// Search Type Id, e.g. module, file or url
+        /// Gets or sets search Type Id, e.g. module, file or url
         /// </summary>
         /// <remarks>A value of -1 means this is property is not used.</remarks>
         public int SearchTypeId { get; set; }
 
         /// <summary>
-        /// QueryString that may be associated with a Search Document.
+        /// Gets or sets queryString that may be associated with a Search Document.
         /// </summary>
         /// <remarks>This information will be used to creare Url for the document</remarks>
         /// <remarks>A value of NULL/EMPTY means this is property is not used.</remarks>
         public string QueryString { get; set; }
 
         /// <summary>
-        /// Additional keywords can be specified for Indexing
+        /// Gets or sets additional keywords can be specified for Indexing
         /// </summary>
         /// <remarks>This is key-value pair, e.g. "AliasName","something"</remarks>
         /// <remarks>An empty dictionary means this is property is not used.</remarks>
         public IDictionary<string, string> Keywords { get; set; }
 
         /// <summary>
-        /// Additional numeric fields can be specified for Indexing
+        /// Gets or sets additional numeric fields can be specified for Indexing
         /// </summary>
         /// <remarks>This is key-value pair, e.g. "ItemId","888"</remarks>
         /// <remarks>An empty dictionary means this is property is not used.</remarks>
         public IDictionary<string, int> NumericKeys { get; set; }
 
         /// <summary>
-        /// Culture Code associated with the content.
+        /// Gets or sets culture Code associated with the content.
         /// </summary>
         /// <remarks>A value of NULL/EMPTY means this is property is not used.</remarks>
         public string CultureCode { get; set; }

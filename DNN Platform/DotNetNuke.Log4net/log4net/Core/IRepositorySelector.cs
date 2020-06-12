@@ -71,7 +71,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// The <see cref="ILoggerRepository"/> that has been created
+        /// Gets the <see cref="ILoggerRepository"/> that has been created
         /// </summary>
         /// <value>
         /// The <see cref="ILoggerRepository"/> that has been created

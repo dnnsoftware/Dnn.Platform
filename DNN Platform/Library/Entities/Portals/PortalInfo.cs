@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// UserID of the user who is the admininistrator of the portal
+        /// Gets or sets userID of the user who is the admininistrator of the portal
         /// </summary>
         /// <value>UserId of the user who is the portal admin</value>
         /// <returns>UserId of the user who is the portal admin</returns>
@@ -96,7 +96,7 @@ namespace DotNetNuke.Entities.Portals
         public int AdministratorId { get; set; }
 
         /// <summary>
-        /// The RoleId of the Security Role of the Administrators group of the portal
+        /// Gets or sets the RoleId of the Security Role of the Administrators group of the portal
         /// </summary>
         /// <value>RoleId of de Administrators Security Role</value>
         /// <returns>RoleId of de Administrators Security Role</returns>
@@ -117,7 +117,7 @@ namespace DotNetNuke.Entities.Portals
         public int AdministratorRoleId { get; set; }
 
         /// <summary>
-        /// TabId at which admin tasks start
+        /// Gets or sets tabId at which admin tasks start
         /// </summary>
         /// <value>TabID of admin tasks</value>
         /// <returns>TabID of admin tasks</returns>
@@ -126,7 +126,7 @@ namespace DotNetNuke.Entities.Portals
         public int AdminTabId { get; set; }
 
         /// <summary>
-        /// Image (bitmap) file that is used as background for the portal
+        /// Gets or sets image (bitmap) file that is used as background for the portal
         /// </summary>
         /// <value>Name of the file that is used as background</value>
         /// <returns>Name of the file that is used as background</returns>
@@ -135,13 +135,13 @@ namespace DotNetNuke.Entities.Portals
         public string BackgroundFile { get; set; }
 
         /// <summary>
-        /// Current host version
+        /// Gets or sets current host version
         /// </summary>
         [XmlElement("crmversion")]
         public string CrmVersion { get; set; }
 
         /// <summary>
-        /// Setting for the type of banner advertising in the portal
+        /// Gets or sets setting for the type of banner advertising in the portal
         /// </summary>
         /// <value>Type of banner advertising</value>
         /// <returns>Type of banner advertising</returns>
@@ -156,7 +156,7 @@ namespace DotNetNuke.Entities.Portals
         public string CultureCode { get; set; }
 
         /// <summary>
-        /// Curreny format that is used in the portal
+        /// Gets or sets curreny format that is used in the portal
         /// </summary>
         /// <value>Currency of the portal</value>
         /// <returns>Currency of the portal</returns>
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Portals
         public string Currency { get; set; }
 
         /// <summary>
-        /// Default language for the portal
+        /// Gets or sets default language for the portal
         /// </summary>
         /// <value>Default language of the portal</value>
         /// <returns>Default language of the portal</returns>
@@ -183,7 +183,7 @@ namespace DotNetNuke.Entities.Portals
         public string DefaultLanguage { get; set; }
 
         /// <summary>
-        /// Description of the portal
+        /// Gets or sets description of the portal
         /// </summary>
         /// <value>Description of the portal</value>
         /// <returns>Description of the portal</returns>
@@ -199,7 +199,7 @@ namespace DotNetNuke.Entities.Portals
         public string Description { get; set; }
 
         /// <summary>
-        /// The default e-mail to be used in the porta;
+        /// Gets or sets the default e-mail to be used in the porta;
         /// </summary>
         /// <value>E-mail of the portal</value>
         /// <returns>E-mail of the portal</returns>
@@ -208,7 +208,7 @@ namespace DotNetNuke.Entities.Portals
         public string Email { get; set; }
 
         /// <summary>
-        /// Date at which the portal expires
+        /// Gets or sets date at which the portal expires
         /// </summary>
         /// <value>Date of expiration of the portal</value>
         /// <returns>Date of expiration of the portal</returns>
@@ -226,7 +226,7 @@ namespace DotNetNuke.Entities.Portals
         public DateTime ExpiryDate { get; set; }
 
         /// <summary>
-        /// The footer text as specified in the Portal settings
+        /// Gets or sets the footer text as specified in the Portal settings
         /// </summary>
         /// <value>Footer text of the portal</value>
         /// <returns>Returns the the footer text of the portal</returns>
@@ -241,7 +241,7 @@ namespace DotNetNuke.Entities.Portals
         public string FooterText { get; set; }
 
         /// <summary>
-        /// GUID of the portal info object
+        /// Gets or sets gUID of the portal info object
         /// </summary>
         /// <value>Portal info Object GUID</value>
         /// <returns>GUD of the portal info object</returns>
@@ -250,7 +250,7 @@ namespace DotNetNuke.Entities.Portals
         public Guid GUID { get; set; }
 
         /// <summary>
-        /// Home directory of the portal (logical path)
+        /// Gets or sets home directory of the portal (logical path)
         /// </summary>
         /// <value>Portal home directory</value>
         /// <returns>Portal home directory</returns>
@@ -259,7 +259,7 @@ namespace DotNetNuke.Entities.Portals
         public string HomeDirectory { get; set; }
 
         /// <summary>
-        /// Home System (local) directory of the portal (logical path)
+        /// Gets home System (local) directory of the portal (logical path)
         /// </summary>
         /// <value>Portal home system directory</value>
         /// <returns>Portal home system directory in local filesystem</returns>
@@ -271,7 +271,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// TabdId of the Home page
+        /// Gets or sets tabdId of the Home page
         /// </summary>
         /// <value>TabId of the Home page</value>
         /// <returns>TabId of the Home page</returns>
@@ -280,7 +280,7 @@ namespace DotNetNuke.Entities.Portals
         public int HomeTabId { get; set; }
 
         /// <summary>
-        /// Amount of currency that is used as a hosting fee of the portal
+        /// Gets or sets amount of currency that is used as a hosting fee of the portal
         /// </summary>
         /// <value>Currency amount hosting fee</value>
         /// <returns>Currency amount hosting fee</returns>
@@ -298,7 +298,7 @@ namespace DotNetNuke.Entities.Portals
         public float HostFee { get; set; }
 
         /// <summary>
-        /// Total disk space allowed for the portal (Mb). 0 means not limited
+        /// Gets or sets total disk space allowed for the portal (Mb). 0 means not limited
         /// </summary>
         /// <value>Diskspace allowed for the portal</value>
         /// <returns>Diskspace allowed for the portal</returns>
@@ -316,7 +316,7 @@ namespace DotNetNuke.Entities.Portals
         public int HostSpace { get; set; }
 
          /// <summary>
-        /// Keywords (separated by ,) for this portal
+        /// Gets or sets keywords (separated by ,) for this portal
         /// </summary>
         /// <value>Keywords seperated by ,</value>
         /// <returns>Keywords for this portal</returns>
@@ -332,7 +332,7 @@ namespace DotNetNuke.Entities.Portals
         public string KeyWords { get; set; }
 
         /// <summary>
-        /// TabId with the login control, page to login
+        /// Gets or sets tabId with the login control, page to login
         /// </summary>
         /// <value>TabId of the Login page</value>
         /// <returns>TabId of the Login page</returns>
@@ -341,7 +341,7 @@ namespace DotNetNuke.Entities.Portals
         public int LoginTabId { get; set; }
 
         /// <summary>
-        /// The portal has a logo (bitmap) associated with the portal. Teh admin can set the logo in the portal settings
+        /// Gets or sets the portal has a logo (bitmap) associated with the portal. Teh admin can set the logo in the portal settings
         /// </summary>
         /// <value>URL of the logo</value>
         /// <returns>URL of the Portal logo</returns>
@@ -353,7 +353,7 @@ namespace DotNetNuke.Entities.Portals
         public string LogoFile { get; set; }
 
         /// <summary>
-        /// Number of portal pages allowed in the portal. 0 means not limited
+        /// Gets or sets number of portal pages allowed in the portal. 0 means not limited
         /// </summary>
         /// <value>Number of portal pages allowed</value>
         /// <returns>Number of portal pages allowed</returns>
@@ -371,7 +371,7 @@ namespace DotNetNuke.Entities.Portals
         public int PageQuota { get; set; }
 
         /// <summary>
-        /// Name of the Payment processor that is used for portal payments, e.g. PayPal
+        /// Gets or sets name of the Payment processor that is used for portal payments, e.g. PayPal
         /// </summary>
         /// <value>Name of the portal payment processor</value>
         /// <returns>Name of the portal payment processor</returns>
@@ -380,7 +380,7 @@ namespace DotNetNuke.Entities.Portals
         public string PaymentProcessor { get; set; }
 
         /// <summary>
-        /// Unique idenitifier of the Portal within the site
+        /// Gets or sets unique idenitifier of the Portal within the site
         /// </summary>
         /// <value>Portal identifier</value>
         /// <returns>Portal Identifier</returns>
@@ -389,7 +389,7 @@ namespace DotNetNuke.Entities.Portals
         public int PortalID { get; set; }
 
         /// <summary>
-        /// Contains the id of the portal group that the portal belongs to
+        /// Gets or sets contains the id of the portal group that the portal belongs to
         /// Will be null or -1 (null.nullinteger) if the portal does not belong to a portal group
         /// </summary>
         /// <value>Portal Group identifier</value>
@@ -398,7 +398,7 @@ namespace DotNetNuke.Entities.Portals
         public int PortalGroupID { get; set; }
 
         /// <summary>
-        /// Name of the portal. Can be set at creation time, Admin can change the name in the portal settings
+        /// Gets or sets name of the portal. Can be set at creation time, Admin can change the name in the portal settings
         /// </summary>
         /// <value>Name of the portal</value>
         /// <returns>Name of the portal</returns>
@@ -414,7 +414,7 @@ namespace DotNetNuke.Entities.Portals
         public string PortalName { get; set; }
 
         /// <summary>
-        /// Password to use in the payment processor
+        /// Gets or sets password to use in the payment processor
         /// </summary>
         /// <value>Payment Processor password</value>
         /// <returns></returns>
@@ -438,7 +438,7 @@ namespace DotNetNuke.Entities.Portals
         public string ProcessorPassword { get; set; }
 
         /// <summary>
-        /// Payment Processor userId
+        /// Gets or sets payment Processor userId
         /// </summary>
         /// <value>
         /// <placeholder>Payment Processor userId</placeholder>
@@ -465,7 +465,7 @@ namespace DotNetNuke.Entities.Portals
         public string ProcessorUserId { get; set; }
 
         /// <summary>
-        /// The RoleId of the Registered users group of the portal.
+        /// Gets or sets the RoleId of the Registered users group of the portal.
         /// </summary>
         /// <value>RoleId of the Registered users </value>
         /// <returns>RoleId of the Registered users </returns>
@@ -474,7 +474,7 @@ namespace DotNetNuke.Entities.Portals
         public int RegisteredRoleId { get; set; }
 
         /// <summary>
-        ///   Tabid of the Registration page
+        ///   Gets or sets tabid of the Registration page
         /// </summary>
         /// <value>TabId of the Registration page</value>
         /// <returns>TabId of the Registration page</returns>
@@ -484,7 +484,7 @@ namespace DotNetNuke.Entities.Portals
         public int RegisterTabId { get; set; }
 
         /// <summary>
-        ///   Tabid of the Search profile page
+        ///   Gets or sets tabid of the Search profile page
         /// </summary>
         /// <value>TabdId of the Search Results page</value>
         /// <returns>TabdId of the Search Results page</returns>
@@ -494,7 +494,7 @@ namespace DotNetNuke.Entities.Portals
         public int SearchTabId { get; set; }
 
         /// <summary>
-        ///   Tabid of the Custom 404 page
+        ///   Gets or sets tabid of the Custom 404 page
         /// </summary>
         /// <value>Tabid of the Custom 404 page</value>
         /// <returns>Tabid of the Custom 404 page</returns>
@@ -504,7 +504,7 @@ namespace DotNetNuke.Entities.Portals
         public int Custom404TabId { get; set; }
 
         /// <summary>
-        ///   Tabid of the Custom 500 error page
+        ///   Gets or sets tabid of the Custom 500 error page
         /// </summary>
         /// <value>Tabid of the Custom 500 error page</value>
         /// <returns>Tabid of the Custom 500 error page</returns>
@@ -514,7 +514,7 @@ namespace DotNetNuke.Entities.Portals
         public int Custom500TabId { get; set; }
 
         /// <summary>
-        ///   Tabid of the Terms of Use page
+        ///   Gets or sets tabid of the Terms of Use page
         /// </summary>
         /// <value>Tabid of the Terms of Use page</value>
         /// <returns>Tabid of the Terms of Use page</returns>
@@ -524,7 +524,7 @@ namespace DotNetNuke.Entities.Portals
         public int TermsTabId { get; set; }
 
         /// <summary>
-        ///   Tabid of the Privacy Statement page
+        ///   Gets or sets tabid of the Privacy Statement page
         /// </summary>
         /// <value>Tabid of the Privacy Statement page</value>
         /// <returns>Tabid of the Privacy Statement page</returns>
@@ -534,7 +534,7 @@ namespace DotNetNuke.Entities.Portals
         public int PrivacyTabId { get; set; }
 
         /// <summary>
-        /// # of days that Site log history should be kept. 0 means unlimited
+        /// Gets or sets # of days that Site log history should be kept. 0 means unlimited
         /// </summary>
         /// <value># of days sitelog history</value>
         /// <returns># of days sitelog history</returns>
@@ -543,7 +543,7 @@ namespace DotNetNuke.Entities.Portals
         public int SiteLogHistory { get; set; }
 
         /// <summary>
-        /// TabdId of the splash page. If 0, there is no splash page
+        /// Gets or sets tabdId of the splash page. If 0, there is no splash page
         /// </summary>
         /// <value>TabdId of the Splash page</value>
         /// <returns>TabdId of the Splash page</returns>
@@ -552,7 +552,7 @@ namespace DotNetNuke.Entities.Portals
         public int SplashTabId { get; set; }
 
         /// <summary>
-        /// TabId at which Host tasks start
+        /// Gets or sets tabId at which Host tasks start
         /// </summary>
         /// <value>TabId of Host tasks</value>
         /// <returns>TabId of Host tasks</returns>
@@ -561,7 +561,7 @@ namespace DotNetNuke.Entities.Portals
         public int SuperTabId { get; set; }
 
         /// <summary>
-        /// Number of registered users allowed in the portal. 0 means not limited
+        /// Gets or sets number of registered users allowed in the portal. 0 means not limited
         /// </summary>
         /// <value>Number of registered users allowed </value>
         /// <returns>Number of registered users allowed </returns>
@@ -579,7 +579,7 @@ namespace DotNetNuke.Entities.Portals
         public int UserQuota { get; set; }
 
         /// <summary>
-        /// Type of registration that the portal supports
+        /// Gets or sets type of registration that the portal supports
         /// </summary>
         /// <value>Type of registration</value>
         /// <returns>Type of registration</returns>
@@ -591,7 +591,7 @@ namespace DotNetNuke.Entities.Portals
         public int UserRegistration { get; set; }
 
         /// <summary>
-        /// Tabid of the User profile page
+        /// Gets or sets tabid of the User profile page
         /// </summary>
         /// <value>TabdId of the User profile page</value>
         /// <returns>TabdId of the User profile page</returns>
@@ -602,7 +602,7 @@ namespace DotNetNuke.Entities.Portals
         private int _users;
 
         /// <summary>
-        /// Actual number of actual users for this portal
+        /// Gets or sets actual number of actual users for this portal
         /// </summary>
         /// <value>Number of users for the portal</value>
         /// <returns>Number of users for the portal</returns>
@@ -624,7 +624,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// DNN Version # of the portal installation
+        /// Gets or sets dNN Version # of the portal installation
         /// </summary>
         /// <value>Version # of the portal installation</value>
         /// <returns>Version # of the portal installation</returns>
@@ -633,7 +633,7 @@ namespace DotNetNuke.Entities.Portals
         public string Version { get; set; }
 
         /// <summary>
-        /// The actual name of the Administrators group of the portal.
+        /// Gets or sets the actual name of the Administrators group of the portal.
         /// This name is retrieved from the RoleController object
         /// </summary>
         /// <value>The name of the Administrators group</value>
@@ -664,7 +664,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Fysical path on disk of the home directory of the portal
+        /// Gets fysical path on disk of the home directory of the portal
         /// </summary>
         /// <value>
         /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
@@ -681,7 +681,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Fysical path on disk of the home directory of the portal
+        /// Gets fysical path on disk of the home directory of the portal
         /// </summary>
         /// <value>
         /// <placeholder>Fysical path on disk of the home directory of the portal</placeholder>
@@ -698,7 +698,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Actual number of pages of the portal
+        /// Gets or sets actual number of pages of the portal
         /// </summary>
         /// <value>Number of pages of the portal</value>
         /// <returns>Number of pages of the portal</returns>
@@ -723,7 +723,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// The actual name of the Registerd Users group of the portal.
+        /// Gets or sets the actual name of the Registerd Users group of the portal.
         /// This name is retrieved from the RoleController object
         /// </summary>
         /// <value>The name of the Registerd Users group</value>
@@ -859,7 +859,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>KeyId of the IHydratable.Key</returns>
         /// <remarks><seealso cref="Fill"></seealso></remarks>

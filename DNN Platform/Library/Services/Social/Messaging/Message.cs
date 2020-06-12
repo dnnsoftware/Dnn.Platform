@@ -30,7 +30,7 @@ namespace DotNetNuke.Services.Social.Messaging
         private string _displayDate;
 
         /// <summary>
-        /// MessageID - The primary key
+        /// Gets or sets messageID - The primary key
         /// </summary>
         [XmlAttribute]
         public int MessageID
@@ -47,61 +47,61 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>
-        /// portalID for the message
+        /// Gets or sets portalID for the message
         /// </summary>
         [XmlAttribute]
         public int PortalID { get; set; }
 
         /// <summary>
-        /// To list for the message. This information is saved for faster display of To list in the message
+        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message
         /// </summary>
         [XmlAttribute]
         public string To { get; set; }
 
         /// <summary>
-        /// Message From
+        /// Gets or sets message From
         /// </summary>
         [XmlAttribute]
         public string From { get; set; }
 
         /// <summary>
-        /// Message Subject
+        /// Gets or sets message Subject
         /// </summary>
         [XmlAttribute]
         public string Subject { get; set; }
 
         /// <summary>
-        /// Message body
+        /// Gets or sets message body
         /// </summary>
         [XmlAttribute]
         public string Body { get; set; }
 
         /// <summary>
-        /// Conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId
+        /// Gets or sets conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId
         /// </summary>
         [XmlAttribute]
         public int ConversationId { get; set; }
 
         /// <summary>
-        /// NotificationType ID of the Message. Each message is associated with a notification type.
+        /// Gets or sets notificationType ID of the Message. Each message is associated with a notification type.
         /// </summary>
         [XmlAttribute]
         public int NotificationTypeID { get; set; }
 
         /// <summary>
-        /// ReplyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender
+        /// Gets or sets a value indicating whether replyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender
         /// </summary>
         [XmlAttribute]
         public bool ReplyAllAllowed { get; set; }
 
         /// <summary>
-        /// The UserID of the sender of the message
+        /// Gets or sets the UserID of the sender of the message
         /// </summary>
         [XmlAttribute]
         public int SenderUserID { get; set; }
 
         /// <summary>
-        /// A pretty printed string with the time since the message was created
+        /// Gets a pretty printed string with the time since the message was created
         /// </summary>
         [XmlAttribute]
         public string DisplayDate
@@ -118,7 +118,7 @@ namespace DotNetNuke.Services.Social.Messaging
         }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

@@ -71,28 +71,28 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Whether disabled pages are not selectable
+        /// Gets or sets a value indicating whether whether disabled pages are not selectable
         /// Please note: IncludeDisabledTabs needs also be set to true to include disabled pages
         /// </summary>
         public bool DisabledNotSelectable { get; set; }
 
         /// <summary>
-        /// Whether include active page.
+        /// Gets or sets a value indicating whether whether include active page.
         /// </summary>
         public bool IncludeActiveTab { get; set; }
 
         /// <summary>
-        /// Whether include pages which are disabled.
+        /// Gets or sets a value indicating whether whether include pages which are disabled.
         /// </summary>
         public bool IncludeDisabledTabs { get; set; }
 
         /// <summary>
-        /// Whether include pages which tab type is not normal.
+        /// Gets or sets a value indicating whether whether include pages which tab type is not normal.
         /// </summary>
         public bool IncludeAllTabTypes { get; set; }
 
         /// <summary>
-        /// Whether include Host Pages
+        /// Gets or sets a value indicating whether whether include Host Pages
         /// </summary>
         public bool IncludeHostPages { get; set; }
 
@@ -128,7 +128,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected Page in the control, or selects the Page in the control.
+        /// Gets or sets the selected Page in the control, or selects the Page in the control.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -147,7 +147,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Specific to only show tabs which have view permission on these roles.
+        /// Gets or sets specific to only show tabs which have view permission on these roles.
         /// </summary>
         public IList<int> Roles { get; set; }
     }

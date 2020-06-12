@@ -141,13 +141,13 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets/sets the current ModuleID to be used for 'User:' token replacement
+        /// Gets or sets /sets the current ModuleID to be used for 'User:' token replacement
         /// </summary>
         /// <value>ModuleID (Integer)</value>
         public int ModuleId { get; set; }
 
         /// <summary>
-        /// Gets/sets the module settings object to use for 'Module:' token replacement
+        /// Gets or sets /sets the module settings object to use for 'Module:' token replacement
         /// </summary>
         public ModuleInfo ModuleInfo
         {
@@ -175,13 +175,13 @@ namespace DotNetNuke.Services.Tokens
         }
 
         /// <summary>
-        /// Gets/sets the portal settings object to use for 'Portal:' token replacement
+        /// Gets or sets /sets the portal settings object to use for 'Portal:' token replacement
         /// </summary>
         /// <value>PortalSettings oject</value>
         public PortalSettings PortalSettings { get; set; }
 
         /// <summary>
-        /// Gets/sets the user object to use for 'User:' token replacement
+        /// Gets or sets /sets the user object to use for 'User:' token replacement
         /// </summary>
         /// <value>UserInfo oject</value>
         public UserInfo User { get; set; }

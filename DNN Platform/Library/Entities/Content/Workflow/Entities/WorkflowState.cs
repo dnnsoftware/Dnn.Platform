@@ -18,39 +18,39 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     public class WorkflowState
     {
         /// <summary>
-        /// State Id
+        /// Gets or sets state Id
         /// </summary>
         public int StateID { get; set; }
 
         /// <summary>
-        /// Workflow associated to the state
+        /// Gets or sets workflow associated to the state
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// State name
+        /// Gets or sets state name
         /// </summary>
         [Required]
         [StringLength(40)]
         public string StateName { get; set; }
 
         /// <summary>
-        /// State Order
+        /// Gets state Order
         /// </summary>
         public int Order { get; internal set; }
 
         /// <summary>
-        /// Indicates if the state is a system state. System states (i.e.: Draft, Published) have a special behavior. They cannot be deleted or moved.
+        /// Gets a value indicating whether indicates if the state is a system state. System states (i.e.: Draft, Published) have a special behavior. They cannot be deleted or moved.
         /// </summary>
         public bool IsSystem { get; internal set; }
 
         /// <summary>
-        /// If set to true the Workflow Engine will send system notification to the reviewer of the state when the workflow reach it
+        /// Gets or sets a value indicating whether if set to true the Workflow Engine will send system notification to the reviewer of the state when the workflow reach it
         /// </summary>
         public bool SendNotification { get; set; }
 
         /// <summary>
-        /// If set to true the Workflow Engine <see cref="IWorkflowEngine"/> will send system notification to administrators user when the workflow reach it
+        /// Gets or sets a value indicating whether if set to true the Workflow Engine <see cref="IWorkflowEngine"/> will send system notification to administrators user when the workflow reach it
         /// </summary>
         public bool SendNotificationToAdministrators { get; set; }
     }

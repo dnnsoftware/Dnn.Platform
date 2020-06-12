@@ -130,7 +130,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// List of the Names of the selected Roles
+        /// Gets or sets list of the Names of the selected Roles
         /// </summary>
         public ArrayList SelectedRoleNames
         {
@@ -147,12 +147,12 @@ namespace DotNetNuke.UI.WebControls
         }
 
          /// <summary>
-         /// Gets and Sets the ResourceFile to localize permissions
+         /// Gets or sets and Sets the ResourceFile to localize permissions
          /// </summary>
         public string ResourceFile { get; set; }
 
         /// <summary>
-        /// Enable ShowAllUsers to display the virtuell "Unauthenticated Users" role
+        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "Unauthenticated Users" role
         /// </summary>
         public bool ShowUnauthenticatedUsers
         {
@@ -173,7 +173,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Enable ShowAllUsers to display the virtuell "All Users" role
+        /// Gets or sets a value indicating whether enable ShowAllUsers to display the virtuell "All Users" role
         /// </summary>
         public bool ShowAllUsers
         {

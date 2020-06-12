@@ -41,7 +41,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected Page in the control, or selects the Page in the control.
+        /// Gets or sets the selected Page in the control, or selects the Page in the control.
         /// </summary>
         [Browsable(false)]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]

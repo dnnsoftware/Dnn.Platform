@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// The parent key of the List to display
+        /// Gets or sets the parent key of the List to display
         /// </summary>
         public string ParentKey { get; set; }
 

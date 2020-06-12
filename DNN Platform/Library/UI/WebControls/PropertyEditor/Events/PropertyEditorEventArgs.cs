@@ -49,7 +49,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the proeprty has changed
+        /// Gets or sets a value indicating whether gets and sets whether the proeprty has changed
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Index of the Item
+        /// Gets or sets and sets the Index of the Item
         /// </summary>
         /// <value>An Integer</value>
         /// -----------------------------------------------------------------------------
@@ -65,7 +65,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key of the Item
+        /// Gets or sets and sets the Key of the Item
         /// </summary>
         /// <value>An Object</value>
         /// -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Name of the Property being changed
+        /// Gets or sets and sets the Name of the Property being changed
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the OldValue of the Property being changed
+        /// Gets or sets and sets the OldValue of the Property being changed
         /// </summary>
         /// <value>An Object</value>
         /// -----------------------------------------------------------------------------
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the String Value of the Property being changed
+        /// Gets or sets and sets the String Value of the Property being changed
         /// </summary>
         /// <value>An Object</value>
         /// -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Value of the Property being changed
+        /// Gets or sets and sets the Value of the Property being changed
         /// </summary>
         /// <value>An Object</value>
         /// -----------------------------------------------------------------------------

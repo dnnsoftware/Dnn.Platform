@@ -36,7 +36,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field is the field that binds to the Text Column
+        /// Gets or sets the Data Field is the field that binds to the Text Column
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Design Mode of the Column
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------

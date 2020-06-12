@@ -12,12 +12,12 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     public class WorkflowStatePermission : PermissionInfoBase
     {
         /// <summary>
-        /// Workflow state permission Id
+        /// Gets or sets workflow state permission Id
         /// </summary>
         public int WorkflowStatePermissionID { get; set; }
 
         /// <summary>
-        /// State Id
+        /// Gets or sets state Id
         /// </summary>
         public int StateID { get; set; }
     }

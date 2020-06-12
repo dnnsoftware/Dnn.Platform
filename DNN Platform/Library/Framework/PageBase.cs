@@ -64,7 +64,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// PageStatePersister returns an instance of the class that will be used to persist the Page State
+        /// Gets pageStatePersister returns an instance of the class that will be used to persist the Page State
         /// </summary>
         /// <returns>A System.Web.UI.PageStatePersister</returns>
         /// -----------------------------------------------------------------------------
@@ -146,7 +146,7 @@ namespace DotNetNuke.Framework
         public string CanonicalLinkUrl { get; set; }
 
         /// <summary>
-        /// Indicate whether http headers has been sent to client.
+        /// Gets a value indicating whether indicate whether http headers has been sent to client.
         /// </summary>
         public bool HeaderIsWritten { get; internal set; }
 

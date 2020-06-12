@@ -97,7 +97,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="StringToMatch"/> or <see cref="RegexToMatch"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="StringToMatch"/> or <see cref="RegexToMatch"/>
         /// </summary>
         /// <remarks>
         /// <para>
@@ -117,7 +117,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Sets the static string to match
+        /// Gets or sets the static string to match
         /// </summary>
         /// <remarks>
         /// <para>
@@ -138,7 +138,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Sets the regular expression to match
+        /// Gets or sets the regular expression to match
         /// </summary>
         /// <remarks>
         /// <para>

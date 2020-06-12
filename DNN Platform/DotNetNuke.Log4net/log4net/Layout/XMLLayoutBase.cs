@@ -85,7 +85,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Gets a value indicating whether to include location information in
+        /// Gets or sets a value indicating whether to include location information in
         /// the XML events.
         /// </summary>
         /// <value>
@@ -111,7 +111,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The string to replace characters that can not be expressed in XML with.
+        /// Gets or sets the string to replace characters that can not be expressed in XML with.
         /// <remarks>
         /// <para>
         /// Not all characters may be expressed in XML. This property contains the

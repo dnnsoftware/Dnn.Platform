@@ -693,7 +693,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// The <see cref="ILoggerRepository"/> that this event was created in.
+        /// Gets the <see cref="ILoggerRepository"/> that this event was created in.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -1014,7 +1014,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// Additional event specific properties.
+        /// Gets additional event specific properties.
         /// </summary>
         /// <value>
         /// Additional event specific properties.
@@ -1059,7 +1059,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// The fixed fields in this event
+        /// Gets or sets the fixed fields in this event
         /// </summary>
         /// <value>
         /// The set of fields that are fixed in this event

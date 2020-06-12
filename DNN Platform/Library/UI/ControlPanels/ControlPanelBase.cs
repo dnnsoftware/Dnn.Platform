@@ -38,7 +38,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the ControlPanel is Visible
+        /// Gets a value indicating whether gets whether the ControlPanel is Visible
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.ControlPanels
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Local ResourceFile for the Control Panel
+        /// Gets or sets and sets the Local ResourceFile for the Control Panel
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------

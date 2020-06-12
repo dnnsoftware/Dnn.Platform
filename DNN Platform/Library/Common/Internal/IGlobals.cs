@@ -18,7 +18,7 @@ namespace DotNetNuke.Common.Internal
         string ApplicationPath { get; }
 
         /// <summary>
-        /// Gets or sets the host map path.
+        /// Gets the host map path.
         /// </summary>
         /// <value>ApplicationMapPath + "Portals\_default\"</value>
         string HostMapPath { get; }

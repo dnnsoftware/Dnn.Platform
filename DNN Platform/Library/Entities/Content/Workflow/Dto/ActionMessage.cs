@@ -11,17 +11,17 @@ namespace DotNetNuke.Entities.Content.Workflow.Dto
     public class ActionMessage
     {
         /// <summary>
-        /// Subject of the message
+        /// Gets or sets subject of the message
         /// </summary>
         public string Subject { get; set; }
 
         /// <summary>
-        /// Body of the message
+        /// Gets or sets body of the message
         /// </summary>
         public string Body { get; set; }
 
         /// <summary>
-        /// Indicates if the message is going to be toasted or not. By default, it is False
+        /// Gets or sets a value indicating whether indicates if the message is going to be toasted or not. By default, it is False
         /// </summary>
         public bool SendToast { get; set; }
     }

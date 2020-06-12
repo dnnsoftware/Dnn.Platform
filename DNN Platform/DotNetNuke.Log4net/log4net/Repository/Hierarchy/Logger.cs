@@ -101,7 +101,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Gets or sets a value indicating if child loggers inherit their parent's appenders.
+        /// Gets or sets a value indicating whether gets or sets a value indicating if child loggers inherit their parent's appenders.
         /// </summary>
         /// <value>
         /// <c>true</c> if child loggers inherit their parent's appenders.
@@ -227,7 +227,7 @@ namespace log4net.Repository.Hierarchy
         }
 
         /// <summary>
-        /// Get the appenders contained in this logger as an
+        /// Gets get the appenders contained in this logger as an
         /// <see cref="System.Collections.ICollection"/>.
         /// </summary>
         /// <returns>A collection of the appenders in this logger</returns>

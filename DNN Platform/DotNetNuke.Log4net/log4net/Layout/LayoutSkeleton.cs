@@ -145,7 +145,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The content type output by this layout.
+        /// Gets the content type output by this layout.
         /// </summary>
         /// <value>The content type is <c>"text/plain"</c></value>
         /// <remarks>
@@ -164,7 +164,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The header for the layout format.
+        /// Gets or sets the header for the layout format.
         /// </summary>
         /// <value>the layout header</value>
         /// <remarks>
@@ -180,7 +180,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The footer for the layout format.
+        /// Gets or sets the footer for the layout format.
         /// </summary>
         /// <value>the layout footer</value>
         /// <remarks>
@@ -196,7 +196,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Flag indicating if this layout handles exceptions
+        /// Gets or sets a value indicating whether flag indicating if this layout handles exceptions
         /// </summary>
         /// <value><c>false</c> if this layout handles exceptions</value>
         /// <remarks>

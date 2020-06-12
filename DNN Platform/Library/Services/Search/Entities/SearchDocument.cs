@@ -16,7 +16,7 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchDocument : SearchDocumentToDelete
     {
         /// <summary>
-        /// Content's Title
+        /// Gets or sets content's Title
         /// </summary>
         /// <remarks>
         /// HTML tags are stripped from this property, but certain HTML attribute values will be retain, ie. alt and title attribute values.
@@ -24,7 +24,7 @@ namespace DotNetNuke.Services.Search.Entities
         public string Title { get; set; }
 
         /// <summary>
-        /// Content's Description
+        /// Gets or sets content's Description
         /// </summary>
         /// <remarks>
         /// Description should generally be no more than two sentences. This property is used by RSS Syndication. It is also used in search result when highlighted text is not found during searching.
@@ -33,7 +33,7 @@ namespace DotNetNuke.Services.Search.Entities
         public string Description { get; set; }
 
         /// <summary>
-        /// Content's Body
+        /// Gets or sets content's Body
         /// </summary>
         /// <remarks>
         /// HTML tags are stripped from this property, but certain HTML attribute values will be retain, ie. alt and title attribute values.
@@ -41,23 +41,23 @@ namespace DotNetNuke.Services.Search.Entities
         public string Body { get; set; }
 
         /// <summary>
-        /// Url for the indexed item.
+        /// Gets or sets url for the indexed item.
         /// </summary>
         /// <remarks>Usually TabId or ModuleId is enough to generate Document Url in Search Result. However, Url field is used if present in SearchResult</remarks>
         public string Url { get; set; }
 
         /// <summary>
-        /// Time when Content was last modified (in Utc)
+        /// Gets or sets time when Content was last modified (in Utc)
         /// </summary>
         public DateTime ModifiedTimeUtc { get; set; }
 
         /// <summary>
-        /// Flag to indicate if Content is Active or Not. Content will be deleted from Index when IsActive = false. Default is True.
+        /// Gets or sets a value indicating whether flag to indicate if Content is Active or Not. Content will be deleted from Index when IsActive = false. Default is True.
         /// </summary>
         public bool IsActive { get; set; }
 
         /// <summary>
-        /// A string representation of roles and users who have view (or denied view) permissions
+        /// Gets or sets a string representation of roles and users who have view (or denied view) permissions
         /// </summary>
         /// <remarks>The Permission property is same as how it�s implement internally in the Platform. Allow or Deny permission can be specified for RoleNamess and / or UserIds.
         /// A semicolon must be specified to separate two RoleName or UserId.
@@ -68,7 +68,7 @@ namespace DotNetNuke.Services.Search.Entities
         public string Permissions { get; set; }
 
         /// <summary>
-        /// Tags can be specified as additional information
+        /// Gets or sets tags can be specified as additional information
         /// </summary>
         public IEnumerable<string> Tags { get; set; }
 

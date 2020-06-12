@@ -72,7 +72,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Status of current assembly.
+        /// Gets status of current assembly.
         /// </summary>
         public ReleaseMode Status
         {

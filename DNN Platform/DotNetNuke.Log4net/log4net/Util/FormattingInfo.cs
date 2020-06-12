@@ -104,7 +104,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets or sets a flag indicating whether left align is enabled
+        /// Gets or sets a value indicating whether gets or sets a flag indicating whether left align is enabled
         /// or not.
         /// </summary>
         /// <value>

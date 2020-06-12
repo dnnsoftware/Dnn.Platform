@@ -69,7 +69,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelMin"/> and <see cref="LevelMax"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LevelMin"/> and <see cref="LevelMax"/>
         /// </summary>
         /// <remarks>
         /// <para>
@@ -89,7 +89,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Set the minimum matched <see cref="Level"/>
+        /// Gets or sets set the minimum matched <see cref="Level"/>
         /// </summary>
         /// <remarks>
         /// <para>
@@ -105,7 +105,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// Sets the maximum matched <see cref="Level"/>
+        /// Gets or sets the maximum matched <see cref="Level"/>
         /// </summary>
         /// <remarks>
         /// <para>

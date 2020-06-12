@@ -228,7 +228,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Target is the value of the console output stream.
+        /// Gets or sets target is the value of the console output stream.
         /// </summary>
         /// <value>
         /// Target is the value of the console output stream.
@@ -349,7 +349,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -432,7 +432,7 @@ namespace log4net.Appender
             private string m_combinedColor = string.Empty;
 
             /// <summary>
-            /// The mapped foreground color for the specified level
+            /// Gets or sets the mapped foreground color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -447,7 +447,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The mapped background color for the specified level
+            /// Gets or sets the mapped background color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -462,7 +462,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The color attributes for the specified level
+            /// Gets or sets the color attributes for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -545,7 +545,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The combined <see cref="ForeColor"/>, <see cref="BackColor"/> and
+            /// Gets the combined <see cref="ForeColor"/>, <see cref="BackColor"/> and
             /// <see cref="Attributes"/> suitable for setting the ansi terminal color.
             /// </summary>
             internal string CombinedColor

@@ -31,7 +31,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleAction for this Action control
+        /// Gets or sets and sets the ModuleAction for this Action control
         /// </summary>
         /// <returns>A ModuleAction object</returns>
         /// -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
         /// -----------------------------------------------------------------------------

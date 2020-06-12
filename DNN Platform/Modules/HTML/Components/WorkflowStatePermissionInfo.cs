@@ -58,7 +58,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets and sets the WorkflowState Permission ID
+        ///   Gets or sets and sets the WorkflowState Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets and sets the State ID
+        ///   Gets or sets and sets the State ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets and sets the Key ID
+        ///   Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

@@ -49,14 +49,14 @@ namespace DotNetNuke.Security.Roles
         }
 
         /// <summary>
-        /// Gets whether this role is a system role
+        /// Gets or sets a value indicating whether gets whether this role is a system role
         /// </summary>
         /// <value>A boolean representing whether this is a system role such as Administrators, Registered Users etc.</value>
         public bool IsSystemRole { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether users are automatically assigned to the role
+        /// Gets or sets a value indicating whether gets and sets whether users are automatically assigned to the role
         /// </summary>
         /// <value>A boolean (True/False)</value>
         /// -----------------------------------------------------------------------------
@@ -64,7 +64,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Billing Frequency for the role
+        /// Gets or sets and sets the Billing Frequency for the role
         /// </summary>
         /// <value>A String representing the Billing Frequency of the Role<br/>
         /// <ul>
@@ -81,7 +81,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the length of the billing period
+        /// Gets or sets and sets the length of the billing period
         /// </summary>
         /// <value>An integer representing the length of the billing period</value>
         /// -----------------------------------------------------------------------------
@@ -89,7 +89,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an sets the Description of the Role
+        /// Gets or sets an sets the Description of the Role
         /// </summary>
         /// <value>A string representing the description of the role</value>
         /// -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Icon File for the role
+        /// Gets or sets and sets the Icon File for the role
         /// </summary>
         /// <value>A string representing the Icon File for the role</value>
         /// -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the role is public
+        /// Gets or sets a value indicating whether gets and sets whether the role is public
         /// </summary>
         /// <value>A boolean (True/False)</value>
         /// -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Portal Id for the Role
+        /// Gets or sets and sets the Portal Id for the Role
         /// </summary>
         /// <value>An Integer representing the Id of the Portal</value>
         /// -----------------------------------------------------------------------------
@@ -122,7 +122,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role Id
+        /// Gets or sets and sets the Role Id
         /// </summary>
         /// <value>An Integer representing the Id of the Role</value>
         /// -----------------------------------------------------------------------------
@@ -131,7 +131,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the RoleGroup Id
+        /// Gets or sets and sets the RoleGroup Id
         /// </summary>
         /// <value>An Integer representing the Id of the RoleGroup</value>
         /// -----------------------------------------------------------------------------
@@ -140,7 +140,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Role Name
+        /// Gets or sets and sets the Role Name
         /// </summary>
         /// <value>A string representing the name of the role</value>
         /// -----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the RSVP Code for the role
+        /// Gets or sets and sets the RSVP Code for the role
         /// </summary>
         /// <value>A string representing the RSVP Code for the role</value>
         /// -----------------------------------------------------------------------------
@@ -176,7 +176,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the role is a security role and can be used in Permission
+        /// Gets or sets and sets whether the role is a security role and can be used in Permission
         /// Grids etc.
         /// </summary>
         /// <value>A SecurityMode enum</value>
@@ -185,7 +185,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the fee for the role
+        /// Gets or sets and sets the fee for the role
         /// </summary>
         /// <value>A single number representing the fee for the role</value>
         /// -----------------------------------------------------------------------------
@@ -210,7 +210,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the status for the role
+        /// Gets or sets and sets the status for the role
         /// </summary>
         /// <value>An enumerated value Pending, Disabled, Approved</value>
         /// -----------------------------------------------------------------------------
@@ -218,7 +218,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the trial fee for the role
+        /// Gets or sets and sets the trial fee for the role
         /// </summary>
         /// <value>A single number representing the trial fee for the role</value>
         /// -----------------------------------------------------------------------------
@@ -226,7 +226,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Trial Frequency for the role
+        /// Gets or sets and sets the Trial Frequency for the role
         /// </summary>
         /// <value>A String representing the Trial Frequency of the Role<br/>
         /// <ul>
@@ -243,7 +243,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the length of the trial period
+        /// Gets or sets and sets the length of the trial period
         /// </summary>
         /// <value>An integer representing the length of the trial period</value>
         /// -----------------------------------------------------------------------------
@@ -382,7 +382,7 @@ namespace DotNetNuke.Security.Roles
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

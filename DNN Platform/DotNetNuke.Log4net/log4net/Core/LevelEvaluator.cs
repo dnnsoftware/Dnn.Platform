@@ -90,7 +90,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// the threshold to trigger at
+        /// Gets or sets the threshold to trigger at
         /// </summary>
         /// <value>
         /// The <see cref="Level"/> that will cause this evaluator to trigger

@@ -20,17 +20,17 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     public class SecureFileTransform : ImageTransform
     {
         /// <summary>
-        /// Set IFileInfo object of given FileId
+        /// Gets or sets set IFileInfo object of given FileId
         /// </summary>
         public IFileInfo SecureFile { get; set; }
 
         /// <summary>
-        /// Sets the Image to return if no image or error
+        /// Gets or sets the Image to return if no image or error
         /// </summary>
         public Image EmptyImage { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + this.SecureFile.FileId;
 

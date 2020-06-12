@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         private DateTime _createdOnDate;
 
         /// <summary>
-        /// MessageID - The primary key
+        /// Gets or sets messageID - The primary key
         /// </summary>
         public int MessageID
         {
@@ -43,47 +43,47 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         }
 
         /// <summary>
-        /// portalID for the message
+        /// Gets or sets portalID for the message
         /// </summary>
         public int PortalID { get; set; }
 
         /// <summary>
-        /// To list for the message. This information is saved for faster display of To list in the message
+        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message
         /// </summary>
         public string To { get; set; }
 
         /// <summary>
-        /// Message From
+        /// Gets or sets message From
         /// </summary>
         public string From { get; set; }
 
         /// <summary>
-        /// Message Subject
+        /// Gets or sets message Subject
         /// </summary>
         public string Subject { get; set; }
 
         /// <summary>
-        /// Message body
+        /// Gets or sets message body
         /// </summary>
         public string Body { get; set; }
 
         /// <summary>
-        /// Conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId
+        /// Gets or sets conversation ID of the Message. Each message has at least one ConversationId. Subsequent Replies to a Message get same ConversationId
         /// </summary>
         public int ConversationId { get; set; }
 
         /// <summary>
-        /// ReplyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender
+        /// Gets or sets a value indicating whether replyAllAllowed is a bit value to indicate if the reply to the message can be sent to all the recipients or just the sender
         /// </summary>
         public bool ReplyAllAllowed { get; set; }
 
         /// <summary>
-        /// The UserID of the sender of the message
+        /// Gets or sets the UserID of the sender of the message
         /// </summary>
         public int SenderUserID { get; set; }
 
         /// <summary>
-        /// A pretty printed string with the time since the message was created
+        /// Gets a pretty printed string with the time since the message was created
         /// </summary>
         public string DisplayDate
         {
@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         public int KeyID
         {
@@ -115,27 +115,27 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
         }
 
         /// <summary>
-        /// RowNumber of the message in a set
+        /// Gets or sets rowNumber of the message in a set
         /// </summary>
         public int RowNumber { get; set; }
 
         /// <summary>
-        /// Count of Total Attachments in a Conversation. It is calculated by adding attachments in all the threads for a given conversation.
+        /// Gets or sets count of Total Attachments in a Conversation. It is calculated by adding attachments in all the threads for a given conversation.
         /// </summary>
         public int AttachmentCount { get; set; }
 
         /// <summary>
-        /// Count of Total New (Unread) Threads in a Conversation. It is calculated by inspecting all the threads in a conversation and counting the ones that are not read yet.
+        /// Gets or sets count of Total New (Unread) Threads in a Conversation. It is calculated by inspecting all the threads in a conversation and counting the ones that are not read yet.
         /// </summary>
         public int NewThreadCount { get; set; }
 
         /// <summary>
-        /// Count of Total Threads in a Conversation.
+        /// Gets or sets count of Total Threads in a Conversation.
         /// </summary>
         public int ThreadCount { get; set; }
 
         /// <summary>
-        /// The Sender User Profile URL
+        /// Gets the Sender User Profile URL
         /// </summary>
         public string SenderProfileUrl
         {

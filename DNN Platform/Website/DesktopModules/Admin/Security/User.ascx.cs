@@ -49,7 +49,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the User is valid
+        /// Gets a value indicating whether gets whether the User is valid
         /// </summary>
         public bool IsValid
         {
@@ -61,7 +61,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Password section is displayed
+        /// Gets or sets a value indicating whether gets and sets whether the Password section is displayed
         /// </summary>
         public bool ShowPassword
         {
@@ -78,7 +78,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Update button
+        /// Gets or sets a value indicating whether gets and sets whether the Update button
         /// </summary>
         public bool ShowUpdate
         {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>
-        /// User Form's css class.
+        /// Gets or sets user Form's css class.
         /// </summary>
         public string CssClass
         {

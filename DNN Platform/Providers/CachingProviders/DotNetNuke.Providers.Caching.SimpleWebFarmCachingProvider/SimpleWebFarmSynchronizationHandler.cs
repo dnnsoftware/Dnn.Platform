@@ -50,7 +50,7 @@ namespace DotNetNuke.Providers.Caching.SimpleWebFarmCachingProvider
         }
 
         /// <summary>
-        ///     Indicates that this handler can be reused for multiple requests
+        ///     Gets a value indicating whether indicates that this handler can be reused for multiple requests
         /// </summary>
         public bool IsReusable => true;
     }

@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.FileSystem
         string GetContentType(string extension);
 
         /// <summary>
-        /// Get all content types dictionary.
+        /// Gets get all content types dictionary.
         /// </summary>
         IDictionary<string, string> ContentTypes { get; }
     }

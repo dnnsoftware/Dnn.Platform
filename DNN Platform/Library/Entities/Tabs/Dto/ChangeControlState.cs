@@ -31,7 +31,7 @@ namespace DotNetNuke.Entities.Tabs.Dto
         public int TabId { get; set; }
 
         /// <summary>
-        /// Gets if change control is enabled for the tab.
+        /// Gets a value indicating whether gets if change control is enabled for the tab.
         /// </summary>
         /// <value>
         /// True if versioning or workflow are enabled, false otherwise.
@@ -42,7 +42,7 @@ namespace DotNetNuke.Entities.Tabs.Dto
         }
 
         /// <summary>
-        /// Gets if versioning is enabled for the tab.
+        /// Gets or sets a value indicating whether gets if versioning is enabled for the tab.
         /// </summary>
         /// <value>
         /// True if versioning is enabled, false otherwise.
@@ -50,7 +50,7 @@ namespace DotNetNuke.Entities.Tabs.Dto
         public bool IsVersioningEnabledForTab { get; set; }
 
         /// <summary>
-        /// Gets if workflow is enabled for the tab.
+        /// Gets or sets a value indicating whether gets if workflow is enabled for the tab.
         /// </summary>
         /// <value>
         /// True if workflow is enabled, false otherwise.

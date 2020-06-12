@@ -54,7 +54,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// The key to lookup in the event properties and then match against.
+        /// Gets or sets the key to lookup in the event properties and then match against.
         /// </summary>
         /// <remarks>
         /// <para>

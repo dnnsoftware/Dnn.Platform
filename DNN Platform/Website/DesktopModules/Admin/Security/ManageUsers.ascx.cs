@@ -46,7 +46,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to display the Manage Services tab
+        /// Gets a value indicating whether gets whether to display the Manage Services tab
         /// </summary>
         protected bool DisplayServices
         {
@@ -145,7 +145,7 @@ namespace DotNetNuke.Modules.Admin.Users
         }
 
         /// <summary>
-        /// Flag to indicate only edit profile.
+        /// Gets a value indicating whether flag to indicate only edit profile.
         /// </summary>
         protected bool EditProfileMode
         {
@@ -161,7 +161,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the current Page No
+        /// Gets or sets and sets the current Page No
         /// </summary>
         public int PageNo
         {

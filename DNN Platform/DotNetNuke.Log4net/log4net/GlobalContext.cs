@@ -70,7 +70,7 @@ namespace log4net
         }
 
         /// <summary>
-        /// The global properties map.
+        /// Gets the global properties map.
         /// </summary>
         /// <value>
         /// The global properties map.

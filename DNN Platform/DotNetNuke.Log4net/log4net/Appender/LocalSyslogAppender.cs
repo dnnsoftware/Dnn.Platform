@@ -265,7 +265,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Message identity
+        /// Gets or sets message identity
         /// </summary>
         /// <remarks>
         /// <para>
@@ -282,7 +282,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Syslog facility
+        /// Gets or sets syslog facility
         /// </summary>
         /// <remarks>
         /// Set to one of the <see cref="SyslogFacility"/> values. The list of
@@ -411,7 +411,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="AppenderSkeleton.Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="AppenderSkeleton.Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -547,7 +547,7 @@ namespace log4net.Appender
             private SyslogSeverity m_severity;
 
             /// <summary>
-            /// The mapped syslog severity for the specified level
+            /// Gets or sets the mapped syslog severity for the specified level
             /// </summary>
             /// <remarks>
             /// <para>

@@ -57,7 +57,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get the next pattern converter in the chain
+        /// Gets get the next pattern converter in the chain
         /// </summary>
         /// <value>
         /// the next pattern converter in the chain

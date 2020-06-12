@@ -18,42 +18,42 @@ namespace DotNetNuke.Collections
     public interface IPagedList<T> : IList<T>
     {
         /// <summary>
-        ///   Gets a boolean indicating if there is a next page available
+        ///   Gets a value indicating whether gets a boolean indicating if there is a next page available
         /// </summary>
         bool HasNextPage { get; }
 
         /// <summary>
-        ///   Gets a boolean indicating if there is a previous page available
+        ///   Gets a value indicating whether gets a boolean indicating if there is a previous page available
         /// </summary>
         bool HasPreviousPage { get; }
 
         /// <summary>
-        ///   Gets a boolean indicating if this is the first page
+        ///   Gets a value indicating whether gets a boolean indicating if this is the first page
         /// </summary>
         bool IsFirstPage { get; }
 
         /// <summary>
-        ///   Gets a boolean indicating if this is the last page
+        ///   Gets a value indicating whether gets a boolean indicating if this is the last page
         /// </summary>
         bool IsLastPage { get; }
 
         /// <summary>
-        ///   The no of pages in this list
+        ///   Gets or sets the no of pages in this list
         /// </summary>
         int PageCount { get; set; }
 
         /// <summary>
-        ///   The index of the page contained in this list
+        ///   Gets or sets the index of the page contained in this list
         /// </summary>
         int PageIndex { get; set; }
 
         /// <summary>
-        ///   The size of the page in this list
+        ///   Gets or sets the size of the page in this list
         /// </summary>
         int PageSize { get; set; }
 
         /// <summary>
-        ///   The total number of objects in the data store
+        ///   Gets or sets the total number of objects in the data store
         /// </summary>
         int TotalCount { get; set; }
     }

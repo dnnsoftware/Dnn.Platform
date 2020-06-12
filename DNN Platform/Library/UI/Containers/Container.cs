@@ -147,7 +147,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Source for this container
+        /// Gets or sets the Source for this container
         /// </summary>
         /// <returns>A String</returns>
         public string ContainerSrc { get; set; }

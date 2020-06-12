@@ -121,7 +121,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The name of the log where messages will be stored.
+        /// Gets or sets the name of the log where messages will be stored.
         /// </summary>
         /// <value>
         /// The string name of the log where messages will be stored.
@@ -145,7 +145,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Property used to set the Application name.  This appears in the
+        /// Gets or sets property used to set the Application name.  This appears in the
         /// event logs when logging.
         /// </summary>
         /// <value>
@@ -161,7 +161,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This property is used to return the name of the computer to use
+        /// Gets or sets this property is used to return the name of the computer to use
         /// when accessing the event logs.  Currently, this is the current
         /// computer, denoted by a dot "."
         /// </summary>
@@ -465,7 +465,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -564,7 +564,7 @@ namespace log4net.Appender
             private EventLogEntryType m_entryType;
 
             /// <summary>
-            /// The <see cref="EventLogEntryType"/> for this entry
+            /// Gets or sets the <see cref="EventLogEntryType"/> for this entry
             /// </summary>
             /// <remarks>
             /// <para>

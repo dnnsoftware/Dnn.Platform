@@ -21,17 +21,17 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     public class UserProfilePicTransform : ImageTransform
     {
         /// <summary>
-        /// Sets the UserID of the profile pic
+        /// Gets or sets the UserID of the profile pic
         /// </summary>
         public int UserID { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + this.UserID;
 
         /// <summary>
-        /// Is reusable
+        /// Gets a value indicating whether is reusable
         /// </summary>
         public bool IsReusable => false;
 

@@ -14,7 +14,7 @@ namespace DotNetNuke.Entities.Modules.Settings
     public abstract class ParameterAttributeBase : Attribute
     {
         /// <summary>
-        /// The prefix to use when naming the setting in the settings table.
+        /// Gets or sets the prefix to use when naming the setting in the settings table.
         /// </summary>
         /// <remarks>
         /// The settings tables are shared by the core platform and the extensions. Extensions
@@ -24,7 +24,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         public string Prefix { get; set; }
 
         /// <summary>
-        /// The name of the setting that will be stored in the settings table.
+        /// Gets or sets the name of the setting that will be stored in the settings table.
         /// </summary>
         /// <remarks>
         /// If parametername is not defined, then the name of the property will be used.  If
@@ -34,7 +34,7 @@ namespace DotNetNuke.Entities.Modules.Settings
         public string ParameterName { get; set; }
 
         /// <summary>
-        /// The serializer to use when saving or retrieving the setting value.
+        /// Gets or sets the serializer to use when saving or retrieving the setting value.
         /// </summary>
         /// <remarks>
         /// The serializer must implement the <see cref="ISettingsSerializer{T}" /> interface.

@@ -72,7 +72,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Expansion Depth for the Control
+        /// Gets or sets and Sets the Expansion Depth for the Control
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Path to the Script Library for the provider
+        /// Gets or sets and Sets the Path to the Script Library for the provider
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -104,7 +104,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets whether the Menu should be populated from the client
+        /// Gets or sets a value indicating whether gets and Sets whether the Menu should be populated from the client
         /// </summary>
         /// <returns>A Boolean</returns>
         /// -----------------------------------------------------------------------------
@@ -112,7 +112,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Name of the provider to use
+        /// Gets or sets and Sets the Name of the provider to use
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
         /// -----------------------------------------------------------------------------

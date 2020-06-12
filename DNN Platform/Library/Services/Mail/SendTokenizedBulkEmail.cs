@@ -100,18 +100,18 @@ namespace DotNetNuke.Services.Mail
         }
 
         /// <summary>
-        /// Priority of emails to be sent
+        /// Gets or sets priority of emails to be sent
         /// </summary>
         public MailPriority Priority { get; set; }
 
         /// <summary>
-        /// Subject of the emails to be sent
+        /// Gets or sets subject of the emails to be sent
         /// </summary>
         /// <remarks>may contain tokens</remarks>
         public string Subject { get; set; }
 
         /// <summary>
-        /// body text of the email to be sent
+        /// Gets or sets body text of the email to be sent
         /// </summary>
         /// <remarks>may contain HTML tags and tokens. Side effect: sets BodyFormat autmatically</remarks>
         public string Body
@@ -128,18 +128,18 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        /// <summary>format of body text for the email to be sent.</summary>
+        /// <summary>Gets or sets format of body text for the email to be sent.</summary>
         /// <remarks>by default activated, if tokens are found in Body and subject.</remarks>
         public MailFormat BodyFormat { get; set; }
 
-        /// <summary>address method for the email to be sent (TO or BCC)</summary>
+        /// <summary>Gets or sets address method for the email to be sent (TO or BCC)</summary>
         /// <remarks>TO is default value</remarks>
         public AddressMethods AddressMethod { get; set; }
 
-        /// <summary>portal alias http path to be used for links to images, ...</summary>
+        /// <summary>Gets or sets portal alias http path to be used for links to images, ...</summary>
         public string PortalAlias { get; set; }
 
-        /// <summary>UserInfo of the user sending the mail</summary>
+        /// <summary>Gets or sets userInfo of the user sending the mail</summary>
         /// <remarks>if not set explicitely, currentuser will be used</remarks>
         public UserInfo SendingUser
         {
@@ -163,7 +163,7 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-        /// <summary>email of the user to be shown in the mail as replyTo address</summary>
+        /// <summary>Gets or sets email of the user to be shown in the mail as replyTo address</summary>
         /// <remarks>if not set explicitely, sendingUser will be used</remarks>
         public UserInfo ReplyTo
         {
@@ -178,15 +178,15 @@ namespace DotNetNuke.Services.Mail
             }
         }
 
-         /// <summary>shall duplicate email addresses be ignored? (default value: false)</summary>
+         /// <summary>Gets or sets a value indicating whether shall duplicate email addresses be ignored? (default value: false)</summary>
          /// <remarks>Duplicate Users (e.g. from multiple role selections) will always be ignored.</remarks>
         public bool RemoveDuplicates { get; set; }
 
-         /// <summary>Shall automatic TokenReplace be prohibited?</summary>
+         /// <summary>Gets or sets a value indicating whether shall automatic TokenReplace be prohibited?</summary>
          /// <remarks>default value: false</remarks>
         public bool SuppressTokenReplace { get; set; }
 
-         /// <summary>Shall List of recipients appended to confirmation report?</summary>
+         /// <summary>Gets or sets a value indicating whether shall List of recipients appended to confirmation report?</summary>
          /// <remarks>enabled by default.</remarks>
         public bool ReportRecipients { get; set; }
 

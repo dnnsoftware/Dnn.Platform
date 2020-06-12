@@ -362,7 +362,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the application map path.
+        /// Gets the application map path.
         /// </summary>
         /// <value>
         /// The application map path.
@@ -432,7 +432,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the host map path.
+        /// Gets the host map path.
         /// </summary>
         /// <value>ApplicationMapPath + "Portals\_default\"</value>
         public static string HostMapPath
@@ -449,7 +449,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the host path.
+        /// Gets the host path.
         /// </summary>
         /// <value>ApplicationPath + "/Portals/_default/"</value>
         public static string HostPath
@@ -466,7 +466,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the install map path.
+        /// Gets the install map path.
         /// </summary>
         /// <value>server map path of InstallPath.</value>
         public static string InstallMapPath
@@ -483,7 +483,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Gets or sets the install path.
+        /// Gets the install path.
         /// </summary>
         /// <value>ApplicationPath + "/Install/"</value>
         public static string InstallPath
@@ -825,7 +825,7 @@ namespace DotNetNuke.Common
         }
 
         /// <summary>
-        /// Image file types
+        /// Gets image file types
         /// </summary>
         /// <value>Values read from ImageTypes List. If there is not List, default values will be jpg,jpeg,jpe,gif,bmp,png,svg,ico</value>
         public static string glbImageFileTypes

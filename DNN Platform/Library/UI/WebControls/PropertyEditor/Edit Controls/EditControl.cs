@@ -32,7 +32,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Custom Attributes for this Control
+        /// Gets or sets and sets the Custom Attributes for this Control
         /// </summary>
         /// <value>An array of Attributes</value>
         /// -----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Edit Mode of the Editor
+        /// Gets or sets and sets the Edit Mode of the Editor
         /// </summary>
         /// <value>A boolean</value>
         /// -----------------------------------------------------------------------------
@@ -63,7 +63,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Returns whether the
+        /// Gets a value indicating whether returns whether the
         /// </summary>
         /// <value>A boolean</value>
         /// -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Local Resource File for the Control
+        /// Gets or sets and sets the Local Resource File for the Control
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Name is the name of the field as a string
+        /// Gets or sets name is the name of the field as a string
         /// </summary>
         /// <value>A string representing the Name of the property</value>
         /// -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Category to which this edit control belongs
+        /// Gets or sets the Category to which this edit control belongs
         /// </summary>
         /// <value>A string representing the Category of the property</value>
         /// -----------------------------------------------------------------------------
@@ -101,7 +101,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldValue is the initial value of the field
+        /// Gets or sets oldValue is the initial value of the field
         /// </summary>
         /// <value>The initial Value of the property</value>
         /// -----------------------------------------------------------------------------
@@ -109,7 +109,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// gets and sets whether the Property is required
+        /// Gets or sets a value indicating whether gets and sets whether the Property is required
         /// </summary>
         /// <value>The initial Value of the property</value>
         /// -----------------------------------------------------------------------------
@@ -117,7 +117,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// SystemType is the System Data Type for the property
+        /// Gets or sets systemType is the System Data Type for the property
         /// </summary>
         /// <value>A string representing the Type of the property</value>
         /// -----------------------------------------------------------------------------
@@ -125,20 +125,20 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Value is the value of the control
+        /// Gets or sets value is the value of the control
         /// </summary>
         /// <value>The Value of the property</value>
         /// -----------------------------------------------------------------------------
         public object Value { get; set; }
 
         /// <summary>
-        /// Set Data Field of the control.
+        /// Gets or sets set Data Field of the control.
         /// </summary>
         public string DataField { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         /// -----------------------------------------------------------------------------

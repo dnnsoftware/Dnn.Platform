@@ -160,7 +160,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The hashtable used to store the properties
+        /// Gets the hashtable used to store the properties
         /// </summary>
         /// <value>
         /// The internal collection used to store the properties
@@ -263,7 +263,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.IsReadOnly"/>
+        /// Gets a value indicating whether see <see cref="IDictionary.IsReadOnly"/>
         /// </summary>
         bool IDictionary.IsReadOnly
         {
@@ -292,7 +292,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.Values"/>
+        /// Gets see <see cref="IDictionary.Values"/>
         /// </summary>
         ICollection IDictionary.Values
         {
@@ -300,7 +300,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.Keys"/>
+        /// Gets see <see cref="IDictionary.Keys"/>
         /// </summary>
         ICollection IDictionary.Keys
         {
@@ -308,7 +308,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="IDictionary.IsFixedSize"/>
+        /// Gets a value indicating whether see <see cref="IDictionary.IsFixedSize"/>
         /// </summary>
         bool IDictionary.IsFixedSize
         {
@@ -326,7 +326,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="ICollection.IsSynchronized"/>
+        /// Gets a value indicating whether see <see cref="ICollection.IsSynchronized"/>
         /// </summary>
         bool ICollection.IsSynchronized
         {
@@ -334,7 +334,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The number of properties in this collection
+        /// Gets the number of properties in this collection
         /// </summary>
         public int Count
         {
@@ -342,7 +342,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// See <see cref="ICollection.SyncRoot"/>
+        /// Gets see <see cref="ICollection.SyncRoot"/>
         /// </summary>
         object ICollection.SyncRoot
         {

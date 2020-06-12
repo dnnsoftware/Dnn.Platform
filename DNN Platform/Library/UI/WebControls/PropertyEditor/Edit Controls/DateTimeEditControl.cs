@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DefaultFormat is a string that will be used to format the date in the absence of a
+        /// Gets defaultFormat is a string that will be used to format the date in the absence of a
         /// FormatAttribute
         /// </summary>
         /// <value>A String representing the default format to use to render the date</value>

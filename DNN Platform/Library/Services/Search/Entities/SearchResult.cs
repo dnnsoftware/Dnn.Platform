@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchResult : SearchDocument
     {
         /// <summary>
-        /// Time when Content was last modified (in friendly format)
+        /// Gets time when Content was last modified (in friendly format)
         /// </summary>
         public string DisplayModifiedTime
         {
@@ -28,30 +28,30 @@ namespace DotNetNuke.Services.Search.Entities
         }
 
         /// <summary>
-        /// Highlighted snippet from document
+        /// Gets or sets highlighted snippet from document
         /// </summary>
         public string Snippet { get; set; }
 
         /// <summary>
-        /// Optional: Display Name of the Author
+        /// Gets or sets optional: Display Name of the Author
         /// </summary>
         /// <remarks>This may be different form current Display Name when Index was run prior to change in Display Name.</remarks>
         public string AuthorName { get; set; }
 
         /// <summary>
-        /// Lucene's original Score. The score of this document for the query.
+        /// Gets or sets lucene's original Score. The score of this document for the query.
         /// </summary>
         /// <remarks>This field may not be reliable as most of the time it contains Nan. Use DisplayScore instead</remarks>
         public float Score { get; set; }
 
         /// <summary>
-        /// Lucene's original Score in String format, e.g. 1.45678 or 0.87642. The score of this document for the query.
+        /// Gets or sets lucene's original Score in String format, e.g. 1.45678 or 0.87642. The score of this document for the query.
         /// </summary>
         /// <remarks>This field is more reliable than the float version of Score.</remarks>
         public string DisplayScore { get; set; }
 
         /// <summary>
-        /// Context information such as the type of module that initiated the search can be stored here.
+        /// Gets or sets context information such as the type of module that initiated the search can be stored here.
         /// <remarks>This is key-value pair, e.g. "SearchSource","SiteSearch"</remarks>
         /// </summary>
         public IDictionary<string, string> SearchContext { get; set; }

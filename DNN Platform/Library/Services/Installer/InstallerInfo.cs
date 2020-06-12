@@ -114,7 +114,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a list of allowable file extensions (in addition to the Host's List)
+        /// Gets or sets and sets a list of allowable file extensions (in addition to the Host's List)
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -130,7 +130,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the package contains Valid Files
+        /// Gets a value indicating whether gets whether the package contains Valid Files
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -150,7 +150,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the File Extension WhiteList is ignored
+        /// Gets or sets a value indicating whether gets and sets whether the File Extension WhiteList is ignored
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -158,7 +158,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is already installed with the same version
+        /// Gets or sets a value indicating whether gets whether the Package is already installed with the same version
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -195,14 +195,14 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Installer is in legacy mode
+        /// Gets or sets a value indicating whether gets whether the Installer is in legacy mode
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsLegacyMode { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the InstallerInfo instance is Valid
+        /// Gets a value indicating whether gets whether the InstallerInfo instance is Valid
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Logger
+        /// Gets or sets the associated Logger
         /// </summary>
         /// <value>A Logger</value>
         /// -----------------------------------------------------------------------------
@@ -240,7 +240,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Id of the package after installation (-1 if fail)
+        /// Gets or sets the Id of the package after installation (-1 if fail)
         /// </summary>
         /// <value>An Integer</value>
         /// -----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Id of the current portal (-1 if Host)
+        /// Gets or sets the Id of the current portal (-1 if Host)
         /// </summary>
         /// <value>An Integer</value>
         /// -----------------------------------------------------------------------------
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Package Install is being repaird
+        /// Gets or sets a value indicating whether gets and sets whether the Package Install is being repaird
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -272,7 +272,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the security Access Level of the user that is calling the INstaller
+        /// Gets or sets and sets the security Access Level of the user that is calling the INstaller
         /// </summary>
         /// <value>A SecurityAccessLevel enumeration</value>
         /// -----------------------------------------------------------------------------

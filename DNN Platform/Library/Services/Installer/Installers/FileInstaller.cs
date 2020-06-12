@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the BasePath for the files
+        /// Gets or sets the BasePath for the files
         /// </summary>
         /// <remarks>The Base Path is relative to the WebRoot</remarks>
         /// <value>A String</value>
@@ -111,7 +111,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Packages files are deleted when uninstalling the
+        /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
         /// package
         /// </summary>
         /// <value>A Boolean value</value>
@@ -131,7 +131,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Installer supports Manifest only installs
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------

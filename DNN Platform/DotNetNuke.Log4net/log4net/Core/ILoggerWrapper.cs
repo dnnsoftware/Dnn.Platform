@@ -43,7 +43,7 @@ namespace log4net.Core
     public interface ILoggerWrapper
     {
         /// <summary>
-        /// Get the implementation behind this wrapper object.
+        /// Gets get the implementation behind this wrapper object.
         /// </summary>
         /// <value>
         /// The <see cref="ILogger"/> object that in implementing this object.

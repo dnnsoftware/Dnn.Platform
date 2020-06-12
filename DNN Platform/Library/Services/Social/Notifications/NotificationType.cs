@@ -29,7 +29,7 @@ namespace DotNetNuke.Services.Social.Notifications
         private int _desktopModuleId = -1;
 
         /// <summary>
-        /// The notification type identifier.
+        /// Gets or sets the notification type identifier.
         /// </summary>
         [XmlAttribute]
         public int NotificationTypeId
@@ -46,19 +46,19 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// The notification type name.
+        /// Gets or sets the notification type name.
         /// </summary>
         [XmlAttribute]
         public string Name { get; set; }
 
         /// <summary>
-        /// The notification type description.
+        /// Gets or sets the notification type description.
         /// </summary>
         [XmlAttribute]
         public string Description { get; set; }
 
         /// <summary>
-        /// The amount of time to add to the creation date of the message to calculate the expiration date.
+        /// Gets or sets the amount of time to add to the creation date of the message to calculate the expiration date.
         /// </summary>
         /// <remarks>
         /// Minutes precision. Seconds won't be considered.
@@ -67,7 +67,7 @@ namespace DotNetNuke.Services.Social.Notifications
         public TimeSpan TimeToLive { get; set; }
 
         /// <summary>
-        /// If the message type is related to a specific module, this field is used to localize actions by getting the resource file from the module folder.
+        /// Gets or sets if the message type is related to a specific module, this field is used to localize actions by getting the resource file from the module folder.
         /// </summary>
         /// <remarks>
         /// The resource file used will be SharedResources by convention.
@@ -87,7 +87,7 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// Is this of a Task type. Default is false.
+        /// Gets or sets a value indicating whether is this of a Task type. Default is false.
         /// </summary>
         /// <remarks>
         /// Tasks are primarily notifications where an action must be taken. Dismiss is usually not enough.
@@ -96,7 +96,7 @@ namespace DotNetNuke.Services.Social.Notifications
         public bool IsTask { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

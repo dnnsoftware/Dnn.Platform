@@ -24,62 +24,62 @@ namespace Dnn.ExportImport.Components.Dto
         }
 
         /// <summary>
-        /// Does this import/export includes the properties definitions or not.
+        /// Gets or sets a value indicating whether does this import/export includes the properties definitions or not.
         /// </summary>
         public bool IncludeProfileProperties { get; set; }
 
         /// <summary>
-        /// Does this import/export includes the permission or not.
+        /// Gets or sets a value indicating whether does this import/export includes the permission or not.
         /// </summary>
         public bool IncludePermissions { get; set; }
 
         /// <summary>
-        /// Does this import/export includes the modules or not.
+        /// Gets or sets a value indicating whether does this import/export includes the modules or not.
         /// </summary>
         public bool IncludeExtensions { get; set; }
 
         /// <summary>
-        /// Does this import/export includes the deleted items or not.
+        /// Gets or sets a value indicating whether does this import/export includes the deleted items or not.
         /// </summary>
         public bool IncludeDeletions { get; set; }
 
         /// <summary>
-        /// Does this import/export includes content or not.
+        /// Gets or sets a value indicating whether does this import/export includes content or not.
         /// </summary>
         public bool IncludeContent { get; set; }
 
         /// <summary>
-        /// Export mode. Differential or complete.
+        /// Gets or sets export mode. Differential or complete.
         /// </summary>
         public ExportMode ExportMode { get; set; }
 
         /// <summary>
-        /// Date from which data was taken to perform export.
+        /// Gets or sets date from which data was taken to perform export.
         /// </summary>
         public DateTime? FromDate { get; set; }
 
         /// <summary>
-        /// Formatted Date from which data was taken to perform export.
+        /// Gets formatted Date from which data was taken to perform export.
         /// </summary>
         public string FromDateString => Util.GetDateTimeString(this.FromDate);
 
         /// <summary>
-        /// Date till which data was taken to perform export.
+        /// Gets or sets date till which data was taken to perform export.
         /// </summary>
         public DateTime ToDate { get; set; }
 
         /// <summary>
-        /// Formatted Date till which data was taken to perform export.
+        /// Gets formatted Date till which data was taken to perform export.
         /// </summary>
         public string ToDateString => Util.GetDateTimeString(this.ToDate);
 
         /// <summary>
-        /// Summary of each item export.
+        /// Gets or sets summary of each item export.
         /// </summary>
         public IEnumerable<SummaryItem> SummaryItems { get; set; }
 
         /// <summary>
-        /// Exported file information.
+        /// Gets or sets exported file information.
         /// </summary>
         public ExportFileInfo ExportFileInfo { get; set; }
 

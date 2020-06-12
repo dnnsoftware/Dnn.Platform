@@ -131,7 +131,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets an ArrayList of ActionEventListeners
+        /// Gets or sets an ArrayList of ActionEventListeners
         /// </summary>
         /// -----------------------------------------------------------------------------
         public ArrayList ActionEventListeners
@@ -163,7 +163,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Source for this skin
+        /// Gets or sets the Source for this skin
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------

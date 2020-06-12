@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public string CssClass { get; set; }
 
         /// <summary>
-        /// Gets or sets the visibility setting for the radio button corresponding to site based searchs.
+        /// Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to site based searchs.
         /// </summary>
         /// <remarks>Set this value to false to hide the "Site" radio button.  This setting has no effect
         /// if UseDropDownList is true.</remarks>
@@ -68,7 +68,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// Gets or sets the visibility setting for the radio button corresponding to web based searchs.
+        /// Gets or sets a value indicating whether gets or sets the visibility setting for the radio button corresponding to web based searchs.
         /// </summary>
         /// <remarks>Set this value to false to hide the "Web" radio button.  This setting has no effect
         /// if UseDropDownList is true.</remarks>
@@ -340,19 +340,19 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// minium chars required to trigger auto search
+        /// Gets or sets minium chars required to trigger auto search
         /// </summary>
         public int MinCharRequired { get; set; }
 
         /// <summary>
-        /// The millisecond to delay trigger auto search
+        /// Gets or sets the millisecond to delay trigger auto search
         /// </summary>
         public int AutoSearchDelayInMilliSecond { get; set; }
 
         private bool _enableWildSearch = true;
 
         /// <summary>
-        /// Disable the wild search
+        /// Gets or sets a value indicating whether disable the wild search
         /// </summary>
         public bool EnableWildSearch
         {

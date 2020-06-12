@@ -80,7 +80,7 @@ namespace DotNetNuke.UI.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the local resource file for this control
+        /// Gets or sets and sets the local resource file for this control
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------

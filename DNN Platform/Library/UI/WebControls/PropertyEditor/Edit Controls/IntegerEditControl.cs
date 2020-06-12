@@ -40,7 +40,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         /// -----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IntegerValue returns the Integer representation of the Value
+        /// Gets integerValue returns the Integer representation of the Value
         /// </summary>
         /// <value>An integer representing the Value</value>
         /// -----------------------------------------------------------------------------
@@ -88,7 +88,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldIntegerValue returns the Integer representation of the OldValue
+        /// Gets oldIntegerValue returns the Integer representation of the OldValue
         /// </summary>
         /// <value>An integer representing the OldValue</value>
         /// -----------------------------------------------------------------------------

@@ -170,7 +170,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The appSettings key from App.Config that contains the connection string.
+        /// Gets or sets the appSettings key from App.Config that contains the connection string.
         /// </summary>
         public string AppSettingsKey
         {
@@ -180,7 +180,7 @@ namespace log4net.Appender
 
 #if NET_2_0
         /// <summary>
-        /// The connectionStrings key from App.Config that contains the connection string.
+        /// Gets or sets the connectionStrings key from App.Config that contains the connection string.
         /// </summary>
         /// <remarks>
         /// This property requires at least .NET 2.0.
@@ -284,7 +284,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Should transactions be used to insert logging events in the database.
+        /// Gets or sets a value indicating whether should transactions be used to insert logging events in the database.
         /// </summary>
         /// <value>
         /// <c>true</c> if transactions should be used to insert logging events in
@@ -328,7 +328,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Should this appender try to reconnect to the database on error.
+        /// Gets or sets a value indicating whether should this appender try to reconnect to the database on error.
         /// </summary>
         /// <value>
         /// <c>true</c> if the appender should try to reconnect to the database after an

@@ -17,22 +17,22 @@ namespace DotNetNuke.Entities.Content.Workflow
     public class ContentWorkflow
     {
         /// <summary>
-        /// Workflow Id
+        /// Gets or sets workflow Id
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// Portal Id
+        /// Gets or sets portal Id
         /// </summary>
         public int PortalID { get; set; }
 
         /// <summary>
-        /// Workflow Name
+        /// Gets or sets workflow Name
         /// </summary>
         public string WorkflowName { get; set; }
 
         /// <summary>
-        /// Workflow Description
+        /// Gets or sets workflow Description
         /// </summary>
         public string Description { get; set; }
 
@@ -45,7 +45,7 @@ namespace DotNetNuke.Entities.Content.Workflow
         public bool DispositionEnabled { get; set; }
 
         /// <summary>
-        /// Workflow states
+        /// Gets or sets workflow states
         /// </summary>
         public IEnumerable<ContentWorkflowState> States { get; set; }
     }

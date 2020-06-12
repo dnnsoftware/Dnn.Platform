@@ -34,12 +34,12 @@ namespace DNN.Integration.Test.Framework
         }
 
         /// <summary>
-        /// The result of the request. Can be used to retrieve additional info like HTTP status code
+        /// Gets the result of the request. Can be used to retrieve additional info like HTTP status code
         /// </summary>
         public HttpResponseMessage Result { get; private set; }
 
         /// <summary>
-        /// Body from the Get Response. Available when exception is thrown as well.
+        /// Gets body from the Get Response. Available when exception is thrown as well.
         /// </summary>
         public string Body { get; private set; }
 

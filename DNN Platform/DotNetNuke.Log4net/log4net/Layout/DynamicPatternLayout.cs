@@ -89,7 +89,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The header for the layout format.
+        /// Gets or sets the header for the layout format.
         /// </summary>
         /// <value>the layout header</value>
         /// <remarks>
@@ -114,7 +114,7 @@ namespace log4net.Layout
         } /* property DynamicPatternLayout Header */
 
         /// <summary>
-        /// The footer for the layout format.
+        /// Gets or sets the footer for the layout format.
         /// </summary>
         /// <value>the layout footer</value>
         /// <remarks>

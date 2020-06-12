@@ -22,82 +22,82 @@ namespace DotNetNuke.Services.ClientCapability
     public class FacebookRequest
     {
         /// <summary>
-        ///  Mechanism used to sign the request
+        ///  Gets or sets mechanism used to sign the request
         /// </summary>
         public string Algorithm { get; set; }
 
         /// <summary>
-        ///  Token you can pass to the Graph API or the Legacy REST API.
+        ///  Gets or sets token you can pass to the Graph API or the Legacy REST API.
         /// </summary>
         public string OauthToken { get; set; }
 
         /// <summary>
-        ///  DateTime when the oauth_token expires
+        ///  Gets or sets dateTime when the oauth_token expires
         /// </summary>
         public DateTime Expires { get; set; }
 
         /// <summary>
-        ///  DateTime when the request was signed.
+        ///  Gets or sets dateTime when the request was signed.
         /// </summary>
         public DateTime IssuedAt { get; set; }
 
         /// <summary>
-        ///  Facebook user identifier (UID) of the current user.
+        ///  Gets or sets facebook user identifier (UID) of the current user.
         /// </summary>
         public string UserID { get; set; }
 
         /// <summary>
-        ///  User's locale.
+        ///  Gets or sets user's locale.
         /// </summary>
         public string UserLocale { get; set; }
 
         /// <summary>
-        ///  User's country.
+        ///  Gets or sets user's country.
         /// </summary>
         public string UserCountry { get; set; }
 
         /// <summary>
-        ///  User's minimum age range.
+        ///  Gets or sets user's minimum age range.
         /// </summary>
         public long UserMinAge { get; set; }
 
         /// <summary>
-        ///  User's maximum age range.
+        ///  Gets or sets user's maximum age range.
         /// </summary>
         public long UserMaxAge { get; set; }
 
         /// <summary>
-        /// Page's Id. Only available if your app is an iframe loaded in a Page tab.
+        /// Gets or sets page's Id. Only available if your app is an iframe loaded in a Page tab.
         /// </summary>
         public string PageId { get; set; }
 
         /// <summary>
-        ///  Has the user has liked the page. Only available if your app is an iframe loaded in a Page tab.
+        ///  Gets or sets a value indicating whether has the user has liked the page. Only available if your app is an iframe loaded in a Page tab.
         /// </summary>
         public bool PageLiked { get; set; }
 
         /// <summary>
-        ///  Is the page user Admin of the page. Only available if your app is an iframe loaded in a Page tab.
+        ///  Gets or sets a value indicating whether is the page user Admin of the page. Only available if your app is an iframe loaded in a Page tab.
         /// </summary>
         public bool PageUserAdmin { get; set; }
 
         /// <summary>
-        /// Page ID if your app is loaded within. Only available if your app is written in FBML and loaded in a Page tab.
+        /// Gets or sets page ID if your app is loaded within. Only available if your app is written in FBML and loaded in a Page tab.
         /// </summary>
         public long ProfileId { get; set; }
 
         /// <summary>
-        /// Content of a query string parameter also called app_data. Usually specified when the application built the link to pass some data to itself. Only available if your app is an iframe loaded in a Page tab.
+        /// Gets or sets content of a query string parameter also called app_data. Usually specified when the application built the link to pass some data to itself. Only available if your app is an iframe loaded in a Page tab.
         /// </summary>
         public string AppData { get; set; }
 
         /// <summary>
-        /// Raw signed request coming from FaceBook in Post
+        /// Gets or sets raw signed request coming from FaceBook in Post
         /// </summary>
         public string RawSignedRequest { get; set; }
 
         /// <summary>
-        /// Is this a valid FaceBook Request. Check this value prior to accessing any other property
+        /// Gets or sets a value indicating whether is this a valid FaceBook Request. Check this value prior to accessing any other property
         /// </summary>
         public bool IsValid { get; set; }
 

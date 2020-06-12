@@ -15,47 +15,47 @@ namespace Dnn.ExportImport.Components.Dto
     public class ImportPackageInfo : IDateTimeConverter
     {
         /// <summary>
-        /// Package Id. Used to identify the package and path.
+        /// Gets or sets package Id. Used to identify the package and path.
         /// </summary>
         public string PackageId { get; set; }
 
         /// <summary>
-        /// Name of the package.
+        /// Gets or sets name of the package.
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// Package file name. It is just fake name for UI representation
+        /// Gets package file name. It is just fake name for UI representation
         /// </summary>
         public string FileName => this.PackageId;
 
         /// <summary>
-        /// DateTime when the package was exported.
+        /// Gets or sets dateTime when the package was exported.
         /// </summary>
         public DateTime ExporTime { get; set; }
 
         /// <summary>
-        /// Formatted DateTime when the package was exported.
+        /// Gets formatted DateTime when the package was exported.
         /// </summary>
         public string ExporTimeString => Util.GetDateTimeString(this.ExporTime);
 
         /// <summary>
-        /// The portal from which the exported package was created
+        /// Gets or sets the portal from which the exported package was created
         /// </summary>
         public string PortalName { get; set; }
 
         /// <summary>
-        /// Package description
+        /// Gets or sets package description
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// Path to the thumbnail image for the package.
+        /// Gets path to the thumbnail image for the package.
         /// </summary>
         public string Thumb => this.PackageId + ".jpg";
 
         /// <summary>
-        /// Complete summary of import package
+        /// Gets or sets complete summary of import package
         /// </summary>
         public ImportExportSummary Summary { get; set; }
 

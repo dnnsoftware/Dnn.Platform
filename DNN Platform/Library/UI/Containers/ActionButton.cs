@@ -76,7 +76,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets whether the link is displayed
+        ///   Gets or sets a value indicating whether gets or sets whether the link is displayed
         /// </summary>
         /// <remarks>
         ///   Defaults to True
@@ -100,7 +100,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets or sets whether the icon is displayed
+        ///   Gets or sets a value indicating whether gets or sets whether the icon is displayed
         /// </summary>
         /// <remarks>
         ///   Defaults to False

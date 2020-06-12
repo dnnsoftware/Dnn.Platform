@@ -28,7 +28,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Gets a value indicating if the collection contains keys that are not null.
+        /// Gets a value indicating whether gets a value indicating if the collection contains keys that are not null.
         /// </summary>
         public bool HasKeys
         {

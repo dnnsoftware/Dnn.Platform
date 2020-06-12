@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Action Control that is connected to this ActionManager instance
+        /// Gets or sets and sets the Action Control that is connected to this ActionManager instance
         /// </summary>
         /// <returns>An IActionControl object</returns>
         /// -----------------------------------------------------------------------------

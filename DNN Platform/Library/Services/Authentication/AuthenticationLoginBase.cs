@@ -31,14 +31,14 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Type of Authentication associated with this control
+        /// Gets or sets and Sets the Type of Authentication associated with this control
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the control is Enabled
+        /// Gets a value indicating whether gets whether the control is Enabled
         /// </summary>
         /// <remarks>This property must be overriden in the inherited class</remarks>
         /// -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Authentication mode of the control (Login or Register)
+        /// Gets or sets the Authentication mode of the control (Login or Register)
         /// </summary>
         /// <remarks>This property may be overriden in the inherited class</remarks>
         /// -----------------------------------------------------------------------------
@@ -69,14 +69,14 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Redirect Url for this control
+        /// Gets or sets and Sets the Redirect Url for this control
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string RedirectURL { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the control supports Registration
+        /// Gets a value indicating whether gets whether the control supports Registration
         /// </summary>
         /// <remarks>This property may be overriden in the inherited class</remarks>
         /// -----------------------------------------------------------------------------

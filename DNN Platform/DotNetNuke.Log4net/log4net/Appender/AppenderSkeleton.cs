@@ -137,7 +137,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The filter chain.
+        /// Gets the filter chain.
         /// </summary>
         /// <value>The head of the filter chain filter chain.</value>
         /// <remarks>
@@ -732,7 +732,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Tests if this appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether tests if this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <remarks>
         /// <para>

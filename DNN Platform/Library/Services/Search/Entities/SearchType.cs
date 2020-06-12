@@ -10,22 +10,22 @@ namespace DotNetNuke.Services.Search.Entities
     public class SearchType
     {
         /// <summary>
-        /// Search Type Id
+        /// Gets or sets search Type Id
         /// </summary>
         public int SearchTypeId { get; set; }
 
         /// <summary>
-        /// Search Type Name
+        /// Gets or sets search Type Name
         /// </summary>
         public string SearchTypeName { get; set; }
 
         /// <summary>
-        /// A class implementing BaseResultController. This class will be invoked by reflection.
+        /// Gets or sets a class implementing BaseResultController. This class will be invoked by reflection.
         /// </summary>
         public string SearchResultClass { get; set; }
 
         /// <summary>
-        /// Content from this SearchType will normally be not searched while performing site or module search
+        /// Gets or sets a value indicating whether content from this SearchType will normally be not searched while performing site or module search
         /// </summary>
         public bool IsPrivate { get; set; }
     }

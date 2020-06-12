@@ -75,7 +75,7 @@ namespace DotNetNuke.Entities.Host
         }
 
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>KeyId of the IHydratable.Key</returns>
         /// <remarks><seealso cref="Fill"></seealso></remarks>

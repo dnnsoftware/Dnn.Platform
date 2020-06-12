@@ -210,7 +210,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Obsolete
+        /// Gets or sets a value indicating whether obsolete
         /// </summary>
         /// <remarks>
         /// Use the BufferingAppenderSkeleton Fix methods instead
@@ -228,7 +228,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The mode to use to authentication with the SMTP server
+        /// Gets or sets the mode to use to authentication with the SMTP server
         /// </summary>
         /// <remarks>
         /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
@@ -249,7 +249,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The username to use to authenticate with the SMTP server
+        /// Gets or sets the username to use to authenticate with the SMTP server
         /// </summary>
         /// <remarks>
         /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
@@ -266,7 +266,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The password to use to authenticate with the SMTP server
+        /// Gets or sets the password to use to authenticate with the SMTP server
         /// </summary>
         /// <remarks>
         /// <note type="caution">Authentication is only available on the MS .NET 1.1 runtime.</note>
@@ -283,7 +283,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// The port on which the SMTP server is listening
+        /// Gets or sets the port on which the SMTP server is listening
         /// </summary>
         /// <remarks>
         /// <note type="caution">Server Port is only available on the MS .NET 1.1 runtime.</note>
@@ -323,7 +323,7 @@ namespace log4net.Appender
 
 #if NET_2_0 || MONO_2_0
         /// <summary>
-        /// Enable or disable use of SSL when sending e-mail message
+        /// Gets or sets a value indicating whether enable or disable use of SSL when sending e-mail message
         /// </summary>
         /// <remarks>
         /// This is available on MS .NET 2.0 runtime and higher
@@ -410,7 +410,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>

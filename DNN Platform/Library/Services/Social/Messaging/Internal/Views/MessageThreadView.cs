@@ -20,12 +20,12 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     public class MessageThreadView
     {
         /// <summary>
-        /// MessageItemView containing consolidated information about the message
+        /// Gets or sets messageItemView containing consolidated information about the message
         /// </summary>
         public MessageConversationView Conversation { get; set; }
 
         /// <summary>
-        /// List of attachments
+        /// Gets or sets list of attachments
         /// </summary>
         public IList<MessageFileView> Attachments { get; set; }
     }

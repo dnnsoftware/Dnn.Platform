@@ -52,7 +52,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The level that is the key for this mapping
+        /// Gets or sets the level that is the key for this mapping
         /// </summary>
         /// <value>
         /// The <see cref="Level"/> that is the key for this mapping

@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Completed flag
+        /// Gets or sets a value indicating whether gets the Completed flag
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -81,7 +81,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Package
+        /// Gets or sets the associated Package
         /// </summary>
         /// <value>An PackageInfo object</value>
         /// -----------------------------------------------------------------------------
@@ -198,7 +198,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Installer supports Manifest only installs
+        /// Gets a value indicating whether gets whether the Installer supports Manifest only installs
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -212,7 +212,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Type of the component
+        /// Gets or sets and sets the Type of the component
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -220,7 +220,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of the Component
+        /// Gets or sets the Version of the Component
         /// </summary>
         /// <value>A System.Version</value>
         /// -----------------------------------------------------------------------------

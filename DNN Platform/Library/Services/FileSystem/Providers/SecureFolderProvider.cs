@@ -27,7 +27,7 @@ namespace DotNetNuke.Services.FileSystem
         }
 
         /// <summary>
-        /// Gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
+        /// Gets a value indicating whether gets a value indicating if the provider ensures the files/folders it manages are secure from outside access.
         /// </summary>
         public override bool IsStorageSecure
         {

@@ -85,7 +85,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the icon is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed
         /// </summary>
         /// <remarks>Defaults to False</remarks>
         /// <value>A Boolean</value>
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the link is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the link is displayed
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -140,7 +140,7 @@ namespace DotNetNuke.UI.Containers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ModuleControl instance for this Action control
+        /// Gets or sets and sets the ModuleControl instance for this Action control
         /// </summary>
         /// <returns>An IModuleControl object</returns>
         public IModuleControl ModuleControl { get; set; }

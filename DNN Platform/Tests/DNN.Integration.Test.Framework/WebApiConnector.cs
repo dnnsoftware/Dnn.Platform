@@ -68,7 +68,7 @@ namespace DNN.Integration.Test.Framework
         }
 
         /// <summary>
-        /// The userID will be available only if the user is logged in.
+        /// Gets the userID will be available only if the user is logged in.
         /// After obtaining it for the first time, it will be cached until logout.
         /// </summary>
         public int UserId

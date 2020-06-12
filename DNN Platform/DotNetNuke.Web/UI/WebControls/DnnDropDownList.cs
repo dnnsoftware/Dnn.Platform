@@ -104,7 +104,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Gets the selected item in the control, or selects the item in the control.
+        /// Gets or sets the selected item in the control, or selects the item in the control.
         /// </summary>
         public ListItem SelectedItem
         {
@@ -125,7 +125,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// When this method returns, contains the 32-bit signed integer value equivalent to the number contained in
+        /// Gets when this method returns, contains the 32-bit signed integer value equivalent to the number contained in
         /// SelectedItem.Value, if the conversion succeeded, or Null.NullInteger if the conversion failed.
         /// </summary>
         [Browsable(false)]
@@ -146,7 +146,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// SelectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
+        /// Gets or sets selectedItem's value when SelectedItem is not explicitly specified (i.e. equals null);
         /// Always displayed as first option in the list
         /// </summary>
         public ListItem UndefinedItem
@@ -164,7 +164,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Item to be displayed as first item
+        /// Gets or sets item to be displayed as first item
         /// </summary>
         public ListItem FirstItem
         {
@@ -189,7 +189,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// DropDownList Caption when no Item is selected.
+        /// Sets dropDownList Caption when no Item is selected.
         /// </summary>
         public string SelectItemDefaultText
         {
@@ -257,7 +257,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// Register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
+        /// Gets register a list of JavaScript methods that are executed when the selection from the list control changes on the client.
         /// </summary>
         public List<string> OnClientSelectionChanged
         {
@@ -268,7 +268,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// When the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
+        /// Gets or sets when the tree view in drop down has multiple level nodes, and the initial selected item is a child node.
         /// we need expand its parent nodes to make it selected.
         /// </summary>
         public string ExpandPath

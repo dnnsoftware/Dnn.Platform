@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the DataSource that is bound to this control
+        /// Gets or sets and sets the DataSource that is bound to this control
         /// </summary>
         /// <value>The DataSource object</value>
         /// -----------------------------------------------------------------------------
@@ -86,7 +86,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the value of the Field/property that this control displays
+        /// Gets or sets and sets the value of the Field/property that this control displays
         /// </summary>
         /// <value>A string representing the Name of the Field</value>
         /// -----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the control uses Divs or Tables
+        /// Gets or sets and sets whether the control uses Divs or Tables
         /// </summary>
         /// <value>An EditorDisplayMode enum</value>
         /// -----------------------------------------------------------------------------
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Edit Mode of the Editor
+        /// Gets or sets and sets the Edit Mode of the Editor
         /// </summary>
         /// <value>The mode of the editor</value>
         /// -----------------------------------------------------------------------------
@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Factory used to create the Control
+        /// Gets or sets and sets the Factory used to create the Control
         /// </summary>
         /// <value>The mode of the editor</value>
         /// -----------------------------------------------------------------------------
@@ -152,7 +152,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Editor Type to use
+        /// Gets or sets and sets the Editor Type to use
         /// </summary>
         /// <value>The typename of the editor</value>
         /// -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets a flag indicating whether the Validators should use client-side
+        /// Gets or sets a value indicating whether gets and sets a flag indicating whether the Validators should use client-side
         /// validation
         /// </summary>
         /// <value>A Boolean</value>
@@ -169,7 +169,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the control displays Help
+        /// Gets or sets and sets whether the control displays Help
         /// </summary>
         /// <value>A HelpDisplayMode enum</value>
         /// -----------------------------------------------------------------------------
@@ -177,7 +177,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether any of the properties have been changed
+        /// Gets a value indicating whether gets whether any of the properties have been changed
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -185,7 +185,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether all of the properties are Valid
+        /// Gets a value indicating whether gets whether all of the properties are Valid
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -206,7 +206,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Local Resource File for the Control
+        /// Gets or sets and sets the Local Resource File for the Control
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Url of the Required Image
+        /// Gets or sets and sets the Url of the Required Image
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -224,14 +224,14 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// gets and sets whether the Required icon is used
+        /// Gets or sets a value indicating whether gets and sets whether the Required icon is used
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool ShowRequired { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// gets and sets whether the Visibility control is used
+        /// Gets or sets a value indicating whether gets and sets whether the Visibility control is used
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool ShowVisibility { get; set; }
@@ -256,7 +256,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the width of the Edit Control Column
+        /// Gets or sets and sets the width of the Edit Control Column
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------
@@ -309,7 +309,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the width of the Label Column
+        /// Gets or sets and sets the width of the Label Column
         /// </summary>
         /// <value>A Style object</value>
         /// -----------------------------------------------------------------------------

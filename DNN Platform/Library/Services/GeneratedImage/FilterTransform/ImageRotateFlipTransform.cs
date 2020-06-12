@@ -13,12 +13,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
     public class ImageRotateFlipTransform : ImageTransform
     {
         /// <summary>
-        /// Sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone
+        /// Gets or sets the type of rotation / flip . Defaultvalue is RotateNoneFlipNone
         /// </summary>
         public RotateFlipType RotateFlip { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for this transformation
+        /// Gets provides an Unique String for this transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.RotateFlip;
 

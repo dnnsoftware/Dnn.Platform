@@ -13,27 +13,27 @@ namespace Dnn.PersonaBar.Library.Prompt.Attributes
     public class FlagParameterAttribute : Attribute
     {
         /// <summary>
-        /// Name of the flag
+        /// Gets or sets name of the flag
         /// </summary>
         public string Flag { get; set; }
 
         /// <summary>
-        /// Type of the flag value expected.
+        /// Gets or sets type of the flag value expected.
         /// </summary>
         public string Type { get; set; }
 
         /// <summary>
-        /// Is flag required or not
+        /// Gets or sets a value indicating whether is flag required or not
         /// </summary>
         public bool Required { get; set; }
 
         /// <summary>
-        /// Default value of the flag
+        /// Gets or sets default value of the flag
         /// </summary>
         public string DefaultValue { get; set; }
 
         /// <summary>
-        /// Description of flag
+        /// Gets or sets description of flag
         /// </summary>
         public string Description { get; set; }
 

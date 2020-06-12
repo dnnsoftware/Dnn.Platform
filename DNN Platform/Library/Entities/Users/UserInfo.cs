@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the AffiliateId for this user
+        /// Gets or sets and sets the AffiliateId for this user
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Display Name
+        /// Gets or sets and sets the Display Name
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(3)]
@@ -70,7 +70,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Email Address
+        /// Gets or sets and sets the Email Address
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(4)]
@@ -81,7 +81,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the First Name
+        /// Gets or sets and sets the First Name
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(1)]
@@ -94,7 +94,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the User is deleted
+        /// Gets or sets a value indicating whether gets and sets whether the User is deleted
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -102,14 +102,14 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the User is a SuperUser
+        /// Gets or sets a value indicating whether gets and sets whether the User is a SuperUser
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
         public bool IsSuperUser { get; set; }
 
         /// <summary>
-        /// Gets whether the user is in the portal's administrators role
+        /// Gets a value indicating whether gets whether the user is in the portal's administrators role
         /// </summary>
         public bool IsAdmin
         {
@@ -127,7 +127,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Last IP address used by user
+        /// Gets or sets and sets the Last IP address used by user
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Last Name
+        /// Gets or sets and sets the Last Name
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(2)]
@@ -148,7 +148,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Membership object
+        /// Gets or sets and sets the Membership object
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -172,20 +172,20 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// gets and sets the token created for resetting passwords
+        /// Gets or sets and sets the token created for resetting passwords
         /// </summary>
         [Browsable(false)]
         public Guid PasswordResetToken { get; set; }
 
         /// <summary>
-        /// gets and sets the datetime that the PasswordResetToken is valid
+        /// Gets or sets and sets the datetime that the PasswordResetToken is valid
         /// </summary>
         [Browsable(false)]
         public DateTime PasswordResetExpiration { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the PortalId
+        /// Gets or sets and sets the PortalId
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -193,7 +193,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the user has agreed to the terms and conditions
+        /// Gets or sets a value indicating whether gets and sets whether the user has agreed to the terms and conditions
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -201,7 +201,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets when the user last agreed to the terms and conditions
+        /// Gets or sets and sets when the user last agreed to the terms and conditions
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -209,7 +209,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the user has requested they be removed from the site
+        /// Gets or sets a value indicating whether gets and sets whether the user has requested they be removed from the site
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -217,7 +217,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Profile Object
+        /// Gets or sets and sets the Profile Object
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -277,7 +277,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User Id
+        /// Gets or sets and sets the User Id
         /// </summary>
         /// -----------------------------------------------------------------------------
         [Browsable(false)]
@@ -285,7 +285,7 @@ namespace DotNetNuke.Entities.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the User Name
+        /// Gets or sets and sets the User Name
         /// </summary>
         /// -----------------------------------------------------------------------------
         [SortOrder(0)]

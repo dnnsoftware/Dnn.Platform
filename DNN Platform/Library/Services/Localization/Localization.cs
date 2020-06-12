@@ -110,7 +110,7 @@ namespace DotNetNuke.Services.Localization
         private static bool? _showMissingKeys;
 
         /// <summary>
-        /// Returns ~/App_GlobalResources
+        /// Gets ~/App_GlobalResources
         /// </summary>
         public static string ApplicationResourceDirectory
         {
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Returns ~/App_GlobalResources/Exceptions.resx
+        /// Gets ~/App_GlobalResources/Exceptions.resx
         /// </summary>
         public static string ExceptionsResourceFile
         {
@@ -132,7 +132,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// Returns ~/App_GlobalResources/GlobalResources.resx
+        /// Gets ~/App_GlobalResources/GlobalResources.resx
         /// </summary>
         public static string GlobalResourceFile
         {
@@ -144,7 +144,7 @@ namespace DotNetNuke.Services.Localization
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The KeyName property returns and caches the name of the key attribute used to lookup resources.
+        /// Gets or sets the KeyName property returns and caches the name of the key attribute used to lookup resources.
         /// This can be configured by setting ResourceManagerKey property in the web.config file. The default value for this property
         /// is 'key'.
         /// </summary>
@@ -192,7 +192,7 @@ namespace DotNetNuke.Services.Localization
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The ShowMissingKeys property returns the web.config setting that determines
+        /// Gets a value indicating whether the ShowMissingKeys property returns the web.config setting that determines
         /// whether to render a visual indicator that a key is missing
         /// is 'key'.
         /// </summary>
@@ -245,7 +245,7 @@ namespace DotNetNuke.Services.Localization
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The CurrentCulture returns the current Culture being used
+        /// Gets the CurrentCulture returns the current Culture being used
         /// is 'key'.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -259,7 +259,7 @@ namespace DotNetNuke.Services.Localization
         }
 
         /// <summary>
-        /// The CurrentUICulture for the Thread
+        /// Gets the CurrentUICulture for the Thread
         /// </summary>
         public string CurrentUICulture
         {

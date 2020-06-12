@@ -119,7 +119,7 @@ namespace DotNetNuke.Services.Scheduling
         }
 
         /// <summary>
-        /// The number of seconds since application start where no timer-initiated
+        /// Gets the number of seconds since application start where no timer-initiated
         /// schedulers are allowed to run before. This safeguards against ovelapped
         /// application re-starts. See "Disable Ovelapped Recycling" under Recycling
         /// of IIS Manager Application Pool's Advanced Settings.

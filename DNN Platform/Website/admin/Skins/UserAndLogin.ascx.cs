@@ -132,7 +132,7 @@ namespace DotNetNuke.UI.Skins.Controls
         }
 
         /// <summary>
-        /// set this to true to show in custom 404/500 page.
+        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
         /// </summary>
         public bool ShowInErrorPage { get; set; }
 

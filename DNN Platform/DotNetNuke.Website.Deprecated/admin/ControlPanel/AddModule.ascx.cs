@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.ControlPanel
         }
 
         /// <summary>
-        /// Return the <see cref="PortalSettings"/> for the selected portal (from the Site list), unless
+        /// Gets return the <see cref="PortalSettings"/> for the selected portal (from the Site list), unless
         /// the site list is not visible or there are no other sites in our site group, in which case
         /// it returns the PortalSettings for the current portal.
         /// </summary>
@@ -344,7 +344,7 @@ namespace DotNetNuke.UI.ControlPanel
             }
         }
 
-        /// <summary>The currently-selected module.</summary>
+        /// <summary>Gets the currently-selected module.</summary>
         protected DesktopModuleInfo SelectedModule
         {
             get

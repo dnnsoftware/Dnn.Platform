@@ -59,7 +59,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated SkinControl
+        /// Gets or sets the associated SkinControl
         /// </summary>
         /// <value>A SkinControlInfo object</value>
         /// -----------------------------------------------------------------------------

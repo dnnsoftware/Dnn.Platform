@@ -189,14 +189,14 @@ namespace DotNetNuke.Entities.Modules
         {
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Id of the User
+            /// Gets or sets and sets the Id of the User
             /// </summary>
             /// -----------------------------------------------------------------------------
             public int UserId { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Id of the User
+            /// Gets or sets and sets the Id of the User
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string UserName { get; set; }
@@ -225,7 +225,7 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the Create Status
+            /// Gets or sets and sets the Create Status
             /// </summary>
             /// -----------------------------------------------------------------------------
             public UserCreateStatus CreateStatus
@@ -243,14 +243,14 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the New User
+            /// Gets or sets and sets the New User
             /// </summary>
             /// -----------------------------------------------------------------------------
             public UserInfo NewUser { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets a flag whether to Notify the new User of the Creation
+            /// Gets or sets a value indicating whether gets and sets a flag whether to Notify the new User of the Creation
             /// </summary>
             /// -----------------------------------------------------------------------------
             public bool Notify { get; set; }
@@ -347,7 +347,7 @@ namespace DotNetNuke.Entities.Modules
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the error message
+            /// Gets or sets and sets the error message
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string Message { get; set; }

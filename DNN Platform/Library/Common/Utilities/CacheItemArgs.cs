@@ -91,28 +91,28 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Cache Item's CacheItemRemovedCallback delegate
+        /// Gets or sets and sets the Cache Item's CacheItemRemovedCallback delegate
         /// </summary>
         /// -----------------------------------------------------------------------------
         public CacheItemRemovedCallback CacheCallback { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Cache Item's CacheDependency
+        /// Gets or sets and sets the Cache Item's CacheDependency
         /// </summary>
         /// -----------------------------------------------------------------------------
         public DNNCacheDependency CacheDependency { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Cache Item's Key
+        /// Gets or sets the Cache Item's Key
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string CacheKey { get; set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Cache Item's priority (defaults to Default)
+        /// Gets or sets the Cache Item's priority (defaults to Default)
         /// </summary>
         /// <remarks>Note: DotNetNuke currently doesn't support the ASP.NET Cache's
         /// ItemPriority, but this is included for possible future use. </remarks>
@@ -121,7 +121,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Cache Item's Timeout
+        /// Gets or sets the Cache Item's Timeout
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int CacheTimeOut { get; set; }

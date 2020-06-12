@@ -179,7 +179,7 @@ namespace DotNetNuke.Modules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ParentModule (if one exists)
+        /// Gets or sets and sets the ParentModule (if one exists)
         /// </summary>
         /// <remarks>
         /// </remarks>

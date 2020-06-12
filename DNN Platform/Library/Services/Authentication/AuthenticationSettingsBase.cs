@@ -20,7 +20,7 @@ namespace DotNetNuke.Services.Authentication
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Type of Authentication associated with this control
+        /// Gets or sets and Sets the Type of Authentication associated with this control
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string AuthenticationType

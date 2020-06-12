@@ -19,49 +19,49 @@ namespace DotNetNuke.Services.Search.Internals
     internal class LuceneResult
     {
         /// <summary>
-        /// Lucene's original Document Object
+        /// Gets or sets lucene's original Document Object
         /// </summary>
         public Document Document { get; set; }
 
         /// <summary>
-        /// Lucene's original Score. The score of this document for the query.
+        /// Gets or sets lucene's original Score. The score of this document for the query.
         /// </summary>
         /// <remarks>This field may not be reliable as most of the time it contains Nan. Use DisplayScore instead</remarks>
         public float Score { get; set; }
 
         /// <summary>
-        /// Lucene's original Score in String format, e.g. 1.45678 or 0.87642. The score of this document for the query.
+        /// Gets or sets lucene's original Score in String format, e.g. 1.45678 or 0.87642. The score of this document for the query.
         /// </summary>
         /// <remarks>This field is more reliable than the float version of Score.</remarks>
         public string DisplayScore { get; set; }
 
         /// <summary>
-        /// Highlighted Title Snippet. This may be empty for synonym based search
+        /// Gets or sets highlighted Title Snippet. This may be empty for synonym based search
         /// </summary>
         public string TitleSnippet { get; set; }
 
         /// <summary>
-        /// Highlighted Body Snippet. This may be empty for synonym based search
+        /// Gets or sets highlighted Body Snippet. This may be empty for synonym based search
         /// </summary>
         public string BodySnippet { get; set; }
 
         /// <summary>
-        /// Highlighted Description Snippet. This may be empty for synonym based search
+        /// Gets or sets highlighted Description Snippet. This may be empty for synonym based search
         /// </summary>
         public string DescriptionSnippet { get; set; }
 
         /// <summary>
-        /// Highlighted Tag Snippet. This may be empty for synonym based search
+        /// Gets or sets highlighted Tag Snippet. This may be empty for synonym based search
         /// </summary>
         public string TagSnippet { get; set; }
 
         /// <summary>
-        /// Highlighted Author Snippet. This may be empty for synonym based search
+        /// Gets or sets highlighted Author Snippet. This may be empty for synonym based search
         /// </summary>
         public string AuthorSnippet { get; set; }
 
         /// <summary>
-        /// Highlighted Content Snippet. This may be empty for synonym based search
+        /// Gets or sets highlighted Content Snippet. This may be empty for synonym based search
         /// </summary>
         public string ContentSnippet { get; set; }
     }

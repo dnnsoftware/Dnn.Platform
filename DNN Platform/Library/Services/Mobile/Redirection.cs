@@ -21,7 +21,7 @@ namespace DotNetNuke.Services.Mobile
         private int _id = -1;
 
         /// <summary>
-        /// Redirection's primary key.
+        /// Gets or sets redirection's primary key.
         /// </summary>
         public int Id
         {
@@ -38,33 +38,33 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// The portal Redirection is belong to.
+        /// Gets or sets the portal Redirection is belong to.
         /// </summary>
         [XmlAttribute]
         public int PortalId { get; set; }
 
         /// <summary>
-        /// Redirection name.
+        /// Gets or sets redirection name.
         /// </summary>
         [XmlAttribute]
         public string Name { get; set; }
 
         /// <summary>
-        /// The redirection's match source tab. if this value is Null.NullInteger(-1) means should redirect when request the whole current portal;
+        /// Gets or sets the redirection's match source tab. if this value is Null.NullInteger(-1) means should redirect when request the whole current portal;
         /// otherwise means this redirection will be available for the specific tab.
         /// </summary>
         [XmlAttribute]
         public int SourceTabId { get; set; }
 
         /// <summary>
-        /// This value will be available when SourceTabId have a specific value, in that way when this value is true, page will rediect
+        /// Gets or sets a value indicating whether this value will be available when SourceTabId have a specific value, in that way when this value is true, page will rediect
         /// to target when request source tab and all child tabs under source tab.
         /// </summary>
         [XmlAttribute]
         public bool IncludeChildTabs { get; set; }
 
         /// <summary>
-        /// Redirection Type: Mobile, Tablet, Both or Other.
+        /// Gets or sets redirection Type: Mobile, Tablet, Both or Other.
         /// </summary>
         [XmlAttribute]
         public RedirectionType Type { get; set; }
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Mobile
         private IList<IMatchRule> _matchRules;
 
         /// <summary>
-        /// When redirection type is RedirectionType.Other, should use this collection to match the request by capability info.
+        /// Gets or sets when redirection type is RedirectionType.Other, should use this collection to match the request by capability info.
         /// </summary>
         [XmlIgnore]
         public IList<IMatchRule> MatchRules
@@ -103,13 +103,13 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Redirection's target type, should be: Portal, Tab, Url
+        /// Gets or sets redirection's target type, should be: Portal, Tab, Url
         /// </summary>
         [XmlAttribute]
         public TargetType TargetType { get; set; }
 
         /// <summary>
-        /// the redirection's target value, this value will determine by TargetType as:
+        /// Gets or sets the redirection's target value, this value will determine by TargetType as:
         /// <list type="bullet">
         ///     <item>TargetType.Portal: this value should be a portal id.</item>
         /// <item>TargetType.Tab: this value should be a tab id.</item>
@@ -120,19 +120,19 @@ namespace DotNetNuke.Services.Mobile
         public object TargetValue { get; set; }
 
         /// <summary>
-        /// Whether this redirection is available.
+        /// Gets or sets a value indicating whether whether this redirection is available.
         /// </summary>
         [XmlAttribute]
         public bool Enabled { get; set; }
 
         /// <summary>
-        /// Redirection's piority.
+        /// Gets or sets redirection's piority.
         /// </summary>
         [XmlAttribute]
         public int SortOrder { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

@@ -26,7 +26,7 @@ namespace DotNetNuke.Entities.Users
         private int _relationshipTypeId = -1;
 
         /// <summary>
-        /// RelationshipId - The primary key
+        /// Gets or sets relationshipId - The primary key
         /// </summary>
         [XmlAttribute]
         public int RelationshipTypeId
@@ -43,25 +43,25 @@ namespace DotNetNuke.Entities.Users
         }
 
         /// <summary>
-        /// Relationship Type Name.
+        /// Gets or sets relationship Type Name.
         /// </summary>
         [XmlAttribute]
         public string Name { get; set; }
 
         /// <summary>
-        /// Relationship Description.
+        /// Gets or sets relationship Description.
         /// </summary>
         [XmlAttribute]
         public string Description { get; set; }
 
         /// <summary>
-        /// Relationship Direction.
+        /// Gets or sets relationship Direction.
         /// </summary>
         [XmlAttribute]
         public RelationshipDirection Direction { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

@@ -31,7 +31,7 @@ namespace DotNetNuke.HttpModules.Compression
         }
 
         /// <summary>
-        /// The name of the content-encoding that's being implemented
+        /// Gets the name of the content-encoding that's being implemented
         /// </summary>
         /// <remarks>
         /// See http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3.5 for more
@@ -40,7 +40,7 @@ namespace DotNetNuke.HttpModules.Compression
         public abstract string ContentEncoding { get; }
 
         /// <summary>
-        /// Keeps track of whether or not we're written the compression headers
+        /// Gets a value indicating whether keeps track of whether or not we're written the compression headers
         /// </summary>
         protected bool HasWrittenHeaders
         {

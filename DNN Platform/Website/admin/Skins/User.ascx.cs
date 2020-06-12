@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public bool ShowAvatar { get; set; }
 
         /// <summary>
-        /// Set this to false in the skin to take advantage of the enhanced markup
+        /// Gets or sets a value indicating whether set this to false in the skin to take advantage of the enhanced markup
         /// </summary>
         public bool LegacyMode { get; set; }
 
@@ -60,7 +60,7 @@ namespace DotNetNuke.UI.Skins.Controls
         public string URL { get; set; }
 
         /// <summary>
-        /// set this to true to show in custom 404/500 page.
+        /// Gets or sets a value indicating whether set this to true to show in custom 404/500 page.
         /// </summary>
         public bool ShowInErrorPage { get; set; }
 

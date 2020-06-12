@@ -13,37 +13,37 @@ namespace DotNetNuke.Entities.Tabs.TabVersions
     public class TabVersionDetail : BaseEntityInfo
     {
         /// <summary>
-        /// Id of TabVersionDetail
+        /// Gets or sets id of TabVersionDetail
         /// </summary>
         public int TabVersionDetailId { get; set; }
 
         /// <summary>
-        /// Id of the related TabVersion master of the detail
+        /// Gets or sets id of the related TabVersion master of the detail
         /// </summary>
         public int TabVersionId { get; set; }
 
         /// <summary>
-        /// Id of the Module which tracks the detail
+        /// Gets or sets id of the Module which tracks the detail
         /// </summary>
         public int ModuleId { get; set; }
 
         /// <summary>
-        /// Version number of the module when the detail was tracked
+        /// Gets or sets version number of the module when the detail was tracked
         /// </summary>
         public int ModuleVersion { get; set; }
 
         /// <summary>
-        /// Pane name where the Module was when the detail was tracked
+        /// Gets or sets pane name where the Module was when the detail was tracked
         /// </summary>
         public string PaneName { get; set; }
 
         /// <summary>
-        /// Order into the pane where the Module was when the detail was tracked
+        /// Gets or sets order into the pane where the Module was when the detail was tracked
         /// </summary>
         public int ModuleOrder { get; set; }
 
         /// <summary>
-        /// Action which provoked the detail
+        /// Gets or sets action which provoked the detail
         /// </summary>
         public TabVersionDetailAction Action { get; set; }
     }

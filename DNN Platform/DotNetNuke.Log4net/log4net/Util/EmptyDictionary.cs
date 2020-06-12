@@ -88,7 +88,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets a value indicating if access to the <see cref="ICollection"/> is synchronized (thread-safe).
+        /// Gets a value indicating whether gets a value indicating if access to the <see cref="ICollection"/> is synchronized (thread-safe).
         /// </summary>
         /// <value>
         /// <b>true</b> if access to the <see cref="ICollection"/> is synchronized (thread-safe); otherwise, <b>false</b>.

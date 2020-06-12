@@ -14,17 +14,17 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     public class GroupedDetailView
     {
         /// <summary>
-        /// Document's Url
+        /// Gets or sets document's Url
         /// </summary>
         public string DocumentUrl { get; set; }
 
         /// <summary>
-        /// Document's Title
+        /// Gets or sets document's Title
         /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Results of the Search
+        /// Gets or sets results of the Search
         /// </summary>
         public List<DetailedView> Results { get; set; }
 

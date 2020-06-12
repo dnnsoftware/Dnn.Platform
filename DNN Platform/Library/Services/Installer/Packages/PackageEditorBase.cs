@@ -54,7 +54,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Package ID
+        /// Gets or sets and sets the Package ID
         /// </summary>
         /// <value>An Integer</value>
         /// -----------------------------------------------------------------------------
@@ -73,7 +73,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Editor is in the Wizard
+        /// Gets or sets a value indicating whether gets and sets whether the Editor is in the Wizard
         /// </summary>
         /// <value>An Boolean</value>
         /// -----------------------------------------------------------------------------

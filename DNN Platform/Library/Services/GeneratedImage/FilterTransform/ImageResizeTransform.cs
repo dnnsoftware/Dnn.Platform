@@ -22,12 +22,12 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         private int _maxHeight;
 
         /// <summary>
-        /// Sets the resize mode. The default value is Fit.
+        /// Gets or sets the resize mode. The default value is Fit.
         /// </summary>
         public ImageResizeMode Mode { get; set; }
 
         /// <summary>
-        /// Sets the width of the resulting image
+        /// Gets or sets the width of the resulting image
         /// </summary>
         public int Width
         {
@@ -44,7 +44,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Sets the Max width of the resulting image
+        /// Gets or sets the Max width of the resulting image
         /// </summary>
         public int MaxWidth
         {
@@ -61,7 +61,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Sets the height of the resulting image
+        /// Gets or sets the height of the resulting image
         /// </summary>
         public int Height
         {
@@ -78,7 +78,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Sets the max height of the resulting image
+        /// Gets or sets the max height of the resulting image
         /// </summary>
         public int MaxHeight
         {
@@ -95,7 +95,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Sets the border width of the resulting image
+        /// Gets or sets the border width of the resulting image
         /// </summary>
         public int Border
         {
@@ -112,7 +112,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Sets the Backcolor
+        /// Gets or sets the Backcolor
         /// </summary>
         public Color BackColor { get; set; } = Color.White;
 
@@ -301,7 +301,7 @@ namespace DotNetNuke.Services.GeneratedImage.FilterTransform
         }
 
         /// <summary>
-        /// Provides an Unique String for this transformation
+        /// Gets provides an Unique String for this transformation
         /// </summary>
         [Browsable(false)]
         public override string UniqueString => base.UniqueString + this.Width + this.InterpolationMode + this.Height + this.Mode;

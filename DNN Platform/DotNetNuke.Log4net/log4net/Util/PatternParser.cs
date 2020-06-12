@@ -77,7 +77,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Get the converter registry used by this parser
+        /// Gets get the converter registry used by this parser
         /// </summary>
         /// <value>
         /// The converter registry used by this parser

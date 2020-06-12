@@ -15,7 +15,7 @@ namespace DotNetNuke.Web.Client.Providers
         private readonly ClientResourceSettings dnnSettingsHelper = new ClientResourceSettings();
 
         /// <summary>
-        /// Checks if the composite files option is set for the current portal (DNN site settings).
+        /// Gets a value indicating whether checks if the composite files option is set for the current portal (DNN site settings).
         /// If not enabled at the portal level it defers to the core CDF setting (web.config).
         /// </summary>
         public override bool EnableCompositeFiles

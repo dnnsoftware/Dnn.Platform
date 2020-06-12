@@ -49,7 +49,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets whether the Module inherits the Page's(Tab's) permissions
+        /// Gets or sets a value indicating whether gets and Sets whether the Module inherits the Page's(Tab's) permissions
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool InheritViewPermissionsFromTab
@@ -68,7 +68,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Id of the Module
+        /// Gets or sets and Sets the Id of the Module
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int ModuleID
@@ -90,7 +90,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Id of the Tab associated with this module
+        /// Gets or sets and Sets the Id of the Tab associated with this module
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int TabId { get; set; }

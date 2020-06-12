@@ -28,7 +28,7 @@ namespace DotNetNuke.UI.WebControls
         public string CommandName { get; set; }
 
         /// <summary>
-        /// EditMode for the Column
+        /// Gets or sets editMode for the Column
         /// </summary>
         /// <value>A String</value>
         public ImageCommandColumnEditMode EditMode
@@ -57,25 +57,25 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// The Icon Key to obtain ImageURL
+        /// Gets or sets the Icon Key to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconKey { get; set; }
 
         /// <summary>
-        /// The Icon Siz to obtain ImageURL
+        /// Gets or sets the Icon Siz to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconSize { get; set; }
 
         /// <summary>
-        /// The Icon Style to obtain ImageURL
+        /// Gets or sets the Icon Style to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         public string IconStyle { get; set; }
 
         /// <summary>
-        /// The Key Field that provides a Unique key to the data Item
+        /// Gets or sets the Key Field that provides a Unique key to the data Item
         /// </summary>
         /// <value>A String</value>
         public string KeyField { get; set; }
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.WebControls
         public string NavigateURLFormatString { get; set; }
 
         /// <summary>
-        /// Javascript text to attach to the OnClick Event
+        /// Gets or sets javascript text to attach to the OnClick Event
         /// </summary>
         /// <value>A String</value>
 // ReSharper disable InconsistentNaming
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.WebControls
 // ReSharper restore InconsistentNaming
 
         /// <summary>
-        /// Gets or sets whether an Image is displayed
+        /// Gets or sets a value indicating whether gets or sets whether an Image is displayed
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -119,7 +119,7 @@ namespace DotNetNuke.UI.WebControls
         public string Text { get; set; }
 
         /// <summary>
-        /// An flag that indicates whether the buttons are visible.
+        /// Gets or sets an flag that indicates whether the buttons are visible.
         /// </summary>
         /// <value>A Boolean</value>
         public string VisibleField { get; set; }

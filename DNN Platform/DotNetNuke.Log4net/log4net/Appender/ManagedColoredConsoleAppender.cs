@@ -114,7 +114,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Target is the value of the console output stream.
+        /// Gets or sets target is the value of the console output stream.
         /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
         /// </summary>
         /// <value>
@@ -218,7 +218,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -291,7 +291,7 @@ namespace log4net.Appender
         public class LevelColors : LevelMappingEntry
         {
             /// <summary>
-            /// The mapped foreground color for the specified level
+            /// Gets or sets the mapped foreground color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -324,7 +324,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The mapped background color for the specified level
+            /// Gets or sets the mapped background color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>

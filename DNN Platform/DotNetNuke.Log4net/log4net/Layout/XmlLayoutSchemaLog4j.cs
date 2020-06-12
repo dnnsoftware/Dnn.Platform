@@ -77,7 +77,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The version of the log4j schema to use.
+        /// Gets or sets the version of the log4j schema to use.
         /// </summary>
         /// <remarks>
         /// <para>

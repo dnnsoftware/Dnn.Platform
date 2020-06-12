@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Content
             }
         }
 
-        /// <summary>The title of the ContentItem.</summary>
+        /// <summary>Gets or sets the title of the ContentItem.</summary>
         [XmlElement("contentTitle")]
         public string ContentTitle
         {
@@ -190,7 +190,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
-        /// Files that are attached to this ContentItem.
+        /// Gets files that are attached to this ContentItem.
         /// </summary>
         [XmlIgnore]
         [ScriptIgnore]
@@ -200,7 +200,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
-        /// Video files attached to this ContentItem.
+        /// Gets video files attached to this ContentItem.
         /// </summary>
         [XmlIgnore]
         [ScriptIgnore]
@@ -210,7 +210,7 @@ namespace DotNetNuke.Entities.Content
         }
 
         /// <summary>
-        /// Images associated with this ContentItem.
+        /// Gets images associated with this ContentItem.
         /// </summary>
         [XmlIgnore]
         [ScriptIgnore]

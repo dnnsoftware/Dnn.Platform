@@ -28,7 +28,7 @@ namespace DotNetNuke.Services.Social.Notifications
         private string _displayDate;
 
         /// <summary>
-        /// NotificationID - The primary key
+        /// Gets or sets notificationID - The primary key
         /// </summary>
         [XmlAttribute]
         public int NotificationID
@@ -45,49 +45,49 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// The message type identifier.
+        /// Gets or sets the message type identifier.
         /// </summary>
         [XmlAttribute]
         public int NotificationTypeID { get; set; }
 
         /// <summary>
-        /// To list for the message. This information is saved for faster display of To list in the message
+        /// Gets or sets to list for the message. This information is saved for faster display of To list in the message
         /// </summary>
         [XmlAttribute]
         public string To { get; set; }
 
         /// <summary>
-        /// Message From
+        /// Gets or sets message From
         /// </summary>
         [XmlAttribute]
         public string From { get; set; }
 
         /// <summary>
-        /// Message Subject
+        /// Gets or sets message Subject
         /// </summary>
         [XmlAttribute]
         public string Subject { get; set; }
 
         /// <summary>
-        /// Message body
+        /// Gets or sets message body
         /// </summary>
         [XmlAttribute]
         public string Body { get; set; }
 
         /// <summary>
-        /// Context set by creator of the notification
+        /// Gets or sets context set by creator of the notification
         /// </summary>
         [XmlAttribute]
         public string Context { get; set; }
 
         /// <summary>
-        /// The UserID of the sender of the message
+        /// Gets or sets the UserID of the sender of the message
         /// </summary>
         [XmlAttribute]
         public int SenderUserID { get; set; }
 
         /// <summary>
-        /// A pretty printed string with the time since the message was created
+        /// Gets a pretty printed string with the time since the message was created
         /// </summary>
         [XmlAttribute]
         public string DisplayDate
@@ -104,13 +104,13 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// For notifications, this field indicates when it has to be removed (or not displayed)
+        /// Gets or sets for notifications, this field indicates when it has to be removed (or not displayed)
         /// </summary>
         [XmlAttribute]
         public DateTime ExpirationDate { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID
@@ -127,13 +127,13 @@ namespace DotNetNuke.Services.Social.Notifications
         }
 
         /// <summary>
-        /// Should this notification support a dismiss action
+        /// Gets or sets a value indicating whether should this notification support a dismiss action
         /// </summary>
         [XmlAttribute]
         public bool IncludeDismissAction { get; set; }
 
         /// <summary>
-        /// The notification is displayed on the UI as a toast notification
+        /// Gets or sets a value indicating whether the notification is displayed on the UI as a toast notification
         /// </summary>
         [XmlAttribute]
         public bool SendToast { get; set; }

@@ -48,7 +48,7 @@ namespace DotNetNuke.Entities.Modules
         private ModuleInstanceContext _moduleContext;
 
         /// <summary>
-        /// Gets or sets the Dependency Provider to resolve registered
+        /// Gets the Dependency Provider to resolve registered
         /// services with the container.
         /// </summary>
         /// <value>
@@ -88,7 +88,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The EditMode property is used to determine whether the user is in the
+        /// Gets a value indicating whether the EditMode property is used to determine whether the user is in the
         /// Administrator role
         /// Cache
         /// </summary>
@@ -275,7 +275,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the local resource file for this control
+        /// Gets or sets and sets the local resource file for this control
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -427,7 +427,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   The CacheDirectory property is used to return the location of the "Cache"
+        ///   Gets the CacheDirectory property is used to return the location of the "Cache"
         ///   Directory for the Module
         /// </summary>
         /// <remarks>
@@ -444,7 +444,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   The CacheFileName property is used to store the FileName for this Module's
+        ///   Gets the CacheFileName property is used to store the FileName for this Module's
         ///   Cache
         /// </summary>
         /// <remarks>

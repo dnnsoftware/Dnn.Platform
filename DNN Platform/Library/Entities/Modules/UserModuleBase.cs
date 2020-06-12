@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Modules
         private UserInfo _User;
 
         /// <summary>
-        /// Gets whether we are in Add User mode
+        /// Gets a value indicating whether gets whether we are in Add User mode
         /// </summary>
         protected virtual bool AddUser
         {
@@ -63,7 +63,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether the current user is an Administrator (or SuperUser)
+        /// Gets a value indicating whether gets whether the current user is an Administrator (or SuperUser)
         /// </summary>
         protected bool IsAdmin
         {
@@ -74,7 +74,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// gets whether this is the current user or admin
+        /// Gets a value indicating whether gets whether this is the current user or admin
         /// </summary>
         /// <value>
         /// <placeholder>gets whether this is the current user or admin</placeholder>
@@ -90,7 +90,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether this control is in the Host menu
+        /// Gets a value indicating whether gets whether this control is in the Host menu
         /// </summary>
         protected bool IsHostTab
         {
@@ -101,7 +101,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether the control is being called form the User Accounts module
+        /// Gets a value indicating whether gets whether the control is being called form the User Accounts module
         /// </summary>
         protected bool IsEdit
         {
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether the current user is modifying their profile
+        /// Gets a value indicating whether gets whether the current user is modifying their profile
         /// </summary>
         protected bool IsProfile
         {
@@ -158,7 +158,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether an anonymous user is trying to register
+        /// Gets a value indicating whether gets whether an anonymous user is trying to register
         /// </summary>
         protected bool IsRegister
         {
@@ -169,7 +169,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets whether the User is editing their own information
+        /// Gets a value indicating whether gets whether the User is editing their own information
         /// </summary>
         protected bool IsUser
         {
@@ -191,7 +191,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets and sets the User associated with this control
+        /// Gets or sets and sets the User associated with this control
         /// </summary>
         public UserInfo User
         {
@@ -211,7 +211,7 @@ namespace DotNetNuke.Entities.Modules
         }
 
         /// <summary>
-        /// Gets and sets the UserId associated with this control
+        /// Gets or sets and sets the UserId associated with this control
         /// </summary>
         public new int UserId
         {

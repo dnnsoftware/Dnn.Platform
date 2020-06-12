@@ -21,7 +21,7 @@ namespace DotNetNuke.UI.WebControls
     {
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// The Data Field is the field that binds to the Text Column
+ /// Gets or sets the Data Field is the field that binds to the Text Column
  /// </summary>
  /// <value>A String</value>
  /// -----------------------------------------------------------------------------

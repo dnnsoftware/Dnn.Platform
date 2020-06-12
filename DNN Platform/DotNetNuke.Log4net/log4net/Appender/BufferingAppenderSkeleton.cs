@@ -108,7 +108,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a value that indicates whether the appender is lossy.
+        /// Gets or sets a value indicating whether gets or sets a value that indicates whether the appender is lossy.
         /// </summary>
         /// <value>
         /// <c>true</c> if the appender is lossy, otherwise <c>false</c>. The default is <c>false</c>.
@@ -203,7 +203,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a value indicating if only part of the logging event data
+        /// Gets or sets a value indicating whether gets or sets a value indicating if only part of the logging event data
         /// should be fixed.
         /// </summary>
         /// <value>

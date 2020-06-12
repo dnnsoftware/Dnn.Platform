@@ -41,7 +41,7 @@ namespace DotNetNuke.Application
         }
 
         /// <summary>
-        /// Get the application.
+        /// Gets get the application.
         /// </summary>
         public Application Application
         {

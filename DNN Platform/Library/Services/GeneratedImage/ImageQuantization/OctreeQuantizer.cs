@@ -179,7 +179,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
 
             /// <summary>
-            /// Get/Set the number of leaves in the tree
+            /// Gets or sets get/Set the number of leaves in the tree
             /// </summary>
             public int Leaves
             {
@@ -188,7 +188,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             }
 
             /// <summary>
-            /// Return the array of reducible nodes
+            /// Gets return the array of reducible nodes
             /// </summary>
             protected OctreeNode[] ReducibleNodes
             {
@@ -345,7 +345,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 }
 
                 /// <summary>
-                /// Get/Set the next reducible node
+                /// Gets or sets get/Set the next reducible node
                 /// </summary>
                 public OctreeNode NextReducible
                 {
@@ -354,7 +354,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
                 }
 
                 /// <summary>
-                /// Return the child nodes
+                /// Gets return the child nodes
                 /// </summary>
                 public OctreeNode[] Children
                 {

@@ -99,7 +99,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or set whether the appender will flush at the end
+        /// Gets or sets a value indicating whether gets or set whether the appender will flush at the end
         /// of each append operation.
         /// </summary>
         /// <value>
@@ -128,7 +128,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Sets the <see cref="TextWriter"/> where the log output will go.
+        /// Gets or sets the <see cref="TextWriter"/> where the log output will go.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -261,7 +261,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or set the <see cref="IErrorHandler"/> and the underlying
+        /// Gets or sets or set the <see cref="IErrorHandler"/> and the underlying
         /// <see cref="QuietTextWriter"/>, if any, for this appender.
         /// </summary>
         /// <value>
@@ -292,7 +292,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>

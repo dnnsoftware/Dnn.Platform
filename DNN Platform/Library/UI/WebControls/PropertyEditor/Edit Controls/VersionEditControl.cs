@@ -24,7 +24,7 @@ namespace DotNetNuke.UI.WebControls
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         /// -----------------------------------------------------------------------------

@@ -47,7 +47,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldStringValue returns the Boolean representation of the OldValue
+        /// Gets oldStringValue returns the Boolean representation of the OldValue
         /// </summary>
         /// <value>A String representing the OldValue</value>
         /// -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         /// -----------------------------------------------------------------------------

@@ -18,28 +18,28 @@ namespace DotNetNuke.Common.Utilities.Internal
         private static readonly ILog Logger = LoggerSource.Instance.GetLogger(typeof(RetryableAction));
 
         /// <summary>
-        /// The Action to execute
+        /// Gets or sets the Action to execute
         /// </summary>
         public Action Action { get; set; }
 
         /// <summary>
-        /// A message describing the action.  The primary purpose is to make the action identifiable in the log output.
+        /// Gets or sets a message describing the action.  The primary purpose is to make the action identifiable in the log output.
         /// </summary>
         public string Description { get; set; }
 
         /// <summary>
-        /// The maximum number of retries to attempt
+        /// Gets or sets the maximum number of retries to attempt
         /// </summary>
         public int MaxRetries { get; set; }
 
         /// <summary>
-        /// The number of milliseconds to wait between retries.
+        /// Gets or sets the number of milliseconds to wait between retries.
         /// <remarks>The delay period is approximate and will be affected by the demands of other threads on the system.</remarks>
         /// </summary>
         public TimeSpan Delay { get; set; }
 
         /// <summary>
-        /// A factor by which the delay is adjusted after each retry.  Default is 1.
+        /// Gets or sets a factor by which the delay is adjusted after each retry.  Default is 1.
         /// <remarks>To double the delay with every retry use a factor of 2, retrys will be 1s, 2s, 4s, 8s...</remarks>
         /// <remarks>To quarter the delay with every retry use a factor of 0.25, retrys will be 1s, 0.25, 0.0625, 0.015625s...</remarks>
         /// </summary>
@@ -56,7 +56,7 @@ namespace DotNetNuke.Common.Utilities.Internal
         }
 
         /// <summary>
-        /// Method that allows thread to sleep until next retry meant for unit testing purposes
+        /// Gets or sets method that allows thread to sleep until next retry meant for unit testing purposes
         /// </summary>
         public static Action<int> SleepAction { get; set; }
 

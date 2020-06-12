@@ -54,7 +54,7 @@ namespace DotNetNuke.Security.Permissions.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the Id of the PortalDesktopModule
+        /// Gets or sets and Sets the Id of the PortalDesktopModule
         /// </summary>
         /// -----------------------------------------------------------------------------
         public int PortalDesktopModuleID

@@ -36,7 +36,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DateValue returns the Date representation of the Value
+        /// Gets dateValue returns the Date representation of the Value
         /// </summary>
         /// <value>A Date representing the Value</value>
         /// -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DefaultDateFormat is a string that will be used to format the date in the absence of a
+        /// Gets defaultDateFormat is a string that will be used to format the date in the absence of a
         /// FormatAttribute
         /// </summary>
         /// <value>A String representing the default format to use to render the date</value>
@@ -77,7 +77,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Format is a string that will be used to format the date in View mode
+        /// Gets format is a string that will be used to format the date in View mode
         /// </summary>
         /// <value>A String representing the format to use to render the date</value>
         /// <returns>A Format String</returns>
@@ -106,7 +106,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldDateValue returns the Date representation of the OldValue
+        /// Gets oldDateValue returns the Date representation of the OldValue
         /// </summary>
         /// <value>A Date representing the OldValue</value>
         /// -----------------------------------------------------------------------------
@@ -134,7 +134,7 @@ namespace DotNetNuke.Web.UI.WebControls.Internal.PropertyEditorControls
         }
 
         /// <summary>
-        /// The Value expressed as a String
+        /// Gets or sets the Value expressed as a String
         /// </summary>
         protected override string StringValue
         {

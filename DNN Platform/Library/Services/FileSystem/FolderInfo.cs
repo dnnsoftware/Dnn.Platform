@@ -275,7 +275,7 @@ namespace DotNetNuke.Services.FileSystem
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets and sets the Key ID
+        ///   Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

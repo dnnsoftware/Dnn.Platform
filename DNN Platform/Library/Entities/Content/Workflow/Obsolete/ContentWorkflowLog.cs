@@ -16,37 +16,37 @@ namespace DotNetNuke.Entities.Content.Workflow
     public class ContentWorkflowLog
     {
         /// <summary>
-        /// Workflow log Id
+        /// Gets or sets workflow log Id
         /// </summary>
         public int WorkflowLogID { get; set; }
 
         /// <summary>
-        /// Workflow associated to the log entry
+        /// Gets or sets workflow associated to the log entry
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// Content Item associated to the log entry
+        /// Gets or sets content Item associated to the log entry
         /// </summary>
         public int ContentItemID { get; set; }
 
         /// <summary>
-        /// Action name (usually is a localized representation of the ContentWorkflowLogType)
+        /// Gets or sets action name (usually is a localized representation of the ContentWorkflowLogType)
         /// </summary>
         public string Action { get; set; }
 
         /// <summary>
-        /// Comment
+        /// Gets or sets comment
         /// </summary>
         public string Comment { get; set; }
 
         /// <summary>
-        /// Log date
+        /// Gets or sets log date
         /// </summary>
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// User Id associated to the log
+        /// Gets or sets user Id associated to the log
         /// </summary>
         public int User { get; set; }
     }

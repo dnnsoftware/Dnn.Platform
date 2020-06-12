@@ -63,7 +63,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="LoggerToMatch"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LoggerToMatch"/>
         /// </summary>
         /// <remarks>
         /// <para>
@@ -83,7 +83,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// The <see cref="LoggingEvent.LoggerName"/> that the filter will match
+        /// Gets or sets the <see cref="LoggingEvent.LoggerName"/> that the filter will match
         /// </summary>
         /// <remarks>
         /// <para>

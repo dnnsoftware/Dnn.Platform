@@ -59,7 +59,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// The number of messages in the stack
+        /// Gets the number of messages in the stack
         /// </summary>
         /// <value>
         /// The current number of messages in the stack
@@ -165,7 +165,7 @@ namespace log4net.Util
         }
 
         /// <summary>
-        /// Gets and sets the internal stack used by this <see cref="ThreadContextStack"/>
+        /// Gets or sets and sets the internal stack used by this <see cref="ThreadContextStack"/>
         /// </summary>
         /// <value>The internal storage stack</value>
         /// <remarks>
@@ -246,7 +246,7 @@ namespace log4net.Util
             }
 
             /// <summary>
-            /// Get the message.
+            /// Gets get the message.
             /// </summary>
             /// <value>The message.</value>
             /// <remarks>

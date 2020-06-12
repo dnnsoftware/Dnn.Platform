@@ -41,24 +41,24 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Caption
+        /// Gets or sets caption
         /// </summary>
         /// <value>A string representing the Name of the property</value>
         public string Caption { get; set; }
 
         /// <summary>
-        /// Name is the name of the field as a string
+        /// Gets or sets name is the name of the field as a string
         /// </summary>
         /// <value>A string representing the Name of the property</value>
         public string Name { get; set; }
 
         /// <summary>
-        /// The UserInfo object that represents the User whose profile is being displayed
+        /// Gets or sets the UserInfo object that represents the User whose profile is being displayed
         /// </summary>
         public UserInfo User { get; set; }
 
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         public object Value { get; set; }

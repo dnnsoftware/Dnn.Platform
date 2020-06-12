@@ -72,7 +72,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         private const string LOGIN_PATH = "/login";
 
         /// <summary>
-        /// Gets and sets the current AuthenticationType
+        /// Gets or sets and sets the current AuthenticationType
         /// </summary>
         protected string AuthenticationType
         {
@@ -94,7 +94,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets a flag that determines whether the user should be automatically registered
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether the user should be automatically registered
         /// </summary>
         protected bool AutoRegister
         {
@@ -135,7 +135,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets the current Page No
+        /// Gets or sets and sets the current Page No
         /// </summary>
         protected int PageNo
         {
@@ -285,7 +285,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets a flag that determines whether a permanent auth cookie should be created
+        /// Gets or sets a value indicating whether gets and sets a flag that determines whether a permanent auth cookie should be created
         /// </summary>
         protected bool RememberMe
         {
@@ -307,7 +307,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets whether the Captcha control is used to validate the login
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login
         /// </summary>
         protected bool UseCaptcha
         {
@@ -338,7 +338,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets the current UserToken
+        /// Gets or sets and sets the current UserToken
         /// </summary>
         protected string UserToken
         {
@@ -360,7 +360,7 @@ namespace DotNetNuke.Modules.Admin.Authentication
         }
 
         /// <summary>
-        /// Gets and sets the current UserName
+        /// Gets or sets and sets the current UserName
         /// </summary>
         protected string UserName
         {

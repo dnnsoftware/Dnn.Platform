@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the CustomEditors that are used by this control
+        /// Gets or sets and sets the CustomEditors that are used by this control
         /// </summary>
         /// <value>The CustomEditors object</value>
         /// -----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Visibility values that are used by this control
+        /// Gets or sets and sets the Visibility values that are used by this control
         /// </summary>
         /// <value>The CustomEditors object</value>
         /// -----------------------------------------------------------------------------

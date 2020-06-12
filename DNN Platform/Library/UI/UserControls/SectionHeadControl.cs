@@ -36,7 +36,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CssClass determines the Css Class used for the Title Text
+        /// Gets or sets cssClass determines the Css Class used for the Title Text
         /// </summary>
         /// <value>A string representing the name of the css class</value>
         /// <remarks>
@@ -57,7 +57,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IncludeRule determines whether there is a horizontal rule displayed under the
+        /// Gets or sets a value indicating whether includeRule determines whether there is a horizontal rule displayed under the
         /// header text
         /// </summary>
         /// <value>A string representing true or false</value>
@@ -79,7 +79,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// IsExpanded determines whether the section is expanded or collapsed.
+        /// Gets or sets a value indicating whether isExpanded determines whether the section is expanded or collapsed.
         /// </summary>
         /// <value>Boolean value that determines whether the panel is expanded (true)
         /// or collapsed (false).  The default is true.</value>
@@ -102,7 +102,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// JavaScript is the name of the javascript function implementation.
+        /// Gets or sets javaScript is the name of the javascript function implementation.
         /// </summary>
         /// <value>A string representing the name of the javascript function implementation</value>
         /// <remarks>
@@ -123,7 +123,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The MaxImageUrl is the url of the image displayed when the contained panel is
+        /// Gets or sets the MaxImageUrl is the url of the image displayed when the contained panel is
         /// collapsed.
         /// </summary>
         /// <value>A string representing the url of the Max Image</value>
@@ -145,7 +145,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The MinImageUrl is the url of the image displayed when the contained panel is
+        /// Gets or sets the MinImageUrl is the url of the image displayed when the contained panel is
         /// expanded.
         /// </summary>
         /// <value>A string representing the url of the Min Image</value>
@@ -167,7 +167,7 @@ namespace DotNetNuke.UI.UserControls
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// The ResourceKey is the key used to identify the Localization Resource for the
+ /// Gets or sets the ResourceKey is the key used to identify the Localization Resource for the
  /// title text.
  /// </summary>
  /// <value>A string representing the ResourceKey.</value>
@@ -178,7 +178,7 @@ namespace DotNetNuke.UI.UserControls
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// The Section is the Id of the DHTML object  that contains the xection content
+ /// Gets or sets the Section is the Id of the DHTML object  that contains the xection content
  /// title text.
  /// </summary>
  /// <value>A string representing the Section.</value>
@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Text is the name or title of the section
+        /// Gets or sets the Text is the name or title of the section
         /// </summary>
         /// <value>A string representing the Title Text.</value>
         /// <remarks>

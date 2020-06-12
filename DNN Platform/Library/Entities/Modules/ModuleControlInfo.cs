@@ -36,7 +36,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Control Title
+        /// Gets or sets and sets the Control Title
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Control Type
+        /// Gets or sets and sets the Control Type
         /// </summary>
         /// <returns>A SecurityAccessLevel</returns>
         /// -----------------------------------------------------------------------------
@@ -52,7 +52,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Help URL
+        /// Gets or sets and sets the Help URL
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -60,7 +60,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Icon  Source
+        /// Gets or sets and sets the Icon  Source
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Control ID
+        /// Gets or sets and sets the Module Control ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -76,7 +76,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Definition ID
+        /// Gets or sets and sets the Module Definition ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether to support popup.
+        /// Gets or sets a value indicating whether gets and sets whether to support popup.
         /// </summary>
         /// <returns>A Boolean value</returns>
         /// -----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the View Order
+        /// Gets or sets and sets the View Order
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -122,7 +122,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

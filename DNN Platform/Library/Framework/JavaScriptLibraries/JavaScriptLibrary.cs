@@ -13,43 +13,43 @@ namespace DotNetNuke.Framework.JavaScriptLibraries
     public class JavaScriptLibrary : IXmlSerializable
     {
         /// <summary>
-        /// unique identifier id for a javscript library package
+        /// Gets or sets unique identifier id for a javscript library package
         /// </summary>
         public int JavaScriptLibraryID { get; set; }
 
         /// <summary>
-        /// package id associated with the javscript library package
+        /// Gets or sets package id associated with the javscript library package
         /// </summary>
         public int PackageID { get; set; }
 
         /// <summary>
-        /// name of the javscript library package (used when requesting library)
+        /// Gets or sets name of the javscript library package (used when requesting library)
         /// </summary>
         public string LibraryName { get; set; }
 
         /// <summary>
-        /// version of the the javscript library package from the database
+        /// Gets or sets version of the the javscript library package from the database
         /// </summary>
         public Version Version { get; set; }
 
         /// <summary>
-        /// main object (where relevant) of the javscript library package
+        /// Gets or sets main object (where relevant) of the javscript library package
         /// used to generate the local file fallback code in the case where the CDN file is not available
         /// </summary>
         public string ObjectName { get; set; }
 
         /// <summary>
-        /// filename of the script in the filesystem
+        /// Gets or sets filename of the script in the filesystem
         /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
-        /// position in the page the script reference is injected
+        /// Gets or sets position in the page the script reference is injected
         /// </summary>
         public ScriptLocation PreferredScriptLocation { get; set; }
 
         /// <summary>
-        /// location of the content delivery network (CDN) where the script is loaded from when CDN has been enabled in host
+        /// Gets or sets location of the content delivery network (CDN) where the script is loaded from when CDN has been enabled in host
         /// </summary>
         public string CDNPath { get; set; }
 

@@ -52,13 +52,13 @@ namespace DotNetNuke.UI.UserControls
             this.ChooseMode = true;
         }
 
-        /// <summary>Enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
+        /// <summary>Gets or sets a value indicating whether enables/Disables the option to allow the user to select between Rich/Basic Mode, Default is true.</summary>
         public bool ChooseMode { get; set; }
 
-        /// <summary>Determines wether or not the Text/Html button is rendered for Basic mode, Default is True</summary>
+        /// <summary>Gets or sets a value indicating whether determines wether or not the Text/Html button is rendered for Basic mode, Default is True</summary>
         public bool ChooseRender { get; set; }
 
-        /// <summary>Gets/Sets the Default mode of the control, either "RICH" or "BASIC", Defaults to Rich</summary>
+        /// <summary>Gets or sets /Sets the Default mode of the control, either "RICH" or "BASIC", Defaults to Rich</summary>
         public string DefaultMode
         {
             get
@@ -79,13 +79,13 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets/Sets the Height of the control</summary>
+        /// <summary>Gets or sets /Sets the Height of the control</summary>
         public Unit Height { get; set; }
 
-        /// <summary>Turns on HtmlEncoding of text.  If this option is on the control will assume, it is being passed encoded text and will decode.</summary>
+        /// <summary>Gets or sets a value indicating whether turns on HtmlEncoding of text.  If this option is on the control will assume, it is being passed encoded text and will decode.</summary>
         public bool HtmlEncode { get; set; }
 
-        /// <summary>The current mode of the control "RICH",  "BASIC"</summary>
+        /// <summary>Gets or sets the current mode of the control "RICH",  "BASIC"</summary>
         public string Mode
         {
             get
@@ -150,7 +150,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets/Sets the Text of the control</summary>
+        /// <summary>Gets or sets /Sets the Text of the control</summary>
         public string Text
         {
             get
@@ -189,7 +189,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Sets the render mode for Basic mode.  {Raw | HTML | Text}</summary>
+        /// <summary>Gets or sets the render mode for Basic mode.  {Raw | HTML | Text}</summary>
         public string TextRenderMode
         {
             get
@@ -209,7 +209,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Gets/Sets the Width of the control</summary>
+        /// <summary>Gets or sets /Sets the Width of the control</summary>
         public Unit Width { get; set; }
 
         public bool IsRichEditorAvailable
@@ -220,7 +220,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Allows public access ot the HtmlEditorProvider</summary>
+        /// <summary>Gets allows public access ot the HtmlEditorProvider</summary>
         public HtmlEditorProvider RichText
         {
             get
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.UserControls
             }
         }
 
-        /// <summary>Allows public access of the BasicTextEditor</summary>
+        /// <summary>Gets allows public access of the BasicTextEditor</summary>
         public TextBox BasicTextEditor
         {
             get

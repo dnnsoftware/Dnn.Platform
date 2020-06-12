@@ -65,7 +65,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// <see cref="FilterDecision.Accept"/> when matching <see cref="LevelToMatch"/>
+        /// <see cref="FilterDecision.Accept"/> Gets or sets a value indicating whether when matching <see cref="LevelToMatch"/>
         /// </summary>
         /// <remarks>
         /// <para>
@@ -85,7 +85,7 @@ namespace log4net.Filter
         }
 
         /// <summary>
-        /// The <see cref="Level"/> that the filter will match
+        /// Gets or sets the <see cref="Level"/> that the filter will match
         /// </summary>
         /// <remarks>
         /// <para>

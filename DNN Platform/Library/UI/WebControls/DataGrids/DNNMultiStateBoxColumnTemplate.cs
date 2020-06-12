@@ -43,7 +43,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the column fires a postback when the control changes
+        /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when the control changes
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the selected state of the DNNMultiStateBox (unless DataBound)
+        /// Gets or sets and sets the selected state of the DNNMultiStateBox (unless DataBound)
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -70,7 +70,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field that the column should bind to
+        /// Gets or sets the Data Field that the column should bind to
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -89,7 +89,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets the Design Mode of the Column
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -97,7 +97,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// An flag that indicates whether the control is enabled (this is overridden if
+        /// Gets or sets a value indicating whether an flag that indicates whether the control is enabled (this is overridden if
         /// the EnabledField is set
         /// changed
         /// </summary>
@@ -118,7 +118,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field that determines whether the control is Enabled
+        /// Gets or sets the Data Field that determines whether the control is Enabled
         /// changed
         /// </summary>
         /// <value>A String</value>
@@ -138,7 +138,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -157,7 +157,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Text to display in a Header Template
+        /// Gets or sets the Text to display in a Header Template
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -176,7 +176,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the image path of the DNNMultiStateBox
+        /// Gets or sets and sets the image path of the DNNMultiStateBox
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------
@@ -195,7 +195,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the state collection of the DNNMultiStateBox
+        /// Gets or sets and sets the state collection of the DNNMultiStateBox
         /// </summary>
         /// <value>A Boolean</value>
         /// -----------------------------------------------------------------------------

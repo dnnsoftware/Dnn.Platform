@@ -41,7 +41,7 @@ namespace DotNetNuke.UI.WebControls
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// Gets and sets whether the column fires a postback when any check box is
+ /// Gets or sets a value indicating whether gets and sets whether the column fires a postback when any check box is
  /// changed
  /// </summary>
  /// <value>A Boolean</value>
@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.WebControls
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// Gets and sets whether the checkbox is checked (unless DataBound)
+ /// Gets or sets a value indicating whether gets and sets whether the checkbox is checked (unless DataBound)
  /// </summary>
  /// <value>A Boolean</value>
  /// -----------------------------------------------------------------------------
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field that the column should bind to
+        /// Gets or sets the Data Field that the column should bind to
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -77,7 +77,7 @@ namespace DotNetNuke.UI.WebControls
 
  /// -----------------------------------------------------------------------------
  /// <summary>
- /// Gets or sets the Design Mode of the Column
+ /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column
  /// </summary>
  /// <value>A Boolean</value>
  /// -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// An flag that indicates whether the hcekboxes are enabled (this is overridden if
+        /// Gets or sets a value indicating whether an flag that indicates whether the hcekboxes are enabled (this is overridden if
         /// the EnabledField is set
         /// changed
         /// </summary>
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Data Field that determines whether the checkbox is Enabled
+        /// Gets or sets the Data Field that determines whether the checkbox is Enabled
         /// changed
         /// </summary>
         /// <value>A String</value>
@@ -126,7 +126,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// A flag that indicates whether there is a checkbox in the Header that sets all
+        /// Gets or sets a value indicating whether a flag that indicates whether there is a checkbox in the Header that sets all
         /// the checkboxes
         /// </summary>
         /// <value>A Boolean</value>
@@ -146,7 +146,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -165,7 +165,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Text to display in a Header Template
+        /// Gets or sets the Text to display in a Header Template
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------

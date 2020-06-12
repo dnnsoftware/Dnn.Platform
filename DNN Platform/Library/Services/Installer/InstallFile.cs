@@ -99,7 +99,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Action for this file
+        /// Gets or sets and sets the Action for this file
         /// </summary>
         /// <value>A string</value>
         /// -----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Type of the file
+        /// Gets or sets and sets the Type of the file
         /// </summary>
         /// <value>An InstallFileType Enumeration</value>
         /// -----------------------------------------------------------------------------

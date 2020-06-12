@@ -39,7 +39,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Module Definition ID
+        /// Gets or sets and sets the Module Definition ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -47,7 +47,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Default Cache Time
+        /// Gets or sets and sets the Default Cache Time
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -55,7 +55,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the associated Desktop Module ID
+        /// Gets or sets and sets the associated Desktop Module ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -63,14 +63,14 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Friendly Name
+        /// Gets or sets and sets the Friendly Name
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
         public string FriendlyName { get; set; }
 
         /// <summary>
-        /// Gets the DefinitionName
+        /// Gets or sets the DefinitionName
         /// </summary>
         public string DefinitionName
         {
@@ -134,7 +134,7 @@ namespace DotNetNuke.Entities.Modules.Definitions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

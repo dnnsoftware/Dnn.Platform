@@ -138,7 +138,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ID of the Associated Desktop Module
+        /// Gets or sets and sets the ID of the Associated Desktop Module
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -226,7 +226,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the ID of the Associated Module Definition
+        /// Gets or sets and sets the ID of the Associated Module Definition
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -255,7 +255,7 @@ namespace DotNetNuke.Entities.Modules
         public int ModuleOrder { get; set; }
 
         /// <summary>
-        /// Get the ModulePermissions for the Module DO NOT USE THE SETTTER
+        /// Gets or sets get the ModulePermissions for the Module DO NOT USE THE SETTTER
         /// <remarks>
         /// Since 5.0 the setter has been obsolete, directly setting the ModulePermissionCollection is likely an error, change the contenst of the collection instead.
         /// The setter still exists to preserve binary compatibility without the obsolete attribute since c# will not allow only a setter to be obsolete.
@@ -616,7 +616,7 @@ namespace DotNetNuke.Entities.Modules
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Key ID
+        /// Gets or sets and sets the Key ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------

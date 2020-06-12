@@ -278,7 +278,7 @@ namespace DotNetNuke.Services.GeneratedImage.ImageQuantization
             public int ARGB;
 
             /// <summary>
-            /// Return the color for this Color32 object
+            /// Gets return the color for this Color32 object
             /// </summary>
             public Color Color
             {

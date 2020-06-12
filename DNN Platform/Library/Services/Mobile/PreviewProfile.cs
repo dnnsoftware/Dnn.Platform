@@ -18,7 +18,7 @@ namespace DotNetNuke.Services.Mobile
         private int _id = -1;
 
         /// <summary>
-        /// Primary key.
+        /// Gets or sets primary key.
         /// </summary>
         [XmlAttribute]
         public int Id
@@ -35,7 +35,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// the profiles' effected portal.
+        /// Gets or sets the profiles' effected portal.
         /// </summary>
         [XmlAttribute]
         public int PortalId
@@ -45,7 +45,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// profile's name.
+        /// Gets or sets profile's name.
         /// </summary>
         [XmlAttribute]
         public string Name
@@ -55,31 +55,31 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// the preview device's width.
+        /// Gets or sets the preview device's width.
         /// </summary>
         [XmlAttribute]
         public int Width { get; set; }
 
         /// <summary>
-        /// the preview device's height.
+        /// Gets or sets the preview device's height.
         /// </summary>
         [XmlAttribute]
         public int Height { get; set; }
 
         /// <summary>
-        /// the preview device's user agent.
+        /// Gets or sets the preview device's user agent.
         /// </summary>
         [XmlAttribute]
         public string UserAgent { get; set; }
 
         /// <summary>
-        /// Profile's sort order.
+        /// Gets or sets profile's sort order.
         /// </summary>
         [XmlAttribute]
         public int SortOrder { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

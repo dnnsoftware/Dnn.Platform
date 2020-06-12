@@ -107,7 +107,7 @@ namespace DotNetNuke.Services.Installer
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Target Config file
+        /// Gets or sets the Target Config file
         /// </summary>
         /// <value>An XmlDocument</value>
         /// -----------------------------------------------------------------------------

@@ -49,7 +49,7 @@ namespace log4net.Layout
         private string m_key;
 
         /// <summary>
-        /// The name of the value to lookup in the LoggingEvent Properties collection.
+        /// Gets or sets the name of the value to lookup in the LoggingEvent Properties collection.
         /// </summary>
         /// <value>
         /// Value to lookup in the LoggingEvent Properties collection

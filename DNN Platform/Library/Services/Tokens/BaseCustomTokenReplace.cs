@@ -20,19 +20,19 @@ namespace DotNetNuke.Services.Tokens
         protected Dictionary<string, IPropertyAccess> PropertySource = new Dictionary<string, IPropertyAccess>();
 
         /// <summary>
-        /// Gets/sets the user object representing the currently accessing user (permission)
+        /// Gets or sets /sets the user object representing the currently accessing user (permission)
         /// </summary>
         /// <value>UserInfo oject</value>
         public UserInfo AccessingUser { get; set; }
 
         /// <summary>
-        /// Gets/sets the current Access Level controlling access to critical user settings
+        /// Gets or sets /sets the current Access Level controlling access to critical user settings
         /// </summary>
         /// <value>A TokenAccessLevel as defined above</value>
         protected Scope CurrentAccessLevel { get; set; }
 
         /// <summary>
-        /// If DebugMessages are enabled, unknown Tokens are replaced with Error Messages
+        /// Gets or sets a value indicating whether if DebugMessages are enabled, unknown Tokens are replaced with Error Messages
         /// </summary>
         /// <value>
         /// <placeholder>If DebugMessages are enabled, unknown Tokens are replaced with Error Messages</placeholder>

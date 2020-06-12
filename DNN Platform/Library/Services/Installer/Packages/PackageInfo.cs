@@ -66,7 +66,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Email for this package
+        /// Gets or sets the Email for this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -74,7 +74,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Description of this package
+        /// Gets or sets the Description of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the FileName of this package
+        /// Gets or sets the FileName of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the name (path) of the folder where the package is installed
+        /// Gets or sets the name (path) of the folder where the package is installed
         /// </summary>
         /// <value>A string</value>
         /// -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the FriendlyName of this package
+        /// Gets or sets and Sets the FriendlyName of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the url for the icon for the package
+        /// Gets or sets the url for the icon for the package
         /// </summary>
         /// <value>A string</value>
         /// -----------------------------------------------------------------------------
@@ -129,7 +129,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Installed Version of the Package
+        /// Gets or sets and sets the Installed Version of the Package
         /// </summary>
         /// <value>A System.Version</value>
         /// -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets whether this package is a "system" Package
+        /// Gets or sets a value indicating whether gets and Sets whether this package is a "system" Package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -168,7 +168,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is Valid
+        /// Gets a value indicating whether gets whether the Package is Valid
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------
@@ -177,7 +177,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the License of this package
+        /// Gets or sets and Sets the License of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -200,7 +200,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Manifest of this package
+        /// Gets or sets the Manifest of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -208,7 +208,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Name of this package
+        /// Gets or sets the Name of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -216,7 +216,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Organisation for this package
+        /// Gets or sets the Organisation for this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -224,7 +224,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Owner of this package
+        /// Gets or sets the Owner of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -232,7 +232,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ID of this package
+        /// Gets or sets the ID of this package
         /// </summary>
         /// <value>An Integer</value>
         /// -----------------------------------------------------------------------------
@@ -240,7 +240,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Type of this package
+        /// Gets or sets the Type of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -248,7 +248,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the ID of this portal
+        /// Gets or sets the ID of this portal
         /// </summary>
         /// <value>An Integer</value>
         /// -----------------------------------------------------------------------------
@@ -256,7 +256,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and Sets the ReleaseNotes of this package
+        /// Gets or sets and Sets the ReleaseNotes of this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -264,7 +264,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Url for this package
+        /// Gets or sets the Url for this package
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -272,7 +272,7 @@ namespace DotNetNuke.Services.Installer.Packages
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the Version of this package
+        /// Gets or sets the Version of this package
         /// </summary>
         /// <value>A System.Version</value>
         /// -----------------------------------------------------------------------------

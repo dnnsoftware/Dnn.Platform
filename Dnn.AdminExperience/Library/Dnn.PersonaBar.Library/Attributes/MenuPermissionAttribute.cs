@@ -19,19 +19,19 @@ namespace Dnn.PersonaBar.Library.Attributes
     public class MenuPermissionAttribute : AuthorizeAttributeBase, IOverrideDefaultAuthLevel
     {
         /// <summary>
-        /// The default service scope when <see cref="MenuName"/> is not defined.
+        /// Gets or sets the default service scope when <see cref="MenuName"/> is not defined.
         /// </summary>
         public ServiceScope Scope { get; set; }
 
         /// <summary>
-        /// The menu identifier which decide the api whether can requested.
+        /// Gets or sets the menu identifier which decide the api whether can requested.
         /// For example, if this value set to "Pages", the user who have access to pages module can request api.
         /// Users who don't have permissions to Pages module, will not available to request the api.
         /// </summary>
         public string MenuName { get; set; }
 
         /// <summary>
-        /// The Roles which need exclude from permissions, when user in the role will receive 401 exception.
+        /// Gets or sets the Roles which need exclude from permissions, when user in the role will receive 401 exception.
         /// If need set multiple roles, put semicolon(;) between role names.
         /// </summary>
         public string Exclude { get; set; }

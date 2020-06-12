@@ -55,7 +55,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// DictionaryValue returns the Dictionary(Of Integer, String) representation of the Value
+        /// Gets or sets dictionaryValue returns the Dictionary(Of Integer, String) representation of the Value
         /// </summary>
         /// <value>A Dictionary(Of Integer, String) representing the Value</value>
         /// -----------------------------------------------------------------------------
@@ -74,7 +74,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue
+        /// Gets or sets oldDictionaryValue returns the Dictionary(Of Integer, String) representation of the OldValue
         /// </summary>
         /// <value>A Dictionary(Of Integer, String) representing the OldValue</value>
         /// -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldStringValue returns the String representation of the OldValue
+        /// Gets oldStringValue returns the String representation of the OldValue
         /// </summary>
         /// <value>A String representing the OldValue</value>
         /// -----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ namespace DotNetNuke.UI.Skins.Controls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         /// -----------------------------------------------------------------------------

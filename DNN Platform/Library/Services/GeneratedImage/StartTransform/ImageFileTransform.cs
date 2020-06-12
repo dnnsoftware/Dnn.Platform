@@ -16,22 +16,22 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     public class ImageFileTransform : ImageTransform
     {
         /// <summary>
-        /// File path of the image
+        /// Gets or sets file path of the image
         /// </summary>
         public string ImageFilePath { get; set; }
 
         /// <summary>
-        /// Url of the image
+        /// Gets or sets url of the image
         /// </summary>
         public string ImageUrl { get; set; }
 
         /// <summary>
-        /// Sets the Image to return if no image or error
+        /// Gets or sets the Image to return if no image or error
         /// </summary>
         public Image EmptyImage { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + "-" + this.ImageFilePath + this.ImageUrl;
 

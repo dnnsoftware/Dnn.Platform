@@ -37,7 +37,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether we are in Admin Mode
+        /// Gets a value indicating whether gets whether we are in Admin Mode
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool AdminMode
@@ -50,7 +50,7 @@ namespace DotNetNuke.UI.Skins
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the associated ModuleControl for this SkinControl
+        /// Gets or sets and sets the associated ModuleControl for this SkinControl
         /// </summary>
         /// -----------------------------------------------------------------------------
         public IModuleControl ModuleControl { get; set; }

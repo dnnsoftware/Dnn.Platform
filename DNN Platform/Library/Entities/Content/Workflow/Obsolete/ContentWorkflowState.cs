@@ -16,22 +16,22 @@ namespace DotNetNuke.Entities.Content.Workflow
     public class ContentWorkflowState
     {
         /// <summary>
-        /// State Id
+        /// Gets or sets state Id
         /// </summary>
         public int StateID { get; set; }
 
         /// <summary>
-        /// Workflow associated to the state
+        /// Gets or sets workflow associated to the state
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// State name
+        /// Gets or sets state name
         /// </summary>
         public string StateName { get; set; }
 
         /// <summary>
-        /// State Order
+        /// Gets or sets state Order
         /// </summary>
         public int Order { get; set; }
 

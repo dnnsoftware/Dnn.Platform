@@ -20,17 +20,17 @@ namespace DotNetNuke.Services.Social.Messaging.Internal.Views
     public class MessageBoxView
     {
         /// <summary>
-        /// Total Number of Coversations
+        /// Gets or sets total Number of Coversations
         /// </summary>
         public int TotalConversations { get; set; }
 
         /// <summary>
-        /// Total Number of New (Unread) Threads
+        /// Gets or sets total Number of New (Unread) Threads
         /// </summary>
         public int TotalNewThreads { get; set; }
 
         /// <summary>
-        /// List of Conversations
+        /// Gets or sets list of Conversations
         /// </summary>
         public List<MessageConversationView> Conversations { get; set; }
     }

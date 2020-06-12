@@ -139,7 +139,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -401,7 +401,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// Test if this handler has active connections
+            /// Gets a value indicating whether test if this handler has active connections
             /// </summary>
             /// <value>
             /// <c>true</c> if this handler has active connections

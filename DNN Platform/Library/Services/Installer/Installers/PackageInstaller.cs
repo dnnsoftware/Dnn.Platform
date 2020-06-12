@@ -85,7 +85,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Packages files are deleted when uninstalling the
+        /// Gets or sets a value indicating whether gets and sets whether the Packages files are deleted when uninstalling the
         /// package
         /// </summary>
         /// <value>A Boolean value</value>
@@ -94,7 +94,7 @@ namespace DotNetNuke.Services.Installer.Installers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Package is Valid
+        /// Gets a value indicating whether gets whether the Package is Valid
         /// </summary>
         /// <value>A Boolean value</value>
         /// -----------------------------------------------------------------------------

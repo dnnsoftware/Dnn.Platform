@@ -26,7 +26,7 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         }
 
         /// <summary>
-        /// Any details of the task while it's executing
+        /// Gets or sets any details of the task while it's executing
         /// </summary>
         public string Details
         {
@@ -47,17 +47,17 @@ namespace DotNetNuke.Services.Upgrade.Internals.Steps
         }
 
         /// <summary>
-        /// Percentage done
+        /// Gets or sets percentage done
         /// </summary>
         public int Percentage { get; set; }
 
         /// <summary>
-        /// Step Status
+        /// Gets or sets step Status
         /// </summary>
         public StepStatus Status { get; set; }
 
         /// <summary>
-        /// List of Errors
+        /// Gets or sets list of Errors
         /// </summary>
         public IList<string> Errors { get; set; }
 

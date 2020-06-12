@@ -223,7 +223,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Allows users to select their own UI culture.
+        /// Gets a value indicating whether allows users to select their own UI culture.
         /// When set to false (default) framework will allways same culture for both
         /// CurrentCulture (content) and CurrentUICulture (interface)
         /// </summary>
@@ -273,7 +273,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether Browser Language Detection is Enabled
+        /// Gets a value indicating whether gets whether Browser Language Detection is Enabled
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
@@ -283,7 +283,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to use the module effect in edit mode.
+        /// Gets a value indicating whether gets whether to use the module effect in edit mode.
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
@@ -292,20 +292,20 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to use the popup.
+        /// Gets a value indicating whether gets whether to use the popup.
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
         public bool EnablePopUps { get; internal set; }
 
         /// <summary>
-        /// Website Administrator whether receive the notification email when new user register.
+        /// Gets a value indicating whether website Administrator whether receive the notification email when new user register.
         /// </summary>
         public bool EnableRegisterNotification { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Skin Widgets are enabled/supported
+        /// Gets a value indicating whether gets whether the Skin Widgets are enabled/supported
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
@@ -313,21 +313,21 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether a cookie consent popup should be shown
+        /// Gets a value indicating whether gets whether a cookie consent popup should be shown
         /// </summary>
         /// <remarks>Defaults to False</remarks>
         /// -----------------------------------------------------------------------------
         public bool ShowCookieConsent { get; internal set; }
 
         /// <summary>
-        /// Link for the user to find out more about cookies. If not specified the link
+        /// Gets link for the user to find out more about cookies. If not specified the link
         /// shown will point to cookiesandyou.com
         /// </summary>
         public string CookieMoreLink { get; internal set; }
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether enable url language.
+        /// Gets a value indicating whether gets whether enable url language.
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
@@ -339,7 +339,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        ///   Gets whether folders which are hidden or whose name begins with underscore
+        ///   Gets a value indicating whether gets whether folders which are hidden or whose name begins with underscore
         ///   are included in folder synchronization.
         /// </summary>
         /// <remarks>
@@ -350,7 +350,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether hide the login link.
+        /// Gets a value indicating whether gets whether hide the login link.
         /// </summary>
         /// <remarks>Defaults to False.</remarks>
         /// -----------------------------------------------------------------------------
@@ -362,7 +362,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the Inline Editor is enabled
+        /// Gets a value indicating whether gets whether the Inline Editor is enabled
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// -----------------------------------------------------------------------------
@@ -370,7 +370,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to inlcude Common Words in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index
         /// </summary>
         /// <remarks>Defaults to False</remarks>
         /// -----------------------------------------------------------------------------
@@ -378,7 +378,7 @@ namespace DotNetNuke.Entities.Portals
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to inlcude Numbers in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index
         /// </summary>
         /// <remarks>Defaults to False</remarks>
         /// -----------------------------------------------------------------------------
@@ -525,7 +525,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
+        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (if either this specific portal or the entire instance is locked). If locked, any actions which update the database should be disabled.
         /// </summary>
         public bool IsLocked
         {
@@ -533,7 +533,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// Get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
+        /// Gets a value indicating whether get a value indicating whether the current portal is in maintenance mode (note, the entire instance may still be locked, this only indicates whether this portal is specifically locked). If locked, any actions which update the database should be disabled.
         /// </summary>
         public bool IsThisPortalLocked
         {
@@ -596,7 +596,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// If true then add a cachebuster parameter to generated file URI's.
+        /// Gets a value indicating whether if true then add a cachebuster parameter to generated file URI's.
         /// </summary>
         public bool AddCachebusterToResourceUris
         {
@@ -607,7 +607,7 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// If this is true, then regular users can't send message to specific user/group.
+        /// Gets a value indicating whether if this is true, then regular users can't send message to specific user/group.
         /// </summary>
         public bool DisablePrivateMessage
         {
@@ -618,42 +618,42 @@ namespace DotNetNuke.Entities.Portals
         }
 
         /// <summary>
-        /// If true then all users will be pushed through the data consent workflow
+        /// Gets a value indicating whether if true then all users will be pushed through the data consent workflow
         /// </summary>
         public bool DataConsentActive { get; internal set; }
 
         /// <summary>
-        /// Last time the terms and conditions have been changed. This will determine if the user needs to
+        /// Gets last time the terms and conditions have been changed. This will determine if the user needs to
         /// reconsent or not. Legally once the terms have changed, users need to sign again. This value is set
         /// by the "reset consent" button on the UI.
         /// </summary>
         public DateTime DataConsentTermsLastChange { get; internal set; }
 
         /// <summary>
-        /// If set this is a tab id of a page where the user will be redirected to for consent. If not set then
+        /// Gets if set this is a tab id of a page where the user will be redirected to for consent. If not set then
         /// the platform's default logic is used.
         /// </summary>
         public int DataConsentConsentRedirect { get; internal set; }
 
         /// <summary>
-        /// Sets what should happen to the user account if a user has been deleted. This is important as
+        /// Gets what should happen to the user account if a user has been deleted. This is important as
         /// under certain circumstances you may be required by law to destroy the user's data within a
         /// certain timeframe after a user has requested deletion.
         /// </summary>
         public UserDeleteAction DataConsentUserDeleteAction { get; internal set; }
 
         /// <summary>
-        /// Sets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction
+        /// Gets the delay time (in conjunction with DataConsentDelayMeasurement) for the DataConsentUserDeleteAction
         /// </summary>
         public int DataConsentDelay { get; internal set; }
 
         /// <summary>
-        /// Units for DataConsentDelay
+        /// Gets units for DataConsentDelay
         /// </summary>
         public string DataConsentDelayMeasurement { get; internal set; }
 
         /// <summary>
-        /// Whitelist of file extensions for end users
+        /// Gets whitelist of file extensions for end users
         /// </summary>
         public FileExtensionWhitelist AllowedExtensionsWhitelist { get; internal set; }
 

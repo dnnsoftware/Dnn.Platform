@@ -13,17 +13,17 @@ namespace DotNetNuke.Entities.Content.Workflow.Entities
     public class WorkflowUsageItem
     {
         /// <summary>
-        /// Workflow Id
+        /// Gets or sets workflow Id
         /// </summary>
         public int WorkflowID { get; set; }
 
         /// <summary>
-        /// Name of the item
+        /// Gets or sets name of the item
         /// </summary>
         public string ContentName { get; set; }
 
         /// <summary>
-        /// Type of the item
+        /// Gets or sets type of the item
         /// </summary>
         public string ContentType { get; set; }
     }

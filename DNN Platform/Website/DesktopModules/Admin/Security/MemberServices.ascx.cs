@@ -474,14 +474,14 @@ namespace DotNetNuke.Modules.Admin.Security
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets whether this was a cancelation
+            /// Gets or sets a value indicating whether gets and sets whether this was a cancelation
             /// </summary>
             /// -----------------------------------------------------------------------------
             public bool Cancel { get; set; }
 
             /// -----------------------------------------------------------------------------
             /// <summary>
-            /// Gets and sets the RoleName that was (un)subscribed to
+            /// Gets or sets and sets the RoleName that was (un)subscribed to
             /// </summary>
             /// -----------------------------------------------------------------------------
             public string RoleName { get; set; }

@@ -43,7 +43,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Key to obtain ImageURL
+        /// Gets or sets the Icon Key to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -51,7 +51,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Siz to obtain ImageURL
+        /// Gets or sets the Icon Siz to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -59,7 +59,7 @@ namespace DotNetNuke.Web.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Style to obtain ImageURL
+        /// Gets or sets the Icon Style to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------

@@ -105,7 +105,7 @@ namespace log4net.Plugin
         }
 
         /// <summary>
-        /// The repository for this plugin
+        /// Gets or sets the repository for this plugin
         /// </summary>
         /// <value>
         /// The <see cref="ILoggerRepository" /> that this plugin is attached to.

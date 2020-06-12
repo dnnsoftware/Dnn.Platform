@@ -51,7 +51,7 @@ namespace log4net.Layout.Pattern
         }
 
         /// <summary>
-        /// Flag indicating if this converter handles the logging event exception
+        /// Gets or sets a value indicating whether flag indicating if this converter handles the logging event exception
         /// </summary>
         /// <value><c>false</c> if this converter handles the logging event exception</value>
         /// <remarks>

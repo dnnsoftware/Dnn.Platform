@@ -42,7 +42,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// BooleanValue returns the Boolean representation of the Value
+        /// Gets a value indicating whether booleanValue returns the Boolean representation of the Value
         /// </summary>
         /// <value>A Boolean representing the Value</value>
         /// -----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// OldBooleanValue returns the Boolean representation of the OldValue
+        /// Gets a value indicating whether oldBooleanValue returns the Boolean representation of the OldValue
         /// </summary>
         /// <value>A Boolean representing the OldValue</value>
         /// -----------------------------------------------------------------------------
@@ -92,7 +92,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// StringValue is the value of the control expressed as a String
+        /// Gets or sets stringValue is the value of the control expressed as a String
         /// </summary>
         /// <value>A string representing the Value</value>
         /// -----------------------------------------------------------------------------

@@ -78,7 +78,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the BackGroundColor
+        /// Gets or sets and sets the BackGroundColor
         /// </summary>
         [Category("Appearance")]
         [Description("The Background Color to use for the Captcha Image.")]
@@ -96,7 +96,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the BackGround Image
+        /// Gets or sets and sets the BackGround Image
         /// </summary>
         [Category("Appearance")]
         [Description("A Background Image to use for the Captcha Image.")]
@@ -114,7 +114,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the list of characters
+        /// Gets or sets and sets the list of characters
         /// </summary>
         [Category("Behavior")]
         [DefaultValue(CHARS_DEFAULT)]
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the height of the Captcha image
+        /// Gets or sets and sets the height of the Captcha image
         /// </summary>
         [Category("Appearance")]
         [Description("Height of Captcha Image.")]
@@ -151,7 +151,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the length of the Captcha string
+        /// Gets or sets and sets the length of the Captcha string
         /// </summary>
         [Category("Behavior")]
         [DefaultValue(LENGTH_DEFAULT)]
@@ -170,7 +170,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the width of the Captcha image
+        /// Gets or sets and sets the width of the Captcha image
         /// </summary>
         [Category("Appearance")]
         [Description("Width of Captcha Image.")]
@@ -188,7 +188,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets whether the Viewstate is enabled
+        /// Gets or sets a value indicating whether gets and sets whether the Viewstate is enabled
         /// </summary>
         [Browsable(false)]
         public override bool EnableViewState
@@ -205,7 +205,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the ErrorMessage to display if the control is invalid
+        /// Gets or sets and sets the ErrorMessage to display if the control is invalid
         /// </summary>
         [Category("Behavior")]
         [Description("The Error Message to display if invalid.")]
@@ -229,7 +229,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the Expiration time in seconds
+        /// Gets or sets and sets the Expiration time in seconds
         /// </summary>
         [Category("Behavior")]
         [Description("The duration of time (seconds) a user has before the challenge expires.")]
@@ -248,7 +248,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets whether the control is valid
+        /// Gets a value indicating whether gets whether the control is valid
         /// </summary>
         [Category("Validation")]
         [Description("Returns True if the user was CAPTCHA validated after a postback.")]
@@ -261,7 +261,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the Url to use to render the control
+        /// Gets or sets and sets the Url to use to render the control
         /// </summary>
         [Category("Behavior")]
         [Description("The URL used to render the image to the client.")]
@@ -280,7 +280,7 @@ namespace DotNetNuke.UI.WebControls
         }
 
         /// <summary>
-        /// Gets and sets the Help Text to use
+        /// Gets or sets and sets the Help Text to use
         /// </summary>
         [Category("Captcha")]
         [DefaultValue("Enter the code shown above:")]

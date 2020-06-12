@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.Api
         }
 
         /// <summary>
-        /// Gets or sets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
+        /// Gets a value indicating whether more than one instance of the indicated attribute can be specified for a single program element.
         /// </summary>
         public abstract bool AllowMultiple { get; }
 

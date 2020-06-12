@@ -15,12 +15,12 @@ namespace DotNetNuke.Entities.Content.Workflow.Dto
         }
 
         /// <summary>
-        /// Params of the message
+        /// Gets or sets params of the message
         /// </summary>
         public string[] Params { get; set; }
 
         /// <summary>
-        /// User comment
+        /// Gets or sets user comment
         /// </summary>
         public string UserComment { get; set; }
     }

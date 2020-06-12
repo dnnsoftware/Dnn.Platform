@@ -195,7 +195,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Target is the value of the console output stream.
+        /// Gets or sets target is the value of the console output stream.
         /// This is either <c>"Console.Out"</c> or <c>"Console.Error"</c>.
         /// </summary>
         /// <value>
@@ -401,7 +401,7 @@ namespace log4net.Appender
         private static readonly char[] s_windowsNewline = { '\r', '\n' };
 
         /// <summary>
-        /// This appender requires a <see cref="Layout"/> to be set.
+        /// Gets a value indicating whether this appender requires a <see cref="Layout"/> to be set.
         /// </summary>
         /// <value><c>true</c></value>
         /// <remarks>
@@ -575,7 +575,7 @@ namespace log4net.Appender
             private ushort m_combinedColor = 0;
 
             /// <summary>
-            /// The mapped foreground color for the specified level
+            /// Gets or sets the mapped foreground color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -590,7 +590,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The mapped background color for the specified level
+            /// Gets or sets the mapped background color for the specified level
             /// </summary>
             /// <remarks>
             /// <para>
@@ -619,7 +619,7 @@ namespace log4net.Appender
             }
 
             /// <summary>
-            /// The combined <see cref="ForeColor"/> and <see cref="BackColor"/> suitable for
+            /// Gets the combined <see cref="ForeColor"/> and <see cref="BackColor"/> suitable for
             /// setting the console color.
             /// </summary>
             internal ushort CombinedColor

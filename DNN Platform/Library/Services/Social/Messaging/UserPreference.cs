@@ -13,22 +13,22 @@ namespace DotNetNuke.Services.Social.Messaging
     public class UserPreference
     {
         /// <summary>
-        /// Portal where the preference are applied
+        /// Gets or sets portal where the preference are applied
         /// </summary>
         public int PortalId { get; set; }
 
         /// <summary>
-        /// User Identifier
+        /// Gets or sets user Identifier
         /// </summary>
         public int UserId { get; set; }
 
         /// <summary>
-        /// The Email Delivery Frequency used for Messages
+        /// Gets or sets the Email Delivery Frequency used for Messages
         /// </summary>
         public Frequency MessagesEmailFrequency { get; set; }
 
         /// <summary>
-        /// The Email Delivery Frequency used for Notifications
+        /// Gets or sets the Email Delivery Frequency used for Notifications
         /// </summary>
         public Frequency NotificationsEmailFrequency { get; set; }
     }

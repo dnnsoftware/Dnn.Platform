@@ -104,7 +104,7 @@ namespace DotNetNuke.Modules.Admin.Security
         }
 
         /// <summary>
-        /// Gets whether the Captcha control is used to validate the login
+        /// Gets a value indicating whether gets whether the Captcha control is used to validate the login
         /// </summary>
         protected bool UseCaptcha
         {

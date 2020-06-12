@@ -39,7 +39,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Css Class used for Error Log Entries
+        /// Gets or sets and sets the Css Class used for Error Log Entries
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -71,7 +71,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Css Class used for Log Entries that should be highlighted
+        /// Gets or sets and sets the Css Class used for Log Entries that should be highlighted
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -109,7 +109,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Css Class used for normal Log Entries
+        /// Gets or sets and sets the Css Class used for normal Log Entries
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ namespace DotNetNuke.Services.Installer.Log
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets a Flag that indicates whether the Installation was Valid
+        /// Gets a value indicating whether gets a Flag that indicates whether the Installation was Valid
         /// </summary>
         /// <value>A List of LogEntrys</value>
         /// -----------------------------------------------------------------------------

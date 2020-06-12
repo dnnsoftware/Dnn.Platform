@@ -35,7 +35,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ControlName is the Id of the control that is associated with the label
+        /// Gets or sets controlName is the Id of the control that is associated with the label
         /// </summary>
         /// <value>A string representing the id of the associated control</value>
         /// <remarks>
@@ -45,7 +45,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// HelpKey is the Resource Key for the Help Text
+        /// Gets or sets helpKey is the Resource Key for the Help Text
         /// </summary>
         /// <value>A string representing the Resource Key for the Help Text</value>
         /// <remarks>
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// HelpText is value of the Help Text if no ResourceKey is provided
+        /// Gets or sets helpText is value of the Help Text if no ResourceKey is provided
         /// </summary>
         /// <value>A string representing the Text</value>
         /// <remarks>
@@ -94,7 +94,7 @@ namespace DotNetNuke.UI.UserControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ResourceKey is the Resource Key for the Help Text
+        /// Gets or sets resourceKey is the Resource Key for the Help Text
         /// </summary>
         /// <value>A string representing the Resource Key for the Label Text</value>
         /// <remarks>

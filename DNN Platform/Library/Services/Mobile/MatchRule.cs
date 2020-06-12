@@ -19,7 +19,7 @@ namespace DotNetNuke.Services.Mobile
         private int _id = -1;
 
         /// <summary>
-        /// Match rule's primary key.
+        /// Gets or sets match rule's primary key.
         /// </summary>
         [XmlAttribute]
         public int Id
@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// Capability's name.
+        /// Gets or sets capability's name.
         /// </summary>
         [XmlAttribute]
         public string Capability
@@ -46,7 +46,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// The value to match the capability from request.
+        /// Gets or sets the value to match the capability from request.
         /// </summary>
         [XmlAttribute]
         public string Expression
@@ -56,7 +56,7 @@ namespace DotNetNuke.Services.Mobile
         }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlAttribute]
         public int KeyID

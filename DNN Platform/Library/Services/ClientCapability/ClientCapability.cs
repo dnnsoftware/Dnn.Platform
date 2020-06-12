@@ -27,32 +27,32 @@ namespace DotNetNuke.Services.ClientCapability
         }
 
         /// <summary>
-        ///   Unique ID of the client making request.
+        ///   Gets or sets unique ID of the client making request.
         /// </summary>
         public string ID { get; set; }
 
         /// <summary>
-        ///   User Agent of the client making request
+        ///   Gets or sets user Agent of the client making request
         /// </summary>
         public string UserAgent { get; set; }
 
         /// <summary>
-        ///   Is request coming from a mobile device.
+        ///   Gets or sets a value indicating whether is request coming from a mobile device.
         /// </summary>
         public bool IsMobile { get; set; }
 
         /// <summary>
-        ///   Is request coming from a tablet device.
+        ///   Gets or sets a value indicating whether is request coming from a tablet device.
         /// </summary>
         public bool IsTablet { get; set; }
 
         /// <summary>
-        ///   Does the requesting device supports touch screen.
+        ///   Gets or sets a value indicating whether does the requesting device supports touch screen.
         /// </summary>
         public bool IsTouchScreen { get; set; }
 
         /// <summary>
-        ///   FacebookRequest property is filled when request is coming though Facebook iFrame (e.g. fan pages).
+        ///   Gets or sets facebookRequest property is filled when request is coming though Facebook iFrame (e.g. fan pages).
         /// </summary>
         /// <remarks>
         ///   FacebookRequest property is populated based on data in "signed_request" headers coming from Facebook.
@@ -61,22 +61,22 @@ namespace DotNetNuke.Services.ClientCapability
         public FacebookRequest FacebookRequest { get; set; }
 
         /// <summary>
-        ///   ScreenResolution Width of the requester in Pixels.
+        ///   Gets or sets screenResolution Width of the requester in Pixels.
         /// </summary>
         public int ScreenResolutionWidthInPixels { get; set; }
 
         /// <summary>
-        ///   ScreenResolution Height of the requester in Pixels.
+        ///   Gets or sets screenResolution Height of the requester in Pixels.
         /// </summary>
         public int ScreenResolutionHeightInPixels { get; set; }
 
         /// <summary>
-        ///   Does requester support Flash.
+        ///   Gets or sets a value indicating whether does requester support Flash.
         /// </summary>
         public bool SupportsFlash { get; set; }
 
         /// <summary>
-        /// A key-value collection containing all capabilities supported by requester
+        /// Gets or sets a key-value collection containing all capabilities supported by requester
         /// </summary>
         [Obsolete("This method is not memory efficient and should be avoided as the Match class now exposes an accessor keyed on property name. Scheduled removal in v10.0.0.")]
         public IDictionary<string, string> Capabilities
@@ -93,17 +93,17 @@ namespace DotNetNuke.Services.ClientCapability
         }
 
         /// <summary>
-        /// Represents the name of the broweser in the request
+        /// Gets or sets represents the name of the broweser in the request
         /// </summary>
         public string BrowserName { get; set; }
 
         /// <summary>
-        /// Returns the request prefered HTML DTD
+        /// Gets or sets the request prefered HTML DTD
         /// </summary>
         public string HtmlPreferedDTD { get; set; }
 
         /// <summary>
-        ///   Http server variable used for SSL offloading - if this value is empty offloading is not enabled
+        ///   Gets or sets http server variable used for SSL offloading - if this value is empty offloading is not enabled
         /// </summary>
         public string SSLOffload { get; set; }
 

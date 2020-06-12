@@ -14,32 +14,32 @@ namespace DotNetNuke.Services.GeneratedImage.StartTransform
     public class PlaceholderTransform : ImageTransform
     {
         /// <summary>
-        /// Sets the width of the placeholder image
+        /// Gets or sets the width of the placeholder image
         /// </summary>
         public int Width { get; set; }
 
         /// <summary>
-        /// Sets the Height of the placeholder image
+        /// Gets or sets the Height of the placeholder image
         /// </summary>
         public int Height { get; set; }
 
         /// <summary>
-        /// Sets the Color of the border and text element
+        /// Gets or sets the Color of the border and text element
         /// </summary>
         public Color Color { get; set; }
 
         /// <summary>
-        /// Sets the backcolor of the placeholder element
+        /// Gets or sets the backcolor of the placeholder element
         /// </summary>
         public Color BackColor { get; set; }
 
         /// <summary>
-        /// Sets the text of the placeholder image. if blank dimension will be used
+        /// Gets or sets the text of the placeholder image. if blank dimension will be used
         /// </summary>
         public string Text { get; set; }
 
         /// <summary>
-        /// Provides an Unique String for the image transformation
+        /// Gets provides an Unique String for the image transformation
         /// </summary>
         public override string UniqueString => base.UniqueString + this.Width + "-" + this.Height + "-" + this.Color + "-" + this.BackColor + "-" + this.Text;
 

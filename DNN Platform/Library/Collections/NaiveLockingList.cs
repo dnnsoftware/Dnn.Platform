@@ -48,7 +48,7 @@ namespace DotNetNuke.Collections.Internal
         }
 
         /// <summary>
-        /// Access to the underlying SharedList
+        /// Gets access to the underlying SharedList
         /// <remarks>
         /// Allows locking to be explicitly managed for the sake of effeciency
         /// </remarks>

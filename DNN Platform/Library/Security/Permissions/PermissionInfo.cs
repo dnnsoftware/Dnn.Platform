@@ -26,7 +26,7 @@ namespace DotNetNuke.Security.Permissions
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Mdoule Definition ID
+        /// Gets or sets and sets the Mdoule Definition ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Permission Code
+        /// Gets or sets and sets the Permission Code
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -44,7 +44,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Permission ID
+        /// Gets or sets and sets the Permission ID
         /// </summary>
         /// <returns>An Integer</returns>
         /// -----------------------------------------------------------------------------
@@ -53,7 +53,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Permission Key
+        /// Gets or sets and sets the Permission Key
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ namespace DotNetNuke.Security.Permissions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the Permission Name
+        /// Gets or sets and sets the Permission Name
         /// </summary>
         /// <returns>A String</returns>
         /// -----------------------------------------------------------------------------

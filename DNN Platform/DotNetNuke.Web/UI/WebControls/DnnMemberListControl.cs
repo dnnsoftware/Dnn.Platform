@@ -101,13 +101,13 @@ namespace DotNetNuke.Web.UI.WebControls
         public int RowSize { get; set; }
 
         /// <summary>
-        /// Sets the property value to sort by.
+        /// Gets or sets the property value to sort by.
         /// </summary>
         [DefaultValue("UserId")]
         public string SortBy { get; set; }
 
         /// <summary>
-        /// Gets or sets the sort direction
+        /// Gets or sets a value indicating whether gets or sets the sort direction
         /// </summary>
         [DefaultValue(true)]
         public bool SortAscending { get; set; }

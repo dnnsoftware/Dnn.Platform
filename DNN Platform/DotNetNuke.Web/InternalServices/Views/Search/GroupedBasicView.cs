@@ -14,12 +14,12 @@ namespace DotNetNuke.Web.InternalServices.Views.Search
     public class GroupedBasicView
     {
         /// <summary>
-        /// Type of Search Document
+        /// Gets or sets type of Search Document
         /// </summary>
         public string DocumentTypeName { get; set; }
 
         /// <summary>
-        /// Results of the Search
+        /// Gets or sets results of the Search
         /// </summary>
         public List<BasicView> Results { get; set; }
 

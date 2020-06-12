@@ -45,7 +45,7 @@ namespace DotNetNuke.Common.Utilities
         }
 
         /// <summary>
-        /// The list of extensions in the whitelist.
+        /// Gets the list of extensions in the whitelist.
         /// </summary>
         /// <remarks>All extensions are lowercase and prefixed with a '.'</remarks>
         public IEnumerable<string> AllowedExtensions

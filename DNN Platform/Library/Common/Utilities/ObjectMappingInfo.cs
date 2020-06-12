@@ -48,7 +48,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheKey gets the root value of the key used to identify the cached collection
+        /// Gets cacheKey gets the root value of the key used to identify the cached collection
         /// in the ASP.NET Cache.
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -68,7 +68,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheByProperty gets and sets the property that is used to cache collections
+        /// Gets or sets cacheByProperty gets and sets the property that is used to cache collections
         /// of the object.  For example: Modules are cached by the "TabId" proeprty.  Tabs
         /// are cached by the PortalId property.
         /// </summary>
@@ -89,7 +89,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// CacheTimeOutMultiplier gets and sets the multiplier used to determine how long
+        /// Gets or sets cacheTimeOutMultiplier gets and sets the multiplier used to determine how long
         /// the cached collection should be cached.  It is multiplied by the Performance
         /// Setting - which in turn can be modified by the Host Account.
         /// </summary>
@@ -110,7 +110,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ColumnNames gets a dictionary of Database Column Names for the Object
+        /// Gets columnNames gets a dictionary of Database Column Names for the Object
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, string> ColumnNames
@@ -123,7 +123,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// ObjectType gets and sets the type of the object
+        /// Gets or sets objectType gets and sets the type of the object
         /// </summary>
         /// -----------------------------------------------------------------------------
         public string ObjectType
@@ -141,7 +141,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// PrimaryKey gets and sets the property of the object that corresponds to the
+        /// Gets or sets primaryKey gets and sets the property of the object that corresponds to the
         /// primary key in the database
         /// </summary>
         /// -----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Properties gets a dictionary of Properties for the Object
+        /// Gets properties gets a dictionary of Properties for the Object
         /// </summary>
         /// -----------------------------------------------------------------------------
         public Dictionary<string, PropertyInfo> Properties
@@ -173,7 +173,7 @@ namespace DotNetNuke.Common.Utilities
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// TableName gets and sets the name of the database table that is used to
+        /// Gets or sets tableName gets and sets the name of the database table that is used to
         /// persist the object.
         /// </summary>
         /// -----------------------------------------------------------------------------

@@ -39,7 +39,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public string CommandName { get; set; }
 
         /// <summary>
-        /// Gets or sets the Design Mode of the Column
+        /// Gets or sets a value indicating whether gets or sets the Design Mode of the Column
         /// </summary>
         /// <value>A Boolean</value>
         public bool DesignMode { get; set; }
@@ -61,7 +61,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public string ImageURL { get; set; }
 
         /// <summary>
-        /// The type of Template to Create
+        /// Gets or sets the type of Template to Create
         /// </summary>
         /// <value>A String</value>
         public GridItemType ItemType
@@ -71,7 +71,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// The Key Field that provides a Unique key to the data Item
+        /// Gets or sets the Key Field that provides a Unique key to the data Item
         /// </summary>
         /// <value>A String</value>
         public string KeyField { get; set; }
@@ -89,13 +89,13 @@ namespace DotNetNuke.Web.UI.WebControls
         public string NavigateURLFormatString { get; set; }
 
         /// <summary>
-        /// Javascript text to attach to the OnClick Event
+        /// Gets or sets javascript text to attach to the OnClick Event
         /// </summary>
         /// <value>A String</value>
         public string OnClickJs { get; set; }
 
         /// <summary>
-        /// Gets or sets whether an Image is displayed
+        /// Gets or sets a value indicating whether gets or sets whether an Image is displayed
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -112,7 +112,7 @@ namespace DotNetNuke.Web.UI.WebControls
         public string Text { get; set; }
 
         /// <summary>
-        /// An flag that indicates whether the buttons are visible (this is overridden if
+        /// Gets or sets a value indicating whether an flag that indicates whether the buttons are visible (this is overridden if
         /// the VisibleField is set)
         /// changed
         /// </summary>
@@ -124,7 +124,7 @@ namespace DotNetNuke.Web.UI.WebControls
         }
 
         /// <summary>
-        /// An flag that indicates whether the buttons are visible.
+        /// Gets or sets an flag that indicates whether the buttons are visible.
         /// </summary>
         /// <value>A Boolean</value>
         public string VisibleField { get; set; }

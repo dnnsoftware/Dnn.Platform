@@ -54,7 +54,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the control causes Validation to occur
+        /// Gets or sets a value indicating whether gets or sets whether the control causes Validation to occur
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -121,7 +121,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the link is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the link is displayed
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -143,7 +143,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the icon is displayed
+        /// Gets or sets a value indicating whether gets or sets whether the icon is displayed
         /// </summary>
         /// <remarks>Defaults to True</remarks>
         /// <value>A Boolean</value>
@@ -191,7 +191,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Key to obtain ImageURL
+        /// Gets or sets the Icon Key to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -199,7 +199,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Siz to obtain ImageURL
+        /// Gets or sets the Icon Siz to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------
@@ -207,7 +207,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Icon Style to obtain ImageURL
+        /// Gets or sets the Icon Style to obtain ImageURL
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------

@@ -36,7 +36,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Authentication System
+        /// Gets or sets the associated Authentication System
         /// </summary>
         /// <value>An AuthenticationInfo object</value>
         /// -----------------------------------------------------------------------------

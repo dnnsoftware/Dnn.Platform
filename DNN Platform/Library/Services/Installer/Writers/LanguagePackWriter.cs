@@ -102,7 +102,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Language
+        /// Gets or sets the associated Language
         /// </summary>
         /// <value>An Locale object</value>
         /// -----------------------------------------------------------------------------
@@ -121,7 +121,7 @@ namespace DotNetNuke.Services.Installer.Writers
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets the associated Language Pack
+        /// Gets or sets the associated Language Pack
         /// </summary>
         /// <value>An LanguagePackInfo object</value>
         /// -----------------------------------------------------------------------------

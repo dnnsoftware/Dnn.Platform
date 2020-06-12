@@ -32,37 +32,37 @@ namespace DotNetNuke.Entities.Users.Social
         }
 
         /// <summary>
-        /// UserRelationshipId - The primary key
+        /// Gets or sets userRelationshipId - The primary key
         /// </summary>
         [XmlAttribute]
         public int UserRelationshipId { get; set; }
 
         /// <summary>
-        /// UserId of the User that owns the relationship
+        /// Gets or sets userId of the User that owns the relationship
         /// </summary>
         [XmlAttribute]
         public int UserId { get; set; }
 
         /// <summary>
-        /// The UserId of the Related User
+        /// Gets or sets the UserId of the Related User
         /// </summary>
         [XmlAttribute]
         public int RelatedUserId { get; set; }
 
         /// <summary>
-        /// The ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers)
+        /// Gets or sets the ID of the Relationship to which this Relation belongs to (e.g. Friend List or Coworkers)
         /// </summary>
         [XmlAttribute]
         public int RelationshipId { get; set; }
 
         /// <summary>
-        /// The Status of the Relationship (e.g. Initiated, Accepted, Rejected)
+        /// Gets or sets the Status of the Relationship (e.g. Initiated, Accepted, Rejected)
         /// </summary>
         [XmlAttribute]
         public RelationshipStatus Status { get; set; }
 
         /// <summary>
-        /// IHydratable.KeyID.
+        /// Gets or sets iHydratable.KeyID.
         /// </summary>
         [XmlIgnore]
         public int KeyID

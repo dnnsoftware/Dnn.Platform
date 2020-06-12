@@ -31,7 +31,7 @@ namespace DesktopModules.Admin.Security
     {
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to display the Visibility controls
+        /// Gets a value indicating whether gets whether to display the Visibility controls
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool ShowVisibility
@@ -45,7 +45,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets the EditorMode
+        /// Gets or sets and sets the EditorMode
         /// </summary>
         /// -----------------------------------------------------------------------------
         public PropertyEditorMode EditorMode
@@ -63,7 +63,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether the User is valid
+        /// Gets a value indicating whether gets whether the User is valid
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool IsValid
@@ -76,7 +76,7 @@ namespace DesktopModules.Admin.Security
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the Update button
+        /// Gets or sets a value indicating whether gets and sets whether the Update button
         /// </summary>
         /// -----------------------------------------------------------------------------
         public bool ShowUpdate

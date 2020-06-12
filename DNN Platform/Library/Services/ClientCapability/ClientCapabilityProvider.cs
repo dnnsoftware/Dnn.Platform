@@ -14,7 +14,7 @@ namespace DotNetNuke.Services.ClientCapability
     public abstract class ClientCapabilityProvider : IClientCapabilityProvider
     {
         /// <summary>
-        /// Support detect the device whether is a tablet.
+        /// Gets a value indicating whether support detect the device whether is a tablet.
         /// </summary>
         public virtual bool SupportsTabletDetection
         {

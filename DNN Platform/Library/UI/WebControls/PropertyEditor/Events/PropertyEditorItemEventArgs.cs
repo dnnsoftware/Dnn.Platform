@@ -34,7 +34,7 @@ namespace DotNetNuke.UI.WebControls
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets and sets whether the proeprty has changed
+        /// Gets or sets and sets whether the proeprty has changed
         /// </summary>
         /// <value>A String</value>
         /// -----------------------------------------------------------------------------

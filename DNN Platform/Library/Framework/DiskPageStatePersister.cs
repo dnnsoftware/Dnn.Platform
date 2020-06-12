@@ -35,7 +35,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The CacheDirectory property is used to return the location of the "Cache"
+        /// Gets the CacheDirectory property is used to return the location of the "Cache"
         /// Directory for the Portal
         /// </summary>
         /// <remarks>
@@ -51,7 +51,7 @@ namespace DotNetNuke.Framework
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The StateFileName property is used to store the FileName for the State
+        /// Gets the StateFileName property is used to store the FileName for the State
         /// </summary>
         /// <remarks>
         /// </remarks>

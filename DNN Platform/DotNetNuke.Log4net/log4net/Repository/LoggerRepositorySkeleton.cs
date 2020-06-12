@@ -101,7 +101,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// The name of the repository
+        /// Gets or sets the name of the repository
         /// </summary>
         /// <value>
         /// The string name of the repository
@@ -120,7 +120,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// The threshold for all events in this repository
+        /// Gets or sets the threshold for all events in this repository
         /// </summary>
         /// <value>
         /// The threshold for all events in this repository
@@ -150,7 +150,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// RendererMap accesses the object renderer map for this repository.
+        /// Gets rendererMap accesses the object renderer map for this repository.
         /// </summary>
         /// <value>
         /// RendererMap accesses the object renderer map for this repository.
@@ -170,7 +170,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// The plugin map for this repository.
+        /// Gets the plugin map for this repository.
         /// </summary>
         /// <value>
         /// The plugin map for this repository.
@@ -187,7 +187,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Get the level map for the Repository.
+        /// Gets get the level map for the Repository.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -318,7 +318,7 @@ namespace log4net.Repository
         public abstract void Log(LoggingEvent logEvent);
 
         /// <summary>
-        /// Flag indicates if this repository has been configured.
+        /// Gets or sets a value indicating whether flag indicates if this repository has been configured.
         /// </summary>
         /// <value>
         /// Flag indicates if this repository has been configured.
@@ -335,7 +335,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Contains a list of internal messages captures during the
+        /// Gets or sets contains a list of internal messages captures during the
         /// last configuration.
         /// </summary>
         public virtual ICollection ConfigurationMessages
@@ -397,7 +397,7 @@ namespace log4net.Repository
         }
 
         /// <summary>
-        /// Repository specific properties
+        /// Gets repository specific properties
         /// </summary>
         /// <value>
         /// Repository specific properties

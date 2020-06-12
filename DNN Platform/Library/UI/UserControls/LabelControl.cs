@@ -36,7 +36,7 @@ namespace DotNetNuke.UI.UserControls
         protected Label lblNoHelpLabel;
 
         /// <summary>
-        /// ControlName is the Id of the control that is associated with the label
+        /// Gets or sets controlName is the Id of the control that is associated with the label
         /// </summary>
         /// <value>A string representing the id of the associated control</value>
         /// <remarks>
@@ -44,13 +44,13 @@ namespace DotNetNuke.UI.UserControls
         public string ControlName { get; set; }
 
         /// <summary>
-        /// Set the associate control id format, combined used with ControlName for controls
+        /// Gets or sets set the associate control id format, combined used with ControlName for controls
         ///  which have child edit control and want that child control focus when click label.
         /// </summary>
         public string AssociateFormat { get; set; }
 
         /// <summary>
-        /// Css style applied to the asp:label control
+        /// Gets or sets css style applied to the asp:label control
         /// </summary>
         /// <value>A string representing css class name</value>
         /// <remarks>
@@ -58,7 +58,7 @@ namespace DotNetNuke.UI.UserControls
         public string CssClass { get; set; }
 
         /// <summary>
-        /// HelpKey is the Resource Key for the Help Text
+        /// Gets or sets helpKey is the Resource Key for the Help Text
         /// </summary>
         /// <value>A string representing the Resource Key for the Help Text</value>
         /// <remarks>
@@ -66,7 +66,7 @@ namespace DotNetNuke.UI.UserControls
         public string HelpKey { get; set; }
 
         /// <summary>
-        /// HelpText is value of the Help Text if no ResourceKey is provided
+        /// Gets or sets helpText is value of the Help Text if no ResourceKey is provided
         /// </summary>
         /// <value>A string representing the Text</value>
         /// <remarks>
@@ -98,7 +98,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// ResourceKey is the Resource Key for the Label Text
+        /// Gets or sets resourceKey is the Resource Key for the Label Text
         /// </summary>
         /// <value>A string representing the Resource Key for the Label Text</value>
         /// <remarks>
@@ -106,7 +106,7 @@ namespace DotNetNuke.UI.UserControls
         public string ResourceKey { get; set; }
 
         /// <summary>
-        /// Suffix is Optional Text that appears after the Localized Label Text
+        /// Gets or sets suffix is Optional Text that appears after the Localized Label Text
         /// </summary>
         /// <value>A string representing the Optional Text</value>
         /// <remarks>
@@ -114,7 +114,7 @@ namespace DotNetNuke.UI.UserControls
         public string Suffix { get; set; }
 
         /// <summary>
-        /// Text is value of the Label Text if no ResourceKey is provided
+        /// Gets or sets text is value of the Label Text if no ResourceKey is provided
         /// </summary>
         /// <value>A string representing the Text</value>
         /// <remarks>
@@ -133,7 +133,7 @@ namespace DotNetNuke.UI.UserControls
         }
 
         /// <summary>
-        /// Width is value of the Label Width
+        /// Gets or sets width is value of the Label Width
         /// </summary>
         /// <value>A string representing the Text</value>
         /// <remarks>

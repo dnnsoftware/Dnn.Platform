@@ -50,7 +50,7 @@ namespace DotNetNuke.Modules.Admin.Users
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether we are dealing with SuperUsers
+        /// Gets a value indicating whether gets whether we are dealing with SuperUsers
         /// </summary>
         /// -----------------------------------------------------------------------------
         protected bool IsSuperUser

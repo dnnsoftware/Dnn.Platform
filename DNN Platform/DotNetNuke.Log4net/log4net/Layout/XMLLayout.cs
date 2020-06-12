@@ -105,7 +105,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// The prefix to use for all element names
+        /// Gets or sets the prefix to use for all element names
         /// </summary>
         /// <remarks>
         /// <para>
@@ -121,7 +121,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Set whether or not to base64 encode the message.
+        /// Gets or sets a value indicating whether set whether or not to base64 encode the message.
         /// </summary>
         /// <remarks>
         /// <para>
@@ -140,7 +140,7 @@ namespace log4net.Layout
         }
 
         /// <summary>
-        /// Set whether or not to base64 encode the property values.
+        /// Gets or sets a value indicating whether set whether or not to base64 encode the property values.
         /// </summary>
         /// <remarks>
         /// <para>

@@ -111,7 +111,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// The Actions property allows the user to create a hierarchy of actions, with
+        /// Gets or sets the Actions property allows the user to create a hierarchy of actions, with
         /// each action having sub-actions.
         /// </summary>
         /// <value>Returns a collection of ModuleActions.</value>
@@ -124,7 +124,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// A Module Action ID is a identifier that can be used in a Module Action Collection
+        /// Gets or sets a Module Action ID is a identifier that can be used in a Module Action Collection
         /// to find a specific Action.
         /// </summary>
         /// <value>The integer ID of the current <see cref="T:DotNetNuke.ModuleAction"/>.</value>
@@ -135,7 +135,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets whether the current action should be displayed.
+        /// Gets or sets a value indicating whether gets or sets whether the current action should be displayed.
         /// </summary>
         /// <value>A boolean value that determines if the current action should be displayed</value>
         /// <remarks>If Visible is false, then the action is always hidden.  If Visible
@@ -160,7 +160,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// A Module Action CommandName represents a string used by the ModuleTitle to notify
+        /// Gets or sets a Module Action CommandName represents a string used by the ModuleTitle to notify
         /// the parent module that a given Module Action was selected in the Module Menu.
         /// </summary>
         /// <value>The name of the command to perform.</value>
@@ -174,7 +174,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// A Module Action CommandArgument provides additional information and
+        /// Gets or sets a Module Action CommandArgument provides additional information and
         /// complements the CommandName.
         /// </summary>
         /// <value>A string that contains the argument for the command.</value>
@@ -271,7 +271,7 @@ namespace DotNetNuke.Entities.Modules.Actions
         public string ClientScript { get; set; }
 
         /// <summary>
-        /// Gets or sets a value that determines if a local ActionEvent is fired when the
+        /// Gets or sets a value indicating whether gets or sets a value that determines if a local ActionEvent is fired when the
         /// <see cref="T:DotNetNuke.ModuleAction" /> contains a URL.
         /// </summary>
         /// <value>A boolean indicating whether to fire the ActionEvent.</value>
@@ -286,7 +286,7 @@ namespace DotNetNuke.Entities.Modules.Actions
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets or sets a value that determines if a new window is opened when the
+        /// Gets or sets a value indicating whether gets or sets a value that determines if a new window is opened when the
         /// DoAction() method is called.
         /// </summary>
         /// <value>A boolean indicating whether to open a new window.</value>

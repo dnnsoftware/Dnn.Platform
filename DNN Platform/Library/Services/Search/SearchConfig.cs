@@ -43,7 +43,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to inlcude Common Words in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Common Words in the Search Index
         /// </summary>
         /// <remarks>Defaults to False</remarks>
         /// -----------------------------------------------------------------------------
@@ -57,7 +57,7 @@ namespace DotNetNuke.Services.Search
 
         /// -----------------------------------------------------------------------------
         /// <summary>
-        /// Gets whether to inlcude Numbers in the Search Index
+        /// Gets a value indicating whether gets whether to inlcude Numbers in the Search Index
         /// </summary>
         /// <remarks>Defaults to False</remarks>
         /// -----------------------------------------------------------------------------

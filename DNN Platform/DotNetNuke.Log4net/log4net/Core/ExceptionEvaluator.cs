@@ -75,7 +75,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// The type that triggers this evaluator.
+        /// Gets or sets the type that triggers this evaluator.
         /// </summary>
         public Type ExceptionType
         {
@@ -84,7 +84,7 @@ namespace log4net.Core
         }
 
         /// <summary>
-        /// If true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.
+        /// Gets or sets a value indicating whether if true, this evaluator will trigger on subclasses of <see cref="ExceptionType"/>.
         /// </summary>
         public bool TriggerOnSubclass
         {

@@ -954,7 +954,7 @@ namespace log4net.Appender
         }
 
         /// <summary>
-        /// Gets or sets a flag that indicates whether the file should be
+        /// Gets or sets a value indicating whether gets or sets a flag that indicates whether the file should be
         /// appended to or overwritten.
         /// </summary>
         /// <value>
