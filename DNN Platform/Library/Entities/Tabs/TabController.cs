@@ -2343,7 +2343,7 @@ namespace DotNetNuke.Entities.Tabs
                 tab.RefreshInterval = XmlUtils.GetNodeValueInt(tabNode, "refreshinterval", Null.NullInteger);
                 tab.PageHeadText = XmlUtils.GetNodeValue(tabNode, "pageheadtext", Null.NullString);
                 tab.IsSecure = XmlUtils.GetNodeValueBoolean(tabNode, "issecure", false);
-                tab.SiteMapPriority = XmlUtils.GetNodeValueSingle(tabNode, "sitemappriority", (float)0.5);
+                tab.SiteMapPriority = XmlUtils.GetNodeValueSingle(tabNode, "sitemappriority", 0.5F);
                 tab.CultureCode = XmlUtils.GetNodeValue(tabNode.CreateNavigator(), "cultureCode");
                 // objTab.UniqueId = New Guid(XmlUtils.GetNodeValue(nodeTab, "guid", Guid.NewGuid.ToString()));
                 // objTab.VersionGuid = New Guid(XmlUtils.GetNodeValue(nodeTab, "versionGuid", Guid.NewGuid.ToString()));
